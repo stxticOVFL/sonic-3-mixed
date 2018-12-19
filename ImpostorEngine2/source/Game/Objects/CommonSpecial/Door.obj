@@ -1,0 +1,49 @@
+object 0x3C;
+
+event Create() {
+    this.W = 32;
+    this.H = 64;
+    this.Active = true;
+    this.Priority = false;
+
+    this.Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    if (Scene.Player.EZX - 10 < this.X + 16) {
+        this.Y = this.InitialY - 64;
+    }
+    else {
+        this.Y = this.InitialY;
+    }
+}
+event Update() {
+    local AllPast:bool = true;
+
+    for (local i:int = 0; i < Scene.PlayerCount; i++) {
+        if (Scene.Players[i].EZX - 10 < this.X + 16 && Scene.Players[i].OnScreen) {
+            AllPast = false;
+            break;
+        }
+    }
+    if (!AllPast) {
+        if (this.Y > this.InitialY - 64)
+            this.Y -= 8;
+    }
+    else {
+        if (this.Y < this.InitialY)
+            this.Y += 8;
+    }
+}
+event Render(CamX:int, CamY:int) {
+    if (Scene.ZoneID == 2) {
+        G.DrawSprite(Scene.TileSprite, 0, 0x8B, 8 + this.X - CamX + (-16), 8 + this.Y - 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x8C, 8 + this.X - CamX + (0), 8 + this.Y - 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x8D, 8 + this.X - CamX + (-16), 8 + this.Y - 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x8E, 8 + this.X - CamX + (0), 8 + this.Y - 16 - CamY + (0), 0, IE_NOFLIP);
+
+        G.DrawSprite(Scene.TileSprite, 0, 0x8B, 8 + this.X - CamX + (-16), 8 + this.Y + 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x8C, 8 + this.X - CamX + (0), 8 + this.Y + 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x8D, 8 + this.X - CamX + (-16), 8 + this.Y + 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x8E, 8 + this.X - CamX + (0), 8 + this.Y + 16 - CamY + (0), 0, IE_NOFLIP);
+    }
+}

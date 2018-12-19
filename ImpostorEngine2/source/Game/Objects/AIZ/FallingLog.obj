@@ -1,0 +1,42 @@
+object 0x2D;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 48;
+    H = 14;
+
+    SolidTop = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    var Length:int = 0;
+    var LastY:int = Y;
+}
+
+event Update() {
+    Priority = true;
+
+    LastY = Y;
+
+    Length = Scene.WaterLevel - InitialY;
+    Y = InitialY + Math.min(Frame, Length);
+
+    Length = (Length / 0x80) * 0x80 + 0x80;
+
+    Frame = (Frame + 1) % (Length);
+
+    if (Math.abs(Scene.Player.EZX - X) > 0x200) {
+        Priority = false;
+        Y = InitialY;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    Length = Scene.WaterLevel - InitialY;
+
+    if (Frame < Length || Frame % 8 < 4)
+        G.DrawSprite(Sprite, 14, 0, X - CamX, LastY - CamY, 0, IE_NOFLIP);
+
+    G.DrawSprite(Sprite, 15, (Frame & 0xF) / 4, X - CamX, LastY - CamY, 0, IE_NOFLIP);
+}

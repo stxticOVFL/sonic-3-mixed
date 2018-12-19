@@ -1,0 +1,14 @@
+Looking in 'AIZ1_Resize'
+Camera_min_X_pos is set to 0x1308, which is correct
+
+
+Camera_target_min_X_pos =	00FFEE0C ; +0x3E0C
+Camera_target_max_X_pos =	00FFEE0E ; +0x3E0E
+Camera_target_min_Y_pos =	00FFEE10 ; +0x3E10
+Camera_target_max_Y_pos =	00FFEE12 ; +0x3E12
+Camera_min_X_pos =		00FFEE14 ; +0x3E14
+Camera_max_X_pos =		00FFEE16 ; +0x3E16
+Camera_min_Y_pos =		00FFEE18 ; +0x3E18
+Camera_max_Y_pos =		00FFEE1A ; +0x3E1A
+
+Player_1 =			00FFB000

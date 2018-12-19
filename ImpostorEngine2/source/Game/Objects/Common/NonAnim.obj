@@ -1,0 +1,66 @@
+object 0x2F;
+
+event Create() {
+    this.Active = true;
+    this.CurrentAnimation = -1;
+    if (this.SubType == 0x06) {
+        this.VisualLayer = 1;
+        this.X++;
+        VisW = 128;
+        VisH = 96;
+    }
+    else if (this.SubType == 0x07) {
+        this.VisualLayer = 1;
+        VisW = 128;
+        VisH = 96;
+    }
+    else if (this.SubType == 0x09) {
+        this.VisualLayer = 1;
+        VisW = 128;
+        VisH = 96;
+    }
+    else if (this.SubType == 0x0A) {
+        this.VisualLayer = 1;
+        VisW = 128;
+        VisH = 96;
+    }
+    else if (this.SubType == 0x13) {
+        this.VisualLayer = 0;
+        this.CurrentAnimation = 11;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    if (CurrentAnimation == -1)
+        return;
+
+    /*
+    if (Scene.ZoneID == 2 && Scene.Act == 1) {
+        if (this.SubType == 0x06) {
+            for (i = 0; i < 64; i++)
+                G.DrawSprite(Scene.TileSprite, 0, 0xD90 + (1 - i % 2) * 16 + ((i / 8) % 2) * 32, 16, 16, (int)this.X - CamX - 64 + (i % 8) * 16, (int)this.Y - CamY - 64 + (i / 8) * 16, 0, IE_NOFLIP, 0, 0);
+        }
+        else if (this.SubType == 0x07) {
+            for (i = 0; i < 32; i++)
+                G.DrawSprite(Scene.TileSprite, 0, 0xD90 + (1 - i % 2) * 16 + ((i / 8) % 2) * 32, 16, 16, (int)this.X - CamX - 64 + (i % 8) * 16, (int)this.Y - CamY - 32 + (i / 8) * 16, 0, IE_NOFLIP, 0, 0);
+        }
+        else if (this.SubType == 0x08) {
+            for (i = 0; i < 32; i++)
+                G.DrawSprite(Scene.TileSprite, 0, 0xD90 + (1 - i % 2) * 16 + (1 - (i / 8) % 2) * 32, 16, 16, (int)this.X - CamX - 64 + (i % 8) * 16, (int)this.Y - CamY - 32 + (i / 8) * 16, 0, IE_NOFLIP, 0, 0);
+        }
+        else if (this.SubType == 0x09) {
+            for (i = 0; i < 96; i++)
+                G.DrawSprite(Scene.TileSprite, 0, 0xD90 + (1 - i % 2) * 16 + ((i / 8) % 2) * 32, 16, 16,
+                (int)this.X - CamX - 64 + (i % 8) * 16, this.Y - CamY + 32 + (i / 8) * 16 - (i % 8) / 2 * 32, 0, IE_NOFLIP, 0, 0);
+        }
+        else if (this.SubType == 0x0A) {
+            for (i = 0; i < 96; i++)
+                G.DrawSprite(Scene.TileSprite, 0, 0xD90 + (1 - i % 2) * 16 + ((i / 8) % 2) * 32, 16, 16,
+                this.X - CamX - 64 + (i % 8) * 16, this.Y - CamY - 96 + (i / 8) * 16 + (i % 8) / 2 * 32, 0, IE_NOFLIP, 0, 0);
+        }
+    }
+    //*/
+
+
+    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

@@ -1,0 +1,16 @@
+object 0x4F;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    W = SubType << 4;
+    H = 0x60;
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+	return true;
+}

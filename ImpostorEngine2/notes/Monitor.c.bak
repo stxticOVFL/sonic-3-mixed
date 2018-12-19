@@ -1,0 +1,117 @@
+#if INTERFACE
+#include <Engine/IApp.h>
+#include <Engine/ISprite.h>
+#include <Game/LevelScene.h>
+#include "../Object.h"
+#include <standard_libs.h>
+
+class Monitor : public Object {
+public:
+    float GhostY = 0.0f;
+    int PlayerAggessor = 0;
+    bool CanFall = false;
+};
+#endif
+
+#include "Monitor.h"
+
+PUBLIC void Monitor::Create() {
+    this->W = 26;
+    this->H = 32;
+    this->Active = true;
+    this->Priority = false;
+    this->Frame = 0;
+    this->Gravity = 0;
+    this->Solid = true;
+    Scene_AddSelfToRegistry(Solid);
+    this->BreakableByRoll = true;
+    this->BreakableByJump = true;
+    this->BreakableByGlide = true;
+    Scene_AddSelfToRegistry(Breakable);
+    this->PlayerAggessor = 0;
+}
+PUBLIC void Monitor::Update() {
+    this->Frame = ((this->Frame + 1) % 12);
+    if (!this->CanFall && (this->Gravity != 0)) {
+        this->CanFall = true;
+    }
+    if (this->CanFall) {
+        this->Gravity += (0.21875f / 1.5f);
+        for (int i = 0; (i < abs(this->Gravity)); i += 0.5f) {
+            if (Scene->CollisionAt(this->X,(this->Y + 16))) {
+                this->Gravity = 0;
+                this->Priority = false;
+                break;
+            }
+            this->Y += (signum(this->Gravity) * 0.5);
+        }
+    }
+    if ((this->Gravity != 0))
+        this->Priority = true;
+    if (((this->Timer >= 0) && (this->Timer < (32 + 24))))
+        this->Timer++;
+    else if (!this->CanFall)
+        this->Priority = false;
+    if ((this->Timer == 32)) {
+        if ((this->SubType == 0x00)) {
+            //Player[this.PlayerAggessor].Hurt(this->X,false);
+        }
+        else if ((this->SubType == 0x01)) {
+            //Player[this.PlayerAggessor].GiveLife(1);
+            //Music.Play(MSC.LifeGet,MSC_TOP_PRIORITY,0.0,0.0,MSC_NOLOOP,MSC_NON_OVERRIDABLE,MSC_DONT_CLEAR_AFTER,0.0);
+        }
+        else if ((this->SubType == 0x02)) {
+            //Player[this.PlayerAggessor].Hurt(this->X,false);
+        }
+        else if ((this->SubType == 0x03)) {
+            //Player[this.PlayerAggessor].GiveRings(10);
+            //Sound.Play(SFX.Ring,SFX_STATIC_OBJECT);
+        }
+        else if ((this->SubType == 0x04)) {
+            //Player[this.PlayerAggessor].SpeedSneakersActive = true;
+            //Player[this.PlayerAggessor].SpeedSneakersTimer = 1200;
+        }
+        else if ((this->SubType == 0x05)) {
+            //Player[this.PlayerAggessor].Shield = ShieldType_Fire;
+            //Player[this.PlayerAggessor].ShieldUsable = true;
+            //Player[this.PlayerAggessor].ShieldAction = false;
+            //Sound.Play(SFX.FireShieldGet,SFX_STATIC_OBJECT);
+        }
+        else if ((this->SubType == 0x06)) {
+            //Player[this.PlayerAggessor].Shield = ShieldType_Electric;
+            //Player[this.PlayerAggessor].ShieldUsable = true;
+            //Player[this.PlayerAggessor].ShieldAction = false;
+            //Sound.Play(SFX.ElectricShieldGet,SFX_STATIC_OBJECT);
+        }
+        else if ((this->SubType == 0x07)) {
+            //Player[this.PlayerAggessor].Shield = ShieldType_Bubble;
+            //Player[this.PlayerAggessor].ShieldUsable = true;
+            //Player[this.PlayerAggessor].ShieldAction = false;
+            //Sound.Play(SFX.BubbleShieldGet,SFX_STATIC_OBJECT);
+        }
+        else if ((this->SubType == 0x08)) {
+            //Player[this.PlayerAggessor].Invincibility = InvincibilityType_Full;
+            //Player[this.PlayerAggessor].InvincibilityTimer = 1200;
+            //Music.Play(MSC.Invincibility,MSC_MID_PRIORITY,0.0,0.0,MSC_LOOP,MSC_NON_OVERRIDABLE,MSC_DONT_CLEAR_AFTER,0.0);
+        }
+        else if ((this->SubType == 0x09)) {
+            //Player[this.PlayerAggessor].SuperForm = true;
+            //Player[this.PlayerAggessor].GiveRings(100);
+        }
+        else if ((this->SubType == 0x0B)) {
+            //Player[this.PlayerAggessor].HyperRings = true;
+            //Player[this.PlayerAggessor].GiveRings(10);
+            //Sound.Play(SFX.Ring,SFX_STATIC_OBJECT);
+        }
+    }
+    if (!this->BreakableByRoll) {
+        this->GhostY += ((-20.0 - this->GhostY) / 10.0);
+        this->Priority = true;
+        if ((floor(this->GhostY) == -20.0)) {
+            this->GhostY = -20.0;
+        }
+    }
+}
+PUBLIC void Monitor::Render(int CamX, int CamY) {
+    G->DrawRectangle(this->X - this->W / 2 - CamX, this->Y - this->H / 2 - CamY, W, H, 0xF2D141);
+}

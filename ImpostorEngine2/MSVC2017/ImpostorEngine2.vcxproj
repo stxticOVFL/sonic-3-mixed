@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="NoGen (Debug)|Win32">
+      <Configuration>NoGen (Debug)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\Engine\IApp.cpp" />
+    <ClCompile Include="..\source\Engine\IAudio.cpp" />
+    <ClCompile Include="..\source\Engine\IGLGraphics.cpp" />
+    <ClCompile Include="..\source\Engine\IGraphics.cpp" />
+    <ClCompile Include="..\source\Engine\IINI.cpp" />
+    <ClCompile Include="..\source\Engine\IInput.cpp" />
+    <ClCompile Include="..\source\Engine\IMath.cpp" />
+    <ClCompile Include="..\source\Engine\IModel.cpp" />
+    <ClCompile Include="..\source\Engine\IResource.cpp" />
+    <ClCompile Include="..\source\Engine\IResources.cpp" />
+    <ClCompile Include="..\source\Engine\IScene.cpp" />
+    <ClCompile Include="..\source\Engine\ISound.cpp" />
+    <ClCompile Include="..\source\Engine\ISprite.cpp" />
+    <ClCompile Include="..\source\Engine\IStreamer.cpp" />
+    <ClCompile Include="..\source\Game\Animal.cpp" />
+    <ClCompile Include="..\source\Game\BubbleCountdown.cpp" />
+    <ClCompile Include="..\source\Game\Explosion.cpp" />
+    <ClCompile Include="..\source\Game\FallingTile.cpp" />
+    <ClCompile Include="..\source\Game\LevelScene.cpp" />
+    <ClCompile Include="..\source\Game\Levels\AIZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\FBZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\HCZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\LBZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\MGZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\MHZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\SpecialStage.cpp" />
+    <ClCompile Include="..\source\Game\MovingSprite.cpp" />
+    <ClCompile Include="..\source\Game\Object.cpp" />
+    <ClCompile Include="..\source\Game\ObjectNames.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Act1TreeBark.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Bloominator.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FallingLog.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\ForegroundPlant.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\HollowTree.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\MonkeyDude.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RhinoBot.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RideVine.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RopePeg.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\SwingVine.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CutsceneKnuckles.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Door.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Rock.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridge.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridgeChild.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\BreakableWall.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Bubbler.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Button.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\CollapsingBridge.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\CollapsingPlatform.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\FloatingPlatform.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleDeath.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSolid.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSpikes.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Monitor.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Ridge.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\RollEnforcer.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Signpost.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\SpecialRing.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\StarPost.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Blastoid.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Block.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BreakBar.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Buggernaut.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Fan.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HandLauncher.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZConveyorBelt.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZConveyorSpike.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZSlide.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZSnakeBlocks.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZVWaterStream.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZWaterSplash.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZWaterWall.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZ_Miniboss.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Jawz.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\LargeFan.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\MegaChomper.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Pointdexter.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\SpinningColumn.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\TurboSpiker.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDashTrigger.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZHeadTrigger.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZHeadTrigger_Eye.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZQuickMud.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSwingingPlatform.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZTriggerPlatform.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp" />
+    <ClCompile Include="..\source\Game\Player.cpp" />
+    <ClCompile Include="..\source\Game\Ring.cpp" />
+    <ClCompile Include="..\source\Game\Scenes\LevelSelect.cpp" />
+    <ClCompile Include="..\source\Game\Scenes\MainMenu.cpp" />
+    <ClCompile Include="..\source\Game\ScoreGhost.cpp" />
+    <ClCompile Include="..\source\Game\Sound.cpp" />
+    <ClCompile Include="..\source\main.cpp" />
+    <ClCompile Include="..\source\Utils\gifdec.cpp" />
+    <ClCompile Include="..\source\Utils\ioapi.c" />
+    <ClCompile Include="..\source\Utils\unzip.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\Engine\I3D.hh" />
+    <ClInclude Include="..\source\Engine\IHeader.hh" />
+    <ClInclude Include="..\source\Game\LevelSceneExt.h" />
+    <ClInclude Include="..\source\Game\Object.h" />
+    <ClInclude Include="..\source\Game\Player.h" />
+    <ClInclude Include="..\source\Utils\gifdec.h" />
+    <ClInclude Include="..\source\Utils\ioapi.h" />
+    <ClInclude Include="..\source\Utils\Minizip.hh" />
+    <ClInclude Include="..\source\Utils\Standard.h" />
+    <ClInclude Include="..\source\Utils\StandardSDL2.h" />
+    <ClInclude Include="..\source\Utils\unzip.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{43B7CD4C-B24A-450B-A277-12F246CF664C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='NoGen (Debug)|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='NoGen (Debug)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\source;..\gen;External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <CustomBuildBeforeTargets>
+    </CustomBuildBeforeTargets>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='NoGen (Debug)|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\source;..\gen;External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <CustomBuildBeforeTargets>
+    </CustomBuildBeforeTargets>
+    <PreBuildEventUseInBuild>
+    </PreBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;_DEBUG;_CONSOLE;MSVC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <UndefinePreprocessorDefinitions>PUBLIC;PRIVATE;INTERFACE;VIRTUAL</UndefinePreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>zlibwapi.lib;discord-rpc.lib;glew32.lib;opengl32.lib;glu32.lib;freeglut.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>
+      </StackReserveSize>
+      <StackCommitSize>
+      </StackCommitSize>
+    </Link>
+    <PreBuildEvent>
+      <Command>"../tools/makeheaders.exe" "../../source"</Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='NoGen (Debug)|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;_DEBUG;_CONSOLE;MSVC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <UndefinePreprocessorDefinitions>PUBLIC;PRIVATE;INTERFACE;VIRTUAL</UndefinePreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>zlibwapi.lib;discord-rpc.lib;glew32.lib;opengl32.lib;glu32.lib;freeglut.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>2000000</StackReserveSize>
+      <StackCommitSize>8000</StackCommitSize>
+      <HeapReserveSize>2000000</HeapReserveSize>
+      <HeapCommitSize>8000</HeapCommitSize>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;MSVC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

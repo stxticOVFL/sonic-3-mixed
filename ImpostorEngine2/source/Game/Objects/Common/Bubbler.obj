@@ -1,0 +1,31 @@
+object 0x54;
+
+
+event Create() {
+    this.W = 16;
+    this.H = 32;
+    this.Active = true;
+    this.Priority = false;
+
+    this.Frame = 0;
+    this.CurrentAnimation = 2;
+    this.Sprite = Scene.WaterSprite;
+
+
+}
+event Update() {
+    if (this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed > 2)
+        this.Frame += this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed;
+    else if (this.Sprite.Animations[this.CurrentAnimation].Frames[this.Frame / 0x100].Duration != 0)
+        this.Frame += 0x100 / this.Sprite.Animations[this.CurrentAnimation].Frames[this.Frame / 0x100].Duration;
+
+    if (this.Frame / 0x100 >= this.Sprite.Animations[this.CurrentAnimation].FrameCount - 1) {
+        this.Frame = this.Sprite.Animations[this.CurrentAnimation].FrameToLoop * 0x100;
+    }
+
+}
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+
+
+}

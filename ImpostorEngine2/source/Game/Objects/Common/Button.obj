@@ -1,0 +1,60 @@
+object 0x33;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    if (Scene.ZoneID != 2) {
+        Solid = true;
+        Scene.AddSelfToRegistry(this, "Solid");
+    }
+
+    W = 32;
+    H = 24;
+    Rotation = 0;
+
+    Y += 6;
+
+    var StartY:int = this.Y;
+    var CurrentAnimation:int = 0;
+    var Down:int = false;
+    var Pressed:int = false;
+}
+event Update() {
+    this.Down = this.CollidingWithPlayer;
+
+    if (this.Down) {
+        Y = this.StartY + 8;
+        H = 18;
+    }
+    else {
+        Y = this.StartY;
+        H = 24;
+    }
+
+    this.Frame = 2;//this.CollidingWithPlayer;
+}
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8,
+        this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (HitFrom != 1) {
+        this.CollidingWithPlayer = false;
+        return 0;
+    }
+
+    if (Scene.Players[PlayerID].YSpeed <= 0) {
+        this.CollidingWithPlayer = false;
+        return 0;
+    }
+
+    if (!this.Pressed) {
+        this.Pressed = true;
+        //Scene->aud_C_ShortBeep->Play(2);
+        Scene.RoutineNumber = SubType;
+    }
+
+    return 1;
+}

@@ -1,0 +1,45 @@
+object 0x94;
+
+subclass Enemy;
+
+event Create() {
+    this.Active = true;
+    this.Priority = false;
+
+    this.W = 32;
+    this.H = 32;
+
+    this.CurrentAnimation = 0;
+
+    HitCount = 1;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+    this.Y += 1;
+}
+
+event OnHit():int {
+    Scene.RoutineNumber = (Scene.RoutineNumber & 0xF0) | this.SubType;
+    return OnDeath();
+}
+
+event Update() {
+    if ((Scene.Timer & 0x7F) == 0x00 ||
+        (Scene.Timer & 0x7F) == 0x10 ||
+        (Scene.Timer & 0x7F) == 0x20) {
+        this.Frame = 0;
+        Sound.Play(Sound.SFX_SHOT);
+    }
+
+    if (this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed > 2)
+        this.Frame += this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed;
+    else if (this.Sprite.Animations[this.CurrentAnimation].Frames[Frame >> 8].Duration != 0)
+        this.Frame += 0x100 / this.Sprite.Animations[this.CurrentAnimation].Frames[this.Frame >> 8].Duration;
+
+    if (this.Frame >= this.Sprite.Animations[this.CurrentAnimation].FrameCount << 8)
+        this.Frame = this.Sprite.Animations[this.CurrentAnimation].FrameToLoop << 8;
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+}

@@ -1,0 +1,12 @@
+object 0x0A;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 80;
+    H = 80;
+}
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, 30, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

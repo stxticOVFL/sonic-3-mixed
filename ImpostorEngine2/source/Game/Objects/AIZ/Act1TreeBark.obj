@@ -1,0 +1,14 @@
+object 0x09;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 16;
+    H = 16;
+
+    VisualLayer = 1;
+}
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, 29, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

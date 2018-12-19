@@ -1,0 +1,104 @@
+object 0x67;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    W = 32;
+    H = 32;
+
+    CurrentAnimation = 14;
+
+    Timer = SubType + Scene.Frame;
+
+    var Offset:int = (SubType & 0x7F);
+
+    var LastY:int = Y;
+
+    var FX:bool = FlipX;
+    var FY:bool = FlipY;
+    FY = false;
+    var F:int = 1;
+
+    var DirX:int = 1;
+    var DirY:int = 1;
+
+    /*
+
+    if (SubType >= 0x80) {
+        F = -1;
+    }
+
+    if (FlipY)
+        Offset += 0x1FF;
+
+    DirX = 1;
+    if (FX) {
+        DirX = -1;
+    }
+
+    DirY = 1;
+    if (FY) {
+        DirY = -1;
+    }
+    */
+}
+
+event Update() {
+    /*
+
+    LastY = Y;
+
+    Timer &= 0x3FF;
+    if (Timer <= 0xFF) {
+        Timer &= 0xFF;
+        if (Timer > 0x7F)
+            Timer = 0x7F;
+
+        X = (InitialX - Math.cosHex(Timer) * 0x40 * DirX) >> 16;
+        Y = InitialY + 0x3F;
+        if (FY)
+            Y -= 0x7F;
+    }
+    else if (Timer <= 0x1FF) {
+        Timer &= 0xFF;
+        if (Timer > 0x7F)
+            Timer = 0x7F;
+
+        X = InitialX + 0x3F;
+        if (FX)
+            X -= 0x7F;
+        Y = (InitialY + Math.cosHex(Timer) * 0x40 * DirY) >> 16;
+    }
+    else if (Timer <= 0x2FF) {
+        Timer &= 0xFF;
+        if (Timer > 0x7F)
+            Timer = 0x7F;
+
+        X = (InitialX + Math.cosHex(Timer) * 0x40 * DirX) >> 16;
+        Y = InitialY - 0x40;
+        if (FY)
+            Y += 0x7F;
+    }
+    else if (Timer <= 0x3FF) {
+        Timer &= 0xFF;
+        if (Timer > 0x7F)
+            Timer = 0x7F;
+
+        X = InitialX - 0x40;
+        if (FX)
+            X += 0x7F;
+        Y = (InitialY - Math.cosHex(Timer) * 0x40 * DirY) >> 16;
+    }
+
+    Timer = Offset + Scene.Frame * F;
+
+    //*/
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, 2, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

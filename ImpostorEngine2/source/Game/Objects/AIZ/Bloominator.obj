@@ -1,0 +1,66 @@
+object 0x8C;
+
+subclass Enemy;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 32;
+    H = 48;
+
+    Frame = 0;
+    HitCount = 1;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+}
+
+event Update() {
+    if (Frame == 31) {
+        // Spore1->X = X;
+        // Spore1->Y = Y - 16;
+        // Spore1->Speed = -1;
+        // Spore1->Gravity = -5;
+        //Scene->aud[]->Play(2);
+        Sound.Play(Sound.SFX_SHOT);
+    }
+    else if (Frame == 62) {
+        // Spore2->X = X;
+        // Spore2->Y = Y - 16;
+        // Spore2->Speed = 1;
+        // Spore2->Gravity = -5;
+        Sound.Play(Sound.SFX_SHOT);
+    }
+    else if (Frame == 182) {
+        Frame = 0;
+    }
+    Frame++;
+}
+
+event Render(CamX:int, CamY:int) {
+    local Subframe:int = 0;
+    local Keyframe:int = Frame - 1;
+    if (Keyframe >= 14 && Keyframe < 62 + 6) {
+        if (Keyframe >= 14 && Keyframe < 14 + 11) {
+            Subframe = 1;
+        }
+        else if (Keyframe >= 25 && Keyframe < 25 + 6) {
+            Subframe = 2;
+        }
+        else if (Keyframe >= 31 && Keyframe < 31 + 6) {
+            Subframe = 3;
+        }
+
+        else if (Keyframe >= 45 && Keyframe < 45 + 11) {
+            Subframe = 1;
+        }
+        else if (Keyframe >= 56 && Keyframe < 56 + 6) {
+            Subframe = 2;
+        }
+        else if (Keyframe >= 62 && Keyframe < 62 + 6) {
+            Subframe = 3;
+        }
+    }
+
+    G.DrawSprite(Sprite, 1, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

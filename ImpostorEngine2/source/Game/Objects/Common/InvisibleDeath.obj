@@ -1,0 +1,49 @@
+object 0x6B;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    // Change this for InvisibleSpikes and InvisibleDeath
+    var Painful:bool = false;
+    var Deadly:bool = true;
+
+    if (!Deadly)
+        Solid = true;
+
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    var Rotation:int = 0;
+    var Size:int = 1 + (SubType & 0xF0) / 0x10;
+    W = (SubType & 0xF0) + 0x10;
+    H = ((SubType & 0x0F) << 4) + 0x10;
+
+    if (Deadly) {
+        //W -= 2;
+        //H -= 2;
+    }
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (Scene.Players[PlayerID].Action == ActionType::Dead)
+        return 0;
+
+    if (Painful) {
+        if (HitFrom == 1 && Rotation == 0 && Scene.Players[PlayerID].Gravity >= 0) {
+            Scene.Players[PlayerID].Hurt(X, true);
+        }
+        else if (HitFrom == 3 && Rotation == 180 && Scene.Players[PlayerID].Gravity <= 0) {
+            Scene.Players[PlayerID].Hurt(X, true);
+        }
+        else if ((Rotation == 90 && HitFrom == 2) || (Rotation == 270 && HitFrom == 0)) {
+            if (Scene.Players[PlayerID].Y + 20 - 4 - 4 <= Y - 16)
+                return 0;
+
+            Scene.Players[PlayerID].Hurt(X, true);
+        }
+    }
+    else if (Deadly) {
+        Scene.Players[PlayerID].Die(false);
+    }
+    return 1;
+}

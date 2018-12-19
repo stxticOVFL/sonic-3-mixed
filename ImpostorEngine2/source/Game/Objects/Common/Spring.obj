@@ -1,0 +1,181 @@
+object 0x07;
+
+event Create() {
+    W = 32;
+    H = 16;
+    Active = true;
+    Priority = false;
+
+    Frame = 0;
+
+    var Diagonal:int = 0;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    Scene.AddSelfToRegistry(this, "Spring");
+
+    var SpringType:int = 1;
+    if ((SubType & 0x2) != 0x0)
+        SpringType = 0;
+
+    CurrentAnimation = SpringType; // 0: yellow, +1: red
+    var Rotation:int = 0;
+    var DoAnimate:bool = false;
+
+    if ((SubType & 0xF0) == 0x10) {
+        W = 18;
+        H = 32;
+        CurrentAnimation = SpringType + 2;
+        Rotation = 270;
+        if (FlipX)
+            Rotation = 90;
+    }
+    else if ((SubType & 0xF0) == 0x20) {
+        Rotation = 180;
+        FlipY = true;
+    }
+    else if ((SubType & 0xF0) == 0x30) {
+        Diagonal = -1;
+        CurrentAnimation = SpringType + 4;
+        Solid = false;
+        W = 28;
+        H = 28;
+    }
+    else if ((SubType & 0xF0) == 0x40) {
+        Diagonal = 1;
+        CurrentAnimation = SpringType + 4;
+        Solid = false;
+        FlipY = true;
+        W = 28;
+        H = 28;
+    }
+}
+event Update() {
+    if (DoAnimate) {
+        if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
+            Frame += Sprite.Animations[CurrentAnimation].AnimationSpeed;
+        else if (Sprite.Animations[CurrentAnimation].Frames[Frame / 0x100].Duration != 0)
+            Frame += 0x100 / Sprite.Animations[CurrentAnimation].Frames[Frame / 0x100].Duration;
+    }
+
+    if (Frame / 0x100 >= Sprite.Animations[CurrentAnimation].FrameCount - 1) {
+        Frame = Sprite.Animations[CurrentAnimation].FrameToLoop * 0x100;
+        DoAnimate = false;
+    }
+}
+
+event OnLeaveScreen() : int {
+    DoAnimate = false;
+    Frame = 0;
+    return 1;
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (Data != 1)
+        return 0;
+
+    local SpringPower:int = 0x1000;
+    local SpringFlips:int = 0;
+
+    if (SpringType == 0) {
+        SpringPower = 0xA00;
+        SpringFlips = (SubType & 0x1);
+    }
+
+    if (Scene.Players[PlayerID].Underwater)
+        SpringFlips = 1 - SpringFlips;
+
+    if (Diagonal != 0) {
+        Scene.Players[PlayerID].YSpeed = Diagonal * SpringPower;
+        Scene.Players[PlayerID].Ground = false;
+        Scene.Players[PlayerID].InputAlarm = 16;
+        Scene.Players[PlayerID].Action = ActionType::Spring;
+        Scene.Players[PlayerID].SpringFlip = SpringFlips;
+        Scene.Players[PlayerID].AngleMode = 0;
+        Scene.Players[PlayerID].Angle = 0;
+        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Sound.Play(Sound.SFX_SPRING);
+
+        DoAnimate = true;
+
+        if (FlipX)
+            SpringPower = -SpringPower;
+
+        Scene.Players[PlayerID].XSpeed = SpringPower;
+
+        return 1;
+    }
+
+    if (HitFrom == 1 && Rotation == 0 && Scene.Players[PlayerID].YSpeed >= 0) {
+        Scene.Players[PlayerID].YSpeed = -SpringPower;
+        Scene.Players[PlayerID].Ground = false;
+        // Scene.Players[PlayerID].InputAlarm = 16;
+        Scene.Players[PlayerID].Action = ActionType::Spring;
+        Scene.Players[PlayerID].SpringFlip = SpringFlips;
+        Scene.Players[PlayerID].AngleMode = 0;
+        Scene.Players[PlayerID].Angle = 0;
+        Scene.Players[PlayerID].EZY += 4;
+        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Sound.Play(Sound.SFX_SPRING);
+
+        DoAnimate = true;
+
+        return 1;
+    }
+    else if (HitFrom == 3 && Rotation == 180) {
+        Scene.Players[PlayerID].YSpeed = SpringPower;
+        if (Scene.Players[PlayerID].AngleMode == 1 ||
+            Scene.Players[PlayerID].AngleMode == 3) {
+            Scene.Players[PlayerID].Flip = -Math.sign(Math.sinHex(Scene.Players[PlayerID].AngleMode * 0x40));
+            Scene.Players[PlayerID].GroundSpeed = SpringPower * Scene.Players[PlayerID].Flip;
+        }
+        else {
+            Scene.Players[PlayerID].Action = ActionType::Spring;
+        }
+        Scene.Players[PlayerID].InputAlarm = 16;
+        Scene.Players[PlayerID].SpringFlip = SpringFlips;
+        if (SubType & 0xC)
+            Scene.Players[PlayerID].Layer = 1 - ((SubType >> 2) & 0x1);
+        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Sound.Play(Sound.SFX_SPRING);
+
+        DoAnimate = true;
+
+        return 1;
+    }
+    else if ((Rotation == 90 && HitFrom == 2) || (Rotation == 270 && HitFrom == 0)) {
+        if (Scene.Players[PlayerID].Y + 20 - 4 - 4 <= Y - 16 || !Scene.Players[PlayerID].Ground)
+            return 0;
+
+        local ToFlip:int = -Math.sign(Math.cosHex(Scene.Players[PlayerID].AngleMode * 0x40 - Rotation + 0x40));
+
+        Scene.Players[PlayerID].Flip = ToFlip;
+        if (Scene.Players[PlayerID].AngleMode == 0 || Scene.Players[PlayerID].AngleMode == 2) {
+            if (HitFrom == 0) {
+                Scene.Players[PlayerID].GroundSpeed = SpringPower;
+                Scene.Players[PlayerID].DisplayFlip = 1;
+            }
+            else {
+                Scene.Players[PlayerID].GroundSpeed = -SpringPower;
+                Scene.Players[PlayerID].DisplayFlip = -1;
+            }
+        }
+        Scene.Players[PlayerID].InputAlarm = 16;
+        if (SubType & 0xC)
+            Scene.Players[PlayerID].Layer = 1 - ((SubType >> 2) & 0x1);
+
+        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Sound.Play(Sound.SFX_SPRING);
+
+        DoAnimate = true;
+
+        return 1;
+    }
+
+    return 0;
+}

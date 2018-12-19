@@ -1,0 +1,146 @@
+object 0x95;
+
+subclass Enemy;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 24;
+    H = 24;
+
+    CurrentAnimation = 4;
+
+    var Flip:int = 1;
+    if (FlipX)
+        Flip = -1;
+
+    HitCount = 1;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+    var Routine:int = 2;
+    var TimerRoutine:int = 2;
+    Timer = 0x3F;
+
+    var MaximumSpeed:int = 0x200;
+    var Acceleration:int = 0x10;
+
+    var SubX:int = X << 16;
+    var SubY:int = Y << 16;
+
+    var ChildSubX:int = (X + 0x20) << 16;
+    var ChildSubY:int = Y << 16;
+    var ChildXSpeed:int = 0;
+    var ChildYSpeed:int = 0;
+    var ChildFlip:int = -1;
+
+    VisualLayer = 1;
+
+
+}
+
+event OnHit() : int {
+    return OnDeath();
+}
+
+event Update() {
+    // Obj_Buggernaut_Chase
+    if (Routine == 4) {
+        if (Scene.Player.EZX < X) {
+            if (XSpeed > -MaximumSpeed)
+                XSpeed -= Acceleration;
+            Flip = -1;
+        }
+        else {
+            if (XSpeed <  MaximumSpeed)
+                XSpeed += Acceleration;
+            Flip = 1;
+        }
+        if (Scene.Player.EZY < Y) {
+            if (YSpeed > -MaximumSpeed)
+                YSpeed -= Acceleration;
+        }
+        else {
+            if (YSpeed <  MaximumSpeed)
+                YSpeed += Acceleration;
+        }
+
+        if (Y > Scene.WaterLevel - 8)
+            YSpeed = -0x200;
+
+        SubX += XSpeed << 8;
+        SubY += YSpeed << 8;
+    }
+
+    if (SubX < ChildSubX) {
+        if (ChildXSpeed > -MaximumSpeed)
+            ChildXSpeed -= Acceleration << 1;
+        ChildFlip = -1;
+    }
+    else {
+        if (ChildXSpeed <  MaximumSpeed)
+            ChildXSpeed += Acceleration << 1;
+        ChildFlip = 1;
+    }
+    if (SubY < ChildSubY) {
+        if (ChildYSpeed > -MaximumSpeed)
+            ChildYSpeed -= Acceleration << 1;
+    }
+    else {
+        if (ChildYSpeed <  MaximumSpeed)
+            ChildYSpeed += Acceleration << 1;
+    }
+
+    if ((ChildSubY >> 16) > Scene.WaterLevel - 8)
+        ChildYSpeed = -0x200;
+
+    ChildSubX += ChildXSpeed << 8;
+    ChildSubY += ChildYSpeed << 8;
+
+
+    if (Timer > 0) {
+        Timer -= 1;
+    }
+    else {
+        if (TimerRoutine == 0) {
+            Routine = 2;
+            TimerRoutine = 2;
+            Timer = 0x3F;
+        }
+        else if (TimerRoutine == 2) {
+            Routine = 4;
+            TimerRoutine = 0;
+            Timer = 0x7F;
+        }
+    }
+
+    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
+        Frame += Sprite.Animations[CurrentAnimation].AnimationSpeed;
+    else if (Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
+        Frame += 0x100 / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
+
+    if (Frame >= Sprite.Animations[CurrentAnimation].FrameCount << 8) {
+        Frame = Sprite.Animations[CurrentAnimation].FrameToLoop << 8;
+    }
+
+    X = SubX >> 16;
+    Y = SubY >> 16;
+
+
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, 5, Frame >> 8,
+        (ChildSubX >> 16) - CamX, (ChildSubY >> 16) - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+
+    G.DrawSprite(Sprite, 3, 0,
+        (ChildSubX >> 16) - CamX, (ChildSubY >> 16) - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8,
+        X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+
+    G.DrawSprite(Sprite, 2, 0,
+        X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+
+}

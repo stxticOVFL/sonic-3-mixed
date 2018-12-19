@@ -1,0 +1,121 @@
+object 0x2A;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    local i:int = 0;
+    var PieceVels:short[64];
+
+    if (Scene.ZoneID == 1) {
+        W = 32;
+        H = 80;
+        if (Scene.Act == 2)
+            H = 88;
+
+        VisualLayer = 1;
+
+        // dc.w \$([A-F0-9]+)
+        // Rock0Vels[i++] = 0x$1;
+
+        i = 0;
+        PieceVels[i++] = 0xFF00; PieceVels[i++] = 0xFE00;
+		PieceVels[i++] = 0x0100; PieceVels[i++] = 0xFE00;
+		PieceVels[i++] = 0xFF20; PieceVels[i++] = 0xFE40;
+		PieceVels[i++] = 0x00E0; PieceVels[i++] = 0xFE40;
+		PieceVels[i++] = 0xFF40; PieceVels[i++] = 0xFE80;
+		PieceVels[i++] = 0x00C0; PieceVels[i++] = 0xFE80;
+		PieceVels[i++] = 0xFF60; PieceVels[i++] = 0xFEC0;
+		PieceVels[i++] = 0x00A0; PieceVels[i++] = 0xFEC0;
+		PieceVels[i++] = 0xFF80; PieceVels[i++] = 0xFF00;
+		PieceVels[i++] = 0x0080; PieceVels[i++] = 0xFF00;
+		PieceVels[i++] = 0xFFA0; PieceVels[i++] = 0xFF40;
+		PieceVels[i++] = 0x0060; PieceVels[i++] = 0xFF40;
+
+        CurrentAnimation = 9;
+
+        BreakableByRoll = false;
+        BreakableByJump = true;
+        BreakableByGlide = false;
+        BreakableByKnuckles = false;
+        Scene.AddSelfToRegistry(this, "Breakable");
+    }
+}
+
+event DrawAIZ(CamX:int, CamY:int) {
+    if (Scene.ZoneID != 1) return;
+
+    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event BreakAIZ(HitSide:int) {
+    if (Scene.ZoneID != 1) return;
+
+    local w:int = 2;
+    local h:int = 6;
+    local x:int = X - w * 8;
+    local y:int = Y + H / 2 - h * 16;
+    local left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
+    local top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
+    local top2:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
+    local toph:int = 16;
+
+    for (i:int = 0; i < w; i++) {
+        for (j:int = 0; j < h; j++) {
+            toph = 16;
+            top2 = top + 88 - h * 16 + j * 16;
+            if (top2 < top) {
+                toph = top - top2;
+                top2 = top;
+            }
+
+            if (FlipX) {
+                Scene.AddMovingSprite(Sprite,
+                    x + i * 16, y + j * 16 + 16 - toph,
+                    left + (w - 1 - i) * 16, top2,
+                    16, toph,
+                    0, 0, FlipX, false, PieceVels[(i + j * w) * 2], PieceVels[(i + j * w) * 2 + 1], 0x18, 0);
+            }
+            else {
+                Scene.AddMovingSprite(Sprite,
+                    x + i * 16, y + j * 16 + 16 - toph,
+                    left + i * 16, top2,
+                    16, toph,
+                    0, 0, FlipX, false, PieceVels[(i + j * w) * 2], PieceVels[(i + j * w) * 2 + 1], 0x18, 0);
+            }
+        }
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    if (!Solid) return;
+
+    DrawAIZ(CamX, CamY);
+}
+
+event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
+    if (PlayerID != 0) return 0;
+    if (Scene.Players[PlayerID].EZX > X + W / 2 - 2) return 0;
+    if (Scene.Players[PlayerID].EZX < X - W / 2 + 2) return 0;
+
+    Sound::Play(Sound::SFX_COLLAPSE);
+
+    BreakableByRoll = false;
+    BreakableByJump = false;
+    BreakableByGlide = false;
+    BreakableByKnuckles = false;
+    Solid = false;
+
+    BreakAIZ(HitFrom);
+
+    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, this\.X \- CamX, this\.Y (\-|\+) 16 \- CamY, Rotation, IE_NOFLIP, (\-*[0-9]*), (\-*[0-9]*)\);
+    // Scene.AddFallingTile(0x$1, X, Y $2 16, $3, $4, false, false, 0x100, 0x100);
+
+    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, X \- CamX( \+ 8)*, Y (\-|\+) 16 \- CamY, Rotation,\W*(IE_NOFLIP|IE_FLIPX),\W*(\-*[0-9]*),\W*(\-*[0-9]*)\);
+    // Scene.AddFallingTile(0x$1, X$2, Y $3 16, -$5, -$6, $4, false, 0x100, 0x100);
+
+    return 1;
+}

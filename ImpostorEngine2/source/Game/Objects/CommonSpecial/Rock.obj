@@ -1,0 +1,244 @@
+object 0x05;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    local i:int = 0;
+
+    var SubX:uint = X << 16;
+    var LastX:int = X;
+
+    var RockSize:int = SubType >> 4 & 0x7;
+    var RockType:int = SubType & 0xF;
+
+    var Rock0Pos:char[32];
+    var Rock0Vels:short[16];
+    var Rock1Pos:char[32];
+    var Rock1Vels:short[16];
+    var Rock2Pos:char[32];
+    var Rock2Vels:short[16];
+
+    // dc.w \$([A-F0-9][A-F0-9])([A-F0-9][A-F0-9])
+    // Rock0Pos[i++] = 0x$1; Rock0Pos[i++] = 0x$2;
+
+    // dc.w \$([A-F0-9]+)
+    // Rock0Vels[i++] = 0x$1;
+
+    // <editor-fold> Rock 0: Large
+    i = 0;
+    Rock0Pos[i++] = 0xF8; Rock0Pos[i++] = 0xE8;
+	Rock0Pos[i++] = 0x0B; Rock0Pos[i++] = 0xE4;
+	Rock0Pos[i++] = 0xFC; Rock0Pos[i++] = 0xF4;
+	Rock0Pos[i++] = 0x0C; Rock0Pos[i++] = 0xFC;
+	Rock0Pos[i++] = 0xF4; Rock0Pos[i++] = 0x04;
+	Rock0Pos[i++] = 0x04; Rock0Pos[i++] = 0x0C;
+	Rock0Pos[i++] = 0xF4; Rock0Pos[i++] = 0x1C;
+	Rock0Pos[i++] = 0x0C; Rock0Pos[i++] = 0x1C;
+
+    i = 0;
+    Rock0Vels[i++] = 0xFD00;
+	Rock0Vels[i++] = 0xFD00;
+	Rock0Vels[i++] = 0xFD40;
+	Rock0Vels[i++] = 0xFD80;
+	Rock0Vels[i++] = 0xFD40;
+	Rock0Vels[i++] = 0xFD80;
+	Rock0Vels[i++] = 0xFD80;
+	Rock0Vels[i++] = 0xFE00;
+	Rock0Vels[i++] = 0xFD80;
+	Rock0Vels[i++] = 0xFE80;
+	Rock0Vels[i++] = 0xFDC0;
+	Rock0Vels[i++] = 0xFE80;
+	Rock0Vels[i++] = 0xFDC0;
+	Rock0Vels[i++] = 0xFF00;
+	Rock0Vels[i++] = 0xFE00;
+	Rock0Vels[i++] = 0xFF00;
+    // </editor-fold>
+
+    // <editor-fold> Rock 1: Medium
+    i = 0;
+    Rock1Pos[i++] = 0xFC; Rock1Pos[i++] = 0xF4;
+	Rock1Pos[i++] = 0x0B; Rock1Pos[i++] = 0xF4;
+	Rock1Pos[i++] = 0xFC; Rock1Pos[i++] = 0xFC;
+	Rock1Pos[i++] = 0xF4; Rock1Pos[i++] = 0x0C;
+	Rock1Pos[i++] = 0x0C; Rock1Pos[i++] = 0x0C;
+    i = 0;
+    Rock1Vels[i++] = 0xFE00;
+	Rock1Vels[i++] = 0xFE00;
+	Rock1Vels[i++] = 0x0200;
+	Rock1Vels[i++] = 0xFE00;
+	Rock1Vels[i++] = 0xFF00;
+	Rock1Vels[i++] = 0xFE20;
+	Rock1Vels[i++] = 0xFE50;
+	Rock1Vels[i++] = 0xFE40;
+	Rock1Vels[i++] = 0x01C0;
+	Rock1Vels[i++] = 0xFE40;
+    // </editor-fold>
+
+    // <editor-fold> Rock 2: Small
+    i = 0;
+    Rock2Pos[i++] = 0xFC; Rock2Pos[i++] = 0xFC;
+	Rock2Pos[i++] = 0x0C; Rock2Pos[i++] = 0xFC;
+	Rock2Pos[i++] = 0xF4; Rock2Pos[i++] = 0x04;
+	Rock2Pos[i++] = 0x0C; Rock2Pos[i++] = 0x04;
+    i = 0;
+    Rock2Vels[i++] = 0xFF00;
+	Rock2Vels[i++] = 0xFE00;
+	Rock2Vels[i++] = 0x0100;
+	Rock2Vels[i++] = 0xFE20;
+	Rock2Vels[i++] = 0xFE50;
+	Rock2Vels[i++] = 0xFE40;
+	Rock2Vels[i++] = 0x01C0;
+	Rock2Vels[i++] = 0xFE40;
+    // </editor-fold>
+
+    // <editor-fold> Rock 3: ???
+    i = 0;
+
+    i = 0;
+
+    // </editor-fold>
+
+    if (Scene.ZoneID == 1) {
+        W = 46;
+        if (RockSize == 0)
+            H = 78;
+        else if (RockSize == 1)
+            H = 46;
+        else if (RockSize == 2)
+            H = 30;
+
+        if (RockType == 1) {
+            BreakableByJump = true;
+        }
+        else if (RockType == 2) {
+            Pushable = true;
+        }
+        else if (RockType == 4) {
+            BreakableByRoll = true;
+            BreakableByKnuckles = true;
+        }
+
+        Scene.AddSelfToRegistry(this, "Breakable");
+    }
+
+    // Other width/2s and height/2s
+    // $E,  $F, // RockSize = 3
+    // $10, $28,
+    // $28, $10,
+    // $28, $10,
+    // $10, $20
+}
+
+event Update() {
+    LastX = X;
+    X = SubX >> 16;
+}
+
+event DrawAIZ(CamX:int, CamY:int) {
+    if (Scene.ZoneID != 1) return;
+
+    G.DrawSprite(Sprite, 21, 3 + RockSize, LastX - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event BreakAIZ(HitSide:int) {
+    if (Scene.ZoneID != 1) return;
+
+    local off:int = 1;
+
+    if (HitSide == 0) {
+        Scene.AddMovingSprite(Sprite, X + 12, Y + 4, 22, 0 + ((off + 3) & 3), false, false,  0x1C0, -0x1C0, 0x18);
+        Scene.AddMovingSprite(Sprite, X - 12, Y + 4, 22, 0 + ((off + 2) & 3), false, false, -0x1B0, -0x1C0, 0x18);
+        Scene.AddMovingSprite(Sprite, X + 12, Y - 4, 22, 0 + ((off + 1) & 3), false, false,  0x100, -0x1E0, 0x18);
+        Scene.AddMovingSprite(Sprite, X - 4, Y - 4, 22, 0 + ((off + 0) & 3), false, false, -0x100, -0x200, 0x18);
+    }
+    else {
+        if (RockSize == 0) {
+            for (i:int = 0; i < 8; i++) {
+                Scene.AddMovingSprite(Sprite, X + Rock0Pos[i << 1], Y + Rock0Pos[(i << 1) + 1], 22, 0 + ((8 - i) & 3), false, false, HitSide * Rock0Vels[i << 1], Rock0Vels[(i << 1) + 1], 0x18);
+            }
+        }
+        else if (RockSize == 1) {
+            for (i:int = 0; i < 5; i++) {
+                Scene.AddMovingSprite(Sprite, X + Rock1Pos[i << 1], Y + Rock1Pos[(i << 1) + 1], 22, 0 + ((5 - i) & 3), false, false, HitSide * Rock0Vels[i << 1], Rock0Vels[(i << 1) + 1], 0x18);
+            }
+        }
+        else if (RockSize == 2) {
+            Scene.AddMovingSprite(Sprite, X + 12, Y + 4, 22, 0 + ((off + 3) & 3), false, false, HitSide * -0x2C0, -0x280, 0x18);
+            Scene.AddMovingSprite(Sprite, X - 12, Y + 4, 22, 0 + ((off + 2) & 3), false, false, HitSide * -0x280, -0x200, 0x18);
+            Scene.AddMovingSprite(Sprite, X + 12, Y - 4, 22, 0 + ((off + 1) & 3), false, false, HitSide * -0x300, -0x300, 0x18);
+            Scene.AddMovingSprite(Sprite, X - 4, Y - 4, 22, 0 + ((off + 0) & 3), false, false, HitSide * -0x2C0, -0x280, 0x18);
+        }
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    if (!Solid) return;
+
+    DrawAIZ(CamX, CamY);
+    // DrawMGZ(CamX, CamY);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (PlayerID != 0) return 0;
+
+    if (!Pushable) return 0;
+
+    if (((Scene.Players[PlayerID].WallLeft && Scene.Players[PlayerID].InputLeft) ||
+        (Scene.Players[PlayerID].Action == ActionType::Spindash && Scene.Players[PlayerID].DisplayFlip < 0)) && HitFrom == 0 && !FlipX) {
+        if (X <= InitialX - 64) return 0;
+
+        Scene.Players[PlayerID].X -= 0x1000;
+        X = SubX >> 16;
+        SubX -= 0x1000;
+    }
+
+    if (((Scene.Players[PlayerID].WallRight && Scene.Players[PlayerID].InputRight) ||
+        (Scene.Players[PlayerID].Action == ActionType::Spindash && Scene.Players[PlayerID].DisplayFlip > 0)) && HitFrom == 2 && FlipX) {
+        if (X >= InitialX + 64) return 0;
+
+        Scene.Players[PlayerID].X += 0x1000;
+        X = SubX >> 16;
+        SubX += 0x1000;
+    }
+
+    return 1;
+}
+
+event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
+    if (HitFrom != 1) return 0;
+
+    OnBreakHorizontal(PlayerID, HitFrom);
+    return 1;
+}
+event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
+    if (IMath::abs(Scene.Players[PlayerID].GroundSpeed) < 0x480 && HitFrom != 1 && Scene.Players[PlayerID].Action == ActionType::Rolling) return 1;
+
+    Sound::Play(Sound::SFX_COLLAPSE);
+
+    BreakableByRoll = false;
+    BreakableByJump = false;
+    BreakableByGlide = false;
+    BreakableByKnuckles = false;
+    Solid = false;
+
+    local HitSide:int = -1;
+    if (HitFrom == 0)
+        HitSide = 1;
+    if (HitFrom == 1)
+        HitSide = 0;
+
+    BreakAIZ(HitSide);
+    // BreakMGZ(HitSide);
+
+    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, this\.X \- CamX, this\.Y (\-|\+) 16 \- CamY, Rotation, IE_NOFLIP, (\-*[0-9]*), (\-*[0-9]*)\);
+    // Scene.AddFallingTile(0x$1, X, Y $2 16, $3, $4, false, false, 0x100, 0x100);
+
+    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, X \- CamX( \+ 8)*, Y (\-|\+) 16 \- CamY, Rotation,\W*(IE_NOFLIP|IE_FLIPX),\W*(\-*[0-9]*),\W*(\-*[0-9]*)\);
+    // Scene.AddFallingTile(0x$1, X$2, Y $3 16, -$5, -$6, $4, false, 0x100, 0x100);
+
+    return 0;
+}

@@ -1,0 +1,13 @@
+Data/Objects/36D61A3DE508B500AE0ECF8D33F32943.bin has the palettes.
+
+All are stored in 4-bit RGB format, and are assuming you're using the most recent files (v1.03, remove 0x05 if you're using an older version's).
+0x3C2 = Sonic
+0x413 = Tails
+0x464 = Knuckles
+0x4B5 = Sonic (Hydrocity, Underwater)
+0x506 = Tails (Hydrocity, Underwater)
+0x557 = Knuckles (Hydrocity, Underwater)
+0x5A8 = Sonic (Chemical Plant, Underwater)
+0x5F9 = Tails (Chemical Plant, Underwater)
+0x64A = Knuckles (Chemical Plant, Underwater)
+* (Green Hill's underwater palette as such doesn't exist)

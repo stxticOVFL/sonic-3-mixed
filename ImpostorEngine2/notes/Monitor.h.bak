@@ -1,0 +1,26 @@
+#ifndef MONITOR_H
+#define MONITOR_H
+
+#define PUBLIC
+#define PRIVATE
+
+class Monitor;
+
+#include <Engine/IApp.h>
+#include <Engine/ISprite.h>
+#include <Game/LevelScene.h>
+#include "../Object.h"
+#include <standard_libs.h>
+
+class Monitor : public Object {
+public:
+    float GhostY = 0.0f;
+    int PlayerAggessor = 0;
+    bool CanFall = false;
+
+    void Create();
+    void Update();
+    void Render(int CamX, int CamY);
+};
+
+#endif /* MONITOR_H */

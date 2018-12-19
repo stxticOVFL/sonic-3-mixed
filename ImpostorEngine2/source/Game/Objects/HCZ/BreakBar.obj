@@ -1,0 +1,76 @@
+object 0x36;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 8;
+    H = ((SubType & 0xF0) << 1) + 64;
+
+    CurrentAnimation = 9;
+
+    var Broken:bool = false;
+}
+event Update() {
+    if (!Broken) {
+        for (local i:int = 0; i < Scene.PlayerCount; i++) {
+            if (Broken) {
+                Scene.Players[i].Action = ActionType::InStream;
+            }
+
+            if (Scene.Players[i].EZY < Y - H / 2) {
+                continue;
+            }
+            if (Scene.Players[i].EZY > Y + H / 2) {
+                continue;
+            }
+            if (Scene.Players[i].EZX > X + 64) {
+                continue;
+            }
+
+            if (Scene.Players[i].Action == ActionType::Hurt || Scene.Players[i].Action == ActionType::Dead)
+                continue;
+
+            if (Scene.Players[i].EZX > X + 20 && Scene.Players[i].Action == ActionType::InStream) {
+                Scene.Players[i].Action = ActionType::InStreamGrab;
+                Scene.Players[i].EZX = X + 20;
+                Scene.Players[i].XSpeed = 0;
+            }
+
+            if (Scene.Players[i].Action == ActionType::InStreamGrab && Scene.Players[i].InputJump && i == 0) {
+                Scene.Players[i].Action = ActionType::InStream;
+                Broken = true;
+                Sound::Play(Sound::SFX_COLLAPSE);
+            }
+        }
+    }
+}
+event Render(CamX:int, CamY:int) {
+    if (Broken) return;
+
+    G.DrawSprite(Sprite,
+        Sprite.Animations[CurrentAnimation].Frames[0].X,
+        Sprite.Animations[CurrentAnimation].Frames[0].Y,
+        Sprite.Animations[CurrentAnimation].Frames[0].W,
+        Sprite.Animations[CurrentAnimation].Frames[0].H, X - CamX, Y - CamY - H / 2 + 4, 0, IE_NOFLIP,
+        Sprite.Animations[CurrentAnimation].Frames[0].OffX,
+        Sprite.Animations[CurrentAnimation].Frames[0].OffY);
+
+    for (local i:int = -H / 2 + 12; i < H / 2 - 4; i += 8) {
+        G.DrawSprite(Sprite,
+            Sprite.Animations[CurrentAnimation].Frames[1].X,
+            Sprite.Animations[CurrentAnimation].Frames[1].Y,
+            Sprite.Animations[CurrentAnimation].Frames[1].W,
+            Sprite.Animations[CurrentAnimation].Frames[1].H, X - CamX, Y - CamY + i, 0, IE_NOFLIP,
+            Sprite.Animations[CurrentAnimation].Frames[1].OffX,
+            Sprite.Animations[CurrentAnimation].Frames[1].OffY);
+    }
+
+    G.DrawSprite(Sprite,
+        Sprite.Animations[CurrentAnimation].Frames[2].X,
+        Sprite.Animations[CurrentAnimation].Frames[2].Y,
+        Sprite.Animations[CurrentAnimation].Frames[2].W,
+        Sprite.Animations[CurrentAnimation].Frames[2].H, X - CamX, Y - CamY + H / 2 - 4, 0, IE_NOFLIP,
+        Sprite.Animations[CurrentAnimation].Frames[2].OffX,
+        Sprite.Animations[CurrentAnimation].Frames[2].OffY);
+}

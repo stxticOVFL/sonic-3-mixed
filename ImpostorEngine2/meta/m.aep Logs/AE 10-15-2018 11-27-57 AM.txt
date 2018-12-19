@@ -1,0 +1,12 @@
+Adobe After Effects v13.5 Windows 64 render log for project “m.aep”
+
+Rendering started on 10/15/2018 at 11:27:57 AM
+
+  10/15/2018 11:27:57 AM: Starting composition “Comp 1”.
+
+  Output To: C:\Users\Justin\Dropbox\ImpostorEngine2\meta\mmm2.png    10/15/2018 11:27:57 AM: Finished composition “Comp 1”.
+
+
+  Total Time Elapsed: 0 Seconds
+Log closed on 10/15/2018 at 11:27:57 AM
+

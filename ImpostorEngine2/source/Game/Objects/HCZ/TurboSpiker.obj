@@ -1,0 +1,44 @@
+object 0x96;
+
+subclass Enemy;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 32;
+    H = 16;
+
+    Y += 7;
+
+    CurrentAnimation = 7;
+
+    var Flip:int = 1;
+    if (FlipX)
+        Flip = -1;
+
+    HitCount = 1;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+}
+
+event OnHit() : int {
+    return OnDeath();
+}
+
+event Update() {
+    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
+        Frame += Sprite.Animations[CurrentAnimation].AnimationSpeed;
+    else if (Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
+        Frame += 0x100 / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
+
+    if (Frame >= Sprite.Animations[CurrentAnimation].FrameCount << 8) {
+        Frame = Sprite.Animations[CurrentAnimation].FrameToLoop << 8;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, 9, 0, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+}

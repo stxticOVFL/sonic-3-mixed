@@ -1,0 +1,194 @@
+object 0x0D;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    if (Scene.ZoneID == 2) {
+        W = 32;
+        H = 64;
+
+        BreakableByRoll = true;
+        BreakableByJump = false;
+        BreakableByGlide = true;
+        BreakableByKnuckles = true;
+        if (SubType == 2) {
+            BreakableByRoll = false;
+            W = 48;
+        }
+        Scene.AddSelfToRegistry(this, "Breakable");
+
+        VisualLayer = 1;
+    }
+    else if (Scene.ZoneID == 3) {
+        W = 64;
+        H = 80;
+
+        BreakableByRoll = true;
+        BreakableByJump = false;
+        BreakableByGlide = true;
+        BreakableByKnuckles = true;
+        Scene.AddSelfToRegistry(this, "Breakable");
+    }
+}
+
+event DrawHCZ(CamX:int, CamY:int) {
+    if (Scene.ZoneID != 2) return;
+
+    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, ([A-z 0-9_\-\+\\\/\*]+), ([A-z 0-9_\-\+\\\/\*]+), Rotation, ([A-z 0-9_\-\+\\\/\*]+), ([A-z 0-9_\-\+\\\/\*]+), ([A-z 0-9_\-\+\\\/\*]+)\);
+    // G.DrawSprite(Scene.TileSprite, 0, 0x$1, 8 + $2 + ($5), 8 + $3 + ($6), 0, $4);
+
+    if (SubType == 2) {
+        G.DrawSprite(Scene.TileSprite, 0, 0x2B, 8 + X - CamX + (-24), 8 + Y - 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0xAE, 8 + X - CamX + ( -8), 8 + Y - 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x2B, 8 + X - CamX + 8 + (0), 8 + Y - 16 - CamY + (-16), 0,  IE_FLIPX);
+
+        G.DrawSprite(Scene.TileSprite, 0, 0x32, 8 + X - CamX + (-24), 8 + Y - 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x81, 8 + X - CamX + ( -8), 8 + Y - 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x32, 8 + X - CamX + 8 + (0), 8 + Y - 16 - CamY + (0), 0,  IE_FLIPX);
+
+        G.DrawSprite(Scene.TileSprite, 0, 0x80, 8 + X - CamX + (-24), 8 + Y + 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x29, 8 + X - CamX + ( -8), 8 + Y + 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x80, 8 + X - CamX + 8 + (0), 8 + Y + 16 - CamY + (-16), 0,  IE_FLIPX);
+
+        G.DrawSprite(Scene.TileSprite, 0, 0x32, 8 + X - CamX + (-24), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x81, 8 + X - CamX + ( -8), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x32, 8 + X - CamX + 8 + (0), 8 + Y + 16 - CamY + (0), 0,  IE_FLIPX);
+    }
+    else {
+        G.DrawSprite(Scene.TileSprite, 0, 0x8F, 8 + X - CamX + (-16), 8 + Y - 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x90, 8 + X - CamX + (0), 8 + Y - 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x91, 8 + X - CamX + (-16), 8 + Y - 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x92, 8 + X - CamX + (0), 8 + Y - 16 - CamY + (0), 0, IE_NOFLIP);
+
+        G.DrawSprite(Scene.TileSprite, 0, 0x8F, 8 + X - CamX + (-16), 8 + Y + 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x90, 8 + X - CamX + (0), 8 + Y + 16 - CamY + (-16), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x91, 8 + X - CamX + (-16), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x92, 8 + X - CamX + (0), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
+    }
+}
+event DrawMGZ(CamX:int, CamY:int) {
+    if (Scene.ZoneID != 3) return;
+
+    G.DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    return;
+
+    local h:int = H / 2;
+
+    // Top
+    G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX - 32 + (0), 8 + Y - h - CamY + (0), 0, IE_NOFLIP);
+    G.DrawSprite(Scene.TileSprite, 0, 0x45, 8 + X - CamX - 16 + (0), 8 + Y - h - CamY + (0), 0, IE_NOFLIP);
+    G.DrawSprite(Scene.TileSprite, 0, 0x45, 8 + X - CamX + 00 + ( 0), 8 + Y - h - CamY + (0), 0, IE_FLIPX);
+    G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX + 16 + ( 0), 8 + Y - h - CamY + (0), 0, IE_FLIPX);
+
+    // Mid
+    for (i:int = -h + 16; i < h - 16; i += 16) {
+        G.DrawSprite(Scene.TileSprite, 0, 0x4A, 8 + X - CamX - 32 + (0), 8 + Y + i - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x4B, 8 + X - CamX - 16 + (0), 8 + Y + i - CamY + (0), 0, IE_NOFLIP);
+        G.DrawSprite(Scene.TileSprite, 0, 0x4B, 8 + X - CamX + 00 + ( 0), 8 + Y + i - CamY + (0), 0, IE_FLIPX);
+        G.DrawSprite(Scene.TileSprite, 0, 0x4A, 8 + X - CamX + 16 + ( 0), 8 + Y + i - CamY + (0), 0, IE_FLIPX);
+    }
+
+    // Bottom
+    G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX - 32 + (0), 8 + Y + h - CamY + (-16), 0, IE_NOFLIP);
+    G.DrawSprite(Scene.TileSprite, 0, 0x45, 8 + X - CamX - 16 + (0), 8 + Y + h - CamY + (-16), 0, IE_NOFLIP);
+    G.DrawSprite(Scene.TileSprite, 0, 0x45, 8 + X - CamX + 00 + ( 0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
+    G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX + 16 + ( 0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
+}
+
+event BreakHCZ(HitSide:int) {
+    if (Scene.ZoneID != 2) return;
+
+    if (SubType == 2) {
+        Scene.AddFallingTile(0x2B, X, Y - 16, -24, -16, IE_NOFLIP, false, HitSide * 0x400, -0x500);
+        Scene.AddFallingTile(0xAE, X, Y - 16, -8, -16, IE_NOFLIP, false, HitSide * 0x600, -0x600);
+        Scene.AddFallingTile(0x2B, X + 8, Y - 16, -0, -16, true, false, HitSide * 0x500, -0x400);
+
+        Scene.AddFallingTile(0x32, X, Y - 16, -24, -0, IE_NOFLIP, false, HitSide * 0x600, -0x200);
+        Scene.AddFallingTile(0x81, X, Y - 16, -8, -0, IE_NOFLIP, false, HitSide * 0x800, -0x300);
+        Scene.AddFallingTile(0x32, X + 8, Y - 16, -0, -0, true, false, HitSide * 0x700, -0x100);
+
+        Scene.AddFallingTile(0x80, X, Y + 16, -24, -16, IE_NOFLIP, false, HitSide * 0x600, 0x200);
+        Scene.AddFallingTile(0x29, X, Y + 16, -8, -16, IE_NOFLIP, false, HitSide * 0x800, 0x300);
+        Scene.AddFallingTile(0x80, X + 8, Y + 16, -0, -16, true, false, HitSide * 0x700, 0x100);
+
+        Scene.AddFallingTile(0x32, X, Y + 16, -24, -0, IE_NOFLIP, false, HitSide * 0x400, 0x500);
+        Scene.AddFallingTile(0x81, X, Y + 16, -8, -0, IE_NOFLIP, false, HitSide * 0x600, 0x600);
+        Scene.AddFallingTile(0x32, X + 8, Y + 16, -0, -0, true, false, HitSide * 0x500, 0x400);
+    }
+    else {
+        Scene.AddFallingTile(0x8F, X, Y - 16, -16, -16, false, false, HitSide * 0x400, -0x500);
+        Scene.AddFallingTile(0x90, X, Y - 16, 0, -16, false, false, HitSide * 0x600, -0x600);
+        Scene.AddFallingTile(0x91, X, Y - 16, -16, 0, false, false, HitSide * 0x600, -0x100);
+        Scene.AddFallingTile(0x92, X, Y - 16, 0, 0, false, false, HitSide * 0x800, -0x200);
+
+        Scene.AddFallingTile(0x8F, X, Y + 16, -16, -16, false, false, HitSide * 0x600, 0x100);
+        Scene.AddFallingTile(0x90, X, Y + 16, 0, -16, false, false, HitSide * 0x800, 0x200);
+        Scene.AddFallingTile(0x91, X, Y + 16, -16, 0, false, false, HitSide * 0x400, 0x500);
+        Scene.AddFallingTile(0x92, X, Y + 16, 0, 0, false, false, HitSide * 0x600, 0x600);
+    }
+}
+event BreakMGZ(HitSide:int) {
+    if (Scene.ZoneID != 3) return;
+
+    local h:int = H / 2;
+
+    HitSide = -HitSide;
+
+    // Top
+    Scene.AddFallingTile(0x44, X - 32, Y - h, 0, 0, false, false, HitSide * 0x400, -0x500);
+    Scene.AddFallingTile(0x45, X - 16, Y - h, 0, 0, false, false, HitSide * 0x500, -0x580);
+    Scene.AddFallingTile(0x45, X + 00, Y - h, 0, 0, true, false,  HitSide * 0x600, -0x600);
+    Scene.AddFallingTile(0x44, X + 16, Y - h, 0, 0, true, false,  HitSide * 0x700, -0x680);
+
+    // Mid
+    local wh:int = -1;
+    for (i:int = -h + 16; i < h - 16; i += 16) {
+        Scene.AddFallingTile(0x4A, X - 32, Y + i, 0, 0, false, false, HitSide * (0x680 - (Math.abs(wh) << 7)), wh * 0x100);
+        Scene.AddFallingTile(0x4B, X - 16, Y + i, 0, 0, false, false, HitSide * (0x780 - (Math.abs(wh) << 7)), wh * 0x180);
+        Scene.AddFallingTile(0x4B, X + 00, Y + i, 0, 0, true, false,  HitSide * (0x880 - (Math.abs(wh) << 7)), wh * 0x200);
+        Scene.AddFallingTile(0x4A, X + 16, Y + i, 0, 0, true, false,  HitSide * (0x980 - (Math.abs(wh) << 7)), wh * 0x280);
+        wh++;
+    }
+
+    // Bottom
+    Scene.AddFallingTile(0x44, X - 32, Y + h, 0, -16, false, false, HitSide * 0x400, 0x500);
+    Scene.AddFallingTile(0x45, X - 16, Y + h, 0, -16, false, false, HitSide * 0x500, 0x580);
+    Scene.AddFallingTile(0x45, X + 00, Y + h, 0, -16, true, false,  HitSide * 0x600, 0x600);
+    Scene.AddFallingTile(0x44, X + 16, Y + h, 0, -16, true, false,  HitSide * 0x700, 0x680);
+}
+
+event Render(CamX:int, CamY:int) {
+    if (!Solid) return;
+
+    DrawHCZ(CamX, CamY);
+    DrawMGZ(CamX, CamY);
+}
+
+event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
+    Sound::Play(Sound::SFX_COLLAPSE);
+
+    BreakableByRoll = false;
+    BreakableByJump = false;
+    BreakableByGlide = false;
+    BreakableByKnuckles = false;
+    Solid = false;
+
+    local HitSide:int = -1;
+    if (HitFrom == 0)
+        HitSide = 1;
+
+    BreakHCZ(HitSide);
+    BreakMGZ(HitSide);
+
+    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, this\.X \- CamX, this\.Y (\-|\+) 16 \- CamY, Rotation, IE_NOFLIP, (\-*[0-9]*), (\-*[0-9]*)\);
+    // Scene.AddFallingTile(0x$1, X, Y $2 16, $3, $4, false, false, 0x100, 0x100);
+
+    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, X \- CamX( \+ 8)*, Y (\-|\+) 16 \- CamY, Rotation,\W*(IE_NOFLIP|IE_FLIPX),\W*(\-*[0-9]*),\W*(\-*[0-9]*)\);
+    // Scene.AddFallingTile(0x$1, X$2, Y $3 16, -$5, -$6, $4, false, 0x100, 0x100);
+
+    return 0;
+}

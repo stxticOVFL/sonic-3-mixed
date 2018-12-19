@@ -1,0 +1,107 @@
+object 0x6C;
+
+event Create() {
+    this.W = 128;
+    this.H = 24;
+    this.Active = true;
+    this.Priority = false;
+
+    this.Frame = 0;
+
+    var Count:int = SubType & 0xF;
+
+    var MaxDepress:int = 2;
+    var Children:Object[16];
+    for (i:int = 0; i < Count; i++) {
+        Children[i] = Scene.AddNewObject(Obj_TensionBridgeChild, i, X - Count * 8 + i * 16, Y, false, false);
+        Children[i].Timer = MaxDepress;
+        Children[i].Sprite = Sprite;
+        Children[i].CurrentAnimation = 18;
+        if (i * 2 == Count - 2) {
+            // No change
+        }
+        else if (i < Count / 2) {
+            MaxDepress += 2;
+        }
+        else if (i >= Count / 2) {
+            MaxDepress -= 2;
+        }
+    }
+
+    var BrakeIndexes:int[16];
+    var Broken:bool = false;
+    Timer = -1;
+
+    if (Scene.ZoneID == 2) {
+        // every 2 frames
+        BrakeIndexes[0] = 7;
+        BrakeIndexes[1] = 6;
+        BrakeIndexes[2] = 4;
+        BrakeIndexes[3] = 0;
+        BrakeIndexes[4] = 5;
+        BrakeIndexes[5] = 2;
+        BrakeIndexes[6] = 3;
+        BrakeIndexes[7] = 1;
+    }
+}
+event Update() {
+    if (!CollidingWithPlayer) {
+        for (i:int = 0; i < Count; i++) {
+            Children[i].Y = Y;
+        }
+    }
+
+    if (Scene.ZoneID == 2) {
+        local j:int = 0;
+        if (Scene.RoutineNumber >= 0x80 && !Broken) {
+            Timer = 16;
+            Broken = true;
+        }
+        if (Timer > 0 && (Timer & 1)) {
+            j = BrakeIndexes[7 - (Timer >> 1)];
+            Scene.AddExplosion(4, false, Children[j].X, Children[j].Y);
+            Scene.AddMovingSprite(Sprite, Children[j].X, Children[j].Y, 18, 0, false, false, 0, 0, 0x38);
+            Sound::Play(Sound::SFX_DESTROY);
+            Children[j].Active = false;
+        }
+    }
+
+    if (Timer >= 0)
+        Timer--;
+}
+event Render(CamX:int, CamY:int) {
+    for (i:int = 0; i < Count; i++) {
+        //Children[i].Render(CamX, CamY);
+    }
+}
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (!Scene.Players[PlayerID].Ground)
+        return 0;
+
+    // if (PlayerID != 0)
+        // return 1;
+
+
+    local CurSegment:int = 0;
+    local MaxDep:int = 0;
+
+    CurSegment = (Scene.Player.EZX - (X - 8 - Count * 8)) >> 4;
+
+    for (i:int = 0; i < Count; i++) {
+        Children[i].Rotation = false;
+    }
+    if (CurSegment >= 0 && CurSegment < Count) {
+        Children[CurSegment].Rotation = true;
+        MaxDep = Children[CurSegment].Timer;
+    }
+    for (i:int = 0; i < Count; i++) {
+        if (i <= CurSegment) {
+            Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (i + 1) / (CurSegment + 1)) >> 16));
+        }
+        else {
+            Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (Count - i) / (Count - CurSegment)) >> 16));
+        }
+    }
+
+    return 1;
+}

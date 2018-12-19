@@ -1,0 +1,238 @@
+object 0x01;
+
+event Create() {
+    W = 26;
+    H = 32;
+    Active = true;
+    Priority = false;
+
+    Frame = 0;
+    YSpeed = 0;
+
+    var SubY:int = Y << 8;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    BreakableByRoll = true;
+    BreakableByJump = true;
+    BreakableByGlide = true;
+    Scene.AddSelfToRegistry(this, "Breakable");
+
+    var PlayerAggressor:int = 0;
+
+    var CanFall:bool = false;
+    var GhostY:double = 0.0;
+
+    var SubTypeFrame:int = 0;
+    if (SubType == 0x00) { // Static
+        SubTypeFrame = 14;
+    }
+    else if (SubType == 0x01) {
+        SubTypeFrame = 7 + (int)(Scene.Players[0].Character); // CharacterId
+    }
+    else if (SubType == 0x02) {
+        SubTypeFrame = 10;
+    }
+    else if (SubType == 0x03) {
+        SubTypeFrame = 0;
+    }
+    else if (SubType == 0x04) {
+        SubTypeFrame = 6;
+    }
+    else if (SubType == 0x05) {
+        SubTypeFrame = 3;
+    }
+    else if (SubType == 0x06) {
+        SubTypeFrame = 4;
+    }
+    else if (SubType == 0x07) {
+        SubTypeFrame = 2;
+    }
+    else if (SubType == 0x08) {
+        SubTypeFrame = 5;
+    }
+    else if (SubType == 0x09) {
+        SubTypeFrame = 12;
+    }
+    else if (SubType == 0x0B) {
+        SubTypeFrame = 11;
+    }
+
+    CurrentAnimation = 4;
+}
+event Update() {
+    if (!CanFall && (YSpeed != 0)) {
+        CanFall = true;
+    }
+    if (CanFall) {
+        if (YSpeed < 0 && Scene.CollisionAt(X, (SubY >> 8) - 16)) {
+            YSpeed = 0;
+        }
+        YSpeed += 0x38;
+        SubY += YSpeed;
+        Y = SubY >> 8;
+
+        while (Scene.CollisionAt(X, Y + 16 + 1)) {
+            Y--;
+            YSpeed = 0;
+            Priority = false;
+            CanFall = false;
+        }
+        if (!CanFall)
+            Y += 2;
+    }
+    if (YSpeed != 0)
+        Priority = true;
+
+    if (Timer >= 0 && Timer < 64 + 24)
+        Timer++;
+
+    else if (!CanFall)
+        Priority = false;
+
+    if (Timer == 32) {
+        if (SubType == 0x00) { // Static
+            Scene.Players[PlayerAggressor].Hurt(X, false);
+        }
+        else if (SubType == 0x01) {
+            Scene.Players[PlayerAggressor].GiveLife(1);
+        }
+        else if (SubType == 0x02) {
+            Scene.Players[PlayerAggressor].Hurt(X, false);
+        }
+        else if (SubType == 0x03) {
+            Scene.Players[PlayerAggressor].GiveRing(10);
+            Sound.Play(Sound.SFX_RING); // SFX_HYPER_RING
+        }
+        else if (SubType == 0x04) {
+            Scene.Players[PlayerAggressor].SpeedSneakersActive = true;
+            Scene.Players[PlayerAggressor].SpeedSneakersTimer  = 1200;
+
+            App.Audio.PushMusic(Sound.SoundBank[0xFE], false, 0);
+        }
+        else if (SubType == 0x05) {
+            Scene.Players[PlayerAggressor].Shield = ShieldType::Fire;
+            Scene.Players[PlayerAggressor].ShieldUsable = true;
+            Scene.Players[PlayerAggressor].ShieldAction = false;
+            Sound.Play(Sound.SFX_SHIELD_FIRE);
+        }
+        else if (SubType == 0x06) {
+            Scene.Players[PlayerAggressor].Shield = ShieldType::Electric;
+            Scene.Players[PlayerAggressor].ShieldUsable = true;
+            Scene.Players[PlayerAggressor].ShieldAction = false;
+            Sound.Play(Sound.SFX_SHIELD_ELECTRIC);
+        }
+        else if (SubType == 0x07) {
+            Scene.Players[PlayerAggressor].Shield = ShieldType::Bubble;
+            Scene.Players[PlayerAggressor].ShieldUsable = true;
+            Scene.Players[PlayerAggressor].ShieldAction = false;
+            Sound.Play(Sound.SFX_SHIELD_BUBBLE);
+            App.Audio.RemoveMusic(Sound.SoundBank[0xFD]);
+        }
+        else if (SubType == 0x08) {
+            if (!Scene.Players[PlayerAggressor].SuperForm && !Scene.Players[PlayerAggressor].HyperForm) {
+                Scene.Players[PlayerAggressor].Invincibility = InvincibilityType::Full;
+                Scene.Players[PlayerAggressor].InvincibilityTimer = 1200;
+                App.Audio.PushMusic(Sound.SoundBank[0xFF], true, 139623);
+            }
+        }
+        else if (SubType == 0x09) {
+            Scene.Players[PlayerAggressor].SuperForm = true;
+            Scene.Players[PlayerAggressor].GiveRing(100);
+        }
+        else if (SubType == 0x0B) {
+            Scene.Players[PlayerAggressor].HyperRings = true;
+            Scene.Players[PlayerAggressor].GiveRing(10);
+            Sound.Play(Sound.SFX_RING);
+        }
+    }
+
+    if (!BreakableByRoll) {
+        GhostY += (-35.0 - GhostY) / 10.0;
+        Priority = true;
+        if (Math.floor(GhostY) == -35.0) {
+            GhostY = -35.0;
+        }
+    }
+
+    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
+        Frame += Sprite.Animations[CurrentAnimation].AnimationSpeed;
+    else if (Sprite.Animations[CurrentAnimation].Frames[Frame / 0x100].Duration != 0)
+        Frame += 0x100 / Sprite.Animations[CurrentAnimation].Frames[Frame / 0x100].Duration;
+
+    if (Frame / 0x100 >= Sprite.Animations[CurrentAnimation].FrameCount - 1) {
+        if (false)
+            Frame = Sprite.Animations[CurrentAnimation].FrameCount * 0x100 - 0x100;
+        else
+            Frame = Sprite.Animations[CurrentAnimation].FrameToLoop * 0x100;
+    }
+}
+event Render(CamX:int, CamY:int) {
+    if (CurrentAnimation == 4) {
+        G.DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+
+        //
+        //G.DrawAlpha = 0xFF;
+        G.DrawModeOverlay = true;
+        G.DrawSprite(Sprite,
+            Sprite.Animations[3].Frames[Scene.Frame >> 1 & 1].X,
+            Sprite.Animations[3].Frames[Scene.Frame >> 1 & 1].Y,
+            Sprite.Animations[3].Frames[Scene.Frame >> 1 & 1].W,
+            Sprite.Animations[3].Frames[Scene.Frame >> 1 & 1].H,
+            X - CamX,
+            Y - CamY - 2,
+            0, IE_NOFLIP,
+            Sprite.Animations[3].Frames[Scene.Frame >> 1 & 1].OffX,
+            Sprite.Animations[3].Frames[Scene.Frame >> 1 & 1].OffY);
+        G.DrawModeOverlay = false;
+        //G.DrawAlpha = 0xFF;
+    }
+    else {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
+
+    if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0))
+        return;
+
+    G.DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
+
+    if (CurrentAnimation == 4) {
+        G.DrawModeOverlay = true;
+        G.DrawAlpha = 0x80;
+        G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - 2, 0, IE_NOFLIP);
+        G.DrawModeOverlay = false;
+        G.DrawAlpha = 0xFF;
+    }
+}
+
+event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
+    BreakableByRoll = false;
+    BreakableByJump = false;
+    BreakableByGlide = false;
+    Solid = false;
+
+    Timer = 0;
+    Priority = true;
+
+    Sound.Play(Sound.SFX_DESTROY);
+    ChangeAnimation(1);
+
+    Scene.AddExplosion(3, false, X, Y - 12);
+
+    return 1;
+}
+event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
+    return OnBreakHorizontal(PlayerID, HitFrom);
+}
+
+/*
+event OnTouchHitbox(int):int {  }
+event OnPush(int, int):int {  }
+event OnGrabbed(int):int {  }
+event OnBreakHorizontal(int, int):int {  }
+event OnBreakVertical(int, int):int {  }
+
+event CustomSolidityCheck(int, int, int, bool):int { return false; }
+event OnLeaveScreen():int { }
+//*/

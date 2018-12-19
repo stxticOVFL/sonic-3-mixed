@@ -1,0 +1,1 @@
+objects dont respawn until they are 0xF0 off the screen vertically (from screen edge to object y)

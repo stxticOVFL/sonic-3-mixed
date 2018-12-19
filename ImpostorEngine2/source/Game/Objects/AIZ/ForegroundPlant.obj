@@ -1,0 +1,45 @@
+object 0x35;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 1;
+    H = 1;
+
+    var CamMult:int = (SubType >> 2) & 0x3C;
+    Frame = (SubType & 0xF) & 1;
+
+    VisualLayer = 1;
+}
+
+event Render(CamX:int, CamY:int) {
+    switch (CamMult) {
+        case 0x04: // 1
+            X = (int32_t(InitialX) - 0xA0 - CamX) / 16 + InitialX;
+            Y = (int32_t(InitialY) - 0x70 - CamY) / 16 + InitialY;
+            break;
+        case 0x08: // 2
+            X = (int32_t(InitialX) - 0xA0 - CamX) / 8 + InitialX;
+            Y = (int32_t(InitialY) - 0x70 - CamY) / 8 + InitialY;
+            break;
+        case 0x0C: // 3
+            X = (int32_t(InitialX) - 0xA0 - CamX) / 4 + InitialX;
+            Y = (int32_t(InitialY) - 0x70 - CamY) / 4 + InitialY;
+            break;
+        case 0x10: // 4
+            X = (int32_t(InitialX) - 0xA0 - CamX) / 2 + InitialX;
+            Y = (int32_t(InitialY) - 0x70 - CamY) / 2 + InitialY;
+            break;
+        case 0x14: // 5
+            X = (int32_t(InitialX) - 0xA0 - CamX) + InitialX;
+            Y = (int32_t(InitialY) - 0x70 - CamY) + InitialY;
+            break;
+        case 0x18: // 6
+            X = (int32_t(InitialX) - 0xA0 - CamX) * 2 + InitialX;
+            Y = (int32_t(InitialY) - 0x70 - CamY) + InitialY;
+            break;
+    }
+
+    G.DrawSprite(Sprite, 12 + Frame, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
