@@ -165,7 +165,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\source;..\gen;External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\source;$(SolutionDir)..\gen;External\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>External\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
@@ -204,7 +204,7 @@
       </StackCommitSize>
     </Link>
     <PreBuildEvent>
-      <Command>"../tools/makeheaders.exe" "../../source"</Command>
+      <Command>"../tools/makeheaders.exe" "../source"</Command>
     </PreBuildEvent>
     <CustomBuildStep>
       <Command>
