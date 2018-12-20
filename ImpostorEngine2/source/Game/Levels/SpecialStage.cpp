@@ -43,7 +43,7 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     ZoneID = 20;
     Act = 1;
 
-    Sound::SoundBank[0] = new ISound("Music/BlueSpheresSPD.wav");
+    Sound::SoundBank[0] = new ISound("Music/BlueSpheresSPD.ogg");
     Sound::Audio->LoopPoint[0] = 5309957;
 
     Globe = new ISprite("Stages/Special/Globe.gif", App);

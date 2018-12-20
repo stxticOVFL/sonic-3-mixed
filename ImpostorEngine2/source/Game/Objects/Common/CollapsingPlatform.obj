@@ -125,7 +125,7 @@ event CustomSolidityCheck(probeX:int, probeY:int, PlayerID:int, checkJumpThrough
                 probeY >= Y - H / 2 &&
                 probeX <  X &&
                 probeY <  Y + H / 2) {
-                if (f == -1 && Scene.Players[PlayerID].Ground) {
+                if (f == -1 && Scene.Players[PlayerID].Ground && Scene.Players[PlayerID].AngleMode == 0 && Scene.Players[PlayerID].EZY < Y - H / 2) {
                     f = 60 + Allotted;
                     Priority = true;
                 }
@@ -135,7 +135,7 @@ event CustomSolidityCheck(probeX:int, probeY:int, PlayerID:int, checkJumpThrough
                 probeY >= Y - H / 2 + (probeX - X) / 3 &&
                 probeX <  X + W / 2 &&
                 probeY <  Y + H / 2) {
-                if (f == -1 && Scene.Players[PlayerID].Ground) {
+                if (f == -1 && Scene.Players[PlayerID].Ground && Scene.Players[PlayerID].AngleMode == 0 && Scene.Players[PlayerID].EZY < Y - H / 2) {
                     f = 60 + Allotted;
                     Priority = true;
                 }
@@ -147,7 +147,7 @@ event CustomSolidityCheck(probeX:int, probeY:int, PlayerID:int, checkJumpThrough
                 probeY >= Y - H / 2 &&
                 probeX <  X + W / 2 &&
                 probeY <  Y + H / 2) {
-                if (f == -1 && Scene.Players[PlayerID].Ground) {
+                if (f == -1 && Scene.Players[PlayerID].Ground && Scene.Players[PlayerID].AngleMode == 0 && Scene.Players[PlayerID].EZY < Y - H / 2) {
                     f = 60 + Allotted;
                     Priority = true;
                 }
@@ -157,7 +157,7 @@ event CustomSolidityCheck(probeX:int, probeY:int, PlayerID:int, checkJumpThrough
                 probeY >= Y - H / 2 + (X - probeX) / 3 &&
                 probeX <  X &&
                 probeY <  Y + H / 2) {
-                if (f == -1 && Scene.Players[PlayerID].Ground) {
+                if (f == -1 && Scene.Players[PlayerID].Ground && Scene.Players[PlayerID].AngleMode == 0 && Scene.Players[PlayerID].EZY < Y - H / 2) {
                     f = 60 + Allotted;
                     Priority = true;
                 }

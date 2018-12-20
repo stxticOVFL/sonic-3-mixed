@@ -38,7 +38,7 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     }
     else if (Act == 1) {
         Sound::SoundBank[0] = new ISound("Music/3M_AIZ1.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
+		Sound::Audio->LoopPoint[0] = 1;
 
         Str_TileConfigBin = "Stages/AIZ1/TileConfig.bin";
         Str_SceneBin = "Stages/AIZ1/Scene.bin";
@@ -77,8 +77,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         PlayerStartY = 0x1BC;
     }
     else {
-        // PlayerStartX = 0x4047;
-        // PlayerStartY = 0x015D;
+        PlayerStartX = 0x2820;
+        PlayerStartY = 0x04D0;
     }
 
     IApp::Print(-1, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
@@ -121,22 +121,43 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 }
 
 PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
-	SpriteMapIDs[0x01] = SpriteMap["Items"];
-    SpriteMapIDs[0x04] = SpriteMap["AIZ"];
-    SpriteMapIDs[0x05] = SpriteMap["AIZ"];
-	SpriteMapIDs[0x07] = SpriteMap["Objects"];
-	SpriteMapIDs[0x08] = SpriteMap["Objects"];
-    SpriteMapIDs[0x09] = SpriteMap["AIZ"];
-    SpriteMapIDs[0x0A] = SpriteMap["AIZ"];
-    SpriteMapIDs[0x0C] = SpriteMap["AIZ"];
-    SpriteMapIDs[0x0D] = SpriteMap["AIZ"];
-    SpriteMapIDs[0x0F] = SpriteMap["AIZ"];
-	SpriteMapIDs[0x2F] = SpriteMap["AIZ"];
-	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = SpriteMap["Objects"];
-    SpriteMapIDs[0x35] = SpriteMap["AIZ"];
+    if (Act <= 1) {
+    	SpriteMapIDs[0x01] = SpriteMap["Items"];
+        SpriteMapIDs[0x04] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x05] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x07] = SpriteMap["Objects"];
+    	SpriteMapIDs[0x08] = SpriteMap["Objects"];
+        SpriteMapIDs[0x09] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0A] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0C] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0D] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0F] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x2F] = SpriteMap["AIZ"];
+    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
+    	SpriteMapIDs[0x34] = SpriteMap["Objects"];
+        SpriteMapIDs[0x35] = SpriteMap["AIZ"];
 
-	SpriteMapIDs[0x51] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x51] = SpriteMap["AIZ"];
+    }
+    else {
+    	SpriteMapIDs[0x01] = SpriteMap["Items"];
+        SpriteMapIDs[0x04] = SpriteMap["AIZ2"];
+        SpriteMapIDs[0x05] = SpriteMap["AIZ2"];
+    	SpriteMapIDs[0x07] = SpriteMap["Objects"];
+    	SpriteMapIDs[0x08] = SpriteMap["Objects"];
+        SpriteMapIDs[0x09] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0A] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0C] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0D] = SpriteMap["AIZ2"];
+        SpriteMapIDs[0x0F] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x2F] = SpriteMap["AIZ"];
+    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
+    	SpriteMapIDs[0x34] = SpriteMap["Objects"];
+        SpriteMapIDs[0x35] = SpriteMap["AIZ"];
+
+    	SpriteMapIDs[0x51] = SpriteMap["AIZ2"];
+        SpriteMapIDs[0x8C] = SpriteMap["AIZ"];
+    }
 }
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
@@ -153,7 +174,7 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 		// printf("\n");
 	}
 
-    if (Act <= 1 || true) {
+    if (Act <= 1) {
         if (!SpriteMap["AIZ"]) {
     		SpriteMap["AIZ"] = new ISprite("Sprites/AIZ1/Objects.gif", App);
             SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
@@ -173,22 +194,32 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
     }
     else {
         if (!SpriteMap["AIZ"]) {
-            SpriteMap["AIZ"] = new ISprite("Sprites/AIZ2/Objects.gif", App);
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/(&MHZ) Ride Vine.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Collapsing Platform 2.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Cork Floor 2.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Falling Log 2.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Falling Log Splash 2.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Floating Platform.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Rock 2.bin");
+    		SpriteMap["AIZ"] = new ISprite("Sprites/AIZ1/Objects.gif", App);
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Decoration.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Platform.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Tree.bin");
+            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
+    		// printf("\n");
+    	}
 
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Breakable Wall.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Disappearing Floor.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Disappearing Floor Water.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Draw Bridge Fire.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Flipping Bridge.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ2/Spiked Log.bin");
+        if (!SpriteMap["AIZ2"]) {
+            SpriteMap["AIZ2"] = new ISprite("Sprites/AIZ2/Objects.gif", App);
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/Drawbridge.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/CollapsingPlatform.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/CorkFloor.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/Decoration.bin"); // HACK: padding
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/FallingLog.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin"); // HACK: padding
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/Platform.bin");
             // printf("\n");
         }
     }
@@ -280,7 +311,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                     water = 0;
                 }
                 else {
-                    memset(G->Deform, 0, water);
+                    memset(Data->layers[1].Deform, 0, water);
                 }
 
                 int8_t AIZ1_WaterDeformDelta[64] = {
@@ -290,12 +321,14 @@ PUBLIC void Level_AIZ::Subupdate() {
                 	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
                 };
                 for (int i = water; i < App->HEIGHT; i++) {
-                    G->Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                    Data->layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
             }
             else {
-                memset(G->Deform, 0, App->HEIGHT);
+                memset(Data->layers[1].Deform, 0, App->HEIGHT);
             }
+            memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
+            memcpy(Data->layers[3].Deform, Data->layers[1].Deform, App->HEIGHT);
         }
 
         if (Player->EZX > 0x2F30) {
@@ -322,7 +355,17 @@ PUBLIC void Level_AIZ::Subupdate() {
             }
             // Deform = (int8_t*)calloc(App->HEIGHT, 1);
 
-            memset(G->Deform, 0, water);
+            int8_t AIZ2_BGDeformDelta[64] = {
+                -2,     1,    2,    2,-1,    2,    2,    1,    2,-1,-2,-2,-2,    1,-1,-1,
+                -1,     0,-2,    0,    0,    0,-2,    0,-2,    2,    0,-2,    2,    2,-1,-2,
+                -2,     1,    2,    2,-1,    2,    2,    1,    2,-1,-2,-2,-2,    1,-1,-1,
+                -1,     0,-2,    0,    0,    0,-2,    0,-2,    2,    0,-2,    2,    2,-1,-2,
+            };
+            for (int i = 0; i < App->HEIGHT; i++) {
+               Data->layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+            }
+
+            memset(Data->layers[1].Deform, 0, water);
 
             int8_t AIZ2_FGDeformDelta[64] = {
                 0,    0,    1,    1,    0,    0,    0,    0,    1,    0,    0,    0,    0,    1,    0,    0,
@@ -331,7 +374,7 @@ PUBLIC void Level_AIZ::Subupdate() {
         	    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    0,    0,    1,    1,    0,    0
             };
             for (int i = 0; i < water; i++) {
-                G->Deform[i] = AIZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+               Data->layers[1].Deform[i] = AIZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
 
             int8_t AIZ1_WaterDeformDelta[64] = {
@@ -341,8 +384,32 @@ PUBLIC void Level_AIZ::Subupdate() {
             	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
             };
             for (int i = water; i < App->HEIGHT; i++) {
-                G->Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                Data->layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
+
+            memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
+        }
+
+        if (RoutineNumber >> 0 & 1) {
+            if (Data->layers[1].Tiles[0x270 + 0x3B * Data->layers[1].Width] != 0x0000) {
+                for (int i = 0x3B; i < 0x53; i++) {
+                    memset(&Data->layers[1].Tiles[0x270 + i * Data->layers[1].Width], 0x00, 8 * sizeof(short));
+                }
+            }
+        }
+
+        if (CameraX >= 0x2440) {
+            if (WaterLevel < 0x618 && (RoutineNumber >> 0 & 1)) {
+                VisualWaterLevel = WaterLevel += 2;
+                ShakeTimer = -1;
+            }
+            else {
+                ShakeTimer = 0;
+            }
+        }
+        else {
+            if (WaterLevel > 0x528)
+                VisualWaterLevel = WaterLevel -= 2;
         }
     }
     else if (Act == 2) {

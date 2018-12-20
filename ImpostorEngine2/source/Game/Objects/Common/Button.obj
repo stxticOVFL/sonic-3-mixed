@@ -4,16 +4,20 @@ event Create() {
     Active = true;
     Priority = false;
 
-    if (Scene.ZoneID != 2) {
+    var Permanent:bool = (SubType >> 4 & 0x1);
+    var TriggerID:bool = (SubType & 0xF);
+    var TriggerType:bool = (SubType >> 6 & 0x1); // 0 - Normal, 1 - Sign Bit
+    var CollisionType:bool = (SubType >> 5 & 0x1);
+
+    if (!CollisionType)
         Solid = true;
-        Scene.AddSelfToRegistry(this, "Solid");
-    }
+    else
+        SolidTop = true;
+    Scene.AddSelfToRegistry(this, "Solid");
 
     W = 32;
-    H = 24;
+    H = 16;
     Rotation = 0;
-
-    Y += 6;
 
     var StartY:int = this.Y;
     var CurrentAnimation:int = 0;
@@ -21,22 +25,28 @@ event Create() {
     var Pressed:int = false;
 }
 event Update() {
-    this.Down = this.CollidingWithPlayer;
+    this.Down = Scene.Players[0].Ground && Scene.Players[0].LastObject == this;
 
-    if (this.Down) {
+    if (Down) {
+        if (!Pressed) {
+            Pressed = true;
+            Sound.Play(Sound.SFX_SCORE_ADD);
+            Scene.RoutineNumber = 1 << TriggerID;
+            CollidingWithPlayer = true;
+        }
+    }
+
+    if (this.Down)
         Y = this.StartY + 8;
-        H = 18;
-    }
-    else {
+    else
         Y = this.StartY;
-        H = 24;
-    }
-
-    this.Frame = 2;//this.CollidingWithPlayer;
 }
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8,
-        this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+    // G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8,
+    //     this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+    G.DrawRectangle(X - CamX - 16, Y - CamY - 8, 32, 8, 0xB4B4D8);
+    if (!this.Down)
+        G.DrawRectangle(X - CamX -  7, Y - CamY - 0, 14, 8, 0x6C6C90);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
@@ -48,12 +58,6 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Scene.Players[PlayerID].YSpeed <= 0) {
         this.CollidingWithPlayer = false;
         return 0;
-    }
-
-    if (!this.Pressed) {
-        this.Pressed = true;
-        //Scene->aud_C_ShortBeep->Play(2);
-        Scene.RoutineNumber = SubType;
     }
 
     return 1;

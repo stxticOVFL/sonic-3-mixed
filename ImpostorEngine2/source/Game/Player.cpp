@@ -1145,7 +1145,7 @@ void IPlayer::Update() {
         GroundSpeed -= min(abs(GroundSpeed), frc / 2) * IMath::sign(GroundSpeed);
 
     // Flip player when hitting left/right
-    if (doLeftRight) {
+    if (doLeftRight && InputAlarm == 0) {
         if (InputLeft) {
             if (Action != ActionType::Skid && Action != ActionType::Rolling)
                 DisplayFlip = -1;
@@ -1461,6 +1461,7 @@ void IPlayer::Update() {
     // Check Sensor A
     SensorA = -1;
     int SensorA_Angle = -1;
+	Object* lastObj = NULL;
     for (int y = 0; y <= SensorLength && DoCollision; y++) {
         if (Scene->CollisionAt(
             X - SensorABCDWidth * ModeCos[AngleMode] + y * ModeSin[AngleMode],
@@ -1472,6 +1473,9 @@ void IPlayer::Update() {
         }
     }
     if (SensorA == 0) SensorA = -1;
+
+	if (LastObject)
+		lastObj = LastObject;
 
     // Check Sensor B
     SensorB = -1;
@@ -1487,6 +1491,9 @@ void IPlayer::Update() {
         }
     }
     if (SensorB == 0) SensorB = -1;
+
+	if (!LastObject)
+		LastObject = lastObj;
 
     // Handle falling and ground reacquisition
     if (Ground) {

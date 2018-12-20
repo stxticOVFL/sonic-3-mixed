@@ -35,6 +35,7 @@ struct Layer {
     int RelativeY = 0x0100;
     int ConstantY = 0x0000;
     short* Tiles = NULL;
+    short* TilesBackup = NULL;
 
     int OffsetX = 0x0000;
     int OffsetY = 0x0000;

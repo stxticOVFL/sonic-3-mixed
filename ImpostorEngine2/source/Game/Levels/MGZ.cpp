@@ -21,7 +21,7 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     Act = ACT;
 
     if (Act == 1) {
-		Sound::SoundBank[0] = new ISound("Music/MirageSaloon1K.wav", true);
+		Sound::SoundBank[0] = new ISound("Music/MirageSaloon1K.ogg", true);
 		Sound::Audio->LoopPoint[0] = 1007820;
 
         Str_TileConfigBin = "Stages/MGZ1/TileConfig.bin";
@@ -30,7 +30,7 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/MGZ1/Animated Tiles.gif";
     }
     else {
-        Sound::SoundBank[0] = new ISound("Music/MirageSaloon1K.wav", true);
+        Sound::SoundBank[0] = new ISound("Music/MirageSaloon1K.ogg", true);
 		Sound::Audio->LoopPoint[0] = 1007820;
 
         Str_TileConfigBin = "Stages/MGZ2/TileConfig.bin";

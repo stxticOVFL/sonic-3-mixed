@@ -60,7 +60,7 @@ public:
     int         PlayerStartX = -1;
     int         PlayerStartY = -1;
 
-    int         RoutineNumber = 0x00;
+    int         RoutineNumber = 0;
 
     int         FadeAction = 0;
     enum        FadeActionType {
@@ -979,6 +979,8 @@ PUBLIC void LevelScene::LoadData() {
             Data->layers[i].IsScrollingVertical = reader.ReadByte() == 1 ? true : false;
             Data->layers[i].Flags = reader.ReadByte();
 
+            Data->layers[i].Deform = (int8_t*)calloc(1, App->HEIGHT);
+
             int   Width = (int)reader.ReadUInt16();
             int   Height = (int)reader.ReadUInt16();
 
@@ -1067,6 +1069,7 @@ PUBLIC void LevelScene::LoadData() {
             unsigned char* Tilesss = reader.ReadCompressed();
 
             Data->layers[i].Tiles = (short*)malloc(Width * Height * sizeof(short));
+            Data->layers[i].TilesBackup = (short*)malloc(Width * Height * sizeof(short));
 
             IStreamer creader(Tilesss);
             for (int y = 0; y < Height; y++) {
@@ -1074,6 +1077,7 @@ PUBLIC void LevelScene::LoadData() {
                     Data->layers[i].Tiles[x + y * Width] = creader.ReadUInt16();
                 }
             }
+            memcpy(Data->layers[i].TilesBackup, Data->layers[i].Tiles, Width * Height * sizeof(short));
             free(Tilesss);
         }
 
@@ -1762,6 +1766,9 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
     ObjectBreakableCount = 0;
     ObjectPathSwitcherCount = 0;
 
+    for (int i = 0; i < Data->layerCount; i++)
+        memcpy(Data->layers[i].Tiles, Data->layers[i].TilesBackup, Data->layers[i].Width * Data->layers[i].Height * sizeof(short));
+
     StopTimer = false;
 
     int pX = PlayerStartX;
@@ -1980,6 +1987,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                     *angle = tempAngle & 0xFF; //(int)wrapAngle(tempAngle);
                                 }
 
+                                player->LastObject = NULL;
                                 return true;
                             }
                         }
@@ -2001,6 +2009,8 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
                                     *angle = tempAngle & 0xFF; //(int)wrapAngle(tempAngle);
                                 }
+
+                                player->LastObject = NULL;
                                 return true;
                             }
                         }
@@ -2024,6 +2034,8 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
                                     *angle = tempAngle & 0xFF; //(int)wrapAngle(tempAngle);
                                 }
+
+                                player->LastObject = NULL;
                                 return true;
                             }
                         }
@@ -2045,6 +2057,8 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
                                     *angle = tempAngle & 0xFF; //(int)wrapAngle(tempAngle);
                                 }
+
+                                player->LastObject = NULL;
                                 return true;
                             }
                         }
@@ -2137,6 +2151,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                         if (obj->CustomSolidityCheck(probeX, probeY, player->PlayerID, anglemode == 0)) {
                             if (angle)
                                 *angle = 0;
+                            player->LastObject = obj;
                             return true;
                         }
                     }
@@ -2695,6 +2710,7 @@ PUBLIC void LevelScene::Update() {
                     SavedPositionX = -1;
                     SavedPositionY = -1;
                     Checkpoint = -1;
+                    App->Audio->ClearMusic();
 
                     Sound::Play(Sound::SFX_MENUACCEPT);
                 }
@@ -3340,9 +3356,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
         layer = Data->layers[l];
 
+        bool DeformObjects = true;
+        bool DeformPlayer = false;
+
         // Draw Tiles
         if (layer.Visible) {
             G->DoDeform = true;
+            memcpy(G->Deform, layer.Deform, App->HEIGHT);
             if (layer.InfoCount > 1) {
                 int buf = 0;
                 for (s = 0; s < layer.ScrollIndexCount; s++) {
@@ -3524,7 +3544,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 }
             }
         }
-        G->DoDeform = false;
 
         // Rendering above background
         if (l == Data->cameraLayer - 1)
@@ -3533,6 +3552,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         if (l >= Data->cameraLayer) {
             //RenderAnimatedSprites(l - (Data->cameraLayer));
         }
+
+        G->DoDeform = DeformObjects;
 
         // Rendering objects
         for (int i = 0; i < ObjectCount; i++) {
@@ -3550,6 +3571,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
             if ((*it)->Active && l == Data->cameraLayer + (*it)->VisualLayer)
                 (*it)->Render(CameraX, CameraY);
         }
+
+        G->DoDeform = DeformPlayer;
 
         // Rendering players
         for (int p = PlayerCount - 1; p >= 0; p--) {
@@ -3656,6 +3679,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
         Y -= 32;
         char pooerp[256];
+        /*
         sprintf(pooerp, "%04X %04X (%02X %d)", Player->EZX, Player->EZY, Player->Angle, Player->AngleMode);
         G->DrawTextShadow(X - CameraX + 37, Y - CameraY, pooerp, 0xFFFFFF);
         Y += 8;
@@ -3725,6 +3749,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         sprintf(pooerp, "GlideTurnCos: %X", Player->GlideTurnCos);
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
+        //*/
 
         sprintf(pooerp, "RoutineNumber: %X", RoutineNumber);
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);

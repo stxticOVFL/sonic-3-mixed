@@ -26,7 +26,7 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     Act = ACT;
 
     if (Act == 1) {
-		Sound::SoundBank[0] = new ISound("Music/3M_HCZ1.wav", true);
+		Sound::SoundBank[0] = new ISound("Music/3M_HCZ1.ogg", true);
 		Sound::Audio->LoopPoint[0] = 1;
 
         Str_TileConfigBin = "Stages/HCZ1/TileConfig.bin";
@@ -37,7 +37,7 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         WaterLine = new ISprite("Sprites/HCZ/AniTiles2.gif", App);
     }
     else {
-		Sound::SoundBank[0] = new ISound("Music/3M_HCZ2.wav", true);
+		Sound::SoundBank[0] = new ISound("Music/3M_HCZ2.ogg", true);
 		Sound::Audio->LoopPoint[0] = 329797;
 
         Str_TileConfigBin = "Stages/HCZ2/TileConfig.bin";

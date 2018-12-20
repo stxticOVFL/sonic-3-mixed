@@ -66,7 +66,7 @@ event Update() {
         CanFall = true;
     }
     if (CanFall) {
-        if (YSpeed < 0 && Scene.CollisionAt(X, (SubY >> 8) - 16)) {
+        if (YSpeed < 0 && Scene.CollisionAt(X, (SubY >> 8) - 17)) {
             YSpeed = 0;
         }
         YSpeed += 0x38;

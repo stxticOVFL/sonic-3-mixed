@@ -20,6 +20,14 @@ public:
     SDL_AudioStream*  Stream = NULL;
     IResource*        Resource = NULL;
     uint8_t*          ExtraBuffer = NULL;
+
+    struct Vorbis {
+        OggVorbis_File vf;
+        vorbis_info* info = NULL;
+        Uint32 audio_len;
+    };
+
+    Vorbis* vorbis_file = NULL;
 };
 #endif
 
@@ -90,7 +98,7 @@ PUBLIC bool ISound::LoadOGG_RW(IResource* src, int freesrc, SDL_AudioSpec *spec,
 
     *audio_buf = NULL;
     *audio_len = 0;
-    memset(spec, 0, sizeof (SDL_AudioSpec));
+    memset(spec, 0, sizeof(SDL_AudioSpec));
 
     spec->format = AUDIO_S16;
     spec->channels = info->channels;
@@ -138,6 +146,69 @@ PUBLIC bool ISound::LoadOGG_RW(IResource* src, int freesrc, SDL_AudioSpec *spec,
     return spec;
 }
 
+/*
+PUBLIC Vorbis* ISound::LoadVorbis(IResource* src, SDL_AudioSpec *spec) {
+}
+*/
+
+ISound::Vorbis* ISound::LoadVorbis(IResource* src, SDL_AudioSpec *spec) {
+    Vorbis* vorb = new Vorbis();
+    ov_callbacks callbacks;
+    long samples;
+    int must_close = 1;
+
+    callbacks.read_func = StaticRead;
+    callbacks.seek_func = StaticSeek;
+    callbacks.tell_func = StaticTell;
+    // callbacks.close_func = freesrc ? StaticCloseFree : StaticCloseNoFree;
+
+    if (ov_open_callbacks(src, &vorb->vf, NULL, 0, callbacks) != 0) {
+        IApp::Print(2, "Resource is not valid Vorbis stream!");
+        return NULL;
+    }
+
+    must_close = 0;
+
+    vorb->info = ov_info(&vorb->vf, -1);
+
+    memset(spec, 0, sizeof(SDL_AudioSpec));
+
+    spec->format = AUDIO_S16;
+    spec->channels = vorb->info->channels;
+    spec->freq = vorb->info->rate;
+    spec->samples = 4096;
+
+    samples = (long)ov_pcm_total(&vorb->vf, -1);
+
+    vorb->audio_len = spec->size = samples * spec->channels * 2;
+    return vorb;
+}
+
+PUBLIC int ISound::ReadVorbis(Vorbis* vorb, void* dst, int size) {
+    int bitstream = -1;
+
+    int tot = 0;
+    int read;
+    int to_read = size;
+    char* buf = (char*)dst;
+    uint32_t left = vorb->audio_len;
+    for (read = ov_read(&vorb->vf, (char*)buf, to_read, 0/*LE*/, 2/*16bit*/, 1/*signed*/, &bitstream); read > 0; read = ov_read(&vorb->vf, (char*)buf, to_read, 0, 2, 1, &bitstream)) {
+        if (read == OV_HOLE || read == OV_EBADLINK)
+            break; /* error */
+
+        to_read -= read;
+        buf += read;
+        tot += read;
+        left -= read;
+        if (left <= 0)
+            break;
+    }
+    return tot;
+}
+PUBLIC int ISound::SeekVorbis(Vorbis* vorb, int64_t pos) {
+    return ov_pcm_seek(&vorb->vf, (ogg_int64_t)pos);
+}
+
 PUBLIC ISound::ISound(const char* filename) {
     ISound::Load(filename, false);
 }
@@ -157,18 +228,20 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
 		return;
 	}
 
-    if (strstr(filename, ".ogg"))
-        StreamFromFile = false;
-
     Name = (char*)filename;
 
     if (StreamFromFile) {
-        WAV_HEADER wvhrd;
-        res->Read(&wvhrd, 0x2E);
+        if (strstr(filename, ".ogg")) {
+            vorbis_file = LoadVorbis(res, &Format);
+        }
+        else {
+            WAV_HEADER wvhrd;
+            res->Read(&wvhrd, 0x2E);
 
-        Format.freq = wvhrd.SamplesPerSec;
-        Format.format = 0x8100 | (wvhrd.bitsPerSample & 0xFF);
-        Format.channels = wvhrd.NumOfChan;
+            Format.freq = wvhrd.SamplesPerSec;
+            Format.format = 0x8100 | (wvhrd.bitsPerSample & 0xFF);
+            Format.channels = wvhrd.NumOfChan;
+        }
 
         Stream = SDL_NewAudioStream(Format.format, Format.channels, Format.freq, IAudio::DeviceFormat.format, IAudio::DeviceFormat.channels, IAudio::DeviceFormat.freq);
         if (Stream == NULL) {
@@ -240,7 +313,11 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
 }
 
 PUBLIC int  ISound::RequestMoreData(int samples, int amount) {
-    int num_samples = Resource->Read(ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels * 2);
+    int num_samples = 0;
+    if (vorbis_file)
+        num_samples = ReadVorbis(vorbis_file, ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels * 2);
+    else
+        num_samples = Resource->Read(ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels * 2);
     if (num_samples == 0)
         return 0;
 
@@ -260,8 +337,12 @@ PUBLIC int  ISound::RequestMoreData(int samples, int amount) {
     return gotten;
 }
 PUBLIC void ISound::Seek(int amount) {
-    if (StreamFromFile)
-        Resource->Seek((Format.format & 0xFF) / 8 * amount * Format.channels + 0x2E, RW_SEEK_SET);
+    if (StreamFromFile) {
+        if (vorbis_file)
+            SeekVorbis(vorbis_file, amount);
+        else
+            Resource->Seek((Format.format & 0xFF) / 8 * amount * Format.channels + 0x2E, RW_SEEK_SET);
+    }
 }
 
 PUBLIC void ISound::Cleanup() {

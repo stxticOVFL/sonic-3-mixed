@@ -18,6 +18,8 @@ event Create() {
     var BaseY:int = InitialY;
 
     var EndX:int = InitialX + ((SubType & 0x7F) << 4);
+    var Fireable:bool = SubType >> 7;
+    var OnFire:bool = false;
 
     var ZipActive:bool = false;
     var Spinning:bool = false;
@@ -58,11 +60,50 @@ event Update() {
             Oscello = (Oscello + 0x100) & 0xFFFF;
         }
         else {
-            if (!Spinning) {
-                Oscello = 0;
+            if (Fireable) {
+                BaseX += 8;
+
+                if (!OnFire) {
+                    OnFire = true;
+
+                    YSpeed = 0x38;
+
+                    BaseY = BaseY << 8;
+
+                    for (i:int = 0; i < 8; i++) {
+                        if (PlayersControlled & (1 << i)) {
+                            if (!Scene.Players[i].OnScreen) {
+                                Scene.Players[i].ObjectControlled = 0;
+                                PlayersControlled &= (1 << i) ^ 0xFF;
+                            }
+
+                            if (Scene.Players[i].Action == ActionType::Dead) {
+                                Scene.Players[i].ObjectControlled = 0;
+                                PlayersControlled &= (1 << i) ^ 0xFF;
+                                continue;
+                            }
+
+                            Scene.Players[i].XSpeed = 0x300;
+                            Scene.Players[i].YSpeed = 0x200;
+
+                            Scene.Players[i].ObjectControlled = 0;
+
+                            Scene.Players[i].Action = ActionType::Normal;
+                            Scene.Players[i].Ground = false;
+                            Scene.Players[i].Angle = 0;
+
+                            PlayersControlled &= (1 << i) ^ 0xFF;
+                        }
+                    }
+                }
             }
-            Spinning = true;
-            Oscello = (Oscello + 0x10000 - 0x200) & 0xFFFF;
+            else {
+                if (!Spinning) {
+                    Oscello = 0;
+                }
+                Spinning = true;
+                Oscello = (Oscello + 0x10000 - 0x200) & 0xFFFF;
+            }
         }
         Amp = -8;
     }
@@ -73,6 +114,11 @@ event Update() {
 
     nX = BaseX;
     nY = BaseY;
+    if (OnFire) {
+        YSpeed += 0x38;
+        BaseY += YSpeed;
+        nY = BaseY >> 8;
+    }
     Rotation = IMath::sinHex(Oscello >> 8) * Amp;
     if (Spinning)
         Rotation = (Oscello << 9);
@@ -107,7 +153,7 @@ event Update() {
     X = nX;
     Y = nY;
 
-    for (i:int = 0; i < 8; i++) {
+    for (i:int = 0; i < 8 && !OnFire; i++) {
         if (PlayersControlled & (1 << i)) {
             if (!Scene.Players[i].OnScreen) {
                 Scene.Players[i].ObjectControlled = 0;
@@ -169,11 +215,18 @@ event Render(CamX:int, CamY:int) {
     local nY:int;
     local framedAngle:int;
 
-    // Base
-    G.DrawSprite(Sprite, 28, 0, BaseX - CamX, BaseY - CamY, 0, IE_NOFLIP);
-
     nX = BaseX;
     nY = BaseY;
+    if (OnFire) {
+        nY = BaseY >> 8;
+    }
+
+    // Base
+    if (OnFire)
+        G.DrawSprite(Sprite, 28, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP); // TODO: Draw fire non anim
+    else
+        G.DrawSprite(Sprite, 28, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
+
     Rotation = IMath::sinHex(Oscello >> 8) * Amp;
     if (Spinning)
         Rotation = (Oscello << 9);

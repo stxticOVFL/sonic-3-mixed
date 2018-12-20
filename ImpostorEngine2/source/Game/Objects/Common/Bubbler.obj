@@ -26,6 +26,4 @@ event Update() {
 }
 event Render(CamX:int, CamY:int) {
     G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
-
-
 }
