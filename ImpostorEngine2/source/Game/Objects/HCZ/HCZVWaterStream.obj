@@ -13,7 +13,7 @@ event Create() {
     this.X -= 48;
 }
 event Update() {
-    if (Scene.RoutineNumber >= 0x20) {
+    if ((Scene.LevelTriggerFlag >> 0 & 1)) {
         this.Solid = false;
 
         if (this.Y > this.InitialY - 64)

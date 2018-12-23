@@ -53,7 +53,7 @@ event Update() {
 
     if (Scene.ZoneID == 2) {
         local j:int = 0;
-        if (Scene.RoutineNumber >= 0x80 && !Broken) {
+        if (Scene.LevelTriggerFlag >= 0x80 && !Broken) {
             Timer = 16;
             Broken = true;
         }

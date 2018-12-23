@@ -11,8 +11,8 @@ public:
 #include <Game/Levels/AIZ.h>
 #include <Game/Levels/HCZ.h>
 #include <Game/Levels/MGZ.h>
-//#include <Game/Levels/CNZ.h>
-//#include <Game/Levels/ICZ.h>
+#include <Game/Levels/CNZ.h>
+#include <Game/Levels/ICZ.h>
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
 #include <Game/Levels/FBZ.h>
@@ -51,6 +51,21 @@ PUBLIC void Scene_LevelSelect::Init() {
     FadeIn = true;
 }
 
+bool HaveStage[12] = {
+    true, // AIZ
+    true,
+    true, // HCZ
+    true,
+    true, // MGZ
+    true,
+    true, // CNZ
+    true,
+    true, // ICZ
+    true,
+    false, // LBZ
+    false,
+};
+
 PUBLIC void Scene_LevelSelect::Update() {
     if (FadeTimer == -1 && FadeTimerMax > 1)
         FadeTimer = FadeTimerMax;
@@ -68,68 +83,44 @@ PUBLIC void Scene_LevelSelect::Update() {
         FadeTimerMax = 0;
 
         if (!FadeIn) {
-            switch (selected) {
-                case 0:
-                case 1:
+            if (selected < 12) {
+                if (HaveStage[selected]) {
                     App->Audio->ClearMusic();
                     if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
                     delete Sound::SoundBank[0];
                     Sound::SoundBank[0] = NULL;
 
-                    App->NextScene = new Level_AIZ(App, G, (selected % 2) + 1);
-                    ((LevelScene*)App->NextScene)->CharacterFlag = character;
-                    break;
-                case 2:
-                case 3:
-                    App->Audio->ClearMusic();
-                    if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
-                    delete Sound::SoundBank[0];
-                    Sound::SoundBank[0] = NULL;
+                    switch (selected) {
+                        case 0:
+                        case 1:
+                            App->NextScene = new Level_AIZ(App, G, (selected % 2) + 1);
+                            break;
+                        case 2:
+                        case 3:
+                            App->NextScene = new Level_HCZ(App, G, (selected % 2) + 1);
+                            break;
+                        case 4:
+                        case 5:
+                            App->NextScene = new Level_MGZ(App, G, (selected % 2) + 1);
+                            break;
+                        case 6:
+                        case 7:
+                            App->NextScene = new Level_CNZ(App, G, (selected % 2) + 1);
+                            break;
+                        case 8:
+                        case 9:
+                            App->NextScene = new Level_ICZ(App, G, (selected % 2) + 1);
+                            break;
+                        case 10:
+                        case 11:
+                            App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
+                            break;
+                        default:
+                            break;
+                    }
 
-                    App->NextScene = new Level_HCZ(App, G, (selected % 2) + 1);
                     ((LevelScene*)App->NextScene)->CharacterFlag = character;
-                    break;
-                case 4:
-                case 5:
-                    App->Audio->ClearMusic();
-                    if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
-                    delete Sound::SoundBank[0];
-                    Sound::SoundBank[0] = NULL;
-
-                    App->NextScene = new Level_MGZ(App, G, (selected % 2) + 1);
-                    ((LevelScene*)App->NextScene)->CharacterFlag = character;
-                    break;
-                case 10:
-                    App->Audio->ClearMusic();
-                    if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
-                    delete Sound::SoundBank[0];
-                    Sound::SoundBank[0] = NULL;
-
-                    App->NextScene = new Level_LBZ(App, G);
-                    ((LevelScene*)App->NextScene)->CharacterFlag = character;
-                    break;
-                case 12:
-                case 13:
-                    App->Audio->ClearMusic();
-                    if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
-                    delete Sound::SoundBank[0];
-                    Sound::SoundBank[0] = NULL;
-
-                    App->NextScene = new Level_MHZ(App, G);
-                    ((LevelScene*)App->NextScene)->CharacterFlag = character;
-                    break;
-                case 14:
-                case 15:
-                    App->Audio->ClearMusic();
-                    if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
-                    delete Sound::SoundBank[0];
-                    Sound::SoundBank[0] = NULL;
-
-                    App->NextScene = new Level_FBZ(App, G, (selected % 2) + 1);
-                    ((LevelScene*)App->NextScene)->CharacterFlag = character;
-                    break;
-                default:
-                    break;
+                }
             }
         }
     }
@@ -168,20 +159,10 @@ PUBLIC void Scene_LevelSelect::Update() {
 
     if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
         bool acc = false;
-        switch (selected) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 10:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
+        if (selected < 12) {
+            if (HaveStage[selected]) {
                 acc = true;
-                break;
+            }
         }
         if (acc) {
             Sound::Play(Sound::SFX_MENUACCEPT);
@@ -191,7 +172,6 @@ PUBLIC void Scene_LevelSelect::Update() {
         else {
             Sound::Play(Sound::SFX_PUSHING);
         }
-
     }
 }
 
@@ -221,30 +201,20 @@ PUBLIC void Scene_LevelSelect::Render() {
 
     for (int i = 0; i < 13; i++) {
         Uint32 col = 0x999999;
-        switch (i) {
-            case 0:
-            case 1:
-            case 2:
-            // case 5:
-            // case 6:
-            case 7:
+        if (i * 2 < 12) {
+            if (HaveStage[i * 2] || HaveStage[i * 2 + 1]) {
                 col = 0xFFFFFF;
-                break;
+            }
         }
         G->DrawTextShadow(4, 4 + i * 18, wordGRoup[i], selected / 2 == i ? 0xFFFF00 : col);
     }
     char poop[20];
     for (int i = 0; i < 26; i++) {
         Uint32 col = 0x999999;
-        switch (i / 2) {
-            case 0:
-            case 1:
-            case 2:
-            // case 5:
-            // case 6:
-            case 7:
+        if (i < 12) {
+            if (HaveStage[i]) {
                 col = 0xFFFFFF;
-                break;
+            }
         }
         sprintf(poop, "%d", (i % 2) + 1);
         G->DrawTextShadow(4 + 16 * 8, 4 + i * 9, poop, selected == i ? 0xFFFF00 : col);

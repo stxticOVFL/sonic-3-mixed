@@ -7,7 +7,12 @@ event Create() {
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    if (Scene.ZoneID == 2) {
+    if (Scene.ZoneID == 1) {
+        W = 32;
+        H = 80;
+        Priority = true;
+    }
+    else if (Scene.ZoneID == 2) {
         W = 32;
         H = 64;
 
@@ -35,6 +40,11 @@ event Create() {
     }
 }
 
+event DrawAIZ(CamX:int, CamY:int) {
+    if (Scene.ZoneID != 1) return;
+
+    G.DrawSprite(Sprite, 27, SubType & 0xF, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
 event DrawHCZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 2) return;
 
@@ -161,9 +171,25 @@ event BreakMGZ(HitSide:int) {
     Scene.AddFallingTile(0x44, X + 16, Y + h, 0, -16, true, false,  HitSide * 0x700, 0x680);
 }
 
+event Update() {
+    if (Scene.LevelTriggerFlag > 0 && SubType & 0xF0) {
+        if (Y > Scene.Player.EZY) {
+            Y += 8;
+            if (Y - InitialY > 160)
+                Active = false;
+        }
+        else {
+            Y -= 8;
+            if (InitialY - Y > 160)
+                Active = false;
+        }
+    }
+}
+
 event Render(CamX:int, CamY:int) {
     if (!Solid) return;
 
+    DrawAIZ(CamX, CamY);
     DrawHCZ(CamX, CamY);
     DrawMGZ(CamX, CamY);
 }

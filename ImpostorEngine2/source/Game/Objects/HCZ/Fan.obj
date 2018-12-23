@@ -120,7 +120,7 @@ event Update() {
 
     if (NeedsActivation) {
         On = false;
-        if (Scene.RoutineNumber >= 0x20)
+        if (Scene.LevelTriggerFlag >= 0x20)
             On = true;
     }
 

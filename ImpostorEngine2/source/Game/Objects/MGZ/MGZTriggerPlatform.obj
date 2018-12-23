@@ -19,7 +19,7 @@ event Create() {
 
 event Update() {
     if (PlatformType > 0) {
-        if (Scene.RoutineNumber - 1 == (SubType & 0xF)) {
+        if (Scene.LevelTriggerFlag - 1 == (SubType & 0xF)) {
             Scene.ShakeTimer = 0;
             if (FlipX) {
                 if (Y + (SubType & 0xF0) * 4 > InitialY) {
@@ -31,7 +31,7 @@ event Update() {
                     }
                 }
                 else if (Y == InitialY - (SubType & 0xF0) * 4) {
-                    Scene.RoutineNumber &= 0xFFF0;
+                    Scene.LevelTriggerFlag &= 0xFFF0;
                 }
             }
             else {
@@ -44,16 +44,16 @@ event Update() {
                     }
                 }
                 else if (Y == InitialY + (SubType & 0xF0) * 4) {
-                    Scene.RoutineNumber &= 0xFFF0;
+                    Scene.LevelTriggerFlag &= 0xFFF0;
                 }
             }
         }
-        if (Scene.RoutineNumber - 1 != (SubType & 0xF) && Math.abs(X - Scene.Player.EZX) >= 0x1D0) {
+        if (Scene.LevelTriggerFlag - 1 != (SubType & 0xF) && Math.abs(X - Scene.Player.EZX) >= 0x1D0) {
             Y = InitialY;
         }
     }
     else {
-        if (Scene.RoutineNumber - 1 == (SubType & 0xF)) {
+        if (Scene.LevelTriggerFlag - 1 == (SubType & 0xF)) {
             Scene.ShakeTimer = 0;
             if (FlipX) {
                 if (X > InitialX - 0x80) {
@@ -65,7 +65,7 @@ event Update() {
                     }
                 }
                 else if (X == InitialX - 0x80) {
-                    Scene.RoutineNumber &= 0xFF0F;
+                    Scene.LevelTriggerFlag &= 0xFF0F;
                     Active = false;
                 }
             }
@@ -79,7 +79,7 @@ event Update() {
                     }
                 }
                 else if (X == InitialX + 0x80) {
-                    Scene.RoutineNumber &= 0xFFF0;
+                    Scene.LevelTriggerFlag &= 0xFFF0;
                     Active = false;
                 }
             }

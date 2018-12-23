@@ -21,6 +21,8 @@ event Create() {
     if (Scene.ZoneID == 1) { // AIZ
         W = 0x30;
         H = 0x20;
+        if (Scene.Act == 2)
+            H = 0x18;
         CurrentAnimation = 8;
         Frame = 0;
     }
@@ -62,6 +64,13 @@ event Break() {
     local h:int = H >> 4;
     local left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
     local top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
+
+    if (Scene.Act == 2) {
+        x = X - W / 2 + 8;
+        y = Y - 0x40 / 2 + 8;
+        w = W >> 4;
+        h = 0x40 >> 4;
+    }
 
     local side:bool = FlipX;
 

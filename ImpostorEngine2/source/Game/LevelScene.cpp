@@ -61,6 +61,7 @@ public:
     int         PlayerStartY = -1;
 
     int         RoutineNumber = 0;
+    int         LevelTriggerFlag = 0;
 
     int         FadeAction = 0;
     enum        FadeActionType {
@@ -1070,6 +1071,7 @@ PUBLIC void LevelScene::LoadData() {
 
             Data->layers[i].Tiles = (short*)malloc(Width * Height * sizeof(short));
             Data->layers[i].TilesBackup = (short*)malloc(Width * Height * sizeof(short));
+            Data->layers[i].TileOffsetY = (short*)calloc(sizeof(short), Width);
 
             IStreamer creader(Tilesss);
             for (int y = 0; y < Height; y++) {
@@ -1394,6 +1396,7 @@ PUBLIC void LevelScene::LoadData() {
             }
 
             AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
+            AnimTileSprite->LinkPalette(TileSprite);
 
             App->Print(0, "Loading IsAnims...");
 			Data->isAnims = (short*)malloc(0x400 * sizeof(short));
@@ -1457,7 +1460,7 @@ PUBLIC void LevelScene::LoadData() {
 				if (Data->layers[i].InfoCount > 1) {
 					int y = 0;
 					volatile int siT, x;
-					volatile int tile = 0, flipY = 0, flags = 0, wheree = 0;
+					volatile int tile = 0, flipY = 0, flags = 0;//, wheree = 0;
 					volatile int heightSize = 0, tilindx = 0, tilindy = 0, tilindpos = 0, word = 0;
 					Layer layer = Data->layers[i];
 
@@ -1506,7 +1509,7 @@ PUBLIC void LevelScene::LoadData() {
 										wheree = 0x10 - wheree - heightSize;
 									wheree += tile << 4;
 
-									if (anID == 0) {
+                                    if (anID == 0xFF) {
 										Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
 											G->MakeFrameBufferID(TileSprite, 0, wheree, 16, heightSize, -8, -heightSize / 2 - (heightSize & 1) * flipY);
 									}
@@ -1605,128 +1608,6 @@ PUBLIC void LevelScene::LoadData() {
     }
 
     startTime = SDL_GetTicks();
-
-    // Loading Objects & Rings
-    if (Str_ObjectsList && false) {
-        // Loading Objects
-        App->Print(0, "Loading objects...");
-        IResource* ObjectList = IResources::Load(Str_ObjectsList);
-        if (ObjectList) {
-            unsigned char ObjectListUnimpl[0x100];
-            memset(ObjectListUnimpl, 0, 0x100);
-
-            IStreamer objectReader(ObjectList);
-
-            while (true) {
-                int X = objectReader.ReadUInt16E();
-                if (X == 0xFFFF)
-                    break;
-                int Y = objectReader.ReadUInt16E();
-
-                int data = (Y & 0xF000) / 0x1000;
-                int PRIORITY = (data >> 3) & 0x01;
-                int FLIPX = (data >> 1) & 0x01;
-                int FLIPY = (data >> 2) & 0x01;
-                int ID = objectReader.ReadByte();
-                int SubType = objectReader.ReadByte();
-                Y &= 0x0FFF;
-
-                if (ID == 0x02) {
-                    int H = (4 << (SubType & 0x03)) - 1;
-
-                    int groundOnly = (SubType >> 7) & 0x01;
-                    int orientation = (SubType >> 2) & 0x01;
-
-                    int leftUpPath = ((SubType >> 4) & 0x01);
-                    int rightDownPath = ((SubType >> 3) & 0x01);
-                    int leftUpPriority = ((SubType >> 6) & 0x01); //1 is high, 0 is low
-                    int rightDownPriority = ((SubType >> 5) & 0x01);
-
-                    PlaneSwitchers[PlaneSwitchCount].X = X;
-                    PlaneSwitchers[PlaneSwitchCount].Y = Y;
-
-                    PlaneSwitchers[PlaneSwitchCount].Flags = rightDownPath << 3 | rightDownPriority << 2 | leftUpPath << 1 | leftUpPriority;
-                    PlaneSwitchers[PlaneSwitchCount].Size = H;
-                    PlaneSwitchers[PlaneSwitchCount].Angle = orientation * 0xC0;
-                    PlaneSwitchers[PlaneSwitchCount].OnPath = groundOnly == 1;
-                    PlaneSwitchCount++;
-                }
-                else {
-                    ObjectProp op;
-                    op.X = X;
-                    op.Y = Y;
-                    op.ID = ID;
-                    op.SubType = SubType;
-                    op.LoadFlag = PRIORITY;
-                    op.FlipX = FLIPX;
-                    op.FlipY = FLIPY;
-
-                    ObjectProps[ObjectPropCount++] = op;
-
-                    Object* obj = GetNewObjectFromID(ID);
-                    if (obj) {
-                        obj->G = G;
-                        obj->App = App;
-                        obj->Scene = this;
-                        obj->InitialX = X;
-                        obj->InitialY = Y;
-                        obj->FlipX = FLIPX == 1;
-                        obj->FlipY = FLIPY == 1;
-                        obj->ID = ID;
-
-                        while (!SpriteMapIDs[ID])
-                            ID--;
-
-                        obj->Sprite = SpriteMapIDs[ID];
-                        obj->SubType = SubType;
-                        Objects[ObjectCount++] = obj;
-                    }
-                    else {
-                        ObjectListUnimpl[ID] = 0xFF;
-                    }
-                }
-            }
-
-            IResources::Close(ObjectList);
-
-            for (int i = 0; i < 0x100; i++) {
-                if (ObjectListUnimpl[i] != 0)
-                    App->Print(1, "Object %02X (%s) has not been implemented!", i, ObjectName[i]);
-            }
-        }
-
-        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Object loading", (SDL_GetTicks() - startTime) / 1000.0);
-        startTime = SDL_GetTicks();
-
-        // Loading Rings
-        App->Print(0, "Loading rings...");
-        IResource* RingList = IResources::Load(Str_RingsList);
-        if (RingList) {
-            IStreamer objectReader(RingList);
-
-            while (true) {
-                int X = objectReader.ReadUInt16E();
-                if (X == 0xFFFF)
-                    break;
-                int Y = objectReader.ReadUInt16E();
-
-                ObjectProp op;
-                op.X = X;
-                op.Y = Y;
-                op.ID = 0xFF;
-                op.LoadFlag = true;
-
-                RingProps[RingPropCount++] = op;
-            }
-
-            IResources::Close(RingList);
-
-            App->Print(0, "Ring Total: %d", RingPropCount);
-        }
-
-        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Ring loading", (SDL_GetTicks() - startTime) / 1000.0);
-        startTime = SDL_GetTicks();
-    }
 }
 
 PUBLIC VIRTUAL void LevelScene::Init() {
@@ -1808,8 +1689,10 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
     }
 
     Timer = 0;
-    if (!doActTransition)
+    if (!doActTransition) {
         RoutineNumber = 0x00;
+        LevelTriggerFlag = 0x00;
+    }
     memset(&PauseAnim[0], 0, 8 * sizeof(int));
     LevelCardTimer = 0.0;
 
@@ -3345,13 +3228,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     int highlightedTile = -1;
 
     Layer layer;
-    int l, s, siT, spl, x;
+    int s, siT, spl, x;
     int tile, flipX, flipY, flags, baseX, baseY, wheree;
     int y;
     int index, TileBaseX, TileBaseY;
     int EndTileBaseX, EndTileBaseY;
 
-    for (l = 0; l < Data->layerCount; l++) {
+    for (int l = 0; l < Data->layerCount; l++) {
         y = 0;
 
         layer = Data->layers[l];
@@ -3476,13 +3359,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                             j = (j % layer.Height + layer.Height) % layer.Height;
                         }
 
-                        baseY = (y << 4) - TileBaseY;
+                        baseY = (y << 4) - TileBaseY + layer.TileOffsetY[((x % lWid) + lWid) % lWid];
                         tile = layer.Tiles[spl + j * lWid];
                         flipX = ((tile >> 10) & 1);
                         flipY = ((tile >> 11) & 1);
                         tile = tile & 0x3FF;
 
-                        if (tile != 0x3FF && tile != 0) {
+                        if (tile != 0) {
                             int anID = Data->isAnims[tile] & 0xFF;
                             if (anID != 0xFF) {
                                 // AnimTileSprite
@@ -3679,7 +3562,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
         Y -= 32;
         char pooerp[256];
-        /*
+        ///*
         sprintf(pooerp, "%04X %04X (%02X %d)", Player->EZX, Player->EZY, Player->Angle, Player->AngleMode);
         G->DrawTextShadow(X - CameraX + 37, Y - CameraY, pooerp, 0xFFFFFF);
         Y += 8;
@@ -3841,10 +3724,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 PUBLIC void LevelScene::RenderResults() {
     if (!ShowResults) return;
-    /*
-    "Sprites/Global/ScoreBonus.bin"
-        "Scores" (18) (Flags: 00, FtL: 0, Spd: 0, Frames: 18)
-    //*/
 
     int value;
     // ISprite::AnimFrame Frame;

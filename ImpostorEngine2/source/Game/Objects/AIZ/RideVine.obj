@@ -34,6 +34,8 @@ event Create() {
     VisualLayer = 0;
 
     Timer = 0;
+
+    CurrentAnimation = 26;
 }
 
 event OnLeaveScreen() : int {
@@ -223,9 +225,9 @@ event Render(CamX:int, CamY:int) {
 
     // Base
     if (OnFire)
-        G.DrawSprite(Sprite, 28, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP); // TODO: Draw fire non anim
+        G.DrawSprite(Sprite, CurrentAnimation + 2, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP); // TODO: Draw fire non anim
     else
-        G.DrawSprite(Sprite, 28, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation + 2, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
 
     Rotation = IMath::sinHex(Oscello >> 8) * Amp;
     if (Spinning)
@@ -237,14 +239,14 @@ event Render(CamX:int, CamY:int) {
             if (Spinning)
                 framedAngle = 0;
             Frame = ((Rotation >> 16) - 4) / 8;
-            G.DrawSprite(Sprite, 26, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
+            G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
 
             for (i:int = 0; i < RopeLength - 1; i++) {
                 nX += IMath::sinHex((Frame & 0x1F) * 8) >> 12;
                 nY += IMath::cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) - 4) / 8;
-                G.DrawSprite(Sprite, 26, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
+                G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
             }
         }
         else {
@@ -252,14 +254,14 @@ event Render(CamX:int, CamY:int) {
             if (Spinning)
                 framedAngle = 0;
             Frame = ((Rotation >> 16) + 4) / 8;
-            G.DrawSprite(Sprite, 26, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
+            G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
 
             for (i:int = 0; i < RopeLength - 1; i++) {
                 nX += IMath::sinHex((Frame & 0x1F) * 8) >> 12;
                 nY += IMath::cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) + 4) / 8;
-                G.DrawSprite(Sprite, 26, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
+                G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
             }
         }
     }
@@ -269,22 +271,22 @@ event Render(CamX:int, CamY:int) {
             framedAngle = 0;
 
         Frame = Rotation / 0x10000;
-        G.DrawSprite(Sprite, 26, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
 
         for (i:int = 0; i < RopeLength - 1; i++) {
             nX += IMath::sinHex(Frame) / 0x1000;
             nY += IMath::cosHex(Frame) / 0x1000;
             Rotation = Rotation + framedAngle;
             Frame = Rotation / 0x10000;
-            G.DrawSprite(Sprite, 26, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
+            G.DrawSprite(Sprite, CurrentAnimation, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
         }
     }
 
     // Handle
     if (!Spinning)
-        G.DrawSprite(Sprite, 27, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation + 1, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
     else
-        G.DrawSprite(Sprite, 27, 0, X - CamX, Y - CamY, Rotation / 0x10000, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation + 1, 0, X - CamX, Y - CamY, Rotation / 0x10000, IE_NOFLIP);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

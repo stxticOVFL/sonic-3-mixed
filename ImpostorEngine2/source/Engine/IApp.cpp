@@ -277,7 +277,7 @@ PUBLIC void IApp::Cleanup() {
 }
 
 PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
-    // if (sev < 1) return;
+    if (sev < 1) return;
 
     va_list args;
     va_start(args, string);
@@ -333,15 +333,15 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     #endif
 
     if (sev == 0) { // LOG
-        sprintf(fullLine, "%s%s", fullLine, "LOG: ");
+        sprintf(fullLine, "%s%s", fullLine, "      LOG: ");
         ForgC = 8;
     }
     else if (sev == 1) { // WARNING
-        sprintf(fullLine, "%s%s", fullLine, "WARNING: ");
+        sprintf(fullLine, "%s%s", fullLine, "  WARNING: ");
         ForgC = 14;
     }
     else if (sev == 2) { // ERROR
-        sprintf(fullLine, "%s%s", fullLine, "ERROR: ");
+        sprintf(fullLine, "%s%s", fullLine, "    ERROR: ");
         ForgC = 12;
     }
     else if (sev == 3) { // IMPORTANT
@@ -349,7 +349,7 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
         ForgC = 11;
     }
     else if (sev == -1) { // VERBOSE
-        sprintf(fullLine, "%s%s", fullLine, "VERBOSE: ");
+        sprintf(fullLine, "%s%s", fullLine, "  VERBOSE: ");
         ForgC = 11;
     }
 

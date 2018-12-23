@@ -500,12 +500,12 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(SDL_Surface* surface, int SrcX, int Sr
 PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip) {
     if (!sprite) return;
     if (animation < 0 || animation >= sprite->Animations.size()) {
-        IApp::Print(2, "Animation %d does not exist in sprite!", animation);
-        exit(0);
+        IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
+        exit(-1);
     }
     if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
-        IApp::Print(2, "Frame %d in animation \"%s\" does not exist!", frame, sprite->Animations[animation].Name);
-        exit(0);
+        IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
+        exit(-1);
     }
 
 

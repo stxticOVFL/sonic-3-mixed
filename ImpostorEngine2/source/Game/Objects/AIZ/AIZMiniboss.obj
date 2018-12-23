@@ -1,0 +1,182 @@
+object 0x91;
+
+subclass Enemy;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 48;
+    H = 48;
+    Radius = 24;
+
+    var TimerAction:int = -1;
+    Timer = 0;
+
+    CurrentAnimation = 0;
+
+    var InvulnTimer:int = 0;
+    var ExplosionTimer:int = 0x80;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+    var State:int = 0;
+
+    HitCount = 6;
+    Boss = true;
+    State = 2;
+
+    var MaxAccel:int = 0;
+    var Acceleration:int = 0;
+    var Variable_38:int = 0;
+
+    var SubX:int = X << 8;
+    var SubY:int = Y << 8;
+}
+
+event OnHit() : int {
+    InvulnTimer = 0x20;
+    HitCount -= 1;
+    if (HitCount == 0) {
+        Scene.StopTimer = true;
+        Scene.Score += 1000;
+        HitCount = -1;
+        return 0; //OnDeath();
+    }
+    return 0;
+}
+
+event Swing_UpAndDown() {
+    local d0:int;
+    local d1:int;
+    local d2:int;
+    local d3:int;
+
+	d0 = Acceleration; // Acceleration
+	d1 = YSpeed; // Velocity
+	d2 = MaxAccel; // Maximum acceleration before "swinging"
+	d3 = 0;
+	if (Variable_38 == 0) {
+		d0 = -d0;
+		d1 += d0;
+		d2 = -d2;
+		if (d1 > d2) {
+			YSpeed = d1;
+			return;
+		}
+		Variable_38 = 1;
+		d0 = -d0;
+		d2 = -d2;
+		d3 = 1;
+	}
+	d1 += d0;
+	if (d1 < d2) {
+		YSpeed = d1;
+		return;
+	}
+	Variable_38 = 0;
+	d0 = -d0;
+	d1 += d0;
+	d3 = 1;
+    YSpeed = d1;
+}
+
+event Update() {
+    if (State == 2) { // AIZMinibossCutscene_WaitForCamera
+        if (Scene.CameraX >= 0x10E0 + 160 - App.WIDTH / 2) { // 0x2F10
+            TimerAction = 0; // loc_6857A
+            // make first batch of children
+            State = 4;
+            Timer = 0xB4; // 180
+            App.Audio.FadeMusic(3.0);
+        }
+    }
+    else if (State == 4) { // AIZMiniboss_Wait
+        // Literally just waits.
+    }
+    else if (State == 6) { // AIZMinibossCutscene_WaitAndPlayerCollide
+        // Waits while also being Harmful.
+    }
+    else if (State == 8) { // AIZMiniboss_MoveUpDownAndPlayerCollide
+        Swing_UpAndDown();
+    }
+
+    if (Timer >= 0)
+        Timer--;
+
+    if (Timer == 0) {
+        if (TimerAction == 0) {
+            TimerAction = 1; // loc_685BE
+            State = 6;
+            // make next batch of chidlren
+            YSpeed = 0x100;
+            Timer = 0xAF;
+            App.Audio.PushMusic(Sound.SoundBank[0xF1], true, 276105);
+        }
+        else if (TimerAction == 1) {
+            Timer = 0x7F;
+            TimerAction = 2; // loc_6862E
+            Variable_38 = 1;
+            State = 8;
+            YSpeed = 0x00;
+            // Swing_Setup1:
+            MaxAccel = 0xC0;
+            YSpeed = 0xC0;
+            Acceleration = 0x10;
+            Variable_38 = 0;
+        }
+        else if (TimerAction == 2) {
+            Timer = 0x10;
+            TimerAction = 3; // loc_68646
+        }
+        else if (TimerAction == 3) {
+
+        }
+    }
+
+    SubX += XSpeed;
+    SubY += YSpeed;
+
+    X = SubX >> 8;
+    Y = SubY >> 8;
+
+    if (InvulnTimer > 0) {
+        InvulnTimer -= 1;
+        Invincible = true;
+        Harmful = false;
+    }
+    else {
+        Invincible = false;
+        Harmful = true;
+    }
+
+    if (HitCount < 0) {
+        if (ExplosionTimer > 0) {
+            if (ExplosionTimer % 3 == 0) {
+                Scene.AddExplosion(5, false, X + Math.randRange(-Radius, Radius), Y + Math.randRange(-Radius, Radius));
+                Sound.Play(Sound.SFX_BOSSEXPLOSION);
+            }
+            // yiss
+            ExplosionTimer--;
+        }
+        else {
+            // Scene.AddMovingSprite(Sprite, X, Y, bodyLeft, bodyTop, 32, 32, -32, -32, false, false, -0x400, -0x400, 0x38);
+            // Scene.AddMovingSprite(Sprite, X, Y, bodyLeft + 32, bodyTop, 32, 32, 0, -32, false, false, 0x400, -0x400, 0x38);
+            //
+            // Scene.AddMovingSprite(Sprite, X, Y, bodyLeft + 00, bodyTop + 32, 32, 32, -32, 0, false, false, -0x400, -0x400, 0x48);
+            // Scene.AddMovingSprite(Sprite, X, Y, bodyLeft + 32, bodyTop + 32, 32, 32, 0, 0, false, false, 0x400, -0x400, 0x48);
+
+            Scene.AddNewObject(Obj_Signpost, 0x00, X, Scene.CameraY - 64, false, false);
+
+            Active = false;
+
+            // Music begins to fade here
+            App.Audio.FadeMusic(3.0);
+        }
+        return;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFF0000);
+}

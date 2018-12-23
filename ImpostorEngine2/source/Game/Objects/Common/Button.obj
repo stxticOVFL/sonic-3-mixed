@@ -31,7 +31,7 @@ event Update() {
         if (!Pressed) {
             Pressed = true;
             Sound.Play(Sound.SFX_SCORE_ADD);
-            Scene.RoutineNumber = 1 << TriggerID;
+            Scene.LevelTriggerFlag = 1 << TriggerID;
             CollidingWithPlayer = true;
         }
     }

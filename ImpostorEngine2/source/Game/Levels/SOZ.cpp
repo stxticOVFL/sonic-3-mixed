@@ -1,7 +1,7 @@
 #if INTERFACE
 #include <Game/LevelScene.h>
 
-class Level_LBZ : public LevelScene {
+class Level_SOZ : public LevelScene {
 public:
 
 };
@@ -12,44 +12,43 @@ public:
 
 #include <Game/Objects/Gen/ObjectListing.h>
 
-#include <Game/Levels/LBZ.h>
+#include <Game/Levels/SOZ.h>
 
-PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
-    ZoneID = 6;
+PUBLIC Level_SOZ::Level_SOZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
+    ZoneID = 9;
     Act = act;
 
     if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/LBZ1.ogg", false);
+        Sound::SoundBank[0] = new ISound("Music/SOZ1.ogg", false);
 		Sound::Audio->LoopPoint[0] = 0;
 
-        Str_TileConfigBin = "Stages/LBZ1/TileConfig.bin";
-        Str_SceneBin = "Stages/LBZ1/Scene.bin";
-        Str_TileSprite = "Stages/LBZ1/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/LBZ1/Animated Tiles.gif";
+        Str_TileConfigBin = "Stages/SOZ1/TileConfig.bin";
+        Str_SceneBin = "Stages/SOZ1/Scene.bin";
+        Str_TileSprite = "Stages/SOZ1/16x16Tiles.gif";
+        Str_AnimatedSprites = "Stages/SOZ1/Animated Tiles.gif";
     }
     else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/LBZ2.ogg", false);
+        Sound::SoundBank[0] = new ISound("Music/SOZ2.ogg", false);
 		Sound::Audio->LoopPoint[0] = 0;
 
-        Str_TileConfigBin = "Stages/LBZ2/TileConfig.bin";
-        Str_SceneBin = "Stages/LBZ2/Scene.bin";
-        Str_TileSprite = "Stages/LBZ2/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/LBZ2/Animated Tiles.gif";
+        Str_TileConfigBin = "Stages/SOZ2/TileConfig.bin";
+        Str_SceneBin = "Stages/SOZ2/Scene.bin";
+        Str_TileSprite = "Stages/SOZ2/16x16Tiles.gif";
+        Str_AnimatedSprites = "Stages/SOZ2/Animated Tiles.gif";
     }
 
-    sprintf(LevelName, "LAUNCH BASE");
-    sprintf(LevelNameDiscord, "Launch Base");
+    sprintf(LevelName, "ICECAP");
+    sprintf(LevelNameDiscord, "IceCap");
 
     if (Act == 1) {
-        PlayerStartX = 0x00C0;
-        PlayerStartY = 0x05BC;
+
     }
-    else {
+    else if (Act == 2) {
 
     }
 }
 
-PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
+PUBLIC void Level_SOZ::RestartStage(bool doActTransition, bool drawBackground) {
     App->Audio->ClearMusic();
     if (Sound::SoundBank[0])
         App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
@@ -57,7 +56,7 @@ PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
     LevelScene::RestartStage(doActTransition, drawBackground);
 }
 
-PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
+PUBLIC void Level_SOZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
@@ -73,7 +72,7 @@ PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
     }
 }
 
-PUBLIC void Level_LBZ::EarlyUpdate() {
+PUBLIC void Level_SOZ::EarlyUpdate() {
     if (Act == 1) {
 
     }
@@ -82,11 +81,11 @@ PUBLIC void Level_LBZ::EarlyUpdate() {
     }
     LevelScene::EarlyUpdate();
 }
-PUBLIC void Level_LBZ::Subupdate() {
+PUBLIC void Level_SOZ::Subupdate() {
     LevelScene::Subupdate();
 }
 
-PUBLIC void Level_LBZ::HandleCamera() {
+PUBLIC void Level_SOZ::HandleCamera() {
     if (Act == 1) {
 
     }

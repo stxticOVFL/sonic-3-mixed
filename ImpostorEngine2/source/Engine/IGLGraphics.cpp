@@ -810,11 +810,11 @@ PUBLIC void IGLGraphics::DrawRectangleStroke(int x, int y, int w, int h, Uint32 
 PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip) {
     if (!sprite) return;
     if (animation < 0 || animation >= sprite->Animations.size()) {
-        IApp::Print(2, "Animation %d does not exist in sprite!", animation);
+        IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
         exit(0);
     }
     if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
-        IApp::Print(2, "Frame %d in animation \"%s\" does not exist!", frame, sprite->Animations[animation].Name);
+        IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
         exit(0);
     }
 

@@ -32,7 +32,7 @@ event Render(CamX:int, CamY:int) {
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     local i:int;
     if (Scene.Players[PlayerID].Action == ActionType::Spindash) {
-        Scene.RoutineNumber = (Scene.RoutineNumber & 0xFFF0) | ((SubType & 0xF) + 1);
+        Scene.LevelTriggerFlag = (Scene.LevelTriggerFlag & 0xFFF0) | ((SubType & 0xF) + 1);
 
         Rev = 60;
     }

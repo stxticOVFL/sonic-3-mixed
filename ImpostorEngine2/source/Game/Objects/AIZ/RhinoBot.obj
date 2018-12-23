@@ -16,6 +16,8 @@ event Create() {
 
     HitCount = 1;
 
+    CurrentAnimation = 23;
+
     Scene.AddSelfToRegistry(this, "Enemies");
 }
 
@@ -142,9 +144,9 @@ event Render(CamX:int, CamY:int) {
 
     if (Frame == 3)
         Flip = -Flip;
-    G.DrawSprite(Sprite, 23 + 1, Frame, X - CamX, Y - CamY, 0, Flip > 0);
+    G.DrawSprite(Sprite, CurrentAnimation + 1, Frame, X - CamX, Y - CamY, 0, Flip > 0);
     if (Frame == 2)
-        G.DrawSprite(Sprite, 23 + 2, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+        G.DrawSprite(Sprite, CurrentAnimation + 2, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
     if (Timer != -1)
-        G.DrawSprite(Sprite, 23 + 2, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+        G.DrawSprite(Sprite, CurrentAnimation + 2, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
 }

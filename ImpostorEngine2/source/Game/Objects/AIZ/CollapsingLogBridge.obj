@@ -1,0 +1,30 @@
+object 0x2C;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 192;
+    H = 16;
+
+    X += 11;
+
+    VisW = 116;
+    VisH = 16;
+
+    SolidTop = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, 29, 0, X - CamX - 96, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, 29, 0, X - CamX - 64, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, 29, 0, X - CamX - 32, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, 29, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, 29, 0, X - CamX + 32, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, 29, 2, X - CamX + 64, Y - CamY, 0, IE_NOFLIP);
+}

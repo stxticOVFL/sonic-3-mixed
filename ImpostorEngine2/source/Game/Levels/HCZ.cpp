@@ -50,15 +50,15 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     sprintf(LevelNameDiscord, "Hydrocity");
 
     if (Act == 1) {
-        PlayerStartX = 0x0280;
-        PlayerStartY = 0x0000;
+        // PlayerStartX = 0x0280;
+        // PlayerStartY = 0x0000;
 
         //PlayerStartX = 0x32E0;
         //PlayerStartY = 0x02EC;
     }
     else {
-        PlayerStartX = 0x0170;
-        PlayerStartY = 0x082C;
+        // PlayerStartX = 0x0170;
+        // PlayerStartY = 0x082C;
 
         // PlayerStartX = 0x097D;
         // PlayerStartY = 0x0148;

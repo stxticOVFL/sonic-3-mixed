@@ -1,0 +1,164 @@
+object 0x90;
+
+subclass Enemy;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 48;
+    H = 48;
+    Radius = 24;
+
+    var TimerAction:int = -1;
+    Timer = 0;
+
+    CurrentAnimation = 0;
+
+    var InvulnTimer:int = 0;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+    // Palettes
+    // something 1
+    // $FC2E, $FC34, $FC36, $FC3C
+    // seomthing 2
+    // $644,  $240,   $20,  $644
+    // $888,  $AAA,  $EEE,  $AAA
+
+    var State:int = 0;
+
+    HitCount = 0x60;
+    Boss = true;
+    State = 2;
+
+    var MaxAccel:int = 0;
+    var Acceleration:int = 0;
+    var Variable_38:int = 0;
+
+    var SubY:int = Y << 8;
+}
+
+event OnHit() : int {
+    InvulnTimer = 0x20;
+    return 0;
+}
+
+event Swing_UpAndDown() {
+    local d0:int;
+    local d1:int;
+    local d2:int;
+    local d3:int;
+
+	d0 = Acceleration; // Acceleration
+	d1 = YSpeed; // Velocity
+	d2 = MaxAccel; // Maximum acceleration before "swinging"
+	d3 = 0;
+	if (Variable_38 == 0) {
+		d0 = -d0;
+		d1 += d0;
+		d2 = -d2;
+		if (d1 > d2) {
+			YSpeed = d1;
+			return;
+		}
+		Variable_38 = 1;
+		d0 = -d0;
+		d2 = -d2;
+		d3 = 1;
+	}
+	d1 += d0;
+	if (d1 < d2) {
+		YSpeed = d1;
+		return;
+	}
+	Variable_38 = 0;
+	d0 = -d0;
+	d1 += d0;
+	d3 = 1;
+    YSpeed = d1;
+}
+
+event Update() {
+    if (State == 2) { // AIZMinibossCutscene_WaitForCamera
+        if (Scene.CameraX >= 0x2ED8) { // 0x2F10
+            TimerAction = 0; // loc_6857A
+            // make first batch of children
+            State = 4;
+            Timer = 0xB4; // 180
+            App.Audio.FadeMusic(3.0);
+        }
+    }
+    else if (State == 4) { // AIZMiniboss_Wait
+        // Literally just waits.
+    }
+    else if (State == 6) { // AIZMinibossCutscene_WaitAndPlayerCollide
+        // Waits while also being Harmful.
+    }
+    else if (State == 8) { // AIZMiniboss_MoveUpDownAndPlayerCollide
+        Swing_UpAndDown();
+    }
+
+    if (Timer >= 0)
+        Timer--;
+
+    if (Timer == 0) {
+        if (TimerAction == 0) {
+            TimerAction = 1; // loc_685BE
+            State = 6;
+            // make next batch of chidlren
+            YSpeed = 0x100;
+            Timer = 0xAF;
+            App.Audio.PushMusic(Sound.SoundBank[0xF1], true, 276105);
+        }
+        else if (TimerAction == 1) {
+            Timer = 0x7F;
+            TimerAction = 2; // loc_6862E
+            Variable_38 = 1;
+            State = 8;
+            YSpeed = 0x00;
+            // Swing_Setup1:
+            MaxAccel = 0xC0;
+            YSpeed = 0xC0;
+            Acceleration = 0x10;
+            Variable_38 = 0;
+        }
+        else if (TimerAction == 2) {
+            Timer = 0x10;
+            TimerAction = 3; // loc_68646
+        }
+        else if (TimerAction == 3) {
+            XSpeed = 0x400;
+            YSpeed = 0x0;
+            State = -1;
+            App.Audio.FadeMusic(3.0);
+            App.Audio.RemoveMusic(Sound.SoundBank[0]);
+            Timer = 0x120;
+            TimerAction = 4; // PlayLevelMusic
+            // Background_event_signal
+            Scene.LevelTriggerFlag = 1;
+        }
+        else if (TimerAction == 4) {
+            App.Audio.PushMusic(Sound.SoundBank[0], true, 0);
+        }
+    }
+
+    X += XSpeed >> 8;
+    SubY += YSpeed;
+
+    if (InvulnTimer > 0) {
+        InvulnTimer -= 1;
+        Invincible = true;
+        Harmful = false;
+    }
+    else {
+        Invincible = false;
+        Harmful = true;
+    }
+
+    Y = SubY >> 8;
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFF0000);
+}

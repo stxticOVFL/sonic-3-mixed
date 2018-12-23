@@ -40,7 +40,7 @@ event OnHit() : int {
 }
 
 event OnDeath():int {
-    Scene.RoutineNumber = (SubType + 1);
+    Scene.LevelTriggerFlag = (SubType + 1);
     return Enemy::OnDeath();
 }
 

@@ -75,7 +75,7 @@ event HCZ2() {
             RoutineNumber = 2;
             CurrentAnimation = 10;
 
-            Scene.RoutineNumber = 0x80;
+            Scene.LevelTriggerFlag = 0x80;
             Scene.CameraMaxX = 0xFFFF;
             App.Audio.FadeMusic(1.5);
         }

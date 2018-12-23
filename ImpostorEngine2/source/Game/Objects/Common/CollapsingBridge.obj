@@ -83,7 +83,7 @@ event Update() {
 
     if (Scene.ZoneID != 3) {
         if ((this.SubType & 0xF) > 0) {
-            if (this.f == -1 && (this.SubType >> 7) == 1 && (this.SubType & 0xF) == (Scene.RoutineNumber & 0xF)) {
+            if (this.f == -1 && (this.SubType >> 7) == 1 && (this.SubType & 0xF) == (Scene.LevelTriggerFlag & 0xF)) {
                 this.f = this.Allotted;
                 this.Priority = true;
             }

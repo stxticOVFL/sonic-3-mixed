@@ -1297,7 +1297,7 @@ void IPlayer::Update() {
                 break;
             }
         }
-        if (SensorE <= SensorEFWidth && SensorE >= 0 && XSpeed < 0) {
+        if (SensorE <= SensorEFWidth && SensorE >= 0 && XSpeed <= 0) {
             this->X = ((X - 1 + (SensorEFWidth + 1 - SensorE)) << 16);
             X = this->X >> 16;
             XSpeed = 0;
@@ -1614,7 +1614,7 @@ void IPlayer::Update() {
         bool Landed = false;
         if (SensorA == -1 && SensorB != -1) {
             if (this->Y > (Y + SensorB - hH) << 16) {
-                if (Action == ActionType::InStream || YSpeed > 0) {
+                if (Action == ActionType::InStream || YSpeed >= 0) {
                     this->Y = (Y + SensorB - hH) << 16;
                     Angle = SensorB_Angle;
                     Landed = true;
@@ -1623,7 +1623,7 @@ void IPlayer::Update() {
         }
         else if (SensorA != -1 && SensorB == -1) {
             if (this->Y > (Y + SensorA - hH) << 16) {
-                if (Action == ActionType::InStream || YSpeed > 0) {
+                if (Action == ActionType::InStream || YSpeed >= 0) {
                     this->Y = (Y + SensorA - hH) << 16;
                     Angle = SensorA_Angle;
                     Landed = true;
@@ -1633,7 +1633,7 @@ void IPlayer::Update() {
         else if (SensorA != -1 && SensorB != -1) {
             if (SensorA < SensorB) {
                 if (this->Y > (Y + SensorA - hH) << 16) {
-                    if (Action == ActionType::InStream || YSpeed > 0) {
+                    if (Action == ActionType::InStream || YSpeed >= 0) {
                         this->Y = (Y + SensorA - hH) << 16;
                         Angle = SensorA_Angle;
                         Landed = true;
@@ -1642,7 +1642,7 @@ void IPlayer::Update() {
             }
             else {
                 if (this->Y > (Y + SensorB - hH) << 16) {
-                    if (Action == ActionType::InStream || YSpeed > 0) {
+                    if (Action == ActionType::InStream || YSpeed >= 0) {
                         this->Y = (Y + SensorB - hH) << 16;
                         Angle = SensorB_Angle;
                         Landed = true;
@@ -3506,6 +3506,9 @@ void IPlayer::HandleMonitors() {
                                 GroundSpeed = -GroundSpeed;
                             }
                             else {
+								if (Action == ActionType::Glide) {
+									Action = ActionType::GlideFall;
+								}
                                 XSpeed = -XSpeed;
                                 YSpeed = -YSpeed;
                             }

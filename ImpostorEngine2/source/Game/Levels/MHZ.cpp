@@ -31,8 +31,8 @@ PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g) : LevelScene(app, g) {
     sprintf(LevelNameDiscord, "Mushroom Hill");
 
     if (Act == 1) {
-        PlayerStartX = 0x00D8;
-        PlayerStartY = 0x0500;
+        // PlayerStartX = 0x00D8;
+        // PlayerStartY = 0x0500;
     }
     else {
 

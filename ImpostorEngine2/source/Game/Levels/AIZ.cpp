@@ -18,6 +18,141 @@ public:
 
 #include <Game/Levels/AIZ.h>
 
+Uint32 AIZ1_GlitteringWaterPalette[24] = {
+    0x44AAEE,
+    0x0066EE,
+    0x22EEEE,
+    0x44AAEE,
+    0x88EEEE,
+    0x44AAEE,
+    0x0066EE,
+    0x88EEEE,
+    0xEEEEEE,
+    0x0066EE,
+    0x22EEEE,
+    0x22EEEE,
+    0x88EEEE,
+    0x44AAEE,
+    0x44AAEE,
+    0x22EEEE,
+    0x0066EE,
+    0x0066EE,
+    0x22EEEE,
+    0x0066EE,
+    0xEEEEEE,
+    0x22EEEE,
+    0x0066EE,
+    0x88EEEE,
+};
+Uint32 AnPal_PalAIZ2_2[24] = {
+    0x442200,
+    0x444400,
+    0xEE8800,
+    0x662200,
+    0x664400,
+    0xEEAA00,
+    0x442200,
+    0x884400,
+    0xEE8800,
+    0x662200,
+    0xAA4400,
+    0xEEAA00,
+    0x442200,
+    0xCC4400,
+    0xEE8800,
+    0x662200,
+    0xAA4400,
+    0xEEAA00,
+    0x442200,
+    0x884400,
+    0xEE8800,
+    0x442200,
+    0x664400,
+    0xEE8800,
+};
+Uint32 AnPal_PalAIZ2_3[24] = {
+    0x442200,
+    0x444400,
+    0xCC0000,
+    0x662200,
+    0x664400,
+    0xEE0000,
+    0x442200,
+    0x884400,
+    0xCC0000,
+    0x662200,
+    0xAA4400,
+    0xEE0000,
+    0x442200,
+    0xCC4400,
+    0xCC0000,
+    0x662200,
+    0xAA4400,
+    0xEE0000,
+    0x442200,
+    0x884400,
+    0xCC0000,
+    0x442200,
+    0x664400,
+    0xCC0000,
+};
+Uint32 AnPal_PalAIZ2_4[26] = {
+    0xEE6600,
+    0xEE6600,
+    0xEE6600,
+    0xEE6600,
+    0xEE8822,
+    0xEEAA44,
+    0xEEAA66,
+    0xEECC88,
+    0xEEEE88,
+    0xEEEEAA,
+    0xEEEEAA,
+    0xEEEEAA,
+    0xEEEEAA,
+    0xEEEEAA,
+    0xEEEE88,
+    0xEEEE88,
+    0xEEEE88,
+    0xEEEE88,
+    0xEECC88,
+    0xEECC88,
+    0xEECC88,
+    0xEEAA66,
+    0xEEAA66,
+    0xEEAA44,
+    0xEEAA44,
+    0xEE8822,
+};
+Uint32 AnPal_PalAIZ2_5[26] = {
+    0xCC0000,
+    0xCC0000,
+    0xCC0000,
+    0xCC0000,
+    0xCC2200,
+    0xEE0000,
+    0xEE2200,
+    0xEE4400,
+    0xEE6600,
+    0xEE8800,
+    0xEE8800,
+    0xEE8800,
+    0xEE8800,
+    0xEE8800,
+    0xEE6600,
+    0xEE4400,
+    0xEE4400,
+    0xEE4400,
+    0xEE2200,
+    0xEE2200,
+    0xEE2200,
+    0xEE0000,
+    0xEE0000,
+    0xCC2200,
+    0xCC2200,
+    0xCC2200,
+};
+
 PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
     ZoneID = 1;
     Act = ACT;
@@ -35,6 +170,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         Str_TileSprite = "Stages/AIZ/16x16Tiles0.gif";
         Str_ObjectsList = "Stages/AIZ/Objects0.bin";
         Str_RingsList = "Stages/AIZ/Rings0.bin";
+
+        VisualAct = 1;
     }
     else if (Act == 1) {
         Sound::SoundBank[0] = new ISound("Music/3M_AIZ1.ogg", true);
@@ -44,6 +181,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         Str_SceneBin = "Stages/AIZ1/Scene.bin";
         Str_TileSprite = "Stages/AIZ1/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/AIZ1/Animated Tiles.gif";
+
+        VisualAct = 1;
     }
     else if (Act == 2) {
         Sound::SoundBank[0] = new ISound("Music/3M_AIZ2.ogg", true);
@@ -73,12 +212,12 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartX = 0x2656;
         // PlayerStartY = 0x04A2;
 
-        PlayerStartX = 0x19D0;
-        PlayerStartY = 0x1BC;
+        PlayerStartX = 0x286B;
+        PlayerStartY = 0x2DC;
     }
     else {
-        PlayerStartX = 0x2820;
-        PlayerStartY = 0x04D0;
+        // PlayerStartX = 0x2820;
+        // PlayerStartY = 0x04D0;
     }
 
     IApp::Print(-1, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
@@ -143,13 +282,14 @@ PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
     	SpriteMapIDs[0x01] = SpriteMap["Items"];
         SpriteMapIDs[0x04] = SpriteMap["AIZ2"];
         SpriteMapIDs[0x05] = SpriteMap["AIZ2"];
+        SpriteMapIDs[0x06] = SpriteMap["AIZ"];
     	SpriteMapIDs[0x07] = SpriteMap["Objects"];
     	SpriteMapIDs[0x08] = SpriteMap["Objects"];
         SpriteMapIDs[0x09] = SpriteMap["AIZ"];
         SpriteMapIDs[0x0A] = SpriteMap["AIZ"];
         SpriteMapIDs[0x0C] = SpriteMap["AIZ"];
         SpriteMapIDs[0x0D] = SpriteMap["AIZ2"];
-        SpriteMapIDs[0x0F] = SpriteMap["AIZ"];
+        SpriteMapIDs[0x0F] = SpriteMap["AIZ2"];
     	SpriteMapIDs[0x2F] = SpriteMap["AIZ"];
     	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
     	SpriteMapIDs[0x34] = SpriteMap["Objects"];
@@ -212,14 +352,17 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 
         if (!SpriteMap["AIZ2"]) {
             SpriteMap["AIZ2"] = new ISprite("Sprites/AIZ2/Objects.gif", App);
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/Drawbridge.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
             SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/CollapsingPlatform.bin");
             SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/CorkFloor.bin");
             SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/Decoration.bin"); // HACK: padding
             SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/FallingLog.bin");
             SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin"); // HACK: padding
             SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/Platform.bin");
+
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
+            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
             // printf("\n");
         }
     }
@@ -331,17 +474,37 @@ PUBLIC void Level_AIZ::Subupdate() {
             memcpy(Data->layers[3].Deform, Data->layers[1].Deform, App->HEIGHT);
         }
 
-        if (Player->EZX > 0x2F30) {
-            TileSprite->Palette[0x31] = 0xEE4400;
-            TileSprite->Palette[0x32] = 0xEE6600;
-            TileSprite->Palette[0x33] = 0xEEAA00;
-            TileSprite->Palette[0x34] = 0xEECC00;
-	        TileSprite->Palette[0x35] = 0xEEEE22;
-            TileSprite->Palette[0x36] = 0xEEEEAA;
+        if (LevelTriggerFlag) {
+            if (TileSprite->Palette[0x31] != 0xEE4400) {
+                TileSprite->Palette[0x31] = 0xEE4400;
+                TileSprite->Palette[0x32] = 0xEE6600;
+                TileSprite->Palette[0x33] = 0xEEAA00;
+                TileSprite->Palette[0x34] = 0xEECC00;
+    	        TileSprite->Palette[0x35] = 0xEEEE22;
+                TileSprite->Palette[0x36] = 0xEEEEAA;
 
-            Data->layers[4].OffsetY--;
+                TileSprite->UpdatePalette();
+            }
 
-            TileSprite->UpdatePalette();
+            if (Data->layers[4].OffsetY > -0x100)
+                Data->layers[4].OffsetY--;
+
+            if (Data->layers[4].OffsetY == -0x80)
+                GoToNextAct();
+
+            if (Frame % 6 == 0)
+                Data->layers[4].OffsetX += 0x60;
+
+            short firetileoffsets[16] = {
+                0x100, 0xFF, 0xFE, 0xFB,
+                0xF8,  0xF6, 0xF3, 0xF2,
+                0xF1,  0xF2, 0xF3, 0xF6,
+                0xF9,  0xFB, 0xFE, 0xFF
+            };
+
+            for (int i = 0; i < 20; i++) {
+                Data->layers[4].TileOffsetY[i] = (firetileoffsets[(Frame / 4 + i * 2) & 0xF] - 0x100);
+            }
         }
     }
     else if (Act == 2) {
@@ -390,7 +553,7 @@ PUBLIC void Level_AIZ::Subupdate() {
             memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
         }
 
-        if (RoutineNumber >> 0 & 1) {
+        if (LevelTriggerFlag >> 0 & 1) {
             if (Data->layers[1].Tiles[0x270 + 0x3B * Data->layers[1].Width] != 0x0000) {
                 for (int i = 0x3B; i < 0x53; i++) {
                     memset(&Data->layers[1].Tiles[0x270 + i * Data->layers[1].Width], 0x00, 8 * sizeof(short));
@@ -399,7 +562,7 @@ PUBLIC void Level_AIZ::Subupdate() {
         }
 
         if (CameraX >= 0x2440) {
-            if (WaterLevel < 0x618 && (RoutineNumber >> 0 & 1)) {
+            if (WaterLevel < 0x618 && (LevelTriggerFlag >> 0 & 1)) {
                 VisualWaterLevel = WaterLevel += 2;
                 ShakeTimer = -1;
             }
@@ -422,25 +585,55 @@ PUBLIC void Level_AIZ::Subupdate() {
             TileSprite->RotatePaletteLeft(TileSprite->Palette + 0x2B, 4);
             TileSprite->RotatePaletteLeft(TileSprite->PaletteAlt + 0x2B, 4);
 
-            // Flower / Log BG / Tree BG
-            int palstart = 0x2F;
-            if (CameraX < 0x2BB0 - App->WIDTH / 2) {
-                TileSprite->Palette[palstart] = 0xEE0022;
-            }
-            else if (CameraX < 0x2E50 - App->WIDTH / 2) {
-                TileSprite->Palette[palstart] = 0x444422;
-            }
-            else {
-                TileSprite->Palette[palstart] = 0x2200CC;
-            }
-
-            TileSprite->UpdatePalette();
+            // Glittering Water
+            // Find: \$([A-F0-9])([A-F0-9])([A-F0-9]),
+            // Replace: 0x$3$3$2$2$1$1,\n
+            for (int i = 0; i < 3; i++)
+                TileSprite->Palette[0x3C + i] = AIZ1_GlitteringWaterPalette[(Frame / 8 * 3) % 24 + i];
         }
+
+        // Flower / Log BG / Tree BG
+        int palstart = 0x2F;
+        if (CameraX < 0x2BB0 - App->WIDTH / 2) {
+            TileSprite->Palette[palstart] = 0xEE0022;
+        }
+        else if (CameraX < 0x2E50 - App->WIDTH / 2) {
+            TileSprite->Palette[palstart] = 0x444422;
+        }
+        else {
+            TileSprite->Palette[palstart] = 0x2200CC;
+        }
+
+        TileSprite->UpdatePalette();
     }
     else {
         if (Frame % 6 == 0) {
             TileSprite->RotatePaletteLeft(TileSprite->Palette + 0x3C, 4);
             TileSprite->RotatePaletteLeft(TileSprite->PaletteAlt + 0x3C, 4);
+
+            if (CameraX < 0x3800) {
+                TileSprite->Palette[0x24] = AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24];
+                TileSprite->Palette[0x28] = AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 1];
+                TileSprite->Palette[0x3B] = AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 2];
+            }
+            else {
+                TileSprite->Palette[0x24] = AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24];
+                TileSprite->Palette[0x28] = AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24 + 1];
+                TileSprite->Palette[0x3B] = AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24 + 2];
+            }
+
+            // if (CameraX < 0x1C0)
+            //     TileSprite->Palette[0x3E] = TileSprite->Palette[0x4B];
+            // else
+            //     TileSprite->Palette[0x3E] = 0xEE00AA;
+        }
+
+        if (!(Frame & 1)) {
+            if (CameraX < 0x3800)
+                TileSprite->Palette[0x31] = AnPal_PalAIZ2_4[Frame % 26];
+            else
+                TileSprite->Palette[0x31] = AnPal_PalAIZ2_5[Frame % 26];
+
             TileSprite->UpdatePalette();
         }
     }
@@ -539,8 +732,68 @@ PUBLIC void Level_AIZ::HandleCamera() {
                 CameraX = 0x1308;
             }
         }
+
+        if (CameraX > 0x2D80) {
+            CameraMinX = CameraX;
+
+            if (CameraY < 0x3B0) {
+                CameraMinY = CameraY;
+            }
+        }
     }
     else {
+        if (VisualAct == 1) {
+            if (RoutineNumber == 0x00) {
+                if (CameraX > 0xF50 + 160 - App->WIDTH / 2) {
+                    RoutineNumber = 0xCD;
+                    AddNewObject(Obj_AIZMiniboss, 0x00, 0x11F0, 0x288, false, false);
+                }
+            }
+
+            if (CameraX < 0x2A0) {
+                CameraMinX = 0x0000;
+                CameraMaxX = 0x2F00;
+                CameraMinY = 0x000;
+                CameraMaxY = 0x258;
+            }
+            else if (CameraX >= 0x980 && CameraX < 0xD60) {
+                CameraMinY = 0x000;
+                CameraMaxY = 0x590;
+            }
+            else if (CameraX >= 0xED0 && CameraX < 0xF90) {
+                CameraMinY = 0x000;
+                CameraMaxY = 0x2B8 + 224 - App->HEIGHT;
+            }
+            else if (CameraX >= 0xF90 && CameraX < 0x10E0 + 160 - App->WIDTH / 2) {
+                CameraMaxX = 0x10E0 + 160 - App->WIDTH / 2;
+
+                CameraMinY = 0x000;
+                CameraMaxY = 0x2B8 + 224 - App->HEIGHT;
+            }
+            else if (CameraX >= 0x10E0 + 160 - App->WIDTH / 2) {
+                CameraMinX = CameraX;
+                CameraMaxX = 0x10E0 + 160 - App->WIDTH / 2;
+                CameraMinY = 0x2B8 + 224 - App->HEIGHT;
+                CameraMaxY = 0x2B8 + 224 - App->HEIGHT;
+            }
+            else if (VisualAct == 1) {
+                CameraMaxY = 0x1F58;
+            }
+        }
+        else {
+            if (Player->EZX < 0x1370) {
+                CameraMinY = 0x2B8 + 224 - App->HEIGHT;
+                CameraMaxY = 0x2B8 + 224 - App->HEIGHT;
+                CameraMaxX = 0xFFFF;
+            }
+            else {
+                CameraMinY = 0;
+                if (CameraMaxY == 0x2B8 + 224 - App->HEIGHT)
+                    CameraMaxY = 0xFFFF;
+                CameraMaxX = 0xFFFF;
+            }
+        }
+
         if (CameraX >= 0x3D00) {
             Data->layers[0].OffsetY = 0xA8;
         }
@@ -554,11 +807,80 @@ PUBLIC void Level_AIZ::UpdateDiscord() {
     char imgkey[15];
     char levelname[50];
     sprintf(imgkey, "%d", ZoneID);
-    if (Act == 0)
-        sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", 1);
-    else
-        sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", Act);
-    Discord_UpdatePresence("Sonic 3:", levelname, imgkey);
+    sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", VisualAct);
+    Discord_UpdatePresence("Classic Mode:", levelname, imgkey);
+}
+
+PUBLIC void Level_AIZ::GoToNextAct() {
+    if (Act == 1 && VisualAct == 1) {
+        LevelScene* NextAct = new Level_AIZ(App, G, 2);
+        NextAct->LevelCardHide = true;
+        NextAct->VisualWaterLevel = NextAct->WaterLevel = 0x528;
+        NextAct->Frame = Frame;
+        NextAct->WaterAnimationFrame = (Frame % 40) << 6;
+        NextAct->VisualAct = 1;
+
+        NextAct->SpecialSpawnPositionX = Player->EZX - 0x2F00;
+        NextAct->SpecialSpawnPositionY = Player->EZY - 0x80;
+        NextAct->RoutineNumber = 0x00;
+        NextAct->LevelTriggerFlag = 0x00;
+
+        NextAct->GiantRingModel = GiantRingModel;
+        NextAct->ItemsSprite = ItemsSprite;
+        NextAct->SpriteMap["Items"] = SpriteMap["Items"];
+        NextAct->SpriteMap["Objects"] = SpriteMap["Objects"];
+        NextAct->SpriteMap["Objects2"] = SpriteMap["Objects2"];
+        NextAct->ExplosionSprite = ExplosionSprite;
+        NextAct->WaterSprite = WaterSprite;
+
+        NextAct->SpriteMap["AIZ"] = SpriteMap["AIZ"];
+        for (int i = 0; i < 5; i++) {
+            NextAct->KnuxSprite[i] = KnuxSprite[i];
+        }
+
+        // Player->ControlLocked = false;
+        // Player->ObjectControlled = 0x00;
+        // Player->Action = ActionType::Normal;
+        // Player->ChangeAnimation(Player->AnimationMap["Idle"]);
+        NextAct->Player = Player;
+        for (int p = 0; p < PlayerCount; p++) {
+            NextAct->Players[p] = Players[p];
+            NextAct->Players[p]->Scene = NextAct;
+        }
+        NextAct->PlayerCount = PlayerCount;
+
+        NextAct->LoadData();
+
+        NextAct->LevelCardTimer = 6.0;
+        NextAct->FadeTimer = -1;
+        NextAct->FadeAction = 0;
+        NextAct->FadeTimerMax = -1;
+
+        App->NextScene = NextAct;
+    }
+    else if (Act == 2 && VisualAct == 1) {
+        VisualAct = 2;
+        ResultsTimer = 0;
+        ShowResults = false;
+        StopTimer = false;
+        ResultsTimer = 0;
+        TimerTotal = 0;
+        TotalToAdd = 0;
+        Player->ControlLocked = false;
+        Player->ObjectControlled = 0;
+        Player->Action = ActionType::Normal;
+
+        LevelCardTimer = 0.0;
+        FadeTimer = 0;
+        FadeAction = 0;
+        LevelCardHide = false;
+
+        App->Audio->ClearMusic();
+        App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+    }
+    else if (Act == 2 && VisualAct == 2) {
+
+    }
 }
 
 PUBLIC void Level_AIZ::Cleanup() {

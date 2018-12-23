@@ -19,7 +19,7 @@ event Create() {
 }
 
 event OnHit():int {
-    Scene.RoutineNumber = (Scene.RoutineNumber & 0xF0) | this.SubType;
+    Scene.LevelTriggerFlag = (Scene.LevelTriggerFlag & 0xF0) | this.SubType;
     return OnDeath();
 }
 

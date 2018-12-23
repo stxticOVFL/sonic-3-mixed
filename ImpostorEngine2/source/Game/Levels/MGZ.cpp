@@ -46,8 +46,8 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 
     }
     else {
-        PlayerStartX = 0x34D8;
-        PlayerStartY = 0x0A30;
+        // PlayerStartX = 0x34D8;
+        // PlayerStartY = 0x0A30;
     }
 }
 
@@ -217,6 +217,11 @@ PUBLIC void Level_MGZ::HandleCamera() {
     // int offX = App->WIDTH / 2 - 0xA0;
     // int offY = App->HEIGHT / 2 - 0x70;
 
+    // Layer Flags:
+    // 0x1: Collidable
+    // 0x2: Don't Repeat X
+    // 0x3: Don't Repeat Y
+
     if (Act == 2) {
         Data->layers[1].Flags |= 1 | 0 | 4;
         Data->layers[1].OffsetX = 0x3480;
@@ -276,6 +281,7 @@ PUBLIC void Level_MGZ::HandleCamera() {
         else {
             Data->layers[0].RelativeY = 0x0030;
             Data->layers[0].OffsetY = 0;
+            BackgroundColor = TileSprite->Palette[0x3A];
         }
 
 

@@ -41,6 +41,8 @@ public:
     unsigned int PaletteID;
     unsigned int PaletteAltID;
     IGraphics* G = NULL;
+
+    const char* Filename;
 };
 #endif
 
@@ -58,6 +60,8 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 		fflush(stdin);
 		return;
 	}
+
+    Filename = filename;
 
     IStreamer stream(res);
     stream.Skip(6);
@@ -145,6 +149,17 @@ PUBLIC void ISprite::UpdatePalette() {
     G->UpdatePalette(this);
 }
 
+PUBLIC void ISprite::LinkPalette(ISprite* other) {
+    if (other == this) return;
+    
+    free(Palette);
+    free(PaletteAlt);
+    Palette = other->Palette;
+    PaletteAlt = other->PaletteAlt;
+    PaletteID = other->PaletteID;
+    PaletteAltID = other->PaletteAltID;
+}
+
 PUBLIC void ISprite::LoadAnimation(const char* filename) {
     IResource* SpriteFile = IResources::Load(filename);
     if (!SpriteFile) {
@@ -155,7 +170,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 
     IStreamer reader(SpriteFile);
 
-    // printf("\"%s\"\n", filename);
+    IApp::Print(-1, "\"%s\"", filename);
 
     reader.ReadUInt32BE(); // magic
 
@@ -186,11 +201,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
         an.FrameToLoop = reader.ReadByte();
         an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation, 3: Static rotation using extra frames, 4: Unknown (used alot in Mania)
         an.Frames = (AnimFrame*)malloc(sizeof(AnimFrame) * an.FrameCount);
-		#if !MSVC
-			// printf("    %s\"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)\x1b[0m\n", solid ? "\x1b[94m" : "\x1b[0m", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
-		#else
-			// printf("    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)\n", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
-		#endif
+		IApp::Print(-1, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
         for (int i = 0; i < an.FrameCount; i++) {
             an.Frames[i].SheetNumber = reader.ReadByte();
             an.Frames[i].Duration = reader.ReadInt16();
