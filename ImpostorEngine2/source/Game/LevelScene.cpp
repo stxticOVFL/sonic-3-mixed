@@ -48,6 +48,10 @@ public:
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    ItemsSprite = NULL;
+    ISprite*    AnimalsSprite = NULL;
+    ISprite*    ObjectsSprite = NULL;
+    ISprite*    Objects2Sprite = NULL;
+    ISprite*    Objects3Sprite = NULL;
     ISprite*    WaterSprite = NULL;
     ISprite*    KnuxSprite[6];
 
@@ -222,7 +226,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     Sound::Audio = App->Audio;
     Sound::Init();
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Sound::Init()", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Sound::Init()", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     Objects = (Object**)calloc(2000, sizeof(Object*));
@@ -241,7 +245,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
     SpriteMapIDs = (ISprite**)calloc(0x400, sizeof(ISprite*));
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     App->Print(0, "Creating GlobalDisplaySprite...");
@@ -250,7 +254,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     App->Print(0, "Creating PauseSprite...");
@@ -258,7 +262,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     PauseSprite->LoadAnimation("UI/TextEN.bin");
     memset(PauseAnim, 0, sizeof(PauseAnim));
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating PauseSprite...", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Creating PauseSprite...", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     memset(KnuxSprite, 0, sizeof(KnuxSprite));
@@ -267,54 +271,11 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 }
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
-    SpriteMapIDs[0x01] = SpriteMap["Items"];
-    SpriteMapIDs[0x07] = SpriteMap["Objects"];
-    SpriteMapIDs[0x08] = SpriteMap["Objects"];
-    SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x34] = SpriteMap["Objects"];
-    SpriteMapIDs[0x36] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x38] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x39] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x3A] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x51] = SpriteMap["HCZ"];
 
-    SpriteMapIDs[0x67] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x6C] = SpriteMap["HCZ"];
-    SpriteMapIDs[0x6D] = SpriteMap["HCZ"];
-
-    SpriteMapIDs[0x93] = SpriteMap["HCZ Enemies"];
-    SpriteMapIDs[0x99] = SpriteMap["HCZ Boss"];
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
-    if (!SpriteMap["HCZ"]) {
-        SpriteMap["HCZ"] = new ISprite("Sprites/HCZ/Objects.gif", App);
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Button.bin");
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Fan.bin");
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/HandLauncher.bin");
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/BreakBar.bin");
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Decoration.bin");
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Platform.bin");
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Wake.bin");
-        SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Bridge.bin");
-        // printf("\n");
-    }
-    if (!SpriteMap["HCZ Enemies"]) {
-        SpriteMap["HCZ Enemies"] = new ISprite("Sprites/HCZ/Enemies.gif", App);
-        SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Blastoid.bin");
-        SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Buggernaut.bin");
-        SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/TurboSpiker.bin");
-        SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/MegaChomper.bin");
-        SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Pointdexter.bin");
-        SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Jawz.bin");
-        // printf("\n");
-    }
-    if (!SpriteMap["HCZ Boss"]) {
-        SpriteMap["HCZ Boss"] = new ISprite("Sprites/HCZ/Boss.gif", App);
-        SpriteMap["HCZ Boss"]->LoadAnimation("Sprites/HCZ/LaundroMobile.bin");
-        // printf("\n");
-    }
+
 }
 
 PUBLIC void LevelScene::LoadData() {
@@ -339,38 +300,37 @@ PUBLIC void LevelScene::LoadData() {
         if (!GiantRingModel)
             GiantRingModel = new IModel("Meshes/SpecialRing.bin", G);
 
-        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "GiantRingModel", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "GiantRingModel", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
         App->Print(0, "Sprites...");
 
         if (!ItemsSprite) {
-            SpriteMap["Items"] = new ISprite("Sprites/Global/Items.gif", App);
-            SpriteMap["Items"]->LoadAnimation("Sprites/Global/ItemBox.bin");
-            SpriteMap["Items"]->LoadAnimation("Sprites/Global/Ring.bin");
-            ItemsSprite = SpriteMap["Items"];
+            ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
+            ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
+            ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
             // printf("\n");
         }
-        if (!SpriteMap["Animals"]) {
-            SpriteMap["Animals"] = new ISprite("Sprites/Global/Animals.gif", App);
-            SpriteMap["Animals"]->LoadAnimation("Sprites/Global/Animals.bin");
+        if (!AnimalsSprite) {
+            AnimalsSprite = new ISprite("Sprites/Global/Animals.gif", App);
+            AnimalsSprite->LoadAnimation("Sprites/Global/Animals.bin");
         }
-        if (!SpriteMap["Objects"]) {
-            SpriteMap["Objects"] = new ISprite("Sprites/Global/Objects.gif", App);
-            SpriteMap["Objects"]->LoadAnimation("Sprites/Global/Springs.bin");
-            SpriteMap["Objects"]->LoadAnimation("Sprites/Global/Spikes.bin");
-            SpriteMap["Objects"]->LoadAnimation("Sprites/Global/StarPost.bin");
-            SpriteMap["Objects"]->LoadAnimation("Sprites/Global/ScoreBonus.bin");
+        if (!ObjectsSprite) {
+            ObjectsSprite = new ISprite("Sprites/Global/Objects.gif", App);
+            ObjectsSprite->LoadAnimation("Sprites/Global/Springs.bin");
+            ObjectsSprite->LoadAnimation("Sprites/Global/Spikes.bin");
+            ObjectsSprite->LoadAnimation("Sprites/Global/StarPost.bin");
+            ObjectsSprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
             // printf("\n");
         }
-        if (!SpriteMap["Objects2"]) {
-            SpriteMap["Objects2"] = new ISprite("Sprites/Global/Objects2.gif", App);
-            SpriteMap["Objects2"]->LoadAnimation("Sprites/Global/SignPost.bin");
+        if (!Objects2Sprite) {
+            Objects2Sprite = new ISprite("Sprites/Global/Objects2.gif", App);
+            Objects2Sprite->LoadAnimation("Sprites/Global/SignPost.bin");
             // printf("\n");
         }
-        if (!SpriteMap["Objects3"]) {
-            SpriteMap["Objects3"] = new ISprite("Sprites/Global/Objects3.gif", App);
-            SpriteMap["Objects3"]->LoadAnimation("Sprites/Global/SpecialRing.bin");
+        if (!Objects3Sprite) {
+            Objects3Sprite = new ISprite("Sprites/Global/Objects3.gif", App);
+            Objects3Sprite->LoadAnimation("Sprites/Global/SpecialRing.bin");
             // printf("\n");
         }
         if (!ExplosionSprite) {
@@ -385,19 +345,19 @@ PUBLIC void LevelScene::LoadData() {
             // printf("\n");
         }
 
-        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
         App->Print(0, "Load Zone Specific Sprites...");
         LoadZoneSpecificSprites();
 
-        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "LoadZoneSpecificSprites", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "LoadZoneSpecificSprites", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
         App->Print(0, "AssignSpriteMapIDs...");
         AssignSpriteMapIDs();
 
-        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "AssignSpriteMapIDs", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "AssignSpriteMapIDs", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
         if (ZoneID < 7) { // if Sonic 3 level
@@ -848,7 +808,7 @@ PUBLIC void LevelScene::LoadData() {
                 ObjectName[i] = "unused";
         }
 
-        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Object Name Assignments", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Object Name Assignments", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
         if (!Player) {
@@ -880,7 +840,7 @@ PUBLIC void LevelScene::LoadData() {
             PlayerCount = 2;
     		//*/
 
-            IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
+            IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
             startTime = SDL_GetTicks();
         }
 
@@ -894,7 +854,7 @@ PUBLIC void LevelScene::LoadData() {
     App->Print(0, "Loading 16x16 Tiles...");
     TileSprite = new ISprite(Str_TileSprite, App); // Stages/MSZ/16x16Tiles.gif
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite loading", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     ISprite::Animation an;
@@ -912,7 +872,7 @@ PUBLIC void LevelScene::LoadData() {
     }
     TileSprite->Animations.push_back(an);
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite frame buffering", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite frame buffering", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     App->Print(0, "Loading TileConfig...");
@@ -956,7 +916,7 @@ PUBLIC void LevelScene::LoadData() {
         exit(1);
     }
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileConfig loading", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "TileConfig loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     App->Print(0, "Loading Scene.Bin...");
@@ -1417,7 +1377,7 @@ PUBLIC void LevelScene::LoadData() {
 			Data->animatedTileFrames = (int*)calloc(Data->animatedTilesCount, sizeof(int));
 
             App->Print(0, "Loading Anim Tile Durations...");
-            Data->animatedTileDurations = (int**)malloc(Data->animatedTilesCount * sizeof(int*));
+            Data->animatedTileDurations = (int**)calloc(Data->animatedTilesCount, sizeof(int*));
             for (int o = 0; o < Data->animatedTilesCount; o++) {
                 int framecount = reader.ReadUInt16();
                 Data->animatedTileDurations[o] = (int*)calloc(framecount + 2, sizeof(int));
@@ -1459,9 +1419,9 @@ PUBLIC void LevelScene::LoadData() {
 				// Build buffers for GL renderer
 				if (Data->layers[i].InfoCount > 1) {
 					int y = 0;
-					volatile int siT, x;
-					volatile int tile = 0, flipY = 0, flags = 0;//, wheree = 0;
-					volatile int heightSize = 0, tilindx = 0, tilindy = 0, tilindpos = 0, word = 0;
+					int siT, x;
+					int tile = 0, flipY = 0, flags = 0;//, wheree = 0;
+					int heightSize = 0, tilindx = 0, tilindy = 0, tilindpos = 0, word = 0;
 					Layer layer = Data->layers[i];
 
 					int bufHeight = 0;
@@ -1479,7 +1439,7 @@ PUBLIC void LevelScene::LoadData() {
 
 					y = 0;
 					int buf = 0;
-					Data->layers[i].ScrollIndexes[0].TileBuffers = (int*)calloc(Data->layers[i].Width * bufHeight, sizeof(int*));
+					Data->layers[i].ScrollIndexes[0].TileBuffers = (int*)calloc(Data->layers[i].Width * bufHeight, sizeof(int));
 					for (int s = 0; s < layer.ScrollIndexCount; s++) {
 						for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
 							heightSize = 16;
@@ -1491,7 +1451,7 @@ PUBLIC void LevelScene::LoadData() {
 							for (x = 0; x < layer.Width; x++) {
 								tilindy = ((y + siT) >> 4);
 								tilindx = x;
-								tilindpos = x + (tilindy)* layer.Width;
+								tilindpos = x + (tilindy) * layer.Width;
 
 								word = layer.Tiles[tilindpos];
 								flipY = ((word >> 11) & 1);
@@ -1532,7 +1492,7 @@ PUBLIC void LevelScene::LoadData() {
         exit(1);
     }
 
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     // Loading StageConfig
@@ -1618,7 +1578,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 
     uint64_t startTime = SDL_GetTicks();
     RestartStage(true, false);
-    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Init RestartStage()", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Init RestartStage()", (SDL_GetTicks() - startTime) / 1000.0);
 }
 
 PUBLIC STATIC  int  LevelScene::LoadStatic(void* data) {
@@ -2109,7 +2069,7 @@ PUBLIC void LevelScene::AddScoreGhost(int frame, int x, int y) {
     dropdashdust->CurrentAnimation = 14;
     dropdashdust->CurrentFrame = frame;
     dropdashdust->Active = true;
-    dropdashdust->Sprite = SpriteMap["Objects"];
+    dropdashdust->Sprite = ObjectsSprite;
     dropdashdust->X = x;
     dropdashdust->Y = y;
     dropdashdust->SubY = y - 32;
@@ -2230,7 +2190,7 @@ PUBLIC void LevelScene::AddAnimal(int x, int y, bool flipX, bool flipY, int xspe
     flicky->G = G;
     flicky->App = App;
     flicky->Scene = this;
-    flicky->Sprite = SpriteMap["Animals"];
+    flicky->Sprite = AnimalsSprite;
     flicky->FlipX = true;
     flicky->FlipY = flipY;
     flicky->Active = true;
@@ -2417,7 +2377,7 @@ PUBLIC void LevelScene::Update() {
 		}
 
         if (!(Frame & 3)) {
-            ISprite* spr = SpriteMap["Items"];
+            ISprite* spr = ItemsSprite;
             Uint32 temp = spr->Palette[0x3C + 4 - 1];
             for (int i = 4 - 1; i >= 1; i--) {
                 spr->Palette[0x3C + i] = spr->Palette[0x3C + i - 1];
@@ -3907,9 +3867,9 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
     CLEANUP(ExplosionSprite);
     CLEANUP(WaterSprite);
     CLEANUP(GlobalDisplaySprite);
-    CLEANUP(SpriteMap["Objects"]);
-    CLEANUP(SpriteMap["Objects2"]);
-    CLEANUP(SpriteMap["Objects3"]);
+    CLEANUP(ObjectsSprite);
+    CLEANUP(Objects2Sprite);
+    CLEANUP(Objects3Sprite);
     CLEANUP(PauseSprite);
 
     free(PlaneSwitchers);

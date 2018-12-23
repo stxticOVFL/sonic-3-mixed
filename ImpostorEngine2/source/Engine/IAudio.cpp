@@ -62,6 +62,22 @@ SDL_AudioSpec IAudio::DeviceFormat;
 PUBLIC IAudio::IAudio(IApp* app) {
     App = app;
 
+	Loop = (bool*)calloc(1, 256 * sizeof(bool));
+	Paused = (bool*)calloc(1, 256 * sizeof(bool));
+	Buffer = (uint8_t**)calloc(1, 256 * sizeof(uint8_t*));
+	Length = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
+	BufferStart = (uint8_t**)calloc(1, 256 * sizeof(uint8_t*));
+	LengthStart = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
+	LoopPoint = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
+
+	memset(Loop, 0, 256 * sizeof(bool));
+	memset(Paused, 0, 256 * sizeof(bool));
+	memset(Buffer, 0, 256 * sizeof(uint8_t*));
+	memset(Length, 0, 256 * sizeof(uint32_t));
+	memset(BufferStart, 0, 256 * sizeof(uint8_t*));
+	memset(LengthStart, 0, 256 * sizeof(uint32_t));
+	memset(LoopPoint, 0, 256 * sizeof(uint32_t));
+
     Want.freq = AUDIO_FREQUENCY;
     Want.format = AUDIO_FORMAT;
     Want.samples = AUDIO_SAMPLES;
@@ -78,30 +94,14 @@ PUBLIC IAudio::IAudio(IApp* app) {
         App->Print(2, "Could not open audio device!");
     }
 
-    // printf("%s = %d\n", "freq", DeviceFmt.freq);
-    // printf("%s = %X\n", "format", DeviceFmt.format);
-    // printf("%s = %X\n", "samples", DeviceFmt.samples);
-    // printf("%s = %X\n", "channels", DeviceFmt.channels);
-    // printf("%s = %X", "callback", DeviceFmt.callback);
-    // printf("%s = %X", "userdata", DeviceFmt.userdata);
+    IApp::Print(0, "%s = %d", "freq", DeviceFmt.freq);
+    IApp::Print(0, "%s = %X", "format", DeviceFmt.format);
+    IApp::Print(0, "%s = %X", "samples", DeviceFmt.samples);
+    IApp::Print(0, "%s = %X", "channels", DeviceFmt.channels);
+    IApp::Print(0, "%s = %X", "callback", DeviceFmt.callback);
+    IApp::Print(0, "%s = %X", "userdata", DeviceFmt.userdata);
 
     IAudio::DeviceFormat = DeviceFmt;
-
-    Loop = (bool*)calloc(1, 256 * sizeof(bool));
-    Paused = (bool*)calloc(1, 256 * sizeof(bool));
-    Buffer = (uint8_t**)calloc(1, 256 * sizeof(uint8_t*));
-    Length = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
-    BufferStart = (uint8_t**)calloc(1, 256 * sizeof(uint8_t*));
-    LengthStart = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
-    LoopPoint = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
-
-    memset(Loop, 0, 256 * sizeof(bool));
-    memset(Paused, 0, 256 * sizeof(bool));
-    memset(Buffer, 0, 256 * sizeof(uint8_t*));
-    memset(Length, 0, 256 * sizeof(uint32_t));
-    memset(BufferStart, 0, 256 * sizeof(uint8_t*));
-    memset(LengthStart, 0, 256 * sizeof(uint32_t));
-    memset(LoopPoint, 0, 256 * sizeof(uint32_t));
 }
 
 PUBLIC void IAudio::SetSound(int channel, uint8_t* buffer, int length) {

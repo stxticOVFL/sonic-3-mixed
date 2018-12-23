@@ -85,9 +85,9 @@ PUBLIC void Level_MGZ::GoToNextAct() {
 
     NextAct->GiantRingModel = GiantRingModel;
     NextAct->ItemsSprite = ItemsSprite;
-    NextAct->SpriteMap["Items"] = SpriteMap["Items"];
-    NextAct->SpriteMap["Objects"] = SpriteMap["Objects"];
-    NextAct->SpriteMap["Objects2"] = SpriteMap["Objects2"];
+    NextAct->ItemsSprite = ItemsSprite;
+    NextAct->ObjectsSprite = ObjectsSprite;
+    NextAct->Objects2Sprite = Objects2Sprite;
     NextAct->ExplosionSprite = ExplosionSprite;
     NextAct->WaterSprite = WaterSprite;
 
@@ -114,14 +114,14 @@ PUBLIC void Level_MGZ::GoToNextAct() {
 }
 
 PUBLIC void Level_MGZ::AssignSpriteMapIDs() {
-	SpriteMapIDs[0x01] = SpriteMap["Items"];
-	SpriteMapIDs[0x07] = SpriteMap["Objects"];
-	SpriteMapIDs[0x08] = SpriteMap["Objects"];
+	SpriteMapIDs[0x01] = ItemsSprite;
+	SpriteMapIDs[0x07] = ObjectsSprite;
+	SpriteMapIDs[0x08] = ObjectsSprite;
     SpriteMapIDs[0x0D] = SpriteMap["MGZ"];
     SpriteMapIDs[0x0F] = SpriteMap["MGZ"];
 	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = SpriteMap["Objects"];
+	SpriteMapIDs[0x34] = ObjectsSprite;
 	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x39] = SpriteMap["HCZ"];

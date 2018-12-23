@@ -89,8 +89,8 @@ PUBLIC void Level_HCZ::Init() {
         memcpy(SpriteMap["HCZ"]->PaletteAlt, n, 96 * 4);
         memcpy(SpriteMap["HCZ Enemies"]->PaletteAlt, n, 96 * 4);
         memcpy(SpriteMap["HCZ Boss"]->PaletteAlt, n, 96 * 4);
-        memcpy(SpriteMap["Items"]->PaletteAlt, n, 96 * 4);
-        memcpy(SpriteMap["Objects"]->PaletteAlt, n, 96 * 4);
+        memcpy(ItemsSprite->PaletteAlt, n, 96 * 4);
+        memcpy(ObjectsSprite->PaletteAlt, n, 96 * 4);
         for (int p = 0; p < 3; p++)
             if (Player->Sprites[p])
                 memcpy(Player->Sprites[p]->PaletteAlt, n, 96 * 4);
@@ -102,8 +102,8 @@ PUBLIC void Level_HCZ::Init() {
         SpriteMap["HCZ"]->Paletted = 2;
         SpriteMap["HCZ Enemies"]->Paletted = 2;
         SpriteMap["HCZ Boss"]->Paletted = 2;
-        SpriteMap["Items"]->Paletted = 2;
-        SpriteMap["Objects"]->Paletted = 2;
+        ItemsSprite->Paletted = 2;
+        ObjectsSprite->Paletted = 2;
         if (Act == 1)
             WaterLine->Paletted = 2;
 
@@ -111,8 +111,8 @@ PUBLIC void Level_HCZ::Init() {
         SpriteMap["HCZ"]->UpdatePalette();
         SpriteMap["HCZ Enemies"]->UpdatePalette();
         SpriteMap["HCZ Boss"]->UpdatePalette();
-        SpriteMap["Items"]->UpdatePalette();
-        SpriteMap["Objects"]->UpdatePalette();
+        ItemsSprite->UpdatePalette();
+        ObjectsSprite->UpdatePalette();
         if (Act == 1)
             WaterLine->UpdatePalette();
 
@@ -180,9 +180,9 @@ PUBLIC void Level_HCZ::GoToNextAct() {
 
     NextAct->GiantRingModel = GiantRingModel;
     NextAct->ItemsSprite = ItemsSprite;
-    NextAct->SpriteMap["Items"] = SpriteMap["Items"];
-    NextAct->SpriteMap["Objects"] = SpriteMap["Objects"];
-    NextAct->SpriteMap["Objects2"] = SpriteMap["Objects2"];
+    NextAct->ItemsSprite = ItemsSprite;
+    NextAct->ObjectsSprite = ObjectsSprite;
+    NextAct->Objects2Sprite = Objects2Sprite;
     NextAct->ExplosionSprite = ExplosionSprite;
     NextAct->WaterSprite = WaterSprite;
 
@@ -209,12 +209,12 @@ PUBLIC void Level_HCZ::GoToNextAct() {
 }
 
 PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
-	SpriteMapIDs[0x01] = SpriteMap["Items"];
-	SpriteMapIDs[0x07] = SpriteMap["Objects"];
-	SpriteMapIDs[0x08] = SpriteMap["Objects"];
+	SpriteMapIDs[0x01] = ItemsSprite;
+	SpriteMapIDs[0x07] = ObjectsSprite;
+	SpriteMapIDs[0x08] = ObjectsSprite;
 	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = SpriteMap["Objects"];
+	SpriteMapIDs[0x34] = ObjectsSprite;
 	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x39] = SpriteMap["HCZ"];

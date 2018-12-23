@@ -277,7 +277,7 @@ PUBLIC void IApp::Cleanup() {
 }
 
 PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
-    if (sev < 1) return;
+    if (sev < 0) return;
 
     va_list args;
     va_start(args, string);

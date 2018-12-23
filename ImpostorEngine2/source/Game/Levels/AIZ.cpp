@@ -8,6 +8,9 @@ public:
     int  CutsceneRoutineNumber = 0x00;
     int  Cutscene_SonicWaitTimer = 0;
     int  Cutscene_KnucklesBackForth = 0;
+
+    ISprite* AIZ1Sprite = NULL;
+    ISprite* AIZ2Sprite = NULL;
 };
 #endif
 
@@ -212,8 +215,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartX = 0x2656;
         // PlayerStartY = 0x04A2;
 
-        PlayerStartX = 0x286B;
-        PlayerStartY = 0x2DC;
+        // PlayerStartX = 0x286B;
+        // PlayerStartY = 0x2DC;
     }
     else {
         // PlayerStartX = 0x2820;
@@ -261,108 +264,95 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 
 PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
     if (Act <= 1) {
-    	SpriteMapIDs[0x01] = SpriteMap["Items"];
-        SpriteMapIDs[0x04] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x05] = SpriteMap["AIZ"];
-    	SpriteMapIDs[0x07] = SpriteMap["Objects"];
-    	SpriteMapIDs[0x08] = SpriteMap["Objects"];
-        SpriteMapIDs[0x09] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x0A] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x0C] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x0D] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x0F] = SpriteMap["AIZ"];
-    	SpriteMapIDs[0x2F] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x01] = ItemsSprite;
+        SpriteMapIDs[0x04] = AIZ1Sprite;
+        SpriteMapIDs[0x05] = AIZ1Sprite;
+    	SpriteMapIDs[0x07] = ObjectsSprite;
+    	SpriteMapIDs[0x08] = ObjectsSprite;
+        SpriteMapIDs[0x09] = AIZ1Sprite;
+        SpriteMapIDs[0x0A] = AIZ1Sprite;
+        SpriteMapIDs[0x0C] = AIZ1Sprite;
+        SpriteMapIDs[0x0D] = AIZ1Sprite;
+        SpriteMapIDs[0x0F] = AIZ1Sprite;
+    	SpriteMapIDs[0x2F] = AIZ1Sprite;
     	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-    	SpriteMapIDs[0x34] = SpriteMap["Objects"];
-        SpriteMapIDs[0x35] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x34] = ObjectsSprite;
+        SpriteMapIDs[0x35] = AIZ1Sprite;
 
-    	SpriteMapIDs[0x51] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x51] = AIZ1Sprite;
     }
     else {
-    	SpriteMapIDs[0x01] = SpriteMap["Items"];
-        SpriteMapIDs[0x04] = SpriteMap["AIZ2"];
-        SpriteMapIDs[0x05] = SpriteMap["AIZ2"];
-        SpriteMapIDs[0x06] = SpriteMap["AIZ"];
-    	SpriteMapIDs[0x07] = SpriteMap["Objects"];
-    	SpriteMapIDs[0x08] = SpriteMap["Objects"];
-        SpriteMapIDs[0x09] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x0A] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x0C] = SpriteMap["AIZ"];
-        SpriteMapIDs[0x0D] = SpriteMap["AIZ2"];
-        SpriteMapIDs[0x0F] = SpriteMap["AIZ2"];
-    	SpriteMapIDs[0x2F] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x01] = ItemsSprite;
+        SpriteMapIDs[0x04] = AIZ2Sprite;
+        SpriteMapIDs[0x05] = AIZ2Sprite;
+        SpriteMapIDs[0x06] = AIZ1Sprite;
+    	SpriteMapIDs[0x07] = ObjectsSprite;
+    	SpriteMapIDs[0x08] = ObjectsSprite;
+        SpriteMapIDs[0x09] = AIZ1Sprite;
+        SpriteMapIDs[0x0A] = AIZ1Sprite;
+        SpriteMapIDs[0x0C] = AIZ1Sprite;
+        SpriteMapIDs[0x0D] = AIZ2Sprite;
+        SpriteMapIDs[0x0F] = AIZ2Sprite;
+    	SpriteMapIDs[0x2F] = AIZ1Sprite;
     	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-    	SpriteMapIDs[0x34] = SpriteMap["Objects"];
-        SpriteMapIDs[0x35] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x34] = ObjectsSprite;
+        SpriteMapIDs[0x35] = AIZ1Sprite;
 
-    	SpriteMapIDs[0x51] = SpriteMap["AIZ2"];
-        SpriteMapIDs[0x8C] = SpriteMap["AIZ"];
+    	SpriteMapIDs[0x51] = AIZ2Sprite;
+        SpriteMapIDs[0x8C] = AIZ1Sprite;
     }
 }
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
-	if (!SpriteMap["HCZ"]) {
-		SpriteMap["HCZ"] = new ISprite("Sprites/HCZ/Objects.gif", App);
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Button.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Fan.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/HandLauncher.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/BreakBar.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Decoration.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Platform.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Wake.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Bridge.bin");
-		// printf("\n");
-	}
-
-    if (Act <= 1) {
-        if (!SpriteMap["AIZ"]) {
-    		SpriteMap["AIZ"] = new ISprite("Sprites/AIZ1/Objects.gif", App);
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Decoration.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Platform.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Tree.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
+	if (Act <= 1) {
+        if (!AIZ1Sprite) {
+    		AIZ1Sprite = new ISprite("Sprites/AIZ1/Objects.gif", App);
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Platform.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Tree.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
     		// printf("\n");
     	}
     }
     else {
-        if (!SpriteMap["AIZ"]) {
-    		SpriteMap["AIZ"] = new ISprite("Sprites/AIZ1/Objects.gif", App);
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Decoration.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Platform.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/Tree.bin");
-            SpriteMap["AIZ"]->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
+        if (!AIZ1Sprite) {
+    		AIZ1Sprite = new ISprite("Sprites/AIZ1/Objects.gif", App);
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Platform.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Tree.bin");
+            AIZ1Sprite->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
     		// printf("\n");
     	}
 
-        if (!SpriteMap["AIZ2"]) {
-            SpriteMap["AIZ2"] = new ISprite("Sprites/AIZ2/Objects.gif", App);
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/CollapsingPlatform.bin");
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/CorkFloor.bin");
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/Decoration.bin"); // HACK: padding
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/FallingLog.bin");
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin"); // HACK: padding
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/Platform.bin");
+        if (!AIZ2Sprite) {
+            AIZ2Sprite = new ISprite("Sprites/AIZ2/Objects.gif", App);
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CollapsingPlatform.bin");
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CorkFloor.bin");
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin"); // HACK: padding
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ2/FallingLog.bin");
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin"); // HACK: padding
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Platform.bin");
 
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
-            SpriteMap["AIZ2"]->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
+            AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
             // printf("\n");
         }
     }
@@ -813,7 +803,7 @@ PUBLIC void Level_AIZ::UpdateDiscord() {
 
 PUBLIC void Level_AIZ::GoToNextAct() {
     if (Act == 1 && VisualAct == 1) {
-        LevelScene* NextAct = new Level_AIZ(App, G, 2);
+		Level_AIZ* NextAct = new Level_AIZ(App, G, 2);
         NextAct->LevelCardHide = true;
         NextAct->VisualWaterLevel = NextAct->WaterLevel = 0x528;
         NextAct->Frame = Frame;
@@ -827,13 +817,13 @@ PUBLIC void Level_AIZ::GoToNextAct() {
 
         NextAct->GiantRingModel = GiantRingModel;
         NextAct->ItemsSprite = ItemsSprite;
-        NextAct->SpriteMap["Items"] = SpriteMap["Items"];
-        NextAct->SpriteMap["Objects"] = SpriteMap["Objects"];
-        NextAct->SpriteMap["Objects2"] = SpriteMap["Objects2"];
+        NextAct->ItemsSprite = ItemsSprite;
+        NextAct->ObjectsSprite = ObjectsSprite;
+        NextAct->Objects2Sprite = Objects2Sprite;
         NextAct->ExplosionSprite = ExplosionSprite;
         NextAct->WaterSprite = WaterSprite;
 
-        NextAct->SpriteMap["AIZ"] = SpriteMap["AIZ"];
+        NextAct->AIZ1Sprite = AIZ1Sprite;
         for (int i = 0; i < 5; i++) {
             NextAct->KnuxSprite[i] = KnuxSprite[i];
         }
@@ -886,7 +876,7 @@ PUBLIC void Level_AIZ::GoToNextAct() {
 PUBLIC void Level_AIZ::Cleanup() {
     #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 
-    CLEANUP(SpriteMap["AIZ"]);
+    CLEANUP(AIZ1Sprite);
     // CLEANUP(SpriteMap["AIZ Enemies"]);
     // CLEANUP(SpriteMap["AIZ Boss"]);
 

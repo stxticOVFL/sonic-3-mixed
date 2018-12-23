@@ -221,16 +221,16 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
 
     StreamFromFile = streamFromFile;
 
-    IResource* res = IResources::Load(filename, true);
-	if (!res) {
-		IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
-		return;
-	}
-
     Name = (char*)filename;
 
     if (StreamFromFile) {
+        IResource* res = IResources::Load(filename);
+    	if (!res) {
+    		IApp::Print(2, "Couldn't open file '%s'!", filename);
+    		fflush(stdin);
+    		return;
+    	}
+
         if (strstr(filename, ".ogg")) {
             vorbis_file = LoadVorbis(res, &Format);
         }
@@ -255,6 +255,13 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
         LoadFailed = false;
     }
     else {
+        IResource* res = IResources::Load(filename, true);
+    	if (!res) {
+    		IApp::Print(2, "Couldn't open file '%s'!", filename);
+    		fflush(stdin);
+    		return;
+    	}
+
         uint32_t length = 0;
         uint8_t* buffer = NULL;
 

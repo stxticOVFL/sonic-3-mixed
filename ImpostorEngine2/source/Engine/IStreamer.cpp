@@ -83,7 +83,9 @@ PUBLIC unsigned char* IStreamer::ReadBytes(int n) {
 
 PUBLIC unsigned short IStreamer::ReadUInt16() {
     if (res) {
-        return (unsigned short)(ReadByte() | ReadByte() << 8);
+        unsigned short data = 0;
+        res->Read(&data, 2);
+        return data;
     }
     unsigned short data = 0;
     data += (unsigned char)(*ptr); ptr++;
@@ -103,7 +105,9 @@ PUBLIC unsigned short IStreamer::ReadUInt16E() {
 }
 PUBLIC unsigned int IStreamer::ReadUInt32() {
     if (res) {
-        return ReadByte() | ReadByte() << 8 | ReadByte() << 16 | ReadByte() << 24;
+        unsigned int data = 0;
+        res->Read(&data, 4);
+        return data;
     }
     unsigned int data = 0;
     data += (*ptr) << 0; ptr++;

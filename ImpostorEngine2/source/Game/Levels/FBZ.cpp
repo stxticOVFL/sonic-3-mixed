@@ -40,14 +40,14 @@ PUBLIC void Level_FBZ::RestartStage(bool doActTransition, bool drawBackground) {
 }
 
 PUBLIC void Level_FBZ::AssignSpriteMapIDs() {
-	SpriteMapIDs[0x01] = SpriteMap["Items"];
-	SpriteMapIDs[0x07] = SpriteMap["Objects"];
-	SpriteMapIDs[0x08] = SpriteMap["Objects"];
+	SpriteMapIDs[0x01] = ItemsSprite;
+	SpriteMapIDs[0x07] = ObjectsSprite;
+	SpriteMapIDs[0x08] = ObjectsSprite;
     SpriteMapIDs[0x0D] = SpriteMap["MGZ"];
     SpriteMapIDs[0x0F] = SpriteMap["MGZ"];
 	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = SpriteMap["Objects"];
+	SpriteMapIDs[0x34] = ObjectsSprite;
 	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x39] = SpriteMap["HCZ"];

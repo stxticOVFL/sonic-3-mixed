@@ -67,7 +67,7 @@ event Update() {
     }
 
     if (GoTimer > 0) {
-        Sprite = Scene.SpriteMap["Objects3"];
+        Sprite = Scene.Objects3Sprite;
 
         local LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
         local FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;

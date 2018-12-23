@@ -618,7 +618,6 @@ PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* fv) {
     glBindBuffer(GL_ARRAY_BUFFER, f->BufferID);
     glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(VertexData), v.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // glDeleteBuffers(1, &f->BufferID);
     return f->BufferID;
 }
 PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, int X, int Y, int W, int H, int OffX, int OffY) {
@@ -965,6 +964,10 @@ PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Wid
 }
 PUBLIC void IGLGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x, int y, int angle, int flip) {
     if (!sprite) return;
+
+    #if NX
+    return;
+    #endif
 
     glUniform3f(LocTranslate, x, y, 0.0f);
     glUniform3f(LocRotate, 0.0f, 0.0f, angle);

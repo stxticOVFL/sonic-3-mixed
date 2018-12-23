@@ -93,7 +93,7 @@ event Render(CamX:int, CamY:int) {
     local x:int = 0;
     local w:int = 0;
     local d:int = 0;
-    Sprite = Scene.SpriteMap["Objects2"];
+    Sprite = Scene.Objects2Sprite;
 
     G.DrawSprite(Sprite, 6, 2, X - CamX, Y - CamY, 0, IE_NOFLIP);
 
