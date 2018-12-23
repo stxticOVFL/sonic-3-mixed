@@ -21,12 +21,12 @@ TARGET		:=	builds/nx/$(notdir $(CURDIR))
 BUILD		:=	out/nx
 SOURCES		:=	$(SRC_DIRS)
 DATA		:=	data
-INCLUDES	:=	source
+INCLUDES	:=	source gen
 
 EXEFS_SRC	:= 	exefs
 
-APP_TITLE 	:= Impostor Engine 2
-APP_AUTHOR 	:= Team 3'Mixed
+APP_TITLE 	:= Sonic 3'Mixed
+APP_AUTHOR 	:= Team 3M
 APP_VERSION	:= 1.0
 ICON       	:= meta/icon-old.jpg
 

@@ -6,13 +6,13 @@
 
 #include <Utils/Standard.h>
 
-#include "Engine/IApp.h"
-#include "Engine/ISprite.h"
-#include "Engine/IGraphics.h"
-#include "Engine/IInput.h"
+#include <Engine/IApp.h>
+#include <Engine/ISprite.h>
+#include <Engine/IGraphics.h>
+#include <Engine/IInput.h>
 
-#include "Game/LevelScene.h"
-#include "Game/Player.h"
+#include <Game/LevelScene.h>
+#include <Game/Player.h>
 
 #if MSVC | MACOSX
     #include "discord_rpc.h"
