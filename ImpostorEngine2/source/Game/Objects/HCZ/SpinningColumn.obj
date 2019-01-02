@@ -1,5 +1,12 @@
 object 0x68;
 
+var YS:int;
+var LastX:int;
+var LastY:int;
+var MoveType:int;
+var ColumnType:int;
+var MotionDirection:int;
+
 event Create() {
     Active = true;
     Priority = true;
@@ -11,15 +18,15 @@ event Create() {
     H = 64;
 
     Timer = 0;
-    var YS:int = -1;
+    YS = -1;
     if (FlipX)
         YS = 1;
 
-    var LastX:int = X;
-    var LastY:int = Y;
-    var MoveType:int = SubType & 0x03;
-    var ColumnType:int = SubType & 0xF0;
-    var MotionDirection:int = 1;
+    LastX = X;
+    LastY = Y;
+    MoveType = SubType & 0x03;
+    ColumnType = SubType & 0xF0;
+    MotionDirection = 1;
 
     if ((SubType & 0xF) == 2) {
         YS <<= 1;
@@ -31,8 +38,8 @@ event Create() {
     CurrentAnimation = 15;
 }
 event Update() {
-    local d0:int;
-    local d1:int;
+    var d0:int;
+    var d1:int;
 
     LastX = X;
     LastY = Y;
@@ -65,8 +72,8 @@ event Update() {
         Y = InitialY + 32 * Math.abs(YS) - ((Math.cosHex(Scene.Frame) * 32 * YS) >> 16);
     }
 
-    for (local i:int = 0; i < Scene.PlayerCount; i++) {
-        if (Scene.Players[i].Action == ActionType::Dead) continue;
+    for (var i:int = 0; i < Scene.PlayerCount; i++) {
+        if (Scene.Players[i].Action == ActionType.Dead) continue;
 
         if (Scene.Players[i].Ground &&
             Scene.Players[i].EZY > Y - 64 &&
@@ -78,7 +85,7 @@ event Update() {
             Scene.Players[i].EZY = Y - 32 - Scene.Players[i].H / 2;
 
             Scene.Players[i].DisplayFlip = -1;
-            Scene.Players[i].Action = ActionType::Spinning;
+            Scene.Players[i].Action = ActionType.Spinning;
         }
     }
 
@@ -92,8 +99,8 @@ event Update() {
     }
 }
 event Render(CamX:int, CamY:int) {
-    local nX:int = LastX;
-    local nY:int = Y;
+    var nX:int = LastX;
+    var nY:int = Y;
 
     G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8,
         nX - CamX, nY - CamY, 0, IE_NOFLIP);
@@ -124,7 +131,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         Scene.Players[PlayerID].ObjectControlled = 0x7E;
         Scene.Players[PlayerID].EZX = X;
         Scene.Players[PlayerID].GroundSpeed = 0;
-        Scene.Players[PlayerID].Action = ActionType::Spinning;
+        Scene.Players[PlayerID].Action = ActionType.Spinning;
         return 1;
     }
 

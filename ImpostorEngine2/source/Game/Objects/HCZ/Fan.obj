@@ -1,5 +1,15 @@
 object 0x38;
 
+var BlowHeight:int;
+var HaveBlock:bool;
+var OutX:int;
+var Underwater:int;
+var AlwaysOn:bool;
+var OnOff:bool;
+var NeedsActivation:bool;
+var On:bool;
+var PlayingSound:bool;
+
 event Create() {
     Active = true;
     Priority = true;
@@ -11,16 +21,16 @@ event Create() {
 
     CurrentAnimation = 2;
 
-    var BlowHeight:int = ((SubType & 0xF) + 8) << 4;
-    var HaveBlock:bool = false;
+    BlowHeight = ((SubType & 0xF) + 8) << 4;
+    HaveBlock = false;
     Solid = false;
-    var OutX:int = 0;
-    var Underwater:int = 0;
-    var AlwaysOn:bool = false;
-    var OnOff:bool = false;
-    var NeedsActivation:bool = false;
-    var On:bool = false;
-    var PlayingSound:bool = false;
+    OutX = 0;
+    Underwater = 0;
+    AlwaysOn = false;
+    OnOff = false;
+    NeedsActivation = false;
+    On = false;
+    PlayingSound = false;
 
     if (SubType & 0x80) { // is negative
         HaveBlock = true;
@@ -53,18 +63,18 @@ event Create() {
     }
 }
 event Update() {
-    local Out:bool = true;
-    local Neck:int = 0;
-    for (local i:int =0; i < Scene.PlayerCount; i++) {
+    var Out:bool = true;
+    var Neck:int = 0;
+    for (var i:int = 0; i < Scene.PlayerCount; i++) {
         if (Scene.Players[i].EZY >= Y - 24 && Scene.Players[i].OnScreen) {
             Out = false;
         }
 
-        if (Scene.Players[i].Action == ActionType::Hurt || Scene.Players[i].Action == ActionType::Conveyor || Scene.Players[i].Action == ActionType::Dead)
+        if (Scene.Players[i].Action == ActionType.Hurt || Scene.Players[i].Action == ActionType.Conveyor || Scene.Players[i].Action == ActionType.Dead)
             continue;
 
         if (On) {
-            Neck = IMath::sinHex(Scene.Frame << 2) >> 13;
+            Neck = Math.sinHex(Scene.Frame << 2) >> 13;
             if ((Scene.Players[i].X >> 16) + 10 >= X - 16 &&
                 (Scene.Players[i].X >> 16) - 10 < X + 16 &&
                 (Scene.Players[i].Y >> 16) < Y + 12 &&
@@ -72,17 +82,17 @@ event Update() {
                 Scene.Players[i].Y += (Y - BlowHeight - 0x30 + Neck - (Scene.Players[i].Y >> 16)) << 10;
                 Scene.Players[i].Ground = false;
                 Scene.Players[i].YSpeed = -1;
-                Scene.Players[i].Action = ActionType::Fan;
+                Scene.Players[i].Action = ActionType.Fan;
             }
         }
     }
 
     if (OnScreen && !PlayingSound) {
-        Sound::Loop(Sound::SFX_FAN_SMALL, 35280);
+        Sound.Loop(Sound.SFX_FAN_SMALL, 35280);
         PlayingSound = true;
     }
     else if (!OnScreen && PlayingSound) {
-        Sound::Stop(Sound::SFX_FAN_SMALL);
+        Sound.Stop(Sound.SFX_FAN_SMALL);
         PlayingSound = false;
     }
 

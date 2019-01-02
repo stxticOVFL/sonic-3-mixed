@@ -1,5 +1,7 @@
 object 0x35;
 
+var CamMult:int;
+
 event Create() {
     Active = true;
     Priority = true;
@@ -7,7 +9,7 @@ event Create() {
     W = 1;
     H = 1;
 
-    var CamMult:int = (SubType >> 2) & 0x3C;
+    CamMult = (SubType >> 2) & 0x3C;
     Frame = (SubType & 0xF) & 1;
 
     VisualLayer = 1;

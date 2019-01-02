@@ -2,13 +2,20 @@ object 0x99;
 
 subclass Enemy;
 
+var TimerSpin:int;
+var SpinSpeed:int;
+var RocketTurn:int;
+var InvulnTimer:int;
+var Started:bool;
+var ExplosionTimer:int;
+
 event Create() {
-    var TimerSpin:int = 0;
-    var SpinSpeed:int = 0;
-    var RocketTurn:int = 0;
-    var InvulnTimer:int = 0;
-    var Started:bool = false;
-    var ExplosionTimer:int = 0x80;
+    TimerSpin = 0;
+    SpinSpeed = 0;
+    RocketTurn = 0;
+    InvulnTimer = 0;
+    Started = false;
+    ExplosionTimer = 0x80;
 
     Active = true;
     Priority = false;
@@ -45,8 +52,8 @@ event OnHit() : int {
 }
 
 event Update() {
-    local bodyLeft:int = 67;
-    local bodyTop:int = 1;
+    var bodyLeft:int = 67;
+    var bodyTop:int = 1;
 
     if (HitCount < 0) {
         if (ExplosionTimer > 0) {
@@ -106,9 +113,9 @@ event Update() {
 
 event DrawRocket(Rock:int, Ang:int, Flip:int, Side:int, CamX:int, CamY:int) {
     Rock &= 0x3F;
-    local cosval:int = (Math.cosHex(Rock << 2) * Radius) >> 16;
-    local xx:int = (cosval * Math.cosHex(Ang)) >> 16;
-    local yy:int = (cosval * Math.sinHex(Ang)) >> 16;
+    var cosval:int = (Math.cosHex(Rock << 2) * Radius) >> 16;
+    var xx:int = (cosval * Math.cosHex(Ang)) >> 16;
+    var yy:int = (cosval * Math.sinHex(Ang)) >> 16;
 
     if (Math.sinHex(Rock << 2) * Side >= 0) {
         if (Rock >> 2 < 4)
@@ -129,7 +136,7 @@ event DrawRocket(Rock:int, Ang:int, Flip:int, Side:int, CamX:int, CamY:int) {
 
 event Render(CamX:int, CamY:int) {
     // Pole
-    for (local i:int = 0; i < 0x41; i += 0x20) {
+    for (var i:int = 0; i < 0x41; i += 0x20) {
         G.DrawSprite(Sprite, 1, TimerSpin >> 9,
             0x3720 - CamX,
             0x06F8 - CamY - i,

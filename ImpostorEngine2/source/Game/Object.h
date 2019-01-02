@@ -19,20 +19,20 @@ public:
 
 
     uint32_t X;
-    int32_t Y;
+    int32_t  Y;
     uint16_t W = 32;
     uint16_t H = 32;
     uint16_t VisW = 0;
     uint16_t VisH = 0;
-    int16_t XSpeed = 0;
-    int16_t YSpeed = 0;
+    int16_t  XSpeed = 0;
+    int16_t  YSpeed = 0;
 
     uint16_t ID;
-    uint8_t SubType;
-    bool Active;
-    bool Priority;
-    bool OnScreen = false;
-    int  VisualLayer = 0;
+    uint8_t  SubType;
+    bool     Active;
+    bool     Priority;
+    bool     OnScreen = false;
+    int      VisualLayer = 0;
 
     bool FlipX;
     bool FlipY;

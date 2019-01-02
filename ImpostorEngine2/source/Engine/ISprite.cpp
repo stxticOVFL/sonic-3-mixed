@@ -4,9 +4,9 @@
 
 class ISprite {
 public:
-    unsigned char* Data = NULL;
-    unsigned short Width;
-    unsigned short Height;
+    uint8_t* Data = NULL;
+    uint16_t Width;
+    uint16_t Height;
     uint32_t* Palette = NULL;
     uint32_t* PaletteAlt = NULL;
     int PaletteSize = 0;
@@ -37,9 +37,9 @@ public:
     vector<Animation> Animations;
     int AnimCount = 0;
 
-    unsigned int TextureID;
-    unsigned int PaletteID;
-    unsigned int PaletteAltID;
+    uint32_t TextureID;
+    uint32_t PaletteID;
+    uint32_t PaletteAltID;
     IGraphics* G = NULL;
 
     const char* Filename;
@@ -85,7 +85,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     stream.Skip(1);
 
     for (int i = 0; i < PaletteSize; i++) {
-        unsigned char* color = stream.ReadBytes(3);
+        uint8_t* color = stream.ReadBytes(3);
         Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
         free(color);
 
@@ -151,7 +151,7 @@ PUBLIC void ISprite::UpdatePalette() {
 
 PUBLIC void ISprite::LinkPalette(ISprite* other) {
     if (other == this) return;
-    
+
     free(Palette);
     free(PaletteAlt);
     Palette = other->Palette;

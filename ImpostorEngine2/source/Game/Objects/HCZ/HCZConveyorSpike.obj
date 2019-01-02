@@ -1,15 +1,19 @@
 object 0x3F;
 
+var StartX:int;
+var EndX:int;
+var Painful:bool;
+
 event Create() {
-    var StartX:int = 0xB28;
-    var EndX:int = 0xCD8;
+    StartX = 0xB28;
+    EndX = 0xCD8;
 
     Active = true;
     Priority = true;
 
     W = 16;
     H = 16;
-    var Painful:bool = true;
+    Painful = true;
 }
 event Update() {
     StartX = 0xB28;

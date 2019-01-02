@@ -1,5 +1,10 @@
 object 0x08;
 
+var Rotation:int;
+var Size:int;
+var Vertical:int;
+var In:bool;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -7,14 +12,15 @@ event Create() {
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    var Rotation:int = 0;
-    var Size:int = 1 + (SubType & 0x30) / 0x10;
+    Rotation = 0;
+    Size = 1 + (SubType & 0x30) / 0x10;
+    Vertical = (SubType >> 6) & 0x1;
+    In = false;
     W = 32 * Size;
     H = 32;
 
     Y = InitialY;
 
-    var Vertical:int = (SubType >> 6) & 0x1;
     if (Vertical && FlipX) {
         W = 32;
         H = 32 * Size;
@@ -37,7 +43,6 @@ event Create() {
         }
     }
 
-    var In:bool = false;
     if (!((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2))
         In = true;
 
@@ -67,7 +72,7 @@ event Render(CamX:int, CamY:int) {
     if (Rotation == 270)
         flag = IE_FLIPX;
 
-    for (local i:int = 0; i < Size; i++) {
+    for (var i:int = 0; i < Size; i++) {
         if (Vertical)
             G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - (Size - 1) * 16 + i * 32, Rotation, flag);
         else

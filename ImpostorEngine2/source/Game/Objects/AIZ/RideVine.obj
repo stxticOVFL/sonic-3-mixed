@@ -1,5 +1,21 @@
 object 0x06;
 
+var RopeLength:int;
+var AngleOffset:int;
+var Oscello:int;
+var LastX:int;
+var LastY:int;
+var BaseX:int;
+var BaseY:int;
+var EndX:int;
+var Fireable:bool;
+var OnFire:bool;
+var ZipActive:bool;
+var Spinning:bool;
+var PlayersControlled:int;
+var Amp:int;
+var ClassicStyle:bool;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -7,28 +23,27 @@ event Create() {
     VisW = 34;
     VisH = 1280;
 
-    var RopeLength:int = 4;
-    var AngleOffset:int = 0;
-    var Oscello:int = 0;
+    RopeLength = 4;
+    AngleOffset = 0;
+    Oscello = 0;
 
-    var LastX:int = X;
-    var LastY:int = Y;
+    LastX = X;
+    LastY = Y;
 
-    var BaseX:int = InitialX;
-    var BaseY:int = InitialY;
+    BaseX = InitialX;
+    BaseY = InitialY;
 
-    var EndX:int = InitialX + ((SubType & 0x7F) << 4);
-    var Fireable:bool = SubType >> 7;
-    var OnFire:bool = false;
+    EndX = InitialX + ((SubType & 0x7F) << 4);
+    Fireable = SubType >> 7;
+    OnFire = false;
 
-    var ZipActive:bool = false;
-    var Spinning:bool = false;
+    ZipActive = false;
+    Spinning = false;
 
-    var PlayersControlled:int = 0;
+    PlayersControlled = 0;
 
-    var Amp:int = 4;
+    Amp = 4;
 
-    var ClassicStyle:bool;
     ClassicStyle = !Scene.Thremixed;
 
     VisualLayer = 0;
@@ -44,10 +59,10 @@ event OnLeaveScreen() : int {
 }
 
 event Update() {
-    local nX:int;
-    local nY:int;
-    local framedAngle:int;
-    local frame:int;
+    var nX:int;
+    var nY:int;
+    var framedAngle:int;
+    var frame:int;
 
     if (PlayersControlled > 0 && !ZipActive) {
         ZipActive = true;
@@ -72,14 +87,14 @@ event Update() {
 
                     BaseY = BaseY << 8;
 
-                    for (i:int = 0; i < 8; i++) {
+                    for (var i:int = 0; i < 8; i++) {
                         if (PlayersControlled & (1 << i)) {
                             if (!Scene.Players[i].OnScreen) {
                                 Scene.Players[i].ObjectControlled = 0;
                                 PlayersControlled &= (1 << i) ^ 0xFF;
                             }
 
-                            if (Scene.Players[i].Action == ActionType::Dead) {
+                            if (Scene.Players[i].Action == ActionType.Dead) {
                                 Scene.Players[i].ObjectControlled = 0;
                                 PlayersControlled &= (1 << i) ^ 0xFF;
                                 continue;
@@ -90,7 +105,7 @@ event Update() {
 
                             Scene.Players[i].ObjectControlled = 0;
 
-                            Scene.Players[i].Action = ActionType::Normal;
+                            Scene.Players[i].Action = ActionType.Normal;
                             Scene.Players[i].Ground = false;
                             Scene.Players[i].Angle = 0;
 
@@ -121,7 +136,7 @@ event Update() {
         BaseY += YSpeed;
         nY = BaseY >> 8;
     }
-    Rotation = IMath::sinHex(Oscello >> 8) * Amp;
+    Rotation = Math.sinHex(Oscello >> 8) * Amp;
     if (Spinning)
         Rotation = (Oscello << 9);
 
@@ -131,19 +146,19 @@ event Update() {
 
 
     if (ClassicStyle) {
-        frame = ((Rotation >> 16) + 4 * IMath::sign(Rotation)) / 8;
-        for (i:int = 0; i < RopeLength; i++) {
-            nX += IMath::sinHex((frame & 0x1F) * 8) >> 12;
-            nY += IMath::cosHex((frame & 0x1F) * 8) >> 12;
+        frame = ((Rotation >> 16) + 4 * Math.sign(Rotation)) / 8;
+        for (var i:int = 0; i < RopeLength; i++) {
+            nX += Math.sinHex((frame & 0x1F) * 8) >> 12;
+            nY += Math.cosHex((frame & 0x1F) * 8) >> 12;
             Rotation = Rotation + framedAngle;
-            frame = ((Rotation >> 16) + 4 * IMath::sign(Rotation)) / 8;
+            frame = ((Rotation >> 16) + 4 * Math.sign(Rotation)) / 8;
         }
     }
     else {
         frame = Rotation / 0x10000;
-        for (i:int = 0; i < RopeLength; i++) {
-            nX += IMath::sinHex(frame) / 0x1000;
-            nY += IMath::cosHex(frame) / 0x1000;
+        for (var i:int = 0; i < RopeLength; i++) {
+            nX += Math.sinHex(frame) / 0x1000;
+            nY += Math.cosHex(frame) / 0x1000;
             Rotation = Rotation + framedAngle;
             frame = Rotation / 0x10000;
         }
@@ -155,7 +170,7 @@ event Update() {
     X = nX;
     Y = nY;
 
-    for (i:int = 0; i < 8 && !OnFire; i++) {
+    for (var i:int = 0; i < 8 && !OnFire; i++) {
         if (PlayersControlled & (1 << i)) {
             if (!Scene.Players[i].OnScreen) {
                 Scene.Players[i].ObjectControlled = 0;
@@ -163,7 +178,7 @@ event Update() {
                 Timer = 60;
             }
 
-            if (Scene.Players[i].Action == ActionType::Dead) {
+            if (Scene.Players[i].Action == ActionType.Dead) {
                 Scene.Players[i].ObjectControlled = 0;
                 PlayersControlled &= (1 << i) ^ 0xFF;
                 Timer = 60;
@@ -182,7 +197,7 @@ event Update() {
                 Scene.Players[i].YSpeed -= 0x380;
                 Scene.Players[i].ObjectControlled = 0;
 
-                Scene.Players[i].Action = ActionType::Jumping;
+                Scene.Players[i].Action = ActionType.Jumping;
                 Scene.Players[i].JumpVariable = 1;
                 Scene.Players[i].Angle = 0;
 
@@ -195,7 +210,7 @@ event Update() {
                 Scene.Players[i].EZY = Y - 3 + Scene.Players[i].H / 2;
                 Scene.Players[i].XSpeed = 0;
                 Scene.Players[i].YSpeed = 0;
-                Scene.Players[i].Action = ActionType::Grab;
+                Scene.Players[i].Action = ActionType.Grab;
                 Scene.Players[i].ObjectControlled = 0xFF;
 
                 if (Spinning) {
@@ -213,9 +228,9 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    local nX:int;
-    local nY:int;
-    local framedAngle:int;
+    var nX:int;
+    var nY:int;
+    var framedAngle:int;
 
     nX = BaseX;
     nY = BaseY;
@@ -229,7 +244,7 @@ event Render(CamX:int, CamY:int) {
     else
         G.DrawSprite(Sprite, CurrentAnimation + 2, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
 
-    Rotation = IMath::sinHex(Oscello >> 8) * Amp;
+    Rotation = Math.sinHex(Oscello >> 8) * Amp;
     if (Spinning)
         Rotation = (Oscello << 9);
 
@@ -241,9 +256,9 @@ event Render(CamX:int, CamY:int) {
             Frame = ((Rotation >> 16) - 4) / 8;
             G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
 
-            for (i:int = 0; i < RopeLength - 1; i++) {
-                nX += IMath::sinHex((Frame & 0x1F) * 8) >> 12;
-                nY += IMath::cosHex((Frame & 0x1F) * 8) >> 12;
+            for (var i:int = 0; i < RopeLength - 1; i++) {
+                nX += Math.sinHex((Frame & 0x1F) * 8) >> 12;
+                nY += Math.cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) - 4) / 8;
                 G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
@@ -256,9 +271,9 @@ event Render(CamX:int, CamY:int) {
             Frame = ((Rotation >> 16) + 4) / 8;
             G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
 
-            for (i:int = 0; i < RopeLength - 1; i++) {
-                nX += IMath::sinHex((Frame & 0x1F) * 8) >> 12;
-                nY += IMath::cosHex((Frame & 0x1F) * 8) >> 12;
+            for (var i:int = 0; i < RopeLength - 1; i++) {
+                nX += Math.sinHex((Frame & 0x1F) * 8) >> 12;
+                nY += Math.cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) + 4) / 8;
                 G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
@@ -273,9 +288,9 @@ event Render(CamX:int, CamY:int) {
         Frame = Rotation / 0x10000;
         G.DrawSprite(Sprite, CurrentAnimation, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
 
-        for (i:int = 0; i < RopeLength - 1; i++) {
-            nX += IMath::sinHex(Frame) / 0x1000;
-            nY += IMath::cosHex(Frame) / 0x1000;
+        for (var i:int = 0; i < RopeLength - 1; i++) {
+            nX += Math.sinHex(Frame) / 0x1000;
+            nY += Math.cosHex(Frame) / 0x1000;
             Rotation = Rotation + framedAngle;
             Frame = Rotation / 0x10000;
             G.DrawSprite(Sprite, CurrentAnimation, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
@@ -292,7 +307,7 @@ event Render(CamX:int, CamY:int) {
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Timer == 0 && !(PlayersControlled & (1 << PlayerID))) {
         PlayersControlled |= 1 << PlayerID;
-        Sound::Play(Sound::SFX_GRAB);
+        Sound.Play(Sound.SFX_GRAB);
     }
     return 1;
 }

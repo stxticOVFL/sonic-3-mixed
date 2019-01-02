@@ -2,6 +2,10 @@ object 0x8D;
 
 subclass Enemy;
 
+var SubX:int;
+var Speed:int;
+var Acceleration:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -10,9 +14,9 @@ event Create() {
     H = 32;
 
     Frame = 0;
-    var SubX:int = X << 16;
-    var Speed:int = 0;
-    var Acceleration:int = -0x10;
+    SubX = X << 16;
+    Speed = 0;
+    Acceleration = -0x10;
 
     HitCount = 1;
 
@@ -22,8 +26,8 @@ event Create() {
 }
 
 event Update() {
-    local DisX:int = 0;
-    local DisY:int = 0;
+    var DisX:int = 0;
+    var DisY:int = 0;
 
     if (Speed == Math.sign(Acceleration) * 0x300) {
         Acceleration = -Acceleration;
@@ -61,7 +65,7 @@ event Update() {
             }
         }
 
-        for (p:int = 0; p < Scene.PlayerCount; p++) {
+        for (var p:int = 0; p < Scene.PlayerCount; p++) {
             DisX = (Scene.Players[p].EZX - X) * Math.sign(Speed);
             DisY = Math.abs(Scene.Players[p].EZY - Y);
             if (DisX < 96 && DisX > 0 && DisY <= 32) {
@@ -82,15 +86,15 @@ event Update() {
         Priority = true;
     }
 
-    local Y1:int = Y;
-    local Y2:int = Y;
-    for (y:int = Y + 8; y < Y + 32; y++) {
+    var Y1:int = Y;
+    var Y2:int = Y;
+    for (var y:int = Y + 8; y < Y + 32; y++) {
         if (Scene.CollisionAt(X - 8, y)) {
             Y1 = y;
             break;
         }
     }
-    for (y:int = Y + 8; y < Y + 32; y++) {
+    for (var y:int = Y + 8; y < Y + 32; y++) {
         if (Scene.CollisionAt(X + 8, y)) {
             Y2 = y;
             break;
@@ -138,7 +142,7 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    local Flip:int = 1;
+    var Flip:int = 1;
     if (FlipX)
         Flip = -1;
 

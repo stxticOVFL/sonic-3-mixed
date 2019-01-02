@@ -1,13 +1,22 @@
 object 0x33;
 
+var Permanent:bool;
+var TriggerID:bool;
+var TriggerType:bool;
+var CollisionType:bool;
+var StartY:int;
+var CurrentAnimation:int;
+var Down:int;
+var Pressed:int;
+
 event Create() {
     Active = true;
     Priority = false;
 
-    var Permanent:bool = (SubType >> 4 & 0x1);
-    var TriggerID:bool = (SubType & 0xF);
-    var TriggerType:bool = (SubType >> 6 & 0x1); // 0 - Normal, 1 - Sign Bit
-    var CollisionType:bool = (SubType >> 5 & 0x1);
+    Permanent = (SubType >> 4 & 0x1);
+    TriggerID = (SubType & 0xF);
+    TriggerType = (SubType >> 6 & 0x1); // 0 - Normal, 1 - Sign Bit
+    CollisionType = (SubType >> 5 & 0x1);
 
     if (!CollisionType)
         Solid = true;
@@ -19,10 +28,10 @@ event Create() {
     H = 16;
     Rotation = 0;
 
-    var StartY:int = this.Y;
-    var CurrentAnimation:int = 0;
-    var Down:int = false;
-    var Pressed:int = false;
+    StartY = this.Y;
+    CurrentAnimation = 0;
+    Down = false;
+    Pressed = false;
 }
 event Update() {
     this.Down = Scene.Players[0].Ground && Scene.Players[0].LastObject == this;

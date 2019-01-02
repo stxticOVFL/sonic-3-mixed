@@ -1,5 +1,7 @@
 object 0x2A;
 
+var PieceVels:short[64];
+
 event Create() {
     Active = true;
     Priority = false;
@@ -7,8 +9,7 @@ event Create() {
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    local i:int = 0;
-    var PieceVels:short[64];
+    var i:int = 0;
 
     if (Scene.ZoneID == 1) {
         W = 32;
@@ -54,17 +55,17 @@ event DrawAIZ(CamX:int, CamY:int) {
 event BreakAIZ(HitSide:int) {
     if (Scene.ZoneID != 1) return;
 
-    local w:int = 2;
-    local h:int = 6;
-    local x:int = X - w * 8;
-    local y:int = Y + H / 2 - h * 16;
-    local left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
-    local top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
-    local top2:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
-    local toph:int = 16;
+    var w:int = 2;
+    var h:int = 6;
+    var x:int = X - w * 8;
+    var y:int = Y + H / 2 - h * 16;
+    var left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
+    var top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
+    var top2:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
+    var toph:int = 16;
 
-    for (i:int = 0; i < w; i++) {
-        for (j:int = 0; j < h; j++) {
+    for (var i:int = 0; i < w; i++) {
+        for (var j:int = 0; j < h; j++) {
             toph = 16;
             top2 = top + 88 - h * 16 + j * 16;
             if (top2 < top) {
@@ -101,7 +102,7 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     if (Scene.Players[PlayerID].EZX > X + W / 2 - 2) return 0;
     if (Scene.Players[PlayerID].EZX < X - W / 2 + 2) return 0;
 
-    Sound::Play(Sound::SFX_COLLAPSE);
+    Sound.Play(Sound.SFX_COLLAPSE);
 
     BreakableByRoll = false;
     BreakableByJump = false;

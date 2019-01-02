@@ -41,7 +41,7 @@ event OnHit() : int {
 
 event OnDeath():int {
     Scene.LevelTriggerFlag = (SubType + 1);
-    return Enemy::OnDeath();
+    return Enemy.OnDeath();
 }
 
 event Render(CamX:int, CamY:int) {

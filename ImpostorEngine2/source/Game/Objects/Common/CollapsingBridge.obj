@@ -1,5 +1,13 @@
 object 0x0F;
 
+var f:int;
+var Allotted:int;
+var Separation:int;
+var Sections:int;
+var Vsect:int;
+var Reset:int;
+var BridgeType:int;
+
 event Create() {
     this.Active = true;
     this.Priority = false;
@@ -7,20 +15,20 @@ event Create() {
     this.W = 96;
     this.H = 64;
 
-    var f:int = -1;
-    var Allotted:int = 60 * 5;
+    f = -1;
+    Allotted = 60 * 5;
 
-    var Separation:int = 2;
-    var Sections:int = 8;
-    var Vsect:int = 2;
+    Separation = 2;
+    Sections = 8;
+    Vsect = 2;
 
-    var Reset:int = false;
+    Reset = false;
 
     SolidTop = true;
     SolidCustomized = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    var BridgeType:int = SubType >> 4 & 0xF;
+    BridgeType = SubType >> 4 & 0xF;
 
     if (Scene.ZoneID == 1) { // AIZ
         Allotted = (SubType & 0xF) * 16 + 8;
@@ -116,7 +124,7 @@ event Break() {
     Sound.Play(Sound.SFX_COLLAPSE);
     if ((this.SubType & 0xF) != 0 && (this.SubType >> 4) != 3) {
         if ((this.SubType >> 4) == 1) {
-            for (local i:int = 0; i < 8; i++) {
+            for (var i:int = 0; i < 8; i++) {
                 if (!(i & 1)) {
                     Scene.AddFallingTile(0x2D, this.X - this.W / 2 + (i << 4), this.Y, 0, -16, false, false, i * 4 + 4 + 2);
                     Scene.AddFallingTile(0x35, this.X - this.W / 2 + (i << 4), this.Y, 0,   0, false, false, i * 4 + 4);
@@ -134,7 +142,7 @@ event Break() {
             Scene.AddFallingTile(0x35, this.X + (4 << 4), this.Y, 0,   0, false, false, 9 * 4);
         }
         else if ((this.SubType >> 4) == 1) {
-            for (local i:int = 0; i < 8; i++) {
+            for (var i:int = 0; i < 8; i++) {
                 if (!(i & 1)) {
                     Scene.AddFallingTile(0x2D, this.X - this.W / 2 + (i << 4), this.Y, 0, -16, false, false, i * 4 + 2);
                     Scene.AddFallingTile(0x35, this.X - this.W / 2 + (i << 4), this.Y, 0,   0, false, false, i * 4);
@@ -146,7 +154,7 @@ event Break() {
             }
         }
         else if ((this.SubType >> 4) == 8) {
-            for (local i:int = 1; i < 7; i++) {
+            for (var i:int = 1; i < 7; i++) {
                 if ((i & 1)) {
                     Scene.AddFallingTile(0x2D, this.X - this.W / 2 + (i << 4), this.Y, 0, -16, false, false, i * 4 + 2);
                     Scene.AddFallingTile(0x35, this.X - this.W / 2 + (i << 4), this.Y, 0,   0, false, false, i * 4);
@@ -174,7 +182,7 @@ event Break() {
         }
     }
     else {
-        for (local i:int = 0; i < 8; i++) {
+        for (var i:int = 0; i < 8; i++) {
             Scene.AddFallingTile(0x132, this.X - 64 + (i << 4), this.Y, 0, -16, !(i & 1), false, i * 4 + 6);
             if ((i & 3) == 0) {
                 Scene.AddFallingTile(0x143, this.X - 64 + (i << 4), this.Y, 0,  0, false, false, i * 4 + 4);
@@ -217,7 +225,7 @@ event Render(CamX:int, CamY:int) {
     if (Scene.ZoneID == 2) {
         if ((this.SubType & 0xF) != 0 && (this.SubType >> 4) != 3) {
             if ((this.SubType >> 4) == 1) {
-                for (local i:int = 0; i < 8; i++) {
+                for (var i:int = 0; i < 8; i++) {
                     if (!(i & 1)) {
                         G.DrawSprite(Scene.TileSprite, 0, 0x2D, 8 + this.X - CamX - this.W / 2 + (i << 4) + (0), 8 + this.Y - CamY + (-16), 0, IE_NOFLIP);
                         G.DrawSprite(Scene.TileSprite, 0, 0x35, 8 + this.X - CamX - this.W / 2 + (i << 4) + (0), 8 + this.Y - CamY + (0), 0, IE_NOFLIP);
@@ -236,7 +244,7 @@ event Render(CamX:int, CamY:int) {
                 //}
             }
             else if ((this.SubType >> 4) == 3) {
-                for (local i:int = 0; i < 8; i++) {
+                for (var i:int = 0; i < 8; i++) {
                     if (!(i & 1)) {
                         G.DrawSprite(Scene.TileSprite, 0, 0x2D, 8 + this.X - CamX - this.W / 2 + (i << 4) + (0), 8 + this.Y - CamY + (-16), 0, IE_NOFLIP);
                         G.DrawSprite(Scene.TileSprite, 0, 0x35, 8 + this.X - CamX - this.W / 2 + (i << 4) + (0), 8 + this.Y - CamY + (0), 0, IE_NOFLIP);
@@ -257,7 +265,7 @@ event Render(CamX:int, CamY:int) {
                 //*/
             }
             else if ((this.SubType >> 4) == 8) {
-                for (local i:int = 1; i < 7; i++) {
+                for (var i:int = 1; i < 7; i++) {
                     if ((i & 1)) {
                         G.DrawSprite(Scene.TileSprite, 0, 0x2D, 8 + this.X - CamX - this.W / 2 + (i << 4) + (0), 8 + this.Y - CamY + (-16), 0, IE_NOFLIP);
                         G.DrawSprite(Scene.TileSprite, 0, 0x35, 8 + this.X - CamX - this.W / 2 + (i << 4) + (0), 8 + this.Y - CamY + (0), 0, IE_NOFLIP);
@@ -284,7 +292,7 @@ event Render(CamX:int, CamY:int) {
             }
         }
         else {
-            for (local i:int = 0; i < 8; i++) {
+            for (var i:int = 0; i < 8; i++) {
                 G.DrawSprite(Scene.TileSprite, 0, 0x132, 8 + this.X - CamX - 64 + (i << 4) + (0), 8 + this.Y - CamY + (-16), 0, (i & 1) ? IE_NOFLIP : IE_FLIPX);
                 if ((i & 3) == 0) {
                     G.DrawSprite(Scene.TileSprite, 0, 0x143, 8 + this.X - CamX - 64 + (i << 4) + (0), 8 + this.Y - CamY + (0), 0, IE_NOFLIP);

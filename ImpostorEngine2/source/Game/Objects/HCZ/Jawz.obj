@@ -2,6 +2,8 @@ object 0x93;
 
 subclass Enemy;
 
+var Flip:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -13,7 +15,7 @@ event Create() {
 
     CurrentAnimation = 15;
 
-    var Flip:int = -2;
+    Flip = -2;
 
     HitCount = 1;
 

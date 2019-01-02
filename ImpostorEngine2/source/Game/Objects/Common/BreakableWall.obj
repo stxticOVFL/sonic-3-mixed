@@ -86,7 +86,7 @@ event DrawMGZ(CamX:int, CamY:int) {
     G.DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
     return;
 
-    local h:int = H / 2;
+    var h:int = H / 2;
 
     // Top
     G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX - 32 + (0), 8 + Y - h - CamY + (0), 0, IE_NOFLIP);
@@ -95,7 +95,7 @@ event DrawMGZ(CamX:int, CamY:int) {
     G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX + 16 + ( 0), 8 + Y - h - CamY + (0), 0, IE_FLIPX);
 
     // Mid
-    for (i:int = -h + 16; i < h - 16; i += 16) {
+    for (var i:int = -h + 16; i < h - 16; i += 16) {
         G.DrawSprite(Scene.TileSprite, 0, 0x4A, 8 + X - CamX - 32 + (0), 8 + Y + i - CamY + (0), 0, IE_NOFLIP);
         G.DrawSprite(Scene.TileSprite, 0, 0x4B, 8 + X - CamX - 16 + (0), 8 + Y + i - CamY + (0), 0, IE_NOFLIP);
         G.DrawSprite(Scene.TileSprite, 0, 0x4B, 8 + X - CamX + 00 + ( 0), 8 + Y + i - CamY + (0), 0, IE_FLIPX);
@@ -144,7 +144,7 @@ event BreakHCZ(HitSide:int) {
 event BreakMGZ(HitSide:int) {
     if (Scene.ZoneID != 3) return;
 
-    local h:int = H / 2;
+    var h:int = H / 2;
 
     HitSide = -HitSide;
 
@@ -155,8 +155,8 @@ event BreakMGZ(HitSide:int) {
     Scene.AddFallingTile(0x44, X + 16, Y - h, 0, 0, true, false,  HitSide * 0x700, -0x680);
 
     // Mid
-    local wh:int = -1;
-    for (i:int = -h + 16; i < h - 16; i += 16) {
+    var wh:int = -1;
+    for (var i:int = -h + 16; i < h - 16; i += 16) {
         Scene.AddFallingTile(0x4A, X - 32, Y + i, 0, 0, false, false, HitSide * (0x680 - (Math.abs(wh) << 7)), wh * 0x100);
         Scene.AddFallingTile(0x4B, X - 16, Y + i, 0, 0, false, false, HitSide * (0x780 - (Math.abs(wh) << 7)), wh * 0x180);
         Scene.AddFallingTile(0x4B, X + 00, Y + i, 0, 0, true, false,  HitSide * (0x880 - (Math.abs(wh) << 7)), wh * 0x200);
@@ -195,7 +195,7 @@ event Render(CamX:int, CamY:int) {
 }
 
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
-    Sound::Play(Sound::SFX_COLLAPSE);
+    Sound.Play(Sound.SFX_COLLAPSE);
 
     BreakableByRoll = false;
     BreakableByJump = false;
@@ -203,7 +203,7 @@ event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
     BreakableByKnuckles = false;
     Solid = false;
 
-    local HitSide:int = -1;
+    var HitSide:int = -1;
     if (HitFrom == 0)
         HitSide = 1;
 

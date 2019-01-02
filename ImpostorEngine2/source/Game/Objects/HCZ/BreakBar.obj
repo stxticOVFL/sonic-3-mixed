@@ -1,5 +1,7 @@
 object 0x36;
 
+var Broken:bool;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -9,13 +11,13 @@ event Create() {
 
     CurrentAnimation = 9;
 
-    var Broken:bool = false;
+    Broken = false;
 }
 event Update() {
     if (!Broken) {
-        for (local i:int = 0; i < Scene.PlayerCount; i++) {
+        for (var i:int = 0; i < Scene.PlayerCount; i++) {
             if (Broken) {
-                Scene.Players[i].Action = ActionType::InStream;
+                Scene.Players[i].Action = ActionType.InStream;
             }
 
             if (Scene.Players[i].EZY < Y - H / 2) {
@@ -28,19 +30,19 @@ event Update() {
                 continue;
             }
 
-            if (Scene.Players[i].Action == ActionType::Hurt || Scene.Players[i].Action == ActionType::Dead)
+            if (Scene.Players[i].Action == ActionType.Hurt || Scene.Players[i].Action == ActionType.Dead)
                 continue;
 
-            if (Scene.Players[i].EZX > X + 20 && Scene.Players[i].Action == ActionType::InStream) {
-                Scene.Players[i].Action = ActionType::InStreamGrab;
+            if (Scene.Players[i].EZX > X + 20 && Scene.Players[i].Action == ActionType.InStream) {
+                Scene.Players[i].Action = ActionType.InStreamGrab;
                 Scene.Players[i].EZX = X + 20;
                 Scene.Players[i].XSpeed = 0;
             }
 
-            if (Scene.Players[i].Action == ActionType::InStreamGrab && Scene.Players[i].InputJump && i == 0) {
-                Scene.Players[i].Action = ActionType::InStream;
+            if (Scene.Players[i].Action == ActionType.InStreamGrab && Scene.Players[i].InputJump && i == 0) {
+                Scene.Players[i].Action = ActionType.InStream;
                 Broken = true;
-                Sound::Play(Sound::SFX_COLLAPSE);
+                Sound.Play(Sound.SFX_COLLAPSE);
             }
         }
     }
@@ -56,7 +58,7 @@ event Render(CamX:int, CamY:int) {
         Sprite.Animations[CurrentAnimation].Frames[0].OffX,
         Sprite.Animations[CurrentAnimation].Frames[0].OffY);
 
-    for (local i:int = -H / 2 + 12; i < H / 2 - 4; i += 8) {
+    for (var i:int = -H / 2 + 12; i < H / 2 - 4; i += 8) {
         G.DrawSprite(Sprite,
             Sprite.Animations[CurrentAnimation].Frames[1].X,
             Sprite.Animations[CurrentAnimation].Frames[1].Y,

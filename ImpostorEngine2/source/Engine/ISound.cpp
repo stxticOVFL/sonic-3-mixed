@@ -290,23 +290,12 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
             convert.buf = (uint8_t*)malloc(length * convert.len_mult);
             convert.len = length;
             memcpy(convert.buf, buffer, length);
-            SDL_free(buffer);
+            free(buffer);
             SDL_ConvertAudio(&convert);
 
             Buffer = convert.buf;
             Length = convert.len_cvt;
             Remaining = convert.len_cvt;
-
-            if (strstr(filename, "Music")) {
-                // IApp::Print(3, "Converting \"%s\" from:", filename);
-                // IApp::Print(3, "Format: %X", Format.format);
-                // IApp::Print(3, "Channels: %d", Format.channels);
-                // IApp::Print(3, "Frequency: %d", Format.freq);
-                // IApp::Print(3, "to:");
-                // IApp::Print(3, "Format: %X", IAudio::DeviceFormat.format);
-                // IApp::Print(3, "Channels: %d", IAudio::DeviceFormat.channels);
-                // IApp::Print(3, "Frequency: %d", IAudio::DeviceFormat.freq);
-            }
         }
         else {
             Buffer = buffer;
@@ -322,7 +311,7 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
 PUBLIC int  ISound::RequestMoreData(int samples, int amount) {
     int num_samples = 0;
     if (vorbis_file)
-        num_samples = ReadVorbis(vorbis_file, ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels * 2);
+        num_samples = ReadVorbis(vorbis_file, ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels);
     else
         num_samples = Resource->Read(ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels * 2);
     if (num_samples == 0)

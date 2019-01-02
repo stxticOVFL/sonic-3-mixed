@@ -50,10 +50,10 @@ public:
 
 #define AUDIO_FORMAT AUDIO_S16
 
-#define AUDIO_FREQUENCY 22050
-// #define AUDIO_FREQUENCY 44100
+// #define AUDIO_FREQUENCY 22050
+#define AUDIO_FREQUENCY 44100
 #define AUDIO_CHANNELS 2
-#define AUDIO_SAMPLES 0x100
+#define AUDIO_SAMPLES 0x200
 #define AUDIO_MAX_SOUNDS 4
 #define SDL_AUDIO_ALLOW_CHANGES SDL_AUDIO_ALLOW_ANY_CHANGE
 
@@ -133,13 +133,12 @@ PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp
 
     StackNode* newms = new StackNode();
     newms->Audio = music;
+    // music->Seek(0);
     // music->Seek(int(ceil(at * AUDIO_FREQUENCY)));
     newms->Buffer = music->Buffer + int(ceil(at * AUDIO_FREQUENCY)) * 4;
     newms->Length = music->Length - int(ceil(at * AUDIO_FREQUENCY)) * 4;
     newms->BufferStart = music->Buffer;
     newms->LengthStart = music->Length;
-    music->Seek(0);
-    music->Seek(0);
     newms->Loop = loop;
     newms->LoopPoint = lp;
     newms->FadeOut = false;

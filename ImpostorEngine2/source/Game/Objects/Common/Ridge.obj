@@ -9,7 +9,7 @@ event Create() {
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-    if (Scene.Players[PlayerID].Action == ActionType::Dead)
+    if (Scene.Players[PlayerID].Action == ActionType.Dead)
         return 0;
 
     if (!FlipX) {
@@ -21,7 +21,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
             Scene.Players[PlayerID].EZY <= Y + 0x20 &&
             Scene.Players[PlayerID].DisplayFlip == 1) {
             // SpringFlip = 4;
-            Scene.Players[PlayerID].Action = ActionType::Spring;
+            Scene.Players[PlayerID].Action = ActionType.Spring;
 
             Scene.Players[PlayerID].XSpeed += 0x400;
             Scene.Players[PlayerID].YSpeed = -0x700;
@@ -37,7 +37,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
             Scene.Players[PlayerID].EZY <= Y + 0x20 &&
             Scene.Players[PlayerID].DisplayFlip == 1) {
             // SpringFlip = 4;
-            Scene.Players[PlayerID].Action = ActionType::Spring;
+            Scene.Players[PlayerID].Action = ActionType.Spring;
 
             Scene.Players[PlayerID].XSpeed -= 0x400;
             Scene.Players[PlayerID].YSpeed = -0x700;

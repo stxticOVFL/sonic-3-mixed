@@ -1,5 +1,11 @@
 object 0x201;
 
+var SubX:int;
+var SubY:int;
+var SpinSpeed:int;
+var Rot:int;
+var Falling:bool;
+
 event Create() {
     W = 48;
     H = 24;
@@ -8,17 +14,17 @@ event Create() {
 
     CurrentAnimation = (int)(Scene.Players[0].Character);
 
-    var SubX:int = X << 16;
-    var SubY:int = Y << 16;
+    SubX = X << 16;
+    SubY = Y << 16;
 
     XSpeed = 0;
     YSpeed = 0;
     Frame = 0x00;
 
-    var SpinSpeed:int = 0x600;
-    var Rot:int = 0;
+    SpinSpeed = 0x600;
+    Rot = 0;
 
-    var Falling:bool = true;
+    Falling = true;
 
     Timer = -1;
 }
@@ -34,7 +40,7 @@ event Update() {
     X = SubX >> 16;
     Y = SubY >> 16;
 
-    for (local i:int = 0; i <= 8; i++) {
+    for (var i:int = 0; i <= 8; i++) {
         if (Scene.CollisionAt(SubX >> 16, Y + 24)) {
             if (Falling) {
                 Falling = false;
@@ -88,11 +94,11 @@ event Update() {
     }
 }
 event Render(CamX:int, CamY:int) {
-    local c:int = 0;
-    local s:int = 0;
-    local x:int = 0;
-    local w:int = 0;
-    local d:int = 0;
+    var c:int = 0;
+    var s:int = 0;
+    var x:int = 0;
+    var w:int = 0;
+    var d:int = 0;
     Sprite = Scene.Objects2Sprite;
 
     G.DrawSprite(Sprite, 6, 2, X - CamX, Y - CamY, 0, IE_NOFLIP);
@@ -164,7 +170,7 @@ event Render(CamX:int, CamY:int) {
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     return 0;
 
-    if (Scene.Players[PlayerID].Action != ActionType::Jumping)
+    if (Scene.Players[PlayerID].Action != ActionType.Jumping)
         return 0;
 
     if (Scene.Players[PlayerID].YSpeed > 0)

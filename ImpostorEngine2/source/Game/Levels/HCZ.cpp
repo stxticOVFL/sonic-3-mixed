@@ -37,7 +37,7 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         WaterLine = new ISprite("Sprites/HCZ/AniTiles2.gif", App);
     }
     else {
-		Sound::SoundBank[0] = new ISound("Music/3M_HCZ2.ogg", true);
+		Sound::SoundBank[0] = new ISound("Music/3M_HCZ2_tmp.ogg", true);
 		Sound::Audio->LoopPoint[0] = 329797;
 
         Str_TileConfigBin = "Stages/HCZ2/TileConfig.bin";
@@ -60,8 +60,8 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartX = 0x0170;
         // PlayerStartY = 0x082C;
 
-        // PlayerStartX = 0x097D;
-        // PlayerStartY = 0x0148;
+        PlayerStartX = 0x1A2E;
+        PlayerStartY = 0x056C;
 
         VisualWaterLevel = 0x700;
         WaterLevel = 0x700;
@@ -722,6 +722,9 @@ PUBLIC void Level_HCZ::Subupdate() {
 
     // Wall shit (part 2)
     if (Act == 2) {
+        Data->layers[1].Visible = false;
+        Data->layers[1].Flags = 1 | 2 | 4;
+
         for (int p = 0; p < PlayerCount; p++) {
             IPlayer* Player = Players[p];
             if (Player->Action == ActionType::Dead) continue;

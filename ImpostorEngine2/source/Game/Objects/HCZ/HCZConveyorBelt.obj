@@ -1,8 +1,11 @@
 object 0x3E;
 
+var StartX:int;
+var EndX:int;
+
 event Create() {
-    var StartX:int = 0xB28;
-    var EndX:int = 0xCD8;
+    StartX = 0xB28;
+    EndX = 0xCD8;
 
     Active = true;
     Priority = true;
@@ -59,8 +62,8 @@ event Update() {
             break;
     }
 
-    for (local p:int = 0; p < Scene.PlayerCount; p++) {
-        if (Scene.Players[p].Action == ActionType::Hurt || Scene.Players[p].Action == ActionType::Dead)
+    for (var p:int = 0; p < Scene.PlayerCount; p++) {
+        if (Scene.Players[p].Action == ActionType.Hurt || Scene.Players[p].Action == ActionType.Dead)
             continue;
 
         if (Scene.Players[p].ObjectControlled == 0 &&
@@ -73,7 +76,7 @@ event Update() {
             Y >= Scene.Players[p].EZY - 0x4 &&
             Y <  Scene.Players[p].EZY + 0xC) {
             Scene.Players[p].ObjectControlled = 4;
-            Scene.Players[p].Action = ActionType::Conveyor;
+            Scene.Players[p].Action = ActionType.Conveyor;
             Scene.Players[p].Data2 = SubType;
         }
         if (Scene.Players[p].ObjectControlled == 4 && Scene.Players[p].Data2 == SubType) {

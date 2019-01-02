@@ -2,6 +2,12 @@ object 0x8E;
 
 subclass Enemy;
 
+var Flip:int;
+var SubX:int;
+var frame_face:int;
+var frame_hand:int;
+var frame_arm:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -13,11 +19,11 @@ event Create() {
 
     CurrentAnimation = 0;
 
-    var Flip:int = 1;
+    Flip = 1;
     if (FlipX)
         Flip = -1;
 
-    var SubX:int = 0;
+    SubX = 0;
 
     Frame = 0;
 
@@ -25,9 +31,9 @@ event Create() {
 
     Scene.AddSelfToRegistry(this, "Enemies");
 
-    var frame_face:int = 0;
-    var frame_hand:int = 0;
-    var frame_arm:int = 0;
+    frame_face = 0;
+    frame_hand = 0;
+    frame_arm = 0;
 
     VisualLayer = 1;
 }
@@ -45,16 +51,16 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    local final_x:int = 0;
-    local final_y:int = 0;
-    local angle:int = 0;
-    local offset:int = 1;
-    local f:int = 0;
+    var final_x:int = 0;
+    var final_y:int = 0;
+    var angle:int = 0;
+    var offset:int = 1;
+    var f:int = 0;
 
     if (frame_hand % (64 + 48) >= 64)
         offset = 0;
 
-    for (i:int = 0; i < 5; i++) {
+    for (var i:int = 0; i < 5; i++) {
         final_x = X - CamX + Flip * -14;
         final_y = Y - CamY - 2 - (frame_face / 8) * 2 * offset;
 

@@ -1,11 +1,14 @@
 object 0x53;
 
+var LastX:int;
+var LastY:int;
+
 event Create() {
     Active = true;
     Priority = true;
 
-    var LastX:int = X;
-    var LastY:int = Y;
+    LastX = X;
+    LastY = Y;
 
     SolidTop = true;
     Scene.AddSelfToRegistry(this, "Solid");
@@ -23,7 +26,7 @@ event Update() {
     XSpeed = (X - LastX) << 8;
 
     if (CollidingWithPlayer) {
-        if (Scene.Player.Action != ActionType::Dead && Scene.Player.EZY < Y) {
+        if (Scene.Player.Action != ActionType.Dead && Scene.Player.EZY < Y) {
             if (Scene.CollisionAt(Scene.Player.EZX, Scene.Player.EZY - Scene.Player.H / 2 - 2, NULL, 2, Scene.Player)) {
                 Scene.Player.Die(false);
             }

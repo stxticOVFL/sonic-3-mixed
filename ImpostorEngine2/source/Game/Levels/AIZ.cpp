@@ -166,7 +166,7 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 
     if (Act == 0) {
         Sound::SoundBank[0] = new ISound("Music/3M_AIZ1.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
+		Sound::Audio->LoopPoint[0] = 1;
 
         Str_TileConfigBin = "Stages/AIZ/TileConfig1.bin";
         Str_SceneBin = "Stages/AIZ/Scene0.bin";

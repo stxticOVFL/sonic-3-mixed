@@ -58,7 +58,7 @@ debug:
 	@mkdir -p $(OBJ_DIRS)
 	@./tools/makeheaders source
 	@make build
-	@lldb -f "$(TARGET)"
+	@lldb -o r -f "$(TARGET)"
 
 clean:
 	@@rm -r $(OBJS)
