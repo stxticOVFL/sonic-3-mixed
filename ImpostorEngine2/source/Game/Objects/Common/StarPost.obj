@@ -1,5 +1,9 @@
 object 0x34;
 
+var Activated:bool;
+var Spin:int;
+var Blinking:bool;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -8,9 +12,9 @@ event Create() {
     H = 64;
     Rotation = 0;
 
-    var Activated:bool = false;
-    var Spin:int = 0;
-    var Blinking:bool = false;
+    Activated = false;
+    Spin = 0;
+    Blinking = false;
     this.Frame = 0;
 
     // TODO: Go through level editor and move all StarPosts out of the ground
@@ -18,7 +22,7 @@ event Create() {
 event Update() {
     // 2 full rotations, counter clockwise, takes 32 frames
     // blinks every 4 frames
-    for (local i:int = 0; i < 20; i++) {
+    for (var i:int = 0; i < 20; i++) {
         if (Scene.CollisionAt(this.X, this.Y + H / 2 - 1)) {
             this.Y -= 1;
         }
@@ -44,9 +48,9 @@ event OnLeaveScreen() : int {
 }
 
 event DrawStar(Rock:int, Ang:int, Side:int, CamX:int, CamY:int) {
-    local cosval:int = (Math.cosHex(Rock) * 16) >> 16;
-    local xx:int = (cosval * Math.cosHex(Ang)) >> 16;
-    local yy:int = (cosval * Math.sinHex(Ang)) >> 16;
+    var cosval:int = (Math.cosHex(Rock) * 16) >> 16;
+    var xx:int = (cosval * Math.cosHex(Ang)) >> 16;
+    var yy:int = (cosval * Math.sinHex(Ang)) >> 16;
 
     if (Math.sinHex(Rock) * Side >= 0) {
         G.DrawSprite(Sprite,

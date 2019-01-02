@@ -17,9 +17,9 @@ event Create() {
     }
 }
 event Update() {
-    local AllPast:bool = true;
+    var AllPast:bool = true;
 
-    for (local i:int = 0; i < Scene.PlayerCount; i++) {
+    for (var i:int = 0; i < Scene.PlayerCount; i++) {
         if (Scene.Players[i].EZX - 10 < this.X + 16 && Scene.Players[i].OnScreen) {
             AllPast = false;
             break;

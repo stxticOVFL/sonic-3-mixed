@@ -1,5 +1,7 @@
 object 0x59;
 
+var Rev:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -7,7 +9,7 @@ event Create() {
     W = 32;
     H = 32;
 
-    var Rev:int = 0;
+    Rev = 0;
 
     SolidCustomized = true;
     Scene.AddSelfToRegistry(this, "Solid");
@@ -30,15 +32,15 @@ event Render(CamX:int, CamY:int) {
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-    local i:int;
-    if (Scene.Players[PlayerID].Action == ActionType::Spindash) {
+    var i:int;
+    if (Scene.Players[PlayerID].Action == ActionType.Spindash) {
         Scene.LevelTriggerFlag = (Scene.LevelTriggerFlag & 0xFFF0) | ((SubType & 0xF) + 1);
 
         Rev = 60;
     }
     // Bounce em off
     if (Scene.Players[PlayerID].EZY < Y - 8 && Rev > 0 && Scene.Players[PlayerID].Ground) {
-        Scene.Players[PlayerID].Action = ActionType::Jumping;
+        Scene.Players[PlayerID].Action = ActionType.Jumping;
         Scene.Players[PlayerID].JumpVariable = 0;
         Scene.Players[PlayerID].Ground = false;
         if (FlipX) {

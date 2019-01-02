@@ -122,26 +122,6 @@ enum class VibrationType {
     Death,
 };
 
-struct AnimFrame {
-    int X;
-    int Y;
-    int W;
-    int H;
-    int OffX;
-    int OffY;
-    int SheetNumber;
-    int Duration;
-};
-
-struct Animation {
-    char* Name;
-    int FrameCount;
-    int AnimationSpeed;
-    int FrameToLoop;
-    int Flags;
-    AnimFrame* Frames;
-};
-
 struct PlayerStatus {
     int16_t     X = 0;
     int16_t     Y = 0;
@@ -200,7 +180,7 @@ public:
     /*ITexture* Palette1 = NULL;
     ITexture* Palette2 = NULL;*/
 
-    Animation* Animations = NULL;
+    ISprite::Animation* Animations = NULL;
     int CurrentAnimation = 0;
     int CurrentFrame = 0;
     int ShieldFrame = 0;
@@ -266,8 +246,8 @@ public:
     int16_t             GroundSpeed = 0;
 
     float               Flip = 1;
-    float               DisplayX = 0;
-    float               DisplayY = 0;
+    int32_t             DisplayX = 0;
+    int32_t             DisplayY = 0;
     int                 CameraX = 0;
     int                 CameraY = 0;
     float               DisplayFlip = 1;
@@ -449,8 +429,6 @@ public:
      */
 
     // <editor-fold> Collision functions
-    bool (*CollisionAt)(int, int, int*) = NULL;
-
     bool CollisionSensor360(int obj, int len, int A, int no360);
     bool CollisionASensor(int obj, int len);
     bool CollisionBSensor(int obj, int len);

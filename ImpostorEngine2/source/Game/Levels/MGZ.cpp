@@ -222,7 +222,11 @@ PUBLIC void Level_MGZ::HandleCamera() {
     // 0x2: Don't Repeat X
     // 0x3: Don't Repeat Y
 
-    if (Act == 2) {
+    if (Act == 1) {
+        Data->layers[1].IsScrollingVertical = true;
+        Data->layers[2].IsScrollingVertical = true;
+    }
+    else if (Act == 2) {
         Data->layers[1].Flags |= 1 | 0 | 4;
         Data->layers[1].OffsetX = 0x3480;
         if (RoutineNumber == 0) {

@@ -1,5 +1,12 @@
 object 0x85;
 
+var HyperColor:int;
+var HyperRing:bool;
+var percent:int;
+var GoTimer:int;
+var StoredX:int;
+var StoredY:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -9,15 +16,15 @@ event Create() {
     VisW = 64;
     VisH = 64;
 
-    var HyperColor:int = 0xF2D141;
-    var HyperRing:bool = true;
-    var percent:int = 0;
+    HyperColor = 0xFFFF00;
+    HyperRing = true;
+    percent = 0;
 
     HyperRing = Scene.ZoneID >= 7;
 
-    var GoTimer:int = -1;
-    var StoredX:int = 0;
-    var StoredY:int = 0;
+    GoTimer = -1;
+    StoredX = 0;
+    StoredY = 0;
 }
 
 event Update() {
@@ -69,10 +76,10 @@ event Update() {
     if (GoTimer > 0) {
         Sprite = Scene.Objects3Sprite;
 
-        local LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
-        local FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;
+        var LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
+        var FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;
 
-        if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) {
+        if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
             Frame += ((0x100 * Sprite.Animations[CurrentAnimation].AnimationSpeed * 0x100) >> 8) / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
 
         if (Frame >= FrameCount * 0x100) {

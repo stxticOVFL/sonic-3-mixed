@@ -1,5 +1,8 @@
 object 0x2D;
 
+var Length:int;
+var LastY:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -10,8 +13,8 @@ event Create() {
     SolidTop = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    var Length:int = 0;
-    var LastY:int = Y;
+    Length = 0;
+    LastY = Y;
 }
 
 event Update() {

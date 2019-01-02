@@ -1,5 +1,10 @@
 object 0x67;
 
+var Offset:int;
+var Reverse:bool;
+var DirX:int;
+var DirY:int;
+
 event Create() {
     Active = true;
     Priority = true;
@@ -14,17 +19,14 @@ event Create() {
 
     Timer = SubType + Scene.Frame;
 
-    var Offset:int = (SubType & 0x7F);
+    Offset = (SubType & 0x7F);
+    Reverse = false;
+    if (SubType & 0x80) {
+        Reverse = true;
+    }
 
-    var LastY:int = Y;
-
-    var FX:bool = FlipX;
-    var FY:bool = FlipY;
-    FY = false;
-    var F:int = 1;
-
-    var DirX:int = 1;
-    var DirY:int = 1;
+    DirX = 1;
+    DirY = 1;
 
     /*
 
@@ -49,8 +51,6 @@ event Create() {
 
 event Update() {
     /*
-
-    LastY = Y;
 
     Timer &= 0x3FF;
     if (Timer <= 0xFF) {

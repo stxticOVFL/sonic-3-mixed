@@ -1,5 +1,17 @@
 object 0x51;
 
+var LastX:int;
+var LastY:int;
+var YS:int;
+var Vertical:int;
+var RisingType:int;
+var Rising:int;
+var Moving:int;
+var SizeIndex:int;
+var MoveType:int;
+var BackupX:int;
+var Amplitude:int;
+
 event Create() {
     Active = true;
     Priority = true;
@@ -9,17 +21,17 @@ event Create() {
 
     Timer = 0;
 
-    var LastX:int = X;
-    var LastY:int = Y;
-    var YS:int = 1 - (FlipX << 1);
-    var Vertical:int = false;
-    var RisingType:int = false;
-    var Rising:int = false;
-    var Moving:int = false;
-    var SizeIndex:int = (SubType >> 4) & 0x7;
-    var MoveType:int = (SubType & 0xF) - 0x8;
-    var BackupX:int = X;
-    var Amplitude:int = 0;
+    LastX = X;
+    LastY = Y;
+    YS = 1 - (FlipX << 1);
+    Vertical = false;
+    RisingType = false;
+    Rising = false;
+    Moving = false;
+    SizeIndex = (SubType >> 4) & 0x7;
+    MoveType = (SubType & 0xF) - 0x8;
+    BackupX = X;
+    Amplitude = 0;
 
 
     if (SizeIndex == 0) {
@@ -91,7 +103,7 @@ event Update() {
             Y = InitialY - Amplitude / 2 + (Math.sinHex(Scene.Frame) >> (14 - MoveType));
 
         if (CollidingWithPlayer) {
-            if (Scene.Player.Action != ActionType::Dead && Scene.Player.EZY < Y - H / 2) {
+            if (Scene.Player.Action != ActionType.Dead && Scene.Player.EZY < Y - H / 2) {
                 if (Scene.CollisionAt(Scene.Player.EZX - 9, Scene.Player.EZY - Scene.Player.H / 2 - 2, NULL, 2, Scene.Player)) {
                     Scene.Player.Die(false);
                 }
@@ -116,7 +128,7 @@ event Update() {
             Y = InitialY - 0x40 / 2 + (Math.sinHex(Scene.Frame) >> 11);
 
         if (CollidingWithPlayer) {
-            if (Scene.Player.Action != ActionType::Dead && Scene.Player.EZY < Y - H / 2) {
+            if (Scene.Player.Action != ActionType.Dead && Scene.Player.EZY < Y - H / 2) {
                 if (Scene.CollisionAt(Scene.Player.EZX, Scene.Player.EZY - Scene.Player.H / 2 - 2, NULL, 2, Scene.Player)) {
                     Scene.Player.Die(false);
                 }
@@ -132,7 +144,7 @@ event Update() {
         }
 
         if (CollidingWithPlayer) {
-            if (Scene.Player.Action != ActionType::Dead && Scene.Player.EZY < Y - H / 2) {
+            if (Scene.Player.Action != ActionType.Dead && Scene.Player.EZY < Y - H / 2) {
                 if (Scene.CollisionAt(Scene.Player.EZX - 9, Scene.Player.EZY - Scene.Player.H / 2 - 2, NULL, 2, Scene.Player)) {
                     Scene.Player.Die(false);
                 }
@@ -160,8 +172,8 @@ event Update() {
     }
 }
 event Render(CamX:int, CamY:int) {
-    local nX:int = X;
-    local nY:int = Y;
+    var nX:int = X;
+    var nY:int = Y;
 
     if (Moving) {
         if (!RisingType) {

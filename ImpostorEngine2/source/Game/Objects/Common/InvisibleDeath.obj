@@ -1,20 +1,25 @@
 object 0x6B;
 
+var Painful:bool;
+var Deadly:bool;
+var Rotation:int;
+var Size:int;
+
 event Create() {
     Active = true;
     Priority = false;
 
     // Change this for InvisibleSpikes and InvisibleDeath
-    var Painful:bool = false;
-    var Deadly:bool = true;
+    Painful = false;
+    Deadly = true;
 
     if (!Deadly)
         Solid = true;
 
     Scene.AddSelfToRegistry(this, "Solid");
 
-    var Rotation:int = 0;
-    var Size:int = 1 + (SubType & 0xF0) / 0x10;
+    Rotation = 0;
+    Size = 1 + (SubType & 0xF0) / 0x10;
     W = (SubType & 0xF0) + 0x10;
     H = ((SubType & 0x0F) << 4) + 0x10;
 
@@ -25,7 +30,7 @@ event Create() {
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-    if (Scene.Players[PlayerID].Action == ActionType::Dead)
+    if (Scene.Players[PlayerID].Action == ActionType.Dead)
         return 0;
 
     if (Painful) {

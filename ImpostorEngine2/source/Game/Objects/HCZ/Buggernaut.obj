@@ -2,6 +2,19 @@ object 0x95;
 
 subclass Enemy;
 
+var Flip:int;
+var Routine:int;
+var TimerRoutine:int;
+var MaximumSpeed:int;
+var Acceleration:int;
+var SubX:int;
+var SubY:int;
+var ChildSubX:int;
+var ChildSubY:int;
+var ChildXSpeed:int;
+var ChildYSpeed:int;
+var ChildFlip:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -11,7 +24,7 @@ event Create() {
 
     CurrentAnimation = 4;
 
-    var Flip:int = 1;
+    Flip = 1;
     if (FlipX)
         Flip = -1;
 
@@ -19,25 +32,23 @@ event Create() {
 
     Scene.AddSelfToRegistry(this, "Enemies");
 
-    var Routine:int = 2;
-    var TimerRoutine:int = 2;
+    Routine = 2;
+    TimerRoutine = 2;
     Timer = 0x3F;
 
-    var MaximumSpeed:int = 0x200;
-    var Acceleration:int = 0x10;
+    MaximumSpeed = 0x200;
+    Acceleration = 0x10;
 
-    var SubX:int = X << 16;
-    var SubY:int = Y << 16;
+    SubX = X << 16;
+    SubY = Y << 16;
 
-    var ChildSubX:int = (X + 0x20) << 16;
-    var ChildSubY:int = Y << 16;
-    var ChildXSpeed:int = 0;
-    var ChildYSpeed:int = 0;
-    var ChildFlip:int = -1;
+    ChildSubX = (X + 0x20) << 16;
+    ChildSubY = Y << 16;
+    ChildXSpeed = 0;
+    ChildYSpeed = 0;
+    ChildFlip = -1;
 
     VisualLayer = 1;
-
-
 }
 
 event OnHit() : int {

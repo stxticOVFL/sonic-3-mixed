@@ -1,5 +1,12 @@
 object 0x82;
 
+var CustomFrameToLoop:int;
+var CustomFrameToCount:int;
+var SubX:int;
+var SubY:int;
+var RoutineNumber:int;
+var Ground:bool;
+
 event Create() {
     W = 32;
     H = 32;
@@ -12,23 +19,23 @@ event Create() {
 
     Sprite = Scene.KnuxSprite[0];
 
-    var CustomFrameToLoop:int = -1;
-    var CustomFrameToCount:int = -1;
+    CustomFrameToLoop = -1;
+    CustomFrameToCount = -1;
 
     X += 128;
 
-    var SubX:int = X << 16;
-    var SubY:int = Y << 16;
+    SubX = X << 16;
+    SubY = Y << 16;
 
     Timer = -1;
 
-    var RoutineNumber:int = 0;
-    var Ground:bool = false;
+    RoutineNumber = 0;
+    Ground = false;
 }
 
 event HCZ2() {
-    local offX:int = App.WIDTH / 2 - 0xA0;
-    local TimerMax:int = 60 * 3 + 64 + 32 + 64;
+    var offX:int = App.WIDTH / 2 - 0xA0;
+    var TimerMax:int = 60 * 3 + 64 + 32 + 64;
     if (Scene.CameraX >= 0x3910 - offX && RoutineNumber != -1) {
         if (RoutineNumber < 1) {
             Scene.CameraMinX = Scene.CameraX;
@@ -123,8 +130,8 @@ event Update() {
     X = SubX >> 16;
     Y = SubY >> 16;
 
-    local LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
-    local FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;
+    var LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
+    var FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;
 
     if (CustomFrameToLoop >= 0)
         LoopPoint = CustomFrameToLoop;
@@ -132,7 +139,7 @@ event Update() {
     if (CustomFrameToCount > 0)
         FrameCount = CustomFrameToCount;
 
-    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) {
+    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
         Frame += ((0x100 * Sprite.Animations[CurrentAnimation].AnimationSpeed * 0x100) >> 8) / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
 
     if (Frame >= FrameCount * 0x100) {

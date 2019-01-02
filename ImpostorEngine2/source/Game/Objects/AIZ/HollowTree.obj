@@ -1,5 +1,8 @@
 object 0x03;
 
+var Status:int;
+var PlayerStorage:int[8];
+
 event Create() {
     Active = true;
     Priority = false;
@@ -7,10 +10,9 @@ event Create() {
     W = 0xD0;
     H = 0x168;
 
-    var Status:int = 0;
-    var PlayerStorage:int[8];
+    Status = 0;
 
-    for (i:int = 0; i < 8; i++)
+    for (var i:int = 0; i < 8; i++)
         PlayerStorage[i] = 0;
 
     Timer = 0;
@@ -19,8 +21,8 @@ event Create() {
 }
 
 event Update() {
-    for (i:int = 0; i < Scene.PlayerCount; i++) {
-        if (Scene.Players[i].Action == ActionType::Dead)
+    for (var i:int = 0; i < Scene.PlayerCount; i++) {
+        if (Scene.Players[i].Action == ActionType.Dead)
             continue;
 
         CheckPlayer(i);
@@ -57,8 +59,8 @@ event Update() {
 }
 
 event CheckPlayer(id:int) {
-    local d0:int;
-    local Player:IPlayer = Scene.Players[id];
+    var d0:int;
+    var Player:IPlayer = Scene.Players[id];
 
     if (((Status >> id) & 1) == 0) {
         if (Player.Ground) {
@@ -74,7 +76,7 @@ event CheckPlayer(id:int) {
                                     PlayerStorage[id] = 0;
                                     Player.ObjectControlled |= (1 << 6);
                                     Player.ObjectControlled |= (1 << 1);
-                                    Player.Action = ActionType::Corkscrew;
+                                    Player.Action = ActionType.Corkscrew;
                                     if (id == 0) {
                                         // TODO: Tree reveal
                                     }
@@ -141,9 +143,9 @@ event CheckPlayer(id:int) {
 }
 
 event AIZTree_FallOff(id:int) {
-    local Player:IPlayer = Scene.Players[id];
+    var Player:IPlayer = Scene.Players[id];
     Player.Ground = false;
-    Player.Action = ActionType::Normal;
+    Player.Action = ActionType.Normal;
     Status &= (1 << id) ^ 0xFF;
     Player.ObjectControlled = 0;
     Player.XSpeed >>= 2;
@@ -152,10 +154,10 @@ event AIZTree_FallOff(id:int) {
 }
 
 event AIZTree_SetPlayerPos(id:int) {
-    local d0:int;
-    local d2:int;
-    local d3:int;
-    local Player:IPlayer = Scene.Players[id];
+    var d0:int;
+    var d2:int;
+    var d3:int;
+    var Player:IPlayer = Scene.Players[id];
 
     if (((Status >> id) & 1) != 0) {
         d0 = Player.GroundSpeed;

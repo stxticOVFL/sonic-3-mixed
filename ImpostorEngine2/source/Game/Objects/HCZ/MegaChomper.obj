@@ -2,6 +2,14 @@ object 0x97;
 
 subclass Enemy;
 
+var Flip:int;
+var Routine:int;
+var MaximumSpeed:int;
+var Acceleration:int;
+var SubX:int;
+var SubY:int;
+var StuckX:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -11,7 +19,7 @@ event Create() {
 
     CurrentAnimation = 13;
 
-    var Flip:int = 1;
+    Flip = 1;
     if (FlipX)
         Flip = -1;
 
@@ -19,15 +27,15 @@ event Create() {
 
     Scene.AddSelfToRegistry(this, "Enemies");
 
-    var Routine:int = 2;
+    Routine = 2;
 
-    var MaximumSpeed:int = 0x200;
-    var Acceleration:int = 0x8;
+    MaximumSpeed = 0x200;
+    Acceleration = 0x8;
 
-    var SubX:int = X << 16;
-    var SubY:int = Y << 16;
+    SubX = X << 16;
+    SubY = Y << 16;
 
-    var StuckX:int = 0;
+    StuckX = 0;
     VisualLayer = 1;
 
     Harmful = false;
@@ -47,7 +55,7 @@ event Update() {
         Routine = 6;
     }
 
-    if (Routine == 2 && Scene.Player.Action != ActionType::Dead) {
+    if (Routine == 2 && Scene.Player.Action != ActionType.Dead) {
         if (Scene.Player.EZX < X) {
             if (XSpeed > -MaximumSpeed)
                 XSpeed -= Acceleration;
@@ -89,7 +97,7 @@ event Update() {
         if (Y > Scene.WaterLevel + 8)
             Routine = 2;
     }
-    else if (Routine == 6 && Scene.Player.Action != ActionType::Dead) {
+    else if (Routine == 6 && Scene.Player.Action != ActionType.Dead) {
         XSpeed = 0;
         YSpeed = 0;
 
@@ -116,7 +124,7 @@ event Update() {
             Scene.Player.InputLockLeftRight = true;
             if (Scene.Player.Rings > 0) {
                 Scene.Player.Rings -= 1;
-                Sound::Play(Sound::SFX_RING);
+                Sound.Play(Sound.SFX_RING);
             }
             else {
                 Scene.Player.Die(false);

@@ -1,10 +1,12 @@
 object 0x57;
 
+var PlatformType:int;
+
 event Create() {
     Active = true;
     Priority = true;
 
-    var PlatformType:int = SubType >> 4;
+    PlatformType = SubType >> 4;
 
     W = 64;
     H = 128;
@@ -27,7 +29,7 @@ event Update() {
                     Scene.ShakeTimer = -1;
 
                     if (!(Scene.Frame & 0xF)) {
-                        Sound::Play(Sound::SFX_RUMBLE);
+                        Sound.Play(Sound.SFX_RUMBLE);
                     }
                 }
                 else if (Y == InitialY - (SubType & 0xF0) * 4) {
@@ -40,7 +42,7 @@ event Update() {
                     Scene.ShakeTimer = -1;
 
                     if (!(Scene.Frame & 0xF)) {
-                        Sound::Play(Sound::SFX_RUMBLE);
+                        Sound.Play(Sound.SFX_RUMBLE);
                     }
                 }
                 else if (Y == InitialY + (SubType & 0xF0) * 4) {
@@ -61,7 +63,7 @@ event Update() {
                     Scene.ShakeTimer = -1;
 
                     if (!(Scene.Frame & 0xF)) {
-                        Sound::Play(Sound::SFX_RUMBLE);
+                        Sound.Play(Sound.SFX_RUMBLE);
                     }
                 }
                 else if (X == InitialX - 0x80) {
@@ -75,7 +77,7 @@ event Update() {
                     Scene.ShakeTimer = -1;
 
                     if (!(Scene.Frame & 0xF)) {
-                        Sound::Play(Sound::SFX_RUMBLE);
+                        Sound.Play(Sound.SFX_RUMBLE);
                     }
                 }
                 else if (X == InitialX + 0x80) {

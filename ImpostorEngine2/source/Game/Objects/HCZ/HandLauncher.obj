@@ -1,5 +1,12 @@
 object 0x3A;
 
+var Near:bool;
+var Spinning:bool;
+var outY:int;
+var outY2:int;
+var coolDown:int;
+var lastOutY2:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -9,20 +16,20 @@ event Create() {
 
     CurrentAnimation = 4;
 
-    var Near:bool = false;
-    var Spinning:bool = false;
+    Near = false;
+    Spinning = false;
 
     Timer = -1;
-    var outY:int = 0;
-    var outY2:int = 0;
-    var coolDown:int = -1;
+    outY = 0;
+    outY2 = 0;
+    coolDown = -1;
 
-    var lastOutY2:int = -1;
+    lastOutY2 = -1;
 }
 event Update() {
     Near = false;
     Spinning = false;
-    for (local i:int = 0; i < Scene.PlayerCount; i++) {
+    for (var i:int = 0; i < Scene.PlayerCount; i++) {
         if ((Scene.Players[i].X >> 16) >= X - 32 &&
             (Scene.Players[i].X >> 16) < X + 32 &&
             (((Scene.Players[i].Y >> 16) + Scene.Players[i].H / 2 >= Y - 32 &&
@@ -66,8 +73,8 @@ event Update() {
     if (outY == 1)
         outY = 0;
 
-    for (local i:int = 0; i < Scene.PlayerCount; i++) {
-        if (Scene.Players[i].Action == ActionType::Hurt || Scene.Players[i].Action == ActionType::Dead)
+    for (var i:int = 0; i < Scene.PlayerCount; i++) {
+        if (Scene.Players[i].Action == ActionType.Hurt || Scene.Players[i].Action == ActionType.Dead)
             continue;
 
         if (((Scene.Players[i].X >> 16) - X) < 0x8 &&
@@ -77,8 +84,8 @@ event Update() {
             if (Scene.Players[i].ObjectControlled == 0) {
                 Scene.Players[i].ObjectControlled = 0x7F;
                 Timer = 60;
-                Sound::Play(Sound::SFX_ROLL);
-                Scene.Players[i].Vibrate(VibrationType::SpindashRev);
+                Sound.Play(Sound.SFX_ROLL);
+                Scene.Players[i].Vibrate(VibrationType.SpindashRev);
             }
         }
 
@@ -91,17 +98,17 @@ event Update() {
             Scene.Players[i].DisplayY = (Scene.Players[i].Y >> 16);
             Scene.Players[i].YSpeed = 0;
             Scene.Players[i].DisplayFlip = (FlipX ? -1 : 1);
-            Scene.Players[i].Action = ActionType::Normal;
+            Scene.Players[i].Action = ActionType.Normal;
             Scene.Players[i].Ground = true;
         }
         if (Timer == 0 && coolDown == -1 && Scene.Players[i].ObjectControlled != 0) {
             Scene.Players[i].Y = (Y + 10 - Scene.Players[i].OrigH / 2) << 16;
             Scene.Players[i].DisplayY = (Scene.Players[i].Y >> 16);
-            Scene.Players[i].Action = ActionType::Normal;
+            Scene.Players[i].Action = ActionType.Normal;
             Scene.Players[i].Ground = true;
             Scene.Players[i].ObjectControlled = 0;
             Scene.Players[i].H = Scene.Players[i].OrigH;
-            Sound::Play(Sound::SFX_SPINDASH);
+            Sound.Play(Sound.SFX_SPINDASH);
         }
     }
 

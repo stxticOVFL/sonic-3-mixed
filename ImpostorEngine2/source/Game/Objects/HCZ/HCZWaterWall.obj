@@ -19,8 +19,8 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (this.X < 0xA80)
         return false;
 
-    local player:IPlayer = Scene.Players[PlayerID];
-    if (player.Action != ActionType::InStream)
+    var player:IPlayer = Scene.Players[PlayerID];
+    if (player.Action != ActionType.InStream)
         return false;
 
     if (player.EZY > this.Y - this.H / 2 + 20 && player.EZY < this.Y - this.H / 2 + 40) {

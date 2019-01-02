@@ -37,7 +37,7 @@ PUBLIC void FallingTile::Update() {
     X += XSpeed >> 8;
     Y += YSpeed >> 8;
 
-    if (Y >= Scene->CameraY + App->HEIGHT)
+    if (Y >= Scene->CameraY + App->HEIGHT + 64)
         Active = false;
 }
 

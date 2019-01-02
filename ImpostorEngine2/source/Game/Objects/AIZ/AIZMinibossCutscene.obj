@@ -2,6 +2,14 @@ object 0x90;
 
 subclass Enemy;
 
+var TimerAction:int;
+var InvulnTimer:int;
+var MaxAccel:int;
+var Acceleration:int;
+var Variable_38:int;
+var State:int;
+var SubY:int;
+
 event Create() {
     Active = true;
     Priority = true;
@@ -10,12 +18,12 @@ event Create() {
     H = 48;
     Radius = 24;
 
-    var TimerAction:int = -1;
+    TimerAction = -1;
     Timer = 0;
 
     CurrentAnimation = 0;
 
-    var InvulnTimer:int = 0;
+    InvulnTimer = 0;
 
     Scene.AddSelfToRegistry(this, "Enemies");
 
@@ -26,17 +34,17 @@ event Create() {
     // $644,  $240,   $20,  $644
     // $888,  $AAA,  $EEE,  $AAA
 
-    var State:int = 0;
+    State = 0;
 
     HitCount = 0x60;
     Boss = true;
     State = 2;
 
-    var MaxAccel:int = 0;
-    var Acceleration:int = 0;
-    var Variable_38:int = 0;
+    MaxAccel = 0;
+    Acceleration = 0;
+    Variable_38 = 0;
 
-    var SubY:int = Y << 8;
+    SubY = Y << 8;
 }
 
 event OnHit() : int {
@@ -45,10 +53,10 @@ event OnHit() : int {
 }
 
 event Swing_UpAndDown() {
-    local d0:int;
-    local d1:int;
-    local d2:int;
-    local d3:int;
+    var d0:int;
+    var d1:int;
+    var d2:int;
+    var d3:int;
 
 	d0 = Acceleration; // Acceleration
 	d1 = YSpeed; // Velocity

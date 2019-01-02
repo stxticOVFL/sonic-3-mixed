@@ -55,15 +55,6 @@ PUBLIC void MovingSprite::Update() {
     X = SubX >> 16;
     Y = SubY >> 16;
 
-    if (Y >= Scene->CameraY + App->HEIGHT) {
-        Active = false;
-
-        if (bufferID >= 0) {
-            G->DeleteBufferID(bufferID);
-            bufferID = -1;
-        }
-    }
-
     ISprite::Animation ani = Sprite->Animations[CurrentAnimation];
 
     if (CurrentFrame / 0x100 >= ani.FrameCount - 1) {
@@ -76,6 +67,15 @@ PUBLIC void MovingSprite::Update() {
         CurrentFrame += ani.AnimationSpeed;
     else if (ani.Frames[CurrentFrame / 0x100].Duration != 0)
         CurrentFrame += 0x100 / ani.Frames[CurrentFrame / 0x100].Duration;
+
+    if (Y + ani.Frames[CurrentFrame / 0x100].OffY >= Scene->CameraY + App->HEIGHT) {
+        Active = false;
+
+        if (bufferID >= 0) {
+            G->DeleteBufferID(bufferID);
+            bufferID = -1;
+        }
+    }
 }
 
 PUBLIC void MovingSprite::Render(int CamX, int CamY) {

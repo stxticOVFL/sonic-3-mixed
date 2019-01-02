@@ -1,5 +1,11 @@
 object 0x04;
 
+var f:int;
+var Allotted:int;
+var Separation:int;
+var Sections:int;
+var Vsect:int;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -7,12 +13,12 @@ event Create() {
     W = 48;
     H = 32;
 
-    var f:int = -1;
-    var Allotted:int = 60 * 5;
+    f = -1;
+    Allotted = 60 * 5;
 
-    var Separation:int = 2;
-    var Sections:int = 8;
-    var Vsect:int = 2;
+    Separation = 2;
+    Sections = 8;
+    Vsect = 2;
 
     SolidTop = true;
     SolidCustomized = true;
@@ -58,12 +64,12 @@ event Update() {
 event Break() {
     Sound.Play(Sound.SFX_COLLAPSE);
 
-    local x:int = X - W / 2 + 8;
-    local y:int = Y - H / 2 + 8;
-    local w:int = W >> 4;
-    local h:int = H >> 4;
-    local left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
-    local top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
+    var x:int = X - W / 2 + 8;
+    var y:int = Y - H / 2 + 8;
+    var w:int = W >> 4;
+    var h:int = H >> 4;
+    var left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
+    var top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
 
     if (Scene.Act == 2) {
         x = X - W / 2 + 8;
@@ -72,11 +78,11 @@ event Break() {
         h = 0x40 >> 4;
     }
 
-    local side:bool = FlipX;
+    var side:bool = FlipX;
 
     if (side) {
-        for (i:int = 0; i < w; i++) {
-            for (j:int = 0; j < h; j++) {
+        for (var i:int = 0; i < w; i++) {
+            for (var j:int = 0; j < h; j++) {
                 Scene.AddMovingSprite(Sprite,
                     x + i * 0x10, y + j * 0x10,
                     left + (w - 1 - i) * 0x10, top + j * 0x10,
@@ -86,8 +92,8 @@ event Break() {
         }
     }
     else {
-        for (i:int = 0; i < w; i++) {
-            for (j:int = 0; j < h; j++) {
+        for (var i:int = 0; i < w; i++) {
+            for (var j:int = 0; j < h; j++) {
                 Scene.AddMovingSprite(Sprite,
                     x + i * 0x10, y + j * 0x10,
                     left + i * 0x10, top + j * 0x10,

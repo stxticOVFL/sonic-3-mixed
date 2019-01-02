@@ -1,5 +1,10 @@
 object 0x07;
 
+var Diagonal:int;
+var SpringType:int;
+var Rotation:int;
+var DoAnimate:bool;
+
 event Create() {
     W = 32;
     H = 16;
@@ -8,20 +13,20 @@ event Create() {
 
     Frame = 0;
 
-    var Diagonal:int = 0;
+    Diagonal = 0;
 
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
     Scene.AddSelfToRegistry(this, "Spring");
 
-    var SpringType:int = 1;
+    SpringType = 1;
     if ((SubType & 0x2) != 0x0)
         SpringType = 0;
 
     CurrentAnimation = SpringType; // 0: yellow, +1: red
-    var Rotation:int = 0;
-    var DoAnimate:bool = false;
+    Rotation = 0;
+    DoAnimate = false;
 
     if ((SubType & 0xF0) == 0x10) {
         W = 18;
@@ -79,8 +84,8 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Data != 1)
         return 0;
 
-    local SpringPower:int = 0x1000;
-    local SpringFlips:int = 0;
+    var SpringPower:int = 0x1000;
+    var SpringFlips:int = 0;
 
     if (SpringType == 0) {
         SpringPower = 0xA00;
@@ -94,11 +99,11 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         Scene.Players[PlayerID].YSpeed = Diagonal * SpringPower;
         Scene.Players[PlayerID].Ground = false;
         Scene.Players[PlayerID].InputAlarm = 16;
-        Scene.Players[PlayerID].Action = ActionType::Spring;
+        Scene.Players[PlayerID].Action = ActionType.Spring;
         Scene.Players[PlayerID].SpringFlip = SpringFlips;
         Scene.Players[PlayerID].AngleMode = 0;
         Scene.Players[PlayerID].Angle = 0;
-        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Scene.Players[PlayerID].Vibrate(VibrationType.ImpactSmall);
         Sound.Play(Sound.SFX_SPRING);
 
         DoAnimate = true;
@@ -111,37 +116,39 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         return 1;
     }
 
+    // Launch up
     if (HitFrom == 1 && Rotation == 0 && Scene.Players[PlayerID].YSpeed >= 0) {
         Scene.Players[PlayerID].YSpeed = -SpringPower;
         Scene.Players[PlayerID].Ground = false;
         // Scene.Players[PlayerID].InputAlarm = 16;
-        Scene.Players[PlayerID].Action = ActionType::Spring;
+        Scene.Players[PlayerID].Action = ActionType.Spring;
         Scene.Players[PlayerID].SpringFlip = SpringFlips;
         Scene.Players[PlayerID].AngleMode = 0;
         Scene.Players[PlayerID].Angle = 0;
         Scene.Players[PlayerID].EZY += 4;
-        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Scene.Players[PlayerID].Vibrate(VibrationType.ImpactSmall);
         Sound.Play(Sound.SFX_SPRING);
 
         DoAnimate = true;
 
         return 1;
     }
+    // Launch down
     else if (HitFrom == 3 && Rotation == 180) {
         Scene.Players[PlayerID].YSpeed = SpringPower;
         if (Scene.Players[PlayerID].AngleMode == 1 ||
             Scene.Players[PlayerID].AngleMode == 3) {
-            Scene.Players[PlayerID].Flip = -Math.sign(Math.sinHex(Scene.Players[PlayerID].AngleMode * 0x40));
+            Scene.Players[PlayerID].Flip = Math.sign(Math.sinHex(Scene.Players[PlayerID].AngleMode * 0x40));
             Scene.Players[PlayerID].GroundSpeed = SpringPower * Scene.Players[PlayerID].Flip;
         }
         else {
-            Scene.Players[PlayerID].Action = ActionType::Spring;
+            Scene.Players[PlayerID].Action = ActionType.Spring;
         }
         Scene.Players[PlayerID].InputAlarm = 16;
         Scene.Players[PlayerID].SpringFlip = SpringFlips;
         if (SubType & 0xC)
             Scene.Players[PlayerID].Layer = 1 - ((SubType >> 2) & 0x1);
-        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Scene.Players[PlayerID].Vibrate(VibrationType.ImpactSmall);
         Sound.Play(Sound.SFX_SPRING);
 
         DoAnimate = true;
@@ -152,7 +159,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         if (Scene.Players[PlayerID].Y + 20 - 4 - 4 <= Y - 16 || !Scene.Players[PlayerID].Ground)
             return 0;
 
-        local ToFlip:int = -Math.sign(Math.cosHex(Scene.Players[PlayerID].AngleMode * 0x40 - Rotation + 0x40));
+        var ToFlip:int = -Math.sign(Math.cosHex(Scene.Players[PlayerID].AngleMode * 0x40 - Rotation + 0x40));
 
         Scene.Players[PlayerID].Flip = ToFlip;
         if (Scene.Players[PlayerID].AngleMode == 0 || Scene.Players[PlayerID].AngleMode == 2) {
@@ -169,7 +176,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         if (SubType & 0xC)
             Scene.Players[PlayerID].Layer = 1 - ((SubType >> 2) & 0x1);
 
-        Scene.Players[PlayerID].Vibrate(VibrationType::ImpactSmall);
+        Scene.Players[PlayerID].Vibrate(VibrationType.ImpactSmall);
         Sound.Play(Sound.SFX_SPRING);
 
         DoAnimate = true;

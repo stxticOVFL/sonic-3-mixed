@@ -24,12 +24,12 @@ public:
     int         RingAnimationFrame = 0;
     int         WaterAnimationFrame = 0;
 
-    int         CameraX = 0;
-    int         CameraY = 0;
-    int         CameraMinX = 0;
-    int         CameraMinY = 0;
-    int         CameraMaxX = 0xFFFF;
-    int         CameraMaxY = 0xFFFF;
+    uint32_t    CameraX = 0;
+    uint32_t    CameraY = 0;
+    uint32_t    CameraMinX = 0;
+    uint32_t    CameraMinY = 0;
+    uint32_t    CameraMaxX = 0xFFFF;
+    uint32_t    CameraMaxY = 0xFFFF;
     int         CameraAutoScrollX = 0;
     int         CameraAutoScrollY = 0;
     int         Frame = 0;
@@ -101,7 +101,7 @@ public:
     Object**    ObjectsPathSwitcher;
     int         ObjectPathSwitcherCount = 0;
 
-	std::unordered_map<std::string, ISprite*> SpriteMap;
+	unordered_map<string, ISprite*> SpriteMap;
     ISprite**   SpriteMapIDs;
 
     int         ZoneID = 0;
@@ -112,7 +112,7 @@ public:
     int         DEBUG_MOUSE_X = -1;
     int         DEBUG_MOUSE_Y = -1;
 
-    std::vector<Object*> Explosions;
+    vector<Object*> Explosions;
 
     struct ObjectProp {
         uint16_t X = 0x00;
@@ -817,7 +817,6 @@ PUBLIC void LevelScene::LoadData() {
             Player->G = G;
             Player->App = App;
             Player->Scene = this;
-            Player->CollisionAt = NULL;
 			Player->Character = (CharacterType)CharacterFlag;
             Player->PlayerID = 0;
             Player->Create();
@@ -853,6 +852,9 @@ PUBLIC void LevelScene::LoadData() {
 
     App->Print(0, "Loading 16x16 Tiles...");
     TileSprite = new ISprite(Str_TileSprite, App); // Stages/MSZ/16x16Tiles.gif
+
+    AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
+    AnimTileSprite->LinkPalette(TileSprite);
 
     IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
@@ -926,6 +928,7 @@ PUBLIC void LevelScene::LoadData() {
         uint32_t mag = reader.ReadUInt32BE(); // magic
         free(reader.ReadBytes(16));
     	free(reader.ReadRSDKString());
+
     	Data->cameraLayer = reader.ReadByte();
         Data->cameraLayer = -1;
         Data->layerCount = reader.ReadByte();
@@ -997,7 +1000,7 @@ PUBLIC void LevelScene::LoadData() {
                 Data->layers[i].ScrollIndexCount = cnt;
             }
 
-            Data->layers[i].ScrollIndexes = (ScrollingIndex*)malloc(cnt * sizeof(ScrollingIndex));
+            Data->layers[i].ScrollIndexes = (ScrollingIndex*)calloc(cnt, sizeof(ScrollingIndex));
 
             if (Height > 0) { // Just in case
                 int sc = 0;
@@ -1058,9 +1061,9 @@ PUBLIC void LevelScene::LoadData() {
 
         // Mania-type Object Loading
         if ((mag >> 24) == 'S') {
-            std::unordered_map<std::string, const char*> ObjectHashes;
+            unordered_map<string, const char*> ObjectHashes;
             for (int i = 0; i < 554; i++) {
-                std::string hash = MD5I(std::string(ObjectNames(i)));
+                string hash = MD5I(string(ObjectNames(i)));
                 ObjectHashes[hash] = ObjectNames(i);
             }
 
@@ -1355,9 +1358,6 @@ PUBLIC void LevelScene::LoadData() {
                 RingProps[RingPropCount++] = op;
             }
 
-            AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
-            AnimTileSprite->LinkPalette(TileSprite);
-
             App->Print(0, "Loading IsAnims...");
 			Data->isAnims = (short*)malloc(0x400 * sizeof(short));
 			memset(Data->isAnims, 0xFF, 0x400 * sizeof(short));
@@ -1374,7 +1374,7 @@ PUBLIC void LevelScene::LoadData() {
 
             Data->animatedTilesCount = reader.ReadUInt16();
 
-			Data->animatedTileFrames = (int*)calloc(Data->animatedTilesCount, sizeof(int));
+            Data->animatedTileFrames = (int*)calloc(Data->animatedTilesCount, sizeof(int));
 
             App->Print(0, "Loading Anim Tile Durations...");
             Data->animatedTileDurations = (int**)calloc(Data->animatedTilesCount, sizeof(int*));
@@ -1415,7 +1415,9 @@ PUBLIC void LevelScene::LoadData() {
                 AnimTileSprite->Animations.push_back(an);
             }
 
-			for (int i = 0; i < Data->layerCount; i++) {
+            goto LOADSTAGEBIN;
+
+			for (int i = 0; i < Data->layerCount && false; i++) {
 				// Build buffers for GL renderer
 				if (Data->layers[i].InfoCount > 1) {
 					int y = 0;
@@ -1494,6 +1496,8 @@ PUBLIC void LevelScene::LoadData() {
 
     IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
+
+    LOADSTAGEBIN:
 
     // Loading StageConfig
     if (Str_StageBin) {
@@ -2525,9 +2529,9 @@ PUBLIC void LevelScene::Update() {
         PauseAnim[3] = (PauseAnim[3] + 11) % (360);
         for (int i = 0; i < 4; i++)
             if (i == PauseSelectedMenuItem)
-                PauseAnim[4 + i] = fmin(2, PauseAnim[4 + i] + 1);
+                PauseAnim[4 + i] = IMath::min(2, PauseAnim[4 + i] + 1);
             else
-                PauseAnim[4 + i] = fmax(0, PauseAnim[4 + i] - 1);
+                PauseAnim[4 + i] = IMath::max(0, PauseAnim[4 + i] - 1);
 
         if (FadeAction == 0) {
             if (App->Input->GetControllerInput(0)[7 + 8]) {
@@ -2719,7 +2723,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
                 }
             }
             if (Player->X > 8 * OffCenteredCamera + CameraX + App->WIDTH / 2) {
-                Player->X = fmin(8 * OffCenteredCamera + CameraX + App->WIDTH / 2, Player->X);
+                Player->X = IMath::min(8 * OffCenteredCamera + CameraX + App->WIDTH / 2, Player->X);
             }
 
             return;
@@ -2991,7 +2995,7 @@ PUBLIC void LevelScene::RenderTitleCard() {
 
     int ex = 0;
 
-    for (int i = 0; i < strlen(LevelName); i++) {
+    for (size_t i = 0; i < strlen(LevelName); i++) {
         if (LevelName[i] == ' ') {
             ex += 16;
         }
@@ -3259,8 +3263,10 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                                         G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, (flipX * IE_FLIPX) | (flipY * IE_FLIPY));
                                     }
                                     else {
-                                        if (layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width] > 0) {
-                                            G->DrawSpriteBuffered(TileSprite, layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], baseX + 8, baseY + heightSize / 2, 0, flags);
+                                        if (layer.ScrollIndexes[0].TileBuffers) {
+                                            if (layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width] > 0) {
+                                                G->DrawSpriteBuffered(TileSprite, layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], baseX + 8, baseY + heightSize / 2, 0, flags);
+                                            }
                                         }
                                         else {
                                             G->DrawSprite(TileSprite, 0, wheree, 16, heightSize, baseX, baseY, 0, flags, 0, 0);
@@ -3325,7 +3331,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         flipY = ((tile >> 11) & 1);
                         tile = tile & 0x3FF;
 
-                        if (tile != 0) {
+                        if (tile) {
                             int anID = Data->isAnims[tile] & 0xFF;
                             if (anID != 0xFF) {
                                 // AnimTileSprite
