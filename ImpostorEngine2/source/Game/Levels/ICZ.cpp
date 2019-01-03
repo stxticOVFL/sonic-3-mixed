@@ -15,6 +15,130 @@ public:
 
 #include <Game/Levels/ICZ.h>
 
+// Find: \$([A-F0-9])([A-F0-9])([A-F0-9]),
+// Replace: 0x$3$3$2$2$1$1,\n
+
+Uint32 AnPal_PalICZ_1[32] = {
+    0x2266EE,
+    0x0022EE,
+    0x4444EE,
+    0x0022EE,
+    0x4444EE,
+    0x0000EE,
+    0x2244EE,
+    0x0000EE,
+    0x2266EE,
+    0x0000CC,
+    0x2288EE,
+    0x0000AA,
+    0x22AAEE,
+    0x0000CC,
+    0x00CCEE,
+    0x0000EE,
+    0x00EEEE,
+    0x0022EE,
+    0x44EEEE,
+    0x0000EE,
+    0x44EEEE,
+    0x0000CC,
+    0x44EEEE,
+    0x0000AA,
+    0x00EEEE,
+    0x000088,
+    0x22CCEE,
+    0x0000AA,
+    0x22AAEE,
+    0x0000CC,
+    0x2288EE,
+    0x0022EE,
+};
+Uint32 AnPal_PalICZ_2[36] = {
+    0x6600EE,
+    0x8800EE,
+    0x4400EE,
+    0x6600EE,
+    0x4400CC,
+    0x4400EE,
+    0x2200CC,
+    0x4400CC,
+    0x2200AA,
+    0x2200CC,
+    0x0000AA,
+    0x2200AA,
+    0x000088,
+    0x0000AA,
+    0x000066,
+    0x000088,
+    0x000066,
+    0x000088,
+    0x000066,
+    0x000088,
+    0x000066,
+    0x000088,
+    0x000088,
+    0x0000AA,
+    0x0000AA,
+    0x2200AA,
+    0x2200AA,
+    0x2200CC,
+    0x2200CC,
+    0x4400CC,
+    0x4400CC,
+    0x4400EE,
+    0x4400EE,
+    0x6600EE,
+    0x6600EE,
+    0x8800EE,
+};
+Uint32 AnPal_PalICZ_3[12] = {
+    0x004488,
+    0xAAEEEE,
+    0x006688,
+    0x00EEEE,
+    0x0088AA,
+    0x00CCEE,
+    0x00CCEE,
+    0x0088AA,
+    0x0088AA,
+    0x00CCEE,
+    0x006688,
+    0x00EEEE,
+};
+Uint32 AnPal_PalICZ_4[32] = {
+    0x88EE00,
+    0xCCEECC,
+    0x88CC00,
+    0xAAEEAA,
+    0x88CC00,
+    0xAAEEAA,
+    0x66AA00,
+    0x88EE66,
+    0x66AA00,
+    0x88EE66,
+    0x448800,
+    0x88EE00,
+    0x448800,
+    0x88EE00,
+    0x228800,
+    0x88CC00,
+    0x446600,
+    0x66AA00,
+    0x446600,
+    0x66AA00,
+    0x228800,
+    0x88CC00,
+    0x448800,
+    0x88EE00,
+    0x66AA00,
+    0x88EE66,
+    0x88CC00,
+    0xAAEEAA,
+    0x88EE00,
+    0xCCEECC,
+    0x88EE00,
+    0xCCEECC,
+};
+
 PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 5;
     Act = act;
@@ -42,7 +166,8 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     sprintf(LevelNameDiscord, "IceCap");
 
     if (Act == 1) {
-
+        PlayerStartX = 0x3E20;
+        PlayerStartY = 0x6C8;
     }
     else if (Act == 2) {
 
@@ -131,7 +256,7 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
         // printf("\n");
     }
-    
+
 	if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
@@ -155,8 +280,73 @@ PUBLIC void Level_ICZ::EarlyUpdate() {
         Data->layers[1].Visible = false;
         Data->layers[1].Flags = 0 | 2 | 4;
         // Background (Outside)
+        Data->layers[2].RelativeY = 0;
+        // FG Low/High
         Data->layers[3].IsScrollingVertical = true;
         Data->layers[4].IsScrollingVertical = true;
+
+        if (Player->EZX < 0x3960) {
+            Data->layers[0].Visible = false;
+            Data->layers[2].Visible = true;
+
+            if (TileSprite->Palette[0x31] != 0xEEEEEE) {
+                TileSprite->Palette[0x31] = 0xEEEEEE;
+                TileSprite->Palette[0x32] = 0xCCEEEE;
+    	        TileSprite->Palette[0x33] = 0xAAEEEE;
+                TileSprite->Palette[0x34] = 0xAACCEE;
+                TileSprite->Palette[0x35] = 0x88CCEE;
+                TileSprite->Palette[0x36] = 0x66AAEE;
+                TileSprite->Palette[0x37] = 0x6688EE;
+                TileSprite->Palette[0x38] = 0x4466EE;
+                TileSprite->Palette[0x39] = 0x0044EE;
+                TileSprite->Palette[0x3A] = 0x0000EE;
+                TileSprite->Palette[0x3B] = 0x0000CC;
+                TileSprite->Palette[0x3C] = 0x000000;
+                TileSprite->Palette[0x3D] = 0xCCEEAA;
+                TileSprite->Palette[0x3E] = 0xAAEECC;
+                TileSprite->Palette[0x3F] = 0x0088EE;
+                TileSprite->UpdatePalette();
+            }
+        }
+        else {
+            Data->layers[0].Visible = true;
+            Data->layers[2].Visible = false;
+
+            if (TileSprite->Palette[0x31] != 0x00CCEE) {
+                TileSprite->Palette[0x31] = 0x00CCEE;
+                TileSprite->Palette[0x32] = 0x0044EE;
+    	        TileSprite->Palette[0x33] = 0x4400EE;
+                TileSprite->Palette[0x34] = 0x0000CC;
+                TileSprite->Palette[0x35] = 0x000066;
+                TileSprite->Palette[0x36] = 0x000022;
+                TileSprite->Palette[0x37] = 0x000000;
+                TileSprite->Palette[0x38] = 0x0022EE;
+                TileSprite->Palette[0x39] = 0x4422EE;
+                TileSprite->Palette[0x3A] = 0x2200AA;
+                TileSprite->Palette[0x3B] = 0x220044;
+                // TileSprite->Palette[0x37] = 0x4466EE;
+                TileSprite->UpdatePalette();
+            }
+        }
+
+        if (Frame % 6 == 0) {
+            TileSprite->Palette[0x2E] = AnPal_PalICZ_1[(Frame / 6 * 2) % 32];
+            TileSprite->Palette[0x2F] = AnPal_PalICZ_1[(Frame / 6 * 2) % 32 + 1];
+            TileSprite->UpdatePalette();
+        }
+        if (Frame % 10 == 0) {
+            TileSprite->Palette[0x3E] = AnPal_PalICZ_2[(Frame / 10 * 2) % 36];
+            TileSprite->Palette[0x3F] = AnPal_PalICZ_2[(Frame / 10 * 2) % 36 + 1];
+            TileSprite->UpdatePalette();
+        }
+        if (Frame % 8 == 0) {
+            TileSprite->Palette[0x3C] = AnPal_PalICZ_3[(Frame / 8 * 2) % 12];
+            TileSprite->Palette[0x3D] = AnPal_PalICZ_3[(Frame / 8 * 2) % 12 + 1];
+
+            TileSprite->Palette[0x2C] = AnPal_PalICZ_4[(Frame / 8 * 2) % 32];
+            TileSprite->Palette[0x2D] = AnPal_PalICZ_4[(Frame / 8 * 2) % 32 + 1];
+            TileSprite->UpdatePalette();
+        }
     }
     else if (Act == 2) {
 

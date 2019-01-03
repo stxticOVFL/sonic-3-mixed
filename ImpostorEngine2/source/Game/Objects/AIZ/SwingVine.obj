@@ -61,8 +61,10 @@ event Update() {
         }
     }
 
-    LastX = X;
-    LastY = Y;
+    if (Math.abs(X - nX) > 0)
+        LastX = X;
+    if (Math.abs(Y - nY) > 0)
+        LastY = Y;
 
     X = nX;
     Y = nY;
@@ -87,8 +89,8 @@ event Update() {
                 && !Scene.CollisionAt(X + 10, Y - H / 2)
                 && !Scene.CollisionAt(X - 10, Y + H / 2)
                 && !Scene.CollisionAt(X + 10, Y + H / 2)) {
-                Scene.Players[i].XSpeed = (X - LastX) << 7;
-                Scene.Players[i].YSpeed = (Y - LastY) << 7;
+                Scene.Players[i].XSpeed = (X - LastX) * 0x80;
+                Scene.Players[i].YSpeed = (Y - LastY) * 0x80;
 
                 if (Scene.Players[i].InputLeft)
                     Scene.Players[i].XSpeed = -0x200;

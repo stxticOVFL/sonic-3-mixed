@@ -24,12 +24,12 @@ public:
     int         RingAnimationFrame = 0;
     int         WaterAnimationFrame = 0;
 
-    uint32_t    CameraX = 0;
-    uint32_t    CameraY = 0;
-    uint32_t    CameraMinX = 0;
-    uint32_t    CameraMinY = 0;
-    uint32_t    CameraMaxX = 0xFFFF;
-    uint32_t    CameraMaxY = 0xFFFF;
+    int32_t     CameraX = 0;
+    int32_t     CameraY = 0;
+    int32_t     CameraMinX = 0;
+    int32_t     CameraMinY = 0;
+    int32_t     CameraMaxX = 0xFFFF;
+    int32_t     CameraMaxY = 0xFFFF;
     int         CameraAutoScrollX = 0;
     int         CameraAutoScrollY = 0;
     int         Frame = 0;
@@ -331,6 +331,8 @@ PUBLIC void LevelScene::LoadData() {
         if (!Objects3Sprite) {
             Objects3Sprite = new ISprite("Sprites/Global/Objects3.gif", App);
             Objects3Sprite->LoadAnimation("Sprites/Global/SpecialRing.bin");
+            Objects3Sprite->LoadAnimation("Sprites/Global/SuperSparkle.bin");
+            Objects3Sprite->LoadAnimation("Sprites/Global/Shields.bin");
             // printf("\n");
         }
         if (!ExplosionSprite) {
@@ -1742,12 +1744,18 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
         if (probeX < 0)
             continue;
-        if (probeY < 0)
-            continue;
         if (probeX >= Data->layers[l].Width * 16)
             continue;
-        if (probeY >= Data->layers[l].Height * 16)
-            continue;
+        if (Data->layers[l].IsScrollingVertical) {
+            int hh = Data->layers[l].Height * 16;
+            probeY = ((probeY % hh) + hh) % hh;
+        }
+        else {
+            if (probeY < 0)
+                continue;
+            if (probeY >= Data->layers[l].Height * 16)
+                continue;
+        }
 
         tileX = probeX >> 4;
         tileY = probeY >> 4;
@@ -2137,6 +2145,9 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left,
     AddMovingSprite(sprite, x, y, left, top, w, h, offX, offY, flipX, flipY, xspeed, yspeed, grv, 0);
 }
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv) {
+    AddMovingSprite(sprite, x, y, animation, frame, flipX, flipY, xspeed, yspeed, grv, -1);
+}
+PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life) {
     ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 
     MovingSprite* tile = new MovingSprite();
@@ -2151,7 +2162,8 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int anima
     tile->Gravity = grv;
     tile->CurrentAnimation = animation;
     tile->CurrentFrame = frame << 8;
-    tile->Left = 0;
+    tile->LifeSpan = life;
+    tile->Left = -1;
     tile->Top = animframe.Y;
     tile->Width = animframe.W;
     tile->Height = animframe.H;
@@ -2336,13 +2348,19 @@ PUBLIC void LevelScene::Update() {
 
                 if (Player->Action == ActionType::Dead && Player->EZY > CameraY + App->HEIGHT + 32) {
                     if (Player->Lives > 0 && FadeAction == 0) {
+                        Player->Lives--;
                         FadeAction = FadeActionType::DIED;
                         FadeTimerMax = 64;
                         FadeMax = 0x100;
                         G->FadeToWhite = false;
+                        App->Audio->FadeMusic(0.75);
                     }
                     else {
-
+                        FadeAction = FadeActionType::EXIT;
+                        FadeTimerMax = 60 * 5;
+                        FadeMax = 0x100;
+                        G->FadeToWhite = false;
+                        App->Audio->FadeMusic(5.0);
                     }
                 }
             }
@@ -2406,7 +2424,7 @@ PUBLIC void LevelScene::Update() {
             }
         }
 
-        for (unsigned int o = 0; o < (unsigned int)ObjectCount; o++) {
+        for (unsigned int o = 0; o < (unsigned int)ObjectCount && Player->Action != ActionType::Dead; o++) {
             Object* obj = Objects[o];
             if (obj != NULL) {
                 if (obj->Active) {
@@ -3203,7 +3221,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
         layer = Data->layers[l];
 
-        bool DeformObjects = true;
+        bool DeformObjects = false;
         bool DeformPlayer = false;
 
         // Draw Tiles
@@ -3465,6 +3483,12 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
             G->DrawRectangle(App->WIDTH - 132 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2), 4, 4, TileSprite->Palette[i]);
 
             G->DrawRectangle(App->WIDTH - 64 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2), 4, 4, TileSprite->PaletteAlt[i]);
+        }
+
+        for (int i = 0; i < 256; i++) {
+            G->DrawRectangle(App->WIDTH - 132 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2) - 96, 4, 4, Player->Sprites[0]->Palette[i]);
+
+            G->DrawRectangle(App->WIDTH - 64 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2) - 96, 4, 4, Player->Sprites[0]->PaletteAlt[i]);
         }
     }
     if (ViewPathswitchers) {

@@ -25,6 +25,8 @@ public:
     int OffY = 0;
 
     int bufferID = -1;
+
+    int LifeSpan = -1;
 };
 
 #endif
@@ -38,8 +40,10 @@ PUBLIC MovingSprite::MovingSprite() {
 }
 
 PUBLIC void MovingSprite::Update() {
-    if (bufferID == -1) {
-        bufferID = G->MakeFrameBufferID(Sprite, Left, Top, Width, Height, OffX, OffY);
+    if (Left >= 0) {
+        if (bufferID == -1) {
+            bufferID = G->MakeFrameBufferID(Sprite, Left, Top, Width, Height, OffX, OffY);
+        }
     }
 
     if (Hold > 0) {
@@ -57,10 +61,6 @@ PUBLIC void MovingSprite::Update() {
 
     ISprite::Animation ani = Sprite->Animations[CurrentAnimation];
 
-    if (CurrentFrame / 0x100 >= ani.FrameCount - 1) {
-        CurrentFrame = ani.FrameToLoop * 0x100;
-    }
-
     if (ani.AnimationSpeed == 4)
         CurrentFrame += 0x100;
     else if (ani.AnimationSpeed > 2)
@@ -68,7 +68,15 @@ PUBLIC void MovingSprite::Update() {
     else if (ani.Frames[CurrentFrame / 0x100].Duration != 0)
         CurrentFrame += 0x100 / ani.Frames[CurrentFrame / 0x100].Duration;
 
-    if (Y + ani.Frames[CurrentFrame / 0x100].OffY >= Scene->CameraY + App->HEIGHT) {
+    if (CurrentFrame / 0x100 >= ani.FrameCount) {
+        CurrentFrame = ani.FrameToLoop * 0x100;
+    }
+
+    if (LifeSpan > 0) {
+        LifeSpan--;
+    }
+
+    if (Y + ani.Frames[CurrentFrame / 0x100].OffY >= Scene->CameraY + App->HEIGHT || LifeSpan == 0) {
         Active = false;
 
         if (bufferID >= 0) {
@@ -79,7 +87,7 @@ PUBLIC void MovingSprite::Update() {
 }
 
 PUBLIC void MovingSprite::Render(int CamX, int CamY) {
-    if (Left) {
+    if (Left >= 0) {
         if (bufferID >= 0) {
             G->DrawSpriteBuffered(Sprite, bufferID, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
         }

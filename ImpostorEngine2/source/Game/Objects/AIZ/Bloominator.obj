@@ -2,6 +2,8 @@ object 0x8C;
 
 subclass Enemy;
 
+var Children:Object[2];
+
 event Create() {
     Active = true;
     Priority = false;
@@ -12,23 +14,33 @@ event Create() {
     Frame = 0;
     HitCount = 1;
 
+    for (var i:int = 0; i < 2; i++) {
+        Children[i] = Scene.AddNewObject(Obj_BloominatorSpore, 0, 0, 0, false, false);
+        Children[i].Sprite = Sprite;
+    }
+
+    VisualLayer = 1;
+
     Scene.AddSelfToRegistry(this, "Enemies");
 }
 
 event Update() {
     if (Frame == 31) {
-        // Spore1->X = X;
-        // Spore1->Y = Y - 16;
-        // Spore1->Speed = -1;
-        // Spore1->Gravity = -5;
-        //Scene->aud[]->Play(2);
+        Children[0].Timer = X << 8;
+        Children[0].Rotation = (Y - 16) << 8;
+        Children[0].X = X;
+        Children[0].Y = Y - 16;
+        Children[0].XSpeed = -0x100;
+        Children[0].YSpeed = -0x500;
         Sound.Play(Sound.SFX_SHOT);
     }
     else if (Frame == 62) {
-        // Spore2->X = X;
-        // Spore2->Y = Y - 16;
-        // Spore2->Speed = 1;
-        // Spore2->Gravity = -5;
+        Children[1].Timer = X << 8;
+        Children[1].Rotation = (Y - 16) << 8;
+        Children[1].X = X;
+        Children[1].Y = Y - 16;
+        Children[1].XSpeed =  0x100;
+        Children[1].YSpeed = -0x500;
         Sound.Play(Sound.SFX_SHOT);
     }
     else if (Frame == 182) {

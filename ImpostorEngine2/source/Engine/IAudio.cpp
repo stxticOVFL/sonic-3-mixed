@@ -134,7 +134,7 @@ PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp
     StackNode* newms = new StackNode();
     newms->Audio = music;
     // music->Seek(0);
-    // music->Seek(int(ceil(at * AUDIO_FREQUENCY)));
+    music->Seek(int(ceil(at * AUDIO_FREQUENCY)));
     newms->Buffer = music->Buffer + int(ceil(at * AUDIO_FREQUENCY)) * 4;
     newms->Length = music->Length - int(ceil(at * AUDIO_FREQUENCY)) * 4;
     newms->BufferStart = music->Buffer;
@@ -315,7 +315,7 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
                 if (audio->Length[i] > 0) {
                     int possibleSampleLength = ((uint32_t)len > audio->Length[i]) ? audio->Length[i] : (uint32_t)len;
 
-                    SDL_MixAudioFormat(stream, audio->Buffer[i], audio->DeviceFmt.format, possibleSampleLength, (0x80) >> 3);
+                    SDL_MixAudioFormat(stream, audio->Buffer[i], audio->DeviceFmt.format, possibleSampleLength, (0xC0) >> 3);
 
                     audio->Buffer[i] += possibleSampleLength;
                     audio->Length[i] -= possibleSampleLength;

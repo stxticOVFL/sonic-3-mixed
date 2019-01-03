@@ -1,5 +1,8 @@
 object 0x3C;
 
+var DoorType:int;
+var Horizontal:bool;
+
 event Create() {
     this.W = 32;
     this.H = 64;
@@ -9,29 +12,94 @@ event Create() {
     this.Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    if (Scene.Player.EZX - 10 < this.X + 16) {
-        this.Y = this.InitialY - 64;
+    Horizontal = (SubType & 0x80) == 0x80;
+    DoorType = (SubType & 0xF);
+
+    if (DoorType == 0) {
+        // HCZ
+        W = 32;
+    }
+    else if (DoorType == 1) {
+        // CNZ
+        W = 16;
+    }
+    else if (DoorType == 2) {
+        // DEZ
+        W = 16;
+    }
+
+    if (Horizontal) {
+        // CNZ
+        W = 64;
+        H = 16;
+    }
+
+    if (!Horizontal) {
+        if (Scene.Player.EZX - 10 < this.X + W / 2)
+            this.Y = this.InitialY - 64;
+        else
+            this.Y = this.InitialY;
     }
     else {
-        this.Y = this.InitialY;
+        if (Scene.Player.EZY + Scene.Player.H / 2 > this.Y + H / 2) {
+            if (FlipX)
+                this.X = this.InitialX - 64;
+            else
+                this.X = this.InitialX + 64;
+        }
+        else {
+            this.X = this.InitialX;
+        }
     }
 }
 event Update() {
     var AllPast:bool = true;
 
     for (var i:int = 0; i < Scene.PlayerCount; i++) {
-        if (Scene.Players[i].EZX - 10 < this.X + 16 && Scene.Players[i].OnScreen) {
-            AllPast = false;
-            break;
+        if (!Horizontal) {
+            if (Scene.Players[i].EZX - 10 < this.X + W / 2 && Scene.Players[i].OnScreen) {
+                AllPast = false;
+                break;
+            }
+        }
+        else {
+            if (Scene.Player.EZY + Scene.Player.H / 2 > this.Y + H / 2 && Scene.Players[i].OnScreen) {
+                AllPast = false;
+                break;
+            }
         }
     }
     if (!AllPast) {
-        if (this.Y > this.InitialY - 64)
-            this.Y -= 8;
+        if (!Horizontal) {
+            if (this.Y > this.InitialY - 64)
+                this.Y -= 8;
+        }
+        else {
+            if (FlipX) {
+                if (this.X > this.InitialX - 64)
+                    this.X -= 8;
+            }
+            else {
+                if (this.X < this.InitialX + 64)
+                    this.X += 8;
+            }
+        }
     }
     else {
-        if (this.Y < this.InitialY)
-            this.Y += 8;
+        if (!Horizontal) {
+            if (this.Y < this.InitialY)
+                this.Y += 8;
+        }
+        else {
+            if (FlipX) {
+                if (this.X < this.InitialX)
+                    this.X += 8;
+            }
+            else {
+                if (this.X > this.InitialX)
+                    this.X -= 8;
+            }
+        }
     }
 }
 event Render(CamX:int, CamY:int) {
@@ -45,5 +113,8 @@ event Render(CamX:int, CamY:int) {
         G.DrawSprite(Scene.TileSprite, 0, 0x8C, 8 + this.X - CamX + (0), 8 + this.Y + 16 - CamY + (-16), 0, IE_NOFLIP);
         G.DrawSprite(Scene.TileSprite, 0, 0x8D, 8 + this.X - CamX + (-16), 8 + this.Y + 16 - CamY + (0), 0, IE_NOFLIP);
         G.DrawSprite(Scene.TileSprite, 0, 0x8E, 8 + this.X - CamX + (0), 8 + this.Y + 16 - CamY + (0), 0, IE_NOFLIP);
+    }
+    else {
+        G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
     }
 }

@@ -71,52 +71,55 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 PUBLIC void Level_HCZ::Init() {
     LevelScene::Init();
 
-    IResource* StageBin = IResources::Load("Stages/HCZ/Palette.bin");
-    if (StageBin) {
-        IStreamer reader(StageBin);
-        free(reader.ReadBytes(128 * 4));
+    bool Thremixed = false;
+    if (Thremixed) {
+        IResource* StageBin = IResources::Load("Stages/HCZ/Palette.bin");
+        if (StageBin) {
+            IStreamer reader(StageBin);
+            free(reader.ReadBytes(128 * 4));
 
-        uint8_t* n = reader.ReadBytes(128 * 4);
-        memcpy(TileSprite->PaletteAlt + 128, n, 128 * 4);
-        memcpy(SpriteMap["HCZ"]->PaletteAlt + 128, n, 128 * 4);
-        memcpy(SpriteMap["HCZ Enemies"]->PaletteAlt + 128, n, 128 * 4);
-        memcpy(SpriteMap["HCZ Boss"]->PaletteAlt + 128, n, 128 * 4);
-        if (Act == 1)
-            memcpy(WaterLine->PaletteAlt + 128, n, 128 * 4);
-        free(n);
+            uint8_t* n = reader.ReadBytes(128 * 4);
+            memcpy(TileSprite->PaletteAlt + 128, n, 128 * 4);
+            memcpy(SpriteMap["HCZ"]->PaletteAlt + 128, n, 128 * 4);
+            memcpy(SpriteMap["HCZ Enemies"]->PaletteAlt + 128, n, 128 * 4);
+            memcpy(SpriteMap["HCZ Boss"]->PaletteAlt + 128, n, 128 * 4);
+            if (Act == 1)
+                memcpy(WaterLine->PaletteAlt + 128, n, 128 * 4);
+            free(n);
 
-        n = reader.ReadBytes(96 * 4);
-        memcpy(SpriteMap["HCZ"]->PaletteAlt, n, 96 * 4);
-        memcpy(SpriteMap["HCZ Enemies"]->PaletteAlt, n, 96 * 4);
-        memcpy(SpriteMap["HCZ Boss"]->PaletteAlt, n, 96 * 4);
-        memcpy(ItemsSprite->PaletteAlt, n, 96 * 4);
-        memcpy(ObjectsSprite->PaletteAlt, n, 96 * 4);
-        for (int p = 0; p < 3; p++)
-            if (Player->Sprites[p])
-                memcpy(Player->Sprites[p]->PaletteAlt, n, 96 * 4);
-        free(n);
+            n = reader.ReadBytes(96 * 4);
+            memcpy(SpriteMap["HCZ"]->PaletteAlt, n, 96 * 4);
+            memcpy(SpriteMap["HCZ Enemies"]->PaletteAlt, n, 96 * 4);
+            memcpy(SpriteMap["HCZ Boss"]->PaletteAlt, n, 96 * 4);
+            memcpy(ItemsSprite->PaletteAlt, n, 96 * 4);
+            memcpy(ObjectsSprite->PaletteAlt, n, 96 * 4);
+            for (int p = 0; p < 3; p++)
+                if (Player->Sprites[p])
+                    memcpy(Player->Sprites[p]->PaletteAlt, n, 96 * 4);
+            free(n);
 
-        TileSprite->PaletteAlt[0] = 0xFF00FF;
+            TileSprite->PaletteAlt[0] = 0xFF00FF;
 
-        TileSprite->Paletted = 2;
-        SpriteMap["HCZ"]->Paletted = 2;
-        SpriteMap["HCZ Enemies"]->Paletted = 2;
-        SpriteMap["HCZ Boss"]->Paletted = 2;
-        ItemsSprite->Paletted = 2;
-        ObjectsSprite->Paletted = 2;
-        if (Act == 1)
-            WaterLine->Paletted = 2;
+            TileSprite->Paletted = 2;
+            SpriteMap["HCZ"]->Paletted = 2;
+            SpriteMap["HCZ Enemies"]->Paletted = 2;
+            SpriteMap["HCZ Boss"]->Paletted = 2;
+            ItemsSprite->Paletted = 2;
+            ObjectsSprite->Paletted = 2;
+            if (Act == 1)
+                WaterLine->Paletted = 2;
 
-        TileSprite->UpdatePalette();
-        SpriteMap["HCZ"]->UpdatePalette();
-        SpriteMap["HCZ Enemies"]->UpdatePalette();
-        SpriteMap["HCZ Boss"]->UpdatePalette();
-        ItemsSprite->UpdatePalette();
-        ObjectsSprite->UpdatePalette();
-        if (Act == 1)
-            WaterLine->UpdatePalette();
+            TileSprite->UpdatePalette();
+            SpriteMap["HCZ"]->UpdatePalette();
+            SpriteMap["HCZ Enemies"]->UpdatePalette();
+            SpriteMap["HCZ Boss"]->UpdatePalette();
+            ItemsSprite->UpdatePalette();
+            ObjectsSprite->UpdatePalette();
+            if (Act == 1)
+                WaterLine->UpdatePalette();
 
-        IResources::Close(StageBin);
+            IResources::Close(StageBin);
+        }
     }
 
     if (Act == 2) {

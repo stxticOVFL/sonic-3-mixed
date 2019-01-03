@@ -215,8 +215,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartX = 0x2656;
         // PlayerStartY = 0x04A2;
 
-        // PlayerStartX = 0x286B;
-        // PlayerStartY = 0x2DC;
+        PlayerStartX = 0x1E40;
+        PlayerStartY = 0x26C;
     }
     else {
         // PlayerStartX = 0x2820;
@@ -241,6 +241,15 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
     else {
         VisualWaterLevel = 0x528;
         WaterLevel = 0x528;
+
+        if (RoutineNumber == 69) {
+            LevelCardTimer = 6.0;
+            LevelCardHide = true;
+        }
+        else {
+            LevelCardTimer = 0.0;
+            LevelCardHide = false;
+        }
     }
 
     if (Act == 0) {
@@ -804,7 +813,6 @@ PUBLIC void Level_AIZ::UpdateDiscord() {
 PUBLIC void Level_AIZ::GoToNextAct() {
     if (Act == 1 && VisualAct == 1) {
 		Level_AIZ* NextAct = new Level_AIZ(App, G, 2);
-        NextAct->LevelCardHide = true;
         NextAct->VisualWaterLevel = NextAct->WaterLevel = 0x528;
         NextAct->Frame = Frame;
         NextAct->WaterAnimationFrame = (Frame % 40) << 6;
@@ -812,7 +820,7 @@ PUBLIC void Level_AIZ::GoToNextAct() {
 
         NextAct->SpecialSpawnPositionX = Player->EZX - 0x2F00;
         NextAct->SpecialSpawnPositionY = Player->EZY - 0x80;
-        NextAct->RoutineNumber = 0x00;
+        NextAct->RoutineNumber = 69;
         NextAct->LevelTriggerFlag = 0x00;
 
         NextAct->GiantRingModel = GiantRingModel;

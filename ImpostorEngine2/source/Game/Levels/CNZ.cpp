@@ -3,7 +3,8 @@
 
 class Level_CNZ : public LevelScene {
 public:
-
+    ISprite* AIZ1Sprite = NULL;
+    ISprite* AIZ2Sprite = NULL;
 };
 #endif
 
@@ -63,6 +64,56 @@ Uint32 AnPal_PalCNZ_1[48] = {
     0x000000,
     0x888800,
     0xEEEE00,
+};
+Uint32 AnPal_PalCNZ_2[48] = {
+    0x000088,
+    0x000088,
+    0x668888,
+    0x000088,
+    0x000088,
+    0x446688,
+    0x000088,
+    0x000088,
+    0x224488,
+    0x000088,
+    0x000088,
+    0x002288,
+    0x002288,
+    0x000088,
+    0x000088,
+    0x224488,
+    0x000088,
+    0x000088,
+    0x446688,
+    0x000088,
+    0x000088,
+    0x668888,
+    0x000088,
+    0x000088,
+    0x668888,
+    0x002288,
+    0x000088,
+    0x446688,
+    0x224488,
+    0x000088,
+    0x224488,
+    0x446688,
+    0x000088,
+    0x002288,
+    0x668888,
+    0x000088,
+    0x000088,
+    0x668888,
+    0x002288,
+    0x000088,
+    0x446688,
+    0x224488,
+    0x000088,
+    0x224488,
+    0x446688,
+    0x000088,
+    0x002288,
+    0x668888,
 };
 Uint32 AnPal_PalCNZ_3[90] = {
     0x0022EE,
@@ -189,56 +240,6 @@ Uint32 AnPal_PalCNZ_5[32] = {
     0xEECCEE,
     0x00EE00,
     0xEEEEEE,
-};
-Uint32 AnPal_PalCNZ_2[48] = {
-    0x000088,
-    0x000088,
-    0x668888,
-    0x000088,
-    0x000088,
-    0x446688,
-    0x000088,
-    0x000088,
-    0x224488,
-    0x000088,
-    0x000088,
-    0x002288,
-    0x002288,
-    0x000088,
-    0x000088,
-    0x224488,
-    0x000088,
-    0x000088,
-    0x446688,
-    0x000088,
-    0x000088,
-    0x668888,
-    0x000088,
-    0x000088,
-    0x668888,
-    0x002288,
-    0x000088,
-    0x446688,
-    0x224488,
-    0x000088,
-    0x224488,
-    0x446688,
-    0x000088,
-    0x002288,
-    0x668888,
-    0x000088,
-    0x000088,
-    0x668888,
-    0x002288,
-    0x000088,
-    0x446688,
-    0x224488,
-    0x000088,
-    0x224488,
-    0x446688,
-    0x000088,
-    0x002288,
-    0x668888,
 };
 Uint32 AnPal_PalCNZ_4[122] = {
     0x0022EE,
@@ -408,7 +409,81 @@ PUBLIC void Level_CNZ::RestartStage(bool doActTransition, bool drawBackground) {
     LevelScene::RestartStage(doActTransition, drawBackground);
 }
 
+PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
+    if (Act <= 1) {
+    	SpriteMapIDs[0x01] = ItemsSprite;
+        SpriteMapIDs[0x04] = AIZ1Sprite;
+        SpriteMapIDs[0x05] = AIZ1Sprite;
+    	SpriteMapIDs[0x07] = ObjectsSprite;
+    	SpriteMapIDs[0x08] = ObjectsSprite;
+        SpriteMapIDs[0x09] = AIZ1Sprite;
+        SpriteMapIDs[0x0A] = AIZ1Sprite;
+        SpriteMapIDs[0x0C] = AIZ1Sprite;
+        SpriteMapIDs[0x0D] = AIZ1Sprite;
+        SpriteMapIDs[0x0F] = AIZ1Sprite;
+    	SpriteMapIDs[0x2F] = AIZ1Sprite;
+    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
+    	SpriteMapIDs[0x34] = ObjectsSprite;
+        SpriteMapIDs[0x35] = AIZ1Sprite;
+
+    	SpriteMapIDs[0x51] = AIZ1Sprite;
+    }
+    else {
+    	SpriteMapIDs[0x01] = ItemsSprite;
+        SpriteMapIDs[0x04] = AIZ2Sprite;
+        SpriteMapIDs[0x05] = AIZ2Sprite;
+        SpriteMapIDs[0x06] = AIZ1Sprite;
+    	SpriteMapIDs[0x07] = ObjectsSprite;
+    	SpriteMapIDs[0x08] = ObjectsSprite;
+        SpriteMapIDs[0x09] = AIZ1Sprite;
+        SpriteMapIDs[0x0A] = AIZ1Sprite;
+        SpriteMapIDs[0x0C] = AIZ1Sprite;
+        SpriteMapIDs[0x0D] = AIZ2Sprite;
+        SpriteMapIDs[0x0F] = AIZ2Sprite;
+    	SpriteMapIDs[0x2F] = AIZ1Sprite;
+    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
+    	SpriteMapIDs[0x34] = ObjectsSprite;
+        SpriteMapIDs[0x35] = AIZ1Sprite;
+
+    	SpriteMapIDs[0x51] = AIZ2Sprite;
+        SpriteMapIDs[0x8C] = AIZ1Sprite;
+    }
+}
+
 PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
+    if (!AIZ1Sprite) {
+        AIZ1Sprite = new ISprite("Sprites/AIZ1/Objects.gif", App);
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Platform.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Tree.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
+        // printf("\n");
+    }
+
+    if (!AIZ2Sprite) {
+        AIZ2Sprite = new ISprite("Sprites/AIZ2/Objects.gif", App);
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CollapsingPlatform.bin");
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CorkFloor.bin");
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin"); // HACK: padding
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/FallingLog.bin");
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin"); // HACK: padding
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Platform.bin");
+
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
+        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
+        // printf("\n");
+    }
+
 	if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
@@ -453,6 +528,26 @@ PUBLIC void Level_CNZ::EarlyUpdate() {
         // 0x3: Don't Repeat Y
         Data->layers[1].Flags |= 0 | 2 | 4;
         Data->layers[1].OffsetX = 0x3480;
+    }
+    if (Frame % 4 == 0) {
+        TileSprite->Palette[0x39] = AnPal_PalCNZ_1[(Frame / 4 * 3) % 48];
+        TileSprite->Palette[0x3A] = AnPal_PalCNZ_1[(Frame / 4 * 3) % 48 + 1];
+        TileSprite->Palette[0x3B] = AnPal_PalCNZ_1[(Frame / 4 * 3) % 48 + 2];
+        TileSprite->PaletteAlt[0x39] = AnPal_PalCNZ_2[(Frame / 4 * 3) % 48];
+        TileSprite->PaletteAlt[0x3A] = AnPal_PalCNZ_2[(Frame / 4 * 3) % 48 + 1];
+        TileSprite->PaletteAlt[0x3B] = AnPal_PalCNZ_2[(Frame / 4 * 3) % 48 + 2];
+
+        TileSprite->Palette[0x29] = AnPal_PalCNZ_3[(Frame / 4 * 3) % 90];
+        TileSprite->Palette[0x2A] = AnPal_PalCNZ_3[(Frame / 4 * 3) % 90 + 1];
+        TileSprite->Palette[0x2B] = AnPal_PalCNZ_3[(Frame / 4 * 3) % 90 + 2];
+        TileSprite->PaletteAlt[0x29] = AnPal_PalCNZ_4[(Frame / 4 * 3) % 90];
+        TileSprite->PaletteAlt[0x2A] = AnPal_PalCNZ_4[(Frame / 4 * 3) % 90 + 1];
+        TileSprite->PaletteAlt[0x2B] = AnPal_PalCNZ_4[(Frame / 4 * 3) % 90 + 2];
+
+        TileSprite->Palette[0x27] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32];
+        TileSprite->Palette[0x28] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32 + 1];
+        TileSprite->PaletteAlt[0x27] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32];
+        TileSprite->PaletteAlt[0x28] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32 + 1];
     }
     LevelScene::EarlyUpdate();
 }

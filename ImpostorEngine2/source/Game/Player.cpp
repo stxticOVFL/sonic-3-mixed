@@ -166,7 +166,7 @@ IPlayer::IPlayer() {
     W = 22;
     H = 40;
     OrigH = H;
-    DropDashEnabled = true;
+    DropDashEnabled = false;
 
 	ModeSin[0] = 0;
 	ModeSin[1] = 1;
@@ -266,28 +266,39 @@ void IPlayer::Create() {
     if (Character == CharacterType::Sonic) {
         H = 40;
         OrigH = H;
-        Sprites[0] = new ISprite("Player/Sonic1.gif", App);
-        Sprites[1] = new ISprite("Player/Sonic2.gif", App);
-        Sprites[2] = new ISprite("Player/Sonic3.gif", App);
-        Sprites[3] = new ISprite("Player/Sonic4.gif", App);
-        Sprites[4] = new ISprite("Player/SonicCutsceneCPZ.gif", App);
+		if (true) {
+			Sprites[0] = new ISprite("Player/S3/Sonic1.gif", App);
+			Sprites[0]->LoadAnimation("Player/S3/Sonic.bin");
 
-        Sprites[0]->LoadAnimation("Player/Sonic.bin");
+	        int i = 0;
+	        for (; i < Sprites[0]->AnimCount; i++) {
+	            AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+	        }
+		}
+		else {
+	        Sprites[0] = new ISprite("Player/Sonic1.gif", App);
+	        Sprites[1] = new ISprite("Player/Sonic2.gif", App);
+	        Sprites[2] = new ISprite("Player/Sonic3.gif", App);
+	        Sprites[3] = new ISprite("Player/Sonic4.gif", App);
+	        Sprites[4] = new ISprite("Player/SonicCutsceneCPZ.gif", App);
 
-        int i = 0;
-        for (; i < Sprites[0]->AnimCount; i++) {
-            AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
-        }
+	        Sprites[0]->LoadAnimation("Player/Sonic.bin");
 
-        Sprites[0]->LoadAnimation("Player/SuperSonic.bin");
-        for (; i < Sprites[0]->AnimCount; i++) {
-            AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
-        }
+	        int i = 0;
+	        for (; i < Sprites[0]->AnimCount; i++) {
+	            AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+	        }
 
-        Sprites[1]->LinkAnimation(Sprites[0]->Animations);
-        Sprites[2]->LinkAnimation(Sprites[0]->Animations);
-        Sprites[3]->LinkAnimation(Sprites[0]->Animations);
-        Sprites[4]->LinkAnimation(Sprites[0]->Animations);
+	        Sprites[0]->LoadAnimation("Player/SuperSonic.bin");
+	        for (; i < Sprites[0]->AnimCount; i++) {
+	            AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
+	        }
+
+	        Sprites[1]->LinkAnimation(Sprites[0]->Animations);
+	        Sprites[2]->LinkAnimation(Sprites[0]->Animations);
+	        Sprites[3]->LinkAnimation(Sprites[0]->Animations);
+	        Sprites[4]->LinkAnimation(Sprites[0]->Animations);
+		}
 	}
     else if (Character == CharacterType::Tails) {
         H = 32;
@@ -357,6 +368,7 @@ void IPlayer::Create() {
 
     SpriteShields2 = new ISprite("Sprites/Global/Shields.gif", App);
     SpriteShields2->LoadAnimation("Sprites/Global/Invincible.bin");
+	SpriteShields2->LoadAnimation("Sprites/Global/Shields.bin");
 
     for (int i = 0; i < 8; i++) {
         if (!Sprites[i]) break;
@@ -369,6 +381,14 @@ void IPlayer::Create() {
     PlayerSetPalettes:
     int palWhere;
     Uint32 *palNormal, *palNormalHCZ;
+
+	if (Scene->TileSprite) {
+		if (Scene->TileSprite->PaletteAlt) {
+			memcpy(Sprites[0]->PaletteAlt, Scene->TileSprite->PaletteAlt, 16 * 4);
+	        Sprites[0]->Paletted = 2;
+			Sprites[0]->UpdatePalette();
+		}
+	}
 
     if (Character == CharacterType::Sonic) {
         palWhere = 0x40;
@@ -395,10 +415,10 @@ void IPlayer::Create() {
     for (int i = 0; i < 8; i++) {
         if (!Sprites[i]) break;
 
-        memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
-        memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
-        Sprites[i]->Paletted = 2;
-		Sprites[i]->UpdatePalette();
+        // memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
+        // memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
+        // Sprites[i]->Paletted = 2;
+		// Sprites[i]->UpdatePalette();
     }
 }
 
@@ -2008,10 +2028,15 @@ void IPlayer::Update() {
                 */
                 if (ShieldUsable) {
                     if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
-                        if (!InputUp) {
+                        if (InputDown) {
                             if (DropDashRev == 0)
                                 DropDashRev = 1;
                         }
+						else if (!InputUp) {
+							ShieldAnimation = 8;
+							Shield = ShieldType::Instashield;
+							// Sound::Play(0x42);
+						}
                         else if (!SuperForm && !HyperForm) {
                             if (Rings >= 50 && !Scene->StopTimer) {
                                 Action = ActionType::Transform;
@@ -2027,6 +2052,7 @@ void IPlayer::Update() {
                         XSpeed = 0x800 * DisplayFlip;
                         YSpeed = 0;
                         CameraLockTimer = 16;
+						ShieldAnimation = 12;
                         Sound::Play(Sound::SFX_SHIELD_FIRE_DASH);
                     }
                     else if (Shield == ShieldType::Bubble) {
@@ -2038,6 +2064,10 @@ void IPlayer::Update() {
                     else if (Shield == ShieldType::Electric) {
                         YSpeed = -0x580;
                         Sound::Play(Sound::SFX_SHIELD_ELECTRIC_JUMP);
+						Scene->AddMovingSprite(SpriteShields, X, Y, 7, 0, false, false, -0x200, -0x200, 0x18, 22);
+						Scene->AddMovingSprite(SpriteShields, X, Y, 7, 0, false, false,  0x200, -0x200, 0x18, 22);
+						Scene->AddMovingSprite(SpriteShields, X, Y, 7, 0, false, false, -0x200,  0x200, 0x18, 22);
+						Scene->AddMovingSprite(SpriteShields, X, Y, 7, 0, false, false,  0x200,  0x200, 0x18, 22);
                     }
                     else if (Shield == ShieldType::Basic) {
                         // Do nothing.
@@ -2284,6 +2314,14 @@ void IPlayer::Update() {
         UnderwaterTimer = 1800;
     }
 
+	if (ShieldAnimation > 0) {
+		ShieldAnimation--;
+		if (Shield == ShieldType::Instashield) {
+			if (ShieldAnimation == 0)
+				Shield = ShieldType::None;
+		}
+	}
+
     if (GrabTimer > 0)
         GrabTimer--;
 
@@ -2313,13 +2351,8 @@ void IPlayer::LateUpdate() {
 
         if (Ground) {
             if (Action == ActionType::Rolling) {
-                if (abs(GroundSpeed) < 0x500)
-                    AnimationSpeedMult = abs(GroundSpeed);
-                else
-                    AnimationSpeedMult = 0x500;
-
-                if (AnimationSpeedMult < 0x100)
-                    AnimationSpeedMult = 0x100;
+				if (abs(GroundSpeed) < 0x500)
+                	AnimationSpeedMult = 0x10000 / (0x500 - abs(GroundSpeed));
 
                 ChangeAnimation(AnimationMap[superflag + "Jump"]);
             }
@@ -2381,45 +2414,53 @@ void IPlayer::LateUpdate() {
                         ChangeAnimation(AnimationMap[superflag + "Idle"]);
                 }
                 else if (abs(GroundSpeed) < 0x400) {
-					AnimationSpeedMult = 0x200 * abs(GroundSpeed) / 0x400;
-					if (AnimationSpeedMult < 0x100)
-						AnimationSpeedMult = 0x100;
+					// AnimationSpeedMult = 0x200 * abs(GroundSpeed) / 0x400;
+					// if (AnimationSpeedMult < 0x100)
+					// 	AnimationSpeedMult = 0x100;
+
+					AnimationSpeedMult = 0x10000 / (0x800 - abs(GroundSpeed));
 
                     ChangeAnimation(AnimationMap[superflag + "Walk"]);
                 }
                 else if (abs(GroundSpeed) < 0x600) {
-                    AnimationSpeedMult = 0x200 * abs(GroundSpeed) / 0x600;
+                    // AnimationSpeedMult = 0x200 * abs(GroundSpeed) / 0x600;
+
+					AnimationSpeedMult = 0x10000 / (0x800 - abs(GroundSpeed));
 
                     ChangeAnimation(AnimationMap[superflag + "Jog"]);
                 }
                 else if (abs(GroundSpeed) < 0xC00) {
-                    AnimationSpeedMult = 0x200 * abs(GroundSpeed) / 0xC00;
+                    // AnimationSpeedMult = 0x200 * abs(GroundSpeed) / 0xC00;
+
+					if (abs(GroundSpeed) < 0x700)
+	                	AnimationSpeedMult = 0x10000 / (0x800 - abs(GroundSpeed));
+					else
+						AnimationSpeedMult = 0x100;
 
                     ChangeAnimation(AnimationMap[superflag + "Run"], 0x100);
                 }
                 else {
+					AnimationSpeedMult = 0x100;
+
                     ChangeAnimation(AnimationMap[superflag + "Dash"]);
                 }
             }
         }
         else {
-            if (Action == ActionType::Fan)
-                ChangeAnimation(AnimationMap[superflag + "Spring CS"]);
+            if (Action == ActionType::Fan) {
+				AnimationSpeedMult = 0x200;
+                ChangeAnimation(AnimationMap[superflag + "Spring Twirl"]);
+			}
             else if (Action == ActionType::Jumping && DropDashRev > 20)
                 ChangeAnimation(AnimationMap[superflag + "Dropdash"]);
             else if (Action == ActionType::Jumping) {
-                if (abs(GroundSpeed) < 0x500)
-                    AnimationSpeedMult = abs(GroundSpeed);
-                else
-                    AnimationSpeedMult = 0x500;
-
-                if (AnimationSpeedMult < 0x100)
-                    AnimationSpeedMult = 0x100;
+				if (abs(GroundSpeed) < 0x500)
+                	AnimationSpeedMult = 0x10000 / (0x500 - abs(GroundSpeed));
 
                 ChangeAnimation(AnimationMap[superflag + "Jump"]);
             }
             else if (Action == ActionType::Spring) {
-                if (ManiaPhysics)
+                if (SpringFlip)
                     ChangeAnimation(AnimationMap[superflag + "Spring Twirl"]);
                 else
                     ChangeAnimation(AnimationMap[superflag + "Spring Diagonal"]);
@@ -2523,7 +2564,11 @@ void IPlayer::LateUpdate() {
             else
                 ChangeAnimation(47);
         }
-    }
+
+		if (!Ground && (CurrentAnimation == 5 || CurrentAnimation == 6 || CurrentAnimation == 7)) {
+			AnimationSpeedMult = 0x10000 / (0x800 - IMath::min(0x400, IMath::abs(GroundSpeed)));
+		}
+	}
 
 	ISprite::Animation animation = Sprites[0]->Animations[CurrentAnimation];
 
@@ -2702,7 +2747,7 @@ void IPlayer::LateUpdate() {
             for (int p = 0; p < 6; p++) {
                 Sprites[i]->Palette[palWhere + p] = G->ColorBlend(palSuper[p], palSuperPulse[p], superblend);
 
-                Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend);
+                // Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend);
             }
 			Sprites[i]->UpdatePalette();
         }
@@ -2716,7 +2761,7 @@ void IPlayer::LateUpdate() {
             for (int p = 0; p < 6; p++) {
                 Sprites[i]->Palette[palWhere + p] = G->ColorBlend(palNormal[p], palSuper[p], superblend);
 
-                Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend);
+                // Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend);
             }
 			Sprites[i]->UpdatePalette();
         }
@@ -2730,19 +2775,19 @@ void IPlayer::LateUpdate() {
             for (int p = 0; p < 6; p++) {
                 Sprites[i]->Palette[palWhere + p] = G->ColorBlend(palSuper[p], palNormal[p], superblend);
 
-                Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend);
+                // Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend);
             }
 			Sprites[i]->UpdatePalette();
         }
     }
     else {
-        for (int i = 0; i < 8; i++) {
-            if (!Sprites[i]) break;
-
-            memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
-            memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
-			Sprites[i]->UpdatePalette();
-        }
+        // for (int i = 0; i < 8; i++) {
+        //     if (!Sprites[i]) break;
+		//
+        //     memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
+        //     memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
+		// 	Sprites[i]->UpdatePalette();
+        // }
     }
 
     // Ease rotation
@@ -2879,10 +2924,13 @@ void IPlayer::Render(int CamX, int CamY) {
         G->DrawModeOverlay = false;
     }
 
-    // Draw shields (Above player)
+    // Draw shields (Behind player)
     if (!SuperForm && !HyperForm && Invincibility != InvincibilityType::Full) {
         if (Shield == ShieldType::Fire && ((ShieldFrame >> 8) & 1)) {
-            G->DrawSprite(SpriteShields, 2, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_NOFLIP);
+			if (ShieldAnimation == 0)
+            	G->DrawSprite(SpriteShields, 2, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_NOFLIP);
+			else
+				G->DrawSprite(SpriteShields, 6, 5 - ((ShieldAnimation - 1) / 2), EZX + myOffX - CamX, EZY + myOffY - CamY, 0, XSpeed < 0 ? IE_FLIPX : IE_NOFLIP);
         }
         else if (Shield == ShieldType::Electric && (Scene->Frame & 1)) {
 			G->DrawSprite(SpriteShields, 3, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_NOFLIP);
@@ -2893,6 +2941,9 @@ void IPlayer::Render(int CamX, int CamY) {
 			else
 				G->DrawSprite(SpriteShields, 1, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_FLIPY);
         }
+		else if (Shield == ShieldType::Instashield) {
+			G->DrawSprite(Scene->Objects3Sprite, 12, 8 - ShieldAnimation, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_NOFLIP);
+		}
         else if (Shield == ShieldType::Basic && !(Scene->Frame & 1)) {
 			G->DrawSprite(SpriteShields, 0, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, !(Scene->Frame & 1) ? IE_FLIPX : IE_NOFLIP);
         }
@@ -3030,7 +3081,10 @@ void IPlayer::Render(int CamX, int CamY) {
     // Draw shields (Above player)
     if (!SuperForm && !HyperForm && Invincibility != InvincibilityType::Full) {
         if (Shield == ShieldType::Fire && !((ShieldFrame >> 8) & 1)) {
-            G->DrawSprite(SpriteShields, 2, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_NOFLIP);
+			if (ShieldAnimation == 0)
+            	G->DrawSprite(SpriteShields, 2, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_NOFLIP);
+			else
+				G->DrawSprite(SpriteShields, 6, 5 - ((ShieldAnimation - 1) / 2), EZX + myOffX - CamX, EZY + myOffY - CamY, 0, XSpeed < 0 ? IE_FLIPX : IE_NOFLIP);
         }
         else if (Shield == ShieldType::Electric && !(Scene->Frame & 1)) {
             G->DrawSprite(SpriteShields, 3, ShieldFrame >> 8, EZX + myOffX - CamX, EZY + myOffY - CamY, 0, IE_NOFLIP);
@@ -3154,7 +3208,6 @@ void IPlayer::Hurt(int x, bool spike) {
         }
         else {
             Die(false);
-            //Scene->aud_Die->Play(1); // $AudioPlay(aud_Die, 1);
         }
     }
     else if (Invincibility == InvincibilityType::None) {
@@ -3180,6 +3233,7 @@ void IPlayer::Die(bool drown) {
     Angle = 0;
     AngleMode = 0;
     DisplayAngle = 0;
+	Ground = false;
     if (drown) {
         YSpeed = 0;
         Sound::Play(Sound::SFX_DROWN);
@@ -3191,7 +3245,6 @@ void IPlayer::Die(bool drown) {
         YSpeed = -0x700;
         Sound::Play(Sound::SFX_DEATH);
     }
-    Lives--;
     VisualLayer = 1;
     Invincibility = InvincibilityType::None;
 }
@@ -3420,25 +3473,43 @@ void IPlayer::HandleMonitors() {
     for (int o = 0; o < Scene->ObjectEnemiesCount; o++) {
         Enemy* obj = Scene->ObjectsEnemies[o];
         if (obj != NULL) {
-            if (obj->Active && obj->HitCount > 0) {
+			if (obj->Active && obj->HitCount > 0) {
+				bool ExtendedShieldHitbox = false;
+				ExtendedShieldHitbox |= Shield == ShieldType::Instashield;
+				ExtendedShieldHitbox |= obj->BounceOffShield && Shield != ShieldType::None;
+
                 bool Collided = false;
                 if (obj->Radius > 1) {
-                    int DeltaX = (int)obj->X - max(EZX - (int)W / 2, min((int)obj->X, EZX + (int)W / 2));
-                    int DeltaY = (int)obj->Y - max(EZY - (int)H / 2, min((int)obj->Y, EZY + (int)H / 2));
-                    Collided = (DeltaX * DeltaX + DeltaY * DeltaY) < (obj->Radius * obj->Radius);
+					if (ExtendedShieldHitbox) {
+						int DeltaX = int(obj->X) - int(EZX);
+	                    int DeltaY = int(obj->Y) - int(EZY);
+						Collided = (DeltaX * DeltaX + DeltaY * DeltaY) < ((obj->Radius + 24) * (obj->Radius + 24));
+					}
+					else {
+	                    int DeltaX = (int)obj->X - max(EZX - (int)W / 2, min((int)obj->X, EZX + (int)W / 2));
+	                    int DeltaY = (int)obj->Y - max(EZY - (int)H / 2, min((int)obj->Y, EZY + (int)H / 2));
+	                    Collided = (DeltaX * DeltaX + DeltaY * DeltaY) < (obj->Radius * obj->Radius);
+					}
                 }
                 else {
-                    Collided =
-                        (int)obj->X + obj->W / 2 >= EZX - (int)W / 2 &&
-                        (int)obj->Y + obj->H / 2 >= EZY - (int)H / 2 &&
-                        (int)obj->X - obj->W / 2 <  EZX + (int)W / 2 &&
-                        (int)obj->Y - obj->H / 2 <  EZY + (int)H / 2;
+					if (ExtendedShieldHitbox) {
+	                    int DeltaX = EZX - IMath::max((int)obj->X - obj->W / 2, IMath::min(EZX, (int)obj->X + obj->W / 2));
+	                    int DeltaY = EZY - IMath::max((int)obj->Y - obj->H / 2, IMath::min(EZY, (int)obj->Y + obj->H / 2));
+	                    Collided = (DeltaX * DeltaX + DeltaY * DeltaY) < (24 * 24);
+					}
+					else {
+						Collided =
+	                        (int)obj->X + obj->W / 2 >= EZX - (int)W / 2 &&
+	                        (int)obj->Y + obj->H / 2 >= EZY - (int)H / 2 &&
+	                        (int)obj->X - obj->W / 2 <  EZX + (int)W / 2 &&
+	                        (int)obj->Y - obj->H / 2 <  EZY + (int)H / 2;
+					}
                 }
 
                 if (Collided) {
                     int hitFrom = 0;
-                    float wy = (W + obj->W) * ((Y >> 16) - obj->Y);
-                    float hx = (H + obj->H) * ((int)(X >> 16) - (int)obj->X);
+                    int wy = (W + obj->W) * ((Y >> 16) - obj->Y);
+                    int hx = (H + obj->H) * ((int)(X >> 16) - (int)obj->X);
 
                     if (wy > hx)
                         if (wy > -hx)
@@ -3450,6 +3521,14 @@ void IPlayer::HandleMonitors() {
                             hitFrom = 0;
                         else
                             hitFrom = 1;
+
+					if (obj->BounceOffShield && Shield != ShieldType::None) {
+						int angle = IMath::atanHex(EZX - int(obj->X), EZY - int(obj->Y));
+						obj->XSpeed = (-0x800 * IMath::cosHex(angle)) >> 16;
+						obj->YSpeed = (-0x800 * IMath::sinHex(angle)) >> 16;
+						obj->Harmful = false;
+						continue;
+					}
 
                     bool IsAttacking = false;
 					bool IsAttackingAbsolute = false;
@@ -3625,6 +3704,16 @@ void IPlayer::HandleMonitors() {
                         X -= abs(GroundSpeed) << 8;
                         obj->OnBreakHorizontal(PlayerID, hitFrom);
                     }
+					else if (obj->BreakableByRoll && obj->BreakableByJump && Shield == ShieldType::Instashield) {
+						if (obj->OnBreakVertical(PlayerID, hitFrom) == 1) {
+							if (YSpeed > 0x600)
+								Vibrate(VibrationType::ImpactLarge);
+							else
+								Vibrate(VibrationType::ImpactSmall);
+
+							YSpeed = -YSpeed;
+						}
+					}
                 }
             }
         }

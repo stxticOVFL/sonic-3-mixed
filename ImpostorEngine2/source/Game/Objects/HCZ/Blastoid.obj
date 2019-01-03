@@ -2,6 +2,9 @@ object 0x94;
 
 subclass Enemy;
 
+var Children:Object[8];
+var ShotIndex:int;
+
 event Create() {
     this.Active = true;
     this.Priority = false;
@@ -16,19 +19,41 @@ event Create() {
     Scene.AddSelfToRegistry(this, "Enemies");
 
     this.Y += 1;
+
+    ShotIndex = 0;
+    for (var i:int = 0; i < 8; i++) {
+        Children[i] = Scene.AddNewObject(Obj_BlastoidShot, 0, 0, 0, false, false);
+        Children[i].Sprite = Sprite;
+        Children[i].CurrentAnimation = CurrentAnimation + 1;
+    }
 }
 
 event OnHit():int {
-    Scene.LevelTriggerFlag = (Scene.LevelTriggerFlag & 0xF0) | this.SubType;
+    Scene.LevelTriggerFlag |= 1 << SubType;
     return OnDeath();
 }
 
 event Update() {
-    if ((Scene.Timer & 0x7F) == 0x00 ||
-        (Scene.Timer & 0x7F) == 0x10 ||
-        (Scene.Timer & 0x7F) == 0x20) {
-        this.Frame = 0;
-        Sound.Play(Sound.SFX_SHOT);
+    if (Math.abs(Scene.Player.EZX - X) < 128) {
+        if ((Scene.Timer & 0x7F) == 0x00 ||
+            (Scene.Timer & 0x7F) == 0x10 ||
+            (Scene.Timer & 0x7F) == 0x20) {
+            if (FlipX) {
+                Children[ShotIndex].X = X + 18;
+                Children[ShotIndex].XSpeed = 0x200;
+            }
+            else {
+                Children[ShotIndex].X = X - 18;
+                Children[ShotIndex].XSpeed = -0x200;
+            }
+            Children[ShotIndex].Y = Y - 8;
+            Children[ShotIndex].YSpeed = -0x100;
+            Children[ShotIndex].Timer = ShotIndex & 1;
+            ShotIndex++;
+            ShotIndex &= 0x7;
+            Frame = 0;
+            Sound.Play(Sound.SFX_SHOT);
+        }
     }
 
     if (this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed > 2)

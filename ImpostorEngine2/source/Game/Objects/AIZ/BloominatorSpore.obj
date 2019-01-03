@@ -1,0 +1,27 @@
+subclass Enemy;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 16;
+    H = 16;
+
+    Invincible = true;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+    BounceOffShield = true;
+}
+
+event Update() {
+    Timer += XSpeed;
+    Rotation += YSpeed;
+    YSpeed += 0x38;
+    X = Timer >> 8;
+    Y = Rotation >> 8;
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, 2, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

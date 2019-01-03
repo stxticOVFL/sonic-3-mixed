@@ -88,7 +88,7 @@ event Update() {
     }
 
     if (OnScreen && !PlayingSound) {
-        Sound.Loop(Sound.SFX_FAN_SMALL, 35280);
+        Sound.Loop(Sound.SFX_FAN_SMALL, 8820);
         PlayingSound = true;
     }
     else if (!OnScreen && PlayingSound) {
@@ -130,7 +130,7 @@ event Update() {
 
     if (NeedsActivation) {
         On = false;
-        if (Scene.LevelTriggerFlag >= 0x20)
+        if (Scene.LevelTriggerFlag & 1)
             On = true;
     }
 
