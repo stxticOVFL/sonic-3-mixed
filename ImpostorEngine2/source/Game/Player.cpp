@@ -3065,13 +3065,13 @@ void IPlayer::Render(int CamX, int CamY) {
                         G->DrawSprite(Sprites[0], Ani, Fra, status.X + x - CamX, status_Y + y - CamY, Ang, Fli);
                 }
 
-				G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame >> 8, status.X + x - CamX, status_Y + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
+				G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, status.X + x - CamX, status_Y + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
             }
         }
 
         G->DrawAlpha = 0xFF;
 
-        G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame >> 8, EZX + x - CamX, EZY + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
+        G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, EZX + x - CamX, EZY + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
     }
 
     // Draw spindash dust

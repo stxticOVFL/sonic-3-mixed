@@ -20,6 +20,13 @@ event Update() {
     Timer = 1 - Timer;
     X += XSpeed >> 8;
     Y += YSpeed >> 8;
+
+    if (!OnScreen) {
+        X = 0;
+        Y = 0;
+        XSpeed = 0;
+        YSpeed = 0;
+    }
 }
 
 event Render(CamX:int, CamY:int) {

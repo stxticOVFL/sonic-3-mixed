@@ -47,6 +47,8 @@ PUBLIC void Scene_LevelSelect::Init() {
         App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
     }
 
+    App->Input->UseTouchController = true;
+
     FadeTimerMax = 30;
     FadeIn = true;
 }
@@ -62,8 +64,8 @@ bool HaveStage[12] = {
     true,
     true, // ICZ
     true,
-    false, // LBZ
-    false,
+    true, // LBZ
+    true,
 };
 
 PUBLIC void Scene_LevelSelect::Update() {

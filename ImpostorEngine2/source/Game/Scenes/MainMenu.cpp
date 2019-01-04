@@ -98,9 +98,45 @@ PUBLIC void Scene_MainMenu::Init() {
     App->Audio->ClearMusic();
     App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
     // App->Audio->PushMusic(Sound::SoundBank[0], false, Sound::Audio->LoopPoint[0]);
+
+    App->Input->UseTouchController = false;
 }
 
 PUBLIC void Scene_MainMenu::Update() {
+    bool CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
+
+    int cenX = App->WIDTH - 164;
+    int cenY = App->HEIGHT / 2;
+
+    int mx = App->Input->MouseX;
+    int my = App->Input->MouseY;
+    if (App->Input->MousePressed) {
+        int sel = selected;
+        int tosel = -1;
+        if (mx >= cenX - 129 && my >= cenY - 79 &&
+            mx <  cenX - 129 + 100 && my <  cenY - 79 + 50)
+            tosel = 0;
+        else if (mx >= cenX + 29 && my >= cenY - 79 &&
+            mx <  cenX + 29 + 100 && my <  cenY - 79 + 50)
+            tosel = 1;
+        else if (mx >= cenX - 129 && my >= cenY + 29 &&
+            mx <  cenX - 129 + 100 && my <  cenY + 29 + 50)
+            tosel = 2;
+        else if (mx >= cenX + 29 && my >= cenY + 29 &&
+            mx <  cenX + 29 + 100 && my <  cenY + 29 + 50)
+            tosel = 3;
+
+        if (tosel >= 0) {
+            selected = tosel;
+            if (sel == selected) {
+                CONFIRM_PRESSED = true;
+            }
+            else {
+                Sound::Play(Sound::SFX_MENUBLEEP);
+            }
+        }
+    }
+
     if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
         if (selected >= 2)
             selected -= 2;
@@ -127,7 +163,8 @@ PUBLIC void Scene_MainMenu::Update() {
         Sound::Play(Sound::SFX_MENUBLEEP);
     }
 
-    if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
+    if (CONFIRM_PRESSED) {
+        Sound::Play(Sound::SFX_MENUACCEPT);
         App->NextScene = new Scene_LevelSelect(App, G);
     }
 
@@ -156,7 +193,7 @@ PUBLIC void Scene_MainMenu::Update() {
 }
 
 PUBLIC void Scene_MainMenu::Render() {
-    G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0x0022EE);
+    G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0x00FF00);
 
     int cenX = App->WIDTH - 164;
     int cenY = App->HEIGHT / 2;
@@ -280,5 +317,9 @@ PUBLIC void Scene_MainMenu::Render() {
         // 6 - Saturn (White)
         G->DrawSprite(SuperButtonsSprite, 4, 0, 14, App->HEIGHT - 34, 0, IE_NOFLIP);
         G->DrawSprite(SuperButtonsSprite, 4, 1, 14, App->HEIGHT - 12, 0, IE_NOFLIP);
+    }
+
+    if (IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android) {
+        G->DrawRectangle(0, App->HEIGHT - 48, 96, 48, 0x000000);
     }
 }

@@ -41,7 +41,9 @@ public:
 
     GLint defaultFBO;
     GLuint renderedTexture;
+    GLuint renderedTextureQuality;
     GLuint framebufferScreen;
+    GLuint framebufferScreenQuality;
 
     int RetinaMult = 1;
 };
@@ -64,6 +66,8 @@ struct VertexData {
 int* backupframebuffers;
 int  backupframebuffercount = 0;
 int  backupframebufferindex = 0;
+
+int Quality = 4;
 
 PUBLIC IGLGraphics::IGLGraphics(IApp* app) {
     App = app;
@@ -91,11 +95,12 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
     else
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
+    int ww, wh;
     if (!Window) {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
 
         Window = SDL_CreateWindow("Sonic 3'Mixed", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             DesiredWidth, DesiredHeight,
@@ -103,7 +108,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             #if ANDROID | IOS
             | SDL_WINDOW_BORDERLESS
             #endif
-            // | SDL_WINDOW_ALLOW_HIGHDPI
+            | SDL_WINDOW_ALLOW_HIGHDPI
             | SDL_WINDOW_OPENGL);
 
         Context = SDL_GL_CreateContext(Window);
@@ -114,8 +119,18 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
         int w, h;
         SDL_GL_GetDrawableSize(Window, &w, &h);
-        if (w > DesiredWidth)
-            RetinaMult = w / DesiredWidth;
+        SDL_GetWindowSize(Window, &ww, &wh);
+        if (h > wh)
+            RetinaMult = 2;
+
+        IApp::Print(0, "Retina Mult: %f", (double)h / wh);
+        IApp::Print(0, "RetinaMult: %d", RetinaMult);
+        IApp::Print(0, "Render Size: %d x %d", w, h);
+        IApp::Print(0, "Window Size: %d x %d", ww, wh);
+
+        if (IApp::Platform == Platforms::iOS) {
+            Quality = 4;
+        }
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -125,7 +140,9 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
         IApp::Print(3, "Default FBO: %d", defaultFBO);
 
-        if (true) { // Not Mobile
+
+
+        if (IApp::Platform != Platforms::iOS) {
             GLuint renderBuffer;
             glGenRenderbuffers(1, &renderBuffer);
             glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
@@ -133,27 +150,66 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             CheckGLError(__LINE__);
         }
 
-        glGenTextures(1, &renderedTexture);
+
+
+        int max;
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max);
+        IApp::Print(-1, "Max Texture Size: %d", max);
+
+
+
+        if (Quality > 1)
+            glGenTextures(2, &renderedTexture);
+        else
+            glGenTextures(1, &renderedTexture);
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+
+
+        if (Quality > 1) {
+            glBindTexture(GL_TEXTURE_2D, renderedTexture + 1);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH * Quality, App->HEIGHT * Quality, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        }
         glBindTexture(GL_TEXTURE_2D, 0);
         CheckGLError(__LINE__);
 
-        glGenFramebuffers(1, &framebufferScreen);
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen);
-        CheckGLError(__LINE__);
 
-        #if MSVC
-            glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
-        #elif MACOSX
-            glFramebufferTextureEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
-        #else
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0);
-        #endif
+
+        if (Quality > 1)
+            glGenFramebuffers(2, &framebufferScreen);
+        else
+            glGenFramebuffers(1, &framebufferScreen);
+
+
+
+        for (int i = 0; i < Quality && i < 2; i++) {
+            glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen + i); CheckGLError(__LINE__);
+
+            #if MSVC
+                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture + i, 0);
+            #elif MACOSX
+                glFramebufferTextureEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture + i, 0);
+            #else
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture + i, 0);
+            #endif
+        }
+
+
+
+        // GLuint depthRenderBuffer;
+        // glGenRenderbuffers(1, &depthRenderBuffer);
+        // glBindRenderbuffer(GL_RENDERBUFFER, depthRenderBuffer);
+        // glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, App->WIDTH, App->HEIGHT);
+        // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderBuffer);
 
         glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
         CheckGLError(__LINE__);
@@ -163,21 +219,12 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
 
         glViewport(0.0, 0.0, App->WIDTH, App->HEIGHT);
-
-        //glMatrixMode(GL_PROJECTION);
-        //glLoadIdentity();
         CheckGLError(__LINE__);
 
-        //glOrtho(0.0, App->WIDTH, App->HEIGHT, 0.0, 1.0, -1.0);
-
-        //glMatrixMode(GL_MODELVIEW);
-        //glLoadIdentity();
-        CheckGLError(__LINE__);
-
-        glClearColor(1.f, 0.82f, 0.25f, 1.f);
+        glClearColor(0.f, 0.f, 0.f, 1.f);
 
         const GLchar* vertexShaderSource[] = {
-            #if NX
+            #if NX | IOS
             "precision mediump float;",
             #endif
             #if !NX | NX
@@ -204,12 +251,11 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             "uniform vec3      u_rotate;",
             "uniform vec3      u_scale;",
 
-            "mat4 scale(vec3 v) {",
-            "    return mat4(",
-            "        vec4(v.x, 0.0, 0.0, 0.0),",
-            "        vec4(0.0, v.y, 0.0, 0.0),",
-            "        vec4(0.0, 0.0, v.z, 0.0),",
-            "        vec4(0.0, 0.0, 0.0, 1.0)",
+            "mat3 scale(vec3 v) {",
+            "    return mat3(",
+            "        vec3(v.x, 0.0, 0.0),",
+            "        vec3(0.0, v.y, 0.0),",
+            "        vec3(0.0, 0.0, v.z)",
             "    );",
             "}",
 
@@ -245,29 +291,47 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             "    return pr;"
             "}",
 
+            "mat3 rotate3(vec3 v) {",
+            "    v = v * 3.1415926535897932384626433832795 / 128.0;",
+            "    mat3 pr = mat3(",
+            "        vec3(1.0,       0.0,      0.0),",
+            "        vec3(0.0,  cos(v.x), -sin(v.x)),",
+            "        vec3(0.0,  sin(v.x),  cos(v.x))",
+            "    );",
+            "    pr *= mat3(",
+            "        vec3( cos(v.y), 0.0,  sin(v.y)),",
+            "        vec3(0.0,       1.0,  0.0     ),",
+            "        vec3(-sin(v.y), 0.0,  cos(v.y))",
+            "    );",
+            "    pr *= mat3(",
+            "        vec3( cos(v.z), -sin(v.z), 0.0),",
+            "        vec3( sin(v.z),  cos(v.z), 0.0),",
+            "        vec3(0.0, 0.0, 1.0)",
+            "    );",
+            "    return pr;"
+            "}",
+
             "void main() {",
             "    mat4 projection = mat4(",
             "        vec4(2.0 / 424.0,  0.0, 0.0, 0.0),",
             "        vec4(0.0, -2.0 / 240.0, 0.0, 0.0),",
-            "        vec4(0.0, 0.0, 2.0 / 300.0, 0.0),",
+            "        vec4(0.0, 0.0, -2.0 / 64.0, 0.0),",
             "        vec4(-1.0, 1.0, 1.0, 1.0)",
             "   );",
 
             "    gl_Position = projection",
+            // "        * rotate(u_rotate)",
             "        * translate(u_translate)",
-            "        * rotate(u_rotate)",
-            "        * scale(u_scale)",
-            "        * vec4(i_position, 1.0);",
+            "        * vec4(i_position * scale(u_scale) * rotate3(u_rotate), 1.0);",
 
             "    o_position = i_position;",
             "    o_uv = i_uv;",
-            "    o_normals = (rotate(u_rotate) * vec4(i_normals, 1.0)).xyz;",
+            "    o_normals = i_normals * rotate3(u_rotate);",
             // "    o_color = i_color;",
             "}",
         };
         const GLchar* fragmentShaderSource[] = {
-            //"precision mediump float;",
-            #if NX
+            #if NX | IOS
             "precision mediump float;",
             #endif
             "varying vec3      o_position;",
@@ -300,26 +364,26 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             "        vec4 index = texture2D(u_texture, o_uv);",
 
             "        if (gl_FragCoord.y > u_waterLine)",
-            "            color = vec4(texture2D(u_palette, vec2(index.a, 0.0)).xyz, 1.0);",
+            "            color = texture2D(u_palette, vec2(index.a, 0.0));",
             "        else",
-            "            color = vec4(texture2D(u_paletteAlt, vec2(index.a, 0.0)).xyz, 1.0);",
+            "            color = texture2D(u_paletteAlt, vec2(index.a, 0.0));",
 
             "        if (color.xyz == vec3(1.0, 0.0, 1.0)) discard;",
 
             "        color = color;",
             "    }",
             "    else if (u_useTexture == 2) {",
-            "        color = vec4(texture2D(u_texture, o_uv).xyz, 1.0);",
+            "        color = texture2D(u_texture, o_uv);",
             "    }",
             "    else if (u_useTexture == 3) {",
             "        vec3 lightdir = vec3(0.0, -1.0, 0.0);",
             "        vec3 normals = normalize(o_normals);",
             "        float intensity = max(0.0, dot(lightdir, normals));",
             "        color = u_color;",
-            "        if (intensity < 0.5)",
+            "        if (intensity < 0.35)",
             "            color = vec4(color.rgb * (intensity + 0.5), color.a);",
             "        else",
-            "            color = vec4(mix(color.rgb, vec3(1.0), (intensity - 0.5) * 1.5), color.a);", // 2.0 is too bright on GL
+            "            color = vec4(mix(color.rgb, vec3(1.0), (intensity - 0.5) * 2.0), color.a);", // 2.0 is too bright on GL
 
             "        color = color / u_color;",
             "    }",
@@ -356,6 +420,8 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
         //*
 
+
+
         GLint compiled = GL_FALSE;
         programID = glCreateProgram();
 
@@ -370,6 +436,8 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             return;
         }
 
+
+
         GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, sizeof(fragmentShaderSource) / sizeof(GLchar*), fragmentShaderSource, NULL);
         glCompileShader(fragmentShader);
@@ -381,8 +449,12 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             return;
         }
 
+
+
         glAttachShader(programID, vertexShader);
         glAttachShader(programID, fragmentShader);
+
+
 
         glBindAttribLocation(programID, 0, "i_position");
         glBindAttribLocation(programID, 1, "i_uv");
@@ -432,6 +504,9 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         // glEnableVertexAttribArray(LocColor);
         // glEnableVertexAttribArray(LocNormals);
 
+
+
+
         IApp::Print(0, "%s: %d", "LocUseTexture", LocUseTexture);
         IApp::Print(0, "%s: %d", "LocPosition", LocPosition);
         IApp::Print(0, "%s: %d", "LocTexCoord", LocTexCoord);
@@ -459,17 +534,18 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
     else {
         SDL_SetWindowSize(Window, DesiredWidth, DesiredHeight);
         SDL_SetWindowPosition(Window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+        SDL_GetWindowSize(Window, &ww, &wh);
     }
 
-    WindowWidth = DesiredWidth;
-    WindowHeight = DesiredHeight;
+    WindowWidth = ww;
+    WindowHeight = wh;
     //*/
 }
 
 PUBLIC bool IGLGraphics::CheckGLError(int line) {
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
-        #if !NX
+        #if !NX && !IOS
             IApp::Print(2, "OpenGL error on line %d: %s", line, gluErrorString(error));
         #endif
         return true;
@@ -522,8 +598,26 @@ PUBLIC bool IGLGraphics::CheckProgramError(GLuint prog) {
 }
 
 PUBLIC void IGLGraphics::Present() {
+    glBindBuffer(GL_ARRAY_BUFFER, rectBufferID);
+    if (Quality > 1) {
+        glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen + 1);
+        glViewport(0.0, 0.0, App->WIDTH * Quality, App->HEIGHT * Quality); // * 2 for retina display
+        glUniform3f(LocTranslate, 0.0f, App->HEIGHT, 0.0f);
+        glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+        glUniform3f(LocScale, App->WIDTH, -App->HEIGHT, 0.0f);
+        glUniform4f(LocColor, 1.0f, 1.0f, 1.0f, 1.0f);
+
+        glUniform1i(LocUseTexture, 2);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, renderedTexture);
+        glUniform1i(LocTexture, 0);
+
+        glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
+        glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
     glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
-    glViewport(0.0, 0.0, WindowWidth * RetinaMult, WindowHeight * RetinaMult); // * 2 for retina display
+    glViewport(0.0, 0.0, WindowWidth * RetinaMult, WindowHeight * RetinaMult);
     glUniform3f(LocTranslate, 0.0f, App->HEIGHT, 0.0f);
     glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
     glUniform3f(LocScale, App->WIDTH, -App->HEIGHT, 0.0f);
@@ -531,10 +625,9 @@ PUBLIC void IGLGraphics::Present() {
 
     glUniform1i(LocUseTexture, 2);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, renderedTexture);
+    glBindTexture(GL_TEXTURE_2D, renderedTexture + (Quality > 1));
     glUniform1i(LocTexture, 0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, rectBufferID);
     glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
     glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -542,7 +635,7 @@ PUBLIC void IGLGraphics::Present() {
 
     SDL_GL_SwapWindow(Window);
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(programID);
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen);
     glViewport(0.0, 0.0, App->WIDTH, App->HEIGHT);
@@ -582,6 +675,16 @@ PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 PUBLIC void IGLGraphics::UpdatePalette(ISprite* sprite) {
+    for (int i = 0; i < 256; i++) {
+        if (i != sprite->TransparentColorIndex) {
+            sprite->Palette[i] = 0xFF000000U | sprite->Palette[i];
+            sprite->PaletteAlt[i] = 0xFF000000U | sprite->PaletteAlt[i];
+        }
+        else {
+            sprite->Palette[i] = 0;
+            sprite->PaletteAlt[i] = 0;
+        }
+    }
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_BGRA, GL_UNSIGNED_BYTE, sprite->Palette);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -699,6 +802,14 @@ PUBLIC int  IGLGraphics::MakeVertexBuffer(IModel* model, bool verts) {
 }
 PUBLIC void IGLGraphics::DeleteBufferID(int buffID) {
     glDeleteBuffers(1, (GLuint*)&buffID);
+}
+
+PUBLIC void IGLGraphics::SetClip(int x, int y, int w, int h) {
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(x, App->HEIGHT - y - h, w, h);
+}
+PUBLIC void IGLGraphics::ClearClip() {
+    glDisable(GL_SCISSOR_TEST);
 }
 
 PUBLIC void IGLGraphics::MakeClone() {
@@ -1048,8 +1159,8 @@ PUBLIC void IGLGraphics::DrawModelOn2D(IModel* model, int x, int y, double scale
     float g = (col >> 8 & 0xFF) / 255.f;
     float b = (col & 0xFF) / 255.f;
 
-    glUniform3f(LocTranslate, x, y, -100.0f);
-    glUniform3f(LocRotate, rx, ry, rz);
+    glUniform3f(LocTranslate, x, y, 32.f);
+    glUniform3f(LocRotate, rx, ry, -rz);
     glUniform3f(LocScale, scale, scale, scale);
     glUniform4f(LocColor, r, g, b, DrawAlpha / 255.f);
 
@@ -1057,7 +1168,10 @@ PUBLIC void IGLGraphics::DrawModelOn2D(IModel* model, int x, int y, double scale
 
     glUniform1f(LocWaterLine, -0xFFFF);
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
     glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+    // glDepthFunc(GL_LESS);
 
     int yep = 0;
     for (int i = 0; i < model->Faces.size(); i++) {
@@ -1080,6 +1194,7 @@ PUBLIC void IGLGraphics::DrawModelOn2D(IModel* model, int x, int y, double scale
 
     glDisableVertexAttribArray(LocNormals);
 
+    glDepthMask(GL_TRUE);
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
 

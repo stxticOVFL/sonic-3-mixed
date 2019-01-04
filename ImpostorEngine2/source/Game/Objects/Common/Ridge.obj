@@ -20,7 +20,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
             Scene.Players[PlayerID].EZY >= Y - 0x14 &&
             Scene.Players[PlayerID].EZY <= Y + 0x20 &&
             Scene.Players[PlayerID].DisplayFlip == 1) {
-            // SpringFlip = 4;
+            Scene.Players[PlayerID].SpringFlip = 4;
             Scene.Players[PlayerID].Action = ActionType.Spring;
 
             Scene.Players[PlayerID].XSpeed += 0x400;

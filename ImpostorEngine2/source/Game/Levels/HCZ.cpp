@@ -60,8 +60,8 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartX = 0x0170;
         // PlayerStartY = 0x082C;
 
-        PlayerStartX = 0x1A2E;
-        PlayerStartY = 0x056C;
+        // PlayerStartX = 0x1A2E;
+        // PlayerStartY = 0x056C;
 
         VisualWaterLevel = 0x700;
         WaterLevel = 0x700;
@@ -149,6 +149,7 @@ PUBLIC void Level_HCZ::RestartStage(bool doActTransition, bool drawBackground) {
     WallY = 0x600;
     WallMoving = false;
     WallStopped = false;
+    ShakeTimer = 0;
 
     if (Act == 1) {
         if (Checkpoint == -1)
@@ -475,6 +476,9 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
         if (Player->EZX >= 0x0680 && !WallStopped) {
             WallMoving = true;
         }
+        if (WallStopped && !WallMoving) {
+            ShakeTimer = 0;
+        }
         if (WallMoving) {
             if (Player->EZX >= 0x0A88)
                 WallX += 0x14000;
@@ -533,6 +537,9 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                 }
             }
         }
+
+        Data->layers[3].OffsetX = WallX >> 16;
+        Data->layers[3].OffsetY = WallY;
 
         // Boss water and camera management
         if (Player->Action != ActionType::Dead) {
@@ -639,7 +646,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                 int py1 = Player->EZY - Player->H / 4;
                 int py2 = Player->EZY;
 
-                if (RoutineNumber >= 0x20) {
+                if (LevelTriggerFlag >> 0 & 1) {
                     for (int i = 0; i < 2; i++) {
                         if (px1 >= waterTunnels[i * 7 + 0] &&
                             py1 >= waterTunnels[i * 7 + 1] &&
@@ -680,7 +687,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
 
                 if (px1 >= 0x2FA0 &&
                     px2 <  0x3300) {
-                    RoutineNumber = 0x00;
+                    LevelTriggerFlag &= ~(1 << 0);
                 }
             }
             else {
@@ -725,8 +732,8 @@ PUBLIC void Level_HCZ::Subupdate() {
 
     // Wall shit (part 2)
     if (Act == 2) {
-        Data->layers[1].Visible = false;
-        Data->layers[1].Flags = 1 | 2 | 4;
+        Data->layers[3].Visible = true;
+        Data->layers[3].Flags = 0 | 2 | 4;
 
         for (int p = 0; p < PlayerCount; p++) {
             IPlayer* Player = Players[p];
@@ -782,7 +789,7 @@ PUBLIC void Level_HCZ::Subupdate() {
                     Player->EZX = CameraX + App->WIDTH / 2 + (IMath::sinHex((DrainTimer << 2) + p * 32) >> 10);
                     Player->Y = 0x6F00000 + (DrainTimer - 90) * 0x18000;
                     Player->Action = ActionType::Normal;
-                    Player->ChangeAnimation2(Player->AnimationMap["Fan"], (DrainTimer >> 1) % 10);
+                    Player->ChangeAnimation2(Player->AnimationMap["Fan"], (DrainTimer >> 1) % 8);
                     Player->DisplayFlip = 1;
                     Player->ObjectControlled = 0x80;
                     Player->UnderwaterTimer = 1800;

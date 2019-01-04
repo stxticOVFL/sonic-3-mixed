@@ -89,9 +89,10 @@ PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
         }
     }
     else {
-        res->RW = SDL_RWFromFile(FullName, "r");
-        if (!res->RW)
+        res->RW = SDL_RWFromFile(FullName, "rb");
+        if (!res->RW) {
             return NULL;
+        }
     }
     res->path = path;
 

@@ -40,6 +40,17 @@ enum {
     IE_FILTER_FADEABLE = 4,
 };
 
+enum class Platforms {
+    Default,
+    Windows,
+    MacOSX,
+    Linux,
+    Ubuntu,
+    Switch,
+    iOS,
+    Android,
+};
+
 void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey);
 
 using namespace std;

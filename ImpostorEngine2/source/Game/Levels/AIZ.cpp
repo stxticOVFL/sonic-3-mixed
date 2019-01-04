@@ -215,8 +215,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartX = 0x2656;
         // PlayerStartY = 0x04A2;
 
-        PlayerStartX = 0x1E40;
-        PlayerStartY = 0x26C;
+        // PlayerStartX = 0x1E40;
+        // PlayerStartY = 0x26C;
     }
     else {
         // PlayerStartX = 0x2820;

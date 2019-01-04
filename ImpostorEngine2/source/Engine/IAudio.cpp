@@ -94,12 +94,12 @@ PUBLIC IAudio::IAudio(IApp* app) {
         App->Print(2, "Could not open audio device!");
     }
 
-    IApp::Print(0, "%s = %d", "freq", DeviceFmt.freq);
-    IApp::Print(0, "%s = %X", "format", DeviceFmt.format);
-    IApp::Print(0, "%s = %X", "samples", DeviceFmt.samples);
-    IApp::Print(0, "%s = %X", "channels", DeviceFmt.channels);
-    IApp::Print(0, "%s = %X", "callback", DeviceFmt.callback);
-    IApp::Print(0, "%s = %X", "userdata", DeviceFmt.userdata);
+    IApp::Print(-1, "%s = %d", "freq", DeviceFmt.freq);
+    IApp::Print(-1, "%s = %X", "format", DeviceFmt.format);
+    IApp::Print(-1, "%s = %X", "samples", DeviceFmt.samples);
+    IApp::Print(-1, "%s = %X", "channels", DeviceFmt.channels);
+    IApp::Print(-1, "%s = %X", "callback", DeviceFmt.callback);
+    IApp::Print(-1, "%s = %X", "userdata", DeviceFmt.userdata);
 
     IAudio::DeviceFormat = DeviceFmt;
 }

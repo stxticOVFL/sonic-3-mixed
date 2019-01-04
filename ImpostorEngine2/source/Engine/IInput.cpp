@@ -36,6 +36,8 @@ public:
     };
 
     int* ControllerMaps[4];
+
+    bool UseTouchController = false;
 };
 #endif
 
@@ -88,8 +90,37 @@ PUBLIC void IInput::Cleanup() {
 }
 
 PUBLIC void IInput::Poll() {
-    int mx, my;
-    #if !NX
+    bool touchEnabled = false;
+    SDL_TouchID touchID;
+    int w = App->WIDTH;
+    int h = App->HEIGHT;
+    if (IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android) {
+        if ((touchID = SDL_GetTouchDevice(0))) {
+            if (UseTouchController) {
+                touchEnabled = true;
+            }
+            else {
+                touchEnabled = false;
+
+                bool Down = false;
+                for (int t = 0; t < SDL_GetNumTouchFingers(touchID) && t < 1; t++) {
+                    SDL_Finger* finger = SDL_GetTouchFinger(touchID, t);
+                    int tx = int(finger->x * w);
+                    int ty = int(finger->y * h);
+
+                    MouseX = tx;
+                    MouseY = ty;
+
+                    Down = true;
+                }
+                MouseReleased = !Down && MouseDown;
+                MousePressed = Down && !MouseDown;
+                MouseDown = Down;
+            }
+        }
+    }
+    else if (IApp::Platform != Platforms::Switch) {
+        int mx, my;
         Uint32 button = SDL_GetMouseState(&mx, &my);
         MouseX = mx * App->WIDTH / App->G->WindowWidth;
         MouseY = my * App->HEIGHT / App->G->WindowHeight;
@@ -97,11 +128,10 @@ PUBLIC void IInput::Poll() {
         MouseReleased = ((button & SDL_BUTTON(SDL_BUTTON_LEFT)) == 0) && MouseDown;
         MousePressed = ((button & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0) && !MouseDown;
         MouseDown = (button & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
-    #endif
+    }
 
     for (int i = 0; i < ControllerCount; i++) {
-        bool UP = false,
-            DOWN = false, LEFT = false, RIGHT = false, CONFIRM = false, DENY = false, EXTRA = false, PAUSE = false;
+        bool UP = false, DOWN = false, LEFT = false, RIGHT = false, CONFIRM = false, DENY = false, EXTRA = false, PAUSE = false;
 
         if (ControllerType[i] == 0x00) { // Keyboard
             const unsigned char *state = SDL_GetKeyboardState(NULL);
@@ -132,6 +162,40 @@ PUBLIC void IInput::Poll() {
                 EXTRA = (hid & KEY_X) != 0;
                 PAUSE = (hid & KEY_PLUS) != 0 || (hid & KEY_MINUS) != 0;
             #endif
+        }
+
+        if (touchEnabled) {
+            for (int t = 0; t < SDL_GetNumTouchFingers(touchID); t++) {
+                SDL_Finger* finger = SDL_GetTouchFinger(touchID, t);
+                int tx = int(finger->x * w);
+                int ty = int(finger->y * h);
+
+                int bx = 48;
+                int by = h - 48;
+
+                if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 150 * 150) {
+                    int ang = IMath::atanHex(tx - bx, ty - by);
+                    if ((ang >= 0x00 && ang < 0x20) || (ang >= 0xD0 && ang <= 0xFF))
+                        RIGHT = true;
+                    else if (ang >= 0x20 && ang < 0x60)
+                        UP = true;
+                    else if (ang >= 0x60 && ang < 0xA0)
+                        LEFT = true;
+                    else if (ang >= 0xA0 && ang < 0xD0)
+                        DOWN = true;
+                }
+
+                bx = w - 48;
+                if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 64 * 64) {
+                    CONFIRM = true;
+                }
+
+                bx = w - 20;
+                by = 20;
+                if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 64 * 64) {
+                    PAUSE = true;
+                }
+            }
         }
 
         Controllers[i][15] = UP && !Controllers[i][15 - 8];

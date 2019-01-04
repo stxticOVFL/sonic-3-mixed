@@ -14,6 +14,18 @@
     #include <GLES2/gl2.h>
     #include <SDL2/SDL_opengl.h>
     #include <GLES2/gl2ext.h>
+#elif IOS
+    #include <SDL.h>
+
+    #include <OpenGLES/ES3/gl.h>
+    #include <SDL_opengl.h>
+    #include <OpenGLES/ES3/glext.h>
+#elif ANDROID
+    #include <SDL.h>
+
+    #include <GLES2/gl2.h>
+    #include <SDL_opengl.h>
+    #include <GLES2/gl2ext.h>
 #else
     #if USING_FRAMEWORK
         #include <SDL.h>
@@ -37,7 +49,11 @@
     #include <switch.h>
 #endif
 
+#if IOS
+#include <Vorbis/vorbisfile.h>
+#else
 #include <vorbis/vorbisfile.h>
+#endif
 
 typedef uint32_t uint;
 

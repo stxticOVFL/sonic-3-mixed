@@ -342,13 +342,13 @@ PUBLIC VIRTUAL void IGraphics::SetFilter(int filter) {
 PUBLIC VIRTUAL int IGraphics::GetFilter() {
      return Filter;
 }
-PUBLIC void IGraphics::SetClip(int x, int y, int w, int h) {
+PUBLIC VIRTUAL void IGraphics::SetClip(int x, int y, int w, int h) {
     Clip[0] = x;
     Clip[1] = y;
     Clip[2] = x + w;
     Clip[3] = y + h;
 }
-PUBLIC void IGraphics::ClearClip() {
+PUBLIC VIRTUAL void IGraphics::ClearClip() {
     Clip[0] = -1;
 }
 

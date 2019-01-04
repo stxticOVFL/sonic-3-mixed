@@ -47,6 +47,7 @@ public:
     bool        PauseFinished = false;
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
+    ISprite*    MobileButtonsSprite = NULL;
     ISprite*    ItemsSprite = NULL;
     ISprite*    AnimalsSprite = NULL;
     ISprite*    ObjectsSprite = NULL;
@@ -207,7 +208,7 @@ public:
 
 bool ViewPalettes = false;
 bool ViewPathswitchers = false;
-bool ViewPlayerStats = true;
+bool ViewPlayerStats = false;
 bool ViewTileInfo = false;
 bool ViewTileCollision = false;
 
@@ -253,6 +254,24 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
+
+    MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+    ISprite::Animation an;
+    an.Name = NULL;
+    an.FrameCount = 8;
+    an.Frames = (ISprite::AnimFrame*)calloc(8, sizeof(ISprite::AnimFrame));
+    for (int i = 0; i < 8; i++) {
+        ISprite::AnimFrame ts_af;
+        ts_af.X = i * 64;
+        ts_af.Y = 0;
+        ts_af.W = ts_af.H = 64;
+        ts_af.OffX = ts_af.OffY = -32;
+        an.Frames[i] = ts_af;
+        G->MakeFrameBufferID(MobileButtonsSprite, an.Frames + i);
+    }
+    MobileButtonsSprite->Animations.push_back(an);
+    MobileButtonsSprite->TransparentColorIndex = 0x05;
+    MobileButtonsSprite->UpdatePalette();
 
     IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
@@ -867,8 +886,8 @@ PUBLIC void LevelScene::LoadData() {
     an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
     for (int i = 0; i < 0x400; i++) {
         ISprite::AnimFrame ts_af;
-        ts_af.X = 0;
-        ts_af.Y = i << 4;
+        ts_af.X = (i & 0x1F) << 4;
+        ts_af.Y = (i >>   5) << 4;
         ts_af.W = ts_af.H = 16;
         ts_af.OffX = ts_af.OffY = -8;
         an.Frames[i] = ts_af;
@@ -1417,9 +1436,7 @@ PUBLIC void LevelScene::LoadData() {
                 AnimTileSprite->Animations.push_back(an);
             }
 
-            goto LOADSTAGEBIN;
-
-			for (int i = 0; i < Data->layerCount && false; i++) {
+			for (int i = 0; i < Data->layerCount; i++) {
 				// Build buffers for GL renderer
 				if (Data->layers[i].InfoCount > 1) {
 					int y = 0;
@@ -1434,22 +1451,24 @@ PUBLIC void LevelScene::LoadData() {
 							heightSize = 16;
 							if (heightSize > layer.ScrollIndexes[s].Size - siT)
 								heightSize = layer.ScrollIndexes[s].Size - siT;
-							if (heightSize >((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
+							if (heightSize > ((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
 								heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
 
 							bufHeight++;
 						}
+                        y += layer.ScrollIndexes[s].Size;
 					}
 
 					y = 0;
 					int buf = 0;
-					Data->layers[i].ScrollIndexes[0].TileBuffers = (int*)calloc(Data->layers[i].Width * bufHeight, sizeof(int));
+                    int maxxx = layer.Width * bufHeight;
+					layer.ScrollIndexes[0].TileBuffers = (int*)calloc(layer.Width * bufHeight, sizeof(int));
 					for (int s = 0; s < layer.ScrollIndexCount; s++) {
 						for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
 							heightSize = 16;
 							if (heightSize > layer.ScrollIndexes[s].Size - siT)
 								heightSize = layer.ScrollIndexes[s].Size - siT;
-							if (heightSize >((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
+							if (heightSize > ((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
 								heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
 
 							for (x = 0; x < layer.Width; x++) {
@@ -1471,11 +1490,10 @@ PUBLIC void LevelScene::LoadData() {
 									int wheree = (y + siT) & 0xF;
 									if (flipY)
 										wheree = 0x10 - wheree - heightSize;
-									wheree += tile << 4;
 
                                     if (anID == 0xFF) {
-										Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
-											G->MakeFrameBufferID(TileSprite, 0, wheree, 16, heightSize, -8, -heightSize / 2 - (heightSize & 1) * flipY);
+                                        Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
+											G->MakeFrameBufferID(TileSprite, ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2 - (heightSize & 1) * flipY);
 									}
 								}
 							}
@@ -1562,12 +1580,12 @@ PUBLIC void LevelScene::LoadData() {
         }
     }
     else {
-        if (TileSprite->Palette[0x81] == 0x000000)
+        if ((TileSprite->Palette[0x81] & 0xFFFFFF) == 0x000000)
             TileSprite->PaletteSize = 0x80;
         TileSprite->SplitPalette();
         TileSprite->UpdatePalette();
 
-        if (AnimTileSprite->Palette[0x81] == 0x000000)
+        if ((AnimTileSprite->Palette[0x81] & 0xFFFFFF) == 0x000000)
             AnimTileSprite->PaletteSize = 0x80;
         AnimTileSprite->SplitPalette();
         AnimTileSprite->UpdatePalette();
@@ -2914,6 +2932,9 @@ PUBLIC void LevelScene::RenderRings() {
 PUBLIC void LevelScene::RenderHUD() {
     if (!HUDVisible) return;
 
+    bool Mobile = IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android;
+    App->Input->UseTouchController = true;
+
     int value;
     int valen;
 
@@ -2966,11 +2987,19 @@ PUBLIC void LevelScene::RenderHUD() {
         value /= 10;
     }
 
+    int iconX = 16;
+    int iconY = App->HEIGHT - 12;
+
+    if (Mobile) {
+        iconX = App->WIDTH - 64 - 24; // 24 is for Pause Button
+        iconY = 12 + 17;
+    }
+
     // Character Icon
-    G->DrawSprite(GlobalDisplaySprite, 2, (int)Player->Character, 16, App->HEIGHT - 12, 0, IE_NOFLIP);
+    G->DrawSprite(GlobalDisplaySprite, 2, (int)Player->Character, iconX, iconY, 0, IE_NOFLIP);
 
     // x symbol
-    G->DrawSprite(GlobalDisplaySprite, 0, 14, 16, App->HEIGHT - 12, 0, IE_NOFLIP);
+    G->DrawSprite(GlobalDisplaySprite, 0, 14, iconX, iconY, 0, IE_NOFLIP);
 
     // Lives value
     valen = 1;
@@ -2980,8 +3009,34 @@ PUBLIC void LevelScene::RenderHUD() {
     if (value >= 99)
         value = 99;
     for (int i = 0; i < valen; i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, 16 + 32 + valen * 8 - i * 8, App->HEIGHT - 12, 0, IE_NOFLIP);
+        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, iconX + 32 + valen * 8 - i * 8, iconY, 0, IE_NOFLIP);
         value /= 10;
+    }
+
+    if (Mobile) {
+        // G->DrawAlpha = 0xC0;
+        int bX = 48;
+        int bY = App->HEIGHT - 48;
+        if (App->Input->GetControllerInput(0)[IInput::I_UP])
+            G->DrawSprite(MobileButtonsSprite, 0, 1, bX, bY, 0, IE_NOFLIP);
+        else if (App->Input->GetControllerInput(0)[IInput::I_DOWN])
+            G->DrawSprite(MobileButtonsSprite, 0, 2, bX, bY, 0, IE_NOFLIP);
+        else if (App->Input->GetControllerInput(0)[IInput::I_LEFT])
+            G->DrawSprite(MobileButtonsSprite, 0, 3, bX, bY, 0, IE_FLIPX);
+        else if (App->Input->GetControllerInput(0)[IInput::I_RIGHT])
+            G->DrawSprite(MobileButtonsSprite, 0, 3, bX, bY, 0, IE_NOFLIP);
+        else
+            G->DrawSprite(MobileButtonsSprite, 0, 0, bX, bY, 0, IE_NOFLIP);
+
+        // A button
+        if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM])
+            G->DrawAlpha = 0xFF;
+
+        G->DrawSprite(MobileButtonsSprite, 0, 4, App->WIDTH - 48, bY, 0, IE_NOFLIP);
+        G->DrawAlpha = 0xFF;
+
+        // Pause
+        G->DrawSprite(MobileButtonsSprite, 0, 5, App->WIDTH - 22, 22, 0, IE_NOFLIP);
     }
 }
 PUBLIC void LevelScene::RenderTitleCard() {
@@ -3275,7 +3330,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                                     wheree = (y + siT) & 0xF;
                                     if (flipY)
                                         wheree = 0x10 - wheree - heightSize;
-                                    wheree += tile << 4;
 
                                     if (anID != 0xFF) {
                                         G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, (flipX * IE_FLIPX) | (flipY * IE_FLIPY));
@@ -3287,7 +3341,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                                             }
                                         }
                                         else {
-                                            G->DrawSprite(TileSprite, 0, wheree, 16, heightSize, baseX, baseY, 0, flags, 0, 0);
+                                            G->DrawSprite(TileSprite, ((tile & 0x1F) << 4), wheree + ((tile >> 5) << 4), 16, heightSize, baseX, baseY, 0, flags, 0, 0);
                                         }
                                     }
                                 }

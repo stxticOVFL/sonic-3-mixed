@@ -117,6 +117,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 
     G = app->G;
     G->MakeTexture(this);
+    UpdatePalette();
 }
 
 PUBLIC void ISprite::SplitPalette() {

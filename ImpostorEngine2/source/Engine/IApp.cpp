@@ -27,6 +27,8 @@ public:
     uint32_t MetricUpdateTime = -1;
     uint32_t MetricRenderTime = -1;
     bool UnlockedFramerate = false;
+
+    static Platforms Platform;
 };
 #endif
 
@@ -58,6 +60,24 @@ public:
     #include "switch.h"
 #endif
 
+#if MSVC
+    Platforms IApp::Platform = Platforms::Windows;
+#elif MACOSX
+    Platforms IApp::Platform = Platforms::MacOSX;
+#elif LINUX
+    Platforms IApp::Platform = Platforms::Linux;
+#elif UBUNTU
+    Platforms IApp::Platform = Platforms::Ubuntu;
+#elif NX
+    Platforms IApp::Platform = Platforms::Switch;
+#elif IOS
+    Platforms IApp::Platform = Platforms::iOS;
+#elif ANDROID
+    Platforms IApp::Platform = Platforms::Android;
+#else
+    Platforms IApp::Platform = Platforms::Default;
+#endif
+
 PUBLIC IApp::IApp() {
     IMath::Init();
 
@@ -78,19 +98,27 @@ PUBLIC IApp::IApp() {
         else
             G = new IGraphics(this);
     }
+    else {
+        G = new IGLGraphics(this);
+    }
 
     int desW, desH;
+    int isSharp = 1;
     if (Settings->GetInteger("display", "width", &desW) && Settings->GetInteger("display", "height", &desH)) { }
     else {
         #if NX
             desW = 1280;
             desH = 720;
+        #elif IOS
+            desW = 1138;
+            desH = 640;
+            isSharp = 0;
         #else
             desW = WIDTH * 3;
             desH = HEIGHT * 3;
     	#endif
     }
-	G->SetDisplay(desW, desH, 1);
+	G->SetDisplay(desW, desH, isSharp);
 
     Input = new IInput(this);
     Audio = new IAudio(this);
@@ -136,6 +164,9 @@ PUBLIC void IApp::Run() {
 
     Print(0, "Running...");
     SDL_Event e;
+
+    G->Present();
+
     while (Running) {
         frameTimeMillis = SDL_GetTicks();
         while (SDL_PollEvent(&e) != 0) {
