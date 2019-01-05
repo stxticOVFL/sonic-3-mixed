@@ -2,6 +2,6 @@
     #include <unzip.h>
 #elif NX || IOS
     #include <Utils/unzip.h>
-#else
+#elif MACOSX
     #include <minizip/unzip.h>
 #endif

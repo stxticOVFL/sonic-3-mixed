@@ -50,6 +50,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossCutscene.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Bloominator.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\BloominatorSpore.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\CollapsingLogBridge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FallingLog.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\ForegroundPlant.cpp" />
@@ -84,6 +85,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\StarPost.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Blastoid.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BlastoidShot.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Block.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BreakBar.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Buggernaut.cpp" />

@@ -99,8 +99,8 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
     if (!Window) {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+        // SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+        // SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
 
         Window = SDL_CreateWindow("Sonic 3'Mixed", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             DesiredWidth, DesiredHeight,
@@ -110,6 +110,10 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             #endif
             | SDL_WINDOW_ALLOW_HIGHDPI
             | SDL_WINDOW_OPENGL);
+        if (!Window) {
+            IApp::Print(2, "Could not create window!: %s", SDL_GetError());
+            exit(0);
+        }
 
         Context = SDL_GL_CreateContext(Window);
         // Set VSYNC
@@ -128,9 +132,10 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         IApp::Print(0, "Render Size: %d x %d", w, h);
         IApp::Print(0, "Window Size: %d x %d", ww, wh);
 
-        if (IApp::Platform == Platforms::iOS) {
+        if (IApp::Platform == Platforms::iOS)
             Quality = 4;
-        }
+        else if (IApp::Platform == Platforms::Android)
+            Quality = 1;
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -138,11 +143,18 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultFBO);
+
         IApp::Print(3, "Default FBO: %d", defaultFBO);
+        int r, g, b, a;
+        SDL_GL_GetAttribute(SDL_GL_RED_SIZE, &r);
+        SDL_GL_GetAttribute(SDL_GL_GREEN_SIZE, &g);
+        SDL_GL_GetAttribute(SDL_GL_BLUE_SIZE, &b);
+        SDL_GL_GetAttribute(SDL_GL_ALPHA_SIZE, &a);
+
+        IApp::Print(1, "Red size: %d, Green size: %d, Blue size: %d, Alpha size: %d\n", r, g, b, a);
 
 
-
-        if (IApp::Platform != Platforms::iOS) {
+        if (IApp::Platform != Platforms::iOS && IApp::Platform != Platforms::Android) {
             GLuint renderBuffer;
             glGenRenderbuffers(1, &renderBuffer);
             glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
@@ -167,9 +179,10 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-
+        if (IApp::Platform == Platforms::Android)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, NULL);
+        else
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
         if (Quality > 1) {
             glBindTexture(GL_TEXTURE_2D, renderedTexture + 1);
@@ -545,7 +558,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 PUBLIC bool IGLGraphics::CheckGLError(int line) {
     GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
-        #if !NX && !IOS
+        #if !NX && !IOS && !ANDROID
             IApp::Print(2, "OpenGL error on line %d: %s", line, gluErrorString(error));
         #endif
         return true;
@@ -654,6 +667,13 @@ PUBLIC void IGLGraphics::Cleanup() {
 PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     if (!sprite) return;
 
+    GLenum form = GL_RGBA;
+#if defined(GL_BGRA8_EXT)
+    form = GL_BGRA8_EXT;
+#else
+    form = GL_BGRA;
+#endif
+
     glGenTextures(1, &sprite->TextureID);
     glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, sprite->Width, sprite->Height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, sprite->Data);
@@ -662,14 +682,14 @@ PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
 
     glGenTextures(1, &sprite->PaletteID);
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_BGRA, GL_UNSIGNED_BYTE, sprite->Palette);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, form, GL_UNSIGNED_BYTE, sprite->Palette);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glGenTextures(1, &sprite->PaletteAltID);
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_BGRA, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, form, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -685,12 +705,20 @@ PUBLIC void IGLGraphics::UpdatePalette(ISprite* sprite) {
             sprite->PaletteAlt[i] = 0;
         }
     }
+
+    GLenum form = GL_RGBA;
+#if defined(GL_BGRA8_EXT)
+    form = GL_BGRA8_EXT;
+#else
+    form = GL_BGRA;
+#endif
+
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_BGRA, GL_UNSIGNED_BYTE, sprite->Palette);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, form, GL_UNSIGNED_BYTE, sprite->Palette);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_BGRA, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, form, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* fv) {

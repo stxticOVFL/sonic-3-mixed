@@ -9,13 +9,18 @@ public:
     SDL_RWops*  RW = NULL;
     const char* path = NULL;
     uint8_t*    Buffer = NULL;
-
-    unzFile uf = NULL;
-    unz_file_info64 info;
+    
+    // unzFile uf = NULL;
+    // unz_file_info64 info;
 
     bool ZipLoading = false;
 };
 
+#endif
+
+#if BOBERT
+unzFile uf = NULL;
+unz_file_info64 info;
 #endif
 
 #include <Engine/IApp.h>
@@ -23,11 +28,13 @@ public:
 
 PUBLIC size_t IResource::Read(void* dest, size_t size) {
     if (ZipLoading) {
+        #if BOBERT
         int err = unzReadCurrentFile(uf, dest, size);
         if (err < 0) {
             IApp::Print(2, "Error while reading '%s'! (Error Code: %d)", path, err);
         }
         return err;
+        #endif
     }
     else {
         return SDL_RWread(RW, dest, 1, size);
@@ -68,7 +75,9 @@ PUBLIC size_t IResource::Seek(size_t where, int whence) {
 }
 PUBLIC size_t IResource::Position() {
     if (ZipLoading) {
+        #if BOBERT
         return unztell(uf);
+        #endif
     }
     else {
         return SDL_RWtell(RW);
@@ -76,7 +85,9 @@ PUBLIC size_t IResource::Position() {
 }
 PUBLIC size_t IResource::Size() {
     if (ZipLoading) {
+        #if BOBERT
         return info.uncompressed_size;
+        #endif
     }
     else {
         return RW->size(RW);

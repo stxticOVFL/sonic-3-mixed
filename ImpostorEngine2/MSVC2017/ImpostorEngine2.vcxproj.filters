@@ -363,6 +363,12 @@
     <ClCompile Include="..\source\Game\Levels\ICZ.cpp">
       <Filter>Source Files\Game\Levels</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\BloominatorSpore.cpp">
+      <Filter>Source Files\Game\Objects\AIZ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BlastoidShot.cpp">
+      <Filter>Source Files\Game\Objects\HCZ</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

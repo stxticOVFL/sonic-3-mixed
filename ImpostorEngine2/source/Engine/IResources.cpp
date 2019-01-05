@@ -22,6 +22,7 @@ PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
     res->RW = NULL;
 
     if (res->ZipLoading) { // zip loading
+        #if 0
 		const char* zipfilename = IFILE("../Resources.zip");
 
         #ifdef USEWIN32IOAPI
@@ -87,6 +88,7 @@ PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
 
             res->ZipLoading = false;
         }
+        #endif
     }
     else {
         res->RW = SDL_RWFromFile(FullName, "rb");

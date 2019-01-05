@@ -23,9 +23,7 @@
 #elif ANDROID
     #include <SDL.h>
 
-    #include <GLES2/gl2.h>
-    #include <SDL_opengl.h>
-    #include <GLES2/gl2ext.h>
+    #include <SDL_opengles2.h>
 #else
     #if USING_FRAMEWORK
         #include <SDL.h>

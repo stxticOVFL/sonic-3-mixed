@@ -88,6 +88,9 @@ PUBLIC IApp::IApp() {
     Print(0, "SDL_Init succeeded!");
 
     SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+    SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
+    // SDL_SetHint(SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH, "1");
+    // SDL_GL_SetAttribute(SDL_GL_RETAINED_BACKING, 0);
 
     LoadSettings();
 
@@ -112,6 +115,10 @@ PUBLIC IApp::IApp() {
         #elif IOS
             desW = 1138;
             desH = 640;
+            isSharp = 0;
+        #elif ANDROID
+            desW = WIDTH * 3;
+            desH = HEIGHT * 3;
             isSharp = 0;
         #else
             desW = WIDTH * 3;
@@ -316,7 +323,11 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     vsprintf(str, string, args);
 
     #if ANDROID
-        if (sev == 0) {
+        if (sev == -1) {
+            __android_log_print(ANDROID_LOG_VERBOSE, "IE2", "%s", str);
+            return;
+        }
+        else if (sev == 0) {
             __android_log_print(ANDROID_LOG_INFO, "IE2", "%s", str);
             return;
         }
