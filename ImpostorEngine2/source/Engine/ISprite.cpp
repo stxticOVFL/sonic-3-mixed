@@ -82,6 +82,9 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     TransparentColorIndex = stream.ReadByte();
     // printf("for %s PaletteSize = %d width = %d height = %d\n", filename, PaletteSize, Width, Height);
 
+    // \->Palette(Alt)?\[(.*)\] = (.*);
+    // ->SetPalette$1($2, $3);
+
     stream.Skip(1);
 
     for (int i = 0; i < PaletteSize; i++) {
@@ -89,18 +92,20 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
         Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
         free(color);
 
-        if (Palette[i] == 0xFF00FF)
-    		TransparentColorIndex = i;
-
         Palette[i] |= 0xFF000000;
         #if ANDROID
         Palette[i] = ReverseColor(Palette[i]);
         #endif
+
+        if (Palette[i] == 0xFF00FF)
+    		TransparentColorIndex = i;
     }
     IResources::Close(res);
 
 	if (TransparentColorIndex == 0xFF)
 		TransparentColorIndex = 0;
+
+    SetTransparentColorIndex(TransparentColorIndex);
 
     Data = (uint8_t*)malloc(Width * Height);
 
@@ -121,36 +126,49 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     UpdatePalette();
 }
 
+PUBLIC void ISprite::SetTransparentColorIndex(int i) {
+    TransparentColorIndex = i;
+
+    Palette[TransparentColorIndex] &= 0xFFFFFF;
+    PaletteAlt[TransparentColorIndex] &= 0xFFFFFF;
+
+    for (int i = 0; i < 256; i++) {
+        if (i == TransparentColorIndex) continue;
+
+        Palette[i] = 0xFF000000 | Palette[i];
+        PaletteAlt[i] = 0xFF000000 | PaletteAlt[i];
+    }
+}
 PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
     #if ANDROID
-    Palette[i] = 0xFF000000 | col & 0xFF << 16 | col & 0xFF00 | col & 0xFF0000 >> 16;
+    Palette[i] = ReverseColor(col);
     #else
     Palette[i] = 0xFF000000 | col;
     #endif
 }
 PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
     #if ANDROID
-    PaletteAlt[i] = 0xFF000000 | col & 0xFF << 16 | col & 0xFF00 | col & 0xFF0000 >> 16;
+    PaletteAlt[i] = ReverseColor(col);
     #else
     PaletteAlt[i] = 0xFF000000 | col;
     #endif
 }
 PUBLIC uint32_t ISprite::GetPalette(int i) {
     #if ANDROID
-    return Palette[i] & 0xFF << 16 | Palette[i] & 0xFF00 | Palette[i] & 0xFF0000 >> 16;
+    return ReverseColor(Palette[i] & 0xFFFFFF);
     #else
     return Palette[i] & 0xFFFFFF;
     #endif
 }
 PUBLIC uint32_t ISprite::GetPaletteAlt(int i) {
     #if ANDROID
-    return PaletteAlt[i] & 0xFF << 16 | PaletteAlt[i] & 0xFF00 | PaletteAlt[i] & 0xFF0000 >> 16;
+    return ReverseColor(PaletteAlt[i] & 0xFFFFFF);
     #else
     return PaletteAlt[i] & 0xFFFFFF;
     #endif
 }
 PUBLIC uint32_t ISprite::ReverseColor(uint32_t col) {
-    return 0xFF000000 | col & 0xFF << 16 | col & 0xFF00 | col & 0xFF0000 >> 16;
+    return 0xFF000000 | ((col & 0xFF) << 16) | (col & 0xFF00) | ((col & 0xFF0000) >> 16);
 }
 
 PUBLIC void ISprite::SplitPalette() {

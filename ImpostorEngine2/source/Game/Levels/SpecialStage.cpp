@@ -195,24 +195,24 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
             Direction = 1;
 
             if ((PlayerX & 0xF) != 0 || (PlayerY & 0xF) != 0) {
-                GlobeSpin->Palette[128] = Globe->Palette[1];
-                GlobeSpin->Palette[144] = Globe->Palette[17];
+                GlobeSpin->SetPalette(128, Globe->GetPalette(1));
+                GlobeSpin->SetPalette(144, Globe->GetPalette(17));
             }
             else {
-                GlobeSpin->Palette[128] = Globe->Palette[17];
-                GlobeSpin->Palette[144] = Globe->Palette[1];
+                GlobeSpin->SetPalette(128, Globe->GetPalette(17));
+                GlobeSpin->SetPalette(144, Globe->GetPalette(1));
             }
         }
         if (App->Input->GetControllerInput(0)[4]) {
             Direction = -1;
 
             if ((PlayerX & 0xF) != 0 || (PlayerY & 0xF) != 0) {
-                GlobeSpin->Palette[128] = Globe->Palette[17];
-                GlobeSpin->Palette[144] = Globe->Palette[1];
+                GlobeSpin->SetPalette(128, Globe->GetPalette(17));
+                GlobeSpin->SetPalette(144, Globe->GetPalette(1));
             }
             else {
-                GlobeSpin->Palette[128] = Globe->Palette[1];
-                GlobeSpin->Palette[144] = Globe->Palette[17];
+                GlobeSpin->SetPalette(128, Globe->GetPalette(1));
+                GlobeSpin->SetPalette(144, Globe->GetPalette(17));
             }
         }
     }
@@ -290,14 +290,14 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
         int t = PlayerSteps;
         if (PlayerAngle >> 14 & 1) {
             for (int i = 0; i < 16; i++) {
-                Globe->Palette[1  + i] = (t >= i) ^ (t - 16 < i) ? 0xEE8800 : 0x662200;
-                Globe->Palette[17 + i] = (t >= i) ^ (t - 16 < i) ? 0x662200 : 0xEE8800;
+                Globe->SetPalette(1  + i, (t >= i) ^ (t - 16 < i) ? 0xEE8800 : 0x662200);
+                Globe->SetPalette(17 + i, (t >= i) ^ (t - 16 < i) ? 0x662200 : 0xEE8800);
             }
         }
         else {
             for (int i = 0; i < 16; i++) {
-                Globe->Palette[17 + i] = (t >= i) ^ (t - 16 < i) ? 0xEE8800 : 0x662200;
-                Globe->Palette[1  + i] = (t >= i) ^ (t - 16 < i) ? 0x662200 : 0xEE8800;
+                Globe->SetPalette(17 + i, (t >= i) ^ (t - 16 < i) ? 0xEE8800 : 0x662200);
+                Globe->SetPalette(1  + i, (t >= i) ^ (t - 16 < i) ? 0x662200 : 0xEE8800);
             }
         }
 

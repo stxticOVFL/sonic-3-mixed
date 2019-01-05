@@ -221,20 +221,16 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
                     IApp::Print(2, "GL_FRAMEBUFFER_COMPLETE");
                     break;
                 default:
-                    IApp::Print(2, "shit");
                     break;
             }
         }
 
 
-        if (IApp::Platform != Platforms::iOS) {
+        if (IApp::Platform != Platforms::iOS && IApp::Platform != Platforms::Android) {
             GLuint renderBuffer;
             glGenRenderbuffers(1, &renderBuffer);
             glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-            if (IApp::Platform == Platforms::Android)
-                glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB565, App->WIDTH, App->HEIGHT);
-            else
-                glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, App->WIDTH, App->HEIGHT);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, App->WIDTH, App->HEIGHT);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
             CheckGLError(__LINE__);
         }
@@ -579,11 +575,40 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 }
 
 PUBLIC bool IGLGraphics::CheckGLError(int line) {
+    const char* errstr = NULL;
     GLenum error = glGetError();
-    if (error != GL_NO_ERROR) {
-        #if !NX && !IOS && !ANDROID
-            IApp::Print(2, "OpenGL error on line %d: %s", line, gluErrorString(error));
+    switch (error) {
+        case GL_NO_ERROR: errstr = "no error"; break;
+        case GL_INVALID_ENUM: errstr = "invalid enumerant"; break;
+        case GL_INVALID_VALUE: errstr = "invalid value"; break;
+        case GL_INVALID_OPERATION: errstr = "invalid operation"; break;
+
+        #if GL_STACK_OVERFLOW
+            case GL_STACK_OVERFLOW: errstr = "stack overflow"; break;
+            case GL_STACK_UNDERFLOW: errstr = "stack underflow"; break;
+            case GL_TABLE_TOO_LARGE: errstr = "table too large"; break;
         #endif
+
+        case GL_OUT_OF_MEMORY: errstr = "out of memory"; break;
+
+        #ifdef GL_EXT_framebuffer_object
+            case GL_INVALID_FRAMEBUFFER_OPERATION_EXT: errstr = "invalid framebuffer operation"; break;
+        #endif
+
+        #if GLU_H
+            case GLU_INVALID_ENUM: errstr = "invalid enumerant"; break;
+            case GLU_INVALID_VALUE: errstr = "invalid value"; break;
+            case GLU_OUT_OF_MEMORY: errstr = "out of memory"; break;
+            case GLU_INCOMPATIBLE_GL_VERSION: errstr = "incompatible gl version"; break;
+            // case GLU_INVALID_OPERATION: errstr = "invalid operation"; break;
+        #endif
+
+        default:
+            errstr = "idk";
+            break;
+    }
+    if (error != GL_NO_ERROR) {
+        IApp::Print(2, "OpenGL error on line %d: %s", line, errstr);
         return true;
     }
     return false;
@@ -634,7 +659,6 @@ PUBLIC bool IGLGraphics::CheckProgramError(GLuint prog) {
 }
 
 PUBLIC void IGLGraphics::Present() {
-    /*
     glBindBuffer(GL_ARRAY_BUFFER, rectBufferID);
     if (Quality > 1) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen + 1);
@@ -670,8 +694,6 @@ PUBLIC void IGLGraphics::Present() {
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    DrawRectangle(90, 0, 32, 32, 0xFF00FF);
-
     SDL_GL_SwapWindow(Window);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -680,14 +702,14 @@ PUBLIC void IGLGraphics::Present() {
     glViewport(0.0, 0.0, App->WIDTH, App->HEIGHT);
 
     backupframebufferindex = 0;
-    */
 
-    SDL_GL_SwapWindow(Window);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(programID);
-    glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
-    glViewport(0.0, 0.0, WindowWidth * RetinaMult, WindowHeight * RetinaMult);
+    // SDL_GL_SwapWindow(Window);
+    //
+    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // glUseProgram(programID);
+    // glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
+    // glViewport(0.0, 0.0, WindowWidth * RetinaMult, WindowHeight * RetinaMult);
 }
 
 PUBLIC void IGLGraphics::Cleanup() {
@@ -700,13 +722,6 @@ PUBLIC void IGLGraphics::Cleanup() {
 
 PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     if (!sprite) return;
-
-    GLenum form = GL_RGBA;
-#if defined(GL_BGRA8_EXT)
-    form = GL_BGRA8_EXT;
-#else
-    form = GL_BGRA;
-#endif
 
     glGenTextures(1, &sprite->TextureID);
     glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
@@ -731,9 +746,6 @@ PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     UpdatePalette(sprite);
 }
 PUBLIC void IGLGraphics::UpdatePalette(ISprite* sprite) {
-    sprite->Palette[sprite->TransparentColorIndex] = 0;
-    sprite->PaletteAlt[sprite->TransparentColorIndex] = 0;
-    
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_RGBA, GL_UNSIGNED_BYTE, sprite->Palette);
     glBindTexture(GL_TEXTURE_2D, 0);

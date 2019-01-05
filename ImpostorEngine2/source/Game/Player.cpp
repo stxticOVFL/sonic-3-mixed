@@ -2745,9 +2745,9 @@ void IPlayer::LateUpdate() {
         double superblend = Cos[(Scene->Frame << 1) & 0xFF] / 2.0 + 0.5;
         for (int i = 0; i < 4; i++) {
             for (int p = 0; p < 6; p++) {
-                Sprites[i]->Palette[palWhere + p] = G->ColorBlend(palSuper[p], palSuperPulse[p], superblend);
+                Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
 
-                // Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend);
+                // Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
             }
 			Sprites[i]->UpdatePalette();
         }
@@ -2759,9 +2759,9 @@ void IPlayer::LateUpdate() {
         double superblend = SuperFormTimer / 40.0;
         for (int i = 0; i < 4; i++) {
             for (int p = 0; p < 6; p++) {
-                Sprites[i]->Palette[palWhere + p] = G->ColorBlend(palNormal[p], palSuper[p], superblend);
+                Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
 
-                // Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend);
+                // Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
             }
 			Sprites[i]->UpdatePalette();
         }
@@ -2773,9 +2773,9 @@ void IPlayer::LateUpdate() {
         double superblend = SuperFormTimer / 20.0;
         for (int i = 0; i < 4; i++) {
             for (int p = 0; p < 6; p++) {
-                Sprites[i]->Palette[palWhere + p] = G->ColorBlend(palSuper[p], palNormal[p], superblend);
+                Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
 
-                // Sprites[i]->PaletteAlt[palWhere + p] = G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend);
+                // Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
             }
 			Sprites[i]->UpdatePalette();
         }

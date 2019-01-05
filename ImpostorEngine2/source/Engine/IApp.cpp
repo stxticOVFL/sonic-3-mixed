@@ -177,37 +177,43 @@ PUBLIC void IApp::Run() {
     while (Running) {
         frameTimeMillis = SDL_GetTicks();
         while (SDL_PollEvent(&e) != 0) {
-            if (e.type == SDL_QUIT) {
-                Running = false;
-            }
-            else if (e.type == SDL_KEYDOWN) {
-                switch (e.key.keysym.sym) {
-                    case SDLK_ESCAPE:
-                        if (DevMenu)
-                            Running = false;
-                        break;
-                    case SDLK_BACKQUOTE:
-                        if (DevMenu) {
-                            Stepper = !Stepper;
-                            MetricFrameCounterTime = 0;
-                        }
-                        break;
-                    case SDLK_1:
-                        if (DevMenu) {
-                            UnlockedFramerate = !UnlockedFramerate;
-                            SDL_GL_SetSwapInterval(!UnlockedFramerate);
-                        }
-                        break;
-                    case SDLK_TAB:
-                        if (DevMenu) {
-                            Step = true;
-                            MetricFrameCounterTime++;
-                        }
-                        break;
-                    case SDLK_f:
-                        G->SetDisplay(1024, 576, 0);
-                        break;
-                }
+            switch (e.type) {
+                case SDL_QUIT:
+                    Running = false;
+                    break;
+                case SDL_FINGERDOWN:
+                case SDL_FINGERMOTION:
+                    // Set IInput device ID here.
+                    break;
+                case SDL_KEYDOWN:
+                    switch (e.key.keysym.sym) {
+                        case SDLK_ESCAPE:
+                            if (DevMenu)
+                                Running = false;
+                            break;
+                        case SDLK_BACKQUOTE:
+                            if (DevMenu) {
+                                Stepper = !Stepper;
+                                MetricFrameCounterTime = 0;
+                            }
+                            break;
+                        case SDLK_1:
+                            if (DevMenu) {
+                                UnlockedFramerate = !UnlockedFramerate;
+                                SDL_GL_SetSwapInterval(!UnlockedFramerate);
+                            }
+                            break;
+                        case SDLK_TAB:
+                            if (DevMenu) {
+                                Step = true;
+                                MetricFrameCounterTime++;
+                            }
+                            break;
+                        case SDLK_f:
+                            G->SetDisplay(1024, 576, 0);
+                            break;
+                    }
+                    break;
             }
         }
 

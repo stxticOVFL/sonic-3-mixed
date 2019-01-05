@@ -474,13 +474,13 @@ PUBLIC void Level_AIZ::Subupdate() {
         }
 
         if (LevelTriggerFlag) {
-            if (TileSprite->Palette[0x31] != 0xEE4400) {
-                TileSprite->Palette[0x31] = 0xEE4400;
-                TileSprite->Palette[0x32] = 0xEE6600;
-                TileSprite->Palette[0x33] = 0xEEAA00;
-                TileSprite->Palette[0x34] = 0xEECC00;
-    	        TileSprite->Palette[0x35] = 0xEEEE22;
-                TileSprite->Palette[0x36] = 0xEEEEAA;
+            if (TileSprite->GetPalette(0x31) != 0xEE4400) {
+                TileSprite->SetPalette(0x31, 0xEE4400);
+                TileSprite->SetPalette(0x32, 0xEE6600);
+                TileSprite->SetPalette(0x33, 0xEEAA00);
+                TileSprite->SetPalette(0x34, 0xEECC00);
+    	        TileSprite->SetPalette(0x35, 0xEEEE22);
+                TileSprite->SetPalette(0x36, 0xEEEEAA);
 
                 TileSprite->UpdatePalette();
             }
@@ -588,19 +588,19 @@ PUBLIC void Level_AIZ::Subupdate() {
             // Find: \$([A-F0-9])([A-F0-9])([A-F0-9]),
             // Replace: 0x$3$3$2$2$1$1,\n
             for (int i = 0; i < 3; i++)
-                TileSprite->Palette[0x3C + i] = AIZ1_GlitteringWaterPalette[(Frame / 8 * 3) % 24 + i];
+                TileSprite->SetPalette(0x3C + i, AIZ1_GlitteringWaterPalette[(Frame / 8 * 3) % 24 + i]);
         }
 
         // Flower / Log BG / Tree BG
         int palstart = 0x2F;
         if (CameraX < 0x2BB0 - App->WIDTH / 2) {
-            TileSprite->Palette[palstart] = 0xEE0022;
+            TileSprite->SetPalette(palstart, 0xEE0022);
         }
         else if (CameraX < 0x2E50 - App->WIDTH / 2) {
-            TileSprite->Palette[palstart] = 0x444422;
+            TileSprite->SetPalette(palstart, 0x444422);
         }
         else {
-            TileSprite->Palette[palstart] = 0x2200CC;
+            TileSprite->SetPalette(palstart, 0x2200CC);
         }
 
         TileSprite->UpdatePalette();
@@ -611,27 +611,27 @@ PUBLIC void Level_AIZ::Subupdate() {
             TileSprite->RotatePaletteLeft(TileSprite->PaletteAlt + 0x3C, 4);
 
             if (CameraX < 0x3800) {
-                TileSprite->Palette[0x24] = AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24];
-                TileSprite->Palette[0x28] = AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 1];
-                TileSprite->Palette[0x3B] = AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 2];
+                TileSprite->SetPalette(0x24, AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24]);
+                TileSprite->SetPalette(0x28, AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 1]);
+                TileSprite->SetPalette(0x3B, AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 2]);
             }
             else {
-                TileSprite->Palette[0x24] = AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24];
-                TileSprite->Palette[0x28] = AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24 + 1];
-                TileSprite->Palette[0x3B] = AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24 + 2];
+                TileSprite->SetPalette(0x24, AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24]);
+                TileSprite->SetPalette(0x28, AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24 + 1]);
+                TileSprite->SetPalette(0x3B, AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24 + 2]);
             }
 
             // if (CameraX < 0x1C0)
-            //     TileSprite->Palette[0x3E] = TileSprite->Palette[0x4B];
+            //     TileSprite->SetPalette(0x3E, TileSprite->GetPalette(0x4B));
             // else
-            //     TileSprite->Palette[0x3E] = 0xEE00AA;
+            //     TileSprite->SetPalette(0x3E, 0xEE00AA);
         }
 
         if (!(Frame & 1)) {
             if (CameraX < 0x3800)
-                TileSprite->Palette[0x31] = AnPal_PalAIZ2_4[Frame % 26];
+                TileSprite->SetPalette(0x31, AnPal_PalAIZ2_4[Frame % 26]);
             else
-                TileSprite->Palette[0x31] = AnPal_PalAIZ2_5[Frame % 26];
+                TileSprite->SetPalette(0x31, AnPal_PalAIZ2_5[Frame % 26]);
 
             TileSprite->UpdatePalette();
         }

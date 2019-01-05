@@ -530,24 +530,24 @@ PUBLIC void Level_CNZ::EarlyUpdate() {
         Data->layers[1].OffsetX = 0x3480;
     }
     if (Frame % 4 == 0) {
-        TileSprite->Palette[0x39] = AnPal_PalCNZ_1[(Frame / 4 * 3) % 48];
-        TileSprite->Palette[0x3A] = AnPal_PalCNZ_1[(Frame / 4 * 3) % 48 + 1];
-        TileSprite->Palette[0x3B] = AnPal_PalCNZ_1[(Frame / 4 * 3) % 48 + 2];
-        TileSprite->PaletteAlt[0x39] = AnPal_PalCNZ_2[(Frame / 4 * 3) % 48];
-        TileSprite->PaletteAlt[0x3A] = AnPal_PalCNZ_2[(Frame / 4 * 3) % 48 + 1];
-        TileSprite->PaletteAlt[0x3B] = AnPal_PalCNZ_2[(Frame / 4 * 3) % 48 + 2];
+        TileSprite->SetPalette(0x39, AnPal_PalCNZ_1[(Frame / 4 * 3) % 48]);
+        TileSprite->SetPalette(0x3A, AnPal_PalCNZ_1[(Frame / 4 * 3) % 48 + 1]);
+        TileSprite->SetPalette(0x3B, AnPal_PalCNZ_1[(Frame / 4 * 3) % 48 + 2]);
+        TileSprite->SetPaletteAlt(0x39, AnPal_PalCNZ_2[(Frame / 4 * 3) % 48]);
+        TileSprite->SetPaletteAlt(0x3A, AnPal_PalCNZ_2[(Frame / 4 * 3) % 48 + 1]);
+        TileSprite->SetPaletteAlt(0x3B, AnPal_PalCNZ_2[(Frame / 4 * 3) % 48 + 2]);
 
-        TileSprite->Palette[0x29] = AnPal_PalCNZ_3[(Frame / 4 * 3) % 90];
-        TileSprite->Palette[0x2A] = AnPal_PalCNZ_3[(Frame / 4 * 3) % 90 + 1];
-        TileSprite->Palette[0x2B] = AnPal_PalCNZ_3[(Frame / 4 * 3) % 90 + 2];
-        TileSprite->PaletteAlt[0x29] = AnPal_PalCNZ_4[(Frame / 4 * 3) % 90];
-        TileSprite->PaletteAlt[0x2A] = AnPal_PalCNZ_4[(Frame / 4 * 3) % 90 + 1];
-        TileSprite->PaletteAlt[0x2B] = AnPal_PalCNZ_4[(Frame / 4 * 3) % 90 + 2];
+        TileSprite->SetPalette(0x29, AnPal_PalCNZ_3[(Frame / 4 * 3) % 90]);
+        TileSprite->SetPalette(0x2A, AnPal_PalCNZ_3[(Frame / 4 * 3) % 90 + 1]);
+        TileSprite->SetPalette(0x2B, AnPal_PalCNZ_3[(Frame / 4 * 3) % 90 + 2]);
+        TileSprite->SetPaletteAlt(0x29, AnPal_PalCNZ_4[(Frame / 4 * 3) % 90]);
+        TileSprite->SetPaletteAlt(0x2A, AnPal_PalCNZ_4[(Frame / 4 * 3) % 90 + 1]);
+        TileSprite->SetPaletteAlt(0x2B, AnPal_PalCNZ_4[(Frame / 4 * 3) % 90 + 2]);
 
-        TileSprite->Palette[0x27] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32];
-        TileSprite->Palette[0x28] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32 + 1];
-        TileSprite->PaletteAlt[0x27] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32];
-        TileSprite->PaletteAlt[0x28] = AnPal_PalCNZ_5[(Frame / 4 * 2) % 32 + 1];
+        TileSprite->SetPalette(0x27, AnPal_PalCNZ_5[(Frame / 4 * 2) % 32]);
+        TileSprite->SetPalette(0x28, AnPal_PalCNZ_5[(Frame / 4 * 2) % 32 + 1]);
+        TileSprite->SetPaletteAlt(0x27, AnPal_PalCNZ_5[(Frame / 4 * 2) % 32]);
+        TileSprite->SetPaletteAlt(0x28, AnPal_PalCNZ_5[(Frame / 4 * 2) % 32 + 1]);
     }
     LevelScene::EarlyUpdate();
 }

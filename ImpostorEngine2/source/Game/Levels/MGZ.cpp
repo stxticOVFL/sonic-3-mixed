@@ -263,7 +263,7 @@ PUBLIC void Level_MGZ::HandleCamera() {
             Data->layers[0].OffsetX = 0x3580;
             Data->layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
 
-            BackgroundColor = TileSprite->Palette[0x3A];
+            BackgroundColor = TileSprite->GetPalette(0x3A);
         }
         else if (Player->EZX >= 0x3000 &&
             Player->EZY >= 0x07F0 &&
@@ -273,19 +273,19 @@ PUBLIC void Level_MGZ::HandleCamera() {
             Data->layers[0].OffsetX = 0x3580;
             Data->layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
 
-            BackgroundColor = TileSprite->Palette[0x3A];
+            BackgroundColor = TileSprite->GetPalette(0x3A);
         }
         else if (Player->EZX > 0x3920 && Player->EZY < 0x7E8) {
             Data->layers[0].RelativeY = 0x0030;
             Data->layers[0].OffsetX = 0;
             Data->layers[0].OffsetY = -0x00F0;
 
-            BackgroundColor = TileSprite->Palette[0x31];
+            BackgroundColor = TileSprite->GetPalette(0x31);
         }
         else {
             Data->layers[0].RelativeY = 0x0030;
             Data->layers[0].OffsetY = 0;
-            BackgroundColor = TileSprite->Palette[0x3A];
+            BackgroundColor = TileSprite->GetPalette(0x3A);
         }
 
 

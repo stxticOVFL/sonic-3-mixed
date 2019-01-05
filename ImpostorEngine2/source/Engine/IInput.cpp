@@ -94,28 +94,33 @@ PUBLIC void IInput::Poll() {
     SDL_TouchID touchID;
     int w = App->WIDTH;
     int h = App->HEIGHT;
+
     if (IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android) {
-        if ((touchID = SDL_GetTouchDevice(0))) {
-            if (UseTouchController) {
-                touchEnabled = true;
-            }
-            else {
-                touchEnabled = false;
-
-                bool Down = false;
-                for (int t = 0; t < SDL_GetNumTouchFingers(touchID) && t < 1; t++) {
-                    SDL_Finger* finger = SDL_GetTouchFinger(touchID, t);
-                    int tx = int(finger->x * w);
-                    int ty = int(finger->y * h);
-
-                    MouseX = tx;
-                    MouseY = ty;
-
-                    Down = true;
+        for (int d = SDL_GetNumTouchDevices() - 1; d >= 0; d--) {
+            if ((touchID = SDL_GetTouchDevice(d))) {
+                if (UseTouchController) {
+                    touchEnabled = true;
+                    break;
                 }
-                MouseReleased = !Down && MouseDown;
-                MousePressed = Down && !MouseDown;
-                MouseDown = Down;
+                else {
+                    touchEnabled = false;
+
+                    bool Down = false;
+                    for (int t = 0; t < SDL_GetNumTouchFingers(touchID) && t < 1; t++) {
+                        SDL_Finger* finger = SDL_GetTouchFinger(touchID, t);
+                        int tx = int(finger->x * w);
+                        int ty = int(finger->y * h);
+
+                        MouseX = tx;
+                        MouseY = ty;
+
+                        Down = true;
+                    }
+                    MouseReleased = !Down && MouseDown;
+                    MousePressed = Down && !MouseDown;
+                    MouseDown = Down;
+                    break;
+                }
             }
         }
     }

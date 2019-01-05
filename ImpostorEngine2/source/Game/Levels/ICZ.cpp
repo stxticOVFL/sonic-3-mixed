@@ -289,22 +289,22 @@ PUBLIC void Level_ICZ::EarlyUpdate() {
             Data->layers[0].Visible = false;
             Data->layers[2].Visible = true;
 
-            if (TileSprite->Palette[0x31] != 0xEEEEEE) {
-                TileSprite->Palette[0x31] = 0xEEEEEE;
-                TileSprite->Palette[0x32] = 0xCCEEEE;
-    	        TileSprite->Palette[0x33] = 0xAAEEEE;
-                TileSprite->Palette[0x34] = 0xAACCEE;
-                TileSprite->Palette[0x35] = 0x88CCEE;
-                TileSprite->Palette[0x36] = 0x66AAEE;
-                TileSprite->Palette[0x37] = 0x6688EE;
-                TileSprite->Palette[0x38] = 0x4466EE;
-                TileSprite->Palette[0x39] = 0x0044EE;
-                TileSprite->Palette[0x3A] = 0x0000EE;
-                TileSprite->Palette[0x3B] = 0x0000CC;
-                TileSprite->Palette[0x3C] = 0x000000;
-                TileSprite->Palette[0x3D] = 0xCCEEAA;
-                TileSprite->Palette[0x3E] = 0xAAEECC;
-                TileSprite->Palette[0x3F] = 0x0088EE;
+            if (TileSprite->GetPalette(0x31) != 0xEEEEEE) {
+                TileSprite->SetPalette(0x31, 0xEEEEEE);
+                TileSprite->SetPalette(0x32, 0xCCEEEE);
+    	        TileSprite->SetPalette(0x33, 0xAAEEEE);
+                TileSprite->SetPalette(0x34, 0xAACCEE);
+                TileSprite->SetPalette(0x35, 0x88CCEE);
+                TileSprite->SetPalette(0x36, 0x66AAEE);
+                TileSprite->SetPalette(0x37, 0x6688EE);
+                TileSprite->SetPalette(0x38, 0x4466EE);
+                TileSprite->SetPalette(0x39, 0x0044EE);
+                TileSprite->SetPalette(0x3A, 0x0000EE);
+                TileSprite->SetPalette(0x3B, 0x0000CC);
+                TileSprite->SetPalette(0x3C, 0x000000);
+                TileSprite->SetPalette(0x3D, 0xCCEEAA);
+                TileSprite->SetPalette(0x3E, 0xAAEECC);
+                TileSprite->SetPalette(0x3F, 0x0088EE);
                 TileSprite->UpdatePalette();
             }
         }
@@ -312,39 +312,39 @@ PUBLIC void Level_ICZ::EarlyUpdate() {
             Data->layers[0].Visible = true;
             Data->layers[2].Visible = false;
 
-            if (TileSprite->Palette[0x31] != 0x00CCEE) {
-                TileSprite->Palette[0x31] = 0x00CCEE;
-                TileSprite->Palette[0x32] = 0x0044EE;
-    	        TileSprite->Palette[0x33] = 0x4400EE;
-                TileSprite->Palette[0x34] = 0x0000CC;
-                TileSprite->Palette[0x35] = 0x000066;
-                TileSprite->Palette[0x36] = 0x000022;
-                TileSprite->Palette[0x37] = 0x000000;
-                TileSprite->Palette[0x38] = 0x0022EE;
-                TileSprite->Palette[0x39] = 0x4422EE;
-                TileSprite->Palette[0x3A] = 0x2200AA;
-                TileSprite->Palette[0x3B] = 0x220044;
-                // TileSprite->Palette[0x37] = 0x4466EE;
+            if (TileSprite->GetPalette(0x31) != 0x00CCEE) {
+                TileSprite->SetPalette(0x31, 0x00CCEE);
+                TileSprite->SetPalette(0x32, 0x0044EE);
+    	        TileSprite->SetPalette(0x33, 0x4400EE);
+                TileSprite->SetPalette(0x34, 0x0000CC);
+                TileSprite->SetPalette(0x35, 0x000066);
+                TileSprite->SetPalette(0x36, 0x000022);
+                TileSprite->SetPalette(0x37, 0x000000);
+                TileSprite->SetPalette(0x38, 0x0022EE);
+                TileSprite->SetPalette(0x39, 0x4422EE);
+                TileSprite->SetPalette(0x3A, 0x2200AA);
+                TileSprite->SetPalette(0x3B, 0x220044);
+                // TileSprite->SetPalette(0x37, 0x4466EE);
                 TileSprite->UpdatePalette();
             }
         }
 
         if (Frame % 6 == 0) {
-            TileSprite->Palette[0x2E] = AnPal_PalICZ_1[(Frame / 6 * 2) % 32];
-            TileSprite->Palette[0x2F] = AnPal_PalICZ_1[(Frame / 6 * 2) % 32 + 1];
+            TileSprite->SetPalette(0x2E, AnPal_PalICZ_1[(Frame / 6 * 2) % 32]);
+            TileSprite->SetPalette(0x2F, AnPal_PalICZ_1[(Frame / 6 * 2) % 32 + 1]);
             TileSprite->UpdatePalette();
         }
         if (Frame % 10 == 0) {
-            TileSprite->Palette[0x3E] = AnPal_PalICZ_2[(Frame / 10 * 2) % 36];
-            TileSprite->Palette[0x3F] = AnPal_PalICZ_2[(Frame / 10 * 2) % 36 + 1];
+            TileSprite->SetPalette(0x3E, AnPal_PalICZ_2[(Frame / 10 * 2) % 36]);
+            TileSprite->SetPalette(0x3F, AnPal_PalICZ_2[(Frame / 10 * 2) % 36 + 1]);
             TileSprite->UpdatePalette();
         }
         if (Frame % 8 == 0) {
-            TileSprite->Palette[0x3C] = AnPal_PalICZ_3[(Frame / 8 * 2) % 12];
-            TileSprite->Palette[0x3D] = AnPal_PalICZ_3[(Frame / 8 * 2) % 12 + 1];
+            TileSprite->SetPalette(0x3C, AnPal_PalICZ_3[(Frame / 8 * 2) % 12]);
+            TileSprite->SetPalette(0x3D, AnPal_PalICZ_3[(Frame / 8 * 2) % 12 + 1]);
 
-            TileSprite->Palette[0x2C] = AnPal_PalICZ_4[(Frame / 8 * 2) % 32];
-            TileSprite->Palette[0x2D] = AnPal_PalICZ_4[(Frame / 8 * 2) % 32 + 1];
+            TileSprite->SetPalette(0x2C, AnPal_PalICZ_4[(Frame / 8 * 2) % 32]);
+            TileSprite->SetPalette(0x2D, AnPal_PalICZ_4[(Frame / 8 * 2) % 32 + 1]);
             TileSprite->UpdatePalette();
         }
     }

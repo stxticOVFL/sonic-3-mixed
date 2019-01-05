@@ -98,7 +98,7 @@ PUBLIC void Level_HCZ::Init() {
                     memcpy(Player->Sprites[p]->PaletteAlt, n, 96 * 4);
             free(n);
 
-            TileSprite->PaletteAlt[0] = 0xFF00FF;
+            TileSprite->SetPaletteAlt(0, 0xFF00FF);
 
             TileSprite->Paletted = 2;
             SpriteMap["HCZ"]->Paletted = 2;
@@ -399,15 +399,15 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
             // Flip color of beginning water area tiles based on camera.
             if (CameraX < 0x910 && CameraY >= 0x406) {
                 // Dark green
-                TileSprite->Palette[0x38] = 0x008866; // lightest
-                TileSprite->Palette[0x39] = 0x004422; // mid
-                TileSprite->Palette[0x3A] = 0x002222; // darkest
+                TileSprite->SetPalette(0x38, 0x008866); // lightest
+                TileSprite->SetPalette(0x39, 0x004422); // mid
+                TileSprite->SetPalette(0x3A, 0x002222); // darkest
             }
             else {
                 // White, used for candles in BG.
-                TileSprite->Palette[0x38] = 0xEEEECC; // lightest
-                TileSprite->Palette[0x39] = 0xEECCAA; // mid
-                TileSprite->Palette[0x3A] = 0xAA8800; // darkest
+                TileSprite->SetPalette(0x38, 0xEEEECC); // lightest
+                TileSprite->SetPalette(0x39, 0xEECCAA); // mid
+                TileSprite->SetPalette(0x3A, 0xAA8800); // darkest
             }
 
             if (Frame % 8 == 0) {
@@ -434,19 +434,19 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
         // Do palette stuffs
         if (Thremixed) {
             /*// rotate left
-            Uint32 temp = TileSprite->Palette[0xB0];
+            Uint32 temp = TileSprite->GetPalette(0xB0);
             for (int i = 0; i < 7 - 1; i++) {
-                TileSprite->Palette[0xB0 + i] = TileSprite->Palette[0xB0 + i + 1];
+                TileSprite->SetPalette(0xB0 + i, TileSprite->GetPalette(0xB0 + i + 1));
             }
-            TileSprite->Palette[0xB0 + 7 - 1] = temp;
+            TileSprite->SetPalette(0xB0 + 7 - 1, temp);
             //*/
 
             // rotate right
-            Uint32 temp = TileSprite->Palette[0xB0 + 7 - 1];
+            Uint32 temp = TileSprite->GetPalette(0xB0 + 7 - 1);
             for (int i = 7 - 1; i >= 1; i--) {
-                TileSprite->Palette[0xB0 + i] = TileSprite->Palette[0xB0 + i - 1];
+                TileSprite->SetPalette(0xB0 + i, TileSprite->GetPalette(0xB0 + i - 1));
             }
-            TileSprite->Palette[0xB0] = temp;
+            TileSprite->SetPalette(0xB0, temp);
 
             TileSprite->UpdatePalette();
             //*/

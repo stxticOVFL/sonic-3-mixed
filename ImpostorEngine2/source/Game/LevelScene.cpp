@@ -270,7 +270,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
         G->MakeFrameBufferID(MobileButtonsSprite, an.Frames + i);
     }
     MobileButtonsSprite->Animations.push_back(an);
-    MobileButtonsSprite->TransparentColorIndex = 0x05;
+    MobileButtonsSprite->SetTransparentColorIndex(0x05);
     MobileButtonsSprite->UpdatePalette();
 
     IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
@@ -1547,7 +1547,7 @@ PUBLIC void LevelScene::LoadData() {
 
                             if (i >= 0) {
                                 if (pp < 256)
-                                    TileSprite->PaletteAlt[pp] = R << 16 | G << 8 | B;
+                                    TileSprite->SetPaletteAlt(pp, R << 16 | G << 8 | B);
                                 pp++;
                             }
                         }
@@ -1580,12 +1580,12 @@ PUBLIC void LevelScene::LoadData() {
         }
     }
     else {
-        if ((TileSprite->Palette[0x81] & 0xFFFFFF) == 0x000000)
+        if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
             TileSprite->PaletteSize = 0x80;
         TileSprite->SplitPalette();
         TileSprite->UpdatePalette();
 
-        if ((AnimTileSprite->Palette[0x81] & 0xFFFFFF) == 0x000000)
+        if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
             AnimTileSprite->PaletteSize = 0x80;
         AnimTileSprite->SplitPalette();
         AnimTileSprite->UpdatePalette();
@@ -2418,17 +2418,17 @@ PUBLIC void LevelScene::Update() {
 
         if (!(Frame & 3)) {
             ISprite* spr = ItemsSprite;
-            Uint32 temp = spr->Palette[0x3C + 4 - 1];
+            Uint32 temp = spr->GetPalette(0x3C + 4 - 1);
             for (int i = 4 - 1; i >= 1; i--) {
-                spr->Palette[0x3C + i] = spr->Palette[0x3C + i - 1];
+                spr->SetPalette(0x3C + i, spr->GetPalette(0x3C + i - 1));
             }
-            spr->Palette[0x3C] = temp;
+            spr->SetPalette(0x3C, temp);
 
-            temp = spr->PaletteAlt[0x3C + 4 - 1];
+            temp = spr->GetPaletteAlt(0x3C + 4 - 1);
             for (int i = 4 - 1; i >= 1; i--) {
-                spr->PaletteAlt[0x3C + i] = spr->PaletteAlt[0x3C + i - 1];
+                spr->SetPaletteAlt(0x3C + i, spr->GetPaletteAlt(0x3C + i - 1));
             }
-            spr->PaletteAlt[0x3C] = temp;
+            spr->SetPaletteAlt(0x3C, temp);
 
             spr->UpdatePalette();
         }
@@ -3534,15 +3534,15 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         G->DrawTextShadow(App->WIDTH - 64, App->HEIGHT - 74, palettetitle, 0xFFFFFF);
 
         for (int i = 0; i < 256; i++) {
-            G->DrawRectangle(App->WIDTH - 132 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2), 4, 4, TileSprite->Palette[i]);
+            G->DrawRectangle(App->WIDTH - 132 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2), 4, 4, TileSprite->GetPalette(i));
 
-            G->DrawRectangle(App->WIDTH - 64 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2), 4, 4, TileSprite->PaletteAlt[i]);
+            G->DrawRectangle(App->WIDTH - 64 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2), 4, 4, TileSprite->GetPaletteAlt(i));
         }
 
         for (int i = 0; i < 256; i++) {
-            G->DrawRectangle(App->WIDTH - 132 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2) - 96, 4, 4, Player->Sprites[0]->Palette[i]);
+            G->DrawRectangle(App->WIDTH - 132 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2) - 96, 4, 4, Player->Sprites[0]->GetPalette(i));
 
-            G->DrawRectangle(App->WIDTH - 64 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2) - 96, 4, 4, Player->Sprites[0]->PaletteAlt[i]);
+            G->DrawRectangle(App->WIDTH - 64 + ((i & 0xF) << 2), App->HEIGHT - 64 + ((i >> 4) << 2) - 96, 4, 4, Player->Sprites[0]->GetPaletteAlt(i));
         }
     }
     if (ViewPathswitchers) {

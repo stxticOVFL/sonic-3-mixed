@@ -84,13 +84,16 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
     MenuSprite = new ISprite("UI/MainMenu.gif", App);
     MenuSprite->LoadAnimation("UI/MainMenu.bin");
     for (int i = 0; i < 9; i++)
-        MenuSprite->Palette[paletteindexes[i]] = paletteToCycle[i];
-    MenuSprite->TransparentColorIndex = 0x2C;
+        MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
+    MenuSprite->SetTransparentColorIndex(0x2C);
     MenuSprite->UpdatePalette();
+
+    // \->Palette(Alt)?\[(.*)\] = (.*);
+    // ->SetPalette$1($2, $3);
 
     SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
     SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
-    SuperButtonsSprite->Palette[1] = 0x282028;
+    SuperButtonsSprite->SetPalette(1, 0x282028);
     SuperButtonsSprite->UpdatePalette();
 }
 
@@ -280,13 +283,13 @@ PUBLIC void Scene_MainMenu::Render() {
 
     // Selection
     for (int i = 0; i < 9; i++)
-        MenuSprite->Palette[paletteindexes[i]] = paletteToCycle[(palframe - i + 18) % 18];
+        MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
     MenuSprite->UpdatePalette();
 
     G->DrawSprite(MenuSprite, 3 + selected, 3, cenX, cenY, 0, IE_NOFLIP);
 
     for (int i = 0; i < 9; i++)
-        MenuSprite->Palette[paletteindexes[i]] = paletteToCycle[i];
+        MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
     MenuSprite->UpdatePalette();
 
     // Spinny Triangle
