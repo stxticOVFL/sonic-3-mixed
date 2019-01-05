@@ -11228,3 +11228,8 @@ IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scr
       LOG: WindowScreen created!
       LOG: ScreenTexture created!
       LOG: Starting scene
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene

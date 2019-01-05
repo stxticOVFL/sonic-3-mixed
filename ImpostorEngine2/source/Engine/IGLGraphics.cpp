@@ -89,11 +89,15 @@ PUBLIC void IGLGraphics::Init() {
 
 }
 
+uint32_t* ColorFlipArray = NULL;
+
 PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsSharp) {
     if (IsSharp)
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
     else
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+
+    ColorFlipArray = (uint32_t*)calloc(256, 4);
 
     int ww, wh;
     if (!Window) {
@@ -154,14 +158,6 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         IApp::Print(1, "Red size: %d, Green size: %d, Blue size: %d, Alpha size: %d\n", r, g, b, a);
 
 
-        if (IApp::Platform != Platforms::iOS && IApp::Platform != Platforms::Android) {
-            GLuint renderBuffer;
-            glGenRenderbuffers(1, &renderBuffer);
-            glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, App->WIDTH, App->HEIGHT);
-            CheckGLError(__LINE__);
-        }
-
 
 
         int max;
@@ -179,10 +175,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        if (IApp::Platform == Platforms::Android)
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, NULL);
-        else
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
         if (Quality > 1) {
             glBindTexture(GL_TEXTURE_2D, renderedTexture + 1);
@@ -202,8 +195,6 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         else
             glGenFramebuffers(1, &framebufferScreen);
 
-
-
         for (int i = 0; i < Quality && i < 2; i++) {
             glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen + i); CheckGLError(__LINE__);
 
@@ -214,8 +205,39 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             #else
                 glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture + i, 0);
             #endif
+
+            GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER); CheckGLError(__LINE__);
+            switch (e) {
+                case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+                    IApp::Print(2, "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT");
+                    break;
+                case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+                    IApp::Print(2, "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT");
+                    break;
+                case GL_FRAMEBUFFER_UNSUPPORTED:
+                    IApp::Print(2, "GL_FRAMEBUFFER_UNSUPPORTED");
+                    break;
+                case GL_FRAMEBUFFER_COMPLETE:
+                    IApp::Print(2, "GL_FRAMEBUFFER_COMPLETE");
+                    break;
+                default:
+                    IApp::Print(2, "shit");
+                    break;
+            }
         }
 
+
+        if (IApp::Platform != Platforms::iOS) {
+            GLuint renderBuffer;
+            glGenRenderbuffers(1, &renderBuffer);
+            glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
+            if (IApp::Platform == Platforms::Android)
+                glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB565, App->WIDTH, App->HEIGHT);
+            else
+                glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, App->WIDTH, App->HEIGHT);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
+            CheckGLError(__LINE__);
+        }
 
 
         // GLuint depthRenderBuffer;
@@ -383,7 +405,8 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
             "        if (color.xyz == vec3(1.0, 0.0, 1.0)) discard;",
 
-            "        color = color;",
+            // "        color = texture2D(u_texture, o_uv);",
+            // "        color = texture2D(u_palette, vec2(0.25, 0.0));",
             "    }",
             "    else if (u_useTexture == 2) {",
             "        color = texture2D(u_texture, o_uv);",
@@ -611,6 +634,7 @@ PUBLIC bool IGLGraphics::CheckProgramError(GLuint prog) {
 }
 
 PUBLIC void IGLGraphics::Present() {
+    /*
     glBindBuffer(GL_ARRAY_BUFFER, rectBufferID);
     if (Quality > 1) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen + 1);
@@ -646,6 +670,8 @@ PUBLIC void IGLGraphics::Present() {
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+    DrawRectangle(90, 0, 32, 32, 0xFF00FF);
+
     SDL_GL_SwapWindow(Window);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -654,6 +680,14 @@ PUBLIC void IGLGraphics::Present() {
     glViewport(0.0, 0.0, App->WIDTH, App->HEIGHT);
 
     backupframebufferindex = 0;
+    */
+
+    SDL_GL_SwapWindow(Window);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glUseProgram(programID);
+    glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
+    glViewport(0.0, 0.0, WindowWidth * RetinaMult, WindowHeight * RetinaMult);
 }
 
 PUBLIC void IGLGraphics::Cleanup() {
@@ -682,43 +716,30 @@ PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
 
     glGenTextures(1, &sprite->PaletteID);
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, form, GL_UNSIGNED_BYTE, sprite->Palette);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glGenTextures(1, &sprite->PaletteAltID);
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, form, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    UpdatePalette(sprite);
 }
 PUBLIC void IGLGraphics::UpdatePalette(ISprite* sprite) {
-    for (int i = 0; i < 256; i++) {
-        if (i != sprite->TransparentColorIndex) {
-            sprite->Palette[i] = 0xFF000000U | sprite->Palette[i];
-            sprite->PaletteAlt[i] = 0xFF000000U | sprite->PaletteAlt[i];
-        }
-        else {
-            sprite->Palette[i] = 0;
-            sprite->PaletteAlt[i] = 0;
-        }
-    }
-
-    GLenum form = GL_RGBA;
-#if defined(GL_BGRA8_EXT)
-    form = GL_BGRA8_EXT;
-#else
-    form = GL_BGRA;
-#endif
-
+    sprite->Palette[sprite->TransparentColorIndex] = 0;
+    sprite->PaletteAlt[sprite->TransparentColorIndex] = 0;
+    
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, form, GL_UNSIGNED_BYTE, sprite->Palette);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_RGBA, GL_UNSIGNED_BYTE, sprite->Palette);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, form, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_RGBA, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* fv) {

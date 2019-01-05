@@ -91,14 +91,15 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 
         if (Palette[i] == 0xFF00FF)
     		TransparentColorIndex = i;
+
+        Palette[i] |= 0xFF000000;
+        #if ANDROID
+        Palette[i] = ReverseColor(Palette[i]);
+        #endif
     }
     IResources::Close(res);
 
 	if (TransparentColorIndex == 0xFF)
-		TransparentColorIndex = 0;
-    if (Palette[0] == 0xFF00FF)
-		TransparentColorIndex = 0;
-	if (Palette[0] == 0x00F000)
 		TransparentColorIndex = 0;
 
     Data = (uint8_t*)malloc(Width * Height);
@@ -120,6 +121,38 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     UpdatePalette();
 }
 
+PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
+    #if ANDROID
+    Palette[i] = 0xFF000000 | col & 0xFF << 16 | col & 0xFF00 | col & 0xFF0000 >> 16;
+    #else
+    Palette[i] = 0xFF000000 | col;
+    #endif
+}
+PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
+    #if ANDROID
+    PaletteAlt[i] = 0xFF000000 | col & 0xFF << 16 | col & 0xFF00 | col & 0xFF0000 >> 16;
+    #else
+    PaletteAlt[i] = 0xFF000000 | col;
+    #endif
+}
+PUBLIC uint32_t ISprite::GetPalette(int i) {
+    #if ANDROID
+    return Palette[i] & 0xFF << 16 | Palette[i] & 0xFF00 | Palette[i] & 0xFF0000 >> 16;
+    #else
+    return Palette[i] & 0xFFFFFF;
+    #endif
+}
+PUBLIC uint32_t ISprite::GetPaletteAlt(int i) {
+    #if ANDROID
+    return PaletteAlt[i] & 0xFF << 16 | PaletteAlt[i] & 0xFF00 | PaletteAlt[i] & 0xFF0000 >> 16;
+    #else
+    return PaletteAlt[i] & 0xFFFFFF;
+    #endif
+}
+PUBLIC uint32_t ISprite::ReverseColor(uint32_t col) {
+    return 0xFF000000 | col & 0xFF << 16 | col & 0xFF00 | col & 0xFF0000 >> 16;
+}
+
 PUBLIC void ISprite::SplitPalette() {
     PaletteSize /= 2;
     memmove(PaletteAlt, Palette + PaletteSize, 4 * PaletteSize);
@@ -139,10 +172,6 @@ PUBLIC void ISprite::RotatePaletteRight(uint32_t* color, int size) {
         *(color + i) = *(color + i - 1);
     }
     *color = temp;
-}
-
-PUBLIC void ISprite::SetPalette(int index, uint32_t color) {
-    // if GL, write just that color change to palette texture
 }
 
 PUBLIC void ISprite::UpdatePalette() {

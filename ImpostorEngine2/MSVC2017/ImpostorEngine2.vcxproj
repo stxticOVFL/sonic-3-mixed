@@ -120,8 +120,6 @@
     <ClCompile Include="..\source\Game\Sound.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\Utils\gifdec.cpp" />
-    <ClCompile Include="..\source\Utils\ioapi.c" />
-    <ClCompile Include="..\source\Utils\unzip.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Engine\I3D.hh" />

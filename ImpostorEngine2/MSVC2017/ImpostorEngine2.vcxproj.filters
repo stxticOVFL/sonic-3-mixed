@@ -333,12 +333,6 @@
     <ClCompile Include="..\source\Utils\gifdec.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Utils\ioapi.c">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Utils\unzip.c">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Sound.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
