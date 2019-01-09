@@ -13,6 +13,8 @@ event Create() {
     Frame = (SubType & 0xF) & 1;
 
     VisualLayer = 1;
+
+    CurrentAnimation = 21;
 }
 
 event Render(CamX:int, CamY:int) {
@@ -43,5 +45,5 @@ event Render(CamX:int, CamY:int) {
             break;
     }
 
-    G.DrawSprite(Sprite, 12 + Frame, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

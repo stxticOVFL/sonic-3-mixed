@@ -1,0 +1,40 @@
+object 0x30;
+
+var FrameStart:int;
+var FrameCount:int;
+var FrameLength:int;
+
+event Create() {
+    Active = true;
+    switch (Scene.ZoneID) {
+        case 1:
+            CurrentAnimation = 2;
+            break;
+    }
+
+    switch (SubType) {
+        case 0: {
+            FrameStart = 0;
+            FrameCount = 5;
+            FrameLength = 4;
+            break;
+        }
+        case 1: {
+            FrameStart = 5;
+            FrameCount = 4;
+            FrameLength = 4;
+            break;
+        }
+    }
+}
+
+event Update() {
+    Frame = FrameStart + (Scene.Frame / FrameLength) % FrameCount;
+}
+
+event Render(CamX:int, CamY:int) {
+    if (CurrentAnimation == -1)
+        return;
+
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

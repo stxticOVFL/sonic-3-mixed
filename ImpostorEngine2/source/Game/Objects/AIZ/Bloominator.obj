@@ -14,9 +14,12 @@ event Create() {
     Frame = 0;
     HitCount = 1;
 
+    CurrentAnimation = 32;
+
     for (var i:int = 0; i < 2; i++) {
         Children[i] = Scene.AddNewObject(Obj_BloominatorSpore, 0, 0, 0, false, false);
         Children[i].Sprite = Sprite;
+        Children[i].CurrentAnimation = CurrentAnimation;
     }
 
     VisualLayer = 1;
@@ -74,5 +77,5 @@ event Render(CamX:int, CamY:int) {
         }
     }
 
-    G.DrawSprite(Sprite, 1, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

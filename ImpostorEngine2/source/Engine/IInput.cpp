@@ -38,6 +38,8 @@ public:
     int* ControllerMaps[4];
 
     bool UseTouchController = false;
+
+    SDL_TouchID TouchDevice;
 };
 #endif
 

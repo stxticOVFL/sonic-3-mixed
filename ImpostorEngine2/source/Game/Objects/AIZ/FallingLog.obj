@@ -15,6 +15,10 @@ event Create() {
 
     Length = 0;
     LastY = Y;
+
+    CurrentAnimation = 14;
+    if (Scene.Act == 2)
+        CurrentAnimation = 15;
 }
 
 event Update() {
@@ -39,7 +43,7 @@ event Render(CamX:int, CamY:int) {
     Length = Scene.WaterLevel - InitialY;
 
     if (Frame < Length || Frame % 8 < 4)
-        G.DrawSprite(Sprite, 14, 0, X - CamX, LastY - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, LastY - CamY, 0, IE_NOFLIP);
 
-    G.DrawSprite(Sprite, 15, (Frame & 0xF) / 4, X - CamX, LastY - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation + 2, (Frame & 0xF) / 4, X - CamX, LastY - CamY, 0, IE_NOFLIP);
 }

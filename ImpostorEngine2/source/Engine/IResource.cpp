@@ -9,7 +9,7 @@ public:
     SDL_RWops*  RW = NULL;
     const char* path = NULL;
     uint8_t*    Buffer = NULL;
-    
+
     // unzFile uf = NULL;
     // unz_file_info64 info;
 
@@ -82,6 +82,7 @@ PUBLIC size_t IResource::Position() {
     else {
         return SDL_RWtell(RW);
     }
+    return 0;
 }
 PUBLIC size_t IResource::Size() {
     if (ZipLoading) {

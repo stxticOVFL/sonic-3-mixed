@@ -128,7 +128,7 @@ event Render(CamX:int, CamY:int) {
     var framedAngle:int;
 
     // Base
-    G.DrawSprite(Sprite, CurrentAnimation + 2, 0, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, 0x21, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
 
     nX = InitialX;
     nY = InitialY;
@@ -177,7 +177,7 @@ event Render(CamX:int, CamY:int) {
     }
 
     // Handle
-    G.DrawSprite(Sprite, CurrentAnimation + 1, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

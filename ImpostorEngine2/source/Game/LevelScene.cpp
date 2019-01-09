@@ -30,8 +30,11 @@ public:
     int32_t     CameraMinY = 0;
     int32_t     CameraMaxX = 0xFFFF;
     int32_t     CameraMaxY = 0xFFFF;
+    int32_t     CameraDeltaX = 0;
+    int32_t     CameraDeltaY = 0;
     int         CameraAutoScrollX = 0;
     int         CameraAutoScrollY = 0;
+    bool        UseDeltaCamera = false;
     int         Frame = 0;
     int         Timer = 0;
     int         Score = 0;
@@ -188,6 +191,7 @@ public:
     bool        CollisionCheckForAlternate2 = false;
 
     uint32_t    BackgroundColor = 0x000000;
+    bool        SepThread = false;
 };
 #endif
 
@@ -210,7 +214,7 @@ bool ViewPalettes = false;
 bool ViewPathswitchers = false;
 bool ViewPlayerStats = false;
 bool ViewTileInfo = false;
-bool ViewTileCollision = false;
+bool ViewTileCollision = true;
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App = app;
@@ -297,7 +301,7 @@ PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
 
 }
 
-PUBLIC void LevelScene::LoadData() {
+PUBLIC VIRTUAL void LevelScene::LoadData() {
     /// Init
     bool AlreadyLoaded = true;
     const char* ObjectName[0x100];
@@ -866,6 +870,8 @@ PUBLIC void LevelScene::LoadData() {
 
         Data = new SceneData();
     }
+
+    if (AlreadyLoaded) App->Print(2, "Already loaded %s Act %d! Skipping!!!", LevelNameDiscord, Act);
 
     if (AlreadyLoaded) return;
 
@@ -1492,8 +1498,8 @@ PUBLIC void LevelScene::LoadData() {
 										wheree = 0x10 - wheree - heightSize;
 
                                     if (anID == 0xFF) {
-                                        Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
-											G->MakeFrameBufferID(TileSprite, ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2 - (heightSize & 1) * flipY);
+                                        // Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
+											G->MakeFrameBufferID(TileSprite, &Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width], ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2 - (heightSize & 1) * flipY);
 									}
 								}
 							}
@@ -1516,8 +1522,6 @@ PUBLIC void LevelScene::LoadData() {
 
     IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
-
-    LOADSTAGEBIN:
 
     // Loading StageConfig
     if (Str_StageBin) {
@@ -1583,15 +1587,18 @@ PUBLIC void LevelScene::LoadData() {
         if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
             TileSprite->PaletteSize = 0x80;
         TileSprite->SplitPalette();
-        TileSprite->UpdatePalette();
+        if (!SepThread)
+            TileSprite->UpdatePalette();
 
         if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
             AnimTileSprite->PaletteSize = 0x80;
         AnimTileSprite->SplitPalette();
-        AnimTileSprite->UpdatePalette();
+        if (!SepThread)
+            AnimTileSprite->UpdatePalette();
     }
 
     startTime = SDL_GetTicks();
+    SepThread = false;
 }
 
 PUBLIC VIRTUAL void LevelScene::Init() {
@@ -1612,6 +1619,7 @@ PUBLIC STATIC  int  LevelScene::LoadStatic(void* data) {
 }
 
 PUBLIC void LevelScene::LoadInBackground() {
+    SepThread = true;
     SDL_DetachThread(SDL_CreateThread(LevelScene::LoadStatic, "LevelScene::LoadInBackground", this));
 }
 
@@ -1691,6 +1699,9 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
     CameraMinY = 0;
     CameraMaxX = 0x7FFF;
     CameraMaxY = 0x7FFF;
+    CameraDeltaX = 0;
+    CameraDeltaY = 0;
+    UseDeltaCamera = false;
 
     HandleCamera();
 
@@ -1847,7 +1858,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
                             if (probeX == tX + eex &&
                                 probeY >= tY &&
-                                probeY <  tY + 1 + h1) {
+                                probeY <  tY + 16 - h1) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles1[tileID].Config[which];
                                     if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
@@ -1895,7 +1906,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
                             if (probeX == tX + eex &&
                                 probeY >= tY &&
-                                probeY <  tY + 1 + h2) {
+                                probeY <  tY + 16 - h2) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles2[tileID].Config[which];
                                     if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
@@ -1942,7 +1953,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                         if ((Data->tiles1[tileID].IsCeiling ^ flipY)) {
                             if (probeX == tX + eex &&
                                 probeY >= tY &&
-                                probeY <  tY + 1 + h1) {
+                                probeY <  tY + 16 - h1) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles1[tileID].Config[which];
                                     if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
@@ -1976,7 +1987,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                         if (Data->tiles2[tileID].IsCeiling ^ flipY) {
                             if (probeX == tX + eex &&
                                 probeY >= tY &&
-                                probeY <  tY + 1 + h2) {
+                                probeY <  tY + 16 - h2) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles2[tileID].Config[which];
                                     if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
@@ -2076,7 +2087,6 @@ PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
     Objects[ObjectCount++] = ring;
     ObjectNewCount++;
 }
-
 PUBLIC void LevelScene::AddExplosion(int animation, bool flip, int x, int y) {
     Explosion* dropdashdust;
     dropdashdust = new Explosion();
@@ -2864,6 +2874,8 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 
         CameraX += OffsetX;
         CameraY += OffsetY;
+        CameraDeltaX += OffsetX;
+        CameraDeltaY += OffsetY;
     }
 
     if (CameraMaxX > d0)
@@ -3014,7 +3026,7 @@ PUBLIC void LevelScene::RenderHUD() {
     }
 
     if (Mobile) {
-        // G->DrawAlpha = 0xC0;
+        G->DrawAlpha = 0xC0;
         int bX = 48;
         int bY = App->HEIGHT - 48;
         if (App->Input->GetControllerInput(0)[IInput::I_UP])
@@ -3296,9 +3308,15 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         if (heightSize > ((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
                             heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
 
-                        TileBaseX = (CameraX * layer.Info[index].RelativeX + layer.Info[index].ConstantX * Frame) >> 8;
                         TileBaseY = y + siT;
-                        TileBaseY -= (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                        if (UseDeltaCamera && layer.Info[index].RelativeX != 0x100 && layer.RelativeY != 0x100) {
+                            TileBaseX = (CameraDeltaX * layer.Info[index].RelativeX + layer.Info[index].ConstantX * Frame) >> 8;
+                            TileBaseY -= (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                        }
+                        else {
+                            TileBaseX = (CameraX * layer.Info[index].RelativeX + layer.Info[index].ConstantX * Frame) >> 8;
+                            TileBaseY -= (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                        }
 
                         TileBaseX -= layer.OffsetX;
                         TileBaseY -= layer.OffsetY;
@@ -3335,10 +3353,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                                         G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, (flipX * IE_FLIPX) | (flipY * IE_FLIPY));
                                     }
                                     else {
-                                        if (layer.ScrollIndexes[0].TileBuffers) {
-                                            if (layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width] > 0) {
-                                                G->DrawSpriteBuffered(TileSprite, layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], baseX + 8, baseY + heightSize / 2, 0, flags);
-                                            }
+                                        if (layer.ScrollIndexes[0].TileBuffers && layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width] > 0) {
+                                            G->DrawSpriteBuffered(TileSprite, layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], baseX + 8, baseY + heightSize / 2, 0, flags);
                                         }
                                         else {
                                             G->DrawSprite(TileSprite, ((tile & 0x1F) << 4), wheree + ((tile >> 5) << 4), 16, heightSize, baseX, baseY, 0, flags, 0, 0);
@@ -3359,8 +3375,14 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         G->DoDeform = true;
                 }
 
-                TileBaseX = (CameraX * layer.Info[0].RelativeX + layer.Info[0].ConstantX * Frame) >> 8;
-                TileBaseY = (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                if (UseDeltaCamera && layer.Info[0].RelativeX != 0x100 && layer.RelativeY != 0x100) {
+                    TileBaseX = (CameraDeltaX * layer.Info[0].RelativeX + layer.Info[0].ConstantX * Frame) >> 8;
+                    TileBaseY = (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                }
+                else {
+                    TileBaseX = (CameraX * layer.Info[0].RelativeX + layer.Info[0].ConstantX * Frame) >> 8;
+                    TileBaseY = (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                }
 
                 TileBaseX -= layer.OffsetX;
                 TileBaseY -= layer.OffsetY;
@@ -3401,6 +3423,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         tile = layer.Tiles[spl + j * lWid];
                         flipX = ((tile >> 10) & 1);
                         flipY = ((tile >> 11) & 1);
+                        int colTypeA = ((tile >> 12) & 3);
+                        int colTypeB = ((tile >> 14) & 3);
                         tile = tile & 0x3FF;
 
                         if (tile) {
@@ -3417,35 +3441,32 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                                 for (int c = 0; c < 16; c++) {
                                     int eex = c;
                                     if (flipX)
-                                      eex = 15 - c;
+                                        eex = 15 - c;
 
                                     int h1 = Data->tiles1[tile].Collision[c];
                                     int h2 = Data->tiles2[tile].Collision[c];
 
-                                    if (flipY && !Data->tiles1[tile].IsCeiling) { // Data->tiles1[tileID].IsCeiling ^ // if not this, make sure IsCeiling tiles have their heights unflipped
-                                      h1 = 15 - h1;
-                                      h2 = 15 - h2;
+                                    if (Player->Layer == 0 && colTypeA) {
+                                        uint32_t col = colTypeA == 3 ? 0 : colTypeA == 2 ? 0xFFFF00 : 0xFFFFFF;
+                                        if (Data->tiles1[tile].HasCollision[c]) {
+                                            if (Data->tiles1[tile].IsCeiling ^ flipY) {
+                                                G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
+                                            }
+                                            else {
+                                                G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
+                                            }
+                                        }
                                     }
-
-                                    if (Player->Layer == 0) {
-                                      if (Data->tiles1[tile].HasCollision[c]) {
-                                          if ((Data->tiles1[tile].IsCeiling ^ flipY)) {
-                                              G->DrawRectangle(baseX + eex, baseY, 1, h1 + 1, Data->tiles1[tile].IsCeiling ? 0xF24141 : flipY ? 0xF241F2 : flipX ? 0x414141 : 0xFFFFFF);
-                                          }
-                                          else {
-                                              G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, Data->tiles1[tile].IsCeiling ? 0xF24141 : flipY ? 0xF241F2 : flipX ? 0x414141 : 0xFFFFFF);
-                                          }
-                                      }
-                                    }
-                                    else {
-                                      if (Data->tiles2[tile].HasCollision[c]) {
-                                          if ((Data->tiles2[tile].IsCeiling ^ flipY)) {
-                                              G->DrawRectangle(baseX + eex, baseY, 1, h1 + 1, Data->tiles2[tile].IsCeiling ? 0xF24141 : flipY ? 0xF241F2 : flipX ? 0x414141 : 0xFFFFFF);
-                                          }
-                                          else {
-                                              G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, Data->tiles2[tile].IsCeiling ? 0xF24141 : flipY ? 0xF241F2 : flipX ? 0x414141 : 0xFFFFFF);
-                                          }
-                                      }
+                                    else if (colTypeB) {
+                                        if (Data->tiles2[tile].HasCollision[c]) {
+                                            uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
+                                            if (Data->tiles2[tile].IsCeiling ^ flipY) {
+                                                G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
+                                            }
+                                            else {
+                                                G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
+                                            }
+                                        }
                                     }
                                 }
 

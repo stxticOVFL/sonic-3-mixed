@@ -29,7 +29,11 @@ event Create() {
         H = 0x20;
         if (Scene.Act == 2)
             H = 0x18;
-        CurrentAnimation = 8;
+
+        CurrentAnimation = 6;
+        if (Scene.Act == 2)
+            CurrentAnimation = 7;
+
         Frame = 0;
     }
     else if (Scene.ZoneID == 2) { // HCZ
