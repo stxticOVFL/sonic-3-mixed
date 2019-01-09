@@ -67,7 +67,7 @@ int* backupframebuffers;
 int  backupframebuffercount = 0;
 int  backupframebufferindex = 0;
 
-int Quality = 4;
+int Quality = 1;
 
 PUBLIC IGLGraphics::IGLGraphics(IApp* app) {
     App = app;
@@ -116,8 +116,26 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             | SDL_WINDOW_OPENGL);
         if (!Window) {
             IApp::Print(2, "Could not create window!: %s", SDL_GetError());
-            exit(0);
+            assert(Window);
         }
+        const char* pxFmt = "UNKNOWN";
+        switch (SDL_PIXELORDER(SDL_GetWindowPixelFormat(Window))) {
+            case SDL_ARRAYORDER_NONE:
+                pxFmt = "SDL_ARRAYORDER_NONE"; break;
+            case SDL_ARRAYORDER_RGB:
+                pxFmt = "SDL_ARRAYORDER_RGB"; break;
+            case SDL_ARRAYORDER_RGBA:
+                pxFmt = "SDL_ARRAYORDER_RGBA"; break;
+            case SDL_ARRAYORDER_ARGB:
+                pxFmt = "SDL_ARRAYORDER_ARGB"; break;
+            case SDL_ARRAYORDER_BGR:
+                pxFmt = "SDL_ARRAYORDER_BGR"; break;
+            case SDL_ARRAYORDER_BGRA:
+                pxFmt = "SDL_ARRAYORDER_BGRA"; break;
+            case SDL_ARRAYORDER_ABGR:
+                pxFmt = "SDL_ARRAYORDER_ABGR"; break;
+        }
+        IApp::Print(3, "PixelFormat: %s", pxFmt);
 
         Context = SDL_GL_CreateContext(Window);
         // Set VSYNC
@@ -155,7 +173,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         SDL_GL_GetAttribute(SDL_GL_BLUE_SIZE, &b);
         SDL_GL_GetAttribute(SDL_GL_ALPHA_SIZE, &a);
 
-        IApp::Print(1, "Red size: %d, Green size: %d, Blue size: %d, Alpha size: %d\n", r, g, b, a);
+        IApp::Print(1, "Red size: %d, Green size: %d, Blue size: %d, Alpha size: %d", r, g, b, a);
 
 
 
@@ -218,7 +236,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
                     IApp::Print(2, "GL_FRAMEBUFFER_UNSUPPORTED");
                     break;
                 case GL_FRAMEBUFFER_COMPLETE:
-                    IApp::Print(2, "GL_FRAMEBUFFER_COMPLETE");
+                    IApp::Print(0, "GL_FRAMEBUFFER_COMPLETE");
                     break;
                 default:
                     break;
@@ -227,12 +245,12 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
 
         if (IApp::Platform != Platforms::iOS && IApp::Platform != Platforms::Android) {
-            GLuint renderBuffer;
-            glGenRenderbuffers(1, &renderBuffer);
-            glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, App->WIDTH, App->HEIGHT);
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
-            CheckGLError(__LINE__);
+            // GLuint renderBuffer;
+            // glGenRenderbuffers(1, &renderBuffer);
+            // glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
+            // glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB, App->WIDTH, App->HEIGHT);
+            // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderBuffer);
+            // CheckGLError(__LINE__);
         }
 
 
@@ -401,8 +419,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
             "        if (color.xyz == vec3(1.0, 0.0, 1.0)) discard;",
 
-            // "        color = texture2D(u_texture, o_uv);",
-            // "        color = texture2D(u_palette, vec2(0.25, 0.0));",
+            // "        color = vec4(1.0, 0.7, 0.2, 1.0);",
             "    }",
             "    else if (u_useTexture == 2) {",
             "        color = texture2D(u_texture, o_uv);",
@@ -701,6 +718,8 @@ PUBLIC void IGLGraphics::Present() {
     glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen);
     glViewport(0.0, 0.0, App->WIDTH, App->HEIGHT);
 
+    MakeAllTexturesAndFrameBuffers();
+
     backupframebufferindex = 0;
 
 
@@ -720,71 +739,137 @@ PUBLIC void IGLGraphics::Cleanup() {
     // glDisableVertexAttribArray(LocColor);
 }
 
+vector<ISprite*> MakeTextureList;
+vector<ISprite*> MakeFrameBufferSpList;
+vector<void*>    MakeFrameBufferIDList;
+vector<vector<VertexData>> MakeFrameBufferRawList;
+vector<int*> MakeFrameBufferRaPtrList;
+
 PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     if (!sprite) return;
 
-    glGenTextures(1, &sprite->TextureID);
-    glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, sprite->Width, sprite->Height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, sprite->Data);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    MakeTextureList.push_back(sprite);
+}
 
-    glGenTextures(1, &sprite->PaletteID);
-    glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glBindTexture(GL_TEXTURE_2D, 0);
+PUBLIC void IGLGraphics::MakeAllTexturesAndFrameBuffers() {
+    for (int i = 0; i < MakeTextureList.size(); i++) {
+        ISprite* sprite = MakeTextureList[i];
 
-    glGenTextures(1, &sprite->PaletteAltID);
-    glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glBindTexture(GL_TEXTURE_2D, 0);
+        glGenTextures(1, &sprite->TextureID);
+        glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, sprite->Width, sprite->Height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, sprite->Data);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-    UpdatePalette(sprite);
+        glGenTextures(1, &sprite->PaletteID);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        glGenTextures(1, &sprite->PaletteAltID);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 1, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        UpdatePalette(sprite);
+    }
+    MakeTextureList.clear();
+
+    for (int i = 0; i < MakeFrameBufferIDList.size(); i++) {
+        ISprite* sprite = MakeFrameBufferSpList[i];
+        ISprite::AnimFrame* f = (ISprite::AnimFrame*)MakeFrameBufferIDList[i];
+
+        float u0_x = float((uint32_t)f->X) / sprite->Width;
+        float u0_y = float((uint32_t)f->Y) / sprite->Height;
+        float u1_x = float((uint32_t)f->X + f->W) / sprite->Width;
+        float u1_y = float((uint32_t)f->Y + f->H) / sprite->Height;
+
+        float p0_x = f->OffX;
+        float p0_y = f->OffY;
+        float p1_x = p0_x + f->W;
+        float p1_y = p0_y + f->H;
+
+        vector<VertexData> v;
+        v.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+        v.push_back(VertexData { float(p1_x), float(p0_y), 0.0, u1_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+        v.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+
+        v.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+        v.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+        v.push_back(VertexData { float(p0_x), float(p1_y), 0.0, u0_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+
+        glGenBuffers(1, &f->BufferID);
+        glBindBuffer(GL_ARRAY_BUFFER, f->BufferID);
+        glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(VertexData), v.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+    MakeFrameBufferSpList.clear();
+    MakeFrameBufferIDList.clear();
+
+    for (int i = 0; i < MakeFrameBufferRawList.size(); i++) {
+        GLuint buffID;
+        glGenBuffers(1, &buffID);
+        glBindBuffer(GL_ARRAY_BUFFER, buffID);
+        glBufferData(GL_ARRAY_BUFFER, MakeFrameBufferRawList[i].size() * sizeof(VertexData), MakeFrameBufferRawList[i].data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        *MakeFrameBufferRaPtrList[i] = (int)buffID;
+    }
+    MakeFrameBufferRaPtrList.clear();
+    MakeFrameBufferRawList.clear();
 }
 PUBLIC void IGLGraphics::UpdatePalette(ISprite* sprite) {
+    if (!sprite->TextureID) return;
+
+    if (sprite->LinkedSprite)
+        sprite = sprite->LinkedSprite;
+
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_RGBA, GL_UNSIGNED_BYTE, sprite->Palette);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_BGRA, GL_UNSIGNED_BYTE, sprite->Palette);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_RGBA, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 256, 1, GL_BGRA, GL_UNSIGNED_BYTE, sprite->PaletteAlt);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* fv) {
     if (!fv) return -1;
 
-    ISprite::AnimFrame* f = (ISprite::AnimFrame*)fv;
+    // ISprite::AnimFrame* f = (ISprite::AnimFrame*)fv;
 
-    float u0_x = float((uint32_t)f->X) / sprite->Width;
-    float u0_y = float((uint32_t)f->Y) / sprite->Height;
-    float u1_x = float((uint32_t)f->X + f->W) / sprite->Width;
-    float u1_y = float((uint32_t)f->Y + f->H) / sprite->Height;
+    MakeFrameBufferSpList.push_back(sprite);
+    MakeFrameBufferIDList.push_back(fv);
 
-    float p0_x = f->OffX;
-    float p0_y = f->OffY;
-    float p1_x = p0_x + f->W;
-    float p1_y = p0_y + f->H;
-
-    vector<VertexData> v;
-    v.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
-    v.push_back(VertexData { float(p1_x), float(p0_y), 0.0, u1_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
-    v.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
-
-    v.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
-    v.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
-    v.push_back(VertexData { float(p0_x), float(p1_y), 0.0, u0_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
-
-    glGenBuffers(1, &f->BufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, f->BufferID);
-    glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(VertexData), v.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    return f->BufferID;
+    return 0;
+    // float u0_x = float((uint32_t)f->X) / sprite->Width;
+    // float u0_y = float((uint32_t)f->Y) / sprite->Height;
+    // float u1_x = float((uint32_t)f->X + f->W) / sprite->Width;
+    // float u1_y = float((uint32_t)f->Y + f->H) / sprite->Height;
+    //
+    // float p0_x = f->OffX;
+    // float p0_y = f->OffY;
+    // float p1_x = p0_x + f->W;
+    // float p1_y = p0_y + f->H;
+    //
+    // vector<VertexData> v;
+    // v.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+    // v.push_back(VertexData { float(p1_x), float(p0_y), 0.0, u1_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+    // v.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+    //
+    // v.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+    // v.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+    // v.push_back(VertexData { float(p0_x), float(p1_y), 0.0, u0_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+    //
+    // glGenBuffers(1, &f->BufferID);
+    // glBindBuffer(GL_ARRAY_BUFFER, f->BufferID);
+    // glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(VertexData), v.data(), GL_STATIC_DRAW);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // return f->BufferID;
 }
-PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, int X, int Y, int W, int H, int OffX, int OffY) {
+PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY) {
     float u0_x = float(X) / sprite->Width;
     float u0_y = float(Y) / sprite->Height;
     float u1_x = float(X + W) / sprite->Width;
@@ -804,12 +889,17 @@ PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, int X, int Y, int W,
     v.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
     v.push_back(VertexData { float(p0_x), float(p1_y), 0.0, u0_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
 
-    GLuint buffID;
-    glGenBuffers(1, &buffID);
-    glBindBuffer(GL_ARRAY_BUFFER, buffID);
-    glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(VertexData), v.data(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    return (int)buffID;
+    MakeFrameBufferRaPtrList.push_back((int*)where);
+    MakeFrameBufferRawList.push_back(v);
+
+    return 0;
+
+    // GLuint buffID;
+    // glGenBuffers(1, &buffID);
+    // glBindBuffer(GL_ARRAY_BUFFER, buffID);
+    // glBufferData(GL_ARRAY_BUFFER, v.size() * sizeof(VertexData), v.data(), GL_STATIC_DRAW);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // return (int)buffID;
 }
 PUBLIC int  IGLGraphics::MakeVertexBuffer(vector<IVertex> vert) {
     vector<VertexData> v;
@@ -980,13 +1070,14 @@ PUBLIC void IGLGraphics::DrawRectangleStroke(int x, int y, int w, int h, Uint32 
 
 PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip) {
     if (!sprite) return;
+    if (!sprite->TextureID) return;
     if (animation < 0 || animation >= sprite->Animations.size()) {
         IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
-        exit(0);
+        assert(animation >= 0 && animation < sprite->Animations.size());
     }
     if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
         IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
-        exit(0);
+        assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
     }
 
     ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
@@ -1004,6 +1095,9 @@ PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, i
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
     glUniform1i(LocTexture, 0);
+
+    if (sprite->LinkedSprite)
+        sprite = sprite->LinkedSprite;
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
@@ -1136,10 +1230,7 @@ PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Wid
 }
 PUBLIC void IGLGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x, int y, int angle, int flip) {
     if (!sprite) return;
-
-    #if NX
-    return;
-    #endif
+    if (!sprite->TextureID) return;
 
     glUniform3f(LocTranslate, x, y, 0.0f);
     glUniform3f(LocRotate, 0.0f, 0.0f, angle);
@@ -1152,6 +1243,9 @@ PUBLIC void IGLGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
     glUniform1i(LocTexture, 0);
+
+    if (sprite->LinkedSprite)
+        sprite = sprite->LinkedSprite;
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);

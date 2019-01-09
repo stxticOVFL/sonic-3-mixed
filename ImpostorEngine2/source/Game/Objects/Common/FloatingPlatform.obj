@@ -63,7 +63,9 @@ event Create() {
     }
 
     if (Scene.ZoneID == 1) {
-        CurrentAnimation = 21;
+        CurrentAnimation = 19;
+        if (Scene.Act == 2)
+            CurrentAnimation = 20;
         Frame = 0;
     }
     else if (Scene.ZoneID == 2) {

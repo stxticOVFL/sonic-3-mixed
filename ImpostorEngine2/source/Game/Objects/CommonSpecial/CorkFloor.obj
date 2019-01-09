@@ -36,7 +36,9 @@ event Create() {
 		PieceVels[i++] = 0xFFA0; PieceVels[i++] = 0xFF40;
 		PieceVels[i++] = 0x0060; PieceVels[i++] = 0xFF40;
 
-        CurrentAnimation = 9;
+        CurrentAnimation = 8;
+        if (Scene.Act == 2)
+            CurrentAnimation = 9;
 
         BreakableByRoll = false;
         BreakableByJump = true;

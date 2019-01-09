@@ -4,9 +4,11 @@ event Create() {
     Active = true;
     Priority = false;
 
+    CurrentAnimation = 1;
+
     W = 80;
     H = 80;
 }
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, 30, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

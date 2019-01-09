@@ -242,9 +242,9 @@ event Render(CamX:int, CamY:int) {
 
     // Base
     if (OnFire)
-        G.DrawSprite(Sprite, CurrentAnimation + 2, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP); // TODO: Draw fire non anim
+        G.DrawSprite(Sprite, 2, (Scene.Frame >> 2) & 3, BaseX - CamX, nY - CamY, 0, IE_NOFLIP); // TODO: Draw fire non anim
     else
-        G.DrawSprite(Sprite, CurrentAnimation + 2, 0, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0x21, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
 
     Rotation = Math.sinHex(Oscello >> 8) * Amp;
     if (Spinning)
@@ -301,9 +301,9 @@ event Render(CamX:int, CamY:int) {
 
     // Handle
     if (!Spinning)
-        G.DrawSprite(Sprite, CurrentAnimation + 1, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, 0, IE_NOFLIP);
     else
-        G.DrawSprite(Sprite, CurrentAnimation + 1, 0, X - CamX, Y - CamY, Rotation / 0x10000, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, Rotation / 0x10000, IE_NOFLIP);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

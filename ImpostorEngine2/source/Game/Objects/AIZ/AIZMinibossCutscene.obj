@@ -21,7 +21,7 @@ event Create() {
     TimerAction = -1;
     Timer = 0;
 
-    CurrentAnimation = 0;
+    CurrentAnimation = 5;
 
     InvulnTimer = 0;
 
@@ -45,6 +45,8 @@ event Create() {
     Variable_38 = 0;
 
     SubY = Y << 8;
+
+    X = 0x2F10 + App.WIDTH - 0x30;
 }
 
 event OnHit() : int {
@@ -89,7 +91,7 @@ event Swing_UpAndDown() {
 
 event Update() {
     if (State == 2) { // AIZMinibossCutscene_WaitForCamera
-        if (Scene.CameraX >= 0x2ED8) { // 0x2F10
+        if (Scene.CameraX >= 0x2F10) { // 0x2F10
             TimerAction = 0; // loc_6857A
             // make first batch of children
             State = 4;
@@ -168,5 +170,5 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFF0000);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

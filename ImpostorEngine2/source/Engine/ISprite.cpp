@@ -43,6 +43,7 @@ public:
     IGraphics* G = NULL;
 
     const char* Filename;
+    ISprite* LinkedSprite = NULL;
 };
 #endif
 
@@ -60,6 +61,10 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 		fflush(stdin);
 		return;
 	}
+
+    TextureID = 0;
+    PaletteID = 0;
+    PaletteAltID = 0;
 
     Filename = filename;
 
@@ -93,7 +98,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
         free(color);
 
         Palette[i] |= 0xFF000000;
-        #if ANDROID
+        #if ANDROID && false
         Palette[i] = ReverseColor(Palette[i]);
         #endif
 
@@ -140,28 +145,28 @@ PUBLIC void ISprite::SetTransparentColorIndex(int i) {
     }
 }
 PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
-    #if ANDROID
+    #if ANDROID && false
     Palette[i] = ReverseColor(col);
     #else
     Palette[i] = 0xFF000000 | col;
     #endif
 }
 PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
-    #if ANDROID
+    #if ANDROID && false
     PaletteAlt[i] = ReverseColor(col);
     #else
     PaletteAlt[i] = 0xFF000000 | col;
     #endif
 }
 PUBLIC uint32_t ISprite::GetPalette(int i) {
-    #if ANDROID
+    #if ANDROID && false
     return ReverseColor(Palette[i] & 0xFFFFFF);
     #else
     return Palette[i] & 0xFFFFFF;
     #endif
 }
 PUBLIC uint32_t ISprite::GetPaletteAlt(int i) {
-    #if ANDROID
+    #if ANDROID && false
     return ReverseColor(PaletteAlt[i] & 0xFFFFFF);
     #else
     return PaletteAlt[i] & 0xFFFFFF;
@@ -194,7 +199,7 @@ PUBLIC void ISprite::RotatePaletteRight(uint32_t* color, int size) {
 
 PUBLIC void ISprite::UpdatePalette() {
     // if GL, write whole palette to palette texture
-    G->UpdatePalette(this);
+    G->UpdatePalette(LinkedSprite ? LinkedSprite : this);
 }
 
 PUBLIC void ISprite::LinkPalette(ISprite* other) {
@@ -206,6 +211,7 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
     PaletteAlt = other->PaletteAlt;
     PaletteID = other->PaletteID;
     PaletteAltID = other->PaletteAltID;
+    LinkedSprite = other;
 }
 
 PUBLIC void ISprite::LoadAnimation(const char* filename) {
@@ -298,6 +304,11 @@ PUBLIC void ISprite::Cleanup() {
         Data = NULL;
     }
 
-    free(Palette);
-    free(PaletteAlt);
+    if (Palette)
+        free(Palette);
+    if (PaletteAlt)
+        free(PaletteAlt);
+
+    Palette = NULL;
+    PaletteAlt = NULL;
 }

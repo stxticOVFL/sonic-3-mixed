@@ -24,7 +24,7 @@ public:
     int OffX = 0;
     int OffY = 0;
 
-    int bufferID = -1;
+    int bufferID = -2;
 
     int LifeSpan = -1;
 };
@@ -41,8 +41,10 @@ PUBLIC MovingSprite::MovingSprite() {
 
 PUBLIC void MovingSprite::Update() {
     if (Left >= 0) {
-        if (bufferID == -1) {
-            bufferID = G->MakeFrameBufferID(Sprite, Left, Top, Width, Height, OffX, OffY);
+        if (bufferID == -2) {
+            bufferID = -1;
+            G->MakeFrameBufferID(Sprite, &bufferID, Left, Top, Width, Height, OffX, OffY);
+            G->MakeAllTexturesAndFrameBuffers();
         }
     }
 

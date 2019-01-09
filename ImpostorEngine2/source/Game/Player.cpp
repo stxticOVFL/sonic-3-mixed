@@ -160,6 +160,8 @@ Uint32 KnuxPaletteSuperPulseHCZ[6] = {
 	0xB868C8,
 };
 
+bool Thremixed = false;
+
 IPlayer::IPlayer() {
     X = 512;
     Y = 64;
@@ -266,7 +268,7 @@ void IPlayer::Create() {
     if (Character == CharacterType::Sonic) {
         H = 40;
         OrigH = H;
-		if (true) {
+		if (!Thremixed) {
 			Sprites[0] = new ISprite("Player/S3/Sonic1.gif", App);
 			Sprites[0]->LoadAnimation("Player/S3/Sonic.bin");
 
@@ -303,6 +305,7 @@ void IPlayer::Create() {
     else if (Character == CharacterType::Tails) {
         H = 32;
         OrigH = H;
+		Thremixed = true;
 
         Sprites[0] = new ISprite("Player/Tails1.gif", App);
         Sprites[1] = new ISprite("Player/Tails2.gif", App);
@@ -340,12 +343,14 @@ void IPlayer::Create() {
             Sprites[3]->LinkAnimation(Sprites[0]->Animations);
             Sprites[4]->LinkAnimation(Sprites[0]->Animations);
         }
+		Thremixed = true;
 
         for (int i = 0; i < Sprites[0]->AnimCount; i++) {
             AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
         }
 	}
     else if (Character == CharacterType::Ray) {
+		Thremixed = true;
         Sprites[0] = new ISprite("Player/Ray1.gif", App);
         Sprites[1] = new ISprite("Player/Ray2.gif", App);
         Sprites[2] = new ISprite("Player/Ray3.gif", App);
@@ -360,6 +365,13 @@ void IPlayer::Create() {
             AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
         }
 	}
+
+	Sprites[0]->Animations[AnimationMap["Walk"]].AnimationSpeed = 0x100;
+	Sprites[0]->Animations[AnimationMap["Air Walk"]].AnimationSpeed = 0x100;
+	Sprites[0]->Animations[AnimationMap["Jog"]].AnimationSpeed = 0x100;
+	Sprites[0]->Animations[AnimationMap["Run"]].AnimationSpeed = 0x100;
+	Sprites[0]->Animations[AnimationMap["Dash"]].AnimationSpeed = 0x100;
+	Sprites[0]->Animations[AnimationMap["Jump"]].AnimationSpeed = 0x100;
 
     SpriteDashDust = Scene->ExplosionSprite;
 
@@ -382,12 +394,15 @@ void IPlayer::Create() {
     int palWhere;
     Uint32 *palNormal, *palNormalHCZ;
 
-	if (Scene->TileSprite) {
-		if (Scene->TileSprite->PaletteAlt) {
-			memcpy(Sprites[0]->PaletteAlt, Scene->TileSprite->PaletteAlt, 16 * 4);
-	        Sprites[0]->Paletted = 2;
-			Sprites[0]->UpdatePalette();
+	if (!Thremixed) {
+		if (Scene->TileSprite) {
+			if (Scene->TileSprite->PaletteAlt) {
+				memcpy(Sprites[0]->PaletteAlt, Scene->TileSprite->PaletteAlt, 16 * 4);
+		        Sprites[0]->Paletted = 2;
+				Sprites[0]->UpdatePalette();
+			}
 		}
+		return;
 	}
 
     if (Character == CharacterType::Sonic) {
@@ -415,10 +430,10 @@ void IPlayer::Create() {
     for (int i = 0; i < 8; i++) {
         if (!Sprites[i]) break;
 
-        // memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
-        // memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
-        // Sprites[i]->Paletted = 2;
-		// Sprites[i]->UpdatePalette();
+        memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
+        memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
+        Sprites[i]->Paletted = 2;
+		Sprites[i]->UpdatePalette();
     }
 }
 
@@ -1286,7 +1301,7 @@ void IPlayer::Update() {
         }
         //*/
 
-        if (IMath::abs(GroundSpeed) < 0x280 && AngleMode != 0) {
+        if (IMath::abs(GroundSpeed) < 0x280 && AngleMode != 0 && !ForceRoll) {
             if (Action == ActionType::Rolling) {
                 this->X += (int)(this->Sin[Angle] * (H / 2 - 16)) << 16;
                 this->Y += (int)(this->Cos[Angle] * (H / 2 - 16)) << 16;
@@ -1299,6 +1314,7 @@ void IPlayer::Update() {
                 GroundSpeed = 0;
                 Angle = 0;
                 AngleMode = 0;
+				printf("%s\n", "fell off");
             }
             InputAlarm = 30;
         }
@@ -1530,6 +1546,7 @@ void IPlayer::Update() {
             YSpeed = GroundSpeed * -Sin[Angle];
 
             Ground = false;
+			printf("%s\n", "No ground");
             if (Action == ActionType::Rolling) {
                 JumpVariable = 2;
                 Action = ActionType::Jumping;
@@ -2659,6 +2676,9 @@ void IPlayer::LateUpdate() {
 		}
 	}
 
+	if (CurrentFrame < 0)
+		CurrentFrame = 0;
+
 
 
     if (Shield != ShieldType::None) {
@@ -2781,13 +2801,17 @@ void IPlayer::LateUpdate() {
         }
     }
     else {
-        // for (int i = 0; i < 8; i++) {
-        //     if (!Sprites[i]) break;
-		//
-        //     memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
-        //     memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
-		// 	Sprites[i]->UpdatePalette();
-        // }
+		if (Thremixed) {
+	        for (int i = 0; i < 8; i++) {
+	            if (!Sprites[i]) break;
+
+				for (int p = 0; p < 6; p++) {
+		            Sprites[i]->SetPalette(palWhere + p, palNormal[p]);
+		            Sprites[i]->SetPaletteAlt(palWhere + p, palNormalHCZ[p]);
+				}
+				Sprites[i]->UpdatePalette();
+	        }
+		}
     }
 
     // Ease rotation

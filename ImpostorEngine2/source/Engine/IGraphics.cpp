@@ -86,6 +86,9 @@ PUBLIC VIRTUAL IGraphics::~IGraphics() {
 
 }
 
+PUBLIC VIRTUAL void IGraphics::MakeAllTexturesAndFrameBuffers() {
+
+}
 PUBLIC VIRTUAL void IGraphics::MakeTexture(ISprite* sprite) {
 
 }
@@ -95,7 +98,7 @@ PUBLIC VIRTUAL void IGraphics::UpdatePalette(ISprite* sprite) {
 PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* f) {
     return -2;
 }
-PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, int X, int Y, int W, int H, int OffX, int OffY) {
+PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY) {
     return -2;
 }
 PUBLIC VIRTUAL int IGraphics::MakeVertexBuffer(vector<IVertex> vert) {
@@ -501,11 +504,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int fr
     if (!sprite) return;
     if (animation < 0 || animation >= sprite->Animations.size()) {
         IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
-        exit(-1);
+        assert(animation >= 0 && animation < sprite->Animations.size());
     }
     if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
         IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
-        exit(-1);
+        assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
     }
 
 

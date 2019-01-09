@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
+#include <assert.h>
 #include <cstring>
 #define _USE_MATH_DEFINES
 #include <cmath>

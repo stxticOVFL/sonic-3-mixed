@@ -23,7 +23,8 @@ event Create() {
     TimerAction = -1;
     Timer = 0;
 
-    CurrentAnimation = 0;
+    CurrentAnimation = 5;
+    Frame = 0;
 
     InvulnTimer = 0;
     ExplosionTimer = 0x80;
@@ -188,5 +189,5 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFF0000);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

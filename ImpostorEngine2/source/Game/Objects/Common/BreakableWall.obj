@@ -11,6 +11,8 @@ event Create() {
         W = 32;
         H = 80;
         Priority = true;
+
+        CurrentAnimation = 3;
     }
     else if (Scene.ZoneID == 2) {
         W = 32;
@@ -43,7 +45,7 @@ event Create() {
 event DrawAIZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 1) return;
 
-    G.DrawSprite(Sprite, 27, SubType & 0xF, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, SubType & 0xF, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }
 event DrawHCZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 2) return;

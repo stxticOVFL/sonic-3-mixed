@@ -1,5 +1,7 @@
 object 0x2C;
 
+var Drawbridge:bool;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -7,13 +9,19 @@ event Create() {
     W = 192;
     H = 16;
 
-    X += 11;
-
     VisW = 116;
     VisH = 16;
 
     SolidTop = true;
     Scene.AddSelfToRegistry(this, "Solid");
+
+    Drawbridge = false;
+    CurrentAnimation = 5;
+    if (SubType & 0x80) {
+        VisualLayer = 1;
+        Drawbridge = true;
+        CurrentAnimation = 13;
+    }
 }
 
 event Update() {
@@ -21,10 +29,20 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, 29, 0, X - CamX - 96, Y - CamY, 0, IE_NOFLIP);
-    G.DrawSprite(Sprite, 29, 0, X - CamX - 64, Y - CamY, 0, IE_NOFLIP);
-    G.DrawSprite(Sprite, 29, 0, X - CamX - 32, Y - CamY, 0, IE_NOFLIP);
-    G.DrawSprite(Sprite, 29, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    G.DrawSprite(Sprite, 29, 0, X - CamX + 32, Y - CamY, 0, IE_NOFLIP);
-    G.DrawSprite(Sprite, 29, 2, X - CamX + 64, Y - CamY, 0, IE_NOFLIP);
+    if (Drawbridge) {
+        G.DrawSprite(Sprite, CurrentAnimation, 1, X - CamX - 80, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX - 48, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX - 16, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX + 16, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX + 48, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 2, X - CamX + 80, Y - CamY, 0, IE_NOFLIP);
+    }
+    else {
+        G.DrawSprite(Sprite, CurrentAnimation, 1, X - CamX - 75, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX - 45, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX - 15, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX + 15, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX + 45, Y - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, 2, X - CamX + 75, Y - CamY, 0, IE_NOFLIP);
+    }
 }
