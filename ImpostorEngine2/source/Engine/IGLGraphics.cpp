@@ -111,6 +111,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             SDL_WINDOW_SHOWN
             #if ANDROID | IOS
             | SDL_WINDOW_BORDERLESS
+            | SDL_WINDOW_FULLSCREEN
             #endif
             | SDL_WINDOW_ALLOW_HIGHDPI
             | SDL_WINDOW_OPENGL);
@@ -148,6 +149,10 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         SDL_GetWindowSize(Window, &ww, &wh);
         if (h > wh)
             RetinaMult = 2;
+
+#if ANDROID
+        App->WIDTH = App->HEIGHT * w / h;
+#endif
 
         IApp::Print(0, "Retina Mult: %f", (double)h / wh);
         IApp::Print(0, "RetinaMult: %d", RetinaMult);
@@ -272,6 +277,11 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
         glClearColor(0.f, 0.f, 0.f, 1.f);
 
+        char strangeLine1[50];
+        char strangeLine2[50];
+        sprintf(strangeLine1, "        vec4(2.0 / %d.0,  0.0, 0.0, 0.0),", App->WIDTH);
+        sprintf(strangeLine2, "        vec4(0.0, -2.0 / %d.0, 0.0, 0.0),", App->HEIGHT);
+
         const GLchar* vertexShaderSource[] = {
             #if NX | IOS
             "precision mediump float;",
@@ -299,6 +309,9 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             "uniform vec3      u_translate;",
             "uniform vec3      u_rotate;",
             "uniform vec3      u_scale;",
+
+            "uniform float     u_screenWidth;",
+            "uniform float     u_screenHeight;",
 
             "mat3 scale(vec3 v) {",
             "    return mat3(",
@@ -362,8 +375,8 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
 
             "void main() {",
             "    mat4 projection = mat4(",
-            "        vec4(2.0 / 424.0,  0.0, 0.0, 0.0),",
-            "        vec4(0.0, -2.0 / 240.0, 0.0, 0.0),",
+            strangeLine1,
+            strangeLine2,
             "        vec4(0.0, 0.0, -2.0 / 64.0, 0.0),",
             "        vec4(-1.0, 1.0, 1.0, 1.0)",
             "   );",
@@ -546,6 +559,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         LocColor = glGetUniformLocation(programID, "u_color");
 
         LocWaterLine = glGetUniformLocation(programID, "u_waterLine");
+
         CheckGLError(__LINE__);
 
         glEnableVertexAttribArray(LocPosition);

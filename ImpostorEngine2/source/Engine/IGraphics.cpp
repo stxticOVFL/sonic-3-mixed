@@ -145,6 +145,7 @@ PUBLIC VIRTUAL void IGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, i
             DesiredWidth, DesiredHeight, SDL_WINDOW_SHOWN
             #if ANDROID | IOS
             | SDL_WINDOW_BORDERLESS
+            | SDL_WINDOW_FULLSCREEN
             #endif
             | SDL_WINDOW_ALLOW_HIGHDPI);
 

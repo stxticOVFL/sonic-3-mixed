@@ -94,6 +94,11 @@ PUBLIC IApp::IApp() {
 
     LoadSettings();
 
+    // HACK:
+    if (IApp::Platform == Platforms::Android) {
+        WIDTH = HEIGHT * 2;
+    }
+
     char iniRenderer[256];
     if (Settings->GetString("display", "renderer", iniRenderer)) {
         if (!strcmp(iniRenderer, "GL"))
@@ -225,7 +230,7 @@ PUBLIC void IApp::Run() {
 
         UpdatesPerFrame = 1;
         if (UnlockedFramerate) UpdatesPerFrame = 8;
-        
+
         for (int m = 0; m < UpdatesPerFrame; m++) {
             if ((Stepper && Step) || !Stepper) {
                 // Poll for inputs
