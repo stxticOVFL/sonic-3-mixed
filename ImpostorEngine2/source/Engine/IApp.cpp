@@ -134,7 +134,11 @@ PUBLIC IApp::IApp() {
 }
 
 PUBLIC void IApp::LoadSettings() {
+#if MSVC
+	Settings = new IINI("../config.ini");
+#else
     Settings = new IINI("config.ini");
+#endif
 }
 
 PUBLIC void IApp::OnEvent(Uint32 event) {
@@ -237,6 +241,7 @@ PUBLIC void IApp::Run() {
         MetricRenderTime = SDL_GetTicks() - MetricRenderTime;
 
         if (NextScene != NULL) {
+			unsigned long now = SDL_GetTicks();
             delete Scene;
             Scene = NextScene;
             NextScene = NULL;
@@ -244,6 +249,7 @@ PUBLIC void IApp::Run() {
             Scene->Init();
             Scene->Update();
             Scene->Render();
+			beginFrameBatch += now - SDL_GetTicks();
         }
 
         // Show FPS counter

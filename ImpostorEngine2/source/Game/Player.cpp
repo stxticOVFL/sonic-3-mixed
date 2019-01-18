@@ -2861,24 +2861,24 @@ void IPlayer::LateUpdate() {
     CameraX = 0;
     if (Action == ActionType::CrouchDown) {
         if (CameraLookTimer >= 60) {
-            CameraY = fmin(CameraY + 2, 88.f);
+            CameraY = IMath::min(CameraY + 2, 88);
         }
         else {
             if (CameraY < 0)
-                CameraY = fmin(CameraY + 2, 0.f);
+                CameraY = IMath::min(CameraY + 2, 0);
             if (CameraY > 0)
-                CameraY = fmax(CameraY - 2, 0.f);
+                CameraY = IMath::max(CameraY - 2, 0);
         }
     }
     else if (Action == ActionType::LookUp) {
         if (CameraLookTimer >= 60) {
-            CameraY = fmax(CameraY - 2, -104.f);
+            CameraY = IMath::max(CameraY - 2, -104);
         }
         else {
             if (CameraY < 0)
-                CameraY = fmin(CameraY + 2, 0.f);
+                CameraY = IMath::min(CameraY + 2, 0);
             if (CameraY > 0)
-                CameraY = fmax(CameraY - 2, 0.f);
+                CameraY = IMath::max(CameraY - 2, 0);
         }
     }
     else if (Action == ActionType::Rolling) {
@@ -2888,9 +2888,9 @@ void IPlayer::LateUpdate() {
     else {
         if (CameraLookTimer >= 60) {
             if (CameraY < 0)
-                CameraY = fmin(CameraY + 2, 0.f);
+                CameraY = IMath::min(CameraY + 2, 0);
             else if (CameraY > 0)
-                CameraY = fmax(CameraY - 2, 0.f);
+                CameraY = IMath::max(CameraY - 2, 0);
             else
                 CameraLookTimer = 0;
         }
@@ -3701,8 +3701,8 @@ void IPlayer::HandleMonitors() {
                     (int)obj->X - obj->W / 2     <   EZX + (int)W / 2 + (XSpeed >> 8) + 2 &&
                     (int)obj->Y - obj->H / 2 - 2 <   EZY + (int)H / 2 + (YSpeed >> 8)) {
                     int hitFrom = 0;
-                    float wy = (W + obj->W) * (int(EZY) - int(obj->Y));
-                    float hx = (H + obj->H) * (int(EZX) - int(obj->X));
+                    int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
+					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
                     if (wy > hx)
                         if (wy > -hx)
@@ -3845,8 +3845,8 @@ bool IPlayer::HandleSprings() {
                     obj->X - obj->W / 2 - si * 3 + co * 6 <  EZX + (XSpeed >> 8) + W / 2 + 8 &&
                     obj->Y - obj->H / 2 - co * 3          <  EZY + H / 2) {
 
-                    float wy = (W + obj->W) * (int(EZY) - int(obj->Y));
-                    float hx = (H + obj->H) * (int(EZX) - int(obj->X));
+					int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
+					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
                     int hitFrom = 0;
 

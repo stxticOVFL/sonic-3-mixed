@@ -216,6 +216,9 @@ PUBLIC VIRTUAL void IGraphics::Cleanup() {
     SDL_FreeSurface(Screen);
 }
 
+PUBLIC VIRTUAL void IGraphics::SetPixelAdditive(SDL_Surface* surface, int x, int y, uint32_t pixel) {
+	*(FrameBuffer + y * RENDER_WIDTH + x) = ColorAddHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
+}
 PUBLIC VIRTUAL void IGraphics::SetPixelTrue(SDL_Surface* surface, int x, int y, uint32_t pixel) {
     if (x < 0) return;
     else if (y < 0) return;
@@ -261,6 +264,7 @@ PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint
         //     pixel = pixel ^ 0xFFFFFF;
 	}
     if ((Filter & 0x4) == 0x4) {
+		///*
         if (Fade > 0) {
 			int fade = Fade + Fade + Fade;
             if (fade > 0x2FD) fade = 0x2FD;
@@ -279,8 +283,8 @@ PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint
                 }
                 b = cb;
                 if (g > 0xFF) {
-                    b = fmax(0, cb + g - 0xFF);
-                    b = fmin(0xFF, b);
+                    b = IMath::max(0, cb + g - 0xFF);
+                    b = IMath::min(0xFF, b);
                     g = 0xFF;
                 }
             }
@@ -293,13 +297,14 @@ PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint
                 }
                 b = cb;
                 if (g < 0) {
-                    b = fmax(0, cb + g);
+                    b = IMath::max(0, cb + g);
                     g = 0;
                 }
             }
 
             pixel = (r << 16) | (g << 8) | b;
         }
+		//*/
     }
     //*/
 
@@ -507,7 +512,6 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int fr
         assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
     }
 
-
     ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
     IGraphics::DrawSprite(sprite, animframe.X, animframe.Y, animframe.W, animframe.H, x, y, angle, flip, animframe.OffX, animframe.OffY);
 }
@@ -517,39 +521,18 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
 PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY, int SX, int SY) {
     int FlipX = (Flip & IE_FLIPX);
     int FlipY = (Flip & IE_FLIPY) >> 1;
-    /*
+    ///*
     if (FlipX) {
         RealCenterX = -RealCenterX;
-        if (RealCenterX != 0)
-            RealCenterX -= Width;
+		RealCenterX -= Width;
     }
     if (FlipY) {
         RealCenterY = -RealCenterY;
-        if (RealCenterX != 0)
-            RealCenterY -= Height;
+		RealCenterY -= Height;
     }
     //*/
 
-    switch (Flip) {
-        case IE_FLIPX:
-            RealCenterX = -RealCenterX;
-            if (RealCenterX != 0)
-                RealCenterX -= Width;
-            break;
-        case IE_FLIPY:
-            RealCenterY = -RealCenterY;
-            if (RealCenterX != 0)
-                RealCenterY -= Height;
-            break;
-        case IE_FLIPX | IE_FLIPY:
-            // RealCenterY = -RealCenterY;
-            // if (RealCenterX != 0)
-            //     RealCenterY -= Height;
-            break;
-        default: break;
-    }
-
-    unsigned int PC;
+    Uint32 PC;
     if ((SX != Width || SY != Height)) {
 		if (SX < 1)
 			SX = 1;
@@ -586,50 +569,48 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
     }
     // Normal drawing
     else if (Angle == 0) {
-        int powerOfTwo = 0;
-        if (Width == 16)
-            powerOfTwo = 4;
+		bool AltPal = false;
+        int DX = 0, DY = 0, finX, finY, PX, PY, size = Width * Height;
+		Uint32 TrPal = sprite->Palette[sprite->TransparentColorIndex];
+		Width--;
+		Height--;
 
-        int DX, DY, finX, finY, PX, PY, size;
-        size = Width * Height;
-
+		if (!AltPal && CenterY + RealCenterY >= WaterPaletteStartLine && sprite->Paletted == 2) {
+			AltPal = true;
+			TrPal = sprite->PaletteAlt[sprite->TransparentColorIndex];
+		}
         for (int D = 0; D < size; D++) {
-            if (powerOfTwo) {
-                DX = D & (Width - 1);
-                DY = D >> powerOfTwo;
-            }
-            else {
-                DX = D % Width;
-                DY = D / Width;
-            }
-
-            finX = CenterX + DX + RealCenterX;
-            finY = CenterY + DY + RealCenterY;
+			finX = DX + RealCenterX;
+            finY = DY + RealCenterY;
 
             PX = DX;
             PY = DY;
             if (FlipX)
-                PX = Width - PX - 1;
+                PX = Width - PX;
             if (FlipY)
-                PY = Height - PY - 1;
+                PY = Height - PY;
 
-            if (finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
-                PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, true);
-                if (PC != sprite->PaletteAlt[sprite->TransparentColorIndex])
-                    SetPixel(Screen, finX, finY, PC);
-            }
-            else {
-                PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, false);
-                if (sprite->Paletted && PC != sprite->Palette[sprite->TransparentColorIndex])
-                    SetPixel(Screen, finX, finY, PC);
-            }
+            PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, AltPal);
+			if (PC != TrPal)
+                SetPixel(Screen, CenterX + finX, CenterY + finY, PC);
+
+			DX++;
+			if (DX > Width) {
+				DX = 0;
+				DY++;
+
+				if (!AltPal && finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
+					AltPal = true;
+					TrPal = sprite->PaletteAlt[sprite->TransparentColorIndex];
+				}
+			}
         }
     }
     // Otherwise, do fast rotation
     else {
         Angle &= 0xFF;
 
-        int OM = (int)fmax(Width * 1.71, Height * 1.71);
+        int OM = (int)IMath::max(Width * 0x1B5 >> 8, Height * 0x1B5 >> 8);
         for (int DX = -OM; DX < OM; DX++) {
             for (int DY = -OM; DY < OM; DY++) {
                 int finX = CenterX + DX;
@@ -816,12 +797,12 @@ PUBLIC VIRTUAL void IGraphics::DrawModelOn2D(IModel* model, int x, int y, double
             intensity = fmin(1.0, fmax(0.0, varying_intensity.Distance()));
 
             if (intensity > 0.5) {
-                DrawLine(v1.x, v1.y, v2.x, v2.y, ColorBlend(color, 0xFFFFFF, intensity * 2.0 - 1.0));
-                DrawLine(v3.x, v3.y, v2.x, v2.y, ColorBlend(color, 0xFFFFFF, intensity * 2.0 - 1.0));
+                DrawLine((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, ColorBlend(color, 0xFFFFFF, intensity * 2.0 - 1.0));
+                DrawLine((int)v3.x, (int)v3.y, (int)v2.x, (int)v2.y, ColorBlend(color, 0xFFFFFF, intensity * 2.0 - 1.0));
             }
             else {
-                DrawLine(v1.x, v1.y, v2.x, v2.y, ColorBlend(color, 0x000000, (0.5 - intensity)));
-                DrawLine(v3.x, v3.y, v2.x, v2.y, ColorBlend(color, 0x000000, (0.5 - intensity)));
+                DrawLine((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, ColorBlend(color, 0x000000, (0.5 - intensity)));
+                DrawLine((int)v3.x, (int)v3.y, (int)v2.x, (int)v2.y, ColorBlend(color, 0x000000, (0.5 - intensity)));
             }
         }
         else {
@@ -924,9 +905,9 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, in
         varying_uv.SetColumn(1, UVs[t.v3]);
         varying_uv.SetColumn(2, UVs[t.v4]);
 
-        v1 = v1.Multiply(currentFrame.W, currentFrame.H, 1.0);
-        v2 = v2.Multiply(currentFrame.W, currentFrame.H, 1.0);
-        v3 = v3.Multiply(currentFrame.W, currentFrame.H, 1.0);
+        v1 = v1.Multiply((float)currentFrame.W, (float)currentFrame.H, 1.0);
+        v2 = v2.Multiply((float)currentFrame.W, (float)currentFrame.H, 1.0);
+        v3 = v3.Multiply((float)currentFrame.W, (float)currentFrame.H, 1.0);
 
         // Offset model
         v1.x += x;
@@ -974,9 +955,9 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, in
     varying_uv.SetColumn(1, UVs[t.v2]);
     varying_uv.SetColumn(2, UVs[t.v3]);
 
-    v1 = v1.Multiply(currentFrame.W, currentFrame.H, 1.0);
-    v2 = v2.Multiply(currentFrame.W, currentFrame.H, 1.0);
-    v3 = v3.Multiply(currentFrame.W, currentFrame.H, 1.0);
+    v1 = v1.Multiply((float)currentFrame.W, (float)currentFrame.H, 1.0);
+    v2 = v2.Multiply((float)currentFrame.W, (float)currentFrame.H, 1.0);
+    v3 = v3.Multiply((float)currentFrame.W, (float)currentFrame.H, 1.0);
     // v1 = v1.Multiply(currentFrame.W - 1, currentFrame.H - 1, 1.0);
     // v2 = v2.Multiply(currentFrame.W - 1, currentFrame.H - 1, 1.0);
     // v3 = v3.Multiply(currentFrame.W - 1, currentFrame.H - 1, 1.0);

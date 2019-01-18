@@ -222,7 +222,7 @@ bool ViewPalettes = false;
 bool ViewPathswitchers = false;
 bool ViewPlayerStats = false;
 bool ViewTileInfo = false;
-bool ViewTileCollision = true;
+bool ViewTileCollision = false;
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App = app;
@@ -2810,7 +2810,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
             CameraX += CameraAutoScrollX;
 
             if (Player->EZX - Player->W / 2 < CameraX) {
-                Player->EZX = fmax(CameraX + Player->W / 2, Player->EZX);
+                Player->EZX = IMath::max(CameraX + Player->W / 2, Player->EZX);
                 if (Player->Ground) {
                     if (Player->GroundSpeed < CameraAutoScrollX)
                         Player->GroundSpeed = CameraAutoScrollX;
@@ -3242,7 +3242,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
     //
     //     if (o != 0) {
     //         uint8_t B = 0xC0;
-    //         uint8_t RG = fmax(0, fmin(  (Cos[PauseAnim[3]] * 0x60 + 0x6000) / 0x100, 0xFF));
+    //         uint8_t RG = IMath::max(0, IMath::min(  (Cos[PauseAnim[3]] * 0x60 + 0x6000) / 0x100, 0xFF));
     //
     //         G->DrawRectangle(baseX - 8 - o - i * 36, baseY + o + i * 36 + 4, 240, 22, RG << 16 | RG << 8 | B);
     //         G->DrawTriangle(
@@ -3344,19 +3344,18 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     int highlightedTile = -1;
 
     Layer layer;
-    int s, siT, spl, x;
-    int tile, flipX, flipY, flags, baseX, baseY, wheree;
-    int y;
+	int fullFlip;
+    int s, siT, spl, x, y;
+    int tile, flipX, flipY, baseX, baseY, wheree;
     int index, TileBaseX, TileBaseY;
     int EndTileBaseX, EndTileBaseY;
+	bool DeformObjects = false;
+	bool DeformPlayer = false;
 
     for (int l = 0; l < Data->layerCount; l++) {
         y = 0;
 
         layer = Data->layers[l];
-
-        bool DeformObjects = false;
-        bool DeformPlayer = false;
 
         // Draw Tiles
         if (layer.Visible) {
@@ -3400,32 +3399,27 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                                 baseY = TileBaseY;
 
                                 word = layer.Tiles[tilindpos];
-                                flipX = ((word >> 10) & 1);
-                                flipY = ((word >> 11) & 1);
+								fullFlip = (word >> 10) & 3;
                                 tile = word & 0x3FF;
 
                                 if (tile) {
                                     int anID = Data->isAnims[tile] & 0xFF;
 
-                                    flags = 0;
-                                    if (flipX)
-                                        flags |= IE_FLIPX;
-                                    if (flipY)
-                                        flags |= IE_FLIPY;
-
-                                    wheree = (y + siT) & 0xF;
-                                    if (flipY)
-                                        wheree = 0x10 - wheree - heightSize;
-
                                     if (anID != 0xFF) {
-                                        G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, (flipX * IE_FLIPX) | (flipY * IE_FLIPY));
+                                        G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
                                     }
                                     else {
                                         if (layer.ScrollIndexes[0].TileBuffers && layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width] > 0) {
-                                            G->DrawSpriteBuffered(TileSprite, layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], baseX + 8, baseY + heightSize / 2, 0, flags);
+                                            G->DrawSpriteBuffered(TileSprite, layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], baseX + 8, baseY + heightSize / 2, 0, fullFlip);
                                         }
                                         else {
-                                            G->DrawSprite(TileSprite, ((tile & 0x1F) << 4), wheree + ((tile >> 5) << 4), 16, heightSize, baseX, baseY, 0, flags, 0, 0);
+											flipY = ((fullFlip >> 1) & 1);
+
+											wheree = (y + siT) & 0xF;
+											if (flipY)
+												wheree = 0x10 - wheree - heightSize;
+
+                                            G->DrawSprite(TileSprite, ((tile & 0x1F) << 4), wheree + ((tile >> 5) << 4), 16, heightSize, baseX + 8, baseY + heightSize / 2, 0, fullFlip, -8, -heightSize / 2 - (heightSize & flipY));
                                         }
                                     }
                                 }
@@ -3460,7 +3454,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 EndTileBaseY = 2 + ((TileBaseY + App->HEIGHT) >> 4); // EndTileBaseX
 
                 int lWid = layer.Width;
-
                 for (int x = TileBaseX >> 4; x < EndTileBaseX; x++) {
                     baseX = (x << 4) - TileBaseX;
 
@@ -3490,23 +3483,24 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
                         baseY = (y << 4) - TileBaseY + layer.TileOffsetY[((x % lWid) + lWid) % lWid];
                         tile = layer.Tiles[spl + j * lWid];
-                        flipX = ((tile >> 10) & 1);
-                        flipY = ((tile >> 11) & 1);
-                        int colTypeA = ((tile >> 12) & 3);
-                        int colTypeB = ((tile >> 14) & 3);
+						fullFlip = (tile >> 10) & 3;
                         tile = tile & 0x3FF;
 
                         if (tile) {
                             int anID = Data->isAnims[tile] & 0xFF;
                             if (anID != 0xFF) {
-                                // AnimTileSprite
-                                G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, (flipX * IE_FLIPX) | (flipY * IE_FLIPY));
+                                G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
                             }
                             else {
-                                G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, (flipX * IE_FLIPX) | (flipY * IE_FLIPY));
+                                G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, fullFlip);
                             }
 
                             if (ViewTileCollision) {
+								flipX = ((tile >> 10) & 1);
+								flipY = ((tile >> 11) & 1);
+								int colTypeA = ((tile >> 12) & 3);
+								int colTypeB = ((tile >> 14) & 3);
+
                                 for (int c = 0; c < 16; c++) {
                                     int eex = c;
                                     if (flipX)
@@ -3560,10 +3554,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         if (l == Data->cameraLayer - 1)
             RenderAboveBackground();
 
-        if (l >= Data->cameraLayer) {
-            //RenderAnimatedSprites(l - (Data->cameraLayer));
-        }
-
         G->DoDeform = DeformObjects;
 
         // Rendering objects
@@ -3592,9 +3582,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         }
 
         // Rendering above foreground
-        if (l == Data->layerCount - 1) {
+        if (l == Data->layerCount - 1)
             RenderAboveForeground();
-        }
     }
 
     G->DoDeform = false;
@@ -3643,14 +3632,14 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
             float cos_ = Player->Sin[PlaneSwitchers[i].Angle];
             float sin_ = Player->Cos[PlaneSwitchers[i].Angle];
 
-            int cos_t = cos_ * Len;
-            int sin_t = sin_ * Len;
+            int cos_t = int(cos_ * Len);
+            int sin_t = int(sin_ * Len);
 
             int ox = PlaneSwitchers[i].X;
             int oy = PlaneSwitchers[i].Y;
 
-            int px = ox + sin_ * 8;
-            int py = oy + cos_ * 8;
+            int px = int(ox + sin_ * 8);
+            int py = int(oy + cos_ * 8);
 
             G->DrawLine(
                 px - cos_t - CameraX,
@@ -3658,8 +3647,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 px + cos_t - CameraX,
                 py + sin_t - CameraY, ((PlaneSwitchers[i].Flags >> 3) & 1) ? 0xFF0000 : 0x0000FF);
 
-            px = ox + sin_ * 6;
-            py = oy + cos_ * 6;
+            px = int(ox + sin_ * 6);
+            py = int(oy + cos_ * 6);
 
             G->DrawLine(
                 px - cos_t - CameraX,
@@ -3667,8 +3656,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 px + cos_t - CameraX,
                 py + sin_t - CameraY, ((PlaneSwitchers[i].Flags >> 2) & 1) ? 0xFF0000 : 0x0000FF);
 
-            px = ox + sin_ * -8;
-            py = oy + cos_ * -8;
+            px = int(ox + sin_ * -8);
+            py = int(oy + cos_ * -8);
 
             G->DrawLine(
                 px - cos_t - CameraX,
@@ -3676,8 +3665,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 px + cos_t - CameraX,
                 py + sin_t - CameraY, ((PlaneSwitchers[i].Flags >> 1) & 1) ? 0xFF0000 : 0x0000FF);
 
-            px = ox + sin_ * -6;
-            py = oy + cos_ * -6;
+            px = int(ox + sin_ * -6);
+            py = int(oy + cos_ * -6);
 
             G->DrawLine(
                 px - cos_t - CameraX,
@@ -3868,7 +3857,6 @@ PUBLIC void LevelScene::RenderResults() {
     if (!ShowResults) return;
 
     int value;
-    // ISprite::AnimFrame Frame;
 
     double resultsTimer = ResultsTimer / 60.0;
 
@@ -3969,7 +3957,6 @@ PUBLIC VIRTUAL void LevelScene::Render() {
     else
         G->SetFilter(G->GetFilter() & ~0x4);
 
-    ///*
 	if (!G->HaveClone) {
 		G->SetFilter(G->GetFilter() | PauseFinished);
 		RenderEverything();
@@ -3981,7 +3968,6 @@ PUBLIC VIRTUAL void LevelScene::Render() {
     else {
         G->DrawClone();
     }
-    //*/
 
     CameraY = tCamY;
 

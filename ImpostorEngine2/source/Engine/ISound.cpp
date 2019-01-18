@@ -109,8 +109,10 @@ PUBLIC bool ISound::LoadOGG_RW(IResource* src, int freesrc, SDL_AudioSpec *spec,
 
     *audio_len = spec->size = samples * spec->channels * 2;
     *audio_buf = (uint8_t*)malloc(*audio_len);
-    if (*audio_buf == NULL)
-        goto done;
+	if (*audio_buf == NULL) {
+		IApp::Print(2, "Could not make memory for Vorbis stream.");
+		goto done;
+	}
 
     buf = *audio_buf;
     to_read = *audio_len;
@@ -268,7 +270,7 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
         Resource = res;
 
         if (strstr(filename, ".wav")) {
-            if (!SDL_LoadWAV_RW(Resource->RW, false, &Format, &buffer, &length)) {
+            if (!SDL_LoadWAV_RW(Resource->RW, 0, &Format, &buffer, &length)) {
                 IApp::Print(2, "Could not load Sound!");
                 return;
             }
@@ -290,7 +292,7 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
             convert.buf = (uint8_t*)malloc(length * convert.len_mult);
             convert.len = length;
             memcpy(convert.buf, buffer, length);
-            free(buffer);
+			SDL_FreeWAV(buffer);
             SDL_ConvertAudio(&convert);
 
             Buffer = convert.buf;
@@ -343,10 +345,10 @@ PUBLIC void ISound::Seek(int amount) {
 
 PUBLIC void ISound::Cleanup() {
     if (Buffer)
-		SDL_free(Buffer);
+		SDL_FreeWAV(Buffer);
 
     if (Stream) {
-        SDL_free(ExtraBuffer);
+		SDL_FreeWAV(ExtraBuffer);
         SDL_FreeAudioStream(Stream);
         IResources::Close(Resource);
     }

@@ -59,7 +59,7 @@ public:
     bool SolidCustomized = false;
 
     bool Pushable = false;
-    bool CollidingWithPlayer = false;
+    int  CollidingWithPlayer = false;
     bool BeingStoodOn = false;
 
     CollideSide BreakableByRoll = CollideSide::NONE;

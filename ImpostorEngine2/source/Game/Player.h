@@ -250,7 +250,7 @@ public:
     int32_t             DisplayY = 0;
     int                 CameraX = 0;
     int                 CameraY = 0;
-    float               DisplayFlip = 1;
+    int                 DisplayFlip = 1;
     bool                SlowRotationReset = false;
     bool                Hidden = false;
 

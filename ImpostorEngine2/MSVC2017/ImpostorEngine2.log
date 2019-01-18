@@ -11233,3 +11233,471 @@ IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scr
       LOG: WindowScreen created!
       LOG: ScreenTexture created!
       LOG: Starting scene
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.005s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.006s to run.
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
