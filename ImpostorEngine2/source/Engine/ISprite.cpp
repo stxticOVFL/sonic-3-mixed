@@ -101,7 +101,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
         free(color);
 
         Palette[i] |= 0xFF000000;
-        #if ANDROID && false
+        #if ANDROID
         Palette[i] = ReverseColor(Palette[i]);
         #endif
 
@@ -150,7 +150,7 @@ PUBLIC void ISprite::SetTransparentColorIndex(int i) {
 PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
     if (LinkedSprite != NULL) { LinkedSprite->SetPalette(i, col); return; }
 
-    #if ANDROID && false
+    #if ANDROID
     Palette[i] = ReverseColor(col);
     #else
     Palette[i] = 0xFF000000 | col;
@@ -159,7 +159,7 @@ PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
 PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
     if (LinkedSprite != NULL) { LinkedSprite->SetPaletteAlt(i, col); return; }
 
-    #if ANDROID && false
+    #if ANDROID
     PaletteAlt[i] = ReverseColor(col);
     #else
     PaletteAlt[i] = 0xFF000000 | col;
@@ -177,7 +177,7 @@ PUBLIC void ISprite::SetPaletteAlt(int i, int cnt, uint32_t* col) {
 PUBLIC uint32_t ISprite::GetPalette(int i) {
     if (LinkedSprite != NULL) { return LinkedSprite->GetPalette(i); }
 
-    #if ANDROID && false
+    #if ANDROID
     return ReverseColor(Palette[i] & 0xFFFFFF);
     #else
     return Palette[i] & 0xFFFFFF;
@@ -186,7 +186,7 @@ PUBLIC uint32_t ISprite::GetPalette(int i) {
 PUBLIC uint32_t ISprite::GetPaletteAlt(int i) {
     if (LinkedSprite != NULL) { return LinkedSprite->GetPaletteAlt(i); }
 
-    #if ANDROID && false
+    #if ANDROID
     return ReverseColor(PaletteAlt[i] & 0xFFFFFF);
     #else
     return PaletteAlt[i] & 0xFFFFFF;
