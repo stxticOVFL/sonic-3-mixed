@@ -45,7 +45,7 @@ public:
     GLuint framebufferScreen;
     GLuint framebufferScreenQuality;
 
-    int RetinaMult = 1;
+    int RetinaMult = 1; //
 };
 #endif
 
@@ -111,6 +111,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             SDL_WINDOW_SHOWN
             #if ANDROID | IOS
             | SDL_WINDOW_BORDERLESS
+            | SDL_WINDOW_FULLSCREEN
             #endif
             | SDL_WINDOW_ALLOW_HIGHDPI
             | SDL_WINDOW_OPENGL);
@@ -148,6 +149,9 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         SDL_GetWindowSize(Window, &ww, &wh);
         if (h > wh)
             RetinaMult = 2;
+
+        if (IApp::Platform == Platforms::Android)
+            App->WIDTH = App->HEIGHT * w / h;
 
         IApp::Print(0, "Retina Mult: %f", (double)h / wh);
         IApp::Print(0, "RetinaMult: %d", RetinaMult);
@@ -712,6 +716,7 @@ PUBLIC void IGLGraphics::Present() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     SDL_GL_SwapWindow(Window);
+    LastSprite = NULL;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(programID);
@@ -751,6 +756,9 @@ PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     MakeTextureList.push_back(sprite);
 }
 
+#if ANDROID
+#define GL_BGRA GL_RGBA
+#endif
 PUBLIC void IGLGraphics::MakeAllTexturesAndFrameBuffers() {
     for (int i = 0; i < MakeTextureList.size(); i++) {
         ISprite* sprite = MakeTextureList[i];
@@ -869,11 +877,23 @@ PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* fv) {
     // glBindBuffer(GL_ARRAY_BUFFER, 0);
     // return f->BufferID;
 }
-PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY) {
+PUBLIC int  IGLGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY, int flip) {
     float u0_x = float(X) / sprite->Width;
     float u0_y = float(Y) / sprite->Height;
     float u1_x = float(X + W) / sprite->Width;
     float u1_y = float(Y + H) / sprite->Height;
+
+    float temp;
+    if (flip & IE_FLIPX) {
+        temp = u0_x;
+        u0_x = u1_x;
+        u1_x = temp;
+    }
+    if (flip & IE_FLIPY) {
+        temp = u0_y;
+        u0_y = u1_y;
+        u1_y = temp;
+    }
 
     float p0_x = OffX;
     float p0_y = OffY;
@@ -1045,8 +1065,6 @@ PUBLIC void IGLGraphics::DrawRectangle(int x, int y, int w, int h, Uint32 col) {
     // glVertexAttribPointer(LocColor,    4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(5 * sizeof(GLfloat)));
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    LastSprite = NULL;
 }
 PUBLIC void IGLGraphics::DrawRectangleSkewedH(int x, int y, int w, int h, int sk, Uint32 col) {
     //w--;
@@ -1092,20 +1110,24 @@ PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, i
     glUniform4f(LocColor, ColorBlendR, ColorBlendG, ColorBlendB, DrawAlpha / 255.f);
 
     glUniform1i(LocUseTexture, 1);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
-    glUniform1i(LocTexture, 0);
+    if (LastSprite != sprite) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
+        glUniform1i(LocTexture, 0);
 
-    if (sprite->LinkedSprite)
-        sprite = sprite->LinkedSprite;
+        LastSprite = sprite;
 
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glUniform1i(LocPalette, 1);
+        if (sprite->LinkedSprite)
+            sprite = sprite->LinkedSprite;
 
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glUniform1i(LocPaletteAlt, 2);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
+        glUniform1i(LocPalette, 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
+        glUniform1i(LocPaletteAlt, 2);
+    }
 
     if (sprite->Paletted == 2)
         glUniform1f(LocWaterLine, (App->HEIGHT - WaterPaletteStartLine));
@@ -1233,27 +1255,31 @@ PUBLIC void IGLGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x
     if (!sprite->TextureID) return;
 
     glUniform3f(LocTranslate, x, y, 0.0f);
-    glUniform3f(LocRotate, 0.0f, 0.0f, angle);
-    glUniform3f(LocScale,
-        (flip & IE_FLIPX) ? -1.0f : 1.0f,
-        (flip & IE_FLIPY) ? -1.0f : 1.0f, 0.0f);
-    glUniform4f(LocColor, ColorBlendR, ColorBlendG, ColorBlendB, DrawAlpha / 255.f);
+    if (flip == 0)
+        glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
 
     glUniform1i(LocUseTexture, 1);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
-    glUniform1i(LocTexture, 0);
+    if (LastSprite != sprite) {
+        // glUniform3f(LocRotate, 0.0f, 0.0f, angle);
+        glUniform4f(LocColor, 1.0f, 1.0f, 1.0f, DrawAlpha / 255.f);
 
-    if (sprite->LinkedSprite)
-        sprite = sprite->LinkedSprite;
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
+        glUniform1i(LocTexture, 0);
 
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
-    glUniform1i(LocPalette, 1);
+        LastSprite = sprite;
 
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
-    glUniform1i(LocPaletteAlt, 2);
+        if (sprite->LinkedSprite)
+            sprite = sprite->LinkedSprite;
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
+        glUniform1i(LocPalette, 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
+        glUniform1i(LocPaletteAlt, 2);
+    }
 
     if (sprite->Paletted == 2)
         glUniform1f(LocWaterLine, (App->HEIGHT - WaterPaletteStartLine));

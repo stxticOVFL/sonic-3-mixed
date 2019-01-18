@@ -1469,7 +1469,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 					y = 0;
 					int buf = 0;
-                    int maxxx = layer.Width * bufHeight;
+                    int fullFlip;
 					layer.ScrollIndexes[0].TileBuffers = (int*)calloc(layer.Width * bufHeight, sizeof(int));
 					for (int s = 0; s < layer.ScrollIndexCount; s++) {
 						for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
@@ -1485,6 +1485,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								tilindpos = x + (tilindy) * layer.Width;
 
 								word = layer.Tiles[tilindpos];
+                                fullFlip = ((word >> 10) & 3);
 								flipY = ((word >> 11) & 1);
 								tile = word & 0x3FF;
 
@@ -1501,7 +1502,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                                     if (anID == 0xFF) {
                                         // Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
-											G->MakeFrameBufferID(TileSprite, &Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width], ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2 - (heightSize & 1) * flipY);
+											G->MakeFrameBufferID(TileSprite, &Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width], ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2, fullFlip);
 									}
 								}
 							}
@@ -1770,7 +1771,7 @@ PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle,
 
 PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
     if (!Data) return false;
-    
+
     int tileX = probeX / 16;
     int tileY = probeY / 16;
 
@@ -3391,6 +3392,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         TileBaseY -= layer.OffsetY;
 
                         if (TileBaseY + heightSize > 0 && TileBaseY < App->HEIGHT) {
+                            int bufVal = 0;
                             for (x = TileBaseX >> 4; x < 2 + ((TileBaseX + App->WIDTH) >> 4); x++) {
                                 tilindy = ((y + siT) >> 4);
                                 tilindy = (tilindy % layer.Height + layer.Height) % layer.Height; // so it loops
@@ -3409,10 +3411,15 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
                                     if (anID != 0xFF) {
                                         G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
+                                        bufVal = 0;
                                     }
                                     else {
                                         if (layer.ScrollIndexes[0].TileBuffers && layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width] > 0) {
-                                            G->DrawSpriteBuffered(TileSprite, layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], baseX + 8, baseY + heightSize / 2, 0, fullFlip);
+                                            G->DrawSpriteBuffered(TileSprite,
+                                                layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], // bufVal,
+                                                baseX + 8, baseY + heightSize / 2, 0, bufVal);//fullFlip);
+
+                                            bufVal = 1;
                                         }
                                         else {
 											flipY = ((fullFlip >> 1) & 1);

@@ -49,7 +49,7 @@ public:
     int     DrawModeOverlay = false;
 
     double  MyCos[256];
-    double  MySin[256]; ///
+    double  MySin[256]; //
 };
 #endif
 
@@ -109,7 +109,7 @@ PUBLIC VIRTUAL void IGraphics::UpdatePalette(ISprite* sprite) {
 PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* f) {
     return -2;
 }
-PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY) {
+PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY, int flip) {
     return -2;
 }
 PUBLIC VIRTUAL int IGraphics::MakeVertexBuffer(vector<IVertex> vert) {
@@ -145,6 +145,7 @@ PUBLIC VIRTUAL void IGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, i
             DesiredWidth, DesiredHeight, SDL_WINDOW_SHOWN
             #if ANDROID | IOS
             | SDL_WINDOW_BORDERLESS
+            | SDL_WINDOW_FULLSCREEN
             #endif
             | SDL_WINDOW_ALLOW_HIGHDPI);
 

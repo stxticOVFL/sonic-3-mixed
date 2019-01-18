@@ -43,7 +43,7 @@ PUBLIC void MovingSprite::Update() {
     if (Left >= 0) {
         if (bufferID == -2) {
             bufferID = -1;
-            G->MakeFrameBufferID(Sprite, &bufferID, Left, Top, Width, Height, OffX, OffY);
+            G->MakeFrameBufferID(Sprite, &bufferID, Left, Top, Width, Height, OffX, OffY, FlipX | FlipY << 1);
             G->MakeAllTexturesAndFrameBuffers();
         }
     }
@@ -91,13 +91,13 @@ PUBLIC void MovingSprite::Update() {
 PUBLIC void MovingSprite::Render(int CamX, int CamY) {
     if (Left >= 0) {
         if (bufferID >= 0) {
-            G->DrawSpriteBuffered(Sprite, bufferID, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
+            G->DrawSpriteBuffered(Sprite, bufferID, X - CamX, Y - CamY, 0, 1);
         }
         else {
-            G->DrawSprite(Sprite, Left, Top, Width, Height, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP), OffX, OffY);
+            G->DrawSprite(Sprite, Left, Top, Width, Height, X - CamX, Y - CamY, 0, FlipX | FlipY << 1, OffX, OffY);
         }
     }
     else {
-        G->DrawSprite(Sprite, CurrentAnimation, CurrentFrame >> 8, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
+        G->DrawSprite(Sprite, CurrentAnimation, CurrentFrame >> 8, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
     }
 }
