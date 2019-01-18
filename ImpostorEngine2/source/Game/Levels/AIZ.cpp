@@ -431,7 +431,7 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
         AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Foreground Plant.bin");
         AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Monkey Dude.bin");
         AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Non Animated Sprites.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rhinobot.bin");
+        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot.bin");
         AIZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot Dust.bin");
         AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Ride Vine.bin");
         AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock.bin");

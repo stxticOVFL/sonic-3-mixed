@@ -751,6 +751,9 @@ PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     MakeTextureList.push_back(sprite);
 }
 
+#if ANDROID
+#define GL_BGRA GL_RGBA
+#endif
 PUBLIC void IGLGraphics::MakeAllTexturesAndFrameBuffers() {
     for (int i = 0; i < MakeTextureList.size(); i++) {
         ISprite* sprite = MakeTextureList[i];
