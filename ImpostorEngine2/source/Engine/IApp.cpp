@@ -173,6 +173,7 @@ PUBLIC void IApp::Run() {
     Settings->GetBool("dev", "devMenu", &DevMenu);
 
     int MetricFrameCounterTime = 0;
+    int UpdatesPerFrame = 1;
 
     Print(0, "Running...");
     SDL_Event e;
@@ -222,15 +223,19 @@ PUBLIC void IApp::Run() {
             }
         }
 
-        //Input->Poll();
-        if ((Stepper && Step) || !Stepper) {
-            // Poll for inputs
-            Input->Poll();
+        UpdatesPerFrame = 1;
+        if (UnlockedFramerate) UpdatesPerFrame = 8;
+        
+        for (int m = 0; m < UpdatesPerFrame; m++) {
+            if ((Stepper && Step) || !Stepper) {
+                // Poll for inputs
+                Input->Poll();
 
-            // Update scene
-            MetricUpdateTime = SDL_GetTicks();
-            Scene->Update();
-            MetricUpdateTime = SDL_GetTicks() - MetricUpdateTime;
+                // Update scene
+                MetricUpdateTime = SDL_GetTicks();
+                Scene->Update();
+                MetricUpdateTime = SDL_GetTicks() - MetricUpdateTime;
+            }
         }
 
         Step = false;
@@ -300,14 +305,12 @@ PUBLIC void IApp::Run() {
 
         G->Present();
 
-        if (!UnlockedFramerate) {
-            unsigned long lenghtFrame = SDL_GetTicks() - frameTimeMillis;
-            if (benchmarkFrameCount < 40) {
-                if (lenghtFrame < 16) SDL_Delay(16 - lenghtFrame);
-            }
-            else {
-                if (lenghtFrame < 15) SDL_Delay(15 - lenghtFrame);
-            }
+        unsigned long lenghtFrame = SDL_GetTicks() - frameTimeMillis;
+        if (benchmarkFrameCount < 40) {
+            if (lenghtFrame < 16) SDL_Delay(16 - lenghtFrame);
+        }
+        else {
+            if (lenghtFrame < 15) SDL_Delay(15 - lenghtFrame);
         }
 
         benchmarkFrameCount++;

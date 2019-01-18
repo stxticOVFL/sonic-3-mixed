@@ -41,7 +41,7 @@ LINKER	  =	-framework SDL2 \
 			#
 
 
-DEFINES   =	-DMACOSX -DUSING_FRAMEWORK -DOGG_MUSIC
+DEFINES   =	-Ofast -DMACOSX -DUSING_FRAMEWORK -DOGG_MUSIC
 
 all:
 	@mkdir -p $(OBJ_DIRS)
@@ -85,7 +85,7 @@ $(OBJ_DIRS):
 	@mkdir -p $@
 
 out/osx/%.o: source/%.cpp
-	@g++ -c -g -O3 $(INCLUDES) $(DEFINES) -o "$@" "$<" -std=c++11
+	@g++ -c -g $(INCLUDES) $(DEFINES) -o "$@" "$<" -std=c++11
 
 out/osx/%.o: source/%.c
-	@gcc -c -g -O3 $(INCLUDES) $(DEFINES) -o "$@" "$<" -std=c11
+	@gcc -c -g $(INCLUDES) $(DEFINES) -o "$@" "$<" -std=c11
