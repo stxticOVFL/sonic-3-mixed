@@ -182,14 +182,22 @@ PUBLIC void IInput::Poll() {
 
                 if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 150 * 150) {
                     int ang = IMath::atanHex(tx - bx, ty - by);
-                    if ((ang >= 0x00 && ang < 0x20) || (ang >= 0xD0 && ang <= 0xFF))
+                    if ((ang >= 0x00 && ang < 0x10) || (ang >= 0xF0 && ang <= 0xFF))
                         RIGHT = true;
-                    else if (ang >= 0x20 && ang < 0x60)
+                    else if (ang >= 0x10 && ang < 0x30)
+                        UP = RIGHT = true;
+                    else if (ang >= 0x30 && ang < 0x50)
                         UP = true;
-                    else if (ang >= 0x60 && ang < 0xA0)
+                    else if (ang >= 0x50 && ang < 0x70)
+                        LEFT = UP = true;
+                    else if (ang >= 0x70 && ang < 0x90)
                         LEFT = true;
-                    else if (ang >= 0xA0 && ang < 0xD0)
+                    else if (ang >= 0x90 && ang < 0xB0)
+                        DOWN = LEFT = true;
+                    else if (ang >= 0xB0 && ang < 0xD0)
                         DOWN = true;
+                    else if (ang >= 0xD0 && ang < 0xF0)
+                        RIGHT = DOWN = true;
                 }
 
                 bx = w - 48;

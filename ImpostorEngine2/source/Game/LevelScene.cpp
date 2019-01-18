@@ -2373,6 +2373,9 @@ PUBLIC void LevelScene::Update() {
             }
         }
 
+        if (LevelCardTimer >= 0.25)
+            ControlsVisible = true;
+
         if (HUDVisible) {
             if (HUDAnim > 0x000)
                 HUDAnim -= 0x10;
@@ -2676,6 +2679,7 @@ PUBLIC void LevelScene::Update() {
 
     if (ShowResults) {
         if (ResultsTimer > 300) {
+            ControlsVisible = false;
             if (!DoneSpinning) {
                 if (App->Input->GetControllerInput(0)[IInput::I_PAUSE]) {
                     while (TimerTotal > 0) {
