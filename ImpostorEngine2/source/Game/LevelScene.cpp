@@ -1769,6 +1769,8 @@ PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle,
 }
 
 PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
+    if (!Data) return false;
+    
     int tileX = probeX / 16;
     int tileY = probeY / 16;
 

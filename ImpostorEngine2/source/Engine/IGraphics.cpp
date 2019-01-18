@@ -49,7 +49,7 @@ public:
     int     DrawModeOverlay = false;
 
     double  MyCos[256];
-    double  MySin[256];
+    double  MySin[256]; ///
 };
 #endif
 
@@ -59,6 +59,8 @@ public:
 #include <Engine/IMath.h>
 
 unsigned char Font8x8_basic[128][8];
+void     (IGraphics::*SetPixelFunction)(int, int, uint32_t);
+uint32_t (IGraphics::*SetFilterFunction[4])(uint32_t);
 
 PUBLIC IGraphics::IGraphics() {
 
@@ -67,9 +69,18 @@ PUBLIC IGraphics::IGraphics() {
 PUBLIC IGraphics::IGraphics(IApp* app) {
     App = app;
 
+    SetPixelFunction = &IGraphics::SetPixelNormal;
+    SetFilterFunction[0] = &IGraphics::FilterNone;
+    SetFilterFunction[1] = &IGraphics::FilterNone;
+    SetFilterFunction[2] = &IGraphics::FilterNone;
+    SetFilterFunction[3] = &IGraphics::FilterNone;
+
     Deform = (int8_t*)calloc(App->HEIGHT, 1);
 
-    Clip[0] = -1;
+    Clip[0] = 0;
+    Clip[1] = 0;
+    Clip[2] = App->WIDTH;
+    Clip[3] = App->HEIGHT;
 
     for (int i = 0; i < 0x100; i++)
         DivTable[i] = i / 3;
@@ -216,19 +227,78 @@ PUBLIC VIRTUAL void IGraphics::Cleanup() {
     SDL_FreeSurface(Screen);
 }
 
-PUBLIC VIRTUAL void IGraphics::SetPixelAdditive(SDL_Surface* surface, int x, int y, uint32_t pixel) {
+PUBLIC void     IGraphics::SetPixelNormal(int x, int y, uint32_t pixel) {
+    if (DrawAlpha == 0xFF) { *(FrameBuffer + y * RENDER_WIDTH + x) = pixel; return; }
+	*(FrameBuffer + y * RENDER_WIDTH + x) = ColorBlendHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
+}
+PUBLIC void     IGraphics::SetPixelAdditive(int x, int y, uint32_t pixel) {
 	*(FrameBuffer + y * RENDER_WIDTH + x) = ColorAddHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
 }
-PUBLIC VIRTUAL void IGraphics::SetPixelTrue(SDL_Surface* surface, int x, int y, uint32_t pixel) {
-    if (x < 0) return;
-    else if (y < 0) return;
-    else if (x >= App->WIDTH) return;
-    else if (y >= App->HEIGHT) return;
 
+PUBLIC uint32_t IGraphics::FilterNone(uint32_t pixel) {
+    return pixel;
+}
+PUBLIC uint32_t IGraphics::FilterGrayscale(uint32_t pixel) {
+    pixel = (DivTable[(pixel >> 16) & 0xFF] + DivTable[(pixel >> 8) & 0xFF] + DivTable[(pixel) & 0xFF]) & 0xFF;
+    pixel = pixel << 16 | pixel << 8 | pixel;
+    return pixel;
+}
+PUBLIC uint32_t IGraphics::FilterInversionRadius(uint32_t pixel) {
+    // if ((x - 200) * (x - 200) + (y - App->HEIGHT / 2) * (y - App->HEIGHT / 2) < invertRadius * invertRadius)
+    //     pixel = pixel ^ 0xFFFFFF;
+    return pixel;
+}
+PUBLIC uint32_t IGraphics::FilterFade(uint32_t pixel) {
+    if (Fade > 0) {
+        int fade = Fade + Fade + Fade;
+        if (fade > 0x2FD) fade = 0x2FD;
+
+        int r = 0, g = 0, b = 0;
+        int cr = (pixel >> 16) & 0xFF;
+        int cg = (pixel >> 8) & 0xFF;
+        int cb = (pixel) & 0xFF;
+
+        if (FadeToWhite) {
+            r = cr + fade;
+            g = cg;
+            if (r > 0xFF) {
+                g += r - 0xFF;
+                r = 0xFF;
+            }
+            b = cb;
+            if (g > 0xFF) {
+                b = IMath::max(0, cb + g - 0xFF);
+                b = IMath::min(0xFF, b);
+                g = 0xFF;
+            }
+        }
+        else {
+            r = cr - fade;
+            g = cg;
+            if (r < 0) {
+                g += r;
+                r = 0;
+            }
+            b = cb;
+            if (g < 0) {
+                b = IMath::max(0, cb + g);
+                g = 0;
+            }
+        }
+
+        pixel = (r << 16) | (g << 8) | b;
+    }
+    return pixel;
+}
+
+PUBLIC VIRTUAL void IGraphics::SetPixelTrue(SDL_Surface* surface, int x, int y, uint32_t pixel) {
     x <<= PixelScale - 1;
+    (this->*SetPixelFunction)(x, y, pixel);
+    if (PixelScale > 1) *(FrameBuffer + y * RENDER_WIDTH + x + 1) = *(FrameBuffer + y * RENDER_WIDTH + x);
 
     //*(unsigned int*)((unsigned char*)surface->pixels + y * surface->pitch + x * 4) = pixel;
     //uint32_t col = *(FrameBuffer + y * RENDER_WIDTH + x);
+    /*
     if (DrawModeOverlay) {
         //*(FrameBuffer + y * RENDER_WIDTH + x) = ColorBlendHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, (pixel & 0xFF) >> 1);
         *(FrameBuffer + y * RENDER_WIDTH + x) = ColorAddHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
@@ -239,97 +309,29 @@ PUBLIC VIRTUAL void IGraphics::SetPixelTrue(SDL_Surface* surface, int x, int y, 
     else if (DrawAlpha > 0) {
         *(FrameBuffer + y * RENDER_WIDTH + x) = ColorBlendHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
     }
-
-    if (PixelScale > 1) *(FrameBuffer + y * RENDER_WIDTH + x + 1) = *(FrameBuffer + y * RENDER_WIDTH + x);
+    //*/
 }
 PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint32_t pixel) {
-    if (Clip[0] != -1 && !(x >= Clip[0] &&
-        y >= Clip[1] &&
-        x < Clip[2] &&
-        y < Clip[3])) {
-        return;
-    }
+    if (DoDeform) x += Deform[y];
 
-    if (DoDeform)
-        x += Deform[y];
+    if (x <  Clip[0] ||
+        y <  Clip[1] ||
+        x >= Clip[2] ||
+        y >= Clip[3]) return;
 
-    ///*
-	if ((Filter & 0x1) == 0x1) {
-		int r = (DivTable[(pixel >> 16) & 0xFF] + DivTable[(pixel >> 8) & 0xFF] + DivTable[(pixel) & 0xFF]) & 0xFF;
-
-		pixel = r << 16 | r << 8 | r;
-	}
-    if ((Filter & 0x2) == 0x2) {
-        // if ((x - 200) * (x - 200) + (y - App->HEIGHT / 2) * (y - App->HEIGHT / 2) < invertRadius * invertRadius)
-        //     pixel = pixel ^ 0xFFFFFF;
-	}
-    if ((Filter & 0x4) == 0x4) {
-		///*
-        if (Fade > 0) {
-			int fade = Fade + Fade + Fade;
-            if (fade > 0x2FD) fade = 0x2FD;
-
-            int r = 0, g = 0, b = 0;
-            int cr = (pixel >> 16) & 0xFF;
-    		int cg = (pixel >> 8) & 0xFF;
-    		int cb = (pixel) & 0xFF;
-
-            if (FadeToWhite) {
-                r = cr + fade;
-                g = cg;
-                if (r > 0xFF) {
-                    g += r - 0xFF;
-                    r = 0xFF;
-                }
-                b = cb;
-                if (g > 0xFF) {
-                    b = IMath::max(0, cb + g - 0xFF);
-                    b = IMath::min(0xFF, b);
-                    g = 0xFF;
-                }
-            }
-            else {
-                r = cr - fade;
-                g = cg;
-                if (r < 0) {
-                    g += r;
-                    r = 0;
-                }
-                b = cb;
-                if (g < 0) {
-                    b = IMath::max(0, cb + g);
-                    g = 0;
-                }
-            }
-
-            pixel = (r << 16) | (g << 8) | b;
-        }
-		//*/
-    }
-    //*/
+    pixel = (this->*SetFilterFunction[0])(pixel);
+    pixel = (this->*SetFilterFunction[1])(pixel);
+    pixel = (this->*SetFilterFunction[2])(pixel);
+    pixel = (this->*SetFilterFunction[3])(pixel);
 
     SetPixelTrue(surface, x, y, pixel);
 }
 
 PUBLIC VIRTUAL uint32_t IGraphics::GetPixelSPR(ISprite* sprite, int x, int y) {
-    return GetPixelSPR(sprite, x, y, false);
+    return GetPixelSPR(sprite, x, y, sprite->Palette);
 }
-PUBLIC VIRTUAL uint32_t IGraphics::GetPixelSPR(ISprite* sprite, int x, int y, bool alt) {
-    if (sprite->Paletted) {
-        if (sprite->Paletted == 2 && alt)
-            return sprite->PaletteAlt[*(sprite->Data + y * sprite->Width + x)];
-        else
-            return sprite->Palette[*(sprite->Data + y * sprite->Width + x)];
-    }
-    else {
-        int bpp = 3;
-        uint8_t* p = (uint8_t*)sprite->Data + y * (sprite->Width * bpp) + x * bpp;
-        if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            return p[0] << 16 | p[1] << 8 | p[2];
-        else
-            return p[0] | p[1] << 8 | p[2] << 16;
-    }
-    return 0;
+PUBLIC VIRTUAL uint32_t IGraphics::GetPixelSPR(ISprite* sprite, int x, int y, uint32_t* pal) {
+    return pal[*(sprite->Data + y * sprite->Width + x)];
 }
 
 PUBLIC VIRTUAL void IGraphics::SetFade(int fade) {
@@ -342,8 +344,17 @@ PUBLIC VIRTUAL void IGraphics::SetFade(int fade) {
 }
 PUBLIC VIRTUAL void IGraphics::SetFilter(int filter) {
     Filter = filter;
+
+    SetFilterFunction[0] = &IGraphics::FilterNone;
+    // SetFilterFunction[1] = &IGraphics::FilterNone;
+    // SetFilterFunction[2] = &IGraphics::FilterNone;
+    SetFilterFunction[3] = &IGraphics::FilterNone;
+    if ((Filter & 0x1) == 0x1)
+        SetFilterFunction[0] = &IGraphics::FilterGrayscale;
+    if ((Filter & 0x4) == 0x4)
+        SetFilterFunction[3] = &IGraphics::FilterFade;
 }
-PUBLIC VIRTUAL int IGraphics::GetFilter() {
+PUBLIC VIRTUAL int  IGraphics::GetFilter() {
      return Filter;
 }
 PUBLIC VIRTUAL void IGraphics::SetClip(int x, int y, int w, int h) {
@@ -351,9 +362,21 @@ PUBLIC VIRTUAL void IGraphics::SetClip(int x, int y, int w, int h) {
     Clip[1] = y;
     Clip[2] = x + w;
     Clip[3] = y + h;
+
+    if (Clip[0] < 0)
+        Clip[0] = 0;
+    if (Clip[1] < 0)
+        Clip[1] = 0;
+    if (Clip[2] > App->WIDTH)
+        Clip[2] = App->WIDTH;
+    if (Clip[3] > App->HEIGHT)
+        Clip[3] = App->HEIGHT;
 }
 PUBLIC VIRTUAL void IGraphics::ClearClip() {
-    Clip[0] = -1;
+    Clip[0] = 0;
+    Clip[1] = 0;
+    Clip[2] = App->WIDTH;
+    Clip[3] = App->HEIGHT;
 }
 
 PUBLIC VIRTUAL void IGraphics::MakeClone() {
@@ -554,12 +577,12 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
                     if (FlipY)
                         PY = Height - PY - 1;
                     if (finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
-                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, true);
+                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->PaletteAlt);
                         if (PC != sprite->PaletteAlt[sprite->TransparentColorIndex])
                             SetPixel(Screen, finX, finY, PC);
                     }
                     else {
-                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, false);
+                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->Palette);
                         if (sprite->Paletted && PC != sprite->Palette[sprite->TransparentColorIndex])
                             SetPixel(Screen, finX, finY, PC);
                     }
@@ -570,37 +593,37 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
     // Normal drawing
     else if (Angle == 0) {
 		bool AltPal = false;
-        int DX = 0, DY = 0, finX, finY, PX, PY, size = Width * Height;
+        Uint32* Pal = sprite->Palette;
+        int DX = 0, DY = 0, PX, PY, size = Width * Height;
 		Uint32 TrPal = sprite->Palette[sprite->TransparentColorIndex];
 		Width--;
 		Height--;
 
 		if (!AltPal && CenterY + RealCenterY >= WaterPaletteStartLine && sprite->Paletted == 2) {
 			AltPal = true;
+            Pal = sprite->PaletteAlt;
 			TrPal = sprite->PaletteAlt[sprite->TransparentColorIndex];
 		}
         for (int D = 0; D < size; D++) {
-			finX = DX + RealCenterX;
-            finY = DY + RealCenterY;
-
-            PX = DX;
+			PX = DX;
             PY = DY;
             if (FlipX)
                 PX = Width - PX;
             if (FlipY)
                 PY = Height - PY;
 
-            PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, AltPal);
+            PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, Pal);
 			if (PC != TrPal)
-                SetPixel(Screen, CenterX + finX, CenterY + finY, PC);
+                SetPixel(Screen, CenterX + DX + RealCenterX, CenterY + DY + RealCenterY, PC);
 
 			DX++;
 			if (DX > Width) {
 				DX = 0;
 				DY++;
 
-				if (!AltPal && finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
+				if (!AltPal && CenterY + DY + RealCenterY >= WaterPaletteStartLine && sprite->Paletted == 2) {
 					AltPal = true;
+                    Pal = sprite->PaletteAlt;
 					TrPal = sprite->PaletteAlt[sprite->TransparentColorIndex];
 				}
 			}
@@ -626,12 +649,12 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
                     if (FlipY)
                         PY = Height - PY - 1;
                     if (finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
-                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, true);
+                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->PaletteAlt);
                         if (PC != sprite->PaletteAlt[sprite->TransparentColorIndex])
                             SetPixel(Screen, finX, finY, PC);
                     }
                     else {
-                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, false);
+                        PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->Palette);
                         if (sprite->Paletted && PC != sprite->Palette[sprite->TransparentColorIndex])
                             SetPixel(Screen, finX, finY, PC);
                     }
@@ -935,7 +958,7 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, in
                     IVertex2 uv = varying_uv.Transform(IVertex(b1, b2, b3));
                     uint32_t color = GetPixelSPR(sprite,
                         currentFrame.X + (int)(uv.x * (currentFrame.W - 1)),
-                        currentFrame.Y + (int)(uv.y * (currentFrame.H - 1)), false);
+                        currentFrame.Y + (int)(uv.y * (currentFrame.H - 1)), sprite->Palette);
 
                     int zIndex = y * wHalf * 2 + x;
                     if (zBuffer[zIndex] < depth) {
@@ -988,7 +1011,7 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, in
                 IVertex2 uv = varying_uv.Transform(IVertex(b1, b2, b3));
                 uint32_t color = GetPixelSPR(sprite,
                     currentFrame.X + (int)(uv.x * (currentFrame.W - 1)),
-                    currentFrame.Y + (int)(uv.y * (currentFrame.H - 1)), false);
+                    currentFrame.Y + (int)(uv.y * (currentFrame.H - 1)), sprite->Palette);
 
                 int zIndex = y * wHalf * 2 + x;
                 if (zBuffer[zIndex] < depth) {
