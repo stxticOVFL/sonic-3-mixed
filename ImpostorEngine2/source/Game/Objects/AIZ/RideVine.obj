@@ -45,6 +45,7 @@ event Create() {
     Amp = 4;
 
     ClassicStyle = !Scene.Thremixed;
+    ClassicStyle = false;
 
     VisualLayer = 0;
 
@@ -215,11 +216,15 @@ event Update() {
                 Scene.Players[i].Action = ActionType.Grab;
                 Scene.Players[i].ObjectControlled = 0xFF;
 
+                Scene.Players[i].GrabSwingValue = ((-framedAngle / 8 + 0x58000) / 0xB) >> 8;
+                if (Scene.Players[i].GrabSwingValue == 0x100) Scene.Players[i].GrabSwingValue = 0XFF;
+
                 if (Spinning) {
                     Scene.Players[i].EZX = X + ((Math.sinHex((Rotation / 0x10000) & 0xFF) * (-3 + Scene.Players[i].H / 2)) >> 16);
                     Scene.Players[i].EZY = Y + ((Math.cosHex((Rotation / 0x10000) & 0xFF) * (-3 + Scene.Players[i].H / 2)) >> 16);
                     Scene.Players[i].Angle = (Rotation / 0x10000) & 0xFF;
                     Scene.Players[i].DisplayAngle = Scene.Players[i].Angle << 8;
+                    Scene.Players[i].GrabSwingValue = 0;
                 }
             }
         }

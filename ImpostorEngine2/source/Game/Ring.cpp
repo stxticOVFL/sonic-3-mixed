@@ -107,7 +107,10 @@ PUBLIC void Ring::Update() {
                 YSpeed += 0xC0;
         }
 
-        CurrentFrame = Scene->RingAnimationFrame;
+        if (Scene->Thremixed)
+            CurrentFrame = Scene->RingAnimationFrame;
+        else
+            CurrentFrame = Scene->RingAnimationFrame >> 2;
     }
 
     MyX += XSpeed;
@@ -134,7 +137,22 @@ PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     int rx[3] = { -4, 1, 4 };
     int ry[3] = { 1, -2, 3 };
-    for (int i = 0; i < 3; i++) {
+    if (Scene->Thremixed) {
+        for (int i = 0; i < 3; i++) {
+            Explosion* ringsparkle;
+            ringsparkle = new Explosion();
+            ringsparkle->G = G;
+            ringsparkle->App = App;
+            ringsparkle->CurrentAnimation = 9;
+            ringsparkle->FlipX = false;
+            ringsparkle->Active = true;
+            ringsparkle->Sprite = Scene->ItemsSprite;
+            ringsparkle->X = X + rx[i];
+            ringsparkle->Y = Y + ry[i];
+            Scene->Explosions.push_back(ringsparkle);
+        }
+    }
+    else {
         Explosion* ringsparkle;
         ringsparkle = new Explosion();
         ringsparkle->G = G;
@@ -143,8 +161,8 @@ PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         ringsparkle->FlipX = false;
         ringsparkle->Active = true;
         ringsparkle->Sprite = Scene->ItemsSprite;
-        ringsparkle->X = X + rx[i];
-        ringsparkle->Y = Y + ry[i];
+        ringsparkle->X = X;
+        ringsparkle->Y = Y;
         Scene->Explosions.push_back(ringsparkle);
     }
 

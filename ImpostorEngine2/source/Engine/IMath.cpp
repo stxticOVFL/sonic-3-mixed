@@ -115,5 +115,5 @@ PUBLIC STATIC int IMath::wrapDeg(int d) {
     return d;
 }
 PUBLIC STATIC int IMath::randRange(int min, int max) {
-    return (rand() % (max - min)) + min;
+    return (rand() % (max - min + 1)) + min;
 }

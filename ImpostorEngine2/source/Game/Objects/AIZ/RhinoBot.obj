@@ -12,6 +12,8 @@ event Create() {
 
     W = 32;
     H = 32;
+    VisW = 128;
+    VisH = 32;
 
     Frame = 0;
     SubX = X << 16;

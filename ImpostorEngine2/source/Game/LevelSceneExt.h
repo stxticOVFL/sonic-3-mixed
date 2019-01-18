@@ -40,6 +40,8 @@ struct Layer {
 
     int OffsetX = 0x0000;
     int OffsetY = 0x0000;
+    bool UseDeltaCameraX = false;
+    bool UseDeltaCameraY = false;
 
     int8_t* Deform = NULL;
 

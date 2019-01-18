@@ -38,11 +38,11 @@ public:
 #include <Game/Levels/AIZ.h>
 #include <Game/Levels/HCZ.h>
 #include <Game/Levels/MGZ.h>
-//#include <Game/Levels/CNZ.h>
-//#include <Game/Levels/ICZ.h>
+#include <Game/Levels/CNZ.h>
+#include <Game/Levels/ICZ.h>
 #include <Game/Levels/LBZ.h>
+#include <Game/Levels/FBZ.h>
 #include <Game/Levels/MHZ.h>
-//#include <Game/Levels/FBZ.h>
 //#include <Game/Levels/SOZ.h>
 //#include <Game/Levels/LRZ.h>
 //#include <Game/Levels/HPZ.h>
@@ -150,10 +150,11 @@ PUBLIC void IApp::Run() {
     int benchmarkFrameCount = 0;
 
     Print(0, "Starting scene");
-    Scene = new Scene_MainMenu(this, G);
-    // Scene = new Scene_LevelSelect(this, G);
+    // Scene = new Scene_MainMenu(this, G);
+    Scene = new Scene_LevelSelect(this, G);
     // Scene = new Level_SpecialStage(this, G);
-    // Scene = new Level_AIZ(this, G, 1);
+    // Scene = new Level_AIZ(this, G, 2);
+    // Scene = new Level_ICZ(this, G, 1);
     // Scene = new Level_HCZ(this, G, 1);
     // Scene = new Level_MGZ(this, G, 1);
     // Scene = new LevelScene(this, G);
@@ -241,6 +242,8 @@ PUBLIC void IApp::Run() {
             NextScene = NULL;
 
             Scene->Init();
+            Scene->Update();
+            Scene->Render();
         }
 
         // Show FPS counter

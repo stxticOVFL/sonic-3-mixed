@@ -1,0 +1,160 @@
+object 0x8F;
+
+subclass Enemy;
+
+var MaxAccel:int;
+var Acceleration:int;
+var Variable_38:int;
+var Variable_38_Copy:int;
+var Variable_Count:int;
+var PosTable:uint32_t[0x80];
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 32;
+    H = 16;
+
+    VisW = 96;
+    VisH = 64;
+
+    Frame = 0;
+    HitCount = 1;
+
+    CurrentAnimation = 4;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+    XSpeed = -0x100;
+    // XSpeed = 0;
+
+    YSpeed = 0x80;
+    MaxAccel = 0x80;
+    Acceleration = 0x8;
+    Variable_38 = 0;
+    Variable_38_Copy = 0;
+    Variable_Count = 0;
+
+    Harmful = true;
+
+    // Sprite.Animations[CurrentAnimation].Frames[5].OffX = 0;
+}
+
+event Update() {
+    Frame++;
+    Frame &= 0x7F;
+
+    Swing_UpAndDown();
+
+    // after a period, switch YSpeed and MaxAccel to 0x100
+    // after 2 periods, flip xspeed
+
+    // Two bigs, two small amplitudes.
+
+    SubX += XSpeed << 8;
+    SubY += YSpeed << 8;
+
+    if (Variable_38_Copy != Variable_38) {
+        Variable_38_Copy = Variable_38;
+
+        Variable_Count = (Variable_Count + 1) & 7;
+
+        if ((Variable_Count & 1) == 0) {
+            if (MaxAccel == 0x100) {
+                YSpeed = Math.sign(YSpeed) * 0x80;
+                MaxAccel = 0x80;
+            }
+            else {
+                YSpeed = Math.sign(YSpeed) * 0x100;
+                MaxAccel = 0x100;
+            }
+            // XSpeed = -XSpeed;
+            // FlipX = !FlipX;
+        }
+        if ((Variable_Count & 3) == 0) {
+            XSpeed = -XSpeed;
+            FlipX = !FlipX;
+        }
+    }
+
+    PosTable[(Frame + 0x7F) & 0x7F] = (FlipX & 0x1) << 31 | (X & 0x7FFF) << 16 | (Y & 0xFFFF);
+}
+
+event Swing_UpAndDown() {
+    var d0:int;
+    var d1:int;
+    var d2:int;
+    var d3:int;
+
+	d0 = Acceleration; // Acceleration
+	d1 = YSpeed; // Velocity
+	d2 = MaxAccel; // Maximum acceleration before "swinging"
+	d3 = 0;
+	if (Variable_38 == 0) {
+		d0 = -d0;
+		d1 += d0;
+		d2 = -d2;
+		if (d1 > d2) {
+			YSpeed = d1;
+			return;
+		}
+		Variable_38 = 1;
+		d0 = -d0;
+		d2 = -d2;
+		d3 = 1;
+	}
+	d1 += d0;
+	if (d1 < d2) {
+		YSpeed = d1;
+		return;
+	}
+	Variable_38 = 0;
+	d0 = -d0;
+	d1 += d0;
+	d3 = 1;
+    YSpeed = d1;
+}
+
+event OnHit() : int {
+    // Children[0].Active = false;
+    // Children[1].Active = false;
+    return OnDeath();
+}
+
+event Render(CamX:int, CamY:int) {
+    var x:int;
+    var y:int;
+    var fX:int;
+    var pos:uint32_t;
+
+    // Body (Small)
+    pos = PosTable[(Frame + 0x80 - 64) & 0x7F];
+    fX = pos >> 31; x = pos >> 16 & 0x7FFF; y = pos & 0xFFFF;
+    G.DrawSprite(Sprite, 22, 3, x - CamX, y - CamY, 0, fX | FlipY << 1);
+    // Body (Small)
+    pos = PosTable[(Frame + 0x80 - 56) & 0x7F];
+    fX = pos >> 31; x = pos >> 16 & 0x7FFF; y = pos & 0xFFFF;
+    G.DrawSprite(Sprite, 22, 3, x - CamX, y - CamY, 0, fX | FlipY << 1);
+    // Body (Medium)
+    pos = PosTable[(Frame + 0x80 - 48) & 0x7F];
+    fX = pos >> 31; x = pos >> 16 & 0x7FFF; y = pos & 0xFFFF;
+    G.DrawSprite(Sprite, CurrentAnimation, 2, x - CamX, y - CamY, 0, fX | FlipY << 1);
+    // Spike (Body)
+    pos = PosTable[(Frame + 0x80 - 36) & 0x7F];
+    fX = pos >> 31; x = pos >> 16 & 0x7FFF; y = pos & 0xFFFF;
+    G.DrawSprite(Sprite, CurrentAnimation, 1, x - CamX, y - CamY, 0, fX | FlipY << 1);
+    // Spike (Body)
+    pos = PosTable[(Frame + 0x80 - 24) & 0x7F];
+    fX = pos >> 31; x = pos >> 16 & 0x7FFF; y = pos & 0xFFFF;
+    G.DrawSprite(Sprite, CurrentAnimation, 1, x - CamX, y - CamY, 0, fX | FlipY << 1);
+    // Spike (Body)
+    pos = PosTable[(Frame + 0x80 - 12) & 0x7F];
+    fX = pos >> 31; x = pos >> 16 & 0x7FFF; y = pos & 0xFFFF;
+    G.DrawSprite(Sprite, CurrentAnimation, 1, x - CamX, y - CamY, 0, fX | FlipY << 1);
+
+    if (!fX)
+        G.DrawSprite(Sprite, CurrentAnimation, 3 + ((Scene.Frame >> 2) % 3), x - CamX, y - CamY, 0, fX);
+    // Head
+    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
+}

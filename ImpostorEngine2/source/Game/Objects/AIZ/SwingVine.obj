@@ -22,6 +22,7 @@ event Create() {
     PlayersControlled = 0;
 
     ClassicStyle = !Scene.Thremixed;
+    ClassicStyle = false;
 
     Timer = 0;
 
@@ -112,6 +113,8 @@ event Update() {
                 Scene.Players[i].EZY = Y - 3 + Scene.Players[i].H / 2;
                 Scene.Players[i].XSpeed = 0;
                 Scene.Players[i].YSpeed = 0;
+                Scene.Players[i].GrabSwingValue = ((-framedAngle + 0x58000) / 0xB) >> 8;
+                if (Scene.Players[i].GrabSwingValue == 0x100) Scene.Players[i].GrabSwingValue = 0XFF;
                 Scene.Players[i].Action = ActionType.Grab;
                 Scene.Players[i].ObjectControlled = 0xFF;
             }

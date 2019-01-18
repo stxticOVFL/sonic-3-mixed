@@ -16,13 +16,13 @@ public:
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
 
-PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
+PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 3;
-    Act = ACT;
+    VisualAct = Act = act;
 
     if (Act == 1) {
-		Sound::SoundBank[0] = new ISound("Music/MirageSaloon1K.ogg", true);
-		Sound::Audio->LoopPoint[0] = 1007820;
+		Sound::SoundBank[0] = new ISound("Music/MGZ1.ogg", true);
+		// Sound::Audio->LoopPoint[0] = 1007820;
 
         Str_TileConfigBin = "Stages/MGZ1/TileConfig.bin";
         Str_SceneBin = "Stages/MGZ1/Scene.bin";
@@ -30,8 +30,9 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/MGZ1/Animated Tiles.gif";
     }
     else {
-        Sound::SoundBank[0] = new ISound("Music/MirageSaloon1K.ogg", true);
-		Sound::Audio->LoopPoint[0] = 1007820;
+        Sound::SoundBank[0] = new ISound("Music/MGZ2.ogg", true);
+        Sound::Audio->LoopPoint[0] = 21609;
+		// Sound::Audio->LoopPoint[0] = 1007820;
 
         Str_TileConfigBin = "Stages/MGZ2/TileConfig.bin";
         Str_SceneBin = "Stages/MGZ2/Scene.bin";
@@ -41,14 +42,6 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 
     sprintf(LevelName, "MARBLE GARDEN");
     sprintf(LevelNameDiscord, "Marble Garden");
-
-    if (Act == 1) {
-
-    }
-    else {
-        // PlayerStartX = 0x34D8;
-        // PlayerStartY = 0x0A30;
-    }
 }
 
 PUBLIC void Level_MGZ::Init() {
@@ -114,6 +107,8 @@ PUBLIC void Level_MGZ::GoToNextAct() {
 }
 
 PUBLIC void Level_MGZ::AssignSpriteMapIDs() {
+    LevelScene::AssignSpriteMapIDs();
+
 	SpriteMapIDs[0x01] = ItemsSprite;
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;

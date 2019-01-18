@@ -1,0 +1,20 @@
+event Create() {
+    this.W = 32;
+    this.H = 32;
+    this.Active = true;
+    this.Priority = false;
+
+    this.Frame = 0;
+    this.CurrentAnimation = 2;
+    this.Sprite = Scene.WaterSprite;
+}
+event Update() {
+
+}
+event OnLeaveScreen() : int {
+    Active = false;
+    return 0;
+}
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(this.Sprite, CurrentAnimation, Frame, this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+}

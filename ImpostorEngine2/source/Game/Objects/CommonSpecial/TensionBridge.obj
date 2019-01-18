@@ -5,6 +5,8 @@ var MaxDepress:int;
 var Children:Object[16];
 var BrakeIndexes:int[16];
 var Broken:bool;
+var Angled:int;
+var Triggered:bool;
 
 event Create() {
     this.W = 128;
@@ -14,16 +16,19 @@ event Create() {
 
     this.Frame = 0;
 
-    Count = SubType & 0xF;
+    Count = SubType & 0x7F;
+
+    Angled = ((SubType & 0x80) / 0x80) * 3;
+    // Triggered = SubType & 0x80 == 0x80;
 
     MaxDepress = 2;
     for (var i:int = 0; i < Count; i++) {
-        Children[i] = Scene.AddNewObject(Obj_TensionBridgeChild, i, X - Count * 8 + i * 16, Y, false, false);
+        Children[i] = Scene.AddNewObject(Obj_TensionBridgeChild, i, X - Count * 8 + i * 16, Y + i * Angled, false, false);
         Children[i].Timer = MaxDepress;
         Children[i].Sprite = Sprite;
         Children[i].CurrentAnimation = 18;
         if (i * 2 == Count - 2) {
-            // No change  
+            // No change
         }
         else if (i < Count / 2) {
             MaxDepress += 2;
@@ -51,7 +56,7 @@ event Create() {
 event Update() {
     if (!CollidingWithPlayer) {
         for (var i:int = 0; i < Count; i++) {
-            Children[i].Y = Y;
+            Children[i].Y = Y + i * Angled;
         }
     }
 
@@ -100,10 +105,10 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     }
     for (var i:int = 0; i < Count; i++) {
         if (i <= CurSegment) {
-            Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (i + 1) / (CurSegment + 1)) >> 16));
+            Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (i + 1) / (CurSegment + 1)) >> 16)) + i * Angled;
         }
         else {
-            Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (Count - i) / (Count - CurSegment)) >> 16));
+            Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (Count - i) / (Count - CurSegment)) >> 16)) + i * Angled;
         }
     }
 

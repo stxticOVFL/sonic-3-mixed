@@ -1,0 +1,83 @@
+object 0x2E;
+
+var Direction:int;
+var Period:int;
+var WaterCount:int;
+var Spin:int;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 64;
+    H = 16;
+
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    CurrentAnimation = 31;
+
+    Direction = 0;
+    Period = 0;
+    Spin = 0;
+
+    WaterCount = Scene.WaterEnteredCounter;
+}
+
+event Update() {
+    // Scene.WaterEnteredCounter
+    // When WaterEnteredCounter changes, bobs down
+
+    Direction = -1;
+    if (BeingStoodOn) {
+        Direction = 1;
+    }
+    if (WaterCount != Scene.WaterEnteredCounter) {
+        if (Period < 0x80) {
+            Direction = 1;
+        }
+        else {
+            WaterCount = Scene.WaterEnteredCounter;
+        }
+    }
+
+    Period += Direction * 8;
+    if (BeingStoodOn) {
+        if (Period > 0x80) {
+            Period = 0x80;
+        }
+    }
+
+    if (Period < 0) {
+        Period = 0;
+        Direction = 0;
+    }
+    if (Period > 0xFF) {
+        Period = 0;
+        Direction = 0;
+    }
+
+    Spin = (Spin - Direction * 4) & 0xFF;
+    if (Period == 0) {
+        if (Spin > 0)
+            Spin -= 4;
+
+        // (Math.cosHex(Scene.Frame << 4) >> 12)
+    }
+
+    Y = InitialY - 3 + (Math.cosHex(Period + 0x80) >> 14) + 4; // + 8
+
+    Frame = ((Spin + 0x180) & 0xFF) >> 4;
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (// (Frame >= 13 || Frame < 3) &&
+        Scene.Players[PlayerID].YSpeed >= 0 && Scene.Players[PlayerID].EZY < Y && Scene.Players[PlayerID].Ground) {
+        Scene.Players[PlayerID].Hurt(X, true);
+    }
+    return 0;
+}

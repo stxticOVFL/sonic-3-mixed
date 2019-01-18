@@ -16,7 +16,7 @@ public:
 
 PUBLIC Level_SOZ::Level_SOZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 9;
-    Act = act;
+    VisualAct = Act = act;
 
     if (Act == 1) {
         Sound::SoundBank[0] = new ISound("Music/SOZ1.ogg", false);

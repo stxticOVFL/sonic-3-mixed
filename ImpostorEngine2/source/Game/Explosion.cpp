@@ -33,6 +33,9 @@ PUBLIC void Explosion::Update() {
         Active = false;
     }
 
+    if (CurrentAnimation == 5)
+        VisualLayer = 1;
+
 
     if (ani.AnimationSpeed == 4)
         CurrentFrame += 0x100;

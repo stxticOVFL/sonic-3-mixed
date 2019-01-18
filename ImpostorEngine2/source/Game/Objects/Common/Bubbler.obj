@@ -10,8 +10,6 @@ event Create() {
     this.Frame = 0;
     this.CurrentAnimation = 2;
     this.Sprite = Scene.WaterSprite;
-
-
 }
 event Update() {
     if (this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed > 2)

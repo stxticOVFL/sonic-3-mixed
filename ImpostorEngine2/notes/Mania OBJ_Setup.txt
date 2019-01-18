@@ -1,9 +1,0 @@
-OBJ Stage Setup format:
-
-0x00 (byte): Flag?
-    0x80 - fast palette cycle
-
-0x05 (byte): Flag?
-    //0x80 - non-fast anim tile cycle
-    0x04 - on clear: fast anim tile cycle
-    0x01 - on clear: fast anim tile cycle

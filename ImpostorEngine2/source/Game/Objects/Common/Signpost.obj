@@ -39,7 +39,7 @@ event Update() {
     Y = SubY >> 16;
 
     for (var i:int = 0; i <= 8; i++) {
-        if (Scene.CollisionAt(SubX >> 16, Y + 24)) {
+        if (Scene.CollisionAt(SubX >> 16, Y + 24) || Y + 24 >= Scene.CameraY + App.HEIGHT) {
             if (Falling) {
                 Falling = false;
                 Timer = 0x48;
@@ -82,8 +82,6 @@ event Update() {
         else
             Scene.TimerTotal = 100000;
         Scene.TotalToAdd = 0;
-        Scene.Player.ControlLocked = true;
-        Scene.Player.ObjectControlled = 0x80; // to prevent jumping
         Scene.Player.DoVictory();
         App.Audio.ClearMusic();
         App.Audio.PushMusic(Sound.SoundBank[0xFC], false, 0);

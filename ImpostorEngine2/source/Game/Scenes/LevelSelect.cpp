@@ -36,8 +36,9 @@ PUBLIC Scene_LevelSelect::Scene_LevelSelect(IApp* app, IGraphics* g) {
     Sound::Init();
 
     if (!Sound::SoundBank[0]) {
-    	Sound::SoundBank[0] = new ISound("Music/SaveSelectTria.ogg", true);
-    	Sound::Audio->LoopPoint[0] = 131859;
+    	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
+    	// Sound::Audio->LoopPoint[0] = 131859;
+        Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
     }
 }
 
@@ -170,9 +171,10 @@ PUBLIC void Scene_LevelSelect::Update() {
             Sound::Play(Sound::SFX_MENUACCEPT);
             FadeIn = false;
             FadeTimerMax = 30;
+            App->Audio->FadeMusic(0.5);
         }
         else {
-            Sound::Play(Sound::SFX_PUSHING);
+            Sound::Play(Sound::SFX_MENUFAIL);
         }
     }
 }

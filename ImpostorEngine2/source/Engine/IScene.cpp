@@ -35,5 +35,5 @@ PUBLIC VIRTUAL void IScene::Cleanup() {
 }
 
 PUBLIC VIRTUAL IScene::~IScene() {
-
+    Cleanup();
 }

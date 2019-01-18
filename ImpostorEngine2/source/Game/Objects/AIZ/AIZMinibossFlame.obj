@@ -1,0 +1,50 @@
+subclass Enemy;
+
+var TimerAction:int;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 32;
+    H = 32;
+
+    Frame = 0;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+
+    TimerAction = 0;
+    Timer = (6 - SubType) << 1;
+}
+
+event OnHit() : int {
+    // Since this doesn't break on contact with Fire Shield, keep it active.
+    // Active = true;
+    return 0;
+}
+
+event Update() {
+    if (Timer == 0) {
+        switch (TimerAction) {
+            case 0: {
+                Invincible = true;
+                Harmful = true;
+                NegatedByFireShield = true;
+
+                TimerAction = 1;
+                Timer = (6 - SubType) << 1;
+                break;
+            }
+            case 1: {
+                Active = false;
+                break;
+            }
+        }
+        Timer = -1;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX);
+}

@@ -43,7 +43,7 @@ public:
     IGraphics* G = NULL;
 
     const char* Filename;
-    ISprite* LinkedSprite = NULL;
+    ISprite* LinkedSprite = NULL; 
 };
 #endif
 
@@ -82,6 +82,9 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 
     Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
     PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
+
+    assert(Palette != NULL);
+    assert(PaletteAlt != NULL);
 
     PaletteSize = 1 << ((fdsz & 0x07) + 1);
     TransparentColorIndex = stream.ReadByte();
@@ -145,6 +148,8 @@ PUBLIC void ISprite::SetTransparentColorIndex(int i) {
     }
 }
 PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
+    if (LinkedSprite != NULL) { LinkedSprite->SetPalette(i, col); return; }
+
     #if ANDROID && false
     Palette[i] = ReverseColor(col);
     #else
@@ -152,13 +157,26 @@ PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
     #endif
 }
 PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
+    if (LinkedSprite != NULL) { LinkedSprite->SetPaletteAlt(i, col); return; }
+
     #if ANDROID && false
     PaletteAlt[i] = ReverseColor(col);
     #else
     PaletteAlt[i] = 0xFF000000 | col;
     #endif
 }
+PUBLIC void ISprite::SetPalette(int i, int cnt, uint32_t* col) {
+    for (int j = i; j < i + cnt; j++)
+        SetPalette(j, col[j - i]);
+}
+PUBLIC void ISprite::SetPaletteAlt(int i, int cnt, uint32_t* col) {
+    for (int j = i; j < i + cnt; j++)
+        SetPaletteAlt(j, col[j - i]);
+}
+
 PUBLIC uint32_t ISprite::GetPalette(int i) {
+    if (LinkedSprite != NULL) { return LinkedSprite->GetPalette(i); }
+
     #if ANDROID && false
     return ReverseColor(Palette[i] & 0xFFFFFF);
     #else
@@ -166,6 +184,8 @@ PUBLIC uint32_t ISprite::GetPalette(int i) {
     #endif
 }
 PUBLIC uint32_t ISprite::GetPaletteAlt(int i) {
+    if (LinkedSprite != NULL) { return LinkedSprite->GetPaletteAlt(i); }
+
     #if ANDROID && false
     return ReverseColor(PaletteAlt[i] & 0xFFFFFF);
     #else
@@ -178,7 +198,8 @@ PUBLIC uint32_t ISprite::ReverseColor(uint32_t col) {
 
 PUBLIC void ISprite::SplitPalette() {
     PaletteSize /= 2;
-    memmove(PaletteAlt, Palette + PaletteSize, 4 * PaletteSize);
+    if (!LinkedSprite)
+        memmove(PaletteAlt, Palette + PaletteSize, 4 * PaletteSize);
     Paletted = 2;
 }
 
@@ -205,12 +226,18 @@ PUBLIC void ISprite::UpdatePalette() {
 PUBLIC void ISprite::LinkPalette(ISprite* other) {
     if (other == this) return;
 
-    free(Palette);
-    free(PaletteAlt);
+    if (!LinkedSprite) {
+        if (Palette)
+            free(Palette);
+        if (PaletteAlt)
+            free(PaletteAlt);
+    }
     Palette = other->Palette;
     PaletteAlt = other->PaletteAlt;
     PaletteID = other->PaletteID;
     PaletteAltID = other->PaletteAltID;
+    PaletteSize = other->PaletteSize;
+    Paletted = other->Paletted;
     LinkedSprite = other;
 }
 
@@ -304,10 +331,12 @@ PUBLIC void ISprite::Cleanup() {
         Data = NULL;
     }
 
-    if (Palette)
-        free(Palette);
-    if (PaletteAlt)
-        free(PaletteAlt);
+    if (!LinkedSprite) {
+        if (Palette)
+            free(Palette);
+        if (PaletteAlt)
+            free(PaletteAlt);
+    }
 
     Palette = NULL;
     PaletteAlt = NULL;

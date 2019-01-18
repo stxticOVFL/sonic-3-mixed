@@ -29,7 +29,7 @@ AIZ:
 HCZ:
 X Add HCZ2 BG ScrollingInfo. (Category: Programming)
 X Add HCZ2 SubBG. (Category: Programming)
-- Add the Underwater Spikes (currently invisible) in HCZ1. (Category: Programming)
+X Add the Underwater Spikes (currently invisible) in HCZ1. (Category: Programming)
 X Implement HCZ2 moving wall. (Category: Programming)
 X Finish HCZ2 16x16 Tile reordering. (Category: Programming)
 - Adjust HCZ2 slide tunnels to have accurate speed & acceleration calculation. (Category: Programming)
@@ -39,8 +39,8 @@ X HCZ2 slides need to invoke ActionType::Peril. (Category: Programming)
   - Obj_WaterDrop (0x6E) (Category: Art) (Category: Programming)
   X Obj_CutsceneKnuckles (0x82) (Category: Programming)
   - Obj_HCZEndBoss (0x9A) (Category: Programming)
-- Need Act 1 music. (Category: Music)
-- Need Act 2 music. (Category: Music)
+X Need Act 1 music. (Category: Music)
+X Need Act 2 music. (Category: Music)
 - Obj_HCZMiniboss:
   - Finish death animations. (Category: Programming)
   - Give the rockets hurtboxes. (Category: Programming)
@@ -83,7 +83,7 @@ X Super & HCZ Palettes need to be fully implemented. (Category: Programming)
 
 Sonic:
 - Super Sonic sprite needs to be updated to fit the new style. (Category: Art)
-- Make instashield happen. (Category: Programming)
+X Make instashield happen. (Category: Programming)
 - Make Super Peel Out happen. (Category: Programming)
 
 Tails:
@@ -112,14 +112,24 @@ Ray:
 ║ OTHER SPRITES: ║
 ╚════════════════╝
 
-
+- Things that need to be S3 sprites instead of Mania:
+  - Animals.gif
+    - Animals
+  - Objects2.gif
+    - SignPost
+  - Objects3.gif
+    - SpecialRing
+    - SuperSparkle
+    - Shields
+  - Water.gif
+    - Water
 
 ╔═════════╗
 ║ ENGINE: ║
 ╚═════════╝
 
 - Level Scenes
-  - Need animated tiles. (Category: Programming)
+  X Need animated tiles. (Category: Programming)
 - Audio:
   X Let music be able to fade out before getting pushed off top. (Category: Programming)
 
@@ -127,4 +137,4 @@ Ray:
 ║ BUGS: ║
 ╚═══════╝
 
-many
+- Sonic touches InvisibleDeath at 0x25E0,0x07E0 in MGZ2 when he shouldn't. (Category: Bugs)

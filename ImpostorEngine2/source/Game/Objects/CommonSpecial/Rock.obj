@@ -12,6 +12,8 @@ var Rock1Vels:short[16];
 var Rock2Pos:char[32];
 var Rock2Vels:short[16];
 
+var Knux:bool;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -25,7 +27,9 @@ event Create() {
     LastX = X;
 
     RockSize = SubType >> 4 & 0x7;
-    RockType = SubType & 0xF;
+    RockType = SubType & 0x7;
+
+    Knux = (SubType & 0x80) != 0;
 
 
     // dc.w \$([A-F0-9][A-F0-9])([A-F0-9][A-F0-9])
@@ -117,15 +121,25 @@ event Create() {
         else if (RockSize == 2)
             H = 30;
 
-        if (RockType == 1) {
-            BreakableByJump = true;
+        if ((SubType & 0xF) == 0xF) {
+            BreakableByJump = CollideSide.TOP;
+            Knux = true;
         }
-        else if (RockType == 2) {
-            Pushable = true;
-        }
-        else if (RockType == 4) {
-            BreakableByRoll = true;
-            BreakableByKnuckles = true;
+        else {
+            if ((RockType & 1) == 1) {
+                BreakableByJump = CollideSide.TOP;
+            }
+            if ((RockType & 2) == 2) {
+                Pushable = true;
+            }
+            if ((RockType & 4) == 4) {
+                if (Knux) {
+                    BreakableByKnuckles = CollideSide.SIDES;
+                }
+                else {
+                    BreakableByRoll = CollideSide.SIDES;
+                }
+            }
         }
 
         CurrentAnimation = 27;
@@ -201,7 +215,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         (Scene.Players[PlayerID].Action == ActionType.Spindash && Scene.Players[PlayerID].DisplayFlip < 0)) && HitFrom == 0 && !FlipX) {
         if (X <= InitialX - 64) return 0;
 
-        Scene.Players[PlayerID].X -= 0x1000;
+        Scene.Players[PlayerID].EZX--;
         X = SubX >> 16;
         SubX -= 0x1000;
     }
@@ -210,7 +224,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         (Scene.Players[PlayerID].Action == ActionType.Spindash && Scene.Players[PlayerID].DisplayFlip > 0)) && HitFrom == 2 && FlipX) {
         if (X >= InitialX + 64) return 0;
 
-        Scene.Players[PlayerID].X += 0x1000;
+        Scene.Players[PlayerID].EZX++;
         X = SubX >> 16;
         SubX += 0x1000;
     }
@@ -220,6 +234,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 
 event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     if (HitFrom != 1) return 0;
+    if (Knux && Scene.Players[PlayerID].Character != CharacterType.Knuckles) return 0;
 
     OnBreakHorizontal(PlayerID, HitFrom);
     return 1;
@@ -229,10 +244,10 @@ event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
 
     Sound.Play(Sound.SFX_COLLAPSE);
 
-    BreakableByRoll = false;
-    BreakableByJump = false;
-    BreakableByGlide = false;
-    BreakableByKnuckles = false;
+    BreakableByRoll = CollideSide.NONE;
+    BreakableByJump = CollideSide.NONE;
+    BreakableByGlide = CollideSide.NONE;
+    BreakableByKnuckles = CollideSide.NONE;
     Solid = false;
 
     var HitSide:int = -1;

@@ -35,9 +35,9 @@ event Create() {
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    BreakableByRoll = true;
-    BreakableByJump = true;
-    BreakableByGlide = true;
+    BreakableByRoll = CollideSide.TOP_SIDES;
+    BreakableByJump = CollideSide.TOP_SIDES;
+    BreakableByGlide = CollideSide.TOP_SIDES;
     Scene.AddSelfToRegistry(this, "Breakable");
 
     PlayerAggressor = 0;
@@ -156,7 +156,7 @@ event Update() {
                 if (!Scene.Players[PlayerAggressor].SuperForm && !Scene.Players[PlayerAggressor].HyperForm) {
                     Scene.Players[PlayerAggressor].Invincibility = InvincibilityType.Full;
                     Scene.Players[PlayerAggressor].InvincibilityTimer = 1200;
-                    App.Audio.PushMusic(Sound.SoundBank[0xFF], true, 139623);
+                    App.Audio.PushMusic(Sound.SoundBank[0xFF], true, 0);
                 }
                 break;
             case ItemTypes.TYPE_SUPER:
@@ -171,7 +171,7 @@ event Update() {
         }
     }
 
-    if (!BreakableByRoll) {
+    if (BreakableByRoll == CollideSide.NONE) {
         GhostY += (-35.0 - GhostY) / 10.0;
         Priority = true;
         if (Math.floor(GhostY) == -35.0) {
@@ -189,26 +189,47 @@ event Update() {
     }
 }
 event Render(CamX:int, CamY:int) {
-    if (CurrentAnimation == 4) {
-        G.DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
-        //G.DrawAlpha = 0xFF;
-        G.DrawModeOverlay = true;
-        G.DrawSprite(Sprite, 3, Scene.Frame >> 1 & 1,
-            X - CamX,
-            Y - CamY - 2,
-            0, IE_NOFLIP);
-        G.DrawModeOverlay = false;
-        //G.DrawAlpha = 0xFF;
+    if (Scene.Thremixed) {
+        if (CurrentAnimation == 4) {
+            G.DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+
+            //G.DrawAlpha = 0xFF;
+            G.DrawModeOverlay = true;
+            G.DrawSprite(Sprite, 3, Scene.Frame >> 1 & 1,
+                X - CamX,
+                Y - CamY - 2,
+                0, IE_NOFLIP);
+            G.DrawModeOverlay = false;
+            //G.DrawAlpha = 0xFF;
+        }
+        else {
+            G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        }
+
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0))
+            return;
+
+        G.DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
     }
     else {
-        G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        if (CurrentAnimation == 4) {
+            // Main box
+            G.DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        }
+        else {
+            // Broken
+            G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        }
+        if (CurrentAnimation == 4 && (Scene.Frame % 6 >= 4))
+            return;
+            
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0))
+            return;
+
+        G.DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
     }
 
-    if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0))
-        return;
-
-    G.DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
-
+    /*
     if (CurrentAnimation == 4) {
         G.DrawModeOverlay = true;
         G.DrawAlpha = 0x80;
@@ -216,12 +237,13 @@ event Render(CamX:int, CamY:int) {
         G.DrawModeOverlay = false;
         G.DrawAlpha = 0xFF;
     }
+    */
 }
 
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
-    BreakableByRoll = false;
-    BreakableByJump = false;
-    BreakableByGlide = false;
+    BreakableByRoll = CollideSide.NONE;
+    BreakableByJump = CollideSide.NONE;
+    BreakableByGlide = CollideSide.NONE;
     Solid = false;
 
     Timer = 0;

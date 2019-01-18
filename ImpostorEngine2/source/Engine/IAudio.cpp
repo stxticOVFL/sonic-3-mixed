@@ -239,7 +239,7 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
                 bool deleted = false;
                 int bytes = audio->MusicStack[0]->Audio->RequestMoreData(AUDIO_SAMPLES, len);
                 if (bytes > 0) {
-                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)bytes, ((int)(0xFF * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 3) + 1);
+                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)bytes, ((int)(0xFF * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 2) + 1);
                 }
                 else if (bytes == -1) {
                     // error

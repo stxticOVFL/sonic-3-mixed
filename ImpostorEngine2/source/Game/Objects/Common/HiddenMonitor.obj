@@ -1,0 +1,13 @@
+object 0x80;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 32;
+    H = 32;
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawRectangle(X - CamX - 16, Y - 16 - CamY, 32, 32, 0xFFFFFF);
+}

@@ -78,8 +78,9 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
     Sound::Audio = App->Audio;
     Sound::Init();
 
-	Sound::SoundBank[0] = new ISound("Music/SaveSelectTria.ogg", true);
-    Sound::Audio->LoopPoint[0] = 131859;
+	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
+    // Sound::Audio->LoopPoint[0] = 131859;
+    Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
 
     MenuSprite = new ISprite("UI/MainMenu.gif", App);
     MenuSprite->LoadAnimation("UI/MainMenu.bin");

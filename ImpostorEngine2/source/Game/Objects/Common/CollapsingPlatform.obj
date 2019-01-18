@@ -20,6 +20,8 @@ event Create() {
     Sections = 8;
     Vsect = 2;
 
+    CurrentAnimation = -1;
+
     SolidTop = true;
     SolidCustomized = true;
     Scene.AddSelfToRegistry(this, "Solid");
@@ -45,6 +47,7 @@ event Create() {
     else if (Scene.ZoneID == 5) { // ICZ
         W = 0x30;
         H = 0x2C;
+        CurrentAnimation = 0;
     }
     else if (Scene.ZoneID == 6) { // LBZ
 
@@ -80,11 +83,20 @@ event Break() {
     var left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
     var top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
 
-    if (Scene.Act == 2) {
-        x = X - W / 2 + 8;
-        y = Y - 0x40 / 2 + 8;
-        w = W >> 4;
-        h = 0x40 >> 4;
+    switch (Scene.ZoneID) {
+        case 1: {
+            if (Scene.Act == 2) {
+                x = X - W / 2 + 8;
+                y = Y - 0x40 / 2 + 8;
+                w = W >> 4;
+                h = 0x40 >> 4;
+            }
+            break;
+        }
+        case 5: {
+            y -= 4;
+            break;
+        }
     }
 
     var side:bool = FlipX;
@@ -123,6 +135,9 @@ event Render(CamX:int, CamY:int) {
         return;
 
     if (Scene.ZoneID == 1) {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
+    }
+    else if (CurrentAnimation >= 0) {
         G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
     }
     else {

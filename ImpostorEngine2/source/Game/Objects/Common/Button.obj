@@ -1,7 +1,7 @@
 object 0x33;
 
 var Permanent:bool;
-var TriggerID:bool;
+var TriggerID:int;
 var TriggerType:bool;
 var CollisionType:bool;
 var StartY:int;
@@ -29,7 +29,7 @@ event Create() {
     Rotation = 0;
 
     StartY = this.Y;
-    CurrentAnimation = 0;
+    CurrentAnimation = 15;
     Down = false;
     Pressed = false;
 }
@@ -40,22 +40,18 @@ event Update() {
         if (!Pressed) {
             Pressed = true;
             Sound.Play(Sound.SFX_SCORE_ADD);
-            Scene.LevelTriggerFlag = 1 << TriggerID;
+            Scene.LevelTriggerFlag |= 1 << TriggerID;
             CollidingWithPlayer = true;
         }
     }
 
-    if (this.Down)
-        Y = this.StartY + 8;
-    else
-        Y = this.StartY;
+    Y = StartY + 4 + 4 * Down;
 }
 event Render(CamX:int, CamY:int) {
-    // G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8,
-    //     this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
-    G.DrawRectangle(X - CamX - 16, Y - CamY - 8, 32, 8, 0xB4B4D8);
-    if (!this.Down)
-        G.DrawRectangle(X - CamX -  7, Y - CamY - 0, 14, 8, 0x6C6C90);
+    G.DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
+    // G.DrawRectangle(X - CamX - 16, Y - CamY - 8, 32, 8, 0xB4B4D8);
+    // if (!this.Down)
+    //     G.DrawRectangle(X - CamX -  7, Y - CamY - 0, 14, 8, 0x6C6C90);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

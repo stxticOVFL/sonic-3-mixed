@@ -78,10 +78,8 @@ event CheckPlayer(id:int) {
                                     Player.ObjectControlled |= (1 << 1);
                                     Player.Action = ActionType.Corkscrew;
                                     if (id == 0) {
-                                        // TODO: Tree reveal
+                                        Scene.LevelTriggerFlag |= 1 << 0;
                                     }
-                                    Scene.CameraMinX = X - App.WIDTH / 2;
-                                    Scene.CameraMaxX = X - App.WIDTH / 2;
                                     Timer = 0x3C;
                                 }
                             }
@@ -92,6 +90,26 @@ event CheckPlayer(id:int) {
         }
     }
     else {
+        if (id == 0) {
+            if (Scene.CameraMinX < X - App.WIDTH / 2) {
+                if (Scene.CameraMinX < Scene.CameraX)
+                    Scene.CameraMinX = Scene.CameraX;
+                Scene.CameraMinX += 4;
+            }
+            else {
+                Scene.CameraMinX = X - App.WIDTH / 2;
+            }
+
+            if (Scene.CameraMaxX > X - App.WIDTH / 2) {
+                if (Scene.CameraMaxX > Scene.CameraX)
+                    Scene.CameraMaxX = Scene.CameraX;
+                Scene.CameraMaxX -= 4;
+            }
+            else {
+                Scene.CameraMaxX = X - App.WIDTH / 2;
+            }
+        }
+
         d0 = Math.abs(Player.GroundSpeed);
         if (d0 >= 0x600) {
             if (Player.Ground || true) {
@@ -175,6 +193,8 @@ event AIZTree_SetPlayerPos(id:int) {
             d2 = Player.EZX;
             d0 = (PlayerStorage[id] >> 16);
             d0 >>= 1;
+
+            Player.GrabSwingValue = (d0 & 0xFF);
 
             d0 = Math.sinHex(d0) * -0x70;
             d3 = Math.sign(d0);

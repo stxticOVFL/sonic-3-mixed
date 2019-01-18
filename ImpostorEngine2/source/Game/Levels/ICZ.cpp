@@ -3,8 +3,7 @@
 
 class Level_ICZ : public LevelScene {
 public:
-    ISprite* AIZ1Sprite = NULL;
-    ISprite* AIZ2Sprite = NULL;
+    ISprite* ICZObjectSprite = NULL;
 };
 #endif
 
@@ -141,7 +140,7 @@ Uint32 AnPal_PalICZ_4[32] = {
 
 PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 5;
-    Act = act;
+    VisualAct = Act = act;
 
     if (Act == 1) {
         Sound::SoundBank[0] = new ISound("Music/ICZ1.ogg", false);
@@ -183,78 +182,36 @@ PUBLIC void Level_ICZ::RestartStage(bool doActTransition, bool drawBackground) {
 }
 
 PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
-    if (Act <= 1) {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZ1Sprite;
-        SpriteMapIDs[0x05] = AIZ1Sprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZ1Sprite;
-        SpriteMapIDs[0x0A] = AIZ1Sprite;
-        SpriteMapIDs[0x0C] = AIZ1Sprite;
-        SpriteMapIDs[0x0D] = AIZ1Sprite;
-        SpriteMapIDs[0x0F] = AIZ1Sprite;
-    	SpriteMapIDs[0x2F] = AIZ1Sprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZ1Sprite;
+    LevelScene::AssignSpriteMapIDs();
 
-    	SpriteMapIDs[0x51] = AIZ1Sprite;
-    }
-    else {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZ2Sprite;
-        SpriteMapIDs[0x05] = AIZ2Sprite;
-        SpriteMapIDs[0x06] = AIZ1Sprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZ1Sprite;
-        SpriteMapIDs[0x0A] = AIZ1Sprite;
-        SpriteMapIDs[0x0C] = AIZ1Sprite;
-        SpriteMapIDs[0x0D] = AIZ2Sprite;
-        SpriteMapIDs[0x0F] = AIZ2Sprite;
-    	SpriteMapIDs[0x2F] = AIZ1Sprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZ1Sprite;
+	SpriteMapIDs[0x01] = ItemsSprite;
+    SpriteMapIDs[0x04] = ICZObjectSprite;
+    SpriteMapIDs[0x05] = ICZObjectSprite;
+	SpriteMapIDs[0x07] = ObjectsSprite;
+	SpriteMapIDs[0x08] = ObjectsSprite;
+    SpriteMapIDs[0x09] = ICZObjectSprite;
+    SpriteMapIDs[0x0A] = ICZObjectSprite;
+    SpriteMapIDs[0x0C] = ICZObjectSprite;
+    SpriteMapIDs[0x0D] = ICZObjectSprite;
+    SpriteMapIDs[0x0F] = ICZObjectSprite;
+	SpriteMapIDs[0x2F] = ICZObjectSprite;
 
-    	SpriteMapIDs[0x51] = AIZ2Sprite;
-        SpriteMapIDs[0x8C] = AIZ1Sprite;
-    }
+	SpriteMapIDs[0x34] = ObjectsSprite;
+    SpriteMapIDs[0x35] = ICZObjectSprite;
+
+	SpriteMapIDs[0x51] = ICZObjectSprite;
 }
 
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
-    if (!AIZ1Sprite) {
-        AIZ1Sprite = new ISprite("Sprites/AIZ1/Objects.gif", App);
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Platform.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Tree.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
-        // printf("\n");
-    }
-
-    if (!AIZ2Sprite) {
-        AIZ2Sprite = new ISprite("Sprites/AIZ2/Objects.gif", App);
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CollapsingPlatform.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CorkFloor.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin"); // HACK: padding
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/FallingLog.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin"); // HACK: padding
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Platform.bin");
-
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
-        // printf("\n");
+    if (!ICZObjectSprite) {
+        ICZObjectSprite = new ISprite("Sprites/ICZ/Objects.gif", App);
+        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 1.bin");
+        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 2.bin");
+        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Cork Floor.bin");
+        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Cork Floor 2.bin");
+        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Platforms.bin");
+        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Tension Bridge.bin");
+        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
     }
 
 	if (!KnuxSprite[0]) {
@@ -276,11 +233,13 @@ PUBLIC void Level_ICZ::EarlyUpdate() {
     if (Act == 1) {
         // Background (Inside)
         Data->layers[0].Visible = false;
+        Data->layers[0].RelativeY = 0x80;
         // Snowpile
         Data->layers[1].Visible = false;
         Data->layers[1].Flags = 0 | 2 | 4;
         // Background (Outside)
-        Data->layers[2].RelativeY = 0;
+        Data->layers[2].RelativeY = 0x1;
+        Data->layers[2].UseDeltaCameraY = true;
         // FG Low/High
         Data->layers[3].IsScrollingVertical = true;
         Data->layers[4].IsScrollingVertical = true;
@@ -327,25 +286,25 @@ PUBLIC void Level_ICZ::EarlyUpdate() {
                 // TileSprite->SetPalette(0x37, 0x4466EE);
                 TileSprite->UpdatePalette();
             }
-        }
 
-        if (Frame % 6 == 0) {
-            TileSprite->SetPalette(0x2E, AnPal_PalICZ_1[(Frame / 6 * 2) % 32]);
-            TileSprite->SetPalette(0x2F, AnPal_PalICZ_1[(Frame / 6 * 2) % 32 + 1]);
-            TileSprite->UpdatePalette();
-        }
-        if (Frame % 10 == 0) {
-            TileSprite->SetPalette(0x3E, AnPal_PalICZ_2[(Frame / 10 * 2) % 36]);
-            TileSprite->SetPalette(0x3F, AnPal_PalICZ_2[(Frame / 10 * 2) % 36 + 1]);
-            TileSprite->UpdatePalette();
-        }
-        if (Frame % 8 == 0) {
-            TileSprite->SetPalette(0x3C, AnPal_PalICZ_3[(Frame / 8 * 2) % 12]);
-            TileSprite->SetPalette(0x3D, AnPal_PalICZ_3[(Frame / 8 * 2) % 12 + 1]);
+            if (Frame % 6 == 0) {
+                TileSprite->SetPalette(0x2E, AnPal_PalICZ_1[(Frame / 6 * 2) % 32]);
+                TileSprite->SetPalette(0x2F, AnPal_PalICZ_1[(Frame / 6 * 2) % 32 + 1]);
+                TileSprite->UpdatePalette();
+            }
+            if (Frame % 10 == 0) {
+                TileSprite->SetPalette(0x3E, AnPal_PalICZ_2[(Frame / 10 * 2) % 36]);
+                TileSprite->SetPalette(0x3F, AnPal_PalICZ_2[(Frame / 10 * 2) % 36 + 1]);
+                TileSprite->UpdatePalette();
+            }
+            if (Frame % 8 == 0) {
+                TileSprite->SetPalette(0x3C, AnPal_PalICZ_3[(Frame / 8 * 2) % 12]);
+                TileSprite->SetPalette(0x3D, AnPal_PalICZ_3[(Frame / 8 * 2) % 12 + 1]);
 
-            TileSprite->SetPalette(0x2C, AnPal_PalICZ_4[(Frame / 8 * 2) % 32]);
-            TileSprite->SetPalette(0x2D, AnPal_PalICZ_4[(Frame / 8 * 2) % 32 + 1]);
-            TileSprite->UpdatePalette();
+                TileSprite->SetPalette(0x2C, AnPal_PalICZ_4[(Frame / 8 * 2) % 32]);
+                TileSprite->SetPalette(0x2D, AnPal_PalICZ_4[(Frame / 8 * 2) % 32 + 1]);
+                TileSprite->UpdatePalette();
+            }
         }
     }
     else if (Act == 2) {

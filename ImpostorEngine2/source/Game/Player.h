@@ -219,8 +219,8 @@ public:
     PlayerStatus        PlayerStatusTable[32];
     int                 PlayerStatusTableIndex = 0;
 
-    int16_t&            EZX = *((int16_t*)&X + 1);
-    int16_t&            EZY = *((int16_t*)&Y + 1);
+    int16_t&            EZX = *((int16_t*)&SubX + 1);
+    int16_t&            EZY = *((int16_t*)&SubY + 1);
 
     bool                DoCollision = true;
 
@@ -306,7 +306,7 @@ public:
     int                 GlideSpeedStore = 0;
     int                 MaxGlideSpeed = 0;
     int                 RayBoostCount = 0;
-    bool                Angle360Detection = false;                 // - If set to true angles will be detected smoother, but using a different method then Sonic 2.
+    int                 GrabSwingValue = -1;
     bool                AngleBothSensors = false;                  // - If set to true, both sensors must return a terrain object to check for angles.
     int                 AngleModeSwitchMode = 0;                     // - If set to 0, it will follow a more accurate angle mode switch(Reccomended).
     int                 AngleSensorHeight = 90;

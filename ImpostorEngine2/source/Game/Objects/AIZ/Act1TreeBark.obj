@@ -7,7 +7,7 @@ event Create() {
     W = 16;
     H = 16;
 
-    VisualLayer = 1;
+    // VisualLayer = 1;
 
     CurrentAnimation = 0;
     Frame = 0;

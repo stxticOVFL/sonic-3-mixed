@@ -52,6 +52,12 @@ event Update() {
     Frame++;
 }
 
+event OnHit() : int {
+    Children[0].Active = false;
+    Children[1].Active = false;
+    return OnDeath();
+}
+
 event Render(CamX:int, CamY:int) {
     var Subframe:int = 0;
     var Keyframe:int = Frame - 1;

@@ -1,0 +1,32 @@
+subclass Enemy;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 10;
+    H = 16;
+
+    Frame = 0;
+
+    Scene.AddSelfToRegistry(this, "Enemies");
+
+    YSpeed = -0x400;
+}
+
+event OnHit() : int {
+    // Since this doesn't break on contact with Fire Shield, keep it active.
+    return 0;
+}
+
+event Update() {
+    SubY += YSpeed * 0x100;
+
+    if (YSpeed < 0 && Y < Scene.CameraY - 24) {
+        Active = false;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, 12 + (Scene.Frame >> 1 & 1), X - CamX, Y - CamY, 0, FlipY << 1);
+}

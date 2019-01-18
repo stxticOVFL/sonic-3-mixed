@@ -16,7 +16,7 @@ public:
 
 PUBLIC Level_LRZ::Level_LRZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 10;
-    Act = act;
+    VisualAct = Act = act;
 
     if (Act == 1) {
         Sound::SoundBank[0] = new ISound("Music/LRZ1.ogg", false);

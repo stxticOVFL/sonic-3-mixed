@@ -17,7 +17,7 @@ public:
 
 PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 6;
-    Act = act;
+    VisualAct = Act = act;
 
     if (Act == 1) {
         Sound::SoundBank[0] = new ISound("Music/LBZ1.ogg", false);
@@ -101,37 +101,43 @@ PUBLIC void Level_LBZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
     if (!AIZ1Sprite) {
-        AIZ1Sprite = new ISprite("Sprites/AIZ1/Objects.gif", App);
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CollapsingPlatform.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/CorkFloor.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/FallingLog.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Platform.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Rhinobot.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/SwingRope.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/Tree.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ1/ZiplinePeg.bin");
-        // printf("\n");
-    }
+		AIZ1Sprite = new ISprite("Sprites/AIZ/Objects.gif", App);
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Act 1 Tree.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Act 1 Zipline Peg.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Animated Sprites.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Breakable Wall.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Caterkiller Jr.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Collapsing Log Bridge.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Collapsing Platform.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Collapsing Platform 2.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Cork Floor.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Cork Floor 2.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Disappearing Floor.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Disappearing Floor Water.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Drawbridge.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Draw Bridge Fire.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 1).bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 2).bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 1).bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 2).bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Flipping Bridge.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Floating Platform.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Floating Platform 2.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Foreground Plant.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Monkey Dude.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Non Animated Sprites.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rhinobot.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/RhinoBot Dust.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Ride Vine.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock Bits.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock 2.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock Bits 2.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Spiked Log.bin");
+        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Tulipon.bin");
 
-    if (!AIZ2Sprite) {
-        AIZ2Sprite = new ISprite("Sprites/AIZ2/Objects.gif", App);
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Bloominator.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/CaterkillerJr.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CollapsingPlatform.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/CorkFloor.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/Decoration.bin"); // HACK: padding
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/FallingLog.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ1/MonkeyDude.bin"); // HACK: padding
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Platform.bin");
-
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/BreakableWall.bin");
-        AIZ2Sprite->LoadAnimation("Sprites/AIZ2/Drawbridge.bin");
-        // printf("\n");
-    }
+        AIZ2Sprite = AIZ1Sprite;
+	}
 
 	if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);

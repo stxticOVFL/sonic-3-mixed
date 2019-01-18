@@ -30,16 +30,15 @@ event Update() {
     Near = false;
     Spinning = false;
     for (var i:int = 0; i < Scene.PlayerCount; i++) {
-        if ((Scene.Players[i].X >> 16) >= X - 32 &&
-            (Scene.Players[i].X >> 16) < X + 32 &&
-            (((Scene.Players[i].Y >> 16) + Scene.Players[i].H / 2 >= Y - 32 &&
-            (Scene.Players[i].Y >> 16) + Scene.Players[i].H / 2 <= Y + 9) || Scene.Players[i].ObjectControlled != 0)) {
+        if (Scene.Players[i].EZX >= X - 32 &&
+            Scene.Players[i].EZX < X + 32 &&
+            ((Scene.Players[i].EZY + Scene.Players[i].H / 2 >= Y - 32 && Scene.Players[i].EZY + Scene.Players[i].H / 2 <= Y + 9) || Scene.Players[i].ObjectControlled != 0)) {
             Near = true;
         }
-        if ((Scene.Players[i].X >> 16) >= X - 8 &&
-            (Scene.Players[i].X >> 16) < X + 8 &&
-            (Scene.Players[i].Y >> 16) + Scene.Players[i].H / 2 >= Y - 32 &&
-            (Scene.Players[i].Y >> 16) + Scene.Players[i].H / 2 <= Y + 9) {
+        if (Scene.Players[i].EZX >= X - 8 &&
+            Scene.Players[i].EZX < X + 8 &&
+            Scene.Players[i].EZY + Scene.Players[i].H / 2 >= Y - 32 &&
+            Scene.Players[i].EZY + Scene.Players[i].H / 2 <= Y + 9) {
             Spinning = true;
         }
     }
@@ -77,10 +76,10 @@ event Update() {
         if (Scene.Players[i].Action == ActionType.Hurt || Scene.Players[i].Action == ActionType.Dead)
             continue;
 
-        if (((Scene.Players[i].X >> 16) - X) < 0x8 &&
+        if (Math.abs(Scene.Players[i].X - X) < 0x8 &&
             Math.abs(Scene.Players[i].GroundSpeed) < 0x400 &&
-            ((Scene.Players[i].Y >> 16) + Scene.Players[i].H / 2) >= Y - 0x4 &&
-            (Scene.Players[i].Y >> 16) + Scene.Players[i].H / 2 <= Y + 0x9) {
+            (Scene.Players[i].Y + Scene.Players[i].H / 2) >= Y - 0x4 &&
+            Scene.Players[i].Y + Scene.Players[i].H / 2 <= Y + 0x9) {
             if (Scene.Players[i].ObjectControlled == 0) {
                 Scene.Players[i].ObjectControlled = 0x7F;
                 Timer = 60;
@@ -91,19 +90,19 @@ event Update() {
 
         if (Timer > 0 && Scene.Players[i].ObjectControlled != 0) {
             Scene.Players[i].GroundSpeed = 0x1000 * (FlipX ? -1 : 1);
-            Scene.Players[i].X = (X << 16);
-            Scene.Players[i].DisplayX = (Scene.Players[i].X >> 16);
+            Scene.Players[i].X = X;
+            Scene.Players[i].DisplayX = Scene.Players[i].X;
             Scene.Players[i].H = 10;
-            Scene.Players[i].Y = (Y + 64 - outY - lastOutY2 - Scene.Players[i].OrigH / 2) << 16;
-            Scene.Players[i].DisplayY = (Scene.Players[i].Y >> 16);
+            Scene.Players[i].Y = Y + 64 - outY - lastOutY2 - Scene.Players[i].OrigH / 2;
+            Scene.Players[i].DisplayY = Scene.Players[i].Y;
             Scene.Players[i].YSpeed = 0;
             Scene.Players[i].DisplayFlip = (FlipX ? -1 : 1);
             Scene.Players[i].Action = ActionType.Normal;
             Scene.Players[i].Ground = true;
         }
         if (Timer == 0 && coolDown == -1 && Scene.Players[i].ObjectControlled != 0) {
-            Scene.Players[i].Y = (Y + 10 - Scene.Players[i].OrigH / 2) << 16;
-            Scene.Players[i].DisplayY = (Scene.Players[i].Y >> 16);
+            Scene.Players[i].Y = Y + 10 - Scene.Players[i].OrigH / 2;
+            Scene.Players[i].DisplayY = Scene.Players[i].Y;
             Scene.Players[i].Action = ActionType.Normal;
             Scene.Players[i].Ground = true;
             Scene.Players[i].ObjectControlled = 0;

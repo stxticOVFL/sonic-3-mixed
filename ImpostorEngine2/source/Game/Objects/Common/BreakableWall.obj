@@ -7,6 +7,9 @@ event Create() {
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
+    W = 32;
+    H = 64;
+
     if (Scene.ZoneID == 1) {
         W = 32;
         H = 80;
@@ -18,12 +21,11 @@ event Create() {
         W = 32;
         H = 64;
 
-        BreakableByRoll = true;
-        BreakableByJump = false;
-        BreakableByGlide = true;
-        BreakableByKnuckles = true;
+        BreakableByRoll = CollideSide.SIDES;
+        BreakableByGlide = CollideSide.SIDES;
+        BreakableByKnuckles = CollideSide.SIDES;
         if (SubType == 2) {
-            BreakableByRoll = false;
+            BreakableByRoll = CollideSide.NONE;
             W = 48;
         }
         Scene.AddSelfToRegistry(this, "Breakable");
@@ -34,10 +36,9 @@ event Create() {
         W = 64;
         H = 80;
 
-        BreakableByRoll = true;
-        BreakableByJump = false;
-        BreakableByGlide = true;
-        BreakableByKnuckles = true;
+        BreakableByRoll = CollideSide.SIDES;
+        BreakableByGlide = CollideSide.SIDES;
+        BreakableByKnuckles = CollideSide.SIDES;
         Scene.AddSelfToRegistry(this, "Breakable");
     }
 }
@@ -191,6 +192,7 @@ event Update() {
 event Render(CamX:int, CamY:int) {
     if (!Solid) return;
 
+    G.DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);
     DrawAIZ(CamX, CamY);
     DrawHCZ(CamX, CamY);
     DrawMGZ(CamX, CamY);
@@ -199,10 +201,10 @@ event Render(CamX:int, CamY:int) {
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
     Sound.Play(Sound.SFX_COLLAPSE);
 
-    BreakableByRoll = false;
-    BreakableByJump = false;
-    BreakableByGlide = false;
-    BreakableByKnuckles = false;
+    BreakableByRoll = CollideSide.NONE;
+    BreakableByJump = CollideSide.NONE;
+    BreakableByGlide = CollideSide.NONE;
+    BreakableByKnuckles = CollideSide.NONE;
     Solid = false;
 
     var HitSide:int = -1;

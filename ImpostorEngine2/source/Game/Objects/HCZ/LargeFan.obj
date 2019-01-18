@@ -18,7 +18,7 @@ event Create() {
 event Update() {
     var Out:bool = false;
     for (var i:int =0; i < Scene.PlayerCount; i++) {
-        if ((Scene.Players[i].X >> 16) > X) {
+        if (Scene.Players[i].X > X) {
             Out = true;
         }
     }

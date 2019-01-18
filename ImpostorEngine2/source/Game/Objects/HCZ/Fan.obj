@@ -17,7 +17,7 @@ event Create() {
     W = 32;
     H = 32;
 
-    Y += 32;
+    Y += 28;
 
     CurrentAnimation = 2;
 
@@ -75,11 +75,11 @@ event Update() {
 
         if (On) {
             Neck = Math.sinHex(Scene.Frame << 2) >> 13;
-            if ((Scene.Players[i].X >> 16) + 10 >= X - 16 &&
-                (Scene.Players[i].X >> 16) - 10 < X + 16 &&
-                (Scene.Players[i].Y >> 16) < Y + 12 &&
-                (Scene.Players[i].Y >> 16) >= Y - BlowHeight - 0x30 + Neck) {
-                Scene.Players[i].Y += (Y - BlowHeight - 0x30 + Neck - (Scene.Players[i].Y >> 16)) << 10;
+            if (Scene.Players[i].EZX + 10 >= X - 16 &&
+                Scene.Players[i].EZX - 10 < X + 16 &&
+                Scene.Players[i].EZY <  Y + 12 &&
+                Scene.Players[i].EZY >= Y - BlowHeight - 0x30 + Neck) {
+                Scene.Players[i].SubY += (Y - BlowHeight - 0x30 + Neck - (Scene.Players[i].SubY >> 16)) << 10;
                 Scene.Players[i].Ground = false;
                 Scene.Players[i].YSpeed = -1;
                 Scene.Players[i].Action = ActionType.Fan;

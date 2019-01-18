@@ -1,0 +1,76 @@
+object 0x2B;
+
+var Delay:int;
+var Period:int;
+var Rise:int;
+var Flip:int;
+var RevolutionDuration:int;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    SolidTop = true;
+    SolidCustomized = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    Rotation = 0;
+    W = 256;
+    H = 8;
+    VisW = 256;
+    VisH = 64;
+
+    // Delay: The amount of frames it takes to activate next flip.
+    Delay = (SubType & 0xF) * 6;
+    // Period: How long each animation frame lasts in timing frames.
+    Period = (SubType >> 4 & 0x7) + 1;
+    Rise = 8 - ((SubType & 0x80) >> 5);
+    RevolutionDuration = 8 * Delay + Delay;
+    Flip = FlipX ? 1 : -1;
+
+    Timer = 0;
+
+    Frame = 5;
+
+    CurrentAnimation = 18;
+}
+
+event Update() {
+    Timer = Scene.Frame % RevolutionDuration;
+    if (FlipX)
+        Timer = (RevolutionDuration - 1) - Timer;
+}
+
+event Render(CamX:int, CamY:int) {
+    for (var i:int = -4; i < 4; i++)
+        G.DrawSprite(Sprite, CurrentAnimation, (((Timer + Delay * (i + 4) * Flip + RevolutionDuration) % RevolutionDuration) / Period), X - CamX + i * 32 + 16, Y - CamY - i * Rise, 0, IE_NOFLIP);
+}
+
+event CustomSolidityCheck(probeX:int, probeY:int, PlayerID:int, checkJumpThrough:int) : int {
+    if (!checkJumpThrough)
+        return 0;
+
+    if (!SolidTop)
+        return 0;
+
+    if (probeX < X - 128)
+        return 0;
+    if (probeX >= X + 128)
+        return 0;
+
+    var i:int = (probeX - (X - 8 * 32 / 2)) / 32;
+    var frm:int = (((Timer + Delay * i * Flip + RevolutionDuration) % RevolutionDuration) / Period);
+    if (frm < 5) return 0;
+
+    var x:int = X - 128 + i * 32;
+    var y:int = Y - (i - 4) * Rise;
+
+    if (probeX >= x &&
+        probeY >= y - 4 &&
+        probeX <  x + 32 &&
+        probeY <  y + 4) {
+        return 1;
+    }
+
+    return 0;
+}

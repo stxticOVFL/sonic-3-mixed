@@ -14,9 +14,9 @@ public:
 
 #include <Game/Levels/FBZ.h>
 
-PUBLIC Level_FBZ::Level_FBZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
+PUBLIC Level_FBZ::Level_FBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 8;
-    Act = ACT;
+    VisualAct = Act = act;
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/FBZ1/TileConfig.bin";
@@ -40,13 +40,14 @@ PUBLIC void Level_FBZ::RestartStage(bool doActTransition, bool drawBackground) {
 }
 
 PUBLIC void Level_FBZ::AssignSpriteMapIDs() {
+    LevelScene::AssignSpriteMapIDs();
+
 	SpriteMapIDs[0x01] = ItemsSprite;
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;
     SpriteMapIDs[0x0D] = SpriteMap["MGZ"];
     SpriteMapIDs[0x0F] = SpriteMap["MGZ"];
 	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x34] = ObjectsSprite;
 	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x38] = SpriteMap["HCZ"];

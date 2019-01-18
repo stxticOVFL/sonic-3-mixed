@@ -36,5 +36,5 @@ event Render(CamX:int, CamY:int) {
     if (CurrentAnimation == -1)
         return;
 
-    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
 }

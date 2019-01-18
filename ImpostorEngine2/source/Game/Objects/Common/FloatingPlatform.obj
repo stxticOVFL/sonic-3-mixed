@@ -74,7 +74,7 @@ event Create() {
 }
 event Update() {
     if (MoveType == 0) {
-        if (CollidingWithPlayer) {
+        if (BeingStoodOn) {
             if (Timer < 0x40)
                 Timer += 0x4;
         }
@@ -140,6 +140,9 @@ event Update() {
         XSpeed = (X - LastX) << 8;
     }
     else if (MoveType == 7) {
+        if (BeingStoodOn)
+            Rising = true;
+        
         LastY = Y;
         if (Rising && Y > InitialY - 0x140) {
             Y -= 1;
@@ -201,19 +204,4 @@ event Render(CamX:int, CamY:int) {
     else {
         G.DrawRectangle(nX - CamX - W / 2, nY - CamY - H / 2, W, H, 0xFF0000);
     }
-}
-
-event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-    if (HitFrom == 1 &&
-        Scene.Players[PlayerID].EZY < Y &&
-        Scene.Players[PlayerID].YSpeed >= 0 &&
-        Scene.Players[PlayerID].Ground && MoveType == 7) {
-        Rising = true;
-        return true;
-    }
-
-    if (MoveType == 0 && !(Scene.Players[PlayerID].Ground && HitFrom == 1)) return false;
-    if (MoveType == 7 && !(Scene.Players[PlayerID].Ground && HitFrom == 1)) return false;
-
-	return true;
 }

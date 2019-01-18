@@ -21,12 +21,12 @@ public:
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
 
-PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
+PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 2;
-    Act = ACT;
+    VisualAct = Act = act;
 
     if (Act == 1) {
-		Sound::SoundBank[0] = new ISound("Music/3M_HCZ1.ogg", true);
+		Sound::SoundBank[0] = new ISound("Music/HCZ1.ogg", true);
 		Sound::Audio->LoopPoint[0] = 1;
 
         Str_TileConfigBin = "Stages/HCZ1/TileConfig.bin";
@@ -37,8 +37,9 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         WaterLine = new ISprite("Sprites/HCZ/AniTiles2.gif", App);
     }
     else {
-		Sound::SoundBank[0] = new ISound("Music/3M_HCZ2_tmp.ogg", true);
-		Sound::Audio->LoopPoint[0] = 329797;
+		Sound::SoundBank[0] = new ISound("Music/HCZ2.ogg", true);
+		Sound::Audio->LoopPoint[0] = 1;
+		// Sound::Audio->LoopPoint[0] = 329797;
 
         Str_TileConfigBin = "Stages/HCZ2/TileConfig.bin";
         Str_SceneBin = "Stages/HCZ2/Scene.bin";
@@ -213,11 +214,13 @@ PUBLIC void Level_HCZ::GoToNextAct() {
 }
 
 PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
+    LevelScene::AssignSpriteMapIDs();
+
 	SpriteMapIDs[0x01] = ItemsSprite;
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;
 	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
+	// SpriteMapIDs[0x33] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x34] = ObjectsSprite;
 	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
@@ -244,7 +247,6 @@ PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Platform.bin");
 		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Wake.bin");
 		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Bridge.bin");
-		printf("\n");
 	}
 	if (!SpriteMap["HCZ Enemies"]) {
 		SpriteMap["HCZ Enemies"] = new ISprite("Sprites/HCZ/Enemies.gif", App);
@@ -254,12 +256,10 @@ PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/MegaChomper.bin");
 		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Pointdexter.bin");
 		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Jawz.bin");
-		printf("\n");
 	}
 	if (!SpriteMap["HCZ Boss"]) {
 		SpriteMap["HCZ Boss"] = new ISprite("Sprites/HCZ/Boss.gif", App);
 		SpriteMap["HCZ Boss"]->LoadAnimation("Sprites/HCZ/LaundroMobile.bin");
-		printf("\n");
 	}
 
     if (!KnuxSprite[0]) {
@@ -566,7 +566,8 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                 }
                 else if (CameraMinX < 0x4000) {
                     // Push Main Boss theme onto stack
-                    App->Audio->PushMusic(Sound::SoundBank[0xF0], true, 264600);
+                    // App->Audio->PushMusic(Sound::SoundBank[0xF0], true, 264600);
+                    App->Audio->PushMusic(Sound::SoundBank[0xF0], true, 0);
                     // Push Mini Boss theme onto stack
                     //App->Audio->PushMusic(Sound::SoundBank[0xF1], true, 276105);
                     CameraMinX = 0x4000;
@@ -787,7 +788,7 @@ PUBLIC void Level_HCZ::Subupdate() {
                     if (Player->Action == ActionType::Dead) continue;
 
                     Player->EZX = CameraX + App->WIDTH / 2 + (IMath::sinHex((DrainTimer << 2) + p * 32) >> 10);
-                    Player->Y = 0x6F00000 + (DrainTimer - 90) * 0x18000;
+                    Player->SubY = 0x6F00000 + (DrainTimer - 90) * 0x18000;
                     Player->Action = ActionType::Normal;
                     Player->ChangeAnimation2(Player->AnimationMap["Fan"], (DrainTimer >> 1) % 8);
                     Player->DisplayFlip = 1;

@@ -34,7 +34,6 @@ public:
     int32_t     CameraDeltaY = 0;
     int         CameraAutoScrollX = 0;
     int         CameraAutoScrollY = 0;
-    bool        UseDeltaCamera = false;
     int         Frame = 0;
     int         Timer = 0;
     int         Score = 0;
@@ -80,7 +79,8 @@ public:
         TO_BONUS_STAGE1 = 5,
         TO_BONUS_STAGE2 = 6,
         TO_SPECIAL_STAGE = 7,
-        NEXT_ZONE = 8
+        NEXT_ZONE = 8,
+        CUSTOM_FADE_ACTION = 9,
     };
 
     int         maxLayer = 1;
@@ -148,6 +148,9 @@ public:
     bool        SKAlone = false;
 
     bool        HUDVisible = true;
+    int         HUDAnim = 0x00;
+    bool        ControlsVisible = true;
+    int         ControlsAnim = 0x00;
 
     bool        ManiaLevel = false;
     bool        SonicKnucklesLevel = false;
@@ -171,14 +174,18 @@ public:
     int         SavedPositionX = -1;
     int         SavedPositionY = -1;
 
+    int         WaterEnteredCounter = 0;
+
     ISound**    SoundBank = NULL;
 
     uint8_t*    PerspectiveMap;
 
     int         ShakeTimer = 0;
 
+    bool        ResetTimer = true;
     bool        StopTimer = false;
     bool        ShowResults = false;
+    bool        DoneSpinning = false;
     int         ResultsTimer = 0;
     int         TimerTotal = 0;
     int         TotalToAdd = 0;
@@ -192,6 +199,7 @@ public:
 
     uint32_t    BackgroundColor = 0x000000;
     bool        SepThread = false;
+    uint16_t    Signal[8];
 };
 #endif
 
@@ -231,8 +239,10 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     Sound::Audio = App->Audio;
     Sound::Init();
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Sound::Init()", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Sound::Init()", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
+
+    memset(Signal, 0, sizeof(Signal));
 
     Objects = (Object**)calloc(2000, sizeof(Object*));
     ObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
@@ -250,10 +260,9 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
     SpriteMapIDs = (ISprite**)calloc(0x400, sizeof(ISprite*));
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
-    App->Print(0, "Creating GlobalDisplaySprite...");
     GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
@@ -277,15 +286,14 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     MobileButtonsSprite->SetTransparentColorIndex(0x05);
     MobileButtonsSprite->UpdatePalette();
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
-    App->Print(0, "Creating PauseSprite...");
     PauseSprite = new ISprite("UI/PauseEN.gif", App);
     PauseSprite->LoadAnimation("UI/TextEN.bin");
     memset(PauseAnim, 0, sizeof(PauseAnim));
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Creating PauseSprite...", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating PauseSprite...", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     memset(KnuxSprite, 0, sizeof(KnuxSprite));
@@ -294,7 +302,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 }
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
-
+    SpriteMapIDs[0x33] = ObjectsSprite;
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
@@ -315,35 +323,32 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         FadeMax = 0x140;
         G->FadeToWhite = false;
 
-        App->Print(0, "Load things...");
-
         startTime = SDL_GetTicks();
 
         // Test Loading Models
         if (!GiantRingModel)
             GiantRingModel = new IModel("Meshes/SpecialRing.bin", G);
 
-        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "GiantRingModel", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "GiantRingModel", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
-        App->Print(0, "Sprites...");
-
         if (!ItemsSprite) {
-            ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
-            ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
-            ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
-            // printf("\n");
+            ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
+            ItemsSprite->LoadAnimation("Sprites/GlobalS3K/ItemBox.bin");
+            ItemsSprite->LoadAnimation("Sprites/GlobalS3K/Ring.bin");
         }
         if (!AnimalsSprite) {
             AnimalsSprite = new ISprite("Sprites/Global/Animals.gif", App);
             AnimalsSprite->LoadAnimation("Sprites/Global/Animals.bin");
         }
         if (!ObjectsSprite) {
-            ObjectsSprite = new ISprite("Sprites/Global/Objects.gif", App);
-            ObjectsSprite->LoadAnimation("Sprites/Global/Springs.bin");
-            ObjectsSprite->LoadAnimation("Sprites/Global/Spikes.bin");
-            ObjectsSprite->LoadAnimation("Sprites/Global/StarPost.bin");
-            ObjectsSprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
+            ObjectsSprite = new ISprite("Sprites/GlobalS3K/Objects.gif", App);
+            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Springs.bin");
+            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Spikes.bin");
+            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/StarPost.bin");
+            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/ScoreBonus.bin");
+
+            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Gray Button.bin");
             // printf("\n");
         }
         if (!Objects2Sprite) {
@@ -359,33 +364,29 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             // printf("\n");
         }
         if (!ExplosionSprite) {
-            ExplosionSprite = new ISprite("Sprites/Global/Explosions.gif", App);
-            ExplosionSprite->LoadAnimation("Sprites/Global/Dust.bin");
-            ExplosionSprite->LoadAnimation("Sprites/Global/Explosions.bin");
+            ExplosionSprite = new ISprite("Sprites/GlobalS3K/Explosions.gif", App);
+            ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Dust.bin");
+            ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Explosions.bin");
             // printf("\n");
         }
         if (!WaterSprite) {
             WaterSprite = new ISprite("Sprites/Global/Water.gif", App);
             WaterSprite->LoadAnimation("Sprites/Global/Water.bin");
-            // printf("\n");
         }
 
-        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
-        App->Print(0, "Load Zone Specific Sprites...");
         LoadZoneSpecificSprites();
-
-        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "LoadZoneSpecificSprites", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "LoadZoneSpecificSprites", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
-        App->Print(0, "AssignSpriteMapIDs...");
         AssignSpriteMapIDs();
-
-        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "AssignSpriteMapIDs", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "AssignSpriteMapIDs", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
-        if (ZoneID < 7) { // if Sonic 3 level
+        // If Sonic 3 level...
+        if (ZoneID < 7) {
             ObjectName[0x00] = "Obj_Ring";
             ObjectName[0x01] = "Obj_Monitor";
             ObjectName[0x02] = "Obj_PathSwap";
@@ -509,15 +510,15 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x78] = "Obj_FBZDEZPlayerLauncher";
             ObjectName[0x79] = "Obj_FBZDisappearingPlatform";
             ObjectName[0x7A] = "Obj_FBZScrewDoor";
-            ObjectName[0x7B] = "Obj_7B_1";
+            ObjectName[0x7B] = "Obj_FBZFanPole";
             ObjectName[0x7C] = "Obj_FBZPropeller";
             ObjectName[0x7D] = "Obj_FBZPiston";
             ObjectName[0x7E] = "Obj_FBZPlatformBlocks";
             ObjectName[0x7F] = "Obj_FBZMissileLauncher";
             ObjectName[0x80] = "Obj_HiddenMonitor";
-            ObjectName[0x81] = "Obj_81";
+            ObjectName[0x81] = "Obj_EggCapsule";
             ObjectName[0x82] = "Obj_CutsceneKnuckles";
-            ObjectName[0x83] = "Obj_83";
+            ObjectName[0x83] = "Obj_CutsceneButton";
             ObjectName[0x84] = "Obj_84";
             ObjectName[0x85] = "Obj_SSEntryRing";
             ObjectName[0x86] = "Obj_86";
@@ -643,6 +644,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0xFE] = "Obj_Ring";
             ObjectName[0xFF] = "Obj_FBZMagneticPendulum";
         }
+        // If Sonic & Knuckles level...
         else {
             ObjectName[0x00] = "Obj_Ring";
             ObjectName[0x01] = "Obj_Monitor";
@@ -773,9 +775,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x7E] = "Obj_SSZCollapsingColumn";
             ObjectName[0x7F] = "Obj_SSZFloatingPlatform";
             ObjectName[0x80] = "Obj_HiddenMonitor";
-            ObjectName[0x81] = "Obj_81";
+            ObjectName[0x81] = "Obj_EggCapsule";
             ObjectName[0x82] = "Obj_CutsceneKnuckles";
-            ObjectName[0x83] = "Obj_83";
+            ObjectName[0x83] = "Obj_CutsceneButton";
             ObjectName[0x84] = "Obj_84";
             ObjectName[0x85] = "Obj_SSEntryRing";
             ObjectName[0x86] = "Obj_86";
@@ -833,11 +835,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                 ObjectName[i] = "unused";
         }
 
-        IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Object Name Assignments", (SDL_GetTicks() - startTime) / 1000.0);
+        IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Object Name Assignments", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
         if (!Player) {
-            App->Print(0, "Creating Player...");
             Player = new IPlayer();
             Player->G = G;
             Player->App = App;
@@ -845,6 +846,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Player->Character = (CharacterType)CharacterFlag;
             Player->PlayerID = 0;
             Player->Create();
+            Player->Lives = 5;
 
             Players[0] = Player;
 
@@ -864,7 +866,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             PlayerCount = 2;
     		//*/
 
-            IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
+            IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
             startTime = SDL_GetTicks();
         }
 
@@ -877,13 +879,16 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
     startTime = SDL_GetTicks();
 
-    App->Print(0, "Loading 16x16 Tiles...");
-    TileSprite = new ISprite(Str_TileSprite, App); // Stages/MSZ/16x16Tiles.gif
+    TileSprite = new ISprite(Str_TileSprite, App);
 
     AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
     AnimTileSprite->LinkPalette(TileSprite);
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite loading", (SDL_GetTicks() - startTime) / 1000.0);
+    ItemsSprite->LinkPalette(TileSprite);
+    ExplosionSprite->LinkPalette(TileSprite);
+    ObjectsSprite->LinkPalette(TileSprite);
+
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     ISprite::Animation an;
@@ -901,10 +906,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
     }
     TileSprite->Animations.push_back(an);
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite frame buffering", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite frame buffering", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
-    App->Print(0, "Loading TileConfig...");
     // Loading TileConfig
     IResource* TileConfig = IResources::Load(Str_TileConfigBin); // Stages/MSZ/TileConfig.bin
     if (TileConfig) {
@@ -945,10 +949,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         exit(1);
     }
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "TileConfig loading", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileConfig loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
-    App->Print(0, "Loading Scene.Bin...");
     IResource* SceneBin = IResources::Load(Str_SceneBin); // Stages/MSZ/Scene2.bin
     if (SceneBin) {
         IStreamer reader(SceneBin);
@@ -1069,6 +1072,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                     Data->layers[i].Tiles[x + y * Width] = creader.ReadUInt16();
                 }
             }
+
+            PatchLayer(i);
+
             memcpy(Data->layers[i].TilesBackup, Data->layers[i].Tiles, Width * Height * sizeof(short));
             free(Tilesss);
         }
@@ -1294,7 +1300,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                 PlayerStartY = pY;
             }
 
-            App->Print(0, "Loading objects...");
             int objectCount = reader.ReadUInt16();
             unsigned char ObjectListUnimpl[0x100];
             memset(ObjectListUnimpl, 0, 0x100);
@@ -1370,7 +1375,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                     App->Print(1, "Object %02X (%s) has not been implemented!", i, ObjectName[i] ? ObjectName[i] : "(null)");
             }
 
-            App->Print(0, "Loading rings...");
             int ringCount = reader.ReadUInt16();
             for (int o = 0; o < ringCount; o++) {
                 int X = reader.ReadUInt16E();
@@ -1385,8 +1389,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                 RingProps[RingPropCount++] = op;
             }
 
-            App->Print(0, "Loading IsAnims...");
-			Data->isAnims = (short*)malloc(0x400 * sizeof(short));
+            Data->isAnims = (short*)malloc(0x400 * sizeof(short));
 			memset(Data->isAnims, 0xFF, 0x400 * sizeof(short));
             int animTilesCount = reader.ReadUInt16();
             vector<int> tils;
@@ -1403,7 +1406,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
             Data->animatedTileFrames = (int*)calloc(Data->animatedTilesCount, sizeof(int));
 
-            App->Print(0, "Loading Anim Tile Durations...");
             Data->animatedTileDurations = (int**)calloc(Data->animatedTilesCount, sizeof(int*));
             for (int o = 0; o < Data->animatedTilesCount; o++) {
                 int framecount = reader.ReadUInt16();
@@ -1520,7 +1522,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         exit(1);
     }
 
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
     // Loading StageConfig
@@ -1587,29 +1589,31 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
             TileSprite->PaletteSize = 0x80;
         TileSprite->SplitPalette();
-        if (!SepThread)
-            TileSprite->UpdatePalette();
+        TileSprite->UpdatePalette();
 
         if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
             AnimTileSprite->PaletteSize = 0x80;
         AnimTileSprite->SplitPalette();
-        if (!SepThread)
-            AnimTileSprite->UpdatePalette();
+        AnimTileSprite->UpdatePalette();
+
+        ItemsSprite->SplitPalette();
+        ObjectsSprite->SplitPalette();
+        ExplosionSprite->SplitPalette();
+
+        ItemsSprite->UpdatePalette();
+        ObjectsSprite->UpdatePalette();
+        ExplosionSprite->UpdatePalette();
     }
 
     startTime = SDL_GetTicks();
-    SepThread = false;
 }
 
 PUBLIC VIRTUAL void LevelScene::Init() {
-    App->Print(0, "Init...");
     LoadData();
-
-    Player->Lives = 5;
 
     uint64_t startTime = SDL_GetTicks();
     RestartStage(true, false);
-    IApp::Print(0, "LevelScene \"%s\" took %0.3fs to run.", "Init RestartStage()", (SDL_GetTicks() - startTime) / 1000.0);
+    IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Init RestartStage()", (SDL_GetTicks() - startTime) / 1000.0);
 }
 
 PUBLIC STATIC  int  LevelScene::LoadStatic(void* data) {
@@ -1619,7 +1623,6 @@ PUBLIC STATIC  int  LevelScene::LoadStatic(void* data) {
 }
 
 PUBLIC void LevelScene::LoadInBackground() {
-    SepThread = true;
     SDL_DetachThread(SDL_CreateThread(LevelScene::LoadStatic, "LevelScene::LoadInBackground", this));
 }
 
@@ -1632,6 +1635,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
         ObjectsEnemies[i] = NULL;
     for (int i = 0; i < ObjectBreakableCount; i++)
         ObjectsBreakable[i] = NULL;
+
+    DoneSpinning = false;
 
     ObjectSolidCount = 0;
     ObjectSpringCount = 0;
@@ -1659,8 +1664,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
     for (int p = 0; p < PlayerCount; p++) {
         IPlayer* Player = Players[p];
 
-        Player->X = (pX - p * 16) << 16;
-        Player->Y = pY << 16;
+        Player->EZX = (pX - p * 16);
+        Player->EZY = pY;
         Player->DisplayX = Players[p]->X;
         Player->DisplayY = Players[p]->Y;
         Player->Action = ActionType::Normal;
@@ -1680,20 +1685,23 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
         Player->LateUpdate();
     }
 
-    Timer = 0;
+    if (ResetTimer)
+        Timer = 0;
+
     if (!doActTransition) {
         RoutineNumber = 0x00;
         LevelTriggerFlag = 0x00;
     }
+
     memset(&PauseAnim[0], 0, 8 * sizeof(int));
     LevelCardTimer = 0.0;
 
     // Set Camera on player
     CameraX = (Player->EZX + Player->CameraX) - App->WIDTH / 2;
     if (ManiaLevel)
-        CameraY = ((Player->Y >> 16) + Player->CameraY - 4) - App->HEIGHT / 2;
+        CameraY = (Player->EZY + Player->CameraY - 4) - App->HEIGHT / 2;
     else
-        CameraY = ((Player->Y >> 16) + Player->CameraY + 8) - App->HEIGHT / 2;
+        CameraY = (Player->EZY + Player->CameraY + 8) - App->HEIGHT / 2;
 
     CameraMinX = 0;
     CameraMinY = 0;
@@ -1701,7 +1709,6 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
     CameraMaxY = 0x7FFF;
     CameraDeltaX = 0;
     CameraDeltaY = 0;
-    UseDeltaCamera = false;
 
     HandleCamera();
 
@@ -1725,11 +1732,22 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
     UpdateDiscord();
 }
 
+PUBLIC VIRTUAL void LevelScene::PatchLayer(int layer) {
+    if (ZoneID == 1 && Act == 2 && layer == 1) {
+        int Width = Data->layers[layer].Width;
+        for (int xx = 0x4; xx < 0xB; xx++) {
+            for (int yy = 0x23; yy < 0x28; yy++) {
+                Data->layers[layer].Tiles[xx + Width * yy] = 0x5B;
+            }
+        }
+    }
+}
+
 PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
     char imgkey[15];
     char levelname[50];
     sprintf(imgkey, "%d", ZoneID);
-    sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", Act);
+    sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", VisualAct);
     Discord_UpdatePresence("Classic Mode:", levelname, imgkey);
 }
 
@@ -1831,13 +1849,6 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                 int h1 = Data->tiles1[tileID].Collision[c];
                 int h2 = Data->tiles2[tileID].Collision[c];
 
-                if (flipY && !Data->tiles1[tileID].IsCeiling) { // Data->tiles1[tileID].IsCeiling ^ // if not this, make sure IsCeiling tiles have their heights unflipped
-                    h1 = 15 - h1;
-                }
-                if (flipY && !Data->tiles2[tileID].IsCeiling) {
-                    h2 = 15 - h2;
-                }
-
                 int which = 0;
                 if (anglemode == 0)
                     which = 0 + flipY * 3;
@@ -1861,7 +1872,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16 - h1) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles1[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
                                     //tempAngle = tempAngle * -45.f / 32;
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
@@ -1884,7 +1895,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles1[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
                                     //tempAngle = tempAngle * -45.f / 32;
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
@@ -1909,7 +1920,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16 - h2) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles2[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
                                     //tempAngle = tempAngle * -45.f / 32;
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
@@ -1932,7 +1943,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles2[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
                                     //tempAngle = tempAngle * -45.f / 32;
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
@@ -1956,7 +1967,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16 - h1) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles1[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
                                         if (flipY) tempAngle = 128 - tempAngle;
@@ -1972,7 +1983,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles1[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
                                         if (flipY) tempAngle = 128 - tempAngle;
@@ -1990,7 +2001,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16 - h2) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles2[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
                                         if (flipY) tempAngle = 128 - tempAngle;
@@ -2006,7 +2017,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
                                 probeY <  tY + 16) {
                                 if (angle != NULL) {
                                     int tempAngle = Data->tiles2[tileID].Config[which];
-                                    if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
+                                    // if (which == 1 && tempAngle >= 0xC0 && tempAngle > 0xF0) tempAngle = 0xC0;
 
                                     if (tempAngle != 0) {
                                         if (flipX) tempAngle = 256 - tempAngle;
@@ -2173,9 +2184,9 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left,
     AddMovingSprite(sprite, x, y, left, top, w, h, offX, offY, flipX, flipY, xspeed, yspeed, grv, 0);
 }
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv) {
-    AddMovingSprite(sprite, x, y, animation, frame, flipX, flipY, xspeed, yspeed, grv, -1);
+    AddMovingSprite(sprite, x, y, animation, frame, flipX, flipY, xspeed, yspeed, grv, -1, 0);
 }
-PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life) {
+PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life, int hold) {
     ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 
     MovingSprite* tile = new MovingSprite();
@@ -2183,7 +2194,7 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int anima
     tile->App = App;
     tile->Scene = this;
     tile->Sprite = sprite;
-    tile->Hold = 0;
+    tile->Hold = hold;
     tile->FlipX = flipX;
     tile->FlipY = flipY;
     tile->Active = true;
@@ -2290,9 +2301,14 @@ PUBLIC VIRTUAL void LevelScene::Subupdate() {
     }
 }
 
-bool DoneSpinning = false;
-
+PUBLIC VIRTUAL void LevelScene::FinishResults() {
+    GoToNextAct();
+}
 PUBLIC VIRTUAL void LevelScene::GoToNextAct() {
+
+}
+
+PUBLIC VIRTUAL void LevelScene::DoCustomFadeAction() {
 
 }
 
@@ -2336,20 +2352,40 @@ PUBLIC void LevelScene::Update() {
         Frame++;
 
         // Animate animated tiles
-        for (int o = 0; o < Data->animatedTilesCount; o++) {
-            int framecount = Data->animatedTileDurations[o][0];
-            int max = Data->animatedTileDurations[o][framecount + 1];
+        if (Data) {
+            for (int o = 0; o < Data->animatedTilesCount; o++) {
+                int framecount = Data->animatedTileDurations[o][0];
+                int max = Data->animatedTileDurations[o][framecount + 1];
 
-            int f = Frame % max;
-            int sum = 0;
-            for (int g = 1; g < framecount + 1; g++) {
-                sum += Data->animatedTileDurations[o][g];
+                int f = Frame % max;
+                int sum = 0;
+                for (int g = 1; g < framecount + 1; g++) {
+                    sum += Data->animatedTileDurations[o][g];
 
-                if (f < sum) {
-                    Data->animatedTileFrames[o] = g - 1;
-                    break;
+                    if (f < sum) {
+                        Data->animatedTileFrames[o] = g - 1;
+                        break;
+                    }
                 }
             }
+        }
+
+        if (HUDVisible) {
+            if (HUDAnim > 0x000)
+                HUDAnim -= 0x10;
+        }
+        else {
+            if (HUDAnim < 0x100)
+                HUDAnim += 0x10;
+        }
+
+        if (ControlsVisible) {
+            if (ControlsAnim > 0x000)
+                ControlsAnim -= 0x10;
+        }
+        else {
+            if (ControlsAnim < 0x100)
+                ControlsAnim += 0x10;
         }
 
         if (Player) {
@@ -2405,28 +2441,28 @@ PUBLIC void LevelScene::Update() {
                 Player->GroundSpeed = 0;
             }
             if (Player->GroundSpeed >= 0x400) {
-                Player->X -= (Player->InputLeft << 8) * Player->GroundSpeed;
-    			Player->X += (Player->InputRight << 8) * Player->GroundSpeed;
-    			Player->Y -= (Player->InputUp << 8) * Player->GroundSpeed;
-    			Player->Y += (Player->InputDown << 8) * Player->GroundSpeed;
+                Player->EZX -= (Player->InputLeft) * (Player->GroundSpeed >> 8);
+    			Player->EZX += (Player->InputRight) * (Player->GroundSpeed >> 8);
+    			Player->EZY -= (Player->InputUp) * (Player->GroundSpeed >> 8);
+    			Player->EZY += (Player->InputDown) * (Player->GroundSpeed >> 8);
             }
             else {
-                Player->X -= (App->Input->GetControllerInput(0)[13] << 16);
-    			Player->X += (App->Input->GetControllerInput(0)[12] << 16);
-    			Player->Y -= (App->Input->GetControllerInput(0)[15] << 16);
-    			Player->Y += (App->Input->GetControllerInput(0)[14] << 16);
+                Player->EZX -= App->Input->GetControllerInput(0)[13];
+    			Player->EZX += App->Input->GetControllerInput(0)[12];
+    			Player->EZY -= App->Input->GetControllerInput(0)[15];
+    			Player->EZY += App->Input->GetControllerInput(0)[14];
             }
 
             if (Player->InputJump)
                 Player->Rings++;
 
-			Player->DisplayX = Player->X;
-			Player->DisplayY = Player->Y;
+			Player->DisplayX = Player->EZX;
+			Player->DisplayY = Player->EZY;
 
             Player->YSpeed = 0;
 		}
 
-        if (!(Frame & 3)) {
+        if (!(Frame & 3) && ItemsSprite && Thremixed) {
             ISprite* spr = ItemsSprite;
             Uint32 temp = spr->GetPalette(0x3C + 4 - 1);
             for (int i = 4 - 1; i >= 1; i--) {
@@ -2458,7 +2494,7 @@ PUBLIC void LevelScene::Update() {
                 if (obj->Active) {
                     bool OnScreen = false;
                     //*
-                    if (obj->VisW > obj->W)
+                    if (obj->VisW > obj->W || obj->VisH > obj->H)
                         OnScreen |= (
                             obj->X + obj->VisW >= CameraX &&
                             obj->Y + obj->VisH >= CameraY &&
@@ -2514,9 +2550,17 @@ PUBLIC void LevelScene::Update() {
 
                                 obj->CollidingWithPlayer |= obj->OnCollisionWithPlayer(Players[p]->PlayerID, hitFrom, 0);
                             }
-                            else {
-                                obj->CollidingWithPlayer = false || obj->CollidingWithPlayer;
+
+                            if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 &&
+                                obj->X - obj->W / 2 <  Players[p]->EZX + Players[p]->W / 2 &&
+                                Players[p]->EZY + Players[p]->H / 2 >= obj->Y - obj->H / 2 - 4 &&
+                                Players[p]->EZY + Players[p]->H / 2 <  obj->Y - obj->H / 2 + 2 &&
+                                Players[p]->YSpeed >= 0 &&
+                                Players[p]->Ground) {
+                                obj->BeingStoodOn = true;
                             }
+                            else
+                                obj->BeingStoodOn = false;
                         }
 
                         obj->Update();
@@ -2682,7 +2726,7 @@ PUBLIC void LevelScene::Update() {
 
             ShowResults = false;
 
-            GoToNextAct();
+            FinishResults();
         }
         ResultsTimer++;
     }
@@ -2718,14 +2762,12 @@ PUBLIC void LevelScene::Update() {
             FadeTimerMax = 90;
             FadeMax = 0x140;
             G->FadeToWhite = false;
-
-            // TODO: Move player to last known checkpoint
         }
         else if (FadeAction == FadeActionType::EXIT) {
             //App->Running = false;
             //FadeAction = 0;
             //FadeTimerMax = 1;
-            Cleanup();
+            // Cleanup();
 
             App->NextScene = new Scene_LevelSelect(App, G);
         }
@@ -2733,10 +2775,19 @@ PUBLIC void LevelScene::Update() {
             FadeAction = 0;
             FadeTimerMax = 1;
         }
-
         else if (FadeAction == FadeActionType::TO_SPECIAL_STAGE) {
             FadeAction = 0;
             FadeTimerMax = 1;
+        }
+        else if (FadeAction == FadeActionType::NEXT_ZONE) {
+            FadeAction = 0;
+            FadeTimerMax = 1;
+            GoToNextAct();
+        }
+        else if (FadeAction == FadeActionType::CUSTOM_FADE_ACTION) {
+            FadeAction = 0;
+            FadeTimerMax = 1;
+            DoCustomFadeAction();
         }
         FadeTimer = -1;
     }
@@ -2749,6 +2800,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
     if (Data->layers[Data->cameraLayer].IsScrollingVertical)
         d1 = 0xFFFFF;
 
+    int OffsetX = 0, OffsetY = 0;
     if (Player) {
         if (Player->Action == ActionType::Dead)
             return;
@@ -2757,8 +2809,8 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
         if (CameraAutoScrollX != 0) {
             CameraX += CameraAutoScrollX;
 
-            if (Player->X - Player->W / 2 < CameraX) {
-                Player->X = fmax(CameraX + Player->W / 2, Player->X);
+            if (Player->EZX - Player->W / 2 < CameraX) {
+                Player->EZX = fmax(CameraX + Player->W / 2, Player->EZX);
                 if (Player->Ground) {
                     if (Player->GroundSpeed < CameraAutoScrollX)
                         Player->GroundSpeed = CameraAutoScrollX;
@@ -2768,8 +2820,8 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
                         Player->XSpeed = CameraAutoScrollX;
                 }
             }
-            if (Player->X > 8 * OffCenteredCamera + CameraX + App->WIDTH / 2) {
-                Player->X = IMath::min(8 * OffCenteredCamera + CameraX + App->WIDTH / 2, Player->X);
+            if (Player->EZX > 8 * OffCenteredCamera + CameraX + App->WIDTH / 2) {
+                Player->EZX = IMath::min(8 * OffCenteredCamera + CameraX + App->WIDTH / 2, Player->EZX);
             }
 
             return;
@@ -2805,14 +2857,14 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
             if (Player->CameraLockTimer <= 0) {
                 if (Player->EZX < CameraMinX + 16) {
                     Player->EZX = CameraMinX + 16;
-                    Player->X &= 0xFFFF0000;
+                    Player->SubX &= 0xFFFF0000;
                     Player->XSpeed = 0;
                     Player->GroundSpeed = 0;
                 }
 
                 if (Player->EZX > CameraMaxX + App->WIDTH - 16) {
                     Player->EZX = CameraMaxX + App->WIDTH - 16;
-                    Player->X &= 0xFFFF0000;
+                    Player->SubX &= 0xFFFF0000;
                     Player->XSpeed = 0;
                     Player->GroundSpeed = 0;
                 }
@@ -2820,7 +2872,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
             if (!Data->layers[Data->cameraLayer].IsScrollingVertical && CameraMinY != 0) {
                 if (Player->EZY < CameraMinY - 64) {
                     Player->EZY = CameraMinY - 64;
-                    Player->Y &= 0xFFFF0000;
+                    Player->SubY &= 0xFFFF0000;
                     Player->YSpeed = 0;
                     Player->GroundSpeed = 0;
                     Player->Ground = false;
@@ -2830,20 +2882,23 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
             }
         }
 
-        int camX = (int)((Player->X >> 16) + Player->CameraX);
+        int camX = int(Player->EZX + Player->CameraX);
         int camY;
         if (ManiaLevel)
-            camY = (int)((Player->Y >> 16) + Player->CameraY - 4);
+            camY = int(Player->EZY + Player->CameraY - 4);
         else
-            camY = (int)((Player->Y >> 16) + Player->CameraY + 8);
+            camY = int(Player->EZY + Player->CameraY + 8);
 
         if (Player->Action == ActionType::Rolling)
             camY -= Player->H / 2 - 16;
 
-        int OffsetX = (camX - (CameraX + App->WIDTH / 2 - 8 * OffCenteredCamera));
-        int OffsetY = (camY - (CameraY + App->HEIGHT / 2));
+        OffsetX = (camX - (CameraX + App->WIDTH / 2 - 8 * OffCenteredCamera));
+        OffsetY = (camY - (CameraY + App->HEIGHT / 2));
 
         int Max = 0x18;
+        if (ZoneID == 5 && Act == 1 && Player->EZX < 0x3880) {
+            Max = 0x90;
+        }
         if (abs(OffsetX) > 8) {
             OffsetX -= 8 * IMath::sign(OffsetX);
         }
@@ -2856,7 +2911,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
             OffsetX = 0;
 
 
-        OffsetX = min(abs(OffsetX), Max) * IMath::sign(OffsetX);
+        OffsetX = IMath::min(IMath::abs(OffsetX), Max) * IMath::sign(OffsetX);
 
         if (!Player->Ground) {
             if (abs(OffsetY) > 32)
@@ -2869,19 +2924,28 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
         if (abs(Player->YSpeed) >= 0x43C && Player->Ground)
             Max = 24;
 
+        // NOTE: Mania notes
+        // When player lands, wait 16 frames
+
         if (Player->Ground)
-            OffsetY = min(abs(OffsetY), Max) * IMath::sign(OffsetY);
+            OffsetY = IMath::min(IMath::abs(OffsetY) / 2, Max) * IMath::sign(OffsetY);
 
         CameraX += OffsetX;
         CameraY += OffsetY;
-        CameraDeltaX += OffsetX;
-        CameraDeltaY += OffsetY;
     }
 
     if (CameraMaxX > d0)
         CameraMaxX = d0;
     if (CameraMaxY > d1)
         CameraMaxY = d1;
+
+    if (CameraX < CameraMinX)
+        OffsetX = 0;
+    if (CameraX > CameraMaxX)
+        OffsetX = 0;
+
+    CameraDeltaX += OffsetX;
+    CameraDeltaY += OffsetY;
 
     if (CameraX < CameraMinX)
         CameraX = CameraMinX;
@@ -2937,73 +3001,76 @@ PUBLIC void LevelScene::RenderRings() {
         }
 
         if (OnScreen && obj.ID) {
-            G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 8, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
+            if (Thremixed)
+                G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 8, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
+            else
+                G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 10, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
         }
     }
 }
 PUBLIC void LevelScene::RenderHUD() {
-    if (!HUDVisible) return;
-
     bool Mobile = IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android;
     App->Input->UseTouchController = true;
 
     int value;
     int valen;
 
+    int STR_X = 16 - (HUDAnim >> 1);
+
     // Score
-    G->DrawSprite(GlobalDisplaySprite, 0, 0, 16, 12, 0, IE_NOFLIP);
+    G->DrawSprite(GlobalDisplaySprite, 0, 0, STR_X, 12, 0, IE_NOFLIP);
 
     // Time
-    G->DrawSprite(GlobalDisplaySprite, 0, 1, 16, 28, 0, IE_NOFLIP);
+    G->DrawSprite(GlobalDisplaySprite, 0, 1, STR_X, 28, 0, IE_NOFLIP);
 
     // Rings
     int CurrentFrame = 3;
     if (Player->Rings == 0 && (this->Frame & 0xF) < 8)
         CurrentFrame = 4;
-    G->DrawSprite(GlobalDisplaySprite, 0, CurrentFrame, 16, 44, 0, IE_NOFLIP);
+    G->DrawSprite(GlobalDisplaySprite, 0, CurrentFrame, STR_X, 44, 0, IE_NOFLIP);
 
     // Score value
     value = Score;
     for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, 16 + 48 + 8 * 7 - 8 * i - 8, 12 + 14, 0, IE_NOFLIP);
+        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 12 + 14, 0, IE_NOFLIP);
         value /= 10;
     }
 
     // Timer " and '
-    G->DrawSprite(GlobalDisplaySprite, 0, 12, 16 + 48 + 8 * 1 - 8 + 3, 28 + 14 - 16, 0, IE_NOFLIP);
+    G->DrawSprite(GlobalDisplaySprite, 0, 12, STR_X + 48 + 8 * 1 - 8 + 3, 28 + 14 - 16, 0, IE_NOFLIP);
 
     // Timer value (Centiseconds)
     value = (Timer % 60) * 100 / 60;
     if (Timer >= 10 * 60 * 60 - 3)
         value = 99;
     for (int i = 0; i < 2; i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, 16 + 48 + 8 * 7 - 8 * i - 8, 28 + 14, 0, IE_NOFLIP);
+        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 28 + 14, 0, IE_NOFLIP);
         value /= 10;
     }
     // Timer value (Seconds)
     value = (Timer / 60) % 60;
     for (int i = 0; i < 2; i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, 16 + 48 + 8 * 4 - 8 * i - 9, 28 + 14, 0, IE_NOFLIP);
+        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 4 - 8 * i - 9, 28 + 14, 0, IE_NOFLIP);
         value /= 10;
     }
     // Timer value (Minutes)
     value = (Timer / 60 / 60);
     if (value > 9)
         value = 9;
-    G->DrawSprite(GlobalDisplaySprite, 1, value % 10, 16 + 48 + 8 * 1 - 10, 28 + 14, 0, IE_NOFLIP);
+    G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 1 - 10, 28 + 14, 0, IE_NOFLIP);
 
     // Ring value
     value = Player->Rings;
     for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, 16 + 48 + 8 * 7 - 8 * i - 8, 44 + 14, 0, IE_NOFLIP);
+        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 44 + 14, 0, IE_NOFLIP);
         value /= 10;
     }
 
-    int iconX = 16;
+    int iconX = STR_X;
     int iconY = App->HEIGHT - 12;
 
     if (Mobile) {
-        iconX = App->WIDTH - 64 - 24; // 24 is for Pause Button
+        iconX = App->WIDTH - 64 - 8 - STR_X; // 24 is for Pause Button
         iconY = 12 + 17;
     }
 
@@ -3026,7 +3093,7 @@ PUBLIC void LevelScene::RenderHUD() {
     }
 
     if (Mobile) {
-        G->DrawAlpha = 0xC0;
+        G->DrawAlpha = 0xC0 - (0xC0 * ControlsAnim >> 8);
         int bX = 48;
         int bY = App->HEIGHT - 48;
         if (App->Input->GetControllerInput(0)[IInput::I_UP])
@@ -3308,15 +3375,16 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         if (heightSize > ((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
                             heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
 
-                        TileBaseY = y + siT;
-                        if (UseDeltaCamera && layer.Info[index].RelativeX != 0x100 && layer.RelativeY != 0x100) {
+                        if (layer.UseDeltaCameraX)
                             TileBaseX = (CameraDeltaX * layer.Info[index].RelativeX + layer.Info[index].ConstantX * Frame) >> 8;
-                            TileBaseY -= (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
-                        }
-                        else {
+                        else
                             TileBaseX = (CameraX * layer.Info[index].RelativeX + layer.Info[index].ConstantX * Frame) >> 8;
+
+                        TileBaseY = y + siT;
+                        if (layer.UseDeltaCameraY)
+                            TileBaseY -= (CameraDeltaY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                        else
                             TileBaseY -= (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
-                        }
 
                         TileBaseX -= layer.OffsetX;
                         TileBaseY -= layer.OffsetY;
@@ -3375,14 +3443,15 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         G->DoDeform = true;
                 }
 
-                if (UseDeltaCamera && layer.Info[0].RelativeX != 0x100 && layer.RelativeY != 0x100) {
+                if (layer.UseDeltaCameraX)
                     TileBaseX = (CameraDeltaX * layer.Info[0].RelativeX + layer.Info[0].ConstantX * Frame) >> 8;
-                    TileBaseY = (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
-                }
-                else {
+                else
                     TileBaseX = (CameraX * layer.Info[0].RelativeX + layer.Info[0].ConstantX * Frame) >> 8;
+
+                if (layer.UseDeltaCameraY)
+                    TileBaseY = (CameraDeltaY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
+                else
                     TileBaseY = (CameraY * layer.RelativeY + layer.ConstantY * Frame) >> 8;
-                }
 
                 TileBaseX -= layer.OffsetX;
                 TileBaseY -= layer.OffsetY;
@@ -3622,18 +3691,23 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         }
     }
     if (ViewPlayerStats) {
-        int16_t X = Player->X >> 16;
-        int16_t Y = Player->Y >> 16;
+        int16_t X = Player->EZX;
+        int16_t Y = Player->EZY;
 
         Y -= 32;
         char pooerp[256];
+
+        if (X < CameraX)
+            X = CameraX;
+        if (Y < CameraY)
+            Y = CameraY;
         ///*
         sprintf(pooerp, "%04X %04X (%02X %d)", Player->EZX, Player->EZY, Player->Angle, Player->AngleMode);
         G->DrawTextShadow(X - CameraX + 37, Y - CameraY, pooerp, 0xFFFFFF);
         Y += 8;
 
         sprintf(pooerp, "Sensor A: %d", Player->SensorA);
-        G->DrawTextShadow(X - CameraX + 37, Y - CameraY, pooerp, 0x00FF00);
+        G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0x00FF00);
         Y += 8;
 
         sprintf(pooerp, "Sensor B: %d", Player->SensorB);
@@ -3694,11 +3768,14 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
 
-        sprintf(pooerp, "GlideTurnCos: %X", Player->GlideTurnCos);
+        sprintf(pooerp, "UnderwaterTimer: %X", Player->UnderwaterTimer);
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
         //*/
 
+        sprintf(pooerp, "LevelTriggerFlag: %X", LevelTriggerFlag);
+        G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
+        Y += 8;
         sprintf(pooerp, "RoutineNumber: %X", RoutineNumber);
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
@@ -3857,34 +3934,35 @@ PUBLIC void LevelScene::RenderResults() {
 PUBLIC VIRTUAL void LevelScene::Render() {
     if (App->NextScene) return;
 
-    if (CameraX < 0)
-        CameraX = 0;
-    if (!Data->layers[Data->cameraLayer].IsScrollingVertical && CameraY < 0)
-        CameraY = 0;
-
     int tCamY = CameraY;
-    if (ShakeTimer > 0) {
-        int Shaking[0x14] = {
-            1, -1, 1, -1,
-            2, -2, 2, -2,
-            3, -3, 3, -3,
-            4, -4, 4, -4,
-            5, -5, 5, -5
-        };
-        CameraY = tCamY + Shaking[ShakeTimer];
-    }
-    else if (ShakeTimer < 0) {
-        int Shaking[0x40] = {
-            1,  2,  1,  3,  1,  2,  2,  1,  2,  3,  1,  2,  1,  2,  0,  0,
-            2,  0,  3,  2,  2,  3,  2,  2,  1,  3,  0,  0,  1,  0,  1,  3,
-            1,  2,  1,  3,  1,  2,  2,  1,  2,  3,  1,  2,  1,  2,  0,  0,
-            2,  0,  3,  2,  2,  3,  2,  2,  1,  3,  0,  0,  1,  0,  1,  3
-        };
-        CameraY = tCamY + Shaking[Frame & 0x3F];
-    }
-    if (!Data->layers[Data->cameraLayer].IsScrollingVertical && CameraY > Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT)
-        CameraY = Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT;
+    if (Data) {
+        if (CameraX < 0)
+            CameraX = 0;
+        if (!Data->layers[Data->cameraLayer].IsScrollingVertical && CameraY < 0)
+            CameraY = 0;
 
+        if (ShakeTimer > 0) {
+            int Shaking[0x14] = {
+                1, -1, 1, -1,
+                2, -2, 2, -2,
+                3, -3, 3, -3,
+                4, -4, 4, -4,
+                5, -5, 5, -5
+            };
+            CameraY = tCamY + Shaking[ShakeTimer];
+        }
+        else if (ShakeTimer < 0) {
+            int Shaking[0x40] = {
+                1,  2,  1,  3,  1,  2,  2,  1,  2,  3,  1,  2,  1,  2,  0,  0,
+                2,  0,  3,  2,  2,  3,  2,  2,  1,  3,  0,  0,  1,  0,  1,  3,
+                1,  2,  1,  3,  1,  2,  2,  1,  2,  3,  1,  2,  1,  2,  0,  0,
+                2,  0,  3,  2,  2,  3,  2,  2,  1,  3,  0,  0,  1,  0,  1,  3
+            };
+            CameraY = tCamY + Shaking[Frame & 0x3F];
+        }
+        if (!Data->layers[Data->cameraLayer].IsScrollingVertical && CameraY > Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT)
+        CameraY = Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT;
+    }
 
     if (FadeAction != 0)
         G->SetFilter(G->GetFilter() | 0x4);
@@ -3909,7 +3987,11 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 
     RenderPauseScreen();
 
-    //G->DrawRectangle(App->WIDTH / 2 - 1, 0, 2, 240, 0xFFFFFF);
+    if (ViewTileCollision) {
+        bool col = CollisionAt(CameraX + App->Input->MouseX, CameraY + App->Input->MouseY);
+        G->DrawRectangle(App->Input->MouseX - 7, App->Input->MouseY, 15, 1, col ? 0x00FF00 : 0xFF00FF);
+        G->DrawRectangle(App->Input->MouseX, App->Input->MouseY - 7, 1, 15, col ? 0x00FF00 : 0xFF00FF);
+    }
 
     G->SetFilter(0);
 }

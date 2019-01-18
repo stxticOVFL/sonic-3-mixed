@@ -1,6 +1,7 @@
 object 0x2A;
 
 var PieceVels:short[64];
+var BreakableFromTop:bool;
 
 event Create() {
     Active = true;
@@ -9,8 +10,11 @@ event Create() {
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    var i:int = 0;
+    BreakableFromTop = false;
+    if (SubType == 1)
+        BreakableFromTop = true;
 
+    var i:int = 0;
     if (Scene.ZoneID == 1) {
         W = 32;
         H = 80;
@@ -40,11 +44,20 @@ event Create() {
         if (Scene.Act == 2)
             CurrentAnimation = 9;
 
-        BreakableByRoll = false;
-        BreakableByJump = true;
-        BreakableByGlide = false;
-        BreakableByKnuckles = false;
+        BreakableByJump = CollideSide.BOTTOM;
+        if (BreakableFromTop)
+            BreakableByJump = CollideSide.TOP;
+        BreakableByRoll = BreakableByJump;
+
+        if (!BreakableFromTop)
+            BreakableBySpring = CollideSide.BOTTOM;
         Scene.AddSelfToRegistry(this, "Breakable");
+    }
+    else {
+        BreakableByJump = CollideSide.BOTTOM;
+        if (BreakableFromTop)
+            BreakableByJump = CollideSide.TOP;
+        BreakableByRoll = BreakableByJump;
     }
 }
 
@@ -104,12 +117,16 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     if (Scene.Players[PlayerID].EZX > X + W / 2 - 2) return 0;
     if (Scene.Players[PlayerID].EZX < X - W / 2 + 2) return 0;
 
+    if (BreakableFromTop  && HitFrom == 3) return 0;
+    if (!BreakableFromTop && HitFrom == 1) return 0;
+
     Sound.Play(Sound.SFX_COLLAPSE);
 
-    BreakableByRoll = false;
-    BreakableByJump = false;
-    BreakableByGlide = false;
-    BreakableByKnuckles = false;
+    BreakableByRoll = CollideSide.NONE;
+    BreakableByJump = CollideSide.NONE;
+    BreakableByGlide = CollideSide.NONE;
+    BreakableBySpring = CollideSide.NONE;
+    BreakableByKnuckles = CollideSide.NONE;
     Solid = false;
 
     BreakAIZ(HitFrom);

@@ -303,10 +303,6 @@ PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint
     }
     //*/
 
-    #if NX
-    pixel = (pixel & 0xFF) << 16 | (pixel & 0xFF00) | (pixel & 0xFF0000) >> 16;
-    #endif
-
     SetPixelTrue(surface, x, y, pixel);
 }
 

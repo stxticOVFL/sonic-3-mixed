@@ -16,6 +16,7 @@ public:
         SFX_SPINDASHREV = 0xAB,
         SFX_SPINDASH = 0xB6,
         SFX_SPLASH = 0x39,
+        SFX_BIG_SPLASH = 0x4B,
         SFX_JUMP = 0x62,
         SFX_SHIELD_FIRE = 0x3E,
         SFX_SHIELD_BUBBLE = 0x3F,
@@ -42,6 +43,7 @@ public:
         SFX_TAILS_FLY = 0xBA,
         SFX_TAILS_TIRED = 0xBB,
         SFX_SLIDE = 0xBC,
+        SFX_AIRSHIP = 0xBD,
 
 
         SFX_SS_WARP = 0xAF,
@@ -62,7 +64,9 @@ public:
         SFX_DROPDASH = 0x02,
         SFX_MENUACCEPT = 0x03,
         SFX_MENUBLEEP = 0x04,
-        SFX_MENUWOOSH = 0x05
+        SFX_MENUWOOSH = 0x05,
+        SFX_MENUFAIL = 0x06,
+        SFX_AIRSHIP2 = 0x07
     };
 
     static IAudio* Audio;
@@ -148,16 +152,20 @@ PUBLIC STATIC void Sound::Init() {
     LOADSOUND(SFX_MENUACCEPT, "Sounds/MenuAccept.wav")
     LOADSOUND(SFX_MENUBLEEP, "Sounds/MenuBleep.wav")
     LOADSOUND(SFX_MENUWOOSH, "Sounds/MenuWoosh.wav")
+    LOADSOUND(SFX_MENUFAIL, "Sounds/Fail.wav")
 
-    Sound::SoundBank[0xFF] = new ISound("Music/Invincible.ogg", true);
-    Sound::SoundBank[0xFE] = new ISound("Music/Sneakers.ogg", true);
+    LOADSOUND(SFX_AIRSHIP, "Sounds/S3K_BD.wav")
+    LOADSOUND(SFX_AIRSHIP2, "Sounds/S3K_BD.wav")
+
+    Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
+    Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);
     Sound::SoundBank[0xFD] = new ISound("Music/Drowning.ogg", true);
-    Sound::SoundBank[0xFC] = new ISound("Music/ActClear.ogg", true);
-    Sound::SoundBank[0xFB] = new ISound("Music/1up.ogg", false);
+    Sound::SoundBank[0xFC] = new ISound("Music/ActComplete.ogg", true);
+    Sound::SoundBank[0xFB] = new ISound("Music/S3 1up.ogg", false);
 
-    Sound::SoundBank[0xF2] = new ISound("Music/KnuckleShuffle.ogg", true);
-    Sound::SoundBank[0xF1] = new ISound("Music/BossMini.ogg", true);
-    Sound::SoundBank[0xF0] = new ISound("Music/BossMain.ogg", true);
+    Sound::SoundBank[0xF2] = new ISound("Music/S3 Knux Theme.ogg", true);
+    Sound::SoundBank[0xF1] = new ISound("Music/S3 Miniboss.ogg", true);
+    Sound::SoundBank[0xF0] = new ISound("Music/Boss.ogg", true);
 
     Sound::AudioLoaded = true;
 }

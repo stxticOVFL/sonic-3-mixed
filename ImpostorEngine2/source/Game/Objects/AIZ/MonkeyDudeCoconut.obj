@@ -12,23 +12,22 @@ event Create() {
     Scene.AddSelfToRegistry(this, "Enemies");
 
     BounceOffShield = true;
+    VisualLayer = 1;
 }
 
 event Update() {
-    Timer += XSpeed;
-    Rotation += YSpeed;
     YSpeed += 0x38;
-    X = Timer >> 8;
-    Y = Rotation >> 8;
+    SubX += XSpeed << 8;
+    SubY += YSpeed << 8;
 
     if (!OnScreen) {
         X = -16;
         Y = -16;
-        Timer = 0;
-        Rotation = 0;
+        XSpeed = 0;
+        YSpeed = 0;
     }
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, 4, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

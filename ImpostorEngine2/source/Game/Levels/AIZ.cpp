@@ -22,6 +22,7 @@ public:
 #include <Game/Objects/Gen/ObjectListing.h>
 
 #include <Game/Levels/AIZ.h>
+#include <Game/Levels/HCZ.h>
 
 Uint32 AIZ1_GlitteringWaterPalette[24] = {
     0x44AAEE,
@@ -157,17 +158,76 @@ Uint32 AnPal_PalAIZ2_5[26] = {
     0xCC2200,
     0xCC2200,
 };
+Uint8  AIZ_TreeRevealArray[0x70] = {
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,
+    0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,
+    0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,  0,
+    0,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  0,
+    1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+    1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+};
+Uint16 AIZ2_BF_ChunkBackup[0x100] = {
+    0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF, 0x06E2, 0x06E1,   0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF, 0x06E2, 0x06E1,  0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF, 0x06E2, 0x06E1,   0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF, 0x06E2, 0x06E1,
+    0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3, 0x06E6, 0x06E5,   0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3, 0x06E6, 0x06E5,  0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3, 0x06E6, 0x06E5,   0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3, 0x06E6, 0x06E5,
+    0x06E2, 0x06E1, 0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF,   0x06E2, 0x06E1, 0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF,  0x06E2, 0x06E1, 0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF,   0x06E2, 0x06E1, 0x02DF, 0x02E0, 0x02E1, 0x02E2, 0x06E0, 0x06DF,
+    0x06E6, 0x06E5, 0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3,   0x06E6, 0x06E5, 0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3,  0x06E6, 0x06E5, 0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3,   0x06E6, 0x06E5, 0x02E3, 0x02E4, 0x02E5, 0x02E6, 0x06E4, 0x06E3,
+    0x02E7, 0x02E8, 0x02E9, 0x02EA, 0x06E8, 0x06E7, 0x06EA, 0x06E9,   0x02E7, 0x02E8, 0x02E9, 0x02EA, 0x06E8, 0x06E7, 0x06EA, 0x06E9,  0x02E7, 0x02E8, 0x02E9, 0x02EA, 0x06E8, 0x06E7, 0x06EA, 0x06E9,   0x02E7, 0x02E8, 0x02E9, 0x02EA, 0x06E8, 0x06E7, 0x06EA, 0x06E9,
+    0x02EB, 0x02EC, 0x02ED, 0x02EE, 0x06EC, 0x06EB, 0x06EE, 0x06ED,   0x02EB, 0x02EC, 0x02ED, 0x02EE, 0x06EC, 0x06EB, 0x06EE, 0x06ED,  0x02EB, 0x02EC, 0x02ED, 0x02EE, 0x06EC, 0x06EB, 0x06EE, 0x06ED,   0x02EB, 0x02EC, 0x02ED, 0x02EE, 0x06EC, 0x06EB, 0x06EE, 0x06ED,
+    0x02EF, 0x02F0, 0x02F1, 0x02F2, 0x06F0, 0x06EF, 0x06F2, 0x06F1,   0x02EF, 0x02F0, 0x02F1, 0x02F2, 0x06F0, 0x06EF, 0x06F2, 0x06F1,  0x02EF, 0x02F0, 0x02F1, 0x02F2, 0x06F0, 0x06EF, 0x06F2, 0x06F1,   0x02EF, 0x02F0, 0x02F1, 0x02F2, 0x06F0, 0x06EF, 0x06F2, 0x06F1,
+    0x0000, 0x0000, 0x0000, 0x02F3, 0x0000, 0x0000, 0x06F3, 0x0000,   0x0000, 0x0000, 0x0000, 0x02F3, 0x0000, 0x0000, 0x06F3, 0x0000,  0x0000, 0x0000, 0x0000, 0x02F3, 0x0000, 0x0000, 0x06F3, 0x0000,   0x0000, 0x0000, 0x0000, 0x02F3, 0x0000, 0x0000, 0x06F3, 0x0000,
+};
+Uint8 AIZBattleShip_BobbingMotion[16] = {
+    4,  4,  3,  3,  2,  1,  1,  0,  0,  0,  1,  1,  2,  3,  3,  4,
+};
+Uint16 AIZBattleship_BombScript[42] = {
+    0x20, 0x3F5C,
+    0x20, 0x3F2C,
+    0x20, 0x3F5C,
+    0x20, 0x3F2C,
+    0x20, 0x3F5C,
+    0x38, 0x3F2C,
+    0x20, 0x3EDC,
+    0x20, 0x3EAC,
+    0x20, 0x3EDC,
+    0x20, 0x3EAC,
+    0x20, 0x3EDC,
+    0x38, 0x3EAC,
+    0x20, 0x3E5C,
+    0x20, 0x3E2C,
+    0x20, 0x3E5C,
+    0x20, 0x3E2C,
+    0x20, 0x3E5C,
+    0x38, 0x3E2C,
+    0x40, 0x3DEC,
+    0x40, 0x3DEC,
+    0x40, 0x3DEC,
+};
+
+int FireRiseValue = 0;
+int FireRiseValue2 = 0;
+int Timerrrr = 2;
+int TreeRevealRow = 32;
+Layer* FireLayerBackup = NULL;
+
+ISprite* AIZShipTileSprite = NULL;
+ISprite* TileSpriteBackup = NULL;
+
+int CutsceneActTimer = 60;
+Uint32 ShipTimer = 0x40200000;
+int BombDelay = 0x1A4;
+int BombIndex = 0;
 
 PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
     ZoneID = 1;
-    Act = ACT;
+    VisualAct = Act = ACT;
 
     IApp::Print(0, "Starting AIZ...");
 
     uint64_t startTime = SDL_GetTicks();
 
     if (Act == 0) {
-        Sound::SoundBank[0] = new ISound("Music/3M_AIZ1.ogg", true);
+        Sound::SoundBank[0] = new ISound("Music/AIZ1.ogg", true);
 		Sound::Audio->LoopPoint[0] = 1;
 
         Str_TileConfigBin = "Stages/AIZ/TileConfig1.bin";
@@ -179,26 +239,23 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         VisualAct = 1;
     }
     else if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/3M_AIZ1.ogg", true);
-		Sound::Audio->LoopPoint[0] = 2381;
+        Sound::SoundBank[0] = new ISound("Music/AIZ1.ogg", true);
+		// Sound::Audio->LoopPoint[0] = 2381;
 
         Str_TileConfigBin = "Stages/AIZ1/TileConfig.bin";
         Str_SceneBin = "Stages/AIZ1/Scene.bin";
         Str_TileSprite = "Stages/AIZ1/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/AIZ1/Animated Tiles.gif";
-
-        VisualAct = 1;
     }
     else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/3M_AIZ2.ogg", true);
-		Sound::Audio->LoopPoint[0] = 85113;
+        Sound::SoundBank[0] = new ISound("Music/AIZ2.ogg", true);
+        Sound::Audio->LoopPoint[0] = 94550;
+		// Sound::Audio->LoopPoint[0] = 85113;
 
         Str_TileConfigBin = "Stages/AIZ2/TileConfig.bin";
         Str_SceneBin = "Stages/AIZ2/Scene.bin";
         Str_TileSprite = "Stages/AIZ2/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/AIZ2/Animated Tiles.gif";
-
-        VisualAct = 2;
     }
 
     sprintf(LevelName, "ANGEL ISLAND");
@@ -211,18 +268,18 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         HUDVisible = false;
     }
     else if (Act == 1) {
-        // PlayerStartX = 0x13E0;
-        // PlayerStartY = 0x041A;
-        //
-        // PlayerStartX = 0x2656;
-        // PlayerStartY = 0x04A2;
+        PlayerStartX = 0x13E0;
+        PlayerStartY = 0x041A;
 
-        // PlayerStartX = 0x1E40;
-        // PlayerStartY = 0x26C;
+        // PlayerStartX = 0x3000;
+        // PlayerStartY = 0x034C;
+
+        // PlayerStartX = 0x2D00;
+        // PlayerStartY = 0x440;
     }
     else {
-        // PlayerStartX = 0x2820;
-        // PlayerStartY = 0x04D0;
+        PlayerStartX = 0x4850;
+        PlayerStartY = 0x01B0;
     }
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
@@ -234,17 +291,50 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 
     BackgroundRepeatTileWidth = 32;
 
+    if (TileSpriteBackup && Act == 2) {
+        TileSprite = TileSpriteBackup;
+    }
+
     LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
         VisualWaterLevel = 0x508;
         WaterLevel = 0x508;
+
+        FireRiseValue = 0;
+        FireRiseValue2 = 0;
+        Timerrrr = 2;
+        TreeRevealRow = 32;
+        FireLayerBackup = NULL;
+        CutsceneActTimer = 60;
+
+        Data->layers[4].OffsetY = 0;
     }
     else {
         VisualWaterLevel = 0x528;
         WaterLevel = 0x528;
 
-        if (RoutineNumber == 69) {
+        ShipTimer = 0x40200000;
+        BombIndex = 0;
+        BombDelay = 0x1A4;
+
+        if (VisualAct == 1) {
+            if (SavedPositionX == -1) {
+                if (!doActTransition) {
+                    App->NextScene = new Level_AIZ(App, G, 1);
+                }
+                else {
+                    LevelCardTimer = 6.0;
+                    FadeTimer = -1;
+                    FadeAction = 0;
+                    FadeTimerMax = -1;
+
+                    CameraMaxY = 0x258;
+                }
+            }
+        }
+
+        if (RoutineNumber == -2) {
             LevelCardTimer = 6.0;
             LevelCardHide = true;
         }
@@ -274,6 +364,8 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 }
 
 PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
+    LevelScene::AssignSpriteMapIDs();
+
     if (Act <= 1) {
     	SpriteMapIDs[0x01] = ItemsSprite;
         SpriteMapIDs[0x04] = AIZObjectsSprite;
@@ -286,7 +378,6 @@ PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
         SpriteMapIDs[0x0D] = AIZObjectsSprite;
         SpriteMapIDs[0x0F] = AIZObjectsSprite;
     	SpriteMapIDs[0x2F] = AIZObjectsSprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
     	SpriteMapIDs[0x34] = ObjectsSprite;
         SpriteMapIDs[0x35] = AIZObjectsSprite;
     	SpriteMapIDs[0x51] = AIZObjectsSprite;
@@ -305,7 +396,6 @@ PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
         SpriteMapIDs[0x0D] = AIZObjectsSprite;
         SpriteMapIDs[0x0F] = AIZObjectsSprite;
     	SpriteMapIDs[0x2F] = AIZObjectsSprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
     	SpriteMapIDs[0x34] = ObjectsSprite;
         SpriteMapIDs[0x35] = AIZObjectsSprite;
     	SpriteMapIDs[0x51] = AIZObjectsSprite;
@@ -354,17 +444,12 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 
     if (!AIZBossSprite) {
         AIZBossSprite = new ISprite("Sprites/AIZ/Boss.gif", App);
-
-
-
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Background Tree.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Bomb Explosion.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Boss Small.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Ship Propeller.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/End Boss.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Miniboss.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Miniboss Flame.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Miniboss Small.bin");
     }
 
     if (!KnuxSprite[0]) {
@@ -387,7 +472,9 @@ PUBLIC void Level_AIZ::LoadData() {
     AIZObjectsSprite->LinkPalette(TileSprite);
 }
 
+int FireInd = 0;
 PUBLIC void Level_AIZ::Subupdate() {
+    // Screen events?
     if (Act == 0) {
         if (LevelCardTimer >= 1.5) {
             LevelCardTimer = 5.0;
@@ -479,7 +566,36 @@ PUBLIC void Level_AIZ::Subupdate() {
             memcpy(Data->layers[3].Deform, Data->layers[1].Deform, App->HEIGHT);
         }
 
-        if (LevelTriggerFlag) {
+        if (TreeRevealRow < 32) {
+            int ind, x, y, pos;
+            for (int i = TreeRevealRow * 0x10; i < TreeRevealRow * 0x10 + 0x70 && i < 0x200; i++) {
+                ind = i - (TreeRevealRow << 4);
+                if (AIZ_TreeRevealArray[ind]) {
+                    x = (i & 0xF) + 0x2C8;
+                    y = (i >> 04) + 0x028;
+                    pos = x + Data->layers[2].Width * y;
+                    x = (i & 0xF);
+                    y = (i >> 04);
+                    Data->layers[2].Tiles[pos] = Data->layers[2].Tiles[x + Data->layers[2].Width * y];
+                    Data->layers[3].Tiles[pos] = Data->layers[3].Tiles[x + Data->layers[2].Width * y];
+                }
+                // Data->layers[5].Tiles[i] *= !AIZ_TreeRevealArray[ind];
+                // Data->layers[6].Tiles[i] *= !AIZ_TreeRevealArray[ind];
+            }
+        }
+
+        if (TreeRevealRow > 0 && (LevelTriggerFlag >> 0 & 1)) {
+            if (!(Frame & 1)) {
+                if (TreeRevealRow > 24) {
+                    TreeRevealRow--;
+                }
+                else if (!(Frame & 3)) {
+                    TreeRevealRow--;
+                }
+            }
+        }
+
+        if (LevelTriggerFlag & 0x80) {
             // Swap palette and preload Act 2
             if (TileSprite->GetPalette(0x31) != 0xEE4400) {
                 TileSprite->SetPalette(0x31, 0xEE4400);
@@ -490,18 +606,43 @@ PUBLIC void Level_AIZ::Subupdate() {
                 TileSprite->SetPalette(0x36, 0xEEEEAA);
 
                 TileSprite->UpdatePalette();
-
-                StartAct2Preload();
             }
 
-            if (Data->layers[4].OffsetY > -0x100)
-                Data->layers[4].OffsetY--;
+            HUDVisible = false;
 
-            if (Data->layers[4].OffsetY == -0x80)
+            if (Frame % 3 == 0) {
+                AddExplosion(5, false, IMath::randRange(CameraX, CameraX + App->WIDTH), IMath::randRange(CameraY, CameraY + App->HEIGHT));
+            }
+
+            if (Data->layers[4].OffsetY <= -0x68) {
+                int d0 = FireRiseValue + 0x2800;
+                if (d0 > 0xA0000)
+                    d0 = 0xA0000;
+                FireRiseValue = d0;
+
+                if (Data->layers[4].OffsetY > -0x200)
+                    Data->layers[4].OffsetY -= FireRiseValue >> 17;
+
+                if (Data->layers[4].OffsetY < -0x180) {
+                    Data->layers[4].OffsetY += 0x40;
+
+                    Timerrrr--;
+                }
+            }
+            else {
+                FireRiseValue2 += (-0x680000 - FireRiseValue2) >> 5;
+                Data->layers[4].OffsetY = FireRiseValue2 >> 16;
+            }
+
+            if (Timerrrr == 0) {
+                FireLayerBackup = new Layer;
+                memcpy(FireLayerBackup, &Data->layers[4], sizeof(Layer));
+
                 GoToNextAct();
+                Timerrrr = -1;
+            }
 
-            if (Frame % 6 == 0)
-                Data->layers[4].OffsetX += 0x60;
+            Data->layers[4].OffsetX = (Frame * 6) & 0x60;
 
             short firetileoffsets[16] = {
                 0x100, 0xFF, 0xFE, 0xFB,
@@ -561,29 +702,180 @@ PUBLIC void Level_AIZ::Subupdate() {
             memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
         }
 
-        if (LevelTriggerFlag >> 0 & 1) {
-            if (Data->layers[1].Tiles[0x270 + 0x3B * Data->layers[1].Width] != 0x0000) {
-                for (int i = 0x3B; i < 0x53; i++) {
-                    memset(&Data->layers[1].Tiles[0x270 + i * Data->layers[1].Width], 0x00, 8 * sizeof(short));
+        Data->layers[3].Flags = 0 | 2 | 4;
+        Data->layers[4].Flags = 0 | 2 | 4;
+
+        Data->layers[3].RelativeY = 0x00;
+        Data->layers[3].Info[0].RelativeX = 0x00;
+        Data->layers[4].RelativeY = 0x00;
+        Data->layers[4].Info[0].RelativeX = 0x00;
+
+        Data->layers[3].Visible = Data->layers[4].Visible = false;
+
+        if (VisualAct == 1) {
+            if (RoutineNumber == -2) {
+                if (CutsceneActTimer == 60) {
+                    if (FireLayerBackup != NULL) {
+                        int ind = Data->layerCount;
+                        FireInd = ind;
+                        memcpy(&Data->layers[ind], FireLayerBackup, sizeof(Layer));
+                        Data->layerCount++;
+                        FireLayerBackup = NULL;
+
+                        // Alter tiles
+                        Data->layers[ind].Flags = 0 | 0 | 4;
+                        for (int i = 16; i < 40; i += 4) {
+                            memcpy(Data->layers[ind].Tiles + (32 * i), AIZ2_BF_ChunkBackup, sizeof(short) * 32 * 4);
+                        }
+                        memcpy(Data->layers[ind].Tiles + (32 * 40), AIZ2_BF_ChunkBackup, sizeof(short) * 0x100);
+                        memset(Data->layers[ind].Tiles + (32 * 0), 0, sizeof(short) * 0x200);
+
+                        TileSprite->SetPalette(0x31, 0xEE4400);
+                        TileSprite->SetPalette(0x32, 0xEE6600);
+                        TileSprite->SetPalette(0x33, 0xEEAA00);
+                        TileSprite->SetPalette(0x34, 0xEECC00);
+            	        TileSprite->SetPalette(0x35, 0xEEEE22);
+                        TileSprite->SetPalette(0x36, 0xEEEEAA);
+
+                        TileSprite->UpdatePalette();
+                    }
+                }
+
+                if (CutsceneActTimer > 0) {
+                    CameraMinX = 0x10;
+                    CameraMaxX = 0x10;
+                    CutsceneActTimer--;
+
+                    Data->layers[FireInd].OffsetX = (Frame * 6) & 0x60;
+                    Data->layers[FireInd].OffsetY -= FireRiseValue >> 17;
+                    if (Data->layers[FireInd].OffsetY < -0x300) {
+                        Data->layers[FireInd].OffsetY = -0x300;
+                        CutsceneActTimer = 0;
+                    }
+                    else {
+                        CutsceneActTimer++;
+                    }
+                }
+                if (CutsceneActTimer == 0) {
+                    CameraMinX = 0x0;
+                    CameraMaxX = 0x7FFF;
+                    CutsceneActTimer = -1;
+
+                    HUDVisible = true;
+
+                    if (FireLayerBackup)
+                        delete FireLayerBackup;
+
+                    TileSprite->SetPalette(0x31, 0xEEEE88);
+                    TileSprite->SetPalette(0x32, 0xAAAA00);
+                    TileSprite->SetPalette(0x33, 0xEE8800);
+                    TileSprite->SetPalette(0x34, 0xEE4400);
+                    TileSprite->SetPalette(0x35, 0xEE2200);
+                    TileSprite->SetPalette(0x36, 0xCC0000);
+
+                    TileSprite->UpdatePalette();
+                }
+            }
+
+            if (RoutineNumber < 0) {
+                if (CameraX > 0xF50 + 160 - App->WIDTH / 2) {
+                    RoutineNumber = 0xCD;
+                    AddNewObject(Obj_AIZMiniboss, 0x00, 0x11F0, 0x288 - 8, false, false);
                 }
             }
         }
+        else {
+            int d0 = ShipTimer >> 16;
 
-        if (CameraX >= 0x2440) {
-            if (WaterLevel < 0x618 && (LevelTriggerFlag >> 0 & 1)) {
-                VisualWaterLevel = WaterLevel += 2;
-                ShakeTimer = -1;
+            Data->layers[3].OffsetX = Data->layers[4].OffsetX = 0x4000 - d0 - 0x280;
+            Data->layers[3].Visible = Data->layers[4].Visible = true;
+
+            if (d0 < 0x3CDC) {
+                // do boss small and tree
             }
             else {
-                ShakeTimer = 0;
+                if (RoutineNumber >= 4)
+                    ShipTimer -= 0x8800 * 16;
+                if (d0 < 0x3D5C) {
+                    // go up
+                    d0 -= 0x3D5C;
+                    Data->layers[3].OffsetY = Data->layers[4].OffsetY += d0 / 4;
+
+                    if (RoutineNumber == 4)
+                        RoutineNumber = 5;
+                }
+                else {
+                    d0 = (d0 >> 2) & 0xF;
+                    Data->layers[3].OffsetY = Data->layers[4].OffsetY = -0x40 + AIZBattleShip_BobbingMotion[d0];
+                }
+                if (RoutineNumber == 4) {
+                    int val = 40;
+                    int d2 = Frame % val;
+                    if (!d2) {
+                        if (Frame % (val * 2) < val)
+                            Sound::Play(Sound::SFX_AIRSHIP);
+                        else
+                            Sound::Play(Sound::SFX_AIRSHIP2);
+                    }
+                }
+
+                if (BombDelay > 0)
+                    BombDelay--;
+                else if (BombDelay == 0) {
+                    BombDelay = AIZBattleship_BombScript[BombIndex * 2];
+                    // int BombX = AIZBattleship_BombScript[BombIndex * 2 + 1];
+
+                    Sound::Play(Sound::SFX_DROP);
+
+                    BombIndex++;
+                    if (BombIndex == 21)
+                        BombDelay = -1;
+                }
+            }
+
+            if (!AIZShipTileSprite) {
+                AIZShipTileSprite = new ISprite("Stages/AIZ2/16x16TilesB.gif", App);
+                TileSpriteBackup = TileSprite;
+
+                ISprite::Animation an;
+                an.Name = NULL;
+                an.FrameCount = 0x400;
+                an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
+                for (int i = 0; i < 0x400; i++) {
+                    ISprite::AnimFrame ts_af;
+                    ts_af.X = (i & 0x1F) << 4;
+                    ts_af.Y = (i >>   5) << 4;
+                    ts_af.W = ts_af.H = 16;
+                    ts_af.OffX = ts_af.OffY = -8;
+                    an.Frames[i] = ts_af;
+                    G->MakeFrameBufferID(TileSprite, an.Frames + i);
+                }
+                AIZShipTileSprite->Animations.push_back(an);
+                AIZShipTileSprite->LinkPalette(TileSprite);
+            }
+
+            if (LevelTriggerFlag >> 0 & 1) {
+                if (Data->layers[1].Tiles[0x270 + 0x3B * Data->layers[1].Width] != 0x0000) {
+                    for (int i = 0x3B; i < 0x53; i++) {
+                        memset(&Data->layers[1].Tiles[0x270 + i * Data->layers[1].Width], 0x00, 8 * sizeof(short));
+                    }
+                }
+            }
+
+            if (CameraX >= 0x2440) {
+                if (WaterLevel < 0x618 && (LevelTriggerFlag >> 0 & 1)) {
+                    VisualWaterLevel = WaterLevel += 2;
+                    ShakeTimer = -1;
+                }
+                else {
+                    ShakeTimer = 0;
+                }
+            }
+            else {
+                if (WaterLevel > 0x528)
+                    VisualWaterLevel = WaterLevel -= 2;
             }
         }
-        else {
-            if (WaterLevel > 0x528)
-                VisualWaterLevel = WaterLevel -= 2;
-        }
-    }
-    else if (Act == 2) {
     }
 
     // Do palette stuffs
@@ -602,15 +894,12 @@ PUBLIC void Level_AIZ::Subupdate() {
 
         // Flower / Log BG / Tree BG
         int palstart = 0x2F;
-        if (CameraX < 0x2BB0 - App->WIDTH / 2) {
+        if (CameraX < 0x2BB0 - App->WIDTH / 2)
             TileSprite->SetPalette(palstart, 0xEE0022);
-        }
-        else if (CameraX < 0x2E50 - App->WIDTH / 2) {
+        else if (CameraX < 0x2E50 - App->WIDTH / 2)
             TileSprite->SetPalette(palstart, 0x444422);
-        }
-        else {
+        else
             TileSprite->SetPalette(palstart, 0x2200CC);
-        }
 
         TileSprite->UpdatePalette();
     }
@@ -658,8 +947,6 @@ PUBLIC void Level_AIZ::Subupdate() {
 
     LevelScene::Subupdate();
 }
-
-int CutsceneActTimer = 60;
 
 PUBLIC void Level_AIZ::HandleCamera() {
     if (Act != 0)
@@ -762,31 +1049,13 @@ PUBLIC void Level_AIZ::HandleCamera() {
             }
         }
     }
-    else {
+    else if (Act == 2) {
         if (VisualAct == 1) {
-            if (RoutineNumber == 69) {
-                if (CutsceneActTimer > 0) {
-                    CameraMinX = 0x10;
-                    CameraMaxX = 0x10;
-                    CutsceneActTimer--;
-                }
-                if (CutsceneActTimer == 0) {
-                    CameraMinX = 0x0;
-                    CameraMaxX = 0x7FFF;
-                    CutsceneActTimer = -1;
-                }
-
-                if (CameraX > 0xF50 + 160 - App->WIDTH / 2) {
-                    RoutineNumber = 0xCD;
-                    AddNewObject(Obj_AIZMiniboss, 0x00, 0x11F0, 0x288, false, false);
-                }
-            }
-
             if (CameraX < 0x2A0) {
                 CameraMinX = 0x0000;
                 CameraMaxX = 0x2F00;
                 CameraMinY = 0x000;
-                CameraMaxY = 0x258;
+                // CameraMaxY = 0x258;
             }
             else if (CameraX >= 0x980 && CameraX < 0xD60) {
                 CameraMinY = 0x000;
@@ -816,45 +1085,90 @@ PUBLIC void Level_AIZ::HandleCamera() {
             if (Player->EZX < 0x1370) {
                 CameraMinY = 0x2B8 + 224 - App->HEIGHT;
                 CameraMaxY = 0x2B8 + 224 - App->HEIGHT;
-                CameraMaxX = 0xFFFF;
             }
             else {
                 CameraMinY = 0;
                 if (CameraMaxY == 0x2B8 + 224 - App->HEIGHT)
                     CameraMaxY = 0xFFFF;
-                CameraMaxX = 0xFFFF;
             }
-        }
 
-        if (CameraX >= 0x3D00) {
-            Data->layers[0].OffsetY = 0xA8;
-            UseDeltaCamera = true;
-        }
-        else {
-            Data->layers[0].OffsetY = 0;
-        }
+            if (CameraX >= 0x3D00) {
+                Data->layers[0].OffsetY = 0xA8;
+                Data->layers[0].UseDeltaCameraX = true;
+            }
+            else {
+                Data->layers[0].OffsetY = 0;
+            }
 
-        int ToS3X = CameraX + App->WIDTH / 2 - 0xA0;
-        if (Player->EZX >= 0x3F30) {
-            CameraMinY = 0x15A;
-        }
-        if (ToS3X >= 0x4000) {
-            CameraMaxY = 0x15A;
-        }
+            int ToS3X = CameraX + App->WIDTH / 2 - 0xA0;
+            if (Player->EZX >= 0x3F30) {
+                CameraMinY = 0x15A;
+            }
+            if (ToS3X >= 0x4000) {
+                CameraMaxY = 0x15A;
+            }
 
-        if (CameraX >= 0x4580 - App->WIDTH) {
-            CameraX -= 0x300;
-            Player->EZX -= 0x300;
+            // Sonic's Path
+            if (CameraY < 0x480) {
+                if (Player->EZX < 0x4580 && CameraX >= 0x41C0 && TileSprite != AIZShipTileSprite) {
+                    TileSprite = AIZShipTileSprite;
+                    RoutineNumber = 4;
+                    ShipTimer = 0x40200000;
+
+                    TileSprite->SetPalette(0x12, 0xEEAA22);
+                    TileSprite->SetPalette(0x13, 0xEE6600);
+                    TileSprite->SetPalette(0x14, 0xCC4400);
+
+                    TileSprite->SetPalette(0x17, 0x442222);
+                    TileSprite->SetPalette(0x19, 0x666600);
+                    TileSprite->SetPalette(0x1A, 0x224400);
+                    TileSprite->SetPalette(0x1B, 0x002200);
+
+                    TileSprite->SetPalette(0x1C, 0xAAAACC);
+                    TileSprite->SetPalette(0x1D, 0x666688);
+                    TileSprite->SetPalette(0x1E, 0x444466);
+                    TileSprite->UpdatePalette();
+                }
+            }
+            // Knuckles' Path
+            else {
+                if (CameraX >= 0x3D00 && TileSprite != AIZShipTileSprite) {
+                    TileSprite = AIZShipTileSprite;
+                    RoutineNumber = 4;
+                }
+            }
+
+            if (RoutineNumber == 4) {
+                if (Player->EZX < 0x4580 && CameraY < 0x480 && CameraX >= 0x4580 - App->WIDTH) {
+                    CameraX -= 0x200;
+                    Player->EZX -= 0x200;
+                }
+            }
+            else if (RoutineNumber == 5) {
+                if (CameraX < 0x4880) {
+                    CameraMinX = CameraX;
+                }
+                else {
+                    CameraMinX = 0x4880;
+                    CameraMaxX = 0x4880;
+                    // CameraMaxX = 0x4B00 - App->WIDTH;
+                    RoutineNumber = 6;
+                }
+            }
+            // else if (RoutineNumber == 6) {
+            //     if (CameraMinX < 0x48E0) {
+            //         CameraMinX++;
+            //         CameraMaxX++;
+            //     }
+            //     else {
+            //         RoutineNumber = 7;
+            //     }
+            // }
+            // else if (RoutineNumber == 7) {
+            //     CameraMaxX = 0x4AE0 - App->WIDTH;
+            // }
         }
     }
-}
-
-PUBLIC void Level_AIZ::UpdateDiscord() {
-    char imgkey[15];
-    char levelname[50];
-    sprintf(imgkey, "%d", ZoneID);
-    sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", VisualAct);
-    Discord_UpdatePresence("Classic Mode:", levelname, imgkey);
 }
 
 PUBLIC void Level_AIZ::StartAct2Preload() {
@@ -867,7 +1181,7 @@ PUBLIC void Level_AIZ::StartAct2Preload() {
 
     Act2Preload->SpecialSpawnPositionX = Player->EZX - 0x2F00;
     Act2Preload->SpecialSpawnPositionY = Player->EZY - 0x80;
-    Act2Preload->RoutineNumber = 69;
+    Act2Preload->RoutineNumber = -2;
     Act2Preload->LevelTriggerFlag = 0x00;
 
     Act2Preload->GiantRingModel = GiantRingModel;
@@ -886,17 +1200,29 @@ PUBLIC void Level_AIZ::StartAct2Preload() {
     }
     Act2Preload->Player = Player;
 
-    Act2Preload->LoadInBackground();
+    // Act2Preload->LoadInBackground();
 }
 
+PUBLIC void Level_AIZ::FinishResults() {
+    if (VisualAct == 1) {
+        LevelScene::FinishResults();
+    }
+    else {
+        FadeAction = FadeActionType::NEXT_ZONE;
+        FadeTimerMax = 90;
+        FadeMax = 0x140;
+        G->FadeToWhite = false;
+    }
+}
 PUBLIC void Level_AIZ::GoToNextAct() {
     if (Act == 1 && VisualAct == 1) {
+        StartAct2Preload();
+
 		Level_AIZ* NextAct = Act2Preload;
         if (!NextAct)
             NextAct = new Level_AIZ(App, G, 2);
 
-        if (!Act2Preload)
-            NextAct->LoadData();
+        // NextAct->LoadData();
 
         // Player->ControlLocked = false;
         // Player->ObjectControlled = 0x00;
@@ -912,6 +1238,14 @@ PUBLIC void Level_AIZ::GoToNextAct() {
         NextAct->FadeTimer = -1;
         NextAct->FadeAction = 0;
         NextAct->FadeTimerMax = -1;
+        NextAct->Timer = Timer;
+        NextAct->Frame = Frame;
+        NextAct->HUDVisible = HUDVisible;
+        NextAct->HUDAnim = HUDAnim;
+        NextAct->ControlsVisible = ControlsVisible;
+        NextAct->ControlsAnim = ControlsAnim;
+
+        NextAct->CameraMaxY = 0x258;
 
         App->NextScene = NextAct;
     }
@@ -923,20 +1257,58 @@ PUBLIC void Level_AIZ::GoToNextAct() {
         ResultsTimer = 0;
         TimerTotal = 0;
         TotalToAdd = 0;
+        DoneSpinning = false;
         Player->ControlLocked = false;
         Player->ObjectControlled = 0;
         Player->Action = ActionType::Normal;
+
+        CameraMaxX = 0xFFFF;
 
         LevelCardTimer = 0.0;
         FadeTimer = 0;
         FadeAction = 0;
         LevelCardHide = false;
+        RoutineNumber = 0;
 
         App->Audio->ClearMusic();
         App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+        UpdateDiscord();
     }
     else if (Act == 2 && VisualAct == 2) {
+        Level_HCZ* NextAct = new Level_HCZ(App, G, 1);
+        NextAct->GiantRingModel = GiantRingModel;
+        NextAct->GlobalDisplaySprite = GlobalDisplaySprite;
+        NextAct->ItemsSprite = ItemsSprite;
+        NextAct->AnimalsSprite = AnimalsSprite;
+        NextAct->ObjectsSprite = ObjectsSprite;
+        NextAct->Objects2Sprite = Objects2Sprite;
+        NextAct->Objects3Sprite = Objects3Sprite;
+        NextAct->ExplosionSprite = ExplosionSprite;
+        NextAct->WaterSprite = WaterSprite;
 
+        for (int i = 0; i < 5; i++) {
+            NextAct->KnuxSprite[i] = KnuxSprite[i];
+        }
+        NextAct->Player = Player;
+        for (int p = 0; p < PlayerCount; p++) {
+            NextAct->Players[p] = Players[p];
+            NextAct->Players[p]->Scene = NextAct;
+        }
+        NextAct->PlayerCount = PlayerCount;
+        NextAct->Score = Score;
+
+        // Set all these to NULL so they do not get cleaned up
+        PlayerCount = 0;
+        KnuxSprite[0] = NULL;
+        ItemsSprite = NULL;
+        AnimalsSprite = NULL;
+        ObjectsSprite = NULL;
+        Objects2Sprite = NULL;
+        Objects3Sprite = NULL;
+        ExplosionSprite = NULL;
+        WaterSprite = NULL;
+
+        App->NextScene = NextAct;
     }
 }
 
@@ -944,8 +1316,7 @@ PUBLIC void Level_AIZ::Cleanup() {
     #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 
     CLEANUP(AIZObjectsSprite);
-    // CLEANUP(SpriteMap["AIZ Enemies"]);
-    // CLEANUP(SpriteMap["AIZ Boss"]);
+    CLEANUP(AIZBossSprite);
 
     LevelScene::Cleanup();
 }

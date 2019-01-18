@@ -5,6 +5,16 @@
 
 class LevelScene;
 
+enum class CollideSide {
+    NONE = 0,
+    LEFT = 1,
+    RIGHT = 2,
+    SIDES = 3,
+    TOP = 4,
+    TOP_SIDES = 7,
+    BOTTOM = 8,
+};
+
 class Object {
 public:
     IApp* App;
@@ -18,12 +28,14 @@ public:
     uint32_t* InitialValues;
 
 
-    uint32_t X;
-    int32_t  Y;
-    uint16_t W = 32;
-    uint16_t H = 32;
-    uint16_t VisW = 0;
-    uint16_t VisH = 0;
+    int32_t  SubX = 0;
+    int32_t  SubY = 0;
+    int16_t& X = *((int16_t*)&SubX + 1);
+    int16_t& Y = *((int16_t*)&SubY + 1);
+    int16_t  W = 32;
+    int16_t  H = 32;
+    int16_t  VisW = 0;
+    int16_t  VisH = 0;
     int16_t  XSpeed = 0;
     int16_t  YSpeed = 0;
 
@@ -47,12 +59,14 @@ public:
     bool SolidCustomized = false;
 
     bool Pushable = false;
-    bool BreakableByRoll = false;
-    bool BreakableByJump = false;
-    bool BreakableByGlide = false;
-    bool BreakableByKnuckles = false;
     bool CollidingWithPlayer = false;
     bool BeingStoodOn = false;
+
+    CollideSide BreakableByRoll = CollideSide::NONE;
+    CollideSide BreakableByJump = CollideSide::NONE;
+    CollideSide BreakableByGlide = CollideSide::NONE;
+    CollideSide BreakableBySpring = CollideSide::NONE;
+    CollideSide BreakableByKnuckles = CollideSide::NONE;
 
     bool BounceOffShield = false;
     bool NegatedByFireShield = false;
