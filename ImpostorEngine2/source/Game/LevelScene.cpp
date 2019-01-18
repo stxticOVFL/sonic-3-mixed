@@ -1470,7 +1470,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					y = 0;
 					int buf = 0;
                     int fullFlip;
-					layer.ScrollIndexes[0].TileBuffers = (int*)calloc(layer.Width * bufHeight, sizeof(int));
+                    // layer.Width * bufHeight
+					layer.ScrollIndexes[0].TileBuffers = (int*)calloc(bufHeight, sizeof(int));
 					for (int s = 0; s < layer.ScrollIndexCount; s++) {
 						for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
 							heightSize = 16;
@@ -1478,6 +1479,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								heightSize = layer.ScrollIndexes[s].Size - siT;
 							if (heightSize > ((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
 								heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
+
+                            G->BeginSpriteListBuffer();
 
 							for (x = 0; x < layer.Width; x++) {
 								tilindy = ((y + siT) >> 4);
@@ -1501,12 +1504,16 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 										wheree = 0x10 - wheree - heightSize;
 
                                     if (anID == 0xFF) {
+                                        /*
                                         // Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
 											G->MakeFrameBufferID(TileSprite, &Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width], ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2, fullFlip);
+                                        //*/
+                                        G->AddToSpriteListBuffer(TileSprite, ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8 + (x << 4), -heightSize / 2, fullFlip);
 									}
 								}
 							}
 
+                            Data->layers[i].ScrollIndexes[0].TileBuffers[buf] = G->FinishSpriteListBuffer();
 							buf++;
 						}
 
@@ -3129,6 +3136,8 @@ PUBLIC void LevelScene::RenderTitleCard() {
     if (LevelCardHide)
         return;
 
+    if (LevelCardTimer == 0.0) return;
+
     if (LevelCardTimer > 4.0)
         return;
 
@@ -3166,7 +3175,7 @@ PUBLIC void LevelScene::RenderTitleCard() {
     }
     textW = ex;
 
-    textX = 390 - textW + text1Off;
+    textX = App->WIDTH - 34 - textW + text1Off;
     textY = 100;
 
     G->DrawRectangleSkewedH(
@@ -3193,7 +3202,7 @@ PUBLIC void LevelScene::RenderTitleCard() {
 
     textY += 36;
 
-    textX = 390 + 8 + text2Off;
+    textX = App->WIDTH - 34 + 8 + text2Off;
     G->DrawRectangleSkewedH(
         textX - 25 - 32 * 4, textY - 5,
         128 + 25, 13, 13, 0xEEEEEE);
@@ -3373,7 +3382,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 for (s = 0; s < layer.ScrollIndexCount; s++) {
                     index = layer.ScrollIndexes[s].Index;
 
-                    int heightSize, tilindx, tilindy, tilindpos, word;
+                    int heightSize, tilindx, tilindy, tilindpos, word, fBX;
                     for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
                         heightSize = 16;
                         if (heightSize > layer.ScrollIndexes[s].Size - siT)
@@ -3395,8 +3404,11 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                         TileBaseX -= layer.OffsetX;
                         TileBaseY -= layer.OffsetY;
 
+                        int bufVal = 0;
                         if (TileBaseY + heightSize > 0 && TileBaseY < App->HEIGHT) {
-                            int bufVal = 0;
+                            bufVal = layer.Width * 16;
+                            fBX = (((-TileBaseX) % bufVal + bufVal) % bufVal);
+
                             for (x = TileBaseX >> 4; x < 2 + ((TileBaseX + App->WIDTH) >> 4); x++) {
                                 tilindy = ((y + siT) >> 4);
                                 tilindy = (tilindy % layer.Height + layer.Height) % layer.Height; // so it loops
@@ -3415,15 +3427,27 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
                                     if (anID != 0xFF) {
                                         G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
-                                        bufVal = 0;
                                     }
                                     else {
-                                        if (layer.ScrollIndexes[0].TileBuffers && layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width] > 0) {
-                                            G->DrawSpriteBuffered(TileSprite,
-                                                layer.ScrollIndexes[0].TileBuffers[tilindx + buf * layer.Width], // bufVal,
-                                                baseX + 8, baseY + heightSize / 2, 0, bufVal);//fullFlip);
+                                        // tilindx + buf * layer.Width
+                                        if (layer.ScrollIndexes[0].TileBuffers && layer.ScrollIndexes[0].TileBuffers[buf] > 0) {
+                                            if (bufVal != 0)
+                                                G->DrawSpriteListBuffer(TileSprite,
+                                                    layer.ScrollIndexes[0].TileBuffers[buf], layer.Width,
+                                                    fBX + 8, baseY + heightSize / 2);
+                                                G->DrawSpriteListBuffer(TileSprite,
+                                                    layer.ScrollIndexes[0].TileBuffers[buf], layer.Width,
+                                                    fBX + 8 - bufVal, baseY + heightSize / 2);
+                                                // G->DrawSpriteListBuffer(TileSprite,
+                                                //     layer.ScrollIndexes[0].TileBuffers[buf], layer.Width,
+                                                //     fBX + 8 + bufVal, baseY + heightSize / 2);
 
-                                            bufVal = 1;
+                                                // G->DrawSpriteBuffered(TileSprite,
+                                                //     layer.ScrollIndexes[0].TileBuffers[buf], // bufVal,
+                                                //     // baseX + 8, baseY + heightSize / 2, 0, bufVal);//fullFlip);
+                                                //     TileBaseX + 8, baseY + heightSize / 2, 0, bufVal);//fullFlip);
+
+                                            bufVal = 0;
                                         }
                                         else {
 											flipY = ((fullFlip >> 1) & 1);

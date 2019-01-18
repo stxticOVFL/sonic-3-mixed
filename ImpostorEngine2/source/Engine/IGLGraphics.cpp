@@ -63,11 +63,23 @@ struct VertexData {
     GLfloat A;
 };
 
-int* backupframebuffers;
-int  backupframebuffercount = 0;
-int  backupframebufferindex = 0;
+#if ANDROID
+#define GL_BGRA GL_RGBA
+#endif
 
-int Quality = 1;
+int                         Quality = 1;
+uint32_t*                   ColorFlipArray = NULL;
+int*                        backupframebuffers = NULL;
+int                         backupframebuffercount = 0;
+int                         backupframebufferindex = 0;
+
+vector<ISprite*>            MakeTextureList;
+vector<ISprite*>            MakeFrameBufferSpList;
+vector<void*>               MakeFrameBufferIDList;
+vector<vector<VertexData>>  MakeFrameBufferRawList;
+vector<int*>                MakeFrameBufferRaPtrList;
+
+vector<VertexData>          RawVertArray;
 
 PUBLIC IGLGraphics::IGLGraphics(IApp* app) {
     App = app;
@@ -88,8 +100,6 @@ PUBLIC IGLGraphics::IGLGraphics(IApp* app) {
 PUBLIC void IGLGraphics::Init() {
 
 }
-
-uint32_t* ColorFlipArray = NULL;
 
 PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsSharp) {
     if (IsSharp)
@@ -643,7 +653,6 @@ PUBLIC bool IGLGraphics::CheckGLError(int line) {
     }
     return false;
 }
-
 PUBLIC bool IGLGraphics::CheckShaderError(GLuint shader) {
     int infoLogLength = 0;
     int maxLength = infoLogLength;
@@ -665,7 +674,6 @@ PUBLIC bool IGLGraphics::CheckShaderError(GLuint shader) {
     delete[] infoLog;
     return false;
 }
-
 PUBLIC bool IGLGraphics::CheckProgramError(GLuint prog) {
     int infoLogLength = 0;
     int maxLength = infoLogLength;
@@ -744,7 +752,6 @@ PUBLIC void IGLGraphics::Present() {
     // glBindFramebuffer(GL_FRAMEBUFFER, defaultFBO);
     // glViewport(0.0, 0.0, WindowWidth * RetinaMult, WindowHeight * RetinaMult);
 }
-
 PUBLIC void IGLGraphics::Cleanup() {
     glDeleteBuffers(1, &rectBufferID);
 
@@ -753,21 +760,11 @@ PUBLIC void IGLGraphics::Cleanup() {
     // glDisableVertexAttribArray(LocColor);
 }
 
-vector<ISprite*> MakeTextureList;
-vector<ISprite*> MakeFrameBufferSpList;
-vector<void*>    MakeFrameBufferIDList;
-vector<vector<VertexData>> MakeFrameBufferRawList;
-vector<int*> MakeFrameBufferRaPtrList;
-
 PUBLIC void IGLGraphics::MakeTexture(ISprite* sprite) {
     if (!sprite) return;
 
     MakeTextureList.push_back(sprite);
 }
-
-#if ANDROID
-#define GL_BGRA GL_RGBA
-#endif
 PUBLIC void IGLGraphics::MakeAllTexturesAndFrameBuffers() {
     for (int i = 0; i < MakeTextureList.size(); i++) {
         ISprite* sprite = MakeTextureList[i];
@@ -983,6 +980,51 @@ PUBLIC int  IGLGraphics::MakeVertexBuffer(IModel* model, bool verts) {
 PUBLIC void IGLGraphics::DeleteBufferID(int buffID) {
     glDeleteBuffers(1, (GLuint*)&buffID);
 }
+
+//*
+PUBLIC void IGLGraphics::BeginSpriteListBuffer() {
+    RawVertArray.clear();
+}
+PUBLIC void IGLGraphics::AddToSpriteListBuffer(ISprite* sprite, int X, int Y, int W, int H, int OffX, int OffY, int Flip) {
+    float u0_x = float(X) / sprite->Width;
+    float u0_y = float(Y) / sprite->Height;
+    float u1_x = float(X + W) / sprite->Width;
+    float u1_y = float(Y + H) / sprite->Height;
+
+    float temp;
+    if (Flip & IE_FLIPX) {
+        temp = u0_x;
+        u0_x = u1_x;
+        u1_x = temp;
+    }
+    if (Flip & IE_FLIPY) {
+        temp = u0_y;
+        u0_y = u1_y;
+        u1_y = temp;
+    }
+
+    float p0_x = OffX;
+    float p0_y = OffY;
+    float p1_x = p0_x + abs(W);
+    float p1_y = p0_y + abs(H);
+
+    RawVertArray.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+    RawVertArray.push_back(VertexData { float(p1_x), float(p0_y), 0.0, u1_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+    RawVertArray.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+
+    RawVertArray.push_back(VertexData { float(p0_x), float(p0_y), 0.0, u0_x, u0_y, 1.0, 1.0, 1.0, 1.0 });
+    RawVertArray.push_back(VertexData { float(p1_x), float(p1_y), 0.0, u1_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+    RawVertArray.push_back(VertexData { float(p0_x), float(p1_y), 0.0, u0_x, u1_y, 1.0, 1.0, 1.0, 1.0 });
+}
+PUBLIC int  IGLGraphics::FinishSpriteListBuffer() {
+    GLuint bufferID;
+    glGenBuffers(1, &bufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+    glBufferData(GL_ARRAY_BUFFER, RawVertArray.size() * sizeof(VertexData), RawVertArray.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    return (int)bufferID;
+}
+//*/
 
 PUBLIC void IGLGraphics::SetClip(int x, int y, int w, int h) {
     glEnable(GL_SCISSOR_TEST);
@@ -1264,8 +1306,7 @@ PUBLIC void IGLGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x
     if (!sprite->TextureID) return;
 
     glUniform3f(LocTranslate, x, y, 0.0f);
-    if (flip == 0)
-        glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
+    glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
 
     glUniform1i(LocUseTexture, 1);
     if (LastSprite != sprite) {
@@ -1297,6 +1338,50 @@ PUBLIC void IGLGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x
     glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
     glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glUniform1f(LocWaterLine, -0xFFFF);
+
+    ColorBlendR = 1.0f;
+    ColorBlendG = 1.0f;
+    ColorBlendB = 1.0f;
+}
+PUBLIC void IGLGraphics::DrawSpriteListBuffer(ISprite* sprite, int bufferID, int count, int x, int y) {
+    if (!sprite) return;
+    if (!sprite->TextureID) return;
+
+    glUniform3f(LocTranslate, x, y, 0.0f);
+    glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
+
+    glUniform1i(LocUseTexture, 1);
+    if (LastSprite != sprite) {
+        glUniform4f(LocColor, 1.0f, 1.0f, 1.0f, DrawAlpha / 255.f);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
+        glUniform1i(LocTexture, 0);
+
+        LastSprite = sprite;
+
+        if (sprite->LinkedSprite)
+            sprite = sprite->LinkedSprite;
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
+        glUniform1i(LocPalette, 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
+        glUniform1i(LocPaletteAlt, 2);
+    }
+
+    if (sprite->Paletted == 2)
+        glUniform1f(LocWaterLine, (App->HEIGHT - WaterPaletteStartLine));
+
+    glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+    glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
+    glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
+    glDrawArrays(GL_TRIANGLES, 0, 6 * count);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glUniform1f(LocWaterLine, -0xFFFF);

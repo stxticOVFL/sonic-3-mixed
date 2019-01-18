@@ -5,12 +5,12 @@ var SubX:Uint32;
 var LastX:int;
 var RockSize:int;
 var RockType:int;
-var Rock0Pos:char[32];
-var Rock0Vels:short[16];
-var Rock1Pos:char[32];
-var Rock1Vels:short[16];
-var Rock2Pos:char[32];
-var Rock2Vels:short[16];
+var Rock0Pos:Sint8[32];
+var Rock0Vels:Sint16[16];
+var Rock1Pos:Sint8[32];
+var Rock1Vels:Sint16[16];
+var Rock2Pos:Sint8[32];
+var Rock2Vels:Sint16[16];
 
 var Knux:bool;
 

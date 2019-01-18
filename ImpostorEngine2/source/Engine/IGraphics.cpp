@@ -49,7 +49,7 @@ public:
     int     DrawModeOverlay = false;
 
     double  MyCos[256];
-    double  MySin[256]; //
+    double  MySin[256]; ///
 };
 #endif
 
@@ -106,20 +106,28 @@ PUBLIC VIRTUAL void IGraphics::MakeTexture(ISprite* sprite) {
 PUBLIC VIRTUAL void IGraphics::UpdatePalette(ISprite* sprite) {
 
 }
-PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* f) {
+PUBLIC VIRTUAL int  IGraphics::MakeFrameBufferID(ISprite* sprite, void* f) {
     return -2;
 }
-PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY, int flip) {
+PUBLIC VIRTUAL int  IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY, int flip) {
     return -2;
 }
-PUBLIC VIRTUAL int IGraphics::MakeVertexBuffer(vector<IVertex> vert) {
+PUBLIC VIRTUAL int  IGraphics::MakeVertexBuffer(vector<IVertex> vert) {
     return -2;
 }
-PUBLIC VIRTUAL int IGraphics::MakeVertexBuffer(IModel* m, bool verts) {
+PUBLIC VIRTUAL int  IGraphics::MakeVertexBuffer(IModel* m, bool verts) {
     return -2;
 }
 PUBLIC VIRTUAL void IGraphics::DeleteBufferID(int buffID) {
 
+}
+
+PUBLIC VIRTUAL void IGraphics::BeginSpriteListBuffer() {
+}
+PUBLIC VIRTUAL void IGraphics::AddToSpriteListBuffer(ISprite* sprite, int X, int Y, int W, int H, int OffX, int OffY, int Flip) {
+}
+PUBLIC VIRTUAL int  IGraphics::FinishSpriteListBuffer() {
+    return -2;
 }
 
 PUBLIC VIRTUAL void IGraphics::Init() {
@@ -667,6 +675,10 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
 PUBLIC VIRTUAL void IGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x, int y, int angle, int flip) {
 
 }
+PUBLIC VIRTUAL void IGraphics::DrawSpriteListBuffer(ISprite* sprite, int bufferID, int count, int x, int y) {
+
+}
+
 PUBLIC VIRTUAL void IGraphics::DrawText(int x, int y, const char* string, unsigned int pixel) {
     for (int i = 0; i < strlen(string); i++) {
         for (int bx = 0; bx < 8; bx++) {
