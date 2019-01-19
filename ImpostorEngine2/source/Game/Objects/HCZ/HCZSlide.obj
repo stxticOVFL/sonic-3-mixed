@@ -262,8 +262,6 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         ) {
             PlayersGot[PlayerID] = 1;
 
-            printf("%s %d\n", "ahhhhhhhhhh", PlayerID);
-
             Scene.Players[PlayerID].GroundSensorHeight = Math.abs(Scene.Players[PlayerID].GroundSpeed);
             Scene.Players[PlayerID].GroundSensorHeightMin = -1;
 

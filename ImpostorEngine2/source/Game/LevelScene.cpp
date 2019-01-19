@@ -2913,7 +2913,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
         if (ZoneID == 5 && Act == 1 && Player->EZX < 0x3880) {
             Max = 0x90;
         }
-        if (abs(OffsetX) > 8) {
+        if (IMath::abs(OffsetX) > 8) {
             OffsetX -= 8 * IMath::sign(OffsetX);
         }
         else {
@@ -2928,20 +2928,20 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
         OffsetX = IMath::min(IMath::abs(OffsetX), Max) * IMath::sign(OffsetX);
 
         if (!Player->Ground) {
-            if (abs(OffsetY) > 32)
+            if (IMath::abs(OffsetY) > 32)
                 OffsetY -= 32 * IMath::sign(OffsetY);
             else
                 OffsetY  = 0;
         }
 
         Max = 6;
-        if (abs(Player->YSpeed) >= 0x43C && Player->Ground)
+        if (IMath::abs(Player->YSpeed) >= 0x43C && Player->Ground)
             Max = 24;
 
         // NOTE: Mania notes
         // When player lands, wait 16 frames
 
-        if (Player->Ground)
+        if (IMath::abs(Player->YSpeed) < 0x43C && Player->Ground)
             OffsetY = IMath::min(IMath::abs(OffsetY) / 2, Max) * IMath::sign(OffsetY);
 
         CameraX += OffsetX;

@@ -19,6 +19,29 @@ public:
 
 #include <Game/Levels/HCZ.h>
 
+int HCZ_WaterTunnels[126] = {
+    /*  Min X,  Min Y,  Max X,  Max Y,  X Velo, Y Velo, Player can influence which axis flag (Set = X, Clear = Y) */
+    0x0380, 0x0580, 0x05A0, 0x05C0, 0x03F0, 0xFFE0, 0x0000,
+    0x05A0, 0x0560, 0x0A80, 0x05C0, 0x03F0, 0xFFF0, 0x0000,
+    0x1400, 0x0A80, 0x15A0, 0x0AC0, 0x0400, 0x0000, 0x0000,
+    0x15A0,	0x0A40, 0x1960, 0x0AC0, 0x0400, 0xFFC0, 0x0000,
+    0x1990,	0x0580, 0x19E0, 0x07F0, 0x0000, 0xF700, 0x0200,
+    0x1990, 0x07F0, 0x19F0, 0x0878, 0xFEC0, 0xFD00, 0x0100,
+    0x1990, 0x0878, 0x19F0, 0x08FD, 0x0140, 0xFD00, 0x0100,
+    0x1990, 0x08FD, 0x19F0, 0x0978, 0xFEC0, 0xFD00, 0x0100,
+    0x1990, 0x0978, 0x19F0, 0x0A10, 0x0100, 0xFD00, 0x0100,
+    0x1960, 0x0A10, 0x19D0, 0x0A80, 0x0300, 0xFD80, 0x0100,
+    0x2B00, 0x0800, 0x2C20, 0x0840, 0x0400, 0x0000, 0x0000,
+    0x2C20,	0x07B0, 0x2EE0, 0x0840, 0x0400, 0xFFC0, 0x0000,
+    0x2EE0,	0x0790, 0x2F10, 0x0800, 0x0300, 0xFD00, 0x0100,
+    0x2F10, 0x0700, 0x2F30, 0x0790, 0x0200, 0xFD00, 0x0100,
+    0x2F30, 0x0700, 0x2F70, 0x0700, 0x0100, 0xFD00, 0x0100,
+    0x2F30, 0x0480, 0x2F70, 0x0700, 0x0000, 0xF700, 0x0200,
+
+    0x3A00, 0x0800, 0x3AA0, 0x0840, 0x0400, 0x0000, 0x0000,
+    0x3AA0, 0x07C0, 0x3F00, 0x0840, 0x0400, 0x0000, 0x0000,
+};
+
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
 
 PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
@@ -498,7 +521,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                 ShakeTimer = 20;
                 Sound::Play(Sound::SFX_IMPACT4);
             }
-            if (Player->EZX >= 0xCD0 || Player->EZY < 0x5A0) {
+            if (Player->EZX >= 0xCD0 || (Player->EZY < 0x5A0 && Player->Action != ActionType::Dead)) {
                 WallMoving = false;
                 WallStopped = true;
                 ShakeTimer = 0;
@@ -612,29 +635,6 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
         }
     }
 
-    // HCZ_WaterTunnels
-    int waterTunnels[126] = {
-        /*  Min X,  Min Y,  Max X,  Max Y,  X Velo, Y Velo, Player can influence which axis flag (Set = X, Clear = Y) */
-        0x0380, 0x0580, 0x05A0, 0x05C0, 0x03F0, 0xFFE0, 0x0000,
-        0x05A0, 0x0560, 0x0A80, 0x05C0, 0x03F0, 0xFFF0, 0x0000,
-        0x1400, 0x0A80, 0x15A0, 0x0AC0, 0x0400, 0x0000, 0x0000,
-        0x15A0,	0x0A40, 0x1960, 0x0AC0, 0x0400, 0xFFC0, 0x0000,
-        0x1990,	0x0580, 0x19E0, 0x07F0, 0x0000, 0xF700, 0x0200,
-        0x1990, 0x07F0, 0x19F0, 0x0878, 0xFEC0, 0xFD00, 0x0100,
-        0x1990, 0x0878, 0x19F0, 0x08FD, 0x0140, 0xFD00, 0x0100,
-        0x1990, 0x08FD, 0x19F0, 0x0978, 0xFEC0, 0xFD00, 0x0100,
-        0x1990, 0x0978, 0x19F0, 0x0A10, 0x0100, 0xFD00, 0x0100,
-        0x1960, 0x0A10, 0x19D0, 0x0A80, 0x0300, 0xFD80, 0x0100,
-        0x2B00, 0x0800, 0x2C20, 0x0840, 0x0400, 0x0000, 0x0000,
-        0x2C20,	0x07B0, 0x2EE0, 0x0840, 0x0400, 0xFFC0, 0x0000,
-        0x2EE0,	0x0790, 0x2F10, 0x0810, 0x0300, 0xFD00, 0x0100,
-        0x2F10, 0x0700, 0x2F30, 0x0800, 0x0200, 0xFD00, 0x0100,
-        0x2F30, 0x0700, 0x2F70, 0x0800, 0x0100, 0xFD00, 0x0100,
-        0x2F30, 0x0480, 0x2F70, 0x0700, 0x0000, 0xF700, 0x0200,
-
-        0x3A00, 0x0800, 0x3AA0, 0x0840, 0x0400, 0x0000, 0x0000,
-        0x3AA0, 0x07C0, 0x3F00, 0x0840, 0x0400, 0x0000, 0x0000,
-    };
     for (int p = 0; p < PlayerCount; p++) {
         IPlayer* Player = Players[p];
         if (Player->Action == ActionType::Dead) continue;
@@ -644,18 +644,18 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
             if (Act == 1) {
                 int px1 = Player->EZX;
                 int px2 = Player->EZX;
-                int py1 = Player->EZY - Player->H / 4;
+                int py1 = Player->EZY;
                 int py2 = Player->EZY;
 
                 if (LevelTriggerFlag >> 0 & 1) {
                     for (int i = 0; i < 2; i++) {
-                        if (px1 >= waterTunnels[i * 7 + 0] &&
-                            py1 >= waterTunnels[i * 7 + 1] &&
-                            px2 <  waterTunnels[i * 7 + 2] &&
-                            py2 <  waterTunnels[i * 7 + 3]) {
+                        if (px1 >= HCZ_WaterTunnels[i * 7 + 0] &&
+                            py1 >= HCZ_WaterTunnels[i * 7 + 1] &&
+                            px2 <  HCZ_WaterTunnels[i * 7 + 2] &&
+                            py2 <  HCZ_WaterTunnels[i * 7 + 3]) {
                             Player->Action = ActionType::InStream;
-                            Player->XSpeed = waterTunnels[i * 7 + 4];
-                            Player->YSpeed = waterTunnels[i * 7 + 5];
+                            Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4] << 1;
+                            Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5] << 1;
                             Player->Ground = false;
                             Found = true;
                         }
@@ -663,23 +663,23 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                 }
 
                 for (int i = 2; i < 16; i++) {
-                    if (px1 >= waterTunnels[i * 7 + 0] &&
-                        py1 >= waterTunnels[i * 7 + 1] &&
-                        px2 <  waterTunnels[i * 7 + 2] &&
-                        py2 <  waterTunnels[i * 7 + 3]) {
-                        if ((waterTunnels[i * 7 + 6] & 0x200) == 0x200) {
+                    if (px1 >= HCZ_WaterTunnels[i * 7 + 0] &&
+                        py1 >= HCZ_WaterTunnels[i * 7 + 1] &&
+                        px2 <  HCZ_WaterTunnels[i * 7 + 2] &&
+                        py2 <  HCZ_WaterTunnels[i * 7 + 3]) {
+                        if ((HCZ_WaterTunnels[i * 7 + 6] & 0x200) == 0x200) {
                             if (Player->Action == ActionType::InStream) {
                                 Player->Action = ActionType::InStream;
-                                Player->XSpeed = waterTunnels[i * 7 + 4];
-                                Player->YSpeed = waterTunnels[i * 7 + 5];
+                                Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4] << 1;
+                                Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5] << 1;
                                 Player->Ground = false;
                                 Found = true;
                             }
                         }
                         else {
                             Player->Action = ActionType::InStream;
-                            Player->XSpeed = waterTunnels[i * 7 + 4];
-                            Player->YSpeed = waterTunnels[i * 7 + 5];
+                            Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4] << 1;
+                            Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5] << 1;
                             Player->Ground = false;
                             Found = true;
                         }
@@ -695,25 +695,25 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                 int px1 = Player->EZX;
                 int px2 = Player->EZX;
                 int py1 = Player->EZY;
-                int py2 = Player->EZY - Player->H / 2;
+                int py2 = Player->EZY;
 
                 for (int i = 16; i < 18; i++) {
-                    if (px1 >= waterTunnels[i * 7 + 0] &&
-                        py1 >= waterTunnels[i * 7 + 1] &&
-                        px2 <  waterTunnels[i * 7 + 2] &&
-                        py2 <  waterTunnels[i * 7 + 3]) {
-                        if ((waterTunnels[i * 7 + 6] & 0x200) == 0x200) {
+                    if (px1 >= HCZ_WaterTunnels[i * 7 + 0] &&
+                        py1 >= HCZ_WaterTunnels[i * 7 + 1] &&
+                        px2 <  HCZ_WaterTunnels[i * 7 + 2] &&
+                        py2 <  HCZ_WaterTunnels[i * 7 + 3]) {
+                        if ((HCZ_WaterTunnels[i * 7 + 6] & 0x200) == 0x200) {
                             if (Player->Action == ActionType::InStream) {
-                                Player->XSpeed = waterTunnels[i * 7 + 4];
-                                Player->YSpeed = waterTunnels[i * 7 + 5];
+                                Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4];
+                                Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5];
                                 Player->Ground = false;
                                 Found = true;
                             }
                         }
                         else {
                             Player->Action = ActionType::InStream;
-                            Player->XSpeed = waterTunnels[i * 7 + 4];
-                            Player->YSpeed = waterTunnels[i * 7 + 5];
+                            Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4];
+                            Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5];
                             Player->Ground = false;
                             Found = true;
                         }
@@ -722,6 +722,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
             }
             if (!Found && Player->Action == ActionType::InStream) {
                 Player->Action = ActionType::Peril;
+                Player->XSpeed >>= 1;
             }
         }
     }

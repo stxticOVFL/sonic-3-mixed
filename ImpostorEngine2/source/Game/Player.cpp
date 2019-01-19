@@ -1229,9 +1229,11 @@ void IPlayer::Update() {
 
     HandleMonitors(); // handle breakable objects before collision, so that solids dont override breakability
 
+	/// BEGIN COLLISION
+    int angleOut;
 	int SensorEFWidth = 10;
+	// AIZ1 Loop Hack
 	bool AngelIslandTriLoopFlag = false;
-
 	if (Scene->ZoneID == 1 && Scene->Act == 1 && AngleMode == 1 &&
 		EZX > 0x2B40 && EZX < 0x2B54 &&
 		EZY > 0x388 && EZY < 0x3F0) {
@@ -1239,16 +1241,14 @@ void IPlayer::Update() {
 		AngleIslandFlag = true;
 		EZX = 0x2B60 - H / 2;
 	}
-
 	if (AngleIslandFlag && (EZY < 0x35B || GroundSpeed < 0 || YSpeed > 0 || !Ground)) {
 		AngleIslandFlag = false;
 		AngelIslandTriLoopFlag = false;
 	}
-
 	if (AngelIslandTriLoopFlag)
 		SensorEFWidth = -1;
 
-	// Handle EF sensors
+	// Handle EF sensors (Wall collisions)
     if (Ground) {
         XSpeed = GroundSpeed * Cos[Angle];
         YSpeed = GroundSpeed * -Sin[Angle];
@@ -1302,8 +1302,8 @@ void IPlayer::Update() {
 
         if (IMath::abs(GroundSpeed) < 0x280 && AngleMode != 0 && !ForceRoll) {
             if (Action == ActionType::Rolling) {
-                this->SubX += (int)(this->Sin[Angle] * (H / 2 - 16)) << 16;
-                this->SubY += (int)(this->Cos[Angle] * (H / 2 - 16)) << 16;
+                SubX += (int)(this->Sin[Angle] * (H / 2 - 16)) << 16;
+                SubY += (int)(this->Cos[Angle] * (H / 2 - 16)) << 16;
             }
 
             if (Angle <= 0xC0 && Angle >= 0x40) {
@@ -1362,15 +1362,6 @@ void IPlayer::Update() {
         }
     }
 
-    this->SubX += XSpeed << 8;
-    this->SubY += YSpeed << 8;
-    if (Action == ActionType::InStream) {
-        this->SubX += XSpeed << 8;
-        this->SubY += YSpeed << 8;
-    }
-
-    int angleOut;
-    // int SensorEFWidth = 10;
     int SensorEFPos = EZY;
     if (Angle == 0)
         SensorEFPos = EZY + 8;
@@ -1378,7 +1369,6 @@ void IPlayer::Update() {
         SensorEFPos = EZY + 8;
     if (!Ground)
         SensorEFPos = EZY;
-
     if (AngleMode != 0 && AngleMode != 2) {
         SensorEFPos -= EZY - EZX;
     }
@@ -1400,7 +1390,7 @@ void IPlayer::Update() {
         if (SensorE < 11 && SensorE >= 0 && XSpeed < 0 && ((DisplayAngle == 0 && AngleMode == 0) || Action == ActionType::InStream || !Ground || (Angle == 0) || (AngleMode == 2))) {
             EZX = EZX + (11 - SensorE);
             if (Action == ActionType::InStream)
-                this->SubX -= (XSpeed << 9);
+                SubX -= (XSpeed << 9);
 
             if (SensorE == 0)
                 goto CheckSensorE;
@@ -1439,7 +1429,7 @@ void IPlayer::Update() {
         if (SensorF < 11 && SensorF >= 0 && XSpeed > 0 && ((DisplayAngle == 0 && AngleMode == 0) || Action == ActionType::InStream || !Ground || (Angle == 0) || (AngleMode == 2))) {
             EZX = EZX - (11 - SensorF);
             if (Action == ActionType::InStream)
-                this->SubX -= (XSpeed << 9);
+                SubX -= (XSpeed << 9);
 
             if (SensorF == 0)
                 goto CheckSensorF;
@@ -1463,481 +1453,469 @@ void IPlayer::Update() {
         }
     }
 
-    if (Action == ActionType::InStream && SensorEFPos == EZY) {
-        SensorEFPos = EZY - 8;
-        goto CheckSensorE;
-    }
-
-    int SensorLength = H / 2;
-    if (Ground || ForceRoll) {
-        SensorLength += 16;
-    }
-
     if ((Action != ActionType::Jumping || YSpeed < 0) && ShieldAction) {
         ShieldAction = false;
     }
 
-    int SensorABCDWidth = 9;
-    if (Action == ActionType::Jumping ||
-        Action == ActionType::Rolling ||
-        Action == ActionType::Spring)
-        SensorABCDWidth = 7;
+	// Handle ABCD Sensors (Floor and ceiling collisions)
+	int CheckStepsMax = 4;
+	int CheckSteps = CheckStepsMax;
 
-    HandleSprings();
+	while (CheckSteps--) {
+		int SensorLength = H / 2;
+	    if (Ground || ForceRoll) {
+	        SensorLength += 16;
+	    }
 
-    CheckSensorsAB:
-    // Check Sensor A
-    SensorA = -1;
-    int SensorA_Angle = -1;
-	Object* lastObj = NULL;
-    for (int y = 0; y <= SensorLength && DoCollision; y++) {
-        if (Scene->CollisionAt(
-            EZX - SensorABCDWidth * ModeCos[AngleMode] + y * ModeSin[AngleMode],
-            EZY + SensorABCDWidth * ModeSin[AngleMode] + y * ModeCos[AngleMode], &SensorA_Angle, AngleMode, this)) {
-            if (!SensorA_Angle)
-                SensorA_Angle = ((4 - AngleMode) & 0x3) * 0x40;
-            SensorA = y;
-            break;
-        }
-    }
-    if (SensorA == 0) SensorA = -1;
+	    int SensorABCDWidth = 9;
+	    if (Action == ActionType::Jumping ||
+	        Action == ActionType::Rolling ||
+	        Action == ActionType::Spring)
+	        SensorABCDWidth = 7;
 
-	if (LastObject)
-		lastObj = LastObject;
-
-    // Check Sensor B
-    SensorB = -1;
-    int SensorB_Angle = -1;
-    for (int y = 0; y <= SensorLength && DoCollision; y++) {
-        if (Scene->CollisionAt(
-            EZX + SensorABCDWidth * ModeCos[AngleMode] + y * ModeSin[AngleMode],
-            EZY - SensorABCDWidth * ModeSin[AngleMode] + y * ModeCos[AngleMode], &SensorB_Angle, AngleMode, this)) {
-            if (!SensorB_Angle)
-                SensorB_Angle = ((4 - AngleMode) & 0x3) * 0x40;
-            SensorB = y;
-            break;
-        }
-    }
-    if (SensorB == 0) SensorB = -1;
-
-	if (!LastObject)
-		LastObject = lastObj;
-
-    // Handle falling and ground reacquisition
-    if (Ground) {
-		if (AngleIslandFlag && SensorEFWidth == -1 && AngelIslandTriLoopFlag) {
-			Angle = 0xC0;
-			AngleMode = 1;
-			Ground = true;
-			EZX = 0x2B60 - H / 2;
-			goto SkipRepositioning;
+	    // CheckSensorsAB:
+		int d0 = (Angle + 0x20) & 0xFF;
+		if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; } else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
+		if (ForceRoll) d0++;
+		switch (d0 & 0xC0) {
+			case 0x00: AngleMode = 0; break;
+			case 0x40: AngleMode = 3; break;
+			case 0x80: AngleMode = 2; break;
+			case 0xC0: AngleMode = 1; break;
 		}
+	    // Check Sensor A
+	    SensorA = -1;
+	    int SensorA_Angle = -1;
+		Object* lastObj = NULL;
+	    for (int y = 0; y <= SensorLength && DoCollision; y++) {
+	        if (Scene->CollisionAt(
+	            EZX - SensorABCDWidth * ModeCos[AngleMode] + y * ModeSin[AngleMode],
+	            EZY + SensorABCDWidth * ModeSin[AngleMode] + y * ModeCos[AngleMode], &SensorA_Angle, AngleMode, this)) {
+	            if (!SensorA_Angle)
+	                SensorA_Angle = ((4 - AngleMode) & 0x3) * 0x40;
+	            SensorA = y;
+	            break;
+	        }
+	    }
+	    if (SensorA == 0) SensorA = -1;
 
-        if (SensorA == -1 && SensorB == -1) {
-            XSpeed = GroundSpeed * Cos[Angle];
-            YSpeed = GroundSpeed * -Sin[Angle];
+		if (LastObject)
+			lastObj = LastObject;
 
-            Ground = false;
-			printf("%s AngleMode %d\n", "No ground", AngleMode);
-            if (Action == ActionType::Rolling && !ForceRoll) {
-                JumpVariable = 2;
-                Action = ActionType::Jumping;
-                EZX += int(this->Sin[Angle] * (H / 2 - 16));
-                EZY += int(this->Cos[Angle] * (H / 2 - 16));
-            }
-            Angle = 0;
-            AngleMode = 0;
-            ShieldUsable = false;
+	    // Check Sensor B
+	    SensorB = -1;
+	    int SensorB_Angle = -1;
+	    for (int y = 0; y <= SensorLength && DoCollision; y++) {
+	        if (Scene->CollisionAt(
+	            EZX + SensorABCDWidth * ModeCos[AngleMode] + y * ModeSin[AngleMode],
+	            EZY - SensorABCDWidth * ModeSin[AngleMode] + y * ModeCos[AngleMode], &SensorB_Angle, AngleMode, this)) {
+	            if (!SensorB_Angle)
+	                SensorB_Angle = ((4 - AngleMode) & 0x3) * 0x40;
+	            SensorB = y;
+	            break;
+	        }
+	    }
+	    if (SensorB == 0) SensorB = -1;
 
-            if (Action == ActionType::Skid) {
-                Action = ActionType::Normal;
-                ChangeAnimation(AnimationMap[superflag + "Air Walk"]);
-            }
-        }
+		if (!LastObject)
+			LastObject = lastObj;
 
-        int ang = 0;
-        int value = 0xFF;
-        if (SensorA == -1 && SensorB != -1) {
-            value = SensorB;
-            ang = SensorB_Angle;
-        }
-        else if (SensorA != -1 && SensorB == -1) {
-            value = SensorA;
-            ang = SensorA_Angle;
-        }
-        else if (SensorA != -1 && SensorB != -1) {
-            if (SensorA < SensorB) {
-                value = SensorA;
-                ang = SensorA_Angle;
-            }
-            else {
-                value = SensorB;
-                ang = SensorB_Angle;
-            }
-        }
-        if (value != 0xFF) {
-            if (LastObject && !extraCheck) {
-                this->SubX += (LastObject->XSpeed) << 8;
-                if (LastObject->XSpeed != 0) {
-                    if (XSpeed == 0) {
-                        if (LastObject->XSpeed < 0)
-                            XSpeed = -1;
-                        else
-                            XSpeed = 1;
-                    }
-                    extraCheck = true;
-                    goto CheckSensorE;
-                }
-            }
+	    // Handle falling and ground reacquisition
+	    if (Ground) {
+			if (AngleIslandFlag && SensorEFWidth == -1 && AngelIslandTriLoopFlag) {
+				Angle = 0xC0;
+				AngleMode = 1;
+				Ground = true;
+				EZX = 0x2B60 - H / 2;
+			}
+			else {
+		        if (SensorA == -1 && SensorB == -1 && !ForceRoll) {
+		            XSpeed = GroundSpeed * Cos[Angle];
+		            YSpeed = GroundSpeed * -Sin[Angle];
 
-            if (true) {
-                if (AngleMode == 0)
-                    this->SubY = (EZY + value - H / 2) << 16;
-                else if (AngleMode == 1)
-					this->SubX = (EZX + value - H / 2) << 16;
-                else if (AngleMode == 2)
-                    this->SubY = (EZY - value + H / 2) << 16;
-                else if (AngleMode == 3)
-                    this->SubX = (EZX - value + H / 2) << 16;
+		            Ground = false;
+		            if (Action == ActionType::Rolling && !ForceRoll) {
+		                JumpVariable = 2;
+		                Action = ActionType::Jumping;
+		                EZX += int(this->Sin[Angle] * (H / 2 - 16));
+		                EZY += int(this->Cos[Angle] * (H / 2 - 16));
+		            }
+		            Angle = 0;
+		            AngleMode = 0;
+		            ShieldUsable = false;
 
-                if (GroundSpeed != 0)
-                    Angle = ang;
-            }
-        }
+		            if (Action == ActionType::Skid) {
+		                Action = ActionType::Normal;
+		                ChangeAnimation(AnimationMap[superflag + "Air Walk"]);
+		            }
+		        }
 
-        if (AngleMode == 0) {
-            if (Angle < 0xE0 && Angle > 0x80) // to prevent bug
-                AngleMode = 1;
-            else if (Angle > 0x20 && Angle < 0x80)
-                AngleMode = 3;
-        }
-        else if (AngleMode == 1) {
-            if (Angle < 0xA0)
-                AngleMode = 2;
-            else if (Angle > 0xDC)
-                AngleMode = 0;
-        }
-        else if (AngleMode == 2) {
-            if (Angle < 0x60)
-                AngleMode = 3;
-            else if (Angle > 0xA0)
-                AngleMode = 1;
-        }
-        else if (AngleMode == 3) {
-            if (Angle < 0x24)           // TODO: fix
-                AngleMode = 0;
-            else if (Angle > 0x60)
-                AngleMode = 2;
-        }
+		        int ang = 0;
+		        int value = 0xFF;
+		        if (SensorA == -1 && SensorB != -1) {
+		            value = SensorB;
+		            ang = SensorB_Angle;
+		        }
+		        else if (SensorA != -1 && SensorB == -1) {
+		            value = SensorA;
+		            ang = SensorA_Angle;
+		        }
+		        else if (SensorA != -1 && SensorB != -1) {
+		            if (SensorA < SensorB) {
+		                value = SensorA;
+		                ang = SensorA_Angle;
+		            }
+		            else {
+		                value = SensorB;
+		                ang = SensorB_Angle;
+		            }
+		        }
 
-        // make sure when exporting/porting S3 levels that angles like FC don't get put on the sides
-        // only ones above 45 degrees!
+				if (value != 0xFF) {
+		            if (LastObject && !extraCheck) {
+		                SubX += (LastObject->XSpeed) << 8;
+		                if (LastObject->XSpeed != 0) {
+		                    if (XSpeed == 0) {
+		                        if (LastObject->XSpeed < 0)
+		                            XSpeed = -1;
+		                        else
+		                            XSpeed = 1;
+		                    }
+		                    extraCheck = true;
+		                    // goto CheckSensorE;
+		                }
+		            }
 
-        if (!extraCheck) {
-            extraCheck = true;
-            //goto CheckSensorsAB;
-        }
-    }
-    else {
-        int hH = this->H / 2;
-        bool Landed = false;
-        if (SensorA == -1 && SensorB != -1) {
-            if (this->SubY > (EZY + SensorB - hH) << 16) {
-                if (Action == ActionType::InStream || YSpeed >= 0) {
-                    this->SubY = (EZY + SensorB - hH) << 16;
-                    Angle = SensorB_Angle;
-                    Landed = true;
-                }
-            }
-        }
-        else if (SensorA != -1 && SensorB == -1) {
-            if (this->SubY > (EZY + SensorA - hH) << 16) {
-                if (Action == ActionType::InStream || YSpeed >= 0) {
-                    this->SubY = (EZY + SensorA - hH) << 16;
-                    Angle = SensorA_Angle;
-                    Landed = true;
-                }
-            }
-        }
-        else if (SensorA != -1 && SensorB != -1) {
-            if (SensorA < SensorB) {
-                if (this->SubY > (EZY + SensorA - hH) << 16) {
-                    if (Action == ActionType::InStream || YSpeed >= 0) {
-                        this->SubY = (EZY + SensorA - hH) << 16;
-                        Angle = SensorA_Angle;
-                        Landed = true;
-                    }
-                }
-            }
-            else {
-                if (this->SubY > (EZY + SensorB - hH) << 16) {
-                    if (Action == ActionType::InStream || YSpeed >= 0) {
-                        this->SubY = (EZY + SensorB - hH) << 16;
-                        Angle = SensorB_Angle;
-                        Landed = true;
-                    }
-                }
-            }
-        }
-
-        if (Landed) {
-            JumpVariable = 0;
-            EnemyCombo = 0;
-        }
-
-        if ((SensorA == 0 || SensorB == 0) && Landed) {
-            goto CheckSensorsAB;
-        }
-        if (Action == ActionType::InStream || Action == ActionType::InStreamGrab)
-            Angle = 0;
-
-        if (DropDashRev > 0 && InputJumpHold) {
-            DropDashRev++;
-        }
-        if (DropDashRev > 0 && !InputJumpHold) {
-            DropDashRev = 0;
-        }
-        if (DropDashRev == 21) {
-            Sound::Play(Sound::SFX_DROPDASHREADY);
-        }
-
-        if (Landed && Action != ActionType::InStream && Action != ActionType::InStreamGrab) {
-            if (Shield == ShieldType::Bubble && ShieldAction) {
-                Ground = false;
-                ShieldUsable = true;
-                ShieldAction = false;
-                if (Underwater)
-                    YSpeed = -0x400;
-                else
-                    YSpeed = -0x780;
-                JumpVariable = 1;
-            }
-            else if (Action == ActionType::GlideFall) {
-                XSpeed = 0;
-                GroundSpeed = 0;
-                if (InputDown) {
-                    Action = ActionType::CrouchDown;
-                }
-                else {
-                    Action = ActionType::GlideFallLand;
-                }
-                Ground = true;
-            }
-            else if (Action == ActionType::Victory) {
-                XSpeed = 0;
-                GroundSpeed = 0;
-                Ground = true;
-            }
-            else {
-                if (Angle >= 0xF0 && Angle <= 0xFF)
-                    GroundSpeed = XSpeed;
-                else if (Angle >= 0x00 && Angle <= 0x0F)
-                    GroundSpeed = XSpeed;
-                else if (IMath::abs(XSpeed) > YSpeed) {
-                    GroundSpeed = XSpeed;
-                }
-                else {
-                    if (Angle >= 0xE0 && Angle <= 0xEF)
-                        GroundSpeed = YSpeed / 2 * -(int)IMath::sign(Sin[Angle]);
-                    else if (Angle >= 0x10 && Angle <= 0x1F)
-                        GroundSpeed = YSpeed / 2 * -(int)IMath::sign(Sin[Angle]);
-
-                    else if (Angle >= 0xC0 && Angle <= 0xDF)
-                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
-                    else if (Angle >= 0x20 && Angle <= 0x3F)
-                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
-                }
-
-
-                Ground = true;
-                ShieldUsable = true;
-                YSpeed = 0;
-				EZY -= (OrigH - H) / 2; H = OrigH;
-
-                if (Action == ActionType::Peril) {
-                    Action = ActionType::Normal;
-                }
-                else if (Action == ActionType::Slide) {
-                    Action = ActionType::Normal;
-                }
-                else if (Action == ActionType::Glide) {
-                    Action = ActionType::GlideSlide;
-                }
-                else if (Action == ActionType::Hurt) {
-                    Invincibility = InvincibilityType::Temporary;
-                    InvincibilityTimer = 120;
-                    Action = ActionType::Normal;
-                    GroundSpeed = 0;
-                    XSpeed = 0;
-                    isHurt = false;
-                }
-				else if (Action == ActionType::Spindash) {
-
-                }
-                else {
-                    if (DropDashRev >= 21 && Action == ActionType::Jumping) {
-                        Sound::Play(Sound::SFX_DROPDASH);
-
-                        Explosion* dropdashdust;
-                        dropdashdust = new Explosion();
-                        dropdashdust->G = G;
-                        dropdashdust->App = App;
-                        dropdashdust->CurrentAnimation = 2;
-                        dropdashdust->FlipX = DisplayFlip < 0;
-                        dropdashdust->Active = true;
-                        dropdashdust->Sprite = Scene->ExplosionSprite;
-                        dropdashdust->X = EZX;
-                        dropdashdust->Y = EZY + H / 2;
-                        Scene->Explosions.push_back(dropdashdust);
-
-                        CameraLockTimer = 8;
-
-                        Action = ActionType::Rolling;
-
-                        int dashspeed = 0x800;
-                        int maxspeed = 0xC00;
-
-                        if (InputRight)
-                            DisplayFlip = 1;
-                        if (InputLeft)
-                            DisplayFlip = -1;
-
-                        if (SuperForm) {
-                            dashspeed = 0xC00;
-                            maxspeed = 0xD00;
-
-                            Scene->ShakeTimer = 20;
-                        }
-                        else {
-                            dashspeed = 0x800;
-                            maxspeed = 0xC00;
-                        }
-
-                        if (DisplayFlip < 0) {
-                            if (XSpeed <= 0) {
-                                GroundSpeed = IMath::max(-maxspeed, (GroundSpeed >> 2) - dashspeed);
-                                goto LABEL_25;
-                            }
-                            if (Angle != 0) {
-                                GroundSpeed = (GroundSpeed >> 1) - dashspeed;
-                                goto LABEL_25;
-                            }
-                            dashspeed = -dashspeed;
-                        }
-                        else {
-                            if (XSpeed >= 0) {
-                                GroundSpeed = IMath::min(maxspeed, dashspeed + (GroundSpeed >> 2));
-                                goto LABEL_25;
-                            }
-                            if (Angle != 0) {
-                                GroundSpeed = dashspeed + (GroundSpeed >> 1);
-                                goto LABEL_25;
-                            }
-                        }
-                        GroundSpeed = dashspeed;
-                        LABEL_25:
-                        DropDashRev = 0;
-                    }
-                    else if ((ObjectControlled & 1) == 0) {
-                        Action = ActionType::Normal;
-						EZY -= (OrigH - H) / 2; H = OrigH;
+	                if (GroundSpeed != 0)
+	                    Angle = ang;
+					d0 = (Angle + 0x20) & 0xFF;
+					if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; } else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
+					if (ForceRoll) d0++;
+					switch (d0 & 0xC0) {
+						case 0x00: AngleMode = 0; break;
+						case 0x40: AngleMode = 3; break;
+						case 0x80: AngleMode = 2; break;
+						case 0xC0: AngleMode = 1; break;
 					}
-                }
 
-                DropDashRev = 0;
-            }
-        }
+	                if (AngleMode == 0)
+	                    SubY = (EZY + value - H / 2) << 16;
+	                else if (AngleMode == 1)
+						SubX = (EZX + value - H / 2) << 16;
+	                else if (AngleMode == 2)
+	                    SubY = (EZY - value + H / 2) << 16;
+	                else if (AngleMode == 3)
+	                    SubX = (EZX - value + H / 2) << 16;
+		        }
 
-        // Check Sensor C
-        SensorC = -1;
-        int SensorC_Angle;
-        for (int y = 0; y <= SensorLength && DoCollision; y++) {
-            if (Scene->CollisionAt(
-                EZX - SensorABCDWidth * ModeCos[AngleMode] - y * ModeSin[AngleMode],
-                EZY - SensorABCDWidth * ModeSin[AngleMode] - y * ModeCos[AngleMode], &SensorC_Angle, (AngleMode + 2) & 0x3, this)) {
-                SensorC = y;
-                break;
-            }
-        }
+		        // make sure when exporting/porting S3 levels that angles like FC don't get put on the sides
+		        // only ones above 45 degrees!
+			}
+	    }
+	    else {
+	        bool Landed = false;
 
-        // Check Sensor D
-        SensorD = -1;
-        int SensorD_Angle;
-        for (int y = 0; y <= SensorLength && DoCollision; y++) {
-            if (Scene->CollisionAt(
-                EZX + SensorABCDWidth * ModeCos[AngleMode] - y * ModeSin[AngleMode],
-                EZY + SensorABCDWidth * ModeSin[AngleMode] - y * ModeCos[AngleMode], &SensorD_Angle, (AngleMode + 2) & 0x3, this)) {
-                SensorD = y;
-                break;
-            }
-        }
+	        int ang = 40;
+	        int value = 0xFF;
+	        if (SensorA == -1 && SensorB != -1) {
+	            value = SensorB - SensorLength;
+                ang = SensorB_Angle;
+	        }
+	        else if (SensorA != -1 && SensorB == -1) {
+				value = SensorA - SensorLength;
+				ang = SensorA_Angle;
+	        }
+	        else if (SensorA != -1 && SensorB != -1) {
+	            if (SensorA < SensorB) {
+					value = SensorA - SensorLength;
+	                ang = SensorA_Angle;
+	            }
+	            else {
+					value = SensorB - SensorLength;
+	                ang = SensorB_Angle;
+	            }
+	        }
 
-        int value = 0xFF;
-        int ang = 40;
-        if (SensorC == -1 && SensorD != -1) {
-            value = SensorD;
-            ang = SensorD_Angle;
-        }
-        else if (SensorC != -1 && SensorD == -1) {
-            value = SensorC;
-            ang = SensorC_Angle;
-        }
-        else if (SensorC != -1 && SensorD != -1) {
-            if (SensorC < SensorD) {
-                value = SensorC;
-                ang = SensorC_Angle;
-            }
-            else {
-                value = SensorD;
-                ang = SensorD_Angle;
-            }
-        }
+			if (value != 0xFF) {
+				if (value <= 0 && YSpeed >= 0) {
+					EZY += value;
+					Angle = ang;
+					Landed = true;
+				}
+			}
 
-        if (value != 0xFF) {
-            if (YSpeed < 0) {
-                if (Action != ActionType::InStream) {
-                    if (ang >= 0xA0 && ang <= 0xBF) {
-                        Angle = ang;
-                        AngleMode = 1;
-                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
-                        Ground = true;
-                        ShieldUsable = true;
-                        Action = ActionType::Normal;
-						EZY += (OrigH - H) / 2; H = OrigH;
-                        DisplayAngle = Angle << 8;
-                    }
-                    else if (ang >= 0x40 && ang <= 0x5F) {
-                        Angle = ang;
-                        AngleMode = 3;
-                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
-                        Ground = true;
-                        ShieldUsable = true;
-                        Action = ActionType::Normal;
-						EZY += (OrigH - H) / 2; H = OrigH;
-                        DisplayAngle = Angle << 8;
-                    }
-                    else {
-                        YSpeed = 0;
-                    }
-                }
-                else {
-                    if (ang >= 0xA0 && ang <= 0xBF) {
-                        this->SubX -= 2 << 16;
-                    }
-                    else if (ang >= 0x40 && ang <= 0x5F) {
-                        this->SubX += 2 << 16;
-                    }
-                    else {
-                        YSpeed = 0;
-                    }
-                }
-                FlyFlag = 0x8;
-                this->SubY = (EZY - value + H / 2) << 16;
-            }
-        }
-    }
+	        if (Landed) {
+	            JumpVariable = 0;
+	        }
 
-	SkipRepositioning:
+	        // if ((SensorA == 0 || SensorB == 0) && Landed) {
+	        //     goto CheckSensorsAB;
+	        // }
+
+	        if (DropDashRev > 0 && InputJumpHold) {
+	            DropDashRev++;
+	        }
+	        if (DropDashRev > 0 && !InputJumpHold) {
+	            DropDashRev = 0;
+	        }
+	        if (DropDashRev == 21) {
+	            Sound::Play(Sound::SFX_DROPDASHREADY);
+	        }
+
+	        if (Landed) {
+	            if (Shield == ShieldType::Bubble && ShieldAction) {
+	                Ground = false;
+	                ShieldUsable = true;
+	                ShieldAction = false;
+	                if (Underwater)
+	                    YSpeed = -0x400;
+	                else
+	                    YSpeed = -0x780;
+	                JumpVariable = 1;
+	            }
+	            else if (Action == ActionType::GlideFall) {
+	                XSpeed = 0;
+	                GroundSpeed = 0;
+	                if (InputDown) {
+	                    Action = ActionType::CrouchDown;
+	                }
+	                else {
+	                    Action = ActionType::GlideFallLand;
+	                }
+	                Ground = true;
+	            }
+	            else if (Action == ActionType::Victory) {
+	                XSpeed = 0;
+	                GroundSpeed = 0;
+	                Ground = true;
+	            }
+				else if (Action == ActionType::InStream || Action == ActionType::InStreamGrab) {
+
+				}
+				else {
+	                if (Angle >= 0xF0 && Angle <= 0xFF)
+	                    GroundSpeed = XSpeed;
+	                else if (Angle >= 0x00 && Angle <= 0x0F)
+	                    GroundSpeed = XSpeed;
+	                else if (IMath::abs(XSpeed) > YSpeed) {
+	                    GroundSpeed = XSpeed;
+	                }
+	                else {
+	                    if (Angle >= 0xE0 && Angle <= 0xEF)
+	                        GroundSpeed = YSpeed / 2 * -(int)IMath::sign(Sin[Angle]);
+	                    else if (Angle >= 0x10 && Angle <= 0x1F)
+	                        GroundSpeed = YSpeed / 2 * -(int)IMath::sign(Sin[Angle]);
+
+	                    else if (Angle >= 0xC0 && Angle <= 0xDF)
+	                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
+	                    else if (Angle >= 0x20 && Angle <= 0x3F)
+	                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
+	                }
+
+	                Ground = true;
+	                ShieldUsable = true;
+	                YSpeed = 0;
+					EZY -= (OrigH - H) / 2; H = OrigH;
+
+	                if (Action == ActionType::Peril) {
+	                    Action = ActionType::Normal;
+	                }
+	                else if (Action == ActionType::Slide) {
+	                    Action = ActionType::Normal;
+	                }
+	                else if (Action == ActionType::Glide) {
+	                    Action = ActionType::GlideSlide;
+	                }
+	                else if (Action == ActionType::Hurt) {
+	                    Invincibility = InvincibilityType::Temporary;
+	                    InvincibilityTimer = 120;
+	                    Action = ActionType::Normal;
+	                    GroundSpeed = 0;
+	                    XSpeed = 0;
+	                    isHurt = false;
+	                }
+					else if (Action == ActionType::Spindash) {
+
+	                }
+	                else {
+	                    if (DropDashRev >= 21 && Action == ActionType::Jumping) {
+	                        Sound::Play(Sound::SFX_DROPDASH);
+
+	                        Explosion* dropdashdust;
+	                        dropdashdust = new Explosion();
+	                        dropdashdust->G = G;
+	                        dropdashdust->App = App;
+	                        dropdashdust->CurrentAnimation = 2;
+	                        dropdashdust->FlipX = DisplayFlip < 0;
+	                        dropdashdust->Active = true;
+	                        dropdashdust->Sprite = Scene->ExplosionSprite;
+	                        dropdashdust->X = EZX;
+	                        dropdashdust->Y = EZY + H / 2;
+	                        Scene->Explosions.push_back(dropdashdust);
+
+	                        CameraLockTimer = 8;
+
+	                        Action = ActionType::Rolling;
+
+	                        int dashspeed = 0x800;
+	                        int maxspeed = 0xC00;
+
+	                        if (InputRight)
+	                            DisplayFlip = 1;
+	                        if (InputLeft)
+	                            DisplayFlip = -1;
+
+	                        if (SuperForm) {
+	                            dashspeed = 0xC00;
+	                            maxspeed = 0xD00;
+
+	                            Scene->ShakeTimer = 20;
+	                        }
+	                        else {
+	                            dashspeed = 0x800;
+	                            maxspeed = 0xC00;
+	                        }
+
+	                        if (DisplayFlip < 0) {
+	                            if (XSpeed <= 0) {
+	                                GroundSpeed = IMath::max(-maxspeed, (GroundSpeed >> 2) - dashspeed);
+	                                goto LABEL_25;
+	                            }
+	                            if (Angle != 0) {
+	                                GroundSpeed = (GroundSpeed >> 1) - dashspeed;
+	                                goto LABEL_25;
+	                            }
+	                            dashspeed = -dashspeed;
+	                        }
+	                        else {
+	                            if (XSpeed >= 0) {
+	                                GroundSpeed = IMath::min(maxspeed, dashspeed + (GroundSpeed >> 2));
+	                                goto LABEL_25;
+	                            }
+	                            if (Angle != 0) {
+	                                GroundSpeed = dashspeed + (GroundSpeed >> 1);
+	                                goto LABEL_25;
+	                            }
+	                        }
+	                        GroundSpeed = dashspeed;
+	                        LABEL_25:
+	                        DropDashRev = 0;
+	                    }
+	                    else if ((ObjectControlled & 1) == 0) {
+	                        Action = ActionType::Normal;
+							// EZY -= (OrigH - H) / 2; H = OrigH;
+						}
+	                }
+
+	                DropDashRev = 0;
+	            }
+	        }
+
+	        // Check Sensor C
+	        SensorC = -1;
+	        int SensorC_Angle;
+	        for (int y = 0; y <= SensorLength && DoCollision; y++) {
+	            if (Scene->CollisionAt(
+	                EZX - SensorABCDWidth * ModeCos[AngleMode] - y * ModeSin[AngleMode],
+	                EZY - SensorABCDWidth * ModeSin[AngleMode] - y * ModeCos[AngleMode], &SensorC_Angle, (AngleMode + 2) & 0x3, this)) {
+	                SensorC = y;
+	                break;
+	            }
+	        }
+
+	        // Check Sensor D
+	        SensorD = -1;
+	        int SensorD_Angle;
+	        for (int y = 0; y <= SensorLength && DoCollision; y++) {
+	            if (Scene->CollisionAt(
+	                EZX + SensorABCDWidth * ModeCos[AngleMode] - y * ModeSin[AngleMode],
+	                EZY + SensorABCDWidth * ModeSin[AngleMode] - y * ModeCos[AngleMode], &SensorD_Angle, (AngleMode + 2) & 0x3, this)) {
+	                SensorD = y;
+	                break;
+	            }
+	        }
+
+			ang = 40;
+	        value = 0xFF;
+	        if (SensorC == -1 && SensorD != -1) {
+	            value = SensorD;
+	            ang = SensorD_Angle;
+	        }
+	        else if (SensorC != -1 && SensorD == -1) {
+	            value = SensorC;
+	            ang = SensorC_Angle;
+	        }
+	        else if (SensorC != -1 && SensorD != -1) {
+	            if (SensorC < SensorD) {
+	                value = SensorC;
+	                ang = SensorC_Angle;
+	            }
+	            else {
+	                value = SensorD;
+	                ang = SensorD_Angle;
+	            }
+	        }
+
+	        if (value != 0xFF) {
+	            if (YSpeed < 0) {
+	                if (Action != ActionType::InStream && Action != ActionType::InStreamGrab) {
+	                    if (ang >= 0xA0 && ang <= 0xBF) {
+	                        Angle = ang;
+	                        AngleMode = 1;
+	                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
+	                        Ground = true;
+	                        ShieldUsable = true;
+	                        Action = ActionType::Normal;
+							EZY += (OrigH - H) / 2; H = OrigH;
+	                        DisplayAngle = Angle << 8;
+	                    }
+	                    else if (ang >= 0x40 && ang <= 0x5F) {
+	                        Angle = ang;
+	                        AngleMode = 3;
+	                        GroundSpeed = YSpeed * -(int)IMath::sign(Sin[Angle]);
+	                        Ground = true;
+	                        ShieldUsable = true;
+	                        Action = ActionType::Normal;
+							EZY += (OrigH - H) / 2; H = OrigH;
+	                        DisplayAngle = Angle << 8;
+	                    }
+	                    else {
+	                        YSpeed = 0;
+	                    }
+
+						FlyFlag = 0x8;
+						SubY = (EZY - value + H / 2) << 16;
+					}
+	                else {
+	                    if (ang >= 0xA0 && ang <= 0xBF) {
+	                        SubX -= 2 << 16;
+	                    }
+	                    else if (ang >= 0x40 && ang <= 0x5F) {
+	                        SubX += 2 << 16;
+	                    }
+	                    else {
+							SubY = (EZY - value + H / 2) << 16;
+	                        YSpeed = 0;
+	                    }
+	                }
+	            }
+	        }
+
+	        // if (Action == ActionType::InStream || Action == ActionType::InStreamGrab) {
+	        //     Angle = 0;
+			// 	Ground = false;
+			// }
+	    }
+
+	    SubX += (XSpeed << 8) / CheckStepsMax;
+	    SubY += (YSpeed << 8) / CheckStepsMax;
+		
+		HandlePathSwitchers();
+	    HandleSprings();
+	}
+
+	if (Ground)
+		EnemyCombo = 0;
 
     if (Action == ActionType::Victory) {
         Angle = 0;
@@ -2222,8 +2200,6 @@ void IPlayer::Update() {
             }
         }
     }
-
-    HandlePathSwitchers();
 
     if (Action == ActionType::Fan)
         Action = ActionType::Normal;
@@ -2946,7 +2922,7 @@ void IPlayer::Render(int CamX, int CamY) {
     // Draw water running waves
     if (WaterRunning) {
         G->DrawModeOverlay = true;
-        G->DrawSprite(Scene->SpriteMapIDs[0x33], 17, (Scene->Frame >> 1) % Scene->SpriteMapIDs[0x33]->Animations[17].FrameCount, EZX - CamX, EZY + H / 2 - CamY, 0, XSpeed > 0 ? IE_NOFLIP : IE_FLIPX);
+        // G->DrawSprite(Scene->SpriteMapIDs[0x33], 17, (Scene->Frame >> 1) % Scene->SpriteMapIDs[0x33]->Animations[17].FrameCount, EZX - CamX, EZY + H / 2 - CamY, 0, XSpeed > 0 ? IE_NOFLIP : IE_FLIPX);
         G->DrawModeOverlay = false;
     }
 
