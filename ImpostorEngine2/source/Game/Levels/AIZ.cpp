@@ -278,8 +278,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartY = 0x440;
     }
     else {
-        PlayerStartX = 0x4850;
-        PlayerStartY = 0x01B0;
+        // PlayerStartX = 0x4850;
+        // PlayerStartY = 0x01B0;
     }
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
@@ -794,8 +794,22 @@ PUBLIC void Level_AIZ::Subupdate() {
                 // do boss small and tree
             }
             else {
-                if (RoutineNumber >= 4)
+                if (RoutineNumber >= 4) {
                     ShipTimer -= 0x8800 * 16;
+
+                    if (BombDelay > 0)
+                        BombDelay--;
+                    else if (BombDelay == 0) {
+                        BombDelay = AIZBattleship_BombScript[BombIndex * 2];
+                        // int BombX = AIZBattleship_BombScript[BombIndex * 2 + 1];
+
+                        Sound::Play(Sound::SFX_DROP);
+
+                        BombIndex++;
+                        if (BombIndex == 21)
+                            BombDelay = -1;
+                    }
+                }
                 if (d0 < 0x3D5C) {
                     // go up
                     d0 -= 0x3D5C;
@@ -817,19 +831,6 @@ PUBLIC void Level_AIZ::Subupdate() {
                         else
                             Sound::Play(Sound::SFX_AIRSHIP2);
                     }
-                }
-
-                if (BombDelay > 0)
-                    BombDelay--;
-                else if (BombDelay == 0) {
-                    BombDelay = AIZBattleship_BombScript[BombIndex * 2];
-                    // int BombX = AIZBattleship_BombScript[BombIndex * 2 + 1];
-
-                    Sound::Play(Sound::SFX_DROP);
-
-                    BombIndex++;
-                    if (BombIndex == 21)
-                        BombDelay = -1;
                 }
             }
 
@@ -854,6 +855,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                 AIZShipTileSprite->LinkPalette(TileSprite);
             }
 
+            // Clear out waterfall
             if (LevelTriggerFlag >> 0 & 1) {
                 if (Data->layers[1].Tiles[0x270 + 0x3B * Data->layers[1].Width] != 0x0000) {
                     for (int i = 0x3B; i < 0x53; i++) {

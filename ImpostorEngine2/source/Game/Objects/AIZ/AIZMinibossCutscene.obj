@@ -135,6 +135,7 @@ event Create() {
         SmallestX = 0;
 
         X = 0x2F10 + App.WIDTH - 0x30;
+        VisualLayer = 0;
     }
     else {
         HitCount = 6;

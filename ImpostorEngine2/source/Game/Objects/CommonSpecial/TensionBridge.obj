@@ -19,7 +19,9 @@ event Create() {
     Count = SubType & 0x7F;
 
     Angled = ((SubType & 0x80) / 0x80) * 3;
-    // Triggered = SubType & 0x80 == 0x80;
+    if (Scene.ZoneID != 5)
+        Angled = 0;
+    Triggered = (SubType & 0x80) == 0x80;
 
     MaxDepress = 2;
     for (var i:int = 0; i < Count; i++) {

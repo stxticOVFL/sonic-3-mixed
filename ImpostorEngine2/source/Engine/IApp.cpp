@@ -159,8 +159,8 @@ PUBLIC void IApp::Run() {
     int benchmarkFrameCount = 0;
 
     Print(0, "Starting scene");
-    // Scene = new Scene_MainMenu(this, G);
-    Scene = new Scene_LevelSelect(this, G);
+    Scene = new Scene_MainMenu(this, G);
+    // Scene = new Scene_LevelSelect(this, G);
     // Scene = new Level_SpecialStage(this, G);
     // Scene = new Level_AIZ(this, G, 2);
     // Scene = new Level_ICZ(this, G, 1);
@@ -250,6 +250,7 @@ PUBLIC void IApp::Run() {
         Scene->Render();
         MetricRenderTime = SDL_GetTicks() - MetricRenderTime;
 
+        // If there's a new scene to go to
         if (NextScene != NULL) {
 			unsigned long now = SDL_GetTicks();
             delete Scene;
@@ -257,6 +258,7 @@ PUBLIC void IApp::Run() {
             NextScene = NULL;
 
             Scene->Init();
+            Input->Poll();
             Scene->Update();
             Scene->Render();
 			beginFrameBatch += now - SDL_GetTicks();
