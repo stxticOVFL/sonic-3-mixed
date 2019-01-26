@@ -226,7 +226,7 @@ public:
     void RenderAnimatedSprites(int layer);
     void RenderRings();
     void RenderHUD();
-    void RenderTitleCard();
+    void RenderTitleCard() ;
     void RenderPauseScreen();
     virtual void RenderAboveBackground();
     virtual void RenderAboveForeground();

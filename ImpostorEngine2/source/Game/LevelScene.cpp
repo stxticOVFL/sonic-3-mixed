@@ -3316,7 +3316,7 @@ PUBLIC void LevelScene::RenderHUD() {
         G->DrawSprite(MobileButtonsSprite, 0, 5, App->WIDTH - 22, 22, 0, IE_NOFLIP);
     }
 }
-PUBLIC void LevelScene::RenderTitleCard() {
+PUBLIC void LevelScene::RenderTitleCard()  {
     if (LevelCardHide)
         return;
 

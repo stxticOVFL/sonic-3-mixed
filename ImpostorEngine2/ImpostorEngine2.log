@@ -504,3 +504,15 @@ IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scro
 IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
 IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
 IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
