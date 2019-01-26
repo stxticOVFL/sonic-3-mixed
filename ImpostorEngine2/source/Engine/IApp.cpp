@@ -262,7 +262,7 @@ PUBLIC void IApp::Run() {
                             }
                             break;
                         case SDLK_f:
-                            G->SetDisplay(1024, 576, 0);
+                            G->SetDisplay(1272, 720, 1);
                             break;
                     }
                     break;

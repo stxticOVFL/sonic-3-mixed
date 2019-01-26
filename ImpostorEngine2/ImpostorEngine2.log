@@ -546,3 +546,57 @@ IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scroll
       LOG: ScreenTexture created!
       LOG: Starting scene
       LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+IMPORTANT: Layer 0 (Background): Width (32) Height (32) Infos (5) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Boss Area Foreground): Width (40) Height (72) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (896) Height (200) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (896) Height (200) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 42 (Obj_CNZCannon) has not been implemented!
+  WARNING: Object 43 (Obj_CNZRisingPlatform) has not been implemented!
+  WARNING: Object 44 (Obj_CNZTrapDoor) has not been implemented!
+  WARNING: Object 46 (Obj_CNZHoverFan) has not been implemented!
+  WARNING: Object 47 (Obj_CNZCylinder) has not been implemented!
+  WARNING: Object 48 (Obj_48_1) has not been implemented!
+  WARNING: Object 49 (Obj_49_1) has not been implemented!
+  WARNING: Object 4A (Obj_Bumper) has not been implemented!
+  WARNING: Object 4B (Obj_4B_1) has not been implemented!
+  WARNING: Object 4C (Obj_4C_1) has not been implemented!
+  WARNING: Object 4D (Obj_CNZBarberPoleSprite) has not been implemented!
+  WARNING: Object 4E (Obj_4E_1) has not been implemented!
+  WARNING: Object A3 (Obj_Clamer) has not been implemented!
+  WARNING: Object A4 (Obj_CNZBlastoid) has not been implemented!
+  WARNING: Object A5 (Obj_Batbot) has not been implemented!
+  WARNING: Object A6 (Obj_CNZMiniboss) has not been implemented!
