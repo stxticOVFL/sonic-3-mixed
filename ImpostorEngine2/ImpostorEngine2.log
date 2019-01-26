@@ -1,0 +1,506 @@
+      LOG: SDL_Init succeeded!
+    ERROR: Couldn't open file '../config.ini'!
+IMPORTANT: PixelFormat: SDL_ARRAYORDER_RGB
+      LOG: Retina Mult: 1.000000
+      LOG: RetinaMult: 1
+      LOG: Render Size: 1272 x 720
+      LOG: Window Size: 1272 x 720
+IMPORTANT: Default FBO: 0
+  WARNING: Red size: 8, Green size: 8, Blue size: 8, Alpha size: 0
+      LOG: SDL_Init succeeded!
+    ERROR: Couldn't open file '../config.ini'!
+IMPORTANT: PixelFormat: SDL_ARRAYORDER_RGB
+      LOG: Retina Mult: 1.000000
+      LOG: RetinaMult: 1
+      LOG: Render Size: 1272 x 720
+      LOG: Window Size: 1272 x 720
+IMPORTANT: Default FBO: 0
+  WARNING: Red size: 8, Green size: 8, Blue size: 8, Alpha size: 0
+      LOG: SDL_Init succeeded!
+    ERROR: Couldn't open file '../config.ini'!
+IMPORTANT: PixelFormat: SDL_ARRAYORDER_RGB
+      LOG: Retina Mult: 1.000000
+      LOG: RetinaMult: 1
+      LOG: Render Size: 1272 x 720
+      LOG: Window Size: 1272 x 720
+IMPORTANT: Default FBO: 0
+  WARNING: Red size: 8, Green size: 8, Blue size: 8, Alpha size: 0
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+    ERROR: Couldn't open file 'Sounds/Charge.wav'!
+    ERROR: Couldn't open file 'Sounds/Release.wav'!
+    ERROR: Couldn't open file 'Sounds/Splash.wav'!
+    ERROR: Couldn't open file 'Sounds/Roll.wav'!
+    ERROR: Couldn't open file 'Sounds/DropDash.wav'!
+    ERROR: Couldn't open file 'Sounds/Release.wav'!
+    ERROR: Couldn't open file 'Sounds/Jump.wav'!
+    ERROR: Couldn't open file 'Sounds/FireShield.wav'!
+    ERROR: Couldn't open file 'Sounds/BubbleShield.wav'!
+    ERROR: Couldn't open file 'Sounds/LightningShield.wav'!
+    ERROR: Couldn't open file 'Sounds/FireDash.wav'!
+    ERROR: Couldn't open file 'Sounds/BubbleBounce.wav'!
+    ERROR: Couldn't open file 'Sounds/LightningJump.wav'!
+    ERROR: Couldn't open file 'Sounds/Ring.wav'!
+    ERROR: Couldn't open file 'Sounds/Warning.wav'!
+    ERROR: Couldn't open file 'Sounds/InstaShield.wav'!
+    ERROR: Couldn't open file 'Sounds/LoseRings.wav'!
+    ERROR: Couldn't open file 'Sounds/Destroy.wav'!
+    ERROR: Couldn't open file 'Sounds/Transform2.wav'!
+    ERROR: Couldn't open file 'Sounds/Hurt.wav'!
+    ERROR: Couldn't open file 'Sounds/Skidding.wav'!
+    ERROR: Couldn't open file 'Sounds/Breathe.wav'!
+    ERROR: Couldn't open file 'Sounds/Drown.wav'!
+    ERROR: Couldn't open file 'Sounds/Spring.wav'!
+    ERROR: Couldn't open file 'Sounds/StarPost.wav'!
+    ERROR: Couldn't open file 'Sounds/LedgeBreak3.wav'!
+    ERROR: Couldn't open file 'Sounds/Push.wav'!
+    ERROR: Couldn't open file 'Sounds/WaterRun.wav'!
+    ERROR: Couldn't open file 'Sounds/Drop.wav'!
+    ERROR: Couldn't open file 'Sounds/Shot.wav'!
+    ERROR: Couldn't open file 'Sounds/Explosion3.wav'!
+    ERROR: Couldn't open file 'Sounds/Grab.wav'!
+    ERROR: Couldn't open file 'Sounds/Flying.wav'!
+    ERROR: Couldn't open file 'Sounds/Tired.wav'!
+    ERROR: Couldn't open file 'Sounds/BossHit.wav'!
+    ERROR: Couldn't open file 'Sounds/Explosion2.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_77.wav'!
+    ERROR: Couldn't open file 'Sounds/BigFan.wav'!
+    ERROR: Couldn't open file 'Sounds/SmallFan.wav'!
+    ERROR: Couldn't open file 'Sounds/Waterfall.wav'!
+    ERROR: Couldn't open file 'Sounds/Impact4.wav'!
+    ERROR: Couldn't open file 'Sounds/Rumble.wav'!
+    ERROR: Couldn't open file 'Sounds/SpecialRing.wav'!
+    ERROR: Couldn't open file 'Sounds/SpecialWarp.wav'!
+    ERROR: Couldn't open file 'Sounds/Hurt.wav'!
+    ERROR: Couldn't open file 'Sounds/ScoreAdd.wav'!
+    ERROR: Couldn't open file 'Sounds/ScoreTotal.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuAccept.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuBleep.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuWoosh.wav'!
+    ERROR: Couldn't open file 'Sounds/Fail.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_BD.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_BD.wav'!
+    ERROR: Couldn't open file 'Music/S3 Invincibility.ogg'!
+    ERROR: Couldn't open file 'Music/Mixed/Sneakers.ogg'!
+    ERROR: Couldn't open file 'Music/Drowning.ogg'!
+    ERROR: Couldn't open file 'Music/ActComplete.ogg'!
+    ERROR: Couldn't open file 'Music/S3 1up.ogg'!
+    ERROR: Couldn't open file 'Music/S3 Knux Theme.ogg'!
+    ERROR: Couldn't open file 'Music/S3 Miniboss.ogg'!
+    ERROR: Couldn't open file 'Music/Boss.ogg'!
+    ERROR: Couldn't open file 'Music/Data Select.ogg'!
+    ERROR: Couldn't open file 'UI/MainMenu.gif'!
+    ERROR: Couldn't open file 'UI/MainMenu.bin'!
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+    ERROR: Couldn't open file 'Sounds/Charge.wav'!
+    ERROR: Couldn't open file 'Sounds/Release.wav'!
+    ERROR: Couldn't open file 'Sounds/Splash.wav'!
+    ERROR: Couldn't open file 'Sounds/Roll.wav'!
+    ERROR: Couldn't open file 'Sounds/DropDash.wav'!
+    ERROR: Couldn't open file 'Sounds/Release.wav'!
+    ERROR: Couldn't open file 'Sounds/Jump.wav'!
+    ERROR: Couldn't open file 'Sounds/FireShield.wav'!
+    ERROR: Couldn't open file 'Sounds/BubbleShield.wav'!
+    ERROR: Couldn't open file 'Sounds/LightningShield.wav'!
+    ERROR: Couldn't open file 'Sounds/FireDash.wav'!
+    ERROR: Couldn't open file 'Sounds/BubbleBounce.wav'!
+    ERROR: Couldn't open file 'Sounds/LightningJump.wav'!
+    ERROR: Couldn't open file 'Sounds/Ring.wav'!
+    ERROR: Couldn't open file 'Sounds/Warning.wav'!
+    ERROR: Couldn't open file 'Sounds/InstaShield.wav'!
+    ERROR: Couldn't open file 'Sounds/LoseRings.wav'!
+    ERROR: Couldn't open file 'Sounds/Destroy.wav'!
+    ERROR: Couldn't open file 'Sounds/Transform2.wav'!
+    ERROR: Couldn't open file 'Sounds/Hurt.wav'!
+    ERROR: Couldn't open file 'Sounds/Skidding.wav'!
+    ERROR: Couldn't open file 'Sounds/Breathe.wav'!
+    ERROR: Couldn't open file 'Sounds/Drown.wav'!
+    ERROR: Couldn't open file 'Sounds/Spring.wav'!
+    ERROR: Couldn't open file 'Sounds/StarPost.wav'!
+    ERROR: Couldn't open file 'Sounds/LedgeBreak3.wav'!
+    ERROR: Couldn't open file 'Sounds/Push.wav'!
+    ERROR: Couldn't open file 'Sounds/WaterRun.wav'!
+    ERROR: Couldn't open file 'Sounds/Drop.wav'!
+    ERROR: Couldn't open file 'Sounds/Shot.wav'!
+    ERROR: Couldn't open file 'Sounds/Explosion3.wav'!
+    ERROR: Couldn't open file 'Sounds/Grab.wav'!
+    ERROR: Couldn't open file 'Sounds/Flying.wav'!
+    ERROR: Couldn't open file 'Sounds/Tired.wav'!
+    ERROR: Couldn't open file 'Sounds/BossHit.wav'!
+    ERROR: Couldn't open file 'Sounds/Explosion2.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_77.wav'!
+    ERROR: Couldn't open file 'Sounds/BigFan.wav'!
+    ERROR: Couldn't open file 'Sounds/SmallFan.wav'!
+    ERROR: Couldn't open file 'Sounds/Waterfall.wav'!
+    ERROR: Couldn't open file 'Sounds/Impact4.wav'!
+    ERROR: Couldn't open file 'Sounds/Rumble.wav'!
+    ERROR: Couldn't open file 'Sounds/SpecialRing.wav'!
+    ERROR: Couldn't open file 'Sounds/SpecialWarp.wav'!
+    ERROR: Couldn't open file 'Sounds/Hurt.wav'!
+    ERROR: Couldn't open file 'Sounds/ScoreAdd.wav'!
+    ERROR: Couldn't open file 'Sounds/ScoreTotal.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuAccept.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuBleep.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuWoosh.wav'!
+    ERROR: Couldn't open file 'Sounds/Fail.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_BD.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_BD.wav'!
+    ERROR: Couldn't open file 'Music/S3 Invincibility.ogg'!
+    ERROR: Couldn't open file 'Music/Mixed/Sneakers.ogg'!
+    ERROR: Couldn't open file 'Music/Drowning.ogg'!
+    ERROR: Couldn't open file 'Music/ActComplete.ogg'!
+    ERROR: Couldn't open file 'Music/S3 1up.ogg'!
+    ERROR: Couldn't open file 'Music/S3 Knux Theme.ogg'!
+    ERROR: Couldn't open file 'Music/S3 Miniboss.ogg'!
+    ERROR: Couldn't open file 'Music/Boss.ogg'!
+    ERROR: Couldn't open file 'Music/Data Select.ogg'!
+    ERROR: Couldn't open file 'UI/MainMenu.gif'!
+    ERROR: Couldn't open file 'UI/MainMenu.bin'!
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+    ERROR: Couldn't open file 'Sounds/Charge.wav'!
+    ERROR: Couldn't open file 'Sounds/Release.wav'!
+    ERROR: Couldn't open file 'Sounds/Splash.wav'!
+    ERROR: Couldn't open file 'Sounds/Roll.wav'!
+    ERROR: Couldn't open file 'Sounds/DropDash.wav'!
+    ERROR: Couldn't open file 'Sounds/Release.wav'!
+    ERROR: Couldn't open file 'Sounds/Jump.wav'!
+    ERROR: Couldn't open file 'Sounds/FireShield.wav'!
+    ERROR: Couldn't open file 'Sounds/BubbleShield.wav'!
+    ERROR: Couldn't open file 'Sounds/LightningShield.wav'!
+    ERROR: Couldn't open file 'Sounds/FireDash.wav'!
+    ERROR: Couldn't open file 'Sounds/BubbleBounce.wav'!
+    ERROR: Couldn't open file 'Sounds/LightningJump.wav'!
+    ERROR: Couldn't open file 'Sounds/Ring.wav'!
+    ERROR: Couldn't open file 'Sounds/Warning.wav'!
+    ERROR: Couldn't open file 'Sounds/InstaShield.wav'!
+    ERROR: Couldn't open file 'Sounds/LoseRings.wav'!
+    ERROR: Couldn't open file 'Sounds/Destroy.wav'!
+    ERROR: Couldn't open file 'Sounds/Transform2.wav'!
+    ERROR: Couldn't open file 'Sounds/Hurt.wav'!
+    ERROR: Couldn't open file 'Sounds/Skidding.wav'!
+    ERROR: Couldn't open file 'Sounds/Breathe.wav'!
+    ERROR: Couldn't open file 'Sounds/Drown.wav'!
+    ERROR: Couldn't open file 'Sounds/Spring.wav'!
+    ERROR: Couldn't open file 'Sounds/StarPost.wav'!
+    ERROR: Couldn't open file 'Sounds/LedgeBreak3.wav'!
+    ERROR: Couldn't open file 'Sounds/Push.wav'!
+    ERROR: Couldn't open file 'Sounds/WaterRun.wav'!
+    ERROR: Couldn't open file 'Sounds/Drop.wav'!
+    ERROR: Couldn't open file 'Sounds/Shot.wav'!
+    ERROR: Couldn't open file 'Sounds/Explosion3.wav'!
+    ERROR: Couldn't open file 'Sounds/Grab.wav'!
+    ERROR: Couldn't open file 'Sounds/Flying.wav'!
+    ERROR: Couldn't open file 'Sounds/Tired.wav'!
+    ERROR: Couldn't open file 'Sounds/BossHit.wav'!
+    ERROR: Couldn't open file 'Sounds/Explosion2.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_77.wav'!
+    ERROR: Couldn't open file 'Sounds/BigFan.wav'!
+    ERROR: Couldn't open file 'Sounds/SmallFan.wav'!
+    ERROR: Couldn't open file 'Sounds/Waterfall.wav'!
+    ERROR: Couldn't open file 'Sounds/Impact4.wav'!
+    ERROR: Couldn't open file 'Sounds/Rumble.wav'!
+    ERROR: Couldn't open file 'Sounds/SpecialRing.wav'!
+    ERROR: Couldn't open file 'Sounds/SpecialWarp.wav'!
+    ERROR: Couldn't open file 'Sounds/Hurt.wav'!
+    ERROR: Couldn't open file 'Sounds/ScoreAdd.wav'!
+    ERROR: Couldn't open file 'Sounds/ScoreTotal.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuAccept.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuBleep.wav'!
+    ERROR: Couldn't open file 'Sounds/MenuWoosh.wav'!
+    ERROR: Couldn't open file 'Sounds/Fail.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_BD.wav'!
+    ERROR: Couldn't open file 'Sounds/S3K_BD.wav'!
+    ERROR: Couldn't open file 'Music/S3 Invincibility.ogg'!
+    ERROR: Couldn't open file 'Music/Mixed/Sneakers.ogg'!
+    ERROR: Couldn't open file 'Music/Drowning.ogg'!
+    ERROR: Couldn't open file 'Music/ActComplete.ogg'!
+    ERROR: Couldn't open file 'Music/S3 1up.ogg'!
+    ERROR: Couldn't open file 'Music/S3 Knux Theme.ogg'!
+    ERROR: Couldn't open file 'Music/S3 Miniboss.ogg'!
+    ERROR: Couldn't open file 'Music/Boss.ogg'!
+    ERROR: Couldn't open file 'Music/Data Select.ogg'!
+    ERROR: Couldn't open file 'UI/MainMenu.gif'!
+    ERROR: Couldn't open file 'UI/MainMenu.bin'!
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (23) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1152) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1152) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Moving Wall): Width (32) Height (32) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+  WARNING: Object 6E (Obj_WaterDrop) has not been implemented!
+  WARNING: Object 9A (Obj_HCZEndBoss) has not been implemented!
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.005s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 55)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 18)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 55)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 18)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 55)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 18)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 55)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 18)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 55)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 18)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 

@@ -3369,7 +3369,7 @@ PUBLIC void LevelScene::RenderTitleCard() {
     G->SetClip(textX - 25, textY - 24, textW + 25, 47);
 
     ex = 0;
-    for (int i = 0; i < strlen(LevelName); i++) {
+    for (int i = 0; i < (int)strlen(LevelName); i++) {
         if (LevelName[i] == ' ') {
             ex += 16;
         }
@@ -4032,7 +4032,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         }
 
         int dx = App->Input->MouseX;
-        if (dx + strlen(poop) * 8 >= App->WIDTH - 3)
+        if (dx + (int)strlen(poop) * 8 >= App->WIDTH - 3)
             dx = App->WIDTH - 3 - strlen(poop) * 8;
         //G->DrawTextShadow(dx, App->Input->MouseY - 8, poop, 0xFFFFFF);
 

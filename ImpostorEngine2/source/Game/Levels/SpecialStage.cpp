@@ -554,34 +554,29 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 
 	char poop[40];
     sprintf(poop, "Direction: %d", Direction);
-    G->DrawText(4, App->HEIGHT - 45 + 4, poop, 0x000000);
-    G->DrawText(3, App->HEIGHT - 45 + 3, poop, 0xFFFFFF);
+    G->DrawTextShadow(4, App->HEIGHT - 45 + 4, poop, 0xFFFFFF);
 
     sprintf(poop, "Player X: %X", PlayerX);
-    G->DrawText(4, App->HEIGHT - 45 + 14, poop, 0x000000);
-	G->DrawText(3, App->HEIGHT - 45 + 13, poop, 0xFFFFFF);
+    G->DrawTextShadow(4, App->HEIGHT - 45 + 14, poop, 0xFFFFFF);
 
 	sprintf(poop, "Player Y: %X", PlayerY);
-	G->DrawText(4, App->HEIGHT - 45 + 24, poop, 0x000000);
-	G->DrawText(3, App->HEIGHT - 45 + 23, poop, 0xFFFFFF);
+	G->DrawTextShadow(4, App->HEIGHT - 45 + 24, poop, 0xFFFFFF);
 
 	sprintf(poop, "Column: %d", columnIDX);
-	G->DrawText(4, App->HEIGHT - 45 + 34, poop, 0x000000);
-	G->DrawText(3, App->HEIGHT - 45 + 33, poop, 0xFFFFFF);
+	G->DrawTextShadow(4, App->HEIGHT - 45 + 34, poop, 0xFFFFFF);
 
     int mx, my;
     mx = App->Input->MouseX;
     my = App->Input->MouseY;
     sprintf(poop, "%d,%d", mx, my);
-    G->DrawText(mx + 1, my + 1, poop, 0x000000);
-	G->DrawText(mx, my, poop, 0xFFFFFF);
+    G->DrawTextShadow(mx, my, poop, 0xFFFFFF);
 
     if (App->Input->MousePressed) {
         dots[dotFrame][columnIDX + 4].push_back(pair<int,int>{ mx, my });
     }
 
     sprintf(poop, "%d", columnIDX);
-    for (int i = 0; i < dots[dotFrame][columnIDX + 4].size(); i++) {
+    for (int i = 0; i < (int)dots[dotFrame][columnIDX + 4].size(); i++) {
         G->DrawText(dots[dotFrame][columnIDX + 4][i].first, dots[dotFrame][columnIDX + 4][i].second, poop, 0xFFFFFF);
         G->DrawRectangle(dots[dotFrame][columnIDX + 4][i].first - 2, dots[dotFrame][columnIDX + 4][i].second - 2, 4, 4, 0);
     }
@@ -619,7 +614,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
             printf("int DotFrame_%d[%d] = int[%d] {\n", d, sz, sz);
             for (int c = 0; c < 9; c++) {
                 printf("    // %d\n", c);
-                for (int i = 0; i < dots[d][c].size(); i++) {
+                for (int i = 0; i < (int)dots[d][c].size(); i++) {
                     printf("    %d, %d,\n", dots[d][c][i].first, dots[d][c][i].second);
                 }
             }

@@ -47,6 +47,7 @@
     <ClCompile Include="..\source\Game\Object.cpp" />
     <ClCompile Include="..\source\Game\ObjectNames.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Act1TreeBark.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AirshipBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZBoss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossBomb.cpp" />
@@ -73,10 +74,14 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CutsceneKnuckles.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Door.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\EggCapsule.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\EggCapsuleButton.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Rock.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Signpost.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridgeChild.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\AnimSprite.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\AutomaticTunnel.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BreakableWall.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BubbleAir.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Bubbler.cpp" />
@@ -92,7 +97,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Ridge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\RollEnforcer.cpp" />
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\Signpost.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\SpecialRing.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp" />

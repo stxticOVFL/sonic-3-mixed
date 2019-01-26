@@ -12,7 +12,7 @@
 
 class Level_FBZ : public LevelScene {
 public:
-    Level_FBZ(IApp* app, IGraphics* g, int ACT);
+    Level_FBZ(IApp* app, IGraphics* g, int act);
     void RestartStage(bool doActTransition, bool drawBackground);
     void AssignSpriteMapIDs();
     void LoadZoneSpecificSprites();

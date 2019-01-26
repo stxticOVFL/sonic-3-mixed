@@ -16,7 +16,7 @@
 #include <deque>
 
 #ifdef MSVC
-    #define IFILE(name) ("../source/Resources/" name)
+    #define IFILE(name) ("source/Resources/" name)
 #elif NX
     #define IFILE(name) ("Resources/" name)
 #elif IOS
