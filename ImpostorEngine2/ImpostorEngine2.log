@@ -516,3 +516,15 @@ IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scroll
       LOG: ScreenTexture created!
       LOG: Starting scene
       LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: G->Screen created!
+      LOG: WindowScreen created!
+      LOG: ScreenTexture created!
+      LOG: Starting scene
+      LOG: Running...
