@@ -36,13 +36,13 @@ event Render(CamX:int, CamY:int) {
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Painful) {
-        if (HitFrom == 1 && Rotation == 0 && Scene.Players[PlayerID].Gravity >= 0) {
+        if (HitFrom == CollideSide.TOP && Rotation == 0 && Scene.Players[PlayerID].YSpeed >= 0) {
             Scene.Players[PlayerID].Hurt(X, true);
         }
-        else if (HitFrom == 3 && Rotation == 180 && Scene.Players[PlayerID].Gravity <= 0) {
+        else if (HitFrom == CollideSide.BOTTOM && Rotation == 180 && Scene.Players[PlayerID].YSpeed <= 0) {
             Scene.Players[PlayerID].Hurt(X, true);
         }
-        else if ((Rotation == 90 && HitFrom == 2) || (Rotation == 270 && HitFrom == 0)) {
+        else if ((Rotation == 90 && HitFrom == CollideSide.LEFT) || (Rotation == 270 && HitFrom == CollideSide.RIGHT)) {
             if (Scene.Players[PlayerID].Y + 20 - 4 - 4 <= Y - 16)
 
 

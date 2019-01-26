@@ -7,10 +7,6 @@ var InvulnTimer:int;
 var ExplosionTimer:int;
 var State:int;
 
-var MaxAccel:int;
-var Acceleration:int;
-var Variable_38:int;
-
 var MainPalette:Uint32[16];
 var HurtPalette:Uint32[16];
 
@@ -51,10 +47,13 @@ event Create() {
     Active = true;
     Priority = true;
     // Object variables
-    W = 80;
-    H = 64;
-    Radius = 32;
-    CurrentAnimation = 4;
+    W = 48;
+    H = 96;
+    HitboxEnemy.Top = -64;
+    HitboxEnemy.Left = -24;
+    HitboxEnemy.Right = 24;
+    HitboxEnemy.Bottom = 24;
+    CurrentAnimation = 5;
     Frame = 0;
     XSpeed = 0;
     YSpeed = 0;
@@ -62,11 +61,11 @@ event Create() {
     // Extended Object Variables
     MaxAccel = 0;
     Acceleration = 0;
-    Variable_38 = 0;
+    SwingDirection = 0;
     // Common Enemy Variables
     HitCount = 8;
     Boss = true;
-    Scene.AddSelfToRegistry(this, "Enemies");
+
     // Common Boss Variables
     TimerAction = -1;
     Timer = 0;
@@ -151,45 +150,6 @@ event OnHit() : int {
     return 0;
 }
 
-event Swing_UpAndDown() {
-    var d0:int;
-    var d1:int;
-    var d2:int;
-    var d3:int;
-
-	d0 = Acceleration; // Acceleration
-	d1 = YSpeed; // Velocity
-	d2 = MaxAccel; // Maximum acceleration before "swinging"
-	d3 = 0;
-	if (Variable_38 == 0) {
-		d0 = -d0;
-		d1 += d0;
-		d2 = -d2;
-		if (d1 > d2) {
-			YSpeed = d1;
-			return;
-		}
-		Variable_38 = 1;
-		d0 = -d0;
-		d2 = -d2;
-		d3 = 1;
-	}
-	d1 += d0;
-	if (d1 < d2) {
-		YSpeed = d1;
-		return;
-	}
-	Variable_38 = 0;
-	d0 = -d0;
-	d1 += d0;
-	d3 = 1;
-    YSpeed = d1;
-}
-event MoveSprite() {
-    SubX += XSpeed << 8;
-    SubY += YSpeed << 8;
-}
-
 event DoExplosionDebris() {
     // Scene.AddMovingSprite(Sprite, X, Y, bodyLeft, bodyTop, 32, 32, -32, -32, false, false, -0x400, -0x400, 0x38);
     // Scene.AddMovingSprite(Sprite, X, Y, bodyLeft + 32, bodyTop, 32, 32, 0, -32, false, false, 0x400, -0x400, 0x38);
@@ -231,7 +191,7 @@ event HandleDamage() {
         VisualLayer = 1;
         if (ExplosionTimer > 0) {
             if (ExplosionTimer % 3 == 0) {
-                Scene.AddExplosion(5, false, X + Math.randRange(-W / 2, W / 2), Y + Math.randRange(-H / 2, H / 2));
+                Scene.AddExplosion(5, false, X + Math.randRange(-W / 2, W / 2), Y + Math.randRange(-H / 2, H / 2), VisualLayer);
                 Sound.Play(Sound.SFX_BOSSEXPLOSION);
             }
             ExplosionTimer--;
@@ -439,7 +399,6 @@ event Update() {
     }
 
     HandleDamage();
-    MoveSprite();
 
     if (BehindWaterFall) {
         Invincible = true;
@@ -490,6 +449,12 @@ event Render(CamX:int, CamY:int) {
                 break;
             }
         }
+        // Eggman
+        if (InvulnTimer > 0) G.DrawSprite(Scene.RobotnikSprite, 2, 0, X - CamX, Y - 48 - CamY, 0, !FlipX);
+        else if (HitCount < 0) G.DrawSprite(Scene.RobotnikSprite, 3, 0, X - CamX, Y - 48 - CamY, 0, !FlipX);
+        else G.DrawSprite(Scene.RobotnikSprite, 0, (Scene.Frame / 6) & 1, X - CamX, Y - 48 - CamY, 0, !FlipX);
+        // Glass Cover
+        G.DrawSprite(Scene.RobotnikSprite, 8, 0, X - CamX, Y - 20 - CamY, 0, !FlipX);
         // Main Body
         G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX);
         // Arm

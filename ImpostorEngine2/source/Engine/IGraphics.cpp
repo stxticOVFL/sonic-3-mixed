@@ -49,7 +49,7 @@ public:
     int     DrawModeOverlay = false;
 
     double  MyCos[256];
-    double  MySin[256]; ///
+    double  MySin[256]; ////
 };
 #endif
 
@@ -305,11 +305,11 @@ PUBLIC VIRTUAL void IGraphics::SetPixelTrue(SDL_Surface* surface, int x, int y, 
     (this->*SetPixelFunction)(x, y, pixel);
     if (PixelScale > 1) *(FrameBuffer + y * RENDER_WIDTH + x + 1) = *(FrameBuffer + y * RENDER_WIDTH + x);
 
-    //*(unsigned int*)((unsigned char*)surface->pixels + y * surface->pitch + x * 4) = pixel;
-    //uint32_t col = *(FrameBuffer + y * RENDER_WIDTH + x);
+    // *(unsigned int*)((unsigned char*)surface->pixels + y * surface->pitch + x * 4) = pixel;
+    // uint32_t col = *(FrameBuffer + y * RENDER_WIDTH + x);
     /*
     if (DrawModeOverlay) {
-        //*(FrameBuffer + y * RENDER_WIDTH + x) = ColorBlendHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, (pixel & 0xFF) >> 1);
+        // *(FrameBuffer + y * RENDER_WIDTH + x) = ColorBlendHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, (pixel & 0xFF) >> 1);
         *(FrameBuffer + y * RENDER_WIDTH + x) = ColorAddHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
     }
     else if (DrawAlpha == 0xFF) {
@@ -547,6 +547,20 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int fr
     ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
     IGraphics::DrawSprite(sprite, animframe.X, animframe.Y, animframe.W, animframe.H, x, y, angle, flip, animframe.OffX, animframe.OffY);
 }
+PUBLIC VIRTUAL void IGraphics::DrawSpriteSized(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip, int width, int height) {
+    if (!sprite) return;
+    if (animation < 0 || animation >= sprite->Animations.size()) {
+        IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
+        assert(animation >= 0 && animation < sprite->Animations.size());
+    }
+    if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
+        IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
+        assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
+    }
+
+    ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
+    IGraphics::DrawSprite(sprite, animframe.X, animframe.Y, animframe.W, animframe.H, x, y, angle, flip, animframe.OffX, animframe.OffY, width, height);
+}
 PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY) {
     DrawSprite(sprite, SrcX, SrcY, Width, Height, CenterX, CenterY, Angle, Flip, RealCenterX, RealCenterY, Width, Height);
 }
@@ -570,17 +584,22 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
 			SX = 1;
 		if (SY < 1)
 			SY = 1;
-        int finX, finY, X, Y;
-		for (int DX = RealCenterX; DX <= SX + RealCenterX; DX++) {
-			for (int DY = RealCenterY; DY <= SY + RealCenterY; DY++) {
-                finX = CenterX + DX;
-                finY = CenterY + DY;
 
-				X = DX * Width / SX;
+        // RealCenterX +=
+        // RealCenterX = RealCenterX * SX / Width;
+        // RealCenterY = RealCenterY * SY / Height;
+
+        int finX, finY, X, Y;
+		for (int DX = 0; DX < SX; DX++) {
+			for (int DY = 0; DY < SY; DY++) {
+                finX = CenterX + DX + RealCenterX;
+                finY = CenterY + DY + RealCenterY;
+
+				X = DX * Width / SX; // Translate the screen coords to image coords
 				Y = DY * Height / SY;
-                if (X >= RealCenterX && Y >= RealCenterY && X < Width + RealCenterX && Y < Height + RealCenterY) {
-                    int PX = (X - RealCenterX);
-                    int PY = (Y - RealCenterY);
+                if (X >= 0 && Y >= 0 && X < Width && Y < Height) {
+                    int PX = X;
+                    int PY = Y;
                     if (FlipX)
                         PX = Width - PX - 1;
                     if (FlipY)

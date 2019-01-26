@@ -3,7 +3,9 @@
 
 class Level_MGZ : public LevelScene {
 public:
-    int32_t FloorY = 0;
+    int32_t FloorY = 0; //
+
+    ISprite* MGZObjectsSprite = NULL;
 };
 #endif
 
@@ -13,6 +15,8 @@ public:
 #include <Game/Objects/Gen/ObjectListing.h>
 
 #include <Game/Levels/MGZ.h>
+#include <Game/Levels/CNZ.h>
+#include <Game/Levels/FBZ.h>
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
 
@@ -64,112 +68,75 @@ PUBLIC void Level_MGZ::RestartStage(bool doActTransition, bool drawBackground) {
     }
 }
 
+PUBLIC void Level_MGZ::FinishResults() {
+    if (VisualAct == 1) {
+        LevelScene::FinishResults();
+    }
+    else {
+        FadeAction = FadeActionType::NEXT_ZONE;
+        FadeTimerMax = 90;
+        FadeMax = 0x140;
+        G->FadeToWhite = false;
+    }
+}
 PUBLIC void Level_MGZ::GoToNextAct() {
-    LevelScene* NextAct = new Level_MGZ(App, G, 2);
-    NextAct->LevelCardTimer = 0.0;
-    NextAct->FadeTimer = 0;
-    NextAct->FadeAction = 0;
-    NextAct->LevelCardHide = false;
-    NextAct->Frame = Frame;
+    if (VisualAct == 1) {
+        Level_MGZ* NextAct = new Level_MGZ(App, G, 2);
 
-    NextAct->SpecialSpawnPositionX = Player->EZX - 0x3600;
-    NextAct->SpecialSpawnPositionY = Player->EZY;
-    NextAct->RoutineNumber = 0x69;
+        TransferCommonLevelData(NextAct);
+        NextAct->MGZObjectsSprite = MGZObjectsSprite;
+        // Enable Title Card with no fade-in
+        NextAct->LevelCardTimer = 0.0;
+        NextAct->FadeTimer = 0;
+        NextAct->FadeAction = 0;
+        NextAct->LevelCardHide = false;
+        // Transfer over current frame
+        NextAct->Frame = Frame;
+        // Set player spawn position relative to their previous position
+        NextAct->SpecialSpawnPositionX = Player->EZX - 0x2E00;
+        NextAct->SpecialSpawnPositionY = Player->EZY - 0x600;
+        NextAct->RoutineNumber = 0x00;
 
-    NextAct->GiantRingModel = GiantRingModel;
-    NextAct->ItemsSprite = ItemsSprite;
-    NextAct->ItemsSprite = ItemsSprite;
-    NextAct->ObjectsSprite = ObjectsSprite;
-    NextAct->Objects2Sprite = Objects2Sprite;
-    NextAct->ExplosionSprite = ExplosionSprite;
-    NextAct->WaterSprite = WaterSprite;
-
-    NextAct->SpriteMap["HCZ"] = SpriteMap["HCZ"];
-    NextAct->SpriteMap["HCZ Enemies"] = SpriteMap["HCZ Enemies"];
-    NextAct->SpriteMap["HCZ Boss"] = SpriteMap["HCZ Boss"];
-    for (int i = 0; i < 5; i++) {
-        NextAct->KnuxSprite[i] = KnuxSprite[i];
+        App->NextScene = NextAct;
     }
-
-    Player->ControlLocked = false;
-    Player->ObjectControlled = 0x00;
-    Player->Action = ActionType::Normal;
-    Player->ChangeAnimation(Player->AnimationMap["Idle"]);
-    NextAct->Player = Player;
-    for (int p = 0; p < PlayerCount; p++) {
-        NextAct->Players[p] = Players[p];
-        NextAct->Players[p]->Scene = NextAct;
+    else {
+        Level_CNZ* NextAct = new Level_CNZ(App, G, 1);
+        TransferCommonLevelData(NextAct);
+        App->NextScene = NextAct;
     }
-    NextAct->PlayerCount = PlayerCount;
-
-    NextAct->LoadData();
-    App->NextScene = NextAct;
 }
 
 PUBLIC void Level_MGZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-	SpriteMapIDs[0x01] = ItemsSprite;
-	SpriteMapIDs[0x07] = ObjectsSprite;
-	SpriteMapIDs[0x08] = ObjectsSprite;
-    SpriteMapIDs[0x0D] = SpriteMap["MGZ"];
-    SpriteMapIDs[0x0F] = SpriteMap["MGZ"];
-	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = ObjectsSprite;
-	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x39] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x3A] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x51] = SpriteMap["MGZ"];
-
-	SpriteMapIDs[0x67] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x6C] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x6D] = SpriteMap["HCZ"];
-
-	SpriteMapIDs[0x93] = SpriteMap["HCZ Enemies"];
-	SpriteMapIDs[0x99] = SpriteMap["HCZ Boss"];
+	SpriteMapIDs[0x0D] = MGZObjectsSprite;
+    SpriteMapIDs[0x0F] = MGZObjectsSprite;
+	SpriteMapIDs[0x2F] = MGZObjectsSprite;
+	SpriteMapIDs[0x51] = MGZObjectsSprite;
 }
 
 PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
-	if (!SpriteMap["HCZ"]) {
-		SpriteMap["HCZ"] = new ISprite("Sprites/HCZ/Objects.gif", App);
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Button.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Fan.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/HandLauncher.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/BreakBar.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Decoration.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Platform.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Wake.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Bridge.bin");
-		// printf("\n");
-	}
-	if (!SpriteMap["HCZ Enemies"]) {
-		SpriteMap["HCZ Enemies"] = new ISprite("Sprites/HCZ/Enemies.gif", App);
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Blastoid.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Buggernaut.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/TurboSpiker.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/MegaChomper.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Pointdexter.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Jawz.bin");
-		// printf("\n");
-	}
-	if (!SpriteMap["HCZ Boss"]) {
-		SpriteMap["HCZ Boss"] = new ISprite("Sprites/HCZ/Boss.gif", App);
-		SpriteMap["HCZ Boss"]->LoadAnimation("Sprites/HCZ/LaundroMobile.bin");
-		// printf("\n");
-	}
-
-    if (!SpriteMap["MGZ"]) {
-		SpriteMap["MGZ"] = new ISprite("Sprites/MGZ/Objects.gif", App);
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Collapsing Bridge.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Dash Trigger.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Floating Platform.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Head Trigger.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Pulley.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Breakable Wall.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Trigger Platform.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Swinging Platform.bin");
+	if (!MGZObjectsSprite) {
+		MGZObjectsSprite = new ISprite("Sprites/MGZ/Objects.gif", App);
+        MGZObjectsSprite->Print = true;
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Collapsing Bridge.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Dash Trigger.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Floating Platform.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Head Trigger.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Pulley.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Breakable Wall.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Trigger Platform.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Swinging Platform.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Moving Spike Platform.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Smashing Pillar.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Swinging Spike Ball.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Top Platform.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Miniboss.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/End Boss.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Non Animated Sprites.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Bubbles Badnik.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Spiker.bin");
+        MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Mantis.bin");
 		// printf("\n");
 	}
 

@@ -10,7 +10,7 @@ event Create() {
     Active = true;
     Priority = true;
 
-    CurrentAnimation = (int)(Scene.Players[0].Character);
+    CurrentAnimation = int(Scene.Players[0].Character);
 
     SubX = X << 16;
     SubY = Y << 16;
@@ -94,7 +94,6 @@ event Render(CamX:int, CamY:int) {
     var s:int = 0;
     var x:int = 0;
     var w:int = 0;
-    var d:int = 0;
     Sprite = Scene.Objects2Sprite;
 
     G.DrawSprite(Sprite, 6, 2, X - CamX, Y - CamY, 0, IE_NOFLIP);
@@ -106,61 +105,37 @@ event Render(CamX:int, CamY:int) {
     x =  (24 * c >> 16) + (-4 * s >> 16);
     w =  (24 * c >> 16) + (4 * s >> 16);
     if (w - x > 0)
-    G.DrawSprite(Sprite,
-        Sprite.Animations[6].Frames[1].X,
-        Sprite.Animations[6].Frames[1].Y,
-        Sprite.Animations[6].Frames[1].W,
-        Sprite.Animations[6].Frames[1].H,
-        X - CamX + x,
-        Y - CamY + Sprite.Animations[6].Frames[1].OffY,
-        0, IE_NOFLIP,
-        0,
-        0, w - x, 30);
+    G.DrawSpriteSized(Sprite, 6, 1,
+        X - CamX + x + 4,
+        Y - CamY + 22 + Sprite.Animations[6].Frames[1].OffY,
+        0, IE_NOFLIP, w - x, 30);
 
     // Side
     x =  (-24 * c >> 16) + (4 * s >> 16);
     w =  (-24 * c >> 16) + (-4 * s >> 16);
     if (w - x > 0)
-    G.DrawSprite(Sprite,
-        Sprite.Animations[6].Frames[1].X,
-        Sprite.Animations[6].Frames[1].Y,
-        Sprite.Animations[6].Frames[1].W,
-        Sprite.Animations[6].Frames[1].H,
-        X - CamX + x,
-        Y - CamY + Sprite.Animations[6].Frames[1].OffY,
-        0, IE_NOFLIP,
-        0,
-        0, w - x, 30);
+    G.DrawSpriteSized(Sprite, 6, 1,
+        X - CamX + x + 4,
+        Y - CamY + 22 + Sprite.Animations[6].Frames[1].OffY,
+        0, IE_NOFLIP, w - x, 30);
 
     // Front
     x =  (24 * c >> 16) + (4 * s >> 16);
     w =  (-24 * c >> 16) + (4 * s >> 16);
     if (w - x > 0)
-    G.DrawSprite(Sprite,
-        Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].X,
-        Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Y,
-        Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].W,
-        Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].H,
-        X - CamX + x,
-        Y - CamY + Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].OffY,
-        0, IE_NOFLIP,
-        0,
-        0, w - x, 30);
+    G.DrawSpriteSized(Sprite, CurrentAnimation, Frame >> 8,
+        X - CamX + x + 24,
+        Y - CamY + 22 + Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].OffY,
+        0, IE_NOFLIP, w - x, 30);
 
     // Back
     x =  (-24 * c >> 16) + (-4 * s >> 16);
     w =  (24 * c >> 16) + (-4 * s >> 16);
     if (w - x > 0)
-    G.DrawSprite(Sprite,
-        Sprite.Animations[5].Frames[Frame >> 8].X,
-        Sprite.Animations[5].Frames[Frame >> 8].Y,
-        Sprite.Animations[5].Frames[Frame >> 8].W,
-        Sprite.Animations[5].Frames[Frame >> 8].H,
-        X - CamX + x,
-        Y - CamY + Sprite.Animations[5].Frames[Frame >> 8].OffY,
-        0, IE_NOFLIP,
-        0,
-        0, w - x, 30);
+    G.DrawSpriteSized(Sprite, 5, Frame >> 8,
+        X - CamX + x + 24,
+        Y - CamY + 22 + Sprite.Animations[5].Frames[Frame >> 8].OffY,
+        0, IE_NOFLIP, w - x, 30);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

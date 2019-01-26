@@ -1,20 +1,51 @@
 event Create() {
-    this.W = 32;
-    this.H = 32;
-    this.Active = true;
-    this.Priority = false;
+    W = 16;
+    H = 16;
+    Active = true;
+    Priority = false;
 
-    this.Frame = 0;
-    this.CurrentAnimation = 2;
-    this.Sprite = Scene.WaterSprite;
+    Frame = 0;
+    CurrentAnimation = Math.randRange(3, 5);
+    Sprite = Scene.WaterSprite;
+    VisualLayer = 1;
+
+    AutoAnimate = true;
+
+    YSpeed = -0x88;
+    Timer = 0;
 }
 event Update() {
-
+    X = ((Math.sinHex(Timer << 1) * 3) >> 16) + InitialX;
+    Timer++;
+    Timer &= 0x7F;
+    if (Y < Scene.WaterLevel)
+        Active = false;
+}
+event OnAnimationFinish() {
+    // Frame = 5;
 }
 event OnLeaveScreen() : int {
     Active = false;
     return 0;
 }
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(this.Sprite, CurrentAnimation, Frame, this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+
+    // G.DrawTextShadow(X - CamX + 8, Y - CamY - 8 - 8, Math.toString());
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (CurrentAnimation != 3) return false;
+    if (Frame < 13) return false;
+
+    App.Audio.RemoveMusic(Sound.SoundBank[0xFD]);
+    Scene.Players[PlayerID].UnderwaterTimer = 1800;
+    Scene.Players[PlayerID].GroundSpeed = 0;
+    Scene.Players[PlayerID].XSpeed = 0;
+    Scene.Players[PlayerID].YSpeed = 0;
+    Sound.Play(Sound.SFX_AIR_BUBBLE);
+
+    Scene.AddExplosion(Sprite, 6, false, X, Y, VisualLayer);
+    Active = false;
+    return 1;
 }

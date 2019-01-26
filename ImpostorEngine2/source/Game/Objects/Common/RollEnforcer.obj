@@ -13,6 +13,8 @@ event Render(CamX:int, CamY:int) {
 }
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     var player:IPlayer = Scene.Players[PlayerID];
+    if (!player.Ground) return 0;
+    
     if (player.GroundSpeed == 0) {
         if ((SubType & 0xF) != 0x4) {
             if ((player.DisplayFlip < 0) == this.FlipX) {

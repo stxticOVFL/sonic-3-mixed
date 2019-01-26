@@ -25,37 +25,37 @@ public:
 
 PUBLIC BubbleCountdown::BubbleCountdown() {
     CurrentAnimation = 7;
-    CurrentFrame = 0;
+    Frame = 0;
 }
 
 PUBLIC void BubbleCountdown::Update() {
     ISprite::Animation ani = Sprite->Animations[CurrentAnimation];
 
     if (CurrentAnimation == 7) {
-        if ((CurrentFrame >> 8) >= ani.FrameCount - 1) {
+        if ((Frame >> 8) >= ani.FrameCount - 1) {
             CurrentAnimation = 8 + Number;
             Timer1 = 88;
-            CurrentFrame = 0;
+            Frame = 0;
         }
 
         if (ani.AnimationSpeed == 4)
-            CurrentFrame += 0x100;
+            Frame += 0x100;
         else if (ani.AnimationSpeed > 2)
-            CurrentFrame += ani.AnimationSpeed;
-        else if (ani.Frames[CurrentFrame >> 8].Duration != 0)
-            CurrentFrame += 0x100 / ani.Frames[CurrentFrame >> 8].Duration;
+            Frame += ani.AnimationSpeed;
+        else if (ani.Frames[Frame >> 8].Duration != 0)
+            Frame += 0x100 / ani.Frames[Frame >> 8].Duration;
     }
     else if (CurrentAnimation > 7) {
-        if ((CurrentFrame >> 8) >= ani.FrameCount - 1) {
-            CurrentFrame = (ani.FrameCount - 1) << 8;
+        if ((Frame >> 8) >= ani.FrameCount - 1) {
+            Frame = (ani.FrameCount - 1) << 8;
         }
 
         if (ani.AnimationSpeed == 4)
-            CurrentFrame += 0x100;
+            Frame += 0x100;
         else if (ani.AnimationSpeed > 2)
-            CurrentFrame += ani.AnimationSpeed;
-        else if (ani.Frames[CurrentFrame >> 8].Duration != 0)
-            CurrentFrame += 0x100 / ani.Frames[CurrentFrame >> 8].Duration;
+            Frame += ani.AnimationSpeed;
+        else if (ani.Frames[Frame >> 8].Duration != 0)
+            Frame += 0x100 / ani.Frames[Frame >> 8].Duration;
 
         if (Timer1 == 0) {
             Timer2 = 54;
@@ -77,7 +77,7 @@ PUBLIC void BubbleCountdown::Render(int CamX, int CamY) {
     G->DrawModeOverlay = true;
     G->DrawAlpha = 0xFF;
     ISprite::Animation animation = Sprite->Animations[CurrentAnimation];
-    ISprite::AnimFrame currentFrame = animation.Frames[CurrentFrame >> 8];
+    ISprite::AnimFrame currentFrame = animation.Frames[Frame >> 8];
     if (Timer2 >= 0) {
         G->DrawSprite(Sprite,
             currentFrame.X,

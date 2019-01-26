@@ -28,7 +28,7 @@ public:
     uint32_t MetricRenderTime = -1;
     bool UnlockedFramerate = false;
 
-    static Platforms Platform;
+    static Platforms Platform; //
 };
 #endif
 
@@ -54,13 +54,13 @@ public:
 #include <Game/Scenes/MainMenu.h>
 #include <Game/Scenes/LevelSelect.h>
 
-#if MSVC
+#if   MSVC
     #include <windows.h>
 #elif NX
     #include "switch.h"
 #endif
 
-#if MSVC
+#if   MSVC
     Platforms IApp::Platform = Platforms::Windows;
 #elif MACOSX
     Platforms IApp::Platform = Platforms::MacOSX;
@@ -131,6 +131,7 @@ PUBLIC IApp::IApp() {
     	#endif
     }
 	G->SetDisplay(desW, desH, isSharp);
+    SDL_SetWindowTitle(G->Window, "Sonic 3'Mixed");
 
     Input = new IInput(this);
     Audio = new IAudio(this);
@@ -139,15 +140,37 @@ PUBLIC IApp::IApp() {
 }
 
 PUBLIC void IApp::LoadSettings() {
-#if MSVC
-	Settings = new IINI("../config.ini");
-#else
     Settings = new IINI("config.ini");
-#endif
 }
 
 PUBLIC void IApp::OnEvent(Uint32 event) {
 
+}
+
+PUBLIC void IApp::ExecuteCommand(char* cmd) {
+    if (Scene && Scene->ExecuteCommand(cmd))
+        return;
+
+    bool isUnknown = true;
+    switch (*cmd) {
+        case 'S':
+            if (!strcmp(cmd, "STARTSCENE ")) {
+                printf("sorry lol\n");
+            }
+            isUnknown = false; break;
+        case 'H':
+            if (!strcmp(cmd, "HELP ")) {
+                printf("sorry lol\n");
+                printf("in level scenes:\n");
+                printf("still none lol\n");
+            }
+            isUnknown = false; break;
+        default:
+            break;
+    }
+
+    if (isUnknown)
+        Print(2, "Unrecognized command '%s'.", cmd);
 }
 
 PUBLIC void IApp::Run() {
@@ -159,15 +182,17 @@ PUBLIC void IApp::Run() {
     int benchmarkFrameCount = 0;
 
     Print(0, "Starting scene");
-    Scene = new Scene_MainMenu(this, G);
-    // Scene = new Scene_LevelSelect(this, G);
-    // Scene = new Level_SpecialStage(this, G);
-    // Scene = new Level_AIZ(this, G, 2);
-    // Scene = new Level_ICZ(this, G, 1);
-    // Scene = new Level_HCZ(this, G, 1);
-    // Scene = new Level_MGZ(this, G, 1);
-    // Scene = new LevelScene(this, G);
-    Scene->Init();
+    if (!Scene) {
+        Scene = new Scene_MainMenu(this, G);
+        // Scene = new Scene_LevelSelect(this, G);
+        // Scene = new Level_SpecialStage(this, G);
+        // Scene = new Level_AIZ(this, G, 2);
+        // Scene = new Level_ICZ(this, G, 1);
+        // Scene = new Level_HCZ(this, G, 1);
+        // Scene = new Level_MGZ(this, G, 1);
+        // Scene = new LevelScene(this, G);
+        Scene->Init();
+    }
 
     beginFrameBatch = SDL_GetTicks();
 
@@ -208,14 +233,30 @@ PUBLIC void IApp::Run() {
                                 MetricFrameCounterTime = 0;
                             }
                             break;
-                        case SDLK_1:
+                        /*
+                        case SDLK_1: {
+                            char* end;
+                            char buffer2[420];
+                            printf("\x1b[1;91m%s\x1b[m > ", "Enter a command");
+                            if (fgets(buffer2, 420, stdin) != NULL) {
+                                end = buffer2 + strlen(buffer2);
+                                do {
+                                    *end-- = 0;
+                                }
+                                while (*end == '\r' || *end == '\n');
+                            }
+                            ExecuteCommand(buffer2);
+                            break; }
+                        */
+                        case SDLK_BACKSPACE:
                             if (DevMenu) {
                                 UnlockedFramerate = !UnlockedFramerate;
                                 SDL_GL_SetSwapInterval(!UnlockedFramerate);
                             }
                             break;
-                        case SDLK_TAB:
+                        case SDLK_BACKSLASH:
                             if (DevMenu) {
+                                Stepper = true;
                                 Step = true;
                                 MetricFrameCounterTime++;
                             }
@@ -229,7 +270,7 @@ PUBLIC void IApp::Run() {
         }
 
         UpdatesPerFrame = 1;
-        if (UnlockedFramerate) UpdatesPerFrame = 8;
+        if (UnlockedFramerate) UpdatesPerFrame = 4;
 
         for (int m = 0; m < UpdatesPerFrame; m++) {
             if ((Stepper && Step) || !Stepper) {
@@ -295,7 +336,7 @@ PUBLIC void IApp::Run() {
         G->DrawText(200 - strlen("IMPOSTOR ENGINE 2") * 4, 36, "IMPOSTOR ENGINE 2", 0xFFFFFF);
         G->DrawText(200 - strlen("Debug Menu") * 4, 46, "Debug Menu", 0xC0C0C0);
 
-        G->DrawText(200 - strlen("Sonic 3 Remastered") * 4, 66, "Sonic 3 Remastered", 0xF2D141);
+        G->DrawText(200 - strlen("Sonic 3") * 4, 66, "Sonic 3", 0xF2D141);
         G->DrawText(200 - strlen("0.00.001") * 4, 76, "0.00.001", 0xC0C0C0);
         // Version Numbering
         // #1.#2.#3

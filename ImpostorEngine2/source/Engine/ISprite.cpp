@@ -43,7 +43,9 @@ public:
     IGraphics* G = NULL;
 
     const char* Filename;
-    ISprite* LinkedSprite = NULL; 
+    ISprite* LinkedSprite = NULL;
+
+    bool Print = false; //
 };
 #endif
 
@@ -251,7 +253,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 
     IStreamer reader(SpriteFile);
 
-    IApp::Print(-1, "\"%s\"", filename);
+    IApp::Print(-1 + Print, "\"%s\"", filename);
 
     reader.ReadUInt32BE(); // magic
 
@@ -282,7 +284,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
         an.FrameToLoop = reader.ReadByte();
         an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation, 3: Static rotation using extra frames, 4: Unknown (used alot in Mania)
         an.Frames = (AnimFrame*)malloc(sizeof(AnimFrame) * an.FrameCount);
-		IApp::Print(-1, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
+		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
         for (int i = 0; i < an.FrameCount; i++) {
             an.Frames[i].SheetNumber = reader.ReadByte();
             an.Frames[i].Duration = reader.ReadInt16();
@@ -308,7 +310,13 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
     IResources::Close(SpriteFile);
     // printf("\n");
 }
+PUBLIC int  ISprite::FindAnimation(const char* animname) {
+    for (int a = 0; a < AnimCount; a++)
+        if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name, animname))
+            return a;
 
+    return -1;
+}
 PUBLIC void ISprite::LinkAnimation(vector<Animation> ani) {
     Animations = ani;
 }

@@ -1,5 +1,7 @@
 object 0x2C;
 
+subclass Solid;
+
 var Drawbridge:bool;
 var Allotted:int;
 
@@ -15,7 +17,6 @@ event Create() {
 
     SolidTop = true;
     SolidCustomized = true;
-    Scene.AddSelfToRegistry(this, "Solid");
 
     Drawbridge = false;
     CurrentAnimation = 5;

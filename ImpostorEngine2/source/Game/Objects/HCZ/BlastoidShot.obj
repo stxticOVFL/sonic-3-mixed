@@ -9,8 +9,6 @@ event Create() {
 
     Invincible = true;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
-
     BounceOffShield = true;
 
     Timer = 0;
@@ -18,8 +16,6 @@ event Create() {
 
 event Update() {
     Timer = 1 - Timer;
-    X += XSpeed >> 8;
-    Y += YSpeed >> 8;
 
     if (!OnScreen) {
         X = -16;

@@ -32,6 +32,8 @@ event Update() {
             }
         }
     }
+
+    return;
 }
 event Render(CamX:int, CamY:int) {
     // Ball thing

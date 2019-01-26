@@ -117,8 +117,8 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     if (Scene.Players[PlayerID].EZX > X + W / 2 - 2) return 0;
     if (Scene.Players[PlayerID].EZX < X - W / 2 + 2) return 0;
 
-    if (BreakableFromTop  && HitFrom == 3) return 0;
-    if (!BreakableFromTop && HitFrom == 1) return 0;
+    if (BreakableFromTop  && HitFrom == CollideSide.BOTTOM) return 0;
+    if (!BreakableFromTop && HitFrom == CollideSide.TOP) return 0;
 
     Sound.Play(Sound.SFX_COLLAPSE);
 

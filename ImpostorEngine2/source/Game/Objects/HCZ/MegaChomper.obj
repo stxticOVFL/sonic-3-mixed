@@ -25,7 +25,7 @@ event Create() {
 
     HitCount = 1;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
+    
 
     Routine = 2;
 

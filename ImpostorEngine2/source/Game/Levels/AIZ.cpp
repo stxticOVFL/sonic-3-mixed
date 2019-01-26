@@ -12,7 +12,7 @@ public:
     ISprite* AIZObjectsSprite = NULL;
     ISprite* AIZBossSprite = NULL;
 
-    Level_AIZ* Act2Preload = NULL;
+    Level_AIZ* Act2Preload = NULL; //
 };
 #endif
 
@@ -217,6 +217,7 @@ int CutsceneActTimer = 60;
 Uint32 ShipTimer = 0x40200000;
 int BombDelay = 0x1A4;
 int BombIndex = 0;
+int FireInd = 0;
 
 PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
     ZoneID = 1;
@@ -278,8 +279,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartY = 0x440;
     }
     else {
-        // PlayerStartX = 0x4850;
-        // PlayerStartY = 0x01B0;
+        PlayerStartX = 0x4850;
+        PlayerStartY = 0x01B0;
     }
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
@@ -366,42 +367,19 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-    if (Act <= 1) {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZObjectsSprite;
-        SpriteMapIDs[0x05] = AIZObjectsSprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZObjectsSprite;
-        SpriteMapIDs[0x0A] = AIZObjectsSprite;
-        SpriteMapIDs[0x0C] = AIZObjectsSprite;
-        SpriteMapIDs[0x0D] = AIZObjectsSprite;
-        SpriteMapIDs[0x0F] = AIZObjectsSprite;
-    	SpriteMapIDs[0x2F] = AIZObjectsSprite;
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZObjectsSprite;
-    	SpriteMapIDs[0x51] = AIZObjectsSprite;
-        SpriteMapIDs[0x90] = AIZBossSprite;
-    }
-    else {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZObjectsSprite;
-        SpriteMapIDs[0x05] = AIZObjectsSprite;
-        SpriteMapIDs[0x06] = AIZObjectsSprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZObjectsSprite;
-        SpriteMapIDs[0x0A] = AIZObjectsSprite;
-        SpriteMapIDs[0x0C] = AIZObjectsSprite;
-        SpriteMapIDs[0x0D] = AIZObjectsSprite;
-        SpriteMapIDs[0x0F] = AIZObjectsSprite;
-    	SpriteMapIDs[0x2F] = AIZObjectsSprite;
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZObjectsSprite;
-    	SpriteMapIDs[0x51] = AIZObjectsSprite;
-        SpriteMapIDs[0x8C] = AIZObjectsSprite;
-        SpriteMapIDs[0x90] = AIZBossSprite;
-    }
+    SpriteMapIDs[0x04] = AIZObjectsSprite;
+    SpriteMapIDs[0x05] = AIZObjectsSprite;
+    SpriteMapIDs[0x06] = AIZObjectsSprite;
+    SpriteMapIDs[0x09] = AIZObjectsSprite;
+    SpriteMapIDs[0x0A] = AIZObjectsSprite;
+    SpriteMapIDs[0x0C] = AIZObjectsSprite;
+    SpriteMapIDs[0x0D] = AIZObjectsSprite;
+    SpriteMapIDs[0x0F] = AIZObjectsSprite;
+	SpriteMapIDs[0x2F] = AIZObjectsSprite;
+    SpriteMapIDs[0x35] = AIZObjectsSprite;
+	SpriteMapIDs[0x51] = AIZObjectsSprite;
+    SpriteMapIDs[0x8C] = AIZObjectsSprite;
+    SpriteMapIDs[0x90] = AIZBossSprite;
 }
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
@@ -444,10 +422,9 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 
     if (!AIZBossSprite) {
         AIZBossSprite = new ISprite("Sprites/AIZ/Boss.gif", App);
+        AIZBossSprite->Print = true;
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Background Tree.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Bomb Explosion.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Boss Small.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Ship Propeller.bin");
+        AIZBossSprite->LoadAnimation("Sprites/AIZ/Airship.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/End Boss.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Miniboss.bin");
     }
@@ -472,7 +449,6 @@ PUBLIC void Level_AIZ::LoadData() {
     AIZObjectsSprite->LinkPalette(TileSprite);
 }
 
-int FireInd = 0;
 PUBLIC void Level_AIZ::Subupdate() {
     // Screen events?
     if (Act == 0) {
@@ -787,7 +763,7 @@ PUBLIC void Level_AIZ::Subupdate() {
         else {
             int d0 = ShipTimer >> 16;
 
-            Data->layers[3].OffsetX = Data->layers[4].OffsetX = 0x4000 - d0 - 0x280;
+            Data->layers[3].OffsetX = Data->layers[4].OffsetX = 0x3D80 - d0;
             Data->layers[3].Visible = Data->layers[4].Visible = true;
 
             if (d0 < 0x3CDC) {
@@ -795,32 +771,40 @@ PUBLIC void Level_AIZ::Subupdate() {
             }
             else {
                 if (RoutineNumber >= 4) {
-                    ShipTimer -= 0x8800 * 16;
+                    ShipTimer -= 0x8800;
+
+                    Signal[6] = 0x3D80 - d0; //(ShipTimer >> 16);
+                    Signal[7] = 0x40 + AIZBattleShip_BobbingMotion[(ShipTimer >> 16) >> 2 & 0xF];
 
                     if (BombDelay > 0)
                         BombDelay--;
                     else if (BombDelay == 0) {
                         BombDelay = AIZBattleship_BombScript[BombIndex * 2];
-                        // int BombX = AIZBattleship_BombScript[BombIndex * 2 + 1];
 
-                        Sound::Play(Sound::SFX_DROP);
+                        int BombX = AIZBattleship_BombScript[BombIndex * 2 + 1] - 0x3D80;
+
+                        if (d0 > 0x3D5C)
+                            AddNewObject(Obj_AirshipBomb, 0, BombX, -0x20, false, false);
 
                         BombIndex++;
                         if (BombIndex == 21)
                             BombDelay = -1;
                     }
                 }
-                if (d0 < 0x3D5C) {
+                if (d0 < 0x3D00) {
+                    if (RoutineNumber == 4) {
+                        RoutineNumber = 5;
+
+                        CameraAutoScrollX = 0;
+                    }
+                }
+                else if (d0 < 0x3D5C) {
                     // go up
                     d0 -= 0x3D5C;
-                    Data->layers[3].OffsetY = Data->layers[4].OffsetY += d0 / 4;
-
-                    if (RoutineNumber == 4)
-                        RoutineNumber = 5;
+                    Data->layers[3].OffsetY = Data->layers[4].OffsetY += d0 / 32;
                 }
                 else {
-                    d0 = (d0 >> 2) & 0xF;
-                    Data->layers[3].OffsetY = Data->layers[4].OffsetY = -0x40 + AIZBattleShip_BobbingMotion[d0];
+                    Data->layers[3].OffsetY = Data->layers[4].OffsetY = -0x40 + AIZBattleShip_BobbingMotion[d0 >> 2 & 0xF];
                 }
                 if (RoutineNumber == 4) {
                     int val = 40;
@@ -1013,7 +997,7 @@ PUBLIC void Level_AIZ::HandleCamera() {
         int CameraBoundCount = 6;
         int CameraBounds[12] = {
             0x1650, 0x390,
-            0x1B00, 0x3B0,
+            0x1B00 - 0x10, 0x3B0,
             0x2000, 0x430,
             0x2B00, 0x4C0,
             0x2D80, 0x3B0,
@@ -1115,7 +1099,16 @@ PUBLIC void Level_AIZ::HandleCamera() {
                 if (Player->EZX < 0x4580 && CameraX >= 0x41C0 && TileSprite != AIZShipTileSprite) {
                     TileSprite = AIZShipTileSprite;
                     RoutineNumber = 4;
+                    CameraAutoScrollX = 4;
                     ShipTimer = 0x40200000;
+
+                    // Airship FrameTime to Pixels:
+                    // FrameTime * 0x8800 / 0x10000;
+
+                    // Airship Pixels to FrameTime
+                    // Pixels * 0x10000 / 0x8800;
+
+                    BombDelay += (App->WIDTH - 320) / 2 * 0x10000 / 0x8800;
 
                     TileSprite->SetPalette(0x12, 0xEEAA22);
                     TileSprite->SetPalette(0x13, 0xEE6600);
@@ -1144,6 +1137,17 @@ PUBLIC void Level_AIZ::HandleCamera() {
                 if (Player->EZX < 0x4580 && CameraY < 0x480 && CameraX >= 0x4580 - App->WIDTH) {
                     CameraX -= 0x200;
                     Player->EZX -= 0x200;
+
+                    for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
+                        (*it)->X -= 0x200;
+                    }
+
+                    for (unsigned int o = 0; o < (unsigned int)ObjectCount && Player->Action != ActionType::Dead; o++) {
+                        Object* obj = Objects[o];
+                        if (obj && obj->Active && obj->OnScreen) {
+                            obj->X -= 0x200;
+                        }
+                    }
                 }
             }
             else if (RoutineNumber == 5) {
@@ -1173,38 +1177,6 @@ PUBLIC void Level_AIZ::HandleCamera() {
     }
 }
 
-PUBLIC void Level_AIZ::StartAct2Preload() {
-    Act2Preload = new Level_AIZ(App, G, 2);
-
-    Act2Preload->VisualWaterLevel = Act2Preload->WaterLevel = 0x528;
-    Act2Preload->Frame = Frame;
-    Act2Preload->WaterAnimationFrame = (Frame % 40) << 6;
-    Act2Preload->VisualAct = 1;
-
-    Act2Preload->SpecialSpawnPositionX = Player->EZX - 0x2F00;
-    Act2Preload->SpecialSpawnPositionY = Player->EZY - 0x80;
-    Act2Preload->RoutineNumber = -2;
-    Act2Preload->LevelTriggerFlag = 0x00;
-
-    Act2Preload->GiantRingModel = GiantRingModel;
-    Act2Preload->ItemsSprite = ItemsSprite;
-    Act2Preload->AnimalsSprite = AnimalsSprite;
-    Act2Preload->ObjectsSprite = ObjectsSprite;
-    Act2Preload->Objects2Sprite = Objects2Sprite;
-    Act2Preload->Objects3Sprite = Objects3Sprite;
-    Act2Preload->ExplosionSprite = ExplosionSprite;
-    Act2Preload->WaterSprite = WaterSprite;
-
-    Act2Preload->AIZObjectsSprite = AIZObjectsSprite;
-    Act2Preload->AIZBossSprite = AIZBossSprite;
-    for (int i = 0; i < 5; i++) {
-        Act2Preload->KnuxSprite[i] = KnuxSprite[i];
-    }
-    Act2Preload->Player = Player;
-
-    // Act2Preload->LoadInBackground();
-}
-
 PUBLIC void Level_AIZ::FinishResults() {
     if (VisualAct == 1) {
         LevelScene::FinishResults();
@@ -1218,35 +1190,33 @@ PUBLIC void Level_AIZ::FinishResults() {
 }
 PUBLIC void Level_AIZ::GoToNextAct() {
     if (Act == 1 && VisualAct == 1) {
-        StartAct2Preload();
+        Level_AIZ* NextAct = new Level_AIZ(App, G, 2);
 
-		Level_AIZ* NextAct = Act2Preload;
-        if (!NextAct)
-            NextAct = new Level_AIZ(App, G, 2);
-
-        // NextAct->LoadData();
-
-        // Player->ControlLocked = false;
-        // Player->ObjectControlled = 0x00;
-        // Player->Action = ActionType::Normal;
-        // Player->ChangeAnimation(Player->AnimationMap["Idle"]);
-        for (int p = 0; p < PlayerCount; p++) {
-            NextAct->Players[p] = Players[p];
-            NextAct->Players[p]->Scene = NextAct;
-        }
-        NextAct->PlayerCount = PlayerCount;
-
+        TransferCommonLevelData(NextAct);
+        NextAct->AIZObjectsSprite = AIZObjectsSprite;
+        NextAct->AIZBossSprite = AIZBossSprite;
+        // Disable Title Card
         NextAct->LevelCardTimer = 6.0;
         NextAct->FadeTimer = -1;
         NextAct->FadeAction = 0;
         NextAct->FadeTimerMax = -1;
+        // Transfer over Timer and current frame
+        NextAct->ResetTimer = false;
         NextAct->Timer = Timer;
         NextAct->Frame = Frame;
         NextAct->HUDVisible = HUDVisible;
         NextAct->HUDAnim = HUDAnim;
         NextAct->ControlsVisible = ControlsVisible;
         NextAct->ControlsAnim = ControlsAnim;
-
+        // Set water level
+        NextAct->VisualWaterLevel = NextAct->WaterLevel = 0x528;
+        NextAct->WaterAnimationFrame = (Frame % 40) << 6;
+        NextAct->VisualAct = 1;
+        // Set player spawn position relative to their previous position
+        NextAct->SpecialSpawnPositionX = Player->X - 0x2F00;
+        NextAct->SpecialSpawnPositionY = Player->Y - 0x80;
+        NextAct->RoutineNumber = -2;
+        NextAct->LevelTriggerFlag = 0x00;
         NextAct->CameraMaxY = 0x258;
 
         App->NextScene = NextAct;
@@ -1278,38 +1248,7 @@ PUBLIC void Level_AIZ::GoToNextAct() {
     }
     else if (Act == 2 && VisualAct == 2) {
         Level_HCZ* NextAct = new Level_HCZ(App, G, 1);
-        NextAct->GiantRingModel = GiantRingModel;
-        NextAct->GlobalDisplaySprite = GlobalDisplaySprite;
-        NextAct->ItemsSprite = ItemsSprite;
-        NextAct->AnimalsSprite = AnimalsSprite;
-        NextAct->ObjectsSprite = ObjectsSprite;
-        NextAct->Objects2Sprite = Objects2Sprite;
-        NextAct->Objects3Sprite = Objects3Sprite;
-        NextAct->ExplosionSprite = ExplosionSprite;
-        NextAct->WaterSprite = WaterSprite;
-
-        for (int i = 0; i < 5; i++) {
-            NextAct->KnuxSprite[i] = KnuxSprite[i];
-        }
-        NextAct->Player = Player;
-        for (int p = 0; p < PlayerCount; p++) {
-            NextAct->Players[p] = Players[p];
-            NextAct->Players[p]->Scene = NextAct;
-        }
-        NextAct->PlayerCount = PlayerCount;
-        NextAct->Score = Score;
-
-        // Set all these to NULL so they do not get cleaned up
-        PlayerCount = 0;
-        KnuxSprite[0] = NULL;
-        ItemsSprite = NULL;
-        AnimalsSprite = NULL;
-        ObjectsSprite = NULL;
-        Objects2Sprite = NULL;
-        Objects3Sprite = NULL;
-        ExplosionSprite = NULL;
-        WaterSprite = NULL;
-
+        TransferCommonLevelData(NextAct);
         App->NextScene = NextAct;
     }
 }

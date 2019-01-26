@@ -24,7 +24,7 @@ event Create() {
 
     HitCount = 1;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
+    
 }
 
 event OnHit() : int {

@@ -55,7 +55,7 @@ event Render(CamX:int, CamY:int) {
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-    if (HitFrom != 1) {
+    if (HitFrom != CollideSide.TOP) {
         this.CollidingWithPlayer = false;
         return 0;
     }

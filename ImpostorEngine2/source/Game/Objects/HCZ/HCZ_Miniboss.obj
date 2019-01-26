@@ -32,7 +32,7 @@ event Create() {
 
     CurrentAnimation = 1;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
+    
 }
 
 event OnHit() : int {

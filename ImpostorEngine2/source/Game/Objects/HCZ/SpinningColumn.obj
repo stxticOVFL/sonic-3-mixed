@@ -97,6 +97,8 @@ event Update() {
     if (Frame >= Sprite.Animations[CurrentAnimation].FrameCount << 8) {
         Frame = Sprite.Animations[CurrentAnimation].FrameToLoop << 8;
     }
+
+    return;
 }
 event Render(CamX:int, CamY:int) {
     var nX:int = LastX;

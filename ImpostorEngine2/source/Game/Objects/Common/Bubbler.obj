@@ -1,5 +1,10 @@
 object 0x54;
 
+var UnkFlag:bool;
+var UnkValue:int;
+
+var SubTimer:int;
+var BubblesToMake:int;
 
 event Create() {
     this.W = 16;
@@ -10,18 +15,39 @@ event Create() {
     this.Frame = 0;
     this.CurrentAnimation = 2;
     this.Sprite = Scene.WaterSprite;
+
+    UnkFlag = (SubType & 0x80) == 0x80;
+    UnkValue = SubType & 0x7F;
+
+    AutoAnimate = true;
+
+    Timer = 1;
+    SubTimer = 1;
+    BubblesToMake = 1;
 }
 event Update() {
-    if (this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed > 2)
-        this.Frame += this.Sprite.Animations[this.CurrentAnimation].AnimationSpeed;
-    else if (this.Sprite.Animations[this.CurrentAnimation].Frames[this.Frame / 0x100].Duration != 0)
-        this.Frame += 0x100 / this.Sprite.Animations[this.CurrentAnimation].Frames[this.Frame / 0x100].Duration;
-
-    if (this.Frame / 0x100 >= this.Sprite.Animations[this.CurrentAnimation].FrameCount - 1) {
-        this.Frame = this.Sprite.Animations[this.CurrentAnimation].FrameToLoop * 0x100;
+    if (Y < Scene.WaterLevel) {
+        Active = false;
+        return;
     }
 
-}
-event Render(CamX:int, CamY:int) {
-    G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+    if (Timer > 0) {
+        Timer--;
+        if (Timer == 0) {
+            Timer = Math.randRange(0x00, 0x7F) + 0x80;
+            BubblesToMake = Math.randRange(1, 6);
+            SubTimer = Math.randRange(0x01, 0x1F);
+        }
+    }
+
+    if (BubblesToMake > 0) {
+        if (SubTimer > 0) {
+            SubTimer--;
+            if (SubTimer == 0) {
+                SubTimer = Math.randRange(0x01, 0x1F);
+                Scene.AddNewObject(Obj_BubbleAir, 0, X + Math.randRange(-8, 8), Y, false, false);
+                BubblesToMake--;
+            }
+        }
+    }
 }

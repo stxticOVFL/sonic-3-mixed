@@ -53,14 +53,14 @@ event Create() {
             break;
         }
         case 3: {
-            CurrentAnimation = 23;
+            CurrentAnimation = 19;
             if (SubType >= 0x0B) {
                 Frame = SubType - 0x0B;
             }
             break;
         }
         case 6: {
-            CurrentAnimation = 23;
+            CurrentAnimation = -1;
             if (SubType >= 0x14 && SubType <= 0x17) {
                 Frame = SubType - 0x14;
             }

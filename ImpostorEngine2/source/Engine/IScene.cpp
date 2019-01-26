@@ -11,7 +11,7 @@ public:
     int         FadeTimer = -1;
     int         FadeTimerMax = 1;
     int         FadeMax = 0xFF;
-    bool        FadeIn = false;
+    bool        FadeIn = false; //
 };
 #endif
 
@@ -32,6 +32,9 @@ PUBLIC VIRTUAL void IScene::Render() {
 }
 PUBLIC VIRTUAL void IScene::Cleanup() {
 
+}
+PUBLIC VIRTUAL bool IScene::ExecuteCommand(char* cmd) {
+    return false;
 }
 
 PUBLIC VIRTUAL IScene::~IScene() {

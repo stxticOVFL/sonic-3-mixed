@@ -8,7 +8,7 @@ public:
     int WallX = 0x4000000;
     int WallY = 0x600;
     int WallMoving = false;
-    int WallStopped = false;
+    int WallStopped = false; //
 };
 #endif
 
@@ -18,7 +18,9 @@ public:
 #include <Game/Objects/Gen/ObjectListing.h>
 
 #include <Game/Levels/HCZ.h>
+#include <Game/Levels/MGZ.h>
 
+int DrainTimer = 0;
 int HCZ_WaterTunnels[126] = {
     /*  Min X,  Min Y,  Max X,  Max Y,  X Velo, Y Velo, Player can influence which axis flag (Set = X, Clear = Y) */
     0x0380, 0x0580, 0x05A0, 0x05C0, 0x03F0, 0xFFE0, 0x0000,
@@ -40,6 +42,28 @@ int HCZ_WaterTunnels[126] = {
 
     0x3A00, 0x0800, 0x3AA0, 0x0840, 0x0400, 0x0000, 0x0000,
     0x3AA0, 0x07C0, 0x3F00, 0x0840, 0x0400, 0x0000, 0x0000,
+};
+int copymake[4 * 16] = {
+    // from     to
+    0x80, 0x80, 0, 0,
+    0x80, 0x80, 8, 0,
+    0x80, 0x80, 16, 0,
+    0xF0, 0x10, 24, 0,
+
+    0x98, 0x88, 0, 8,
+    0xA0, 0x88, 8, 8,
+    0xA8, 0x88, 16, 8,
+    0xF0, 0x18, 24, 8,
+
+    0x90, 0x88, 0, 16,
+    0x98, 0x88, 8, 16,
+    0xA0, 0x88, 16, 16,
+    0xF0, 0x18, 24, 16,
+
+    0xB8, 0x28, 0, 24,
+    0xB8, 0x28, 8, 24,
+    0xB8, 0x28, 16, 24,
+    0x178, 0x30, 24, 24,
 };
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
@@ -147,7 +171,7 @@ PUBLIC void Level_HCZ::Init() {
     }
 
     if (Act == 2) {
-        bool EasyMode = true;
+        bool EasyMode = false;
         if (EasyMode) {
             int X = 0x970;
             int Y = 0x620;
@@ -160,8 +184,6 @@ PUBLIC void Level_HCZ::Init() {
         }
     }
 }
-
-int DrainTimer = 0;
 
 PUBLIC void Level_HCZ::RestartStage(bool doActTransition, bool drawBackground) {
     App->Audio->ClearMusic();
@@ -191,60 +213,59 @@ PUBLIC void Level_HCZ::RestartStage(bool doActTransition, bool drawBackground) {
     }
 }
 
+PUBLIC void Level_HCZ::FinishResults() {
+    if (VisualAct == 1) {
+        LevelScene::FinishResults();
+    }
+    else {
+        FadeAction = FadeActionType::NEXT_ZONE;
+        FadeTimerMax = 90;
+        FadeMax = 0x140;
+        G->FadeToWhite = false;
+    }
+}
 PUBLIC void Level_HCZ::GoToNextAct() {
-    LevelScene* NextAct = new Level_HCZ(App, G, 2);
-    NextAct->LevelCardTimer = 0.0;
-    NextAct->FadeTimer = 0;
-    NextAct->FadeAction = 0;
-    NextAct->LevelCardHide = false;
-    NextAct->VisualWaterLevel = 0x6A0;
-    NextAct->WaterLevel = 0x6A0;
-    NextAct->Frame = Frame;
-    NextAct->WaterAnimationFrame = (Frame % 40) << 6;
+    if (VisualAct == 1) {
+        Level_HCZ* NextAct = new Level_HCZ(App, G, 2);
 
-    NextAct->SpecialSpawnPositionX = Player->EZX - 0x3600;
-    NextAct->SpecialSpawnPositionY = Player->EZY;
-    NextAct->RoutineNumber = 0x69;
+        Player->ControlLocked = false;
+        Player->ObjectControlled = 0x00;
+        Player->Action = ActionType::Normal;
+        Player->ChangeAnimation(Player->AnimationMap["Idle"]);
+        TransferCommonLevelData(NextAct);
+        NextAct->SpriteMap["HCZ"] = SpriteMap["HCZ"];
+        NextAct->SpriteMap["HCZ Enemies"] = SpriteMap["HCZ Enemies"];
+        NextAct->SpriteMap["HCZ Boss"] = SpriteMap["HCZ Boss"];
+        // Enable Title Card with no fade-in
+        NextAct->LevelCardTimer = 0.0;
+        NextAct->FadeTimer = 0;
+        NextAct->FadeAction = 0;
+        NextAct->LevelCardHide = false;
+        // Transfer over current frame
+        NextAct->Frame = Frame;
+        NextAct->WaterAnimationFrame = (Frame % 40) << 6;
+        // Set water level
+        NextAct->VisualWaterLevel = 0x6A0;
+        NextAct->WaterLevel = 0x6A0;
+        // Set player spawn position relative to their previous position
+        NextAct->SpecialSpawnPositionX = Player->EZX - 0x3600;
+        NextAct->SpecialSpawnPositionY = Player->EZY;
+        NextAct->RoutineNumber = 0x69;
 
-    NextAct->GiantRingModel = GiantRingModel;
-    NextAct->ItemsSprite = ItemsSprite;
-    NextAct->ItemsSprite = ItemsSprite;
-    NextAct->ObjectsSprite = ObjectsSprite;
-    NextAct->Objects2Sprite = Objects2Sprite;
-    NextAct->ExplosionSprite = ExplosionSprite;
-    NextAct->WaterSprite = WaterSprite;
-
-    NextAct->SpriteMap["HCZ"] = SpriteMap["HCZ"];
-    NextAct->SpriteMap["HCZ Enemies"] = SpriteMap["HCZ Enemies"];
-    NextAct->SpriteMap["HCZ Boss"] = SpriteMap["HCZ Boss"];
-    for (int i = 0; i < 5; i++) {
-        NextAct->KnuxSprite[i] = KnuxSprite[i];
+        App->NextScene = NextAct;
     }
-
-    Player->ControlLocked = false;
-    Player->ObjectControlled = 0x00;
-    Player->Action = ActionType::Normal;
-    Player->ChangeAnimation(Player->AnimationMap["Idle"]);
-    NextAct->Player = Player;
-    for (int p = 0; p < PlayerCount; p++) {
-        NextAct->Players[p] = Players[p];
-        NextAct->Players[p]->Scene = NextAct;
+    else {
+        Level_MGZ* NextAct = new Level_MGZ(App, G, 1);
+        TransferCommonLevelData(NextAct);
+        App->NextScene = NextAct;
     }
-    NextAct->PlayerCount = PlayerCount;
-
-    NextAct->LoadData();
-    App->NextScene = NextAct;
 }
 
 PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-	SpriteMapIDs[0x01] = ItemsSprite;
-	SpriteMapIDs[0x07] = ObjectsSprite;
-	SpriteMapIDs[0x08] = ObjectsSprite;
 	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
 	// SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = ObjectsSprite;
 	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x39] = SpriteMap["HCZ"];
@@ -310,29 +331,6 @@ PUBLIC void Level_HCZ::Cleanup() {
 
     LevelScene::Cleanup();
 }
-
-int copymake[4 * 16] = {
-    // from     to
-    0x80, 0x80, 0, 0,
-    0x80, 0x80, 8, 0,
-    0x80, 0x80, 16, 0,
-    0xF0, 0x10, 24, 0,
-
-    0x98, 0x88, 0, 8,
-    0xA0, 0x88, 8, 8,
-    0xA8, 0x88, 16, 8,
-    0xF0, 0x18, 24, 8,
-
-    0x90, 0x88, 0, 16,
-    0x98, 0x88, 8, 16,
-    0xA0, 0x88, 16, 16,
-    0xF0, 0x18, 24, 16,
-
-    0xB8, 0x28, 0, 24,
-    0xB8, 0x28, 8, 24,
-    0xB8, 0x28, 16, 24,
-    0x178, 0x30, 24, 24,
-};
 
 PUBLIC void Level_HCZ::RenderAboveBackground() {
     if (Act == 1) {

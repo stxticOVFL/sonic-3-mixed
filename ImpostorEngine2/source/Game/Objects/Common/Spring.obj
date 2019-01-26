@@ -123,7 +123,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     }
 
     // Launch up
-    if (HitFrom == 1 && Rotation == 0 && Scene.Players[PlayerID].YSpeed >= 0) {
+    if (HitFrom == CollideSide.TOP && Rotation == 0 && Scene.Players[PlayerID].YSpeed >= 0) {
         Scene.Players[PlayerID].YSpeed = -SpringPower;
         Scene.Players[PlayerID].Ground = false;
         // Scene.Players[PlayerID].InputAlarm = 16;
@@ -140,16 +140,10 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         return 1;
     }
     // Launch down
-    else if (HitFrom == 3 && Rotation == 180) {
+    else if (HitFrom == CollideSide.BOTTOM && Rotation == 180) {
         Scene.Players[PlayerID].YSpeed = SpringPower;
-        if (Scene.Players[PlayerID].AngleMode == 1 ||
-            Scene.Players[PlayerID].AngleMode == 3) {
-            Scene.Players[PlayerID].Flip = Math.sign(Math.sinHex(Scene.Players[PlayerID].AngleMode * 0x40));
-            Scene.Players[PlayerID].GroundSpeed = SpringPower * Scene.Players[PlayerID].Flip;
-        }
-        else {
-            Scene.Players[PlayerID].Action = ActionType.Spring;
-        }
+        Scene.Players[PlayerID].Ground = false;
+        Scene.Players[PlayerID].Action = ActionType.Jumping;
         Scene.Players[PlayerID].InputAlarm = 16;
         Scene.Players[PlayerID].SpringFlip = Twirl;
         if (SubType & 0xC)
@@ -161,7 +155,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 
         return 1;
     }
-    else if ((Rotation == 90 && HitFrom == 2) || (Rotation == 270 && HitFrom == 0)) {
+    else if ((Rotation == 90 && HitFrom == CollideSide.LEFT) || (Rotation == 270 && HitFrom == CollideSide.RIGHT)) {
         if (Scene.Players[PlayerID].Y + 20 - 4 - 4 <= Y - 16 || !Scene.Players[PlayerID].Ground)
             return 0;
 
@@ -169,7 +163,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 
         Scene.Players[PlayerID].Flip = ToFlip;
         if (Scene.Players[PlayerID].AngleMode == 0 || Scene.Players[PlayerID].AngleMode == 2) {
-            if (HitFrom == 0) {
+            if (HitFrom == CollideSide.RIGHT) {
                 Scene.Players[PlayerID].GroundSpeed = SpringPower;
                 Scene.Players[PlayerID].DisplayFlip = 1;
             }

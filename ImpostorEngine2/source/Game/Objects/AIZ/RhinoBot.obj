@@ -24,7 +24,7 @@ event Create() {
 
     CurrentAnimation = 24;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
+    
 }
 
 event Update() {

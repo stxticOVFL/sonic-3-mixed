@@ -11,23 +11,24 @@ public:
         SFX_SKID = 0x36,
         SFX_SPIKE_DEATH = 0x37,
         SFX_AIR_BUBBLE = 0x38,
+        SFX_SPLASH = 0x39,
+        SFX_SHIELD = 0x3A,
         SFX_DROWN = 0x3B,
         SFX_ROLL = 0x3C,
-        SFX_SPINDASHREV = 0xAB,
-        SFX_SPINDASH = 0xB6,
-        SFX_SPLASH = 0x39,
-        SFX_BIG_SPLASH = 0x4B,
-        SFX_JUMP = 0x62,
+        SFX_DESTROY = 0x3D,
         SFX_SHIELD_FIRE = 0x3E,
         SFX_SHIELD_BUBBLE = 0x3F,
         SFX_SHIELD_ELECTRIC = 0x41,
+        SFX_SPINDASHREV = 0xAB,
+        SFX_SPINDASH = 0xB6,
+        SFX_BIG_SPLASH = 0x4B,
+        SFX_JUMP = 0x62,
         SFX_SHIELD_FIRE_DASH = 0x43,
         SFX_SHIELD_BUBBLE_BOUNCE = 0x44,
         SFX_SHIELD_ELECTRIC_JUMP = 0x45,
         SFX_UNDERWATER_BEEP = 0xA9,
         SFX_INSTASHIELD = 0x42,
         SFX_RINGLOSS = 0xB9,
-        SFX_DESTROY = 0x3D,
         SFX_TRANSFORM = 0x9F,
         SFX_SPRING = 0xB1,
         SFX_STARPOST = 0x63,
@@ -35,6 +36,8 @@ public:
         SFX_PUSHING = 0x69,
         SFX_WATERRUN = 0xDB,
         SFX_BOSSHIT = 0x6E,
+
+        SFX_BALLOON_POP = 0x77,
 
         SFX_GRAB = 0x4A,
         SFX_SHOT = 0x4D,
@@ -132,6 +135,8 @@ PUBLIC STATIC void Sound::Init() {
 
     LOADSOUND(SFX_BOSSHIT, "Sounds/BossHit.wav")
     LOADSOUND(SFX_BOSSEXPLOSION, "Sounds/Explosion2.wav")
+
+    LOADSOUND(SFX_BALLOON_POP, "Sounds/S3K_77.wav")
 
 
     LOADSOUND(SFX_FAN_BIG, "Sounds/BigFan.wav")

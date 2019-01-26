@@ -40,6 +40,8 @@ PUBLIC Scene_LevelSelect::Scene_LevelSelect(IApp* app, IGraphics* g) {
     	// Sound::Audio->LoopPoint[0] = 131859;
         Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
     }
+
+    selected = 1;
 }
 
 PUBLIC void Scene_LevelSelect::Init() {

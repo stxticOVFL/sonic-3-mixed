@@ -36,6 +36,8 @@ event Create() {
         W = 64;
         H = 80;
 
+        CurrentAnimation = 5;
+
         BreakableByRoll = CollideSide.SIDES;
         BreakableByGlide = CollideSide.SIDES;
         BreakableByKnuckles = CollideSide.SIDES;
@@ -86,7 +88,7 @@ event DrawHCZ(CamX:int, CamY:int) {
 event DrawMGZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 3) return;
 
-    G.DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
     return;
 
     var h:int = H / 2;
@@ -208,7 +210,7 @@ event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
     Solid = false;
 
     var HitSide:int = -1;
-    if (HitFrom == 0)
+    if (HitFrom == CollideSide.RIGHT)
         HitSide = 1;
 
     BreakHCZ(HitSide);

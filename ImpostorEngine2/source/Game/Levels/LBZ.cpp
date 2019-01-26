@@ -42,8 +42,11 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     sprintf(LevelNameDiscord, "Launch Base");
 
     if (Act == 1) {
-        PlayerStartX = 0x00C0;
-        PlayerStartY = 0x05BC;
+        // PlayerStartX = 0x00C0;
+        // PlayerStartY = 0x05BC;
+
+        PlayerStartX = 0x0CC8;
+        PlayerStartY = 0x076C;
     }
     else {
 
@@ -59,44 +62,26 @@ PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
 }
 
 PUBLIC void Level_LBZ::AssignSpriteMapIDs() {
-    if (Act <= 1) {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZ1Sprite;
-        SpriteMapIDs[0x05] = AIZ1Sprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZ1Sprite;
-        SpriteMapIDs[0x0A] = AIZ1Sprite;
-        SpriteMapIDs[0x0C] = AIZ1Sprite;
-        SpriteMapIDs[0x0D] = AIZ1Sprite;
-        SpriteMapIDs[0x0F] = AIZ1Sprite;
-    	SpriteMapIDs[0x2F] = AIZ1Sprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZ1Sprite;
+    LevelScene::AssignSpriteMapIDs();
+    
+	SpriteMapIDs[0x01] = ItemsSprite;
+    SpriteMapIDs[0x04] = AIZ2Sprite;
+    SpriteMapIDs[0x05] = AIZ2Sprite;
+    SpriteMapIDs[0x06] = AIZ1Sprite;
+	SpriteMapIDs[0x07] = ObjectsSprite;
+	SpriteMapIDs[0x08] = ObjectsSprite;
+    SpriteMapIDs[0x09] = AIZ1Sprite;
+    SpriteMapIDs[0x0A] = AIZ1Sprite;
+    SpriteMapIDs[0x0C] = AIZ1Sprite;
+    SpriteMapIDs[0x0D] = AIZ2Sprite;
+    SpriteMapIDs[0x0F] = AIZ2Sprite;
+	SpriteMapIDs[0x2F] = AIZ1Sprite;
+	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
+	SpriteMapIDs[0x34] = ObjectsSprite;
+    SpriteMapIDs[0x35] = AIZ1Sprite;
 
-    	SpriteMapIDs[0x51] = AIZ1Sprite;
-    }
-    else {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZ2Sprite;
-        SpriteMapIDs[0x05] = AIZ2Sprite;
-        SpriteMapIDs[0x06] = AIZ1Sprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZ1Sprite;
-        SpriteMapIDs[0x0A] = AIZ1Sprite;
-        SpriteMapIDs[0x0C] = AIZ1Sprite;
-        SpriteMapIDs[0x0D] = AIZ2Sprite;
-        SpriteMapIDs[0x0F] = AIZ2Sprite;
-    	SpriteMapIDs[0x2F] = AIZ1Sprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZ1Sprite;
-
-    	SpriteMapIDs[0x51] = AIZ2Sprite;
-        SpriteMapIDs[0x8C] = AIZ1Sprite;
-    }
+	SpriteMapIDs[0x51] = AIZ2Sprite;
+    SpriteMapIDs[0x8C] = AIZ1Sprite;
 }
 
 PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {

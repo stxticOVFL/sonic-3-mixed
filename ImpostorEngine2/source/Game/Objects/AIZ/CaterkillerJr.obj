@@ -2,11 +2,7 @@ object 0x8F;
 
 subclass Enemy;
 
-var MaxAccel:int;
-var Acceleration:int;
-var Variable_38:int;
-var Variable_38_Copy:int;
-var Variable_Count:int;
+var Routine:int;
 var PosTable:uint32_t[0x80];
 
 event Create() {
@@ -24,96 +20,70 @@ event Create() {
 
     CurrentAnimation = 4;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
-
     XSpeed = -0x100;
-    // XSpeed = 0;
 
+    Routine = 4;
+    SwingCounter = 3;
     YSpeed = 0x80;
     MaxAccel = 0x80;
     Acceleration = 0x8;
-    Variable_38 = 0;
-    Variable_38_Copy = 0;
-    Variable_Count = 0;
+    SwingDirection = 0;
 
     Harmful = true;
 
+    for (var i:int = 0; i < 0x7F; i++)
+        PosTable[i] = 0;
     // Sprite.Animations[CurrentAnimation].Frames[5].OffX = 0;
+}
+
+event OnSwingFinish() {
+    Routine = 6;
+    YSpeed = 0x100;
+    MaxAccel = 0x100;
+    Acceleration = 0x8;
+    SwingDirection = 0;
 }
 
 event Update() {
     Frame++;
     Frame &= 0x7F;
 
-    Swing_UpAndDown();
+    var d3:int;
+    var nomove:bool = false;
 
-    // after a period, switch YSpeed and MaxAccel to 0x100
-    // after 2 periods, flip xspeed
-
-    // Two bigs, two small amplitudes.
-
-    SubX += XSpeed << 8;
-    SubY += YSpeed << 8;
-
-    if (Variable_38_Copy != Variable_38) {
-        Variable_38_Copy = Variable_38;
-
-        Variable_Count = (Variable_Count + 1) & 7;
-
-        if ((Variable_Count & 1) == 0) {
-            if (MaxAccel == 0x100) {
-                YSpeed = Math.sign(YSpeed) * 0x80;
+    switch (Routine) {
+        case 4:
+            Rotation = Swing_UpAndDown();
+            if (Routine == 6)
+                nomove = true;
+            break;
+        case 6:
+            d3 = Swing_UpAndDown();
+            Rotation = d3;
+            if (d3) {
+                Routine = 8;
+                XSpeed = -XSpeed;
+                FlipX = !FlipX;
+            }
+            break;
+        case 8:
+            d3 = Swing_UpAndDown();
+            Rotation = d3;
+            if (d3) {
+                Routine = 4;
+                SwingCounter = 3;
+                YSpeed = 0x80;
                 MaxAccel = 0x80;
+                Acceleration = 0x8;
+                SwingDirection = 0;
+                nomove = true;
             }
-            else {
-                YSpeed = Math.sign(YSpeed) * 0x100;
-                MaxAccel = 0x100;
-            }
-            // XSpeed = -XSpeed;
-            // FlipX = !FlipX;
-        }
-        if ((Variable_Count & 3) == 0) {
-            XSpeed = -XSpeed;
-            FlipX = !FlipX;
-        }
+            break;
     }
 
     PosTable[(Frame + 0x7F) & 0x7F] = (FlipX & 0x1) << 31 | (X & 0x7FFF) << 16 | (Y & 0xFFFF);
-}
-
-event Swing_UpAndDown() {
-    var d0:int;
-    var d1:int;
-    var d2:int;
-    var d3:int;
-
-	d0 = Acceleration; // Acceleration
-	d1 = YSpeed; // Velocity
-	d2 = MaxAccel; // Maximum acceleration before "swinging"
-	d3 = 0;
-	if (Variable_38 == 0) {
-		d0 = -d0;
-		d1 += d0;
-		d2 = -d2;
-		if (d1 > d2) {
-			YSpeed = d1;
-			return;
-		}
-		Variable_38 = 1;
-		d0 = -d0;
-		d2 = -d2;
-		d3 = 1;
-	}
-	d1 += d0;
-	if (d1 < d2) {
-		YSpeed = d1;
-		return;
-	}
-	Variable_38 = 0;
-	d0 = -d0;
-	d1 += d0;
-	d3 = 1;
-    YSpeed = d1;
+    if (nomove)
+        return;
 }
 
 event OnHit() : int {
@@ -153,8 +123,7 @@ event Render(CamX:int, CamY:int) {
     fX = pos >> 31; x = pos >> 16 & 0x7FFF; y = pos & 0xFFFF;
     G.DrawSprite(Sprite, CurrentAnimation, 1, x - CamX, y - CamY, 0, fX | FlipY << 1);
 
-    if (!fX)
-        G.DrawSprite(Sprite, CurrentAnimation, 3 + ((Scene.Frame >> 2) % 3), x - CamX, y - CamY, 0, fX);
+    G.DrawSprite(Sprite, CurrentAnimation, 3 + ((Scene.Frame >> 2) % 3), x - CamX, y - CamY, 0, fX);
     // Head
     G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
 }

@@ -212,7 +212,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (!Pushable) return 0;
 
     if (((Scene.Players[PlayerID].WallLeft && Scene.Players[PlayerID].InputLeft) ||
-        (Scene.Players[PlayerID].Action == ActionType.Spindash && Scene.Players[PlayerID].DisplayFlip < 0)) && HitFrom == 0 && !FlipX) {
+        (Scene.Players[PlayerID].Action == ActionType.Spindash && Scene.Players[PlayerID].DisplayFlip < 0)) && HitFrom == CollideSide.RIGHT && !FlipX) {
         if (X <= InitialX - 64) return 0;
 
         Scene.Players[PlayerID].EZX--;
@@ -221,7 +221,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     }
 
     if (((Scene.Players[PlayerID].WallRight && Scene.Players[PlayerID].InputRight) ||
-        (Scene.Players[PlayerID].Action == ActionType.Spindash && Scene.Players[PlayerID].DisplayFlip > 0)) && HitFrom == 2 && FlipX) {
+        (Scene.Players[PlayerID].Action == ActionType.Spindash && Scene.Players[PlayerID].DisplayFlip > 0)) && HitFrom == CollideSide.LEFT && FlipX) {
         if (X >= InitialX + 64) return 0;
 
         Scene.Players[PlayerID].EZX++;
@@ -233,14 +233,14 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 }
 
 event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
-    if (HitFrom != 1) return 0;
+    if (HitFrom != CollideSide.TOP) return 0;
     if (Knux && Scene.Players[PlayerID].Character != CharacterType.Knuckles) return 0;
 
     OnBreakHorizontal(PlayerID, HitFrom);
     return 1;
 }
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
-    if (Math.abs(Scene.Players[PlayerID].GroundSpeed) < 0x480 && HitFrom != 1 && Scene.Players[PlayerID].Action == ActionType.Rolling) return 1;
+    if (Math.abs(Scene.Players[PlayerID].GroundSpeed) < 0x480 && HitFrom != CollideSide.TOP && Scene.Players[PlayerID].Action == ActionType.Rolling) return 1;
 
     Sound.Play(Sound.SFX_COLLAPSE);
 
@@ -251,9 +251,9 @@ event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
     Solid = false;
 
     var HitSide:int = -1;
-    if (HitFrom == 0)
+    if (HitFrom == CollideSide.RIGHT)
         HitSide = 1;
-    if (HitFrom == 1)
+    if (HitFrom == CollideSide.TOP)
         HitSide = 0;
 
     BreakAIZ(HitSide);

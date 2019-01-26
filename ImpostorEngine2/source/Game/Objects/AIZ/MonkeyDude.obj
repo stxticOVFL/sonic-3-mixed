@@ -37,7 +37,7 @@ event Create() {
 
     HitCount = 1;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
+    
 
     frame_face = 0;
     frame_hand = 0;

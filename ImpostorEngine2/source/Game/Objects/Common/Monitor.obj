@@ -222,7 +222,7 @@ event Render(CamX:int, CamY:int) {
         }
         if (CurrentAnimation == 4 && (Scene.Frame % 6 >= 4))
             return;
-            
+
         if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0))
             return;
 

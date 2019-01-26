@@ -11,7 +11,7 @@ event Create() {
 
     Frame = 0;
 
-    Scene.AddSelfToRegistry(this, "Enemies");
+    
 
 
     TimerAction = 0;

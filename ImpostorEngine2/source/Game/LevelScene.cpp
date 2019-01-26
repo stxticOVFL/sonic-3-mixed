@@ -14,6 +14,8 @@
 #include <Game/Player.h>
 #include <Game/ObjectNames.h>
 
+#include <Game/Explosion.h>
+
 class LevelScene : public IScene {
 public:
     SceneData*  Data = NULL;
@@ -41,12 +43,11 @@ public:
     int         WaterLevel = 0xFFFF;
     int         VisualWaterLevel = 0xFFFF;
 
-    ISprite*    ExplosionSprite = NULL;
-
     int         PauseAnim[8];
     int         PauseSelectedMenuItem = 0;
     bool        Paused = false;
     bool        PauseFinished = false;
+
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;
@@ -55,6 +56,8 @@ public:
     ISprite*    ObjectsSprite = NULL;
     ISprite*    Objects2Sprite = NULL;
     ISprite*    Objects3Sprite = NULL;
+    ISprite*    RobotnikSprite = NULL;
+    ISprite*    ExplosionSprite = NULL;
     ISprite*    WaterSprite = NULL;
     ISprite*    KnuxSprite[6];
 
@@ -199,12 +202,11 @@ public:
 
     uint32_t    BackgroundColor = 0x000000;
     bool        SepThread = false;
-    uint16_t    Signal[8];
+    uint16_t    Signal[8]; //
 };
 #endif
 
 #include <Game/Ring.h>
-#include <Game/Explosion.h>
 #include <Game/FallingTile.h>
 #include <Game/MovingSprite.h>
 #include <Game/ScoreGhost.h>
@@ -223,6 +225,7 @@ bool ViewPathswitchers = false;
 bool ViewPlayerStats = false;
 bool ViewTileInfo = false;
 bool ViewTileCollision = false;
+const char* ObjectName[0x100];
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App = app;
@@ -263,6 +266,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
+    /*
     GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
     GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
@@ -286,11 +290,13 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     MobileButtonsSprite->SetTransparentColorIndex(0x05);
     MobileButtonsSprite->UpdatePalette();
 
+    PauseSprite = new ISprite("UI/PauseEN.gif", App);
+    PauseSprite->LoadAnimation("UI/TextEN.bin");
+    //*/
+
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
-    PauseSprite = new ISprite("UI/PauseEN.gif", App);
-    PauseSprite->LoadAnimation("UI/TextEN.bin");
     memset(PauseAnim, 0, sizeof(PauseAnim));
 
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating PauseSprite...", (SDL_GetTicks() - startTime) / 1000.0);
@@ -302,7 +308,12 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 }
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
+	SpriteMapIDs[0x01] = ItemsSprite;
+    SpriteMapIDs[0x07] = ObjectsSprite;
+    SpriteMapIDs[0x08] = ObjectsSprite;
     SpriteMapIDs[0x33] = ObjectsSprite;
+    SpriteMapIDs[0x34] = ObjectsSprite;
+    SpriteMapIDs[0x81] = ObjectsSprite;
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
@@ -312,7 +323,6 @@ PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
 PUBLIC VIRTUAL void LevelScene::LoadData() {
     /// Init
     bool AlreadyLoaded = true;
-    const char* ObjectName[0x100];
     uint64_t startTime = SDL_GetTicks();
     if (!Data) {
         AlreadyLoaded = false;
@@ -332,6 +342,35 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "GiantRingModel", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
 
+        if (!PauseSprite) {
+            PauseSprite = new ISprite("UI/PauseEN.gif", App);
+            PauseSprite->LoadAnimation("UI/TextEN.bin");
+        }
+        if (!GlobalDisplaySprite) {
+            GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
+            GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
+            GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
+            GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
+        }
+        if (!MobileButtonsSprite) {
+            MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+            ISprite::Animation an;
+            an.Name = NULL;
+            an.FrameCount = 8;
+            an.Frames = (ISprite::AnimFrame*)calloc(8, sizeof(ISprite::AnimFrame));
+            for (int i = 0; i < 8; i++) {
+                ISprite::AnimFrame ts_af;
+                ts_af.X = i * 64;
+                ts_af.Y = 0;
+                ts_af.W = ts_af.H = 64;
+                ts_af.OffX = ts_af.OffY = -32;
+                an.Frames[i] = ts_af;
+                G->MakeFrameBufferID(MobileButtonsSprite, an.Frames + i);
+            }
+            MobileButtonsSprite->Animations.push_back(an);
+            MobileButtonsSprite->SetTransparentColorIndex(0x05);
+            MobileButtonsSprite->UpdatePalette();
+        }
         if (!ItemsSprite) {
             ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
             ItemsSprite->LoadAnimation("Sprites/GlobalS3K/ItemBox.bin");
@@ -349,6 +388,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/ScoreBonus.bin");
 
             ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Gray Button.bin");
+            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/EggPrison.bin");
             // printf("\n");
         }
         if (!Objects2Sprite) {
@@ -363,6 +403,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             Objects3Sprite->LoadAnimation("Sprites/Global/Shields.bin");
             // printf("\n");
         }
+        if (!RobotnikSprite) {
+            RobotnikSprite = new ISprite("Sprites/GlobalS3K/Robotnik.gif", App);
+            RobotnikSprite->LoadAnimation("Sprites/GlobalS3K/EggMobile.bin");
+            RobotnikSprite->LoadAnimation("Sprites/GlobalS3K/Crane.bin");
+            // printf("\n");
+        }
         if (!ExplosionSprite) {
             ExplosionSprite = new ISprite("Sprites/GlobalS3K/Explosions.gif", App);
             ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Dust.bin");
@@ -371,6 +417,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         }
         if (!WaterSprite) {
             WaterSprite = new ISprite("Sprites/Global/Water.gif", App);
+            WaterSprite->Print = true;
             WaterSprite->LoadAnimation("Sprites/Global/Water.bin");
         }
 
@@ -1622,6 +1669,70 @@ PUBLIC VIRTUAL void LevelScene::Init() {
     uint64_t startTime = SDL_GetTicks();
     RestartStage(true, false);
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Init RestartStage()", (SDL_GetTicks() - startTime) / 1000.0);
+
+    switch (ZoneID) {
+        case 2:
+            if (Act == 2) {
+                int X = 0x40C8;
+                int Y = 0x7D0;
+                int ID = 0x81;
+                int SubType = 0;
+                int PRIORITY = true;
+                int FLIPX = 0;
+                int FLIPY = 0;
+                ADD_OBJECT();
+                obj->Create();
+            }
+            break;
+        case 3:
+            if (Act == 1) {
+                int X = 0x2F00;
+                int Y = 0xE60;
+                int ID = 0x81;
+                int SubType = 0;
+                int PRIORITY = true;
+                int FLIPX = 0;
+                int FLIPY = 0;
+                ADD_OBJECT();
+                obj->Create();
+            }
+            else {
+                int X = 0x3D00;
+                int Y = 0x720;
+                int ID = 0x81;
+                int SubType = 0;
+                int PRIORITY = true;
+                int FLIPX = 0;
+                int FLIPY = 0;
+                ADD_OBJECT();
+                obj->Create();
+            }
+            break;
+        case 4:
+            if (Act == 1) {
+                int X = 0x32C0;
+                int Y = 0x20C;
+                int ID = 0x81;
+                int SubType = 0;
+                int PRIORITY = true;
+                int FLIPX = 0;
+                int FLIPY = 1;
+                ADD_OBJECT();
+                obj->Create();
+            }
+            else {
+                int X = 0x4940;
+                int Y = 0x270;
+                int ID = 0x81;
+                int SubType = 0;
+                int PRIORITY = true;
+                int FLIPX = 0;
+                int FLIPY = 1;
+                ADD_OBJECT();
+                obj->Create();
+            }
+            break;
+    }
 }
 
 PUBLIC STATIC  int  LevelScene::LoadStatic(void* data) {
@@ -1687,7 +1798,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
         Player->ControlLocked = false;
         Player->ObjectControlled = 0x00;
 
-        Player->Rings = 0;
+        if (ResetTimer)
+            Player->Rings = 0;
 
         Player->Create();
         Player->LateUpdate();
@@ -1701,6 +1813,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
         LevelTriggerFlag = 0x00;
     }
 
+    memset(Signal, 0, sizeof(Signal));
     memset(&PauseAnim[0], 0, 8 * sizeof(int));
     LevelCardTimer = 0.0;
 
@@ -1717,6 +1830,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
     CameraMaxY = 0x7FFF;
     CameraDeltaX = 0;
     CameraDeltaY = 0;
+    CameraAutoScrollX = 0;
+    CameraAutoScrollY = 0;
 
     HandleCamera();
 
@@ -2108,7 +2223,16 @@ PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
     Objects[ObjectCount++] = ring;
     ObjectNewCount++;
 }
-PUBLIC void LevelScene::AddExplosion(int animation, bool flip, int x, int y) {
+PUBLIC Explosion* LevelScene::AddExplosion(int animation, bool flip, int x, int y) {
+    return AddExplosion(ExplosionSprite, animation, flip, x, y, 0);
+}
+PUBLIC Explosion* LevelScene::AddExplosion(int animation, bool flip, int x, int y, int vl) {
+    return AddExplosion(ExplosionSprite, animation, flip, x, y, vl);
+}
+PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y) {
+    return AddExplosion(sprite, animation, flip, x, y, 0);
+}
+PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y, int vl) {
     Explosion* dropdashdust;
     dropdashdust = new Explosion();
     dropdashdust->G = G;
@@ -2116,10 +2240,13 @@ PUBLIC void LevelScene::AddExplosion(int animation, bool flip, int x, int y) {
     dropdashdust->CurrentAnimation = animation;
     dropdashdust->FlipX = flip;
     dropdashdust->Active = true;
-    dropdashdust->Sprite = ExplosionSprite;
+    dropdashdust->Sprite = sprite;
+    dropdashdust->VisualLayer = vl;
     dropdashdust->X = x;
     dropdashdust->Y = y;
     Explosions.push_back(dropdashdust);
+
+    return dropdashdust;
 }
 PUBLIC void LevelScene::AddScoreGhost(int frame, int x, int y) {
     ScoreGhost* dropdashdust;
@@ -2210,7 +2337,7 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int anima
     tile->Active = true;
     tile->Gravity = grv;
     tile->CurrentAnimation = animation;
-    tile->CurrentFrame = frame << 8;
+    tile->Frame = frame;
     tile->LifeSpan = life;
     tile->Left = -1;
     tile->Top = animframe.Y;
@@ -2316,6 +2443,61 @@ PUBLIC VIRTUAL void LevelScene::FinishResults() {
 }
 PUBLIC VIRTUAL void LevelScene::GoToNextAct() {
 
+}
+PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
+    NextAct->GiantRingModel = GiantRingModel;
+
+    NextAct->GlobalDisplaySprite = GlobalDisplaySprite;
+    NextAct->MobileButtonsSprite = MobileButtonsSprite;
+    NextAct->ItemsSprite = ItemsSprite;
+    NextAct->AnimalsSprite = AnimalsSprite;
+    NextAct->ObjectsSprite = ObjectsSprite;
+    NextAct->Objects2Sprite = Objects2Sprite;
+    NextAct->Objects3Sprite = Objects3Sprite;
+    NextAct->RobotnikSprite = RobotnikSprite;
+    NextAct->ExplosionSprite = ExplosionSprite;
+    NextAct->WaterSprite = WaterSprite;
+    for (int i = 0; i < 5; i++) {
+        NextAct->KnuxSprite[i] = KnuxSprite[i];
+    }
+    NextAct->Player = Player;
+    for (int p = 0; p < PlayerCount; p++) {
+        NextAct->Players[p] = Players[p];
+        NextAct->Players[p]->Scene = NextAct;
+    }
+    NextAct->PlayerCount = PlayerCount;
+    NextAct->Score = Score;
+
+    // Set all these to NULL so they do not get cleaned up
+    PlayerCount = 0;
+    KnuxSprite[0] = NULL;
+    KnuxSprite[1] = NULL;
+    KnuxSprite[2] = NULL;
+    KnuxSprite[3] = NULL;
+    KnuxSprite[4] = NULL;
+    PauseSprite = NULL;
+    GlobalDisplaySprite = NULL;
+    MobileButtonsSprite = NULL;
+    ItemsSprite = NULL;
+    AnimalsSprite = NULL;
+    ObjectsSprite = NULL;
+    Objects2Sprite = NULL;
+    Objects3Sprite = NULL;
+    RobotnikSprite = NULL;
+    ExplosionSprite = NULL;
+    WaterSprite = NULL;
+
+    // #PauseSprite#
+    // #GlobalDisplaySprite#
+    // #MobileButtonsSprite#
+    // #ItemsSprite#
+    // #AnimalsSprite#
+    // #ObjectsSprite#
+    // #Objects2Sprite#
+    // #Objects3Sprite#
+    // #RobotnikSprite#
+    // #ExplosionSprite#
+    // #WaterSprite#
 }
 
 PUBLIC VIRTUAL void LevelScene::DoCustomFadeAction() {
@@ -2538,28 +2720,28 @@ PUBLIC void LevelScene::Update() {
                     if (obj->Priority || OnScreen) {
                         obj->CollidingWithPlayer = false;
                         for (int p = 0; p < PlayerCount && maxLayer; p++) {
-                            if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 &&
-                                obj->Y + obj->H / 2 >= Players[p]->EZY - Players[p]->H / 2 &&
-                                obj->X - obj->W / 2 <  Players[p]->EZX + Players[p]->W / 2 &&
-                                obj->Y - obj->H / 2 <  Players[p]->EZY + Players[p]->H / 2) {
+                            if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 - 1 &&
+                                obj->Y + obj->H / 2 >= Players[p]->EZY - Players[p]->H / 2 - 1 &&
+                                obj->X - obj->W / 2 <  Players[p]->EZX + Players[p]->W / 2 + 1 &&
+                                obj->Y - obj->H / 2 <  Players[p]->EZY + Players[p]->H / 2 + 1) {
 
-                                if (Player->Action == ActionType::Dead) continue;
+                                if (Players[p]->Action == ActionType::Dead) continue;
 
                                 int wy = (Player->W + obj->W) * ((int)Players[p]->EZY - (int)obj->Y);
                                 int hx = (Player->H + obj->H) * ((int)Players[p]->EZX - (int)obj->X);
 
-                                int hitFrom = 0;
+                                int hitFrom = (int)CollideSide::RIGHT;
 
                                 if (wy > hx)
                                     if (wy > -hx)
-                                        hitFrom = 3;
+                                        hitFrom = (int)CollideSide::BOTTOM;
                                     else
-                                        hitFrom = 2;
+                                        hitFrom = (int)CollideSide::LEFT;
                                 else
                                     if (wy > -hx)
-                                        hitFrom = 0;
+                                        hitFrom = (int)CollideSide::RIGHT;
                                     else
-                                        hitFrom = 1;
+                                        hitFrom = (int)CollideSide::TOP;
 
                                 obj->CollidingWithPlayer |= obj->OnCollisionWithPlayer(Players[p]->PlayerID, hitFrom, 0);
                             }
@@ -2822,16 +3004,18 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
         bool OffCenteredCamera = false;
         if (CameraAutoScrollX != 0) {
             CameraX += CameraAutoScrollX;
+            CameraDeltaX += CameraAutoScrollX;
+            // CameraDeltaY += CameraAutoScrollY;
 
             if (Player->EZX - Player->W / 2 < CameraX) {
                 Player->EZX = IMath::max(CameraX + Player->W / 2, Player->EZX);
                 if (Player->Ground) {
-                    if (Player->GroundSpeed < CameraAutoScrollX)
-                        Player->GroundSpeed = CameraAutoScrollX;
+                    if (Player->GroundSpeed < CameraAutoScrollX * 0x100)
+                        Player->GroundSpeed = CameraAutoScrollX * 0x100;
                 }
                 else {
-                    if (Player->XSpeed < CameraAutoScrollX)
-                        Player->XSpeed = CameraAutoScrollX;
+                    // if (Player->XSpeed < CameraAutoScrollX)
+                    //     Player->XSpeed = CameraAutoScrollX;
                 }
             }
             if (Player->EZX > 8 * OffCenteredCamera + CameraX + App->WIDTH / 2) {
@@ -3595,9 +3779,12 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
         // Rendering objects
         for (int i = 0; i < ObjectCount; i++) {
-            if (Objects[i]->Active && (Objects[i]->OnScreen || Objects[i]->Priority))
-                if (l == Data->cameraLayer + Objects[i]->VisualLayer)
-                    Objects[i]->Render(CameraX, CameraY);
+            Object* obj = Objects[i];
+            if (obj->Active && (obj->OnScreen || obj->Priority)) {
+                if (l == Data->cameraLayer + obj->VisualLayer) {
+                    obj->Render(CameraX, CameraY);
+                }
+            }
         }
 
         // Rendering rings
@@ -4073,14 +4260,17 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 
     CLEANUP(TileSprite);
     CLEANUP(GiantRingModel);
-    CLEANUP(ItemsSprite);
-    CLEANUP(ExplosionSprite);
-    CLEANUP(WaterSprite);
+    CLEANUP(PauseSprite);
     CLEANUP(GlobalDisplaySprite);
+    CLEANUP(MobileButtonsSprite);
+    CLEANUP(ItemsSprite);
+    CLEANUP(AnimalsSprite);
     CLEANUP(ObjectsSprite);
     CLEANUP(Objects2Sprite);
     CLEANUP(Objects3Sprite);
-    CLEANUP(PauseSprite);
+    CLEANUP(RobotnikSprite);
+    CLEANUP(ExplosionSprite);
+    CLEANUP(WaterSprite);
 
     free(PlaneSwitchers);
 

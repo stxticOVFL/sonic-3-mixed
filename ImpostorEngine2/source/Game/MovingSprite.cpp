@@ -37,6 +37,8 @@ PUBLIC MovingSprite::MovingSprite() {
     XSpeed = 0;
     YSpeed = 0;
     VisualLayer = 1;
+    Frame = 0;
+    AutoAnimate = true;
 }
 
 PUBLIC void MovingSprite::Update() {
@@ -61,24 +63,17 @@ PUBLIC void MovingSprite::Update() {
     X = SubX >> 16;
     Y = SubY >> 16;
 
-    ISprite::Animation ani = Sprite->Animations[CurrentAnimation];
-
-    if (ani.AnimationSpeed == 4)
-        CurrentFrame += 0x100;
-    else if (ani.AnimationSpeed > 2)
-        CurrentFrame += ani.AnimationSpeed;
-    else if (ani.Frames[CurrentFrame / 0x100].Duration != 0)
-        CurrentFrame += 0x100 / ani.Frames[CurrentFrame / 0x100].Duration;
-
-    if (CurrentFrame / 0x100 >= ani.FrameCount) {
-        CurrentFrame = ani.FrameToLoop * 0x100;
-    }
-
     if (LifeSpan > 0) {
         LifeSpan--;
     }
 
-    if (Y + ani.Frames[CurrentFrame / 0x100].OffY >= Scene->CameraY + App->HEIGHT || LifeSpan == 0) {
+    int ext = -Height / 2;
+    if (Left < 0) {
+        Animate();
+        ext = Sprite->Animations[CurrentAnimation].Frames[Frame].OffY;
+    }
+
+    if (Y + ext >= Scene->CameraY + App->HEIGHT || LifeSpan == 0) {
         Active = false;
 
         if (bufferID >= 0) {
@@ -98,6 +93,6 @@ PUBLIC void MovingSprite::Render(int CamX, int CamY) {
         }
     }
     else {
-        G->DrawSprite(Sprite, CurrentAnimation, CurrentFrame >> 8, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
+        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
     }
 }

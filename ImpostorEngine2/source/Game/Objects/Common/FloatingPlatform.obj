@@ -142,7 +142,7 @@ event Update() {
     else if (MoveType == 7) {
         if (BeingStoodOn)
             Rising = true;
-        
+
         LastY = Y;
         if (Rising && Y > InitialY - 0x140) {
             Y -= 1;
@@ -175,6 +175,8 @@ event Update() {
             Y -= 1;
         }
     }
+
+    return;
 }
 event Render(CamX:int, CamY:int) {
     var nX:int = X;

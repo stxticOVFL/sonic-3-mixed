@@ -6,6 +6,8 @@ public:
     static int32_t Cos[256];
     static int32_t Sin[256];
     static int32_t Atan[258];
+
+    static char Str[258];
 };
 #endif
 
@@ -14,6 +16,7 @@ public:
 int32_t IMath::Cos[256];
 int32_t IMath::Sin[256];
 int32_t IMath::Atan[258];
+char IMath::Str[258];
 
 PUBLIC STATIC void IMath::Init() {
     for (int i = 0; i < 256; i++) {
@@ -116,4 +119,9 @@ PUBLIC STATIC int IMath::wrapDeg(int d) {
 }
 PUBLIC STATIC int IMath::randRange(int min, int max) {
     return (rand() % (max - min + 1)) + min;
+}
+
+PUBLIC STATIC char* IMath::toString(int a) {
+    sprintf(IMath::Str, "%d", a);
+    return IMath::Str;
 }

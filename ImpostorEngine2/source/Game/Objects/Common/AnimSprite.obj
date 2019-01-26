@@ -36,5 +36,13 @@ event Render(CamX:int, CamY:int) {
     if (CurrentAnimation == -1)
         return;
 
+    if (Scene.ZoneID == 1) {
+        // G.SetClip(0, 0, App.WIDTH, );
+        // G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
+        // G.ClearClip();
+        if (Y + 16 >= Scene.VisualWaterLevel)
+            return;
+    }
+
     G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
 }

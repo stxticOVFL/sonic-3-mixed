@@ -7,10 +7,6 @@ var InvulnTimer:int;
 var ExplosionTimer:int;
 var State:int;
 
-var Variable_38:int;
-var MaxAccel:int; // $3E
-var Acceleration:int; // $40
-
 var MainPalette:Uint32[16];
 var HurtPalette:Uint32[16];
 
@@ -52,7 +48,7 @@ event Create() {
     W = 48;
     H = 48;
     Radius = 24;
-    CurrentAnimation = 6;
+    CurrentAnimation = 7;
     Frame = 0;
     XSpeed = 0;
     YSpeed = 0;
@@ -60,11 +56,11 @@ event Create() {
     // Extended Object Variables
     MaxAccel = 0;
     Acceleration = 0;
-    Variable_38 = 0;
+    SwingDirection = 0;
     // Common Enemy Variables
     HitCount = 0x60;
     Boss = true;
-    Scene.AddSelfToRegistry(this, "Enemies");
+
     // Common Boss Variables
     TimerAction = -1;
     Timer = 0;
@@ -154,45 +150,6 @@ event OnHit() : int {
     }
     InvulnTimer = 0x20;
     return 0;
-}
-
-event Swing_UpAndDown() {
-    var d0:int;
-    var d1:int;
-    var d2:int;
-    var d3:int;
-
-	d0 = Acceleration; // Acceleration
-	d1 = YSpeed; // Velocity
-	d2 = MaxAccel; // Maximum acceleration before "swinging"
-	d3 = 0;
-	if (Variable_38 == 0) {
-		d0 = -d0;
-		d1 += d0;
-		d2 = -d2;
-		if (d1 > d2) {
-			YSpeed = d1;
-			return;
-		}
-		Variable_38 = 1;
-		d0 = -d0;
-		d2 = -d2;
-		d3 = 1;
-	}
-	d1 += d0;
-	if (d1 < d2) {
-		YSpeed = d1;
-		return;
-	}
-	Variable_38 = 0;
-	d0 = -d0;
-	d1 += d0;
-	d3 = 1;
-    YSpeed = d1;
-}
-event MoveSprite() {
-    SubX += XSpeed << 8;
-    SubY += YSpeed << 8;
 }
 
 event DoExplosionDebris() {
@@ -300,14 +257,14 @@ event Update() {
                 SmallX = 0x2F0000 - 240 * 0x200;
                 Timer = 0x7F;
                 TimerAction = 2; // loc_6862E
-                Variable_38 = 1;
+                SwingDirection = 1;
                 State = 8;
                 YSpeed = 0x00;
                 // Swing_Setup1:
                 MaxAccel = 0xC0;
                 YSpeed = 0xC0;
                 Acceleration = 0x10;
-                Variable_38 = 0;
+                SwingDirection = 0;
 
                 OpenHatch = true;
                 break;
@@ -373,6 +330,8 @@ event Update() {
         SmallerX += 0x180;
         SmallestX += 0x100;
     }
+
+    return;
 }
 
 event Render(CamX:int, CamY:int) {

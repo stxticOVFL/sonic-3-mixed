@@ -75,9 +75,15 @@ event Render(CamX:int, CamY:int) {
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-    if (// (Frame >= 13 || Frame < 3) &&
-        Scene.Players[PlayerID].YSpeed >= 0 && Scene.Players[PlayerID].EZY < Y && Scene.Players[PlayerID].Ground) {
-        Scene.Players[PlayerID].Hurt(X, true);
+    if (Frame >= 13 || Frame < 3) {
+        if (Scene.Players[PlayerID].YSpeed >= 0 && Scene.Players[PlayerID].EZY < Y && Scene.Players[PlayerID].Ground) {
+            Scene.Players[PlayerID].Hurt(X, true);
+        }
+    }
+    else {
+        if (Scene.Players[PlayerID].YSpeed <= 0 && Scene.Players[PlayerID].EZY > Y) {
+            Scene.Players[PlayerID].Hurt(X, true);
+        }
     }
     return 0;
 }

@@ -1,0 +1,81 @@
+subclass Enemy;
+
+var WeY:int;
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 24;
+    H = 32;
+
+    Sprite = Scene.SpriteMapIDs[0x90];
+    CurrentAnimation = 1;
+
+    Gravity = 0x70;
+
+    X = InitialX + Scene.CameraX;
+    Y = InitialY + Scene.CameraY;
+
+    VisualLayer = 1;
+
+    Harmful = false;
+    Invincible = true;
+
+    WeY = InitialY << 16;
+
+    Timer = 6;
+}
+
+event Update() {
+    // MoveSprite();
+
+    X = Scene.Signal[6] + InitialX + Scene.CameraX;
+    Y = Scene.Signal[7] + (WeY >> 16) + Scene.CameraY;
+
+    if (WeY < 0) {
+        WeY += 2 << 16;
+    }
+    else if (Timer > 0) {
+        Timer--;
+        if (Timer == 0)
+            Sound.Play(Sound.SFX_DROP);
+    }
+    else {
+        YSpeed += 0x20;
+        WeY += YSpeed << 8;
+    }
+
+    if (Scene.CollisionAt(X, Y + H / 2)) {
+        Sound.Play(Sound.SFX_BOMB_EXPLOSION);
+        Scene.ShakeTimer = 16;
+        Active = false;
+
+        // X offset, Y offset, animation number, animation delay
+        // dc.w     0,  -3C,    0,   $A
+		// dc.w     0,   -C, $101,    9
+		// dc.w    -4,  -34,    0,    8
+		// dc.w     C,   -4, $101,    7
+		// dc.w    -C,   -4, $101,    5
+		// dc.w     8,  -24,    0,    4
+		// dc.w    -8,  -1C,    0,    2
+		// dc.w     0,   -C,    0,    0
+        Scene.AddExplosion(Sprite, CurrentAnimation + 1, false,       X, Y - 0x3C); // 0xA
+        Scene.AddExplosion(Sprite, CurrentAnimation + 2, false,       X, Y - 0x0C); // 9
+        Scene.AddExplosion(Sprite, CurrentAnimation + 1, false, X - 0x4, Y - 0x34); // 8
+        Scene.AddExplosion(Sprite, CurrentAnimation + 2, false, X + 0xC, Y - 0x04); // 7
+        Scene.AddExplosion(Sprite, CurrentAnimation + 2, false, X - 0xC, Y - 0x04); // 5
+        Scene.AddExplosion(Sprite, CurrentAnimation + 1, false, X + 0x8, Y - 0x24); // 4
+        Scene.AddExplosion(Sprite, CurrentAnimation + 1, false, X - 0x8, Y - 0x1C); // 2
+        Scene.AddExplosion(Sprite, CurrentAnimation + 1, false,       X, Y - 0x0C); // 0
+    }
+
+    return;
+}
+
+event Render(CamX:int, CamY:int) {
+    X = Scene.Signal[6] + InitialX + CamX;
+    Y = Scene.Signal[7] + (WeY >> 16) + CamY;
+
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

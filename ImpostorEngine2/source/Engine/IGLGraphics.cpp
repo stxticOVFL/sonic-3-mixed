@@ -45,7 +45,7 @@ public:
     GLuint framebufferScreen;
     GLuint framebufferScreenQuality;
 
-    int RetinaMult = 1; //
+    int RetinaMult = 1; ///
 };
 #endif
 
@@ -1158,6 +1158,66 @@ PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, i
         (flip & IE_FLIPY) ? -1.0f : 1.0f, 0.0f);
         //(float)SX / Width * ((flip & IE_FLIPX) ? -1.0f : 1.0f),
         //(float)SY / Height * ((flip & IE_FLIPY) ? -1.0f : 1.0f), 0.0f);
+    glUniform4f(LocColor, ColorBlendR, ColorBlendG, ColorBlendB, DrawAlpha / 255.f);
+
+    glUniform1i(LocUseTexture, 1);
+    if (LastSprite != sprite) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, sprite->TextureID);
+        glUniform1i(LocTexture, 0);
+
+        LastSprite = sprite;
+
+        if (sprite->LinkedSprite)
+            sprite = sprite->LinkedSprite;
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteID);
+        glUniform1i(LocPalette, 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, sprite->PaletteAltID);
+        glUniform1i(LocPaletteAlt, 2);
+    }
+
+    if (sprite->Paletted == 2)
+        glUniform1f(LocWaterLine, (App->HEIGHT - WaterPaletteStartLine));
+
+    glBindBuffer(GL_ARRAY_BUFFER, animframe.BufferID);
+    glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
+    glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glUniform1f(LocWaterLine, -0xFFFF);
+
+    ColorBlendR = 1.0f;
+    ColorBlendG = 1.0f;
+    ColorBlendB = 1.0f;
+}
+PUBLIC void IGLGraphics::DrawSpriteSized(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip, int w, int h) {
+    if (!sprite) return;
+    if (!sprite->TextureID) return;
+    if (animation < 0 || animation >= sprite->Animations.size()) {
+        IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
+        assert(animation >= 0 && animation < sprite->Animations.size());
+    }
+    if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
+        IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
+        assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
+    }
+
+    ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
+
+    glUniform3f(LocTranslate,
+        x + animframe.OffX - (animframe.OffX * (float)w / animframe.W),
+        y + animframe.OffY - (animframe.OffY * (float)h / animframe.H), 0.0f);
+    glUniform3f(LocRotate, 0.0f, 0.0f, angle);
+    glUniform3f(LocScale,
+        // (flip & IE_FLIPX) ? -1.0f : 1.0f,
+        // (flip & IE_FLIPY) ? -1.0f : 1.0f, 0.0f);
+        (float)w / animframe.W * ((flip & IE_FLIPX) ? -1.0f : 1.0f),
+        (float)h / animframe.H * ((flip & IE_FLIPY) ? -1.0f : 1.0f), 0.0f);
     glUniform4f(LocColor, ColorBlendR, ColorBlendG, ColorBlendB, DrawAlpha / 255.f);
 
     glUniform1i(LocUseTexture, 1);

@@ -1475,15 +1475,17 @@ void IPlayer::Update() {
 
 	    // CheckSensorsAB:
 		int d0 = (Angle + 0x20) & 0xFF;
-		if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; } else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
-		if (ForceRoll) d0++;
-		switch (d0 & 0xC0) {
-			case 0x00: AngleMode = 0; break;
-			case 0x40: AngleMode = 3; break;
-			case 0x80: AngleMode = 2; break;
-			case 0xC0: AngleMode = 1; break;
+		if (CheckSteps > 0) {
+			if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; } else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
+			if (ForceRoll) d0++;
+			switch (d0 & 0xC0) {
+				case 0x00: AngleMode = 0; break;
+				case 0x40: AngleMode = 3; break;
+				case 0x80: AngleMode = 2; break;
+				case 0xC0: AngleMode = 1; break;
+			}
 		}
-	    // Check Sensor A
+		// Check Sensor A
 	    SensorA = -1;
 	    int SensorA_Angle = -1;
 		Object* lastObj = NULL;
@@ -1586,30 +1588,43 @@ void IPlayer::Update() {
 		                }
 		            }
 
-	                if (GroundSpeed != 0)
-	                    Angle = ang;
-					d0 = (Angle + 0x20) & 0xFF;
-					if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; } else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
-					if (ForceRoll) d0++;
-					switch (d0 & 0xC0) {
-						case 0x00: AngleMode = 0; break;
-						case 0x40: AngleMode = 3; break;
-						case 0x80: AngleMode = 2; break;
-						case 0xC0: AngleMode = 1; break;
+					bool DoStick = Angle == ang;
+
+					// Spindash from 0xCFF, lowest spin rev possible, if Y ever gets to 0xCD1, it will bug
+
+	                if (GroundSpeed != 0) {
+						// smallest angle difference
+						int diff = IMath::abs(((ang - Angle + 0x80) & 0xFF) - 0x80);
+						if (diff < 0x28) {
+		                    Angle = ang;
+							DoStick = true;
+						}
+					}
+					if (CheckSteps > 0 && DoStick) {
+						d0 = (Angle + 0x20) & 0xFF;
+						if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; } else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
+						if (ForceRoll) d0++;
+						switch (d0 & 0xC0) {
+							case 0x00: AngleMode = 0; break;
+							case 0x40: AngleMode = 3; break;
+							case 0x80: AngleMode = 2; break;
+							case 0xC0: AngleMode = 1; break;
+						}
 					}
 
-	                if (AngleMode == 0)
-	                    SubY = (EZY + value - H / 2) << 16;
-	                else if (AngleMode == 1)
-						SubX = (EZX + value - H / 2) << 16;
-	                else if (AngleMode == 2)
-	                    SubY = (EZY - value + H / 2) << 16;
-	                else if (AngleMode == 3)
-	                    SubX = (EZX - value + H / 2) << 16;
-		        }
+					if ((Angle & 0x3F) == 0 && value > H / 2 && AngleMode != 0) DoStick = false;
 
-		        // make sure when exporting/porting S3 levels that angles like FC don't get put on the sides
-		        // only ones above 45 degrees!
+					if (DoStick) {
+		                if (AngleMode == 0)
+		                    SubY = (EZY + value - H / 2) << 16;
+		                else if (AngleMode == 1)
+							SubX = (EZX + value - H / 2) << 16;
+		                else if (AngleMode == 2)
+		                    SubY = (EZY - value + H / 2) << 16;
+		                else if (AngleMode == 3)
+		                    SubX = (EZX - value + H / 2) << 16;
+					}
+		        }
 			}
 	    }
 	    else {
@@ -1909,7 +1924,7 @@ void IPlayer::Update() {
 
 	    SubX += (XSpeed << 8) / CheckStepsMax;
 	    SubY += (YSpeed << 8) / CheckStepsMax;
-		
+
 		HandlePathSwitchers();
 	    HandleSprings();
 	}
@@ -2332,6 +2347,7 @@ void IPlayer::Update() {
 void IPlayer::LateUpdate() {
 	AnimationSpeedMult = 0x100;
 
+	// Apply animations based on Action states
     if (!Cutscene) {
         string superflag;
         if (SuperForm && Character == CharacterType::Sonic)
@@ -2340,7 +2356,7 @@ void IPlayer::LateUpdate() {
         if (Ground) {
             if (Action == ActionType::Rolling) {
 				if (IMath::abs(GroundSpeed) < 0x500)
-                	AnimationSpeedMult = 0x10000 / (0x500 - IMath::abs(GroundSpeed));
+                	AnimationSpeedMult = 0x100 / (5 - (IMath::abs(GroundSpeed) >> 8));
 
                 ChangeAnimation(AnimationMap[superflag + "Jump"]);
             }
@@ -2380,56 +2396,93 @@ void IPlayer::LateUpdate() {
                 ChangeAnimation(AnimationMap[superflag + "Push"]);
             }
             else if (Action != ActionType::CancelableAnim) {
-				if (IMath::abs(GroundSpeed) == 0x0 && (Angle <= 0x10 || Angle >= 0xF0)) {
-                    bool below = !Scene->CollisionAt(EZX, EZY + H / 2 + 2, NULL, 0, this);
-					bool yikes = !Scene->CollisionAt(EZX - DisplayFlip * 4, EZY + H / 2 + 2, NULL, 0, this);
+				if (!Thremixed) {
+					if (IMath::abs(GroundSpeed) == 0x0 && (Angle <= 0x10 || Angle >= 0xF0)) {
+	                    bool below = !Scene->CollisionAt(EZX, EZY + H / 2 + 2, NULL, 0, this);
+						bool yikes = !Scene->CollisionAt(EZX - DisplayFlip * 4, EZY + H / 2 + 2, NULL, 0, this);
 
-                    below &= Angle == 0;
-                    yikes &= Angle == 0;
+	                    below &= Angle == 0;
+	                    yikes &= Angle == 0;
 
-					AnimationSpeedMult = 0x100;
-                    if (below && !yikes) {
-		                ChangeAnimation(AnimationMap[superflag + "Balance 1"]);
-                        WaitTimer = 180;
-                    }
-                    else if (below) {
-		                ChangeAnimation(AnimationMap[superflag + "Balance 2"]);
-                        WaitTimer = 180;
-                    }
-                    else
-                        ChangeAnimation(AnimationMap[superflag + "Idle"]);
-                }
-                else if (IMath::abs(GroundSpeed) < 0x400) {
-					// AnimationSpeedMult = 0x200 * IMath::abs(GroundSpeed) / 0x400;
-					// if (AnimationSpeedMult < 0x100)
-					// 	AnimationSpeedMult = 0x100;
+						AnimationSpeedMult = 0x100;
+	                    if (below && !yikes) {
+			                ChangeAnimation(AnimationMap[superflag + "Balance 1"]);
+	                        WaitTimer = 180;
+	                    }
+	                    else if (below) {
+			                ChangeAnimation(AnimationMap[superflag + "Balance 2"]);
+	                        WaitTimer = 180;
+	                    }
+	                    else
+	                        ChangeAnimation(AnimationMap[superflag + "Idle"]);
+	                }
+	                else if (IMath::abs(GroundSpeed) < 0x600) {
+						AnimationSpeedMult = 0x100 / (8 - (IMath::abs(GroundSpeed) >> 8));
 
-					AnimationSpeedMult = 0x10000 / (0x800 - IMath::abs(GroundSpeed));
+	                    ChangeAnimation(AnimationMap[superflag + "Walk"]);
+	                }
+	                else {
+	                    if (IMath::abs(GroundSpeed) < 0x800)
+		                	AnimationSpeedMult = 0x100 / (8 - (IMath::abs(GroundSpeed) >> 8));
+						else
+							AnimationSpeedMult = 0x100;
 
-                    ChangeAnimation(AnimationMap[superflag + "Walk"]);
-                }
-                else if (IMath::abs(GroundSpeed) < 0x600) {
-                    // AnimationSpeedMult = 0x200 * IMath::abs(GroundSpeed) / 0x600;
+	                    ChangeAnimation(AnimationMap[superflag + "Run"], 0x100);
+	                }
+				}
+				else {
+					if (IMath::abs(GroundSpeed) == 0x0 && (Angle <= 0x10 || Angle >= 0xF0)) {
+	                    bool below = !Scene->CollisionAt(EZX, EZY + H / 2 + 2, NULL, 0, this);
+						bool yikes = !Scene->CollisionAt(EZX - DisplayFlip * 4, EZY + H / 2 + 2, NULL, 0, this);
 
-					AnimationSpeedMult = 0x10000 / (0x800 - IMath::abs(GroundSpeed));
+	                    below &= Angle == 0;
+	                    yikes &= Angle == 0;
 
-                    ChangeAnimation(AnimationMap[superflag + "Jog"]);
-                }
-                else if (IMath::abs(GroundSpeed) < 0xC00) {
-                    // AnimationSpeedMult = 0x200 * IMath::abs(GroundSpeed) / 0xC00;
+						AnimationSpeedMult = 0x100;
+	                    if (below && !yikes) {
+			                ChangeAnimation(AnimationMap[superflag + "Balance 1"]);
+	                        WaitTimer = 180;
+	                    }
+	                    else if (below) {
+			                ChangeAnimation(AnimationMap[superflag + "Balance 2"]);
+	                        WaitTimer = 180;
+	                    }
+	                    else {
+	                        ChangeAnimation(AnimationMap[superflag + "Idle"]);
+						}
+	                }
+	                else if (IMath::abs(GroundSpeed) < 0x400) {
+						AnimationSpeedMult = 0x100 / (8 - (IMath::abs(GroundSpeed) >> 8));
 
-					if (IMath::abs(GroundSpeed) < 0x700)
-	                	AnimationSpeedMult = 0x10000 / (0x800 - IMath::abs(GroundSpeed));
-					else
+						// AnimationSpeedMult = 0x200 * IMath::abs(GroundSpeed) / 0x400;
+						// if (AnimationSpeedMult < 0x100)
+						// AnimationSpeedMult = 0x100;
+
+	                    ChangeAnimation(AnimationMap[superflag + "Walk"]);
+	                }
+	                else if (IMath::abs(GroundSpeed) < 0x600) {
+	                    // AnimationSpeedMult = 0x200 * IMath::abs(GroundSpeed) / 0x600;
+
+						AnimationSpeedMult = 0x100 / (8 - (IMath::abs(GroundSpeed) >> 8));
+
+						ChangeAnimation(AnimationMap[superflag + "Jog"]);
+	                }
+	                else if (IMath::abs(GroundSpeed) < 0xC00) {
+	                    // AnimationSpeedMult = 0x200 * IMath::abs(GroundSpeed) / 0xC00;
+
+						if (IMath::abs(GroundSpeed) < 0x800)
+		                	AnimationSpeedMult = 0x100 / (8 - (IMath::abs(GroundSpeed) >> 8));
+						else
+							AnimationSpeedMult = 0x100;
+
+	                    ChangeAnimation(AnimationMap[superflag + "Run"], 0x100);
+	                }
+	                else {
 						AnimationSpeedMult = 0x100;
 
-                    ChangeAnimation(AnimationMap[superflag + "Run"], 0x100);
-                }
-                else {
-					AnimationSpeedMult = 0x100;
-
-                    ChangeAnimation(AnimationMap[superflag + "Dash"]);
-                }
+						ChangeAnimation(AnimationMap[superflag + "Dash"]);
+	                }
+				}
             }
         }
         else {
@@ -2441,7 +2494,7 @@ void IPlayer::LateUpdate() {
                 ChangeAnimation(AnimationMap[superflag + "Dropdash"]);
             else if (Action == ActionType::Jumping) {
 				if (IMath::abs(GroundSpeed) < 0x500)
-                	AnimationSpeedMult = 0x10000 / (0x500 - IMath::abs(GroundSpeed));
+                	AnimationSpeedMult = 0x100 / (5 - (IMath::abs(GroundSpeed) >> 8));
 
                 ChangeAnimation(AnimationMap[superflag + "Jump"]);
             }
@@ -2910,9 +2963,11 @@ void IPlayer::Render(int CamX, int CamY) {
     ISprite::Animation animation2 = Sprites[0]->Animations[CurrentAnimation];
     ISprite::AnimFrame currentFrame2 = animation2.Frames[CurrentFrame / 0x100];
     int myOffX = 0;
-    int myOffY = currentFrame2.OffY + H / 2;
-    if (Action != ActionType::Conveyor)
-        myOffY = 0;
+    int myOffY = 0;
+	if (Action == ActionType::Conveyor)
+		myOffY = currentFrame2.H / 2 + currentFrame2.OffY;
+	if (CurrentAnimation == 38 || CurrentAnimation == 39)
+        myOffY = 20;
 
     if (Action == ActionType::Rolling) {
         myOffX += (int)(this->Sin[Angle] * (H / 2 - 16));
@@ -2963,6 +3018,10 @@ void IPlayer::Render(int CamX, int CamY) {
             x = (int)(this->Sin[Angle] * (H / 2 - 16));
             y = (int)(this->Cos[Angle] * (H / 2 - 16));
         }
+		if (Action == ActionType::Conveyor)
+			y = currentFrame2.H / 2 + currentFrame2.OffY;
+		if (CurrentAnimation == 38 || CurrentAnimation == 39)
+	        y = 20;
 
         /*
         "Player/TailSprite.bin"
@@ -3423,9 +3482,11 @@ void IPlayer::HandlePathSwitchers() {
 void IPlayer::HandleMonitors() {
     ISprite::Animation animation2 = Sprites[0]->Animations[CurrentAnimation];
     ISprite::AnimFrame currentFrame2 = animation2.Frames[CurrentFrame / 0x100];
-    int myOffY = currentFrame2.OffY + H / 2;
-    if (Action != ActionType::Conveyor)
-        myOffY = 0;
+    int myOffY = 0;
+	if (Action == ActionType::Conveyor)
+		myOffY = currentFrame2.H / 2 + currentFrame2.OffY;
+	if (CurrentAnimation == 38 || CurrentAnimation == 39)
+        myOffY = 20;
 
     for (int o = 0; o < Scene->RingPropCount; o++) {
         LevelScene::ObjectProp obj = Scene->RingProps[o];
@@ -3484,6 +3545,7 @@ void IPlayer::HandleMonitors() {
         }
     }
 
+	Rect EnemyHitbox;
     for (int o = 0; o < Scene->ObjectEnemiesCount; o++) {
         Enemy* obj = Scene->ObjectsEnemies[o];
         if (obj != NULL) {
@@ -3496,6 +3558,14 @@ void IPlayer::HandleMonitors() {
 				ExtendedShieldHitbox |= Shield == ShieldType::Instashield;
 				ExtendedShieldHitbox |= obj->BounceOffShield && Shield != ShieldType::None;
 
+				if (!obj->HitboxEnemy.Empty()) {
+					EnemyHitbox = obj->HitboxEnemy;
+				// 	// EnemyHitbox = EnemyHitbox.FlipX(obj->FlipX).FlipY(obj->FlipY);
+				}
+				else {
+					EnemyHitbox = { -obj->W / 2, obj->W / 2, -obj->H / 2, obj->H / 2 };
+				}
+
                 bool Collided = false;
                 if (obj->Radius > 1) {
 					if (ExtendedShieldHitbox) {
@@ -3504,43 +3574,28 @@ void IPlayer::HandleMonitors() {
 						Collided = (DeltaX * DeltaX + DeltaY * DeltaY) < ((obj->Radius + 24) * (obj->Radius + 24));
 					}
 					else {
-	                    int DeltaX = (int)obj->X - IMath::max(EZX - (int)W / 2, IMath::min((int)obj->X, EZX + (int)W / 2));
-	                    int DeltaY = (int)obj->Y - IMath::max(EZY - (int)H / 2, IMath::min((int)obj->Y, EZY + (int)H / 2));
+	                    int DeltaX = (int)obj->X - IMath::max(X - W / 2, IMath::min((int)obj->X, X + W / 2));
+	                    int DeltaY = (int)obj->Y - IMath::max(Y - H / 2,  IMath::min((int)obj->Y, Y + H / 2));
 	                    Collided = (DeltaX * DeltaX + DeltaY * DeltaY) < (obj->Radius * obj->Radius);
 					}
                 }
                 else {
 					if (ExtendedShieldHitbox) {
-	                    int DeltaX = EZX - IMath::max((int)obj->X - obj->W / 2, IMath::min(EZX, (int)obj->X + obj->W / 2));
-	                    int DeltaY = EZY - IMath::max((int)obj->Y - obj->H / 2, IMath::min(EZY, (int)obj->Y + obj->H / 2));
+	                    int DeltaX = EZX - IMath::max((int)obj->X + EnemyHitbox.Left, IMath::min(EZX, (int)obj->X + EnemyHitbox.Right));
+	                    int DeltaY = EZY - IMath::max((int)obj->Y + EnemyHitbox.Top, IMath::min(EZY, (int)obj->Y + EnemyHitbox.Bottom));
 	                    Collided = (DeltaX * DeltaX + DeltaY * DeltaY) < (24 * 24);
 					}
 					else {
 						Collided =
-	                        (int)obj->X + obj->W / 2 >= EZX - (int)W / 2 &&
-	                        (int)obj->Y + obj->H / 2 >= EZY - (int)H / 2 &&
-	                        (int)obj->X - obj->W / 2 <  EZX + (int)W / 2 &&
-	                        (int)obj->Y - obj->H / 2 <  EZY + (int)H / 2;
+	                        (int)obj->X + EnemyHitbox.Right  >= X - W / 2 &&
+	                        (int)obj->Y + EnemyHitbox.Bottom >= Y - H / 2 &&
+	                        (int)obj->X + EnemyHitbox.Left   <  X + W / 2 &&
+	                        (int)obj->Y + EnemyHitbox.Top    <  Y + H / 2;
 					}
                 }
 
                 if (Collided) {
-                    int hitFrom = 0;
-                    int wy = (W + obj->W) * (EZY - obj->Y);
-                    int hx = (H + obj->H) * (EZX - (int)obj->X);
-
-                    if (wy > hx)
-                        if (wy > -hx)
-                            hitFrom = 3;
-                        else
-                            hitFrom = 2;
-                    else
-                        if (wy > -hx)
-                            hitFrom = 0;
-                        else
-                            hitFrom = 1;
-
-					Bounceable |= Shield != ShieldType::None;
+                    Bounceable |= Shield != ShieldType::None;
 					if ((obj->X < EZX && DisplayFlip < 0) ||
                         (obj->X > EZX && DisplayFlip > 0))
                         Bounceable |= Action == ActionType::Glide;
@@ -3676,20 +3731,20 @@ void IPlayer::HandleMonitors() {
                     (int)obj->Y + obj->H / 2 + 2 >=  EZY - (int)H / 2 + (YSpeed >> 8) * (Action == ActionType::Spring) &&
                     (int)obj->X - obj->W / 2     <   EZX + (int)W / 2 + (XSpeed >> 8) + 2 &&
                     (int)obj->Y - obj->H / 2 - 2 <   EZY + (int)H / 2 + (YSpeed >> 8)) {
-                    int hitFrom = 0;
+                    int hitFrom = (int)CollideSide::RIGHT;
                     int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
 					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
                     if (wy > hx)
                         if (wy > -hx)
-                            hitFrom = 3;
+                            hitFrom = (int)CollideSide::BOTTOM;
                         else
-                            hitFrom = 2;
+                            hitFrom = (int)CollideSide::LEFT;
                     else
                         if (wy > -hx)
-                            hitFrom = 0;
+                            hitFrom = (int)CollideSide::RIGHT;
                         else
-                            hitFrom = 1;
+                            hitFrom = (int)CollideSide::TOP;
 
 					bool Connect;
 					int Side;
@@ -3697,14 +3752,14 @@ void IPlayer::HandleMonitors() {
 					Connect = false;
 					if (obj->BreakableByRoll != CollideSide::NONE) {
 						Side = (int)obj->BreakableByRoll;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == 0 && GroundSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == 2 && GroundSpeed > -0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == 1 && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == 3 && YSpeed < 0));
+						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && GroundSpeed < -0x80));
+						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && GroundSpeed > 0x80));
+						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
 					}
 
                     if (Connect && Action == ActionType::Rolling) {
-						if (hitFrom == 1 || hitFrom == 3) {
+						if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
 							obj->OnBreakVertical(PlayerID, hitFrom);
 						}
 						else {
@@ -3722,14 +3777,14 @@ void IPlayer::HandleMonitors() {
 					Connect = false;
 					if (obj->BreakableBySpring != CollideSide::NONE) {
 						Side = (int)obj->BreakableBySpring;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == 0 && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == 2 && XSpeed > -0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == 1 && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == 3 && YSpeed < 0));
+						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
 					}
 
                     if (Connect && Action == ActionType::Spring) {
-						if (hitFrom == 1 || hitFrom == 3) {
+						if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
 							obj->OnBreakVertical(PlayerID, hitFrom);
 						}
 						else {
@@ -3740,10 +3795,10 @@ void IPlayer::HandleMonitors() {
 					Connect = false;
 					if (obj->BreakableByGlide != CollideSide::NONE) {
 						Side = (int)obj->BreakableByGlide;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == 0 && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == 2 && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == 1 && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == 3 && YSpeed < 0));
+						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
 					}
 
 					if (Connect && Action == ActionType::Glide) {
@@ -3752,7 +3807,7 @@ void IPlayer::HandleMonitors() {
                         else
                             Vibrate(VibrationType::ImpactSmall);
 
-                        if (hitFrom == 0 || hitFrom == 2) {
+                        if (hitFrom == CollideSide::RIGHT || hitFrom == CollideSide::LEFT) {
                             obj->OnBreakHorizontal(PlayerID, hitFrom);
                         }
                         else {
@@ -3766,10 +3821,10 @@ void IPlayer::HandleMonitors() {
 					Connect = false;
 					if (obj->BreakableByJump != CollideSide::NONE) {
 						Side = (int)obj->BreakableByJump;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == 0 && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == 2 && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == 1 && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == 3 && YSpeed < 0));
+						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
 					}
 
 					if (Connect && Action == ActionType::Jumping) {
@@ -3783,7 +3838,7 @@ void IPlayer::HandleMonitors() {
                                 YSpeed = -YSpeed;
                             }
                         }
-                        else if (hitFrom == 3) {
+                        else if (hitFrom == CollideSide::BOTTOM) {
                             obj->YSpeed = -0x300;
                             YSpeed = 0x100;
                             Vibrate(VibrationType::SpindashRev);
@@ -3793,10 +3848,10 @@ void IPlayer::HandleMonitors() {
 					Connect = false;
 					if (obj->BreakableByKnuckles != CollideSide::NONE) {
 						Side = (int)obj->BreakableByKnuckles;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == 0 && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == 2 && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == 1 && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == 3 && YSpeed < 0));
+						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
 					}
 
 					if (Connect && Character == CharacterType::Knuckles) {
@@ -3824,18 +3879,18 @@ bool IPlayer::HandleSprings() {
 					int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
 					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
-                    int hitFrom = 0;
+                    int hitFrom = (int)CollideSide::RIGHT;
 
                     if (wy > hx)
                         if (wy > -hx)
-                            hitFrom = 3;
+                            hitFrom = (int)CollideSide::BOTTOM;
                         else
-                            hitFrom = 2;
+                            hitFrom = (int)CollideSide::LEFT;
                     else
                         if (wy > -hx)
-                            hitFrom = 0;
+                            hitFrom = (int)CollideSide::RIGHT;
                         else
-                            hitFrom = 1;
+                            hitFrom = (int)CollideSide::TOP;
 
                     if (obj->OnCollisionWithPlayer(PlayerID, hitFrom, 1)) {
                         /*if (Action == ActionType::Hurt) {

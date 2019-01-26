@@ -5,6 +5,18 @@
 
 class LevelScene;
 
+struct Rect {
+    int  Left = 0x0;
+    int  Right = 0x0;
+    int  Top = 0x0;
+    int  Bottom = 0x0;
+    Rect() : Left(0), Right(0), Top(0), Bottom(0) {};
+    Rect(int l, int r, int t, int b) : Left(l), Right(r), Top(t), Bottom(b) {};
+    bool Empty() { return !Left && !Right && !Top && !Bottom; };
+    Rect FlipX(bool flipX) { if (!flipX) return Rect(Left, Right, Top, Bottom); Left = -Left; Right = -Right; return Rect(Left, Right, Top, Bottom); };
+    Rect FlipY(bool flipY) { if (!flipY) return Rect(Left, Right, Top, Bottom); Top = -Top; Bottom = -Bottom; return Rect(Left, Right, Top, Bottom); };
+};
+
 enum class CollideSide {
     NONE = 0,
     LEFT = 1,
@@ -14,6 +26,10 @@ enum class CollideSide {
     TOP_SIDES = 7,
     BOTTOM = 8,
 };
+bool operator==(const CollideSide& left, const int& right);
+bool operator==(const int& left, const CollideSide& right);
+bool operator!=(const CollideSide& left, const int& right);
+bool operator!=(const int& left, const CollideSide& right);
 
 class Object {
 public:
@@ -27,11 +43,15 @@ public:
     uint32_t InitialY;
     uint32_t* InitialValues;
 
-
     int32_t  SubX = 0;
     int32_t  SubY = 0;
     int16_t& X = *((int16_t*)&SubX + 1);
     int16_t& Y = *((int16_t*)&SubY + 1);
+    uint16_t ID = 0x0;
+    uint8_t  SubType = 0x0;
+    bool     FlipX = false;
+    bool     FlipY = false;
+
     int16_t  W = 32;
     int16_t  H = 32;
     int16_t  VisW = 0;
@@ -39,28 +59,38 @@ public:
     int16_t  XSpeed = 0;
     int16_t  YSpeed = 0;
 
-    uint16_t ID;
-    uint8_t  SubType;
-    bool     Active;
-    bool     Priority;
+    int16_t  Gravity = 0;
+
+    int16_t  MaxAccel = 0;
+    int16_t  Acceleration = 0;
+    int16_t  SwingDirection = 0;
+    int16_t  SwingCounter = 0;
+
+    bool     Active = false;
+    bool     Priority = false;
     bool     OnScreen = false;
     int      VisualLayer = 0;
 
-    bool FlipX;
-    bool FlipY;
+    bool     AutoAnimate = false;
+    int      CurrentAnimation = -1;
+    int      AnimationFrame = -2;
+    int      Frame = 0;
+    int      Timer = -1;
+    int      Rotation = 0;
 
-    int  Frame = 0;
-    int  CurrentAnimation = 0;
-    int  Timer = -1;
-    int  Rotation = 0;
+    bool     Solid = false;
+    bool     SolidTop = false;
+    bool     SolidCustomized = false;
+    Rect     HitboxSolid;
 
-    bool Solid = false;
-    bool SolidTop = false;
-    bool SolidCustomized = false;
+    bool     Pushable = false;
 
-    bool Pushable = false;
-    int  CollidingWithPlayer = false;
-    bool BeingStoodOn = false;
+    bool     BounceOffShield = false;
+    bool     NegatedByFireShield = false;
+    bool     NegatedByElectricShield = false;
+    bool     NegatedByBubbleShield = false;
+    int      CollidingWithPlayer = false;
+    bool     BeingStoodOn = false;
 
     CollideSide BreakableByRoll = CollideSide::NONE;
     CollideSide BreakableByJump = CollideSide::NONE;
@@ -68,25 +98,13 @@ public:
     CollideSide BreakableBySpring = CollideSide::NONE;
     CollideSide BreakableByKnuckles = CollideSide::NONE;
 
-    bool BounceOffShield = false;
-    bool NegatedByFireShield = false;
-    bool NegatedByElectricShield = false;
-    bool NegatedByBubbleShield = false;
-
-    void* MyVars[25];
-
     virtual ~Object() {
 
     };
 
-    virtual void Create() {
-        X = InitialX;
-        Y = InitialY;
-        VisW = W;
-        VisH = H;
-    };
-    virtual void Update() { };
-    virtual void Render(int CamX, int CamY) { };
+    virtual void Create();
+    virtual void Update();
+    virtual void Render(int CamX, int CamY);
 
     virtual int  OnTouchHitbox(int) { return 0; };
 
@@ -97,6 +115,8 @@ public:
     virtual int  OnCollisionWithPlayer(int, int, int) { return 0; };
     virtual int  CustomSolidityCheck(int x, int y, int ID, int jumpthrough) { return false; };
     virtual int  OnLeaveScreen() { return 0; };
+    virtual void OnSwingFinish() { };
+    virtual void OnAnimationFinish();
 
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)
@@ -109,6 +129,10 @@ public:
     void ChangeAnimation(int animationID) {
         ChangeAnimation(animationID, 0);
     };
+
+    void Animate();
+    void MoveSprite();
+    int  Swing_UpAndDown();
 };
 
 class Enemy : public Object {
@@ -121,14 +145,16 @@ public:
 
     bool Boss = false;
 
-    virtual int OnDeath();
-    virtual int OnHit() {
-        HitCount--;
-        if (HitCount <= 0)
-            return OnDeath();
-        return 0;
-    };
-    virtual int  OnCollisionWithPlayer(int, int, int) { return 0; };
+    Rect HitboxEnemy;
+
+    virtual void Create();
+    virtual int  OnDeath();
+    virtual int  OnHit();
+};
+
+class Solid : public Object {
+public:
+    virtual void Create();
 };
 
 #endif /* S3_OBJECT_H */

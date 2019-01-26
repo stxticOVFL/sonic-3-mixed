@@ -102,7 +102,12 @@ event Update() {
             }
             if (Scene.Players[p].EZX < StartX || Scene.Players[p].EZX > EndX) {
                 Scene.Players[p].ObjectControlled = 0;
-                Scene.Players[p].Jump();
+                Scene.Players[p].Ground = false;
+                Scene.Players[p].Angle = 0;
+                Scene.Players[p].AngleMode = 0;
+                Scene.Players[p].ShieldUsable = false;
+                Scene.Players[p].JumpVariable = 1;
+                Scene.Players[p].Action = ActionType.Jumping;
                 Scene.Players[p].YSpeed = 0;
                 Scene.Players[p].GrabTimer = 16;
                 Scene.Players[p].Data2 = 0;

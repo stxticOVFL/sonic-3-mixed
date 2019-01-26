@@ -22,9 +22,7 @@ event Create() {
         Children[i].CurrentAnimation = CurrentAnimation;
     }
 
-    VisualLayer = 1;
-
-    Scene.AddSelfToRegistry(this, "Enemies");
+    VisualLayer = 1;   
 }
 
 event Update() {
