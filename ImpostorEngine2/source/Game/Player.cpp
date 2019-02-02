@@ -2713,7 +2713,7 @@ void IPlayer::LateUpdate() {
 		else {
 			if (Action == ActionType::Fan) {
 				AnimationSpeedMult = 0x200;
-				ChangeAnimation((int)AnimationEnum::SpringTwirl + superflag);
+				ChangeAnimation((int)AnimationEnum::SpringCS + superflag);
 			}
 			else if (Action == ActionType::Jumping && DropDashRev > 20)
 				ChangeAnimation((int)AnimationEnum::Dropdash + superflag);
@@ -2725,7 +2725,7 @@ void IPlayer::LateUpdate() {
 			}
 			else if (Action == ActionType::Spring) {
 				if (SpringFlip)
-					ChangeAnimation((int)AnimationEnum::SpringTwirl + superflag);
+					ChangeAnimation((int)AnimationEnum::SpringCS + superflag);
 				else
 					ChangeAnimation((int)AnimationEnum::SpringDiagonal + superflag);
 			}

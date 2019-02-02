@@ -30,13 +30,12 @@ event OnLeaveScreen() : int {
 }
 event Render(CamX:int, CamY:int) {
     G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
-
-    // G.DrawTextShadow(X - CamX + 8, Y - CamY - 8 - 8, Math.toString());
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (CurrentAnimation != 3) return false;
     if (Frame < 13) return false;
+    if (Scene.Players[PlayerID].Shield == ShieldType.Bubble) return false;
 
     App.Audio.RemoveMusic(Sound.SoundBank[0xFD]);
     Scene.Players[PlayerID].UnderwaterTimer = 1800;

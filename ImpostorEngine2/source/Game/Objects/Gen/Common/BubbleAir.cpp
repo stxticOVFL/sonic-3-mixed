@@ -46,6 +46,8 @@ int BubbleAir::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     if (Frame < 13) return false;
 
+    if (Scene->Players[PlayerID]->Shield == ShieldType::Bubble) return false;
+
     App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
     Scene->Players[PlayerID]->UnderwaterTimer = 1800;
     Scene->Players[PlayerID]->GroundSpeed = 0;

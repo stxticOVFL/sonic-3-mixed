@@ -51,7 +51,8 @@ public:
 #define AUDIO_FORMAT AUDIO_S16
 
 // #define AUDIO_FREQUENCY 22050
-#define AUDIO_FREQUENCY 48000
+// #define AUDIO_FREQUENCY 48000
+#define AUDIO_FREQUENCY 44100
 #define AUDIO_CHANNELS 2
 #define AUDIO_SAMPLES 0x200
 #define AUDIO_MAX_SOUNDS 4
@@ -94,12 +95,13 @@ PUBLIC IAudio::IAudio(IApp* app) {
         App->Print(2, "Could not open audio device!");
     }
 
-    IApp::Print(-1, "%s = %d", "freq", DeviceFmt.freq);
-    IApp::Print(-1, "%s = %X", "format", DeviceFmt.format);
-    IApp::Print(-1, "%s = %X", "samples", DeviceFmt.samples);
-    IApp::Print(-1, "%s = %X", "channels", DeviceFmt.channels);
-    IApp::Print(-1, "%s = %X", "callback", DeviceFmt.callback);
-    IApp::Print(-1, "%s = %X", "userdata", DeviceFmt.userdata);
+    IApp::Print(-1, "%s", "Audio Device:");
+    IApp::Print(-1, "%s = %d", "Freq", DeviceFmt.freq);
+    IApp::Print(-1, "%s = %X", "Format", DeviceFmt.format);
+    IApp::Print(-1, "%s = %X", "Samples", DeviceFmt.samples);
+    IApp::Print(-1, "%s = %X", "Channels", DeviceFmt.channels);
+    IApp::Print(-1, "%s = %X", "Callback", DeviceFmt.callback);
+    IApp::Print(-1, "%s = %X", "Userdata", DeviceFmt.userdata);
 
     IAudio::DeviceFormat = DeviceFmt;
 }
@@ -133,11 +135,11 @@ PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp
 
     StackNode* newms = new StackNode();
     newms->Audio = music;
-    // music->Seek(0);
-	if (music->Stream) {
-		SDL_AudioStreamClear(music->Stream);
-	}
+
     music->Seek(int(ceil(at * AUDIO_FREQUENCY)));
+	if (music->Stream)
+		SDL_AudioStreamClear(music->Stream);
+
     newms->Buffer = music->Buffer + int(ceil(at * AUDIO_FREQUENCY)) * 4;
     newms->Length = music->Length - int(ceil(at * AUDIO_FREQUENCY)) * 4;
     newms->BufferStart = music->Buffer;

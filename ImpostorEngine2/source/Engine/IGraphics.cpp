@@ -60,7 +60,7 @@ public:
 
 unsigned char Font8x8_basic[128][8];
 void     (IGraphics::*SetPixelFunction)(int, int, uint32_t);
-uint32_t(IGraphics::*SetFilterFunction[4])(uint32_t);
+uint32_t (IGraphics::*SetFilterFunction[4])(uint32_t);
 
 PUBLIC IGraphics::IGraphics() {
 
@@ -151,10 +151,10 @@ PUBLIC VIRTUAL void IGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, i
 	if (!Window) {
 		Window = SDL_CreateWindow("Sonic 3'Mixed", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			DesiredWidth, DesiredHeight, SDL_WINDOW_SHOWN
-#if ANDROID | IOS
+			#if ANDROID | IOS
 			| SDL_WINDOW_BORDERLESS
 			| SDL_WINDOW_FULLSCREEN
-#endif
+			#endif
 			| SDL_WINDOW_ALLOW_HIGHDPI);
 
 		Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED
@@ -186,20 +186,37 @@ PUBLIC VIRTUAL void IGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, i
 		PixelScale = 1;
 
 		Screen = SDL_CreateRGBSurface(0, App->WIDTH, App->HEIGHT, 32, rmask, gmask, bmask, 0);
+		if (!Screen) {
+			IApp::Print(2, "Screen could not be created! (%s)", SDL_GetError());
+			exit(-1);
+		}
 		Screen->pixels = FrameBuffer;
-		IApp::Print(0, "G->Screen created!");
 
 		WindowScreen = SDL_CreateRGBSurface(0, App->WIDTH * PixelScale, App->HEIGHT * PixelScale, 32, rmask, gmask, bmask, 0);
-		IApp::Print(0, "WindowScreen created!");
+		if (!WindowScreen) {
+			IApp::Print(2, "Window Screen could not be created! (%s)", SDL_GetError());
+			exit(-1);
+		}
 		ScreenTexture = SDL_CreateTexture(Renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, App->WIDTH * PixelScale, App->HEIGHT * PixelScale);
-		IApp::Print(0, "ScreenTexture created!");
+		if (!ScreenTexture) {
+			IApp::Print(2, "Screen Texture could not be created! (%s)", SDL_GetError());
+			exit(-1);
+		}
 	}
 	else {
 		SDL_FreeSurface(WindowScreen);
 		SDL_DestroyTexture(ScreenTexture);
 
 		WindowScreen = SDL_CreateRGBSurface(0, App->WIDTH * PixelScale, App->HEIGHT * PixelScale, 32, rmask, gmask, bmask, 0);
+		if (!WindowScreen) {
+			IApp::Print(2, "Window Screen could not be created! (%s)", SDL_GetError());
+			exit(-1);
+		}
 		ScreenTexture = SDL_CreateTexture(Renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, App->WIDTH * PixelScale, App->HEIGHT * PixelScale);
+		if (!ScreenTexture) {
+			IApp::Print(2, "Screen Texture could not be created! (%s)", SDL_GetError());
+			exit(-1);
+		}
 	}
 }
 

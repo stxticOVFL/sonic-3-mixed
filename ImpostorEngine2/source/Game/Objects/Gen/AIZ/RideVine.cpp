@@ -9,11 +9,11 @@ void RideVine::Create() {
     Object::Create();
     Active = true;
     Priority = false;
-    VisW = 34;
-    VisH = 1280;
     RopeLength = 4;
     AngleOffset = 0;
     Oscello = 0;
+    VisW = RopeLength << 4;
+    VisH = RopeLength << 4;
     LastX = X;
     LastY = Y;
     BaseX = InitialX;

@@ -45,7 +45,7 @@ public:
 
 #include <Game/SaveGame.h>
 
-const char* LevelLabels[15] = { 
+const char* LevelLabels[15] = {
 	"AIZ",
 	"HCZ",
 	"MGZ",
@@ -110,7 +110,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		ISprite::Animation an;
 		SaveIconsSprite = new ISprite("UI/SaveIcons.gif", App);
 
-		an.Name = "Static";
+		an.Name = (char*)"Static";
 		an.FrameCount = 4;
 		an.Frames = (ISprite::AnimFrame*)malloc(an.FrameCount * sizeof(ISprite::AnimFrame));
 		for (int i = 0; i < an.FrameCount; i++) {
@@ -124,7 +124,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		}
 		SaveIconsSprite->Animations.push_back(an);
 
-		an.Name = "New";
+		an.Name = (char*)"New";
 		an.FrameCount = 1;
 		an.Frames = (ISprite::AnimFrame*)malloc(an.FrameCount * sizeof(ISprite::AnimFrame));
 		for (int i = 0; i < an.FrameCount; i++) {
@@ -138,7 +138,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		}
 		SaveIconsSprite->Animations.push_back(an);
 
-		an.Name = "Zone Images (Classic)";
+		an.Name = (char*)"Zone Images (Classic)";
 		an.FrameCount = 14;
 		an.Frames = (ISprite::AnimFrame*)malloc(an.FrameCount * sizeof(ISprite::AnimFrame));
 		for (int i = 0; i < an.FrameCount; i++) {
@@ -153,7 +153,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		}
 		SaveIconsSprite->Animations.push_back(an);
 
-		an.Name = "Zone Images (Original)";
+		an.Name = (char*)"Zone Images (Original)";
 		an.FrameCount = 14;
 		an.Frames = (ISprite::AnimFrame*)malloc(an.FrameCount * sizeof(ISprite::AnimFrame));
 		for (int i = 0; i < an.FrameCount; i++) {
@@ -167,7 +167,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		}
 		SaveIconsSprite->Animations.push_back(an);
 
-		an.Name = "Clear Images";
+		an.Name = (char*)"Clear Images";
 		an.FrameCount = 7;
 		an.Frames = (ISprite::AnimFrame*)malloc(an.FrameCount * sizeof(ISprite::AnimFrame));
 		for (int i = 0; i < an.FrameCount; i++) {
@@ -195,8 +195,8 @@ PUBLIC void Scene_DataSelect::Init() {
 PUBLIC void Scene_DataSelect::Update() {
 	bool CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
 
-	int mx = App->Input->MouseX;
-	int my = App->Input->MouseY;
+	// int mx = App->Input->MouseX;
+	// int my = App->Input->MouseY;
 	if (App->Input->MousePressed) {
 		CONFIRM_PRESSED = true;
 	}
@@ -449,7 +449,7 @@ PUBLIC void Scene_DataSelect::Render() {
 			snprintf(lives, 3, "%d", SaveGame::Savefiles[i].Lives);
 			G->DrawTextSprite(TextSprite, 6, '0' - 37, myX + 80 / 2 + 4, myY + 151, lives);
 		}
-		
+
 		// Border
 		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, 160 + 10, 0x000000);
 		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, 160 + 8, 0x000000);
@@ -466,7 +466,7 @@ PUBLIC void Scene_DataSelect::Render() {
 	}
 
 	// Buttons
-	int CurrAni = 1;
+	int CurrAni = 4;
 	if (IApp::Platform == Platforms::Switch) {
 		CurrAni = 4;
 	}

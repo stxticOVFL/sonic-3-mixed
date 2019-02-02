@@ -14,6 +14,8 @@ void SwingVine::Create() {
     Oscello = 0;
     LastX = X;
     LastY = Y;
+    VisW = RopeLength << 4;
+    VisH = RopeLength << 4;
     PlayersControlled = 0;
     ClassicStyle = !Scene->Thremixed;
     ClassicStyle = false;

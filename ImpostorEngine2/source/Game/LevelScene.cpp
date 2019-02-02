@@ -324,6 +324,7 @@ PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
 }
 
 ISprite* GlobalDisplaySpriteS3K = NULL;
+Object* LastObjectUpdated = NULL;
 
 PUBLIC VIRTUAL void LevelScene::LoadData() {
     /// Init
@@ -2349,6 +2350,8 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left,
     tile->OffY = offY;
     tile->XSpeed = xspeed;
     tile->YSpeed = yspeed;
+    if (LastObjectUpdated)
+        tile->VisualLayer = LastObjectUpdated->VisualLayer;
     Explosions.push_back(tile);
 }
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left, int top, int w, int h, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed, int grv) {
@@ -2381,6 +2384,8 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int anima
     tile->SubY = (y) << 16;
     tile->XSpeed = xspeed;
     tile->YSpeed = yspeed;
+    if (LastObjectUpdated)
+        tile->VisualLayer = LastObjectUpdated->VisualLayer;
     Explosions.push_back(tile);
 }
 PUBLIC void LevelScene::AddAnimal(int x, int y, bool flipX, bool flipY, int xspeed, int yspeed, bool escaping) {
@@ -2768,6 +2773,8 @@ PUBLIC void LevelScene::Update() {
             Object* obj = Objects[o];
             if (obj != NULL) {
                 if (obj->Active) {
+                    LastObjectUpdated = obj;
+
                     bool OnScreen = false;
                     //*
                     if (obj->VisW > obj->W || obj->VisH > obj->H)
@@ -3107,8 +3114,8 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
                     //     Player->XSpeed = CameraAutoScrollX;
                 }
             }
-            if (Player->EZX > 8 * OffCenteredCamera + CameraX + App->WIDTH / 2) {
-                Player->EZX = IMath::min(8 * OffCenteredCamera + CameraX + App->WIDTH / 2, Player->EZX);
+            if (Player->EZX > -8 * OffCenteredCamera + CameraX + App->WIDTH / 2) {
+                Player->EZX = IMath::min(-8 * OffCenteredCamera + CameraX + App->WIDTH / 2, Player->EZX);
             }
 
             return;
@@ -3142,16 +3149,14 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
             }
 
             if (Player->CameraLockTimer <= 0) {
-                if (Player->EZX < CameraMinX + 16) {
-                    Player->EZX = CameraMinX + 16;
-                    Player->SubX &= 0xFFFF0000;
+                if (Player->X < CameraMinX + 16) {
+                    Player->X = CameraMinX + 16;
                     Player->XSpeed = 0;
                     Player->GroundSpeed = 0;
                 }
 
                 if (Player->EZX > CameraMaxX + App->WIDTH - 16) {
                     Player->EZX = CameraMaxX + App->WIDTH - 16;
-                    Player->SubX &= 0xFFFF0000;
                     Player->XSpeed = 0;
                     Player->GroundSpeed = 0;
                 }
@@ -3273,19 +3278,19 @@ PUBLIC void LevelScene::RenderRings() {
         ObjectProp obj = RingProps[o];
 		if (!obj.ID) continue;
 
-		bool OnScreenH = 
+		bool OnScreenH =
 			obj.X + 8 >= CameraX &&
 			obj.X - 8 < CameraX + App->WIDTH;
 		if (!OnScreenH) continue;
 
         int oY = obj.Y;
-		bool OnScreen = 
+		bool OnScreen =
 			oY + 8 >= CameraY &&
             oY - 8 <  CameraY + App->HEIGHT;
 
         if (Data->layers[Data->cameraLayer].IsScrollingVertical && !OnScreen) {
             oY -= Data->layers[Data->cameraLayer].Height * 16;
-            OnScreen = 
+            OnScreen =
 				oY + 8 >= CameraY &&
                 oY - 8 <  CameraY + App->HEIGHT;
         }
@@ -3715,10 +3720,10 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
     Layer layer;
 	int fullFlip;
-    int s, siT, spl, x, y;
+    int s, siT, x, y;
     int tile, flipX, flipY, baseX, baseY, wheree;
     int index, TileBaseX, TileBaseY;
-    int EndTileBaseX, EndTileBaseY;
+    // int EndTileBaseX, EndTileBaseY;
 	bool DeformObjects = false;
 	bool DeformPlayer = false;
 
@@ -3844,20 +3849,19 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 // EndTileBaseX = 2 + ((TileBaseX + App->WIDTH) >> 4);
                 // EndTileBaseY = 2 + ((TileBaseY + App->HEIGHT) >> 4);
 
-                int lWid = layer.Width;
-                
-                int j;
-				int fBX;
-				int bufVal;
+                //int lWid = layer.Width;
+
+                // int j;
+				// int bufVal;
 				int tBX = (TileBaseX >> 4) - 1;
 				int tBW = 3 + (App->WIDTH >> 4);
 				int tBH = 2 + (App->HEIGHT >> 4);
 				int ix = tBX,
 					iy = (TileBaseY >> 4),
 					fx = 0,
-					fy = 0, 
-					tw = tBX + tBW,
-					th = (TileBaseY >> 4) + tBH;
+					fy = 0,
+					// th = (TileBaseY >> 4) + tBH,
+					tw = tBX + tBW;
 				int fullSize = tBW * tBH;
 				int anID;
 				for (int w = 0; w < fullSize; w++) {

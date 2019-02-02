@@ -14,6 +14,7 @@ public:
         uint32_t TargetScore;
         uint16_t UsedZoneRings[16];
     };
+    
     static SaveFile Savefiles[8];
     static int32_t  CurrentSaveFile;
 	static int32_t  CurrentZoneID;
