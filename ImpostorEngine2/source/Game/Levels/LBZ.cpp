@@ -87,6 +87,8 @@ PUBLIC void Level_LBZ::AssignSpriteMapIDs() {
 PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
     if (!AIZ1Sprite) {
 		AIZ1Sprite = new ISprite("Sprites/AIZ/Objects.gif", App);
+		AIZ1Sprite->Print = true;
+
         AIZ1Sprite->LoadAnimation("Sprites/AIZ/Act 1 Tree.bin");
         AIZ1Sprite->LoadAnimation("Sprites/AIZ/Act 1 Zipline Peg.bin");
         AIZ1Sprite->LoadAnimation("Sprites/AIZ/Animated Sprites.bin");

@@ -113,7 +113,7 @@ PUBLIC STATIC int IMath::ceil(float a) {
 PUBLIC STATIC int IMath::wrapDeg(int d) {
     while (d < 0)
         d += 360;
-    while (d > 360)
+    while (d >= 360)
         d -= 360;
     return d;
 }

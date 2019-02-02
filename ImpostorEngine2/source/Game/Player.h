@@ -189,6 +189,8 @@ public:
     int TurnValue = 5;
     int AnimationSpeedMult = 1;
 
+	bool Thremixed = false;
+
     int SensorA = 20;
     int SensorB = 20;
     int SensorC = 20;
@@ -371,6 +373,8 @@ public:
 
     float               Sin[360];
     float               Cos[360];
+
+	IPlayer*			HoldingPlayer = NULL;
 
     int                 ObjectControlled = 0;
 

@@ -53,20 +53,7 @@ void Signpost::Update() {
     if (Timer == 0 && (Rot >> 8 & 0xFF) == 0x80) {
         SpinSpeed = 0;
         App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
-        Scene->ShowResults = true;
-        Scene->ResultsTimer = 0;
-        if (Scene->Timer < 60 * 60) Scene->TimerTotal = 50000;
-        else if (Scene->Timer < 90 * 60) Scene->TimerTotal = 10000;
-        else if (Scene->Timer < 120 * 60) Scene->TimerTotal = 5000;
-        else if (Scene->Timer < 150 * 60) Scene->TimerTotal = 4000;
-        else if (Scene->Timer < 180 * 60) Scene->TimerTotal = 3000;
-        else if (Scene->Timer < 210 * 60) Scene->TimerTotal = 1000;
-        else if (Scene->Timer < 599 * 60) Scene->TimerTotal = 100;
-        else Scene->TimerTotal = 100000;
-        Scene->TotalToAdd = 0;
-        Scene->Player->DoVictory();
-        App->Audio->ClearMusic();
-        App->Audio->PushMusic(Sound::SoundBank[0xFC], false, 0);
+        Scene->DoResults();
         Timer = -1;
     }
 

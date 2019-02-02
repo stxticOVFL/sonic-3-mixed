@@ -157,7 +157,10 @@ ISound::Vorbis* ISound::LoadVorbis(IResource* src, SDL_AudioSpec *spec) {
     Vorbis* vorb = new Vorbis();
     ov_callbacks callbacks;
     long samples;
-    int must_close = 1;
+	callbacks = OV_CALLBACKS_STREAMONLY;
+	callbacks = OV_CALLBACKS_STREAMONLY_NOCLOSE;
+	callbacks = OV_CALLBACKS_NOCLOSE;
+	callbacks = OV_CALLBACKS_DEFAULT;
 
     callbacks.read_func = StaticRead;
     callbacks.seek_func = StaticSeek;
@@ -168,8 +171,6 @@ ISound::Vorbis* ISound::LoadVorbis(IResource* src, SDL_AudioSpec *spec) {
         IApp::Print(2, "Resource is not valid Vorbis stream!");
         return NULL;
     }
-
-    must_close = 0;
 
     vorb->info = ov_info(&vorb->vf, -1);
 
@@ -271,7 +272,7 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
 
         if (strstr(filename, ".wav")) {
             if (!SDL_LoadWAV_RW(Resource->RW, 0, &Format, &buffer, &length)) {
-                IApp::Print(2, "Could not load Sound!");
+                IApp::Print(2, "Could not load Sound! (%s)", SDL_GetError());
                 return;
             }
         }
@@ -311,27 +312,33 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
 }
 
 PUBLIC int  ISound::RequestMoreData(int samples, int amount) {
-    int num_samples = 0;
-    if (vorbis_file)
-        num_samples = ReadVorbis(vorbis_file, ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels);
-    else
-        num_samples = Resource->Read(ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels * 2);
-    if (num_samples == 0)
-        return 0;
+	int out = (IAudio::DeviceFormat.format & 0xFF) / 8 * samples * IAudio::DeviceFormat.channels;
+	int avail = SDL_AudioStreamAvailable(Stream);
+	if (avail < out * 2) {
+		int num_samples = 0;
+		if (vorbis_file)
+			num_samples = ReadVorbis(vorbis_file, ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels);
+		else
+			num_samples = Resource->Read(ExtraBuffer, (Format.format & 0xFF) / 8 * samples * Format.channels * 2);
+		if (num_samples == 0) {
+			return 0;
+		}
 
-    int rc = SDL_AudioStreamPut(Stream, ExtraBuffer, num_samples);
-    if (rc == -1) {
-        IApp::Print(2, "Uhoh, failed to put samples in stream: %s", SDL_GetError());
-        return -1;
-    }
+		int rc = SDL_AudioStreamPut(Stream, ExtraBuffer, num_samples);
+		if (rc == -1) {
+			IApp::Print(2, "Uhoh, failed to put samples in stream: %s", SDL_GetError());
+			return -1;
+		}
+	}
 
-    int gotten = SDL_AudioStreamGet(Stream, Buffer, (IAudio::DeviceFormat.format & 0xFF) / 8 * samples * IAudio::DeviceFormat.channels);
+    int gotten = SDL_AudioStreamGet(Stream, Buffer, out);
     if (gotten == -1) {
         IApp::Print(2, "Uhoh, failed to get converted data: %s", SDL_GetError());
         return -1;
     }
     if (gotten == 0)
         gotten = -2;
+
     return gotten;
 }
 PUBLIC void ISound::Seek(int amount) {

@@ -45,6 +45,8 @@ struct Layer {
 
     int8_t* Deform = NULL;
 
+	bool NoBuffer = false;
+
     int Flags = 0x0000;
 };
 

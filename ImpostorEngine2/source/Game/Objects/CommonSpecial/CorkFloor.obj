@@ -1,6 +1,6 @@
 object 0x2A;
 
-var PieceVels:short[64];
+var PieceVels:Sint16[64];
 var BreakableFromTop:bool;
 
 event Create() {

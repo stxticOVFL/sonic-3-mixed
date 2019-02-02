@@ -3,7 +3,7 @@ object 0x8F;
 subclass Enemy;
 
 var Routine:int;
-var PosTable:uint32_t[0x80];
+var PosTable:Uint32[0x80];
 
 event Create() {
     Active = true;

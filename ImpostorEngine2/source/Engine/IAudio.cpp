@@ -51,7 +51,7 @@ public:
 #define AUDIO_FORMAT AUDIO_S16
 
 // #define AUDIO_FREQUENCY 22050
-#define AUDIO_FREQUENCY 44100
+#define AUDIO_FREQUENCY 48000
 #define AUDIO_CHANNELS 2
 #define AUDIO_SAMPLES 0x200
 #define AUDIO_MAX_SOUNDS 4
@@ -134,6 +134,9 @@ PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp
     StackNode* newms = new StackNode();
     newms->Audio = music;
     // music->Seek(0);
+	if (music->Stream) {
+		SDL_AudioStreamClear(music->Stream);
+	}
     music->Seek(int(ceil(at * AUDIO_FREQUENCY)));
     newms->Buffer = music->Buffer + int(ceil(at * AUDIO_FREQUENCY)) * 4;
     newms->Length = music->Length - int(ceil(at * AUDIO_FREQUENCY)) * 4;
@@ -157,7 +160,7 @@ PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp
 }
 PUBLIC void IAudio::RemoveMusic(ISound* music) {
     SDL_LockAudioDevice(Device);
-    for (int i = 0; i < MusicStack.size(); i++) {
+    for (int i = 0; i < (int)MusicStack.size(); i++) {
         if (MusicStack[i]->Audio == music) {
             delete MusicStack[i];
             MusicStack.erase(MusicStack.begin() + i);
@@ -169,7 +172,7 @@ PUBLIC bool IAudio::IsPlayingMusic() {
     return MusicStack.size() > 0;
 }
 PUBLIC bool IAudio::IsPlayingMusic(ISound* music) {
-    for (int i = 0; i < MusicStack.size(); i++) {
+    for (int i = 0; i < (int)MusicStack.size(); i++) {
         if (MusicStack[i]->Audio == music) {
             return true;
         }
@@ -178,7 +181,7 @@ PUBLIC bool IAudio::IsPlayingMusic(ISound* music) {
 }
 PUBLIC void IAudio::ClearMusic() {
     SDL_LockAudioDevice(Device);
-    for (int i = 0; i < MusicStack.size(); i++) {
+    for (int i = 0; i < (int)MusicStack.size(); i++) {
         delete MusicStack[i];
     }
     MusicStack.clear();
@@ -239,11 +242,14 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
                 bool deleted = false;
                 int bytes = audio->MusicStack[0]->Audio->RequestMoreData(AUDIO_SAMPLES, len);
                 if (bytes > 0) {
-                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)bytes, ((int)(0xFF * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 2) + 1);
+                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)len, ((int)(0xFF * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 2) + 1);
                 }
-                else if (bytes == -1) {
-                    // error
-                }
+				else if (bytes == -2) {
+					// waiting
+				}
+				else if (bytes == -1) {
+					// error
+				}
                 else if (bytes == 0) {
                     // end of file
                     if (audio->MusicStack[0]->Loop) {

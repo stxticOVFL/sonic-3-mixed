@@ -76,6 +76,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     Width = stream.ReadUInt16();
     Height = stream.ReadUInt16();
 
+
     int fdsz = stream.ReadByte();
     if ((fdsz & 0x80) == 0) {
         IApp::Print(2, "Could not make sprite using '%s' without a palette!", filename);
@@ -168,6 +169,8 @@ PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
     #endif
 }
 PUBLIC void ISprite::SetPalette(int i, int cnt, uint32_t* col) {
+	if (LinkedSprite != NULL) { LinkedSprite->SetPalette(i, cnt, col); return; }
+
     for (int j = i; j < i + cnt; j++)
         SetPalette(j, col[j - i]);
 }
@@ -277,7 +280,6 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 
     for (int a = AnimCount; a < AnimCount + count; a++) {
         Animation an;
-
         an.Name = reader.ReadRSDKString();
         an.FrameCount = reader.ReadUInt16();
         an.AnimationSpeed = reader.ReadUInt16();

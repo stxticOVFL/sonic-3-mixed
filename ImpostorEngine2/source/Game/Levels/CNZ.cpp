@@ -14,6 +14,7 @@ public:
 #include <Game/Objects/Gen/ObjectListing.h>
 
 #include <Game/Levels/CNZ.h>
+#include <Game/Levels/ICZ.h>
 
 Uint32 AnPal_PalCNZ_1[48] = {
     0x000000,
@@ -455,6 +456,8 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
 PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
     if (!AIZ1Sprite) {
 		AIZ1Sprite = new ISprite("Sprites/CNZ/Objects.gif", App);
+		AIZ1Sprite->Print = true;
+
         AIZ1Sprite->LoadAnimation("Sprites/CNZ/Breakable Wall.bin");
         AIZ1Sprite->LoadAnimation("Sprites/CNZ/Balloon.bin");
         AIZ1Sprite->LoadAnimation("Sprites/CNZ/Button.bin");
@@ -491,6 +494,44 @@ PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
     }
+}
+
+PUBLIC void Level_CNZ::FinishResults() {
+	if (VisualAct == 1) {
+		LevelScene::FinishResults();
+	}
+	else {
+		FadeAction = FadeActionType::NEXT_ZONE;
+		FadeTimerMax = 90;
+		FadeMax = 0x140;
+		G->FadeToWhite = false;
+	}
+}
+PUBLIC void Level_CNZ::GoToNextAct() {
+	if (VisualAct == 1) {
+		Level_CNZ* NextAct = new Level_CNZ(App, G, 2);
+
+		TransferCommonLevelData(NextAct);
+		NextAct->AIZ1Sprite = AIZ1Sprite;
+		// Enable Title Card with no fade-in
+		NextAct->LevelCardTimer = 0.0;
+		NextAct->FadeTimer = 0;
+		NextAct->FadeAction = 0;
+		NextAct->LevelCardHide = false;
+		// Transfer over current frame
+		NextAct->Frame = Frame;
+		// Set player spawn position relative to their previous position
+		NextAct->SpecialSpawnPositionX = Player->EZX - 0x3000;
+		NextAct->SpecialSpawnPositionY = Player->EZY + 0x200;
+		NextAct->RoutineNumber = 0x00;
+
+		App->NextScene = NextAct;
+	}
+	else {
+		Level_ICZ* NextAct = new Level_ICZ(App, G, 1);
+		TransferCommonLevelData(NextAct);
+		App->NextScene = NextAct;
+	}
 }
 
 PUBLIC void Level_CNZ::EarlyUpdate() {

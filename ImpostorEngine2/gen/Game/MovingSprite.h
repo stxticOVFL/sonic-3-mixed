@@ -34,6 +34,7 @@ public:
 
     MovingSprite();
     void Update();
+    void OnAnimationFinish();
     void Render(int CamX, int CamY);
 };
 

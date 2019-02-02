@@ -18,6 +18,7 @@ void Spikes::Create() {
     W = 32 * Size;
     H = 32;
     Y = InitialY;
+    Timer = 0;
     if (Vertical && FlipX) {
         W = 32;
         H = 32 * Size;

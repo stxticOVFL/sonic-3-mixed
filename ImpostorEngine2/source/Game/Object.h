@@ -84,6 +84,7 @@ public:
     Rect     HitboxSolid;
 
     bool     Pushable = false;
+	// bool     Climbable = false;
 
     bool     BounceOffShield = false;
     bool     NegatedByFireShield = false;
@@ -95,6 +96,7 @@ public:
     CollideSide BreakableByRoll = CollideSide::NONE;
     CollideSide BreakableByJump = CollideSide::NONE;
     CollideSide BreakableByGlide = CollideSide::NONE;
+	// CollideSide BreakableBySuper = CollideSide::NONE;
     CollideSide BreakableBySpring = CollideSide::NONE;
     CollideSide BreakableByKnuckles = CollideSide::NONE;
 

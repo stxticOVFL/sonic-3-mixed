@@ -52,6 +52,7 @@ public:
 #include <Game/Levels/SpecialStage.h>
 
 #include <Game/Scenes/MainMenu.h>
+#include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
 
 #if   MSVC
@@ -184,6 +185,7 @@ PUBLIC void IApp::Run() {
     Print(0, "Starting scene");
     if (!Scene) {
         Scene = new Scene_MainMenu(this, G);
+		// Scene = new Scene_DataSelect(this, G);
         // Scene = new Scene_LevelSelect(this, G);
         // Scene = new Level_SpecialStage(this, G);
         // Scene = new Level_AIZ(this, G, 2);
@@ -381,7 +383,9 @@ PUBLIC void IApp::Cleanup() {
 }
 
 PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
+#if !ANDROID
     if (sev < 0) return;
+#endif
 
     va_list args;
     va_start(args, string);
@@ -441,23 +445,23 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     #endif
 
     if (sev == 0) { // LOG
-        sprintf(fullLine, "%s%s", fullLine, "      LOG: ");
+		strcat(fullLine, "      LOG: ");
         ForgC = 8;
     }
     else if (sev == 1) { // WARNING
-        sprintf(fullLine, "%s%s", fullLine, "  WARNING: ");
+		strcat(fullLine, "  WARNING: ");
         ForgC = 14;
     }
     else if (sev == 2) { // ERROR
-        sprintf(fullLine, "%s%s", fullLine, "    ERROR: ");
+		strcat(fullLine, "    ERROR: ");
         ForgC = 12;
     }
     else if (sev == 3) { // IMPORTANT
-        sprintf(fullLine, "%s%s", fullLine, "IMPORTANT: ");
+		strcat(fullLine, "IMPORTANT: ");
         ForgC = 11;
     }
     else if (sev == -1) { // VERBOSE
-        sprintf(fullLine, "%s%s", fullLine, "  VERBOSE: ");
+		strcat(fullLine, "  VERBOSE: ");
         ForgC = 11;
     }
 
@@ -466,11 +470,12 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
             sprintf(fullLine, "%s%s", fullLine, "\x1b[0m");
     #endif
 
+		ForgC = ForgC & 0xF;
     #if MSVC
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
         if (GetConsoleScreenBufferInfo(hStdOut, &csbi)) {
-            WORD wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+            WORD wColor = (csbi.wAttributes & 0xF0) + ForgC;
             SetConsoleTextAttribute(hStdOut, wColor);
         }
     #endif

@@ -22,7 +22,7 @@ public:
     int PathID;
     bool Reverse;
     bool Launch;
-    short AutoTunnel_Data[0x1D];
+    Sint16 AutoTunnel_Data[0x1D];
     
     void Create();
     void Update();

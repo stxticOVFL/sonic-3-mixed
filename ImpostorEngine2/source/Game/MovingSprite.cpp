@@ -83,6 +83,10 @@ PUBLIC void MovingSprite::Update() {
     }
 }
 
+PUBLIC void MovingSprite::OnAnimationFinish() {
+	
+}
+
 PUBLIC void MovingSprite::Render(int CamX, int CamY) {
     if (Left >= 0) {
         if (bufferID >= 0) {

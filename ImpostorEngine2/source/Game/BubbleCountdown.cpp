@@ -75,7 +75,7 @@ PUBLIC void BubbleCountdown::Update() {
 
 PUBLIC void BubbleCountdown::Render(int CamX, int CamY) {
     G->DrawModeOverlay = true;
-    G->DrawAlpha = 0xFF;
+    G->SetDrawAlpha(0xFF);
     ISprite::Animation animation = Sprite->Animations[CurrentAnimation];
     ISprite::AnimFrame currentFrame = animation.Frames[Frame >> 8];
     if (Timer2 >= 0) {
@@ -97,5 +97,5 @@ PUBLIC void BubbleCountdown::Render(int CamX, int CamY) {
             currentFrame.OffY, currentFrame.W + Off, currentFrame.H - Off);
     }
     G->DrawModeOverlay = false;
-    G->DrawAlpha = 0xFF;
+    G->SetDrawAlpha(0xFF);
 }

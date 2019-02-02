@@ -15,7 +15,7 @@ class CorkFloor;
 class CorkFloor: public Object {
 public:    
     
-    short PieceVels[64];
+    Sint16 PieceVels[64];
     bool BreakableFromTop;
     
     void Create();

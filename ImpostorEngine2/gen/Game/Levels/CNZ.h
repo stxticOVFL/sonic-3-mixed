@@ -21,6 +21,8 @@ public:
     void RestartStage(bool doActTransition, bool drawBackground);
     void AssignSpriteMapIDs();
     void LoadZoneSpecificSprites();
+    void FinishResults();
+    void GoToNextAct();
     void EarlyUpdate();
     void Subupdate();
     void HandleCamera();

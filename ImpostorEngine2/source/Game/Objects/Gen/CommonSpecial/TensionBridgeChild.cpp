@@ -14,13 +14,10 @@ void TensionBridgeChild::Create() {
     SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");
     Rotation = false;
-}
-
-void TensionBridgeChild::Update() {
-    Object::Update();
+    AutoAnimate = true;
 }
 
 void TensionBridgeChild::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 

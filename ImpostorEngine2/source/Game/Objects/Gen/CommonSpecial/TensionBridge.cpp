@@ -11,19 +11,28 @@ void TensionBridge::Create() {
     this->H = 24;
     this->Active = true;
     this->Priority = false;
-    this->Frame = 0;
+    Frame = 0;
     Count = SubType & 0x7F;
     Angled = ((SubType & 0x80) / 0x80) * 3;
     if (Scene->ZoneID != 5) Angled = 0;
 
     Triggered = (SubType & 0x80) == 0x80;
+    switch (Scene->ZoneID) {
+        case 2:
+        CurrentAnimation = 18;
+        break;
+        case 5:
+        CurrentAnimation = 5;
+        break;
+    }
+
     MaxDepress = 2;
     for (int i = 0; i < Count; i++)
 {
         Children[i] = Scene->AddNewObject(Obj_TensionBridgeChild, i, X - Count * 8 + i * 16, Y + i * Angled, false, false);
         Children[i]->Timer = MaxDepress;
         Children[i]->Sprite = Sprite;
-        Children[i]->CurrentAnimation = 18;
+        Children[i]->CurrentAnimation = CurrentAnimation;
         if (i * 2 == Count - 2) {
         }
         else if (i < Count / 2) {

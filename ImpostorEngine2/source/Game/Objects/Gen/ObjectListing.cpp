@@ -74,7 +74,7 @@ Object* GetNewObjectFromID(int ID) {
         case 0x0C:
             return new SwingVine();
             break;
-        case 0x41:
+        case 0x1041:
             return new Balloon();
             break;
         case 0x30:

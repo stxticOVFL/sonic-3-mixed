@@ -221,21 +221,22 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         CheckGLError(__LINE__);
 
 
+		int iiii = 0;
 
         if (Quality > 1)
             glGenFramebuffers(2, &framebufferScreen);
         else
             glGenFramebuffers(1, &framebufferScreen);
 
-        for (int i = 0; i < Quality && i < 2; i++) {
-            glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen + i); CheckGLError(__LINE__);
+        for (; iiii < Quality && iiii < 2; iiii++) {
+            glBindFramebuffer(GL_FRAMEBUFFER, framebufferScreen + iiii); CheckGLError(__LINE__);
 
             #if MSVC
-                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture + i, 0);
+                glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture + iiii, 0);
             #elif MACOSX
-                glFramebufferTextureEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture + i, 0);
+                glFramebufferTextureEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture + iiii, 0);
             #else
-                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture + i, 0);
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture + iiii, 0);
             #endif
 
             GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER); CheckGLError(__LINE__);
@@ -1134,7 +1135,35 @@ PUBLIC void IGLGraphics::DrawRectangleSkewedH(int x, int y, int w, int h, int sk
 }
 
 PUBLIC void IGLGraphics::DrawRectangleStroke(int x, int y, int w, int h, Uint32 col) {
+	float r = (col >> 16 & 0xFF) / 255.f;
+	float g = (col >> 8 & 0xFF) / 255.f;
+	float b = (col & 0xFF) / 255.f;
 
+	glUniform1i(LocUseTexture, 0);
+	glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+	glUniform4f(LocColor, r, g, b, DrawAlpha / 255.f);
+	glBindBuffer(GL_ARRAY_BUFFER, rectBufferID);
+
+	glUniform3f(LocTranslate, x, y, 0.0f);
+	glUniform3f(LocScale, float(w), 1.0f, 0.0f);
+	glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glUniform3f(LocScale, 1.0f, float(h), 0.0f);
+	glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glUniform3f(LocTranslate, x + w - 1, y, 0.0f);
+	glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glUniform3f(LocTranslate, x, y + h - 1, 0.0f);
+	glUniform3f(LocScale, float(w), 1.0f, 0.0f);
+	glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip) {
@@ -1412,6 +1441,7 @@ PUBLIC void IGLGraphics::DrawSpriteListBuffer(ISprite* sprite, int bufferID, int
 
     glUniform3f(LocTranslate, x, y, 0.0f);
     glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
+	glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
 
     glUniform1i(LocUseTexture, 1);
     if (LastSprite != sprite) {

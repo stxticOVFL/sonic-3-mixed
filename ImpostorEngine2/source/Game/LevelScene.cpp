@@ -216,7 +216,10 @@ public:
 
 #include <Game/Objects/Gen/ObjectListing.h>
 
+#include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
+
+#include <Game/SaveGame.h>
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; Objects[ObjectCount++] = obj; }
 
@@ -320,6 +323,8 @@ PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
 
 }
 
+ISprite* GlobalDisplaySpriteS3K = NULL;
+
 PUBLIC VIRTUAL void LevelScene::LoadData() {
     /// Init
     bool AlreadyLoaded = true;
@@ -346,12 +351,15 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             PauseSprite = new ISprite("UI/PauseEN.gif", App);
             PauseSprite->LoadAnimation("UI/TextEN.bin");
         }
-        if (!GlobalDisplaySprite) {
-            GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
-            GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
-            GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
-            GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
-        }
+		if (!GlobalDisplaySprite) {
+			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
+			GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
+			GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
+		}
+		if (!GlobalDisplaySpriteS3K) {
+			GlobalDisplaySpriteS3K = new ISprite("Sprites/GlobalS3K/Display.gif", App);
+			GlobalDisplaySpriteS3K->LoadAnimation("Sprites/GlobalS3K/HUD.bin");
+		}
         if (!MobileButtonsSprite) {
             MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
             ISprite::Animation an;
@@ -890,28 +898,27 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             Player->G = G;
             Player->App = App;
             Player->Scene = this;
-			Player->Character = (CharacterType)CharacterFlag;
+			Player->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
             Player->PlayerID = 0;
             Player->Create();
-            Player->Lives = 5;
+            Player->Lives = SaveGame::GetLives();
 
             Players[0] = Player;
 
             PlayerCount = 1;
 
-            /*
-    		Players[1] = new IPlayer();
-            Players[1]->G = G;
-            Players[1]->App = App;
-            Players[1]->Scene = this;
-            Players[1]->Sidekick = true;
-            Players[1]->CollisionAt = NULL;
-			Players[1]->Character = CharacterType::Tails;
-            Players[1]->PlayerID = 1;
-            Players[1]->Create();
+			if (CharacterFlag >> 4) {
+				Players[1] = new IPlayer();
+				Players[1]->G = G;
+				Players[1]->App = App;
+				Players[1]->Scene = this;
+				Players[1]->Sidekick = true;
+				Players[1]->Character = (CharacterType)(SaveGame::CurrentCharacterFlag >> 4);
+				Players[1]->PlayerID = 1;
+				Players[1]->Create();
 
-            PlayerCount = 2;
-    		//*/
+				PlayerCount = 2;
+			}
 
             IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
             startTime = SDL_GetTicks();
@@ -999,6 +1006,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileConfig loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
+	// Loading SceneBin
     IResource* SceneBin = IResources::Load(Str_SceneBin); // Stages/MSZ/Scene2.bin
     if (SceneBin) {
         IStreamer reader(SceneBin);
@@ -1351,8 +1359,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             unsigned char ObjectListUnimpl[0x100];
             memset(ObjectListUnimpl, 0, 0x100);
             for (int o = 0; o < objectCount; o++) {
-                int X = reader.ReadUInt16E();
-                int Y = reader.ReadUInt16E();
+                int X = reader.ReadUInt16BE();
+                int Y = reader.ReadUInt16BE();
 
                 int data = (Y & 0xF000) / 0x1000;
                 int PRIORITY = (data >> 3) & 0x01;
@@ -1424,8 +1432,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
             int ringCount = reader.ReadUInt16();
             for (int o = 0; o < ringCount; o++) {
-                int X = reader.ReadUInt16E();
-                int Y = reader.ReadUInt16E();
+                int X = reader.ReadUInt16BE();
+                int Y = reader.ReadUInt16BE();
 
                 ObjectProp op;
                 op.X = X;
@@ -1493,7 +1501,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 			for (int i = 0; i < Data->layerCount; i++) {
 				// Build buffers for GL renderer
-				if (Data->layers[i].InfoCount > 1) {
+				if (Data->layers[i].InfoCount) {
 					int y = 0;
 					int siT, x;
 					int tile = 0, flipY = 0, flags = 0;//, wheree = 0;
@@ -1732,6 +1740,30 @@ PUBLIC VIRTUAL void LevelScene::Init() {
                 obj->Create();
             }
             break;
+		case 5:
+			if (Act == 1) {
+				int X = 0x6540;
+				int Y = 0x05A0;
+				int ID = 0x81;
+				int SubType = 0;
+				int PRIORITY = true;
+				int FLIPX = 0;
+				int FLIPY = 0;
+				ADD_OBJECT();
+				obj->Create();
+			}
+			else {
+				int X = 0x4590;
+				int Y = 0x0680;
+				int ID = 0x81;
+				int SubType = 0;
+				int PRIORITY = true;
+				int FLIPX = 0;
+				int FLIPY = 0;
+				ADD_OBJECT();
+				obj->Create();
+			}
+			break;
     }
 }
 
@@ -1746,6 +1778,10 @@ PUBLIC void LevelScene::LoadInBackground() {
 }
 
 PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBackground) {
+	SaveGame::SetLives(Player->Lives);
+	SaveGame::SetZone(ZoneID - 1);
+	SaveGame::Flush();
+
     for (int i = 0; i < ObjectSolidCount; i++)
         ObjectsSolid[i] = NULL;
     for (int i = 0; i < ObjectSpringCount; i++)
@@ -2160,45 +2196,43 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
     }
     for (unsigned int o = 0; o < (unsigned int)ObjectSolidCount; o++) {
         Object* obj = ObjectsSolid[o];
-        if (obj != NULL) {
-            if (obj->Active) {
-                if (CollisionCheckForClimbable) {
-                    // if it isn't climbable
-                    continue;
+		if (!obj) continue;
+		if (!obj->Active) continue;
+		if (!obj->OnScreen) continue;
+
+        if (CollisionCheckForClimbable) continue;
+
+        if (obj->SolidCustomized) {
+            if (player) {
+                if (obj->CustomSolidityCheck(probeX, probeY, player->PlayerID, anglemode == 0)) {
+                    if (angle)
+                        *angle = 0;
+                    player->LastObject = obj;
+                    return true;
                 }
-                if (obj->SolidCustomized) {
-                    if (player) {
-                        if (obj->CustomSolidityCheck(probeX, probeY, player->PlayerID, anglemode == 0)) {
-                            if (angle)
-                                *angle = 0;
-                            player->LastObject = obj;
-                            return true;
-                        }
-                    }
-                }
-                else {
-                    bool playerCheck = true;
+            }
+        }
+        else {
+            bool playerCheck = true;
+            if (player)
+                playerCheck = player->YSpeed >= 0 && player->EZY < obj->Y - obj->H / 2;
+
+            if (obj->Solid || (obj->SolidTop && anglemode == 0 && playerCheck)) {
+                int obj_X = obj->X;
+                int obj_Y = obj->Y;
+                int obj_W = obj->W / 2;
+                int obj_H = obj->H / 2;
+                if (probeX >= obj_X - obj_W &&
+                    probeY >= obj_Y - obj_H &&
+                    probeX <  obj_X + obj_W &&
+                    probeY <  obj_Y + obj_H) {
+                    if (angle)
+                        *angle = 0;
+
                     if (player)
-                        playerCheck = player->YSpeed >= 0 && player->EZY < obj->Y - obj->H / 2;
+                        player->LastObject = obj;
 
-                    if (obj->Solid || (obj->SolidTop && anglemode == 0 && playerCheck)) {
-                        int obj_X = obj->X;
-                        int obj_Y = obj->Y;
-                        int obj_W = obj->W / 2;
-                        int obj_H = obj->H / 2;
-                        if (probeX >= obj_X - obj_W &&
-                            probeY >= obj_Y - obj_H &&
-                            probeX <  obj_X + obj_W &&
-                            probeY <  obj_Y + obj_H) {
-                            if (angle)
-                                *angle = 0;
-
-                            if (player)
-                                player->LastObject = obj;
-
-                            return true;
-                        }
-                    }
+                    return true;
                 }
             }
         }
@@ -2438,6 +2472,30 @@ PUBLIC VIRTUAL void LevelScene::Subupdate() {
     }
 }
 
+PUBLIC VIRTUAL void LevelScene::DoResults() {
+	ShowResults = true;
+	ResultsTimer = 0;
+	if (Timer < 60 * 60)
+		TimerTotal = 50000;
+	else if (Timer < 90 * 60)
+		TimerTotal = 10000;
+	else if (Timer < 120 * 60)
+		TimerTotal = 5000;
+	else if (Timer < 150 * 60)
+		TimerTotal = 4000;
+	else if (Timer < 180 * 60)
+		TimerTotal = 3000;
+	else if (Timer < 210 * 60)
+		TimerTotal = 1000;
+	else if (Timer < 599 * 60)
+		TimerTotal = 100;
+	else
+		TimerTotal = 100000;
+	TotalToAdd = 0;
+	Player->DoVictory();
+	App->Audio->ClearMusic();
+	App->Audio->PushMusic(Sound::SoundBank[0xFC], false, 0);
+}
 PUBLIC VIRTUAL void LevelScene::FinishResults() {
     GoToNextAct();
 }
@@ -2504,6 +2562,14 @@ PUBLIC VIRTUAL void LevelScene::DoCustomFadeAction() {
 
 }
 
+#include <time.h>
+
+bool acitvated = false;
+uint64_t playerUpdateCount[8];
+float    playerUpdateTimers[8];
+uint64_t playerLateUpdateCount[8];
+float    playerLateUpdateTimers[8];
+
 PUBLIC void LevelScene::Update() {
     // Pause function
     if (FadeAction == 0 && !ShowResults) {
@@ -2538,6 +2604,14 @@ PUBLIC void LevelScene::Update() {
     		maxLayer = 1 - maxLayer;
         }
     }
+
+	if (!acitvated) {
+		memset(playerUpdateCount, 0, sizeof(playerUpdateCount));
+		memset(playerUpdateTimers, 0, sizeof(playerUpdateTimers));
+		memset(playerLateUpdateCount, 0, sizeof(playerLateUpdateCount));
+		memset(playerLateUpdateTimers, 0, sizeof(playerLateUpdateTimers));
+		acitvated = true;
+	}
 
     // Unpaused
     if (!PauseFinished) {
@@ -2678,8 +2752,15 @@ PUBLIC void LevelScene::Update() {
 
         if (maxLayer) {
             if (LevelCardTimer >= 1.0 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
-                for (int p = 0; p < PlayerCount; p++)
-                    Players[p]->Update();
+				for (int p = 0; p < PlayerCount; p++) {
+					playerUpdateCount[p]++;
+
+					clock_t start_t = clock();
+
+					Players[p]->Update();
+
+					playerUpdateTimers[p] += ((clock() - start_t) * 1000.0f / CLOCKS_PER_SEC - playerUpdateTimers[p]) / playerUpdateCount[p];
+				}
             }
         }
 
@@ -2764,10 +2845,18 @@ PUBLIC void LevelScene::Update() {
             }
         }
 
-        if (maxLayer) {
-            if (LevelCardTimer >= 1.0 && FadeAction < FadeActionType::TO_BONUS_STAGE1)
-                for (int p = 0; p < PlayerCount; p++)
-                    Players[p]->LateUpdate();
+		if (maxLayer) {
+			if (LevelCardTimer >= 1.0 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
+				for (int p = 0; p < PlayerCount; p++) {
+					playerLateUpdateCount[p]++;
+
+					clock_t start_t = clock();
+
+					Players[p]->LateUpdate();
+
+					playerLateUpdateTimers[p] += ((clock() - start_t) * 1000.0f / CLOCKS_PER_SEC - playerLateUpdateTimers[p]) / playerLateUpdateCount[p];
+				}
+			}
         }
 
         for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
@@ -2965,7 +3054,7 @@ PUBLIC void LevelScene::Update() {
             //FadeTimerMax = 1;
             // Cleanup();
 
-            App->NextScene = new Scene_LevelSelect(App, G);
+            App->NextScene = new Scene_DataSelect(App, G);
         }
         else if (FadeAction == FadeActionType::FADEIN) {
             FadeAction = 0;
@@ -3070,7 +3159,6 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
             if (!Data->layers[Data->cameraLayer].IsScrollingVertical && CameraMinY != 0) {
                 if (Player->EZY < CameraMinY - 64) {
                     Player->EZY = CameraMinY - 64;
-                    Player->SubY &= 0xFFFF0000;
                     Player->YSpeed = 0;
                     Player->GroundSpeed = 0;
                     Player->Ground = false;
@@ -3183,22 +3271,26 @@ PUBLIC void LevelScene::RenderAnimatedSprites(int layer) {
 PUBLIC void LevelScene::RenderRings() {
     for (unsigned int o = 0; o < (unsigned int)RingPropCount; o++) {
         ObjectProp obj = RingProps[o];
+		if (!obj.ID) continue;
+
+		bool OnScreenH = 
+			obj.X + 8 >= CameraX &&
+			obj.X - 8 < CameraX + App->WIDTH;
+		if (!OnScreenH) continue;
+
         int oY = obj.Y;
-        bool OnScreen = (
-            obj.X + 8 >= CameraX &&
-            oY + 8 >= CameraY &&
-            obj.X - 8 <  CameraX + App->WIDTH &&
-            oY - 8 <  CameraY + App->HEIGHT);
+		bool OnScreen = 
+			oY + 8 >= CameraY &&
+            oY - 8 <  CameraY + App->HEIGHT;
+
         if (Data->layers[Data->cameraLayer].IsScrollingVertical && !OnScreen) {
             oY -= Data->layers[Data->cameraLayer].Height * 16;
-            OnScreen |= (
-                obj.X + 8 >= CameraX &&
-                oY + 8 >= CameraY &&
-                obj.X - 8 <  CameraX + App->WIDTH &&
-                oY - 8 <  CameraY + App->HEIGHT);
+            OnScreen = 
+				oY + 8 >= CameraY &&
+                oY - 8 <  CameraY + App->HEIGHT;
         }
 
-        if (OnScreen && obj.ID) {
+        if (OnScreen) {
             if (Thremixed)
                 G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 8, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
             else
@@ -3215,6 +3307,10 @@ PUBLIC void LevelScene::RenderHUD() {
 
     int STR_X = 16 - (HUDAnim >> 1);
 
+	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
+	if (GlobalDisplaySpriteS3K) {
+		GlobalDisplaySprite = GlobalDisplaySpriteS3K;
+	}
     // Score
     G->DrawSprite(GlobalDisplaySprite, 0, 0, STR_X, 12, 0, IE_NOFLIP);
 
@@ -3235,7 +3331,7 @@ PUBLIC void LevelScene::RenderHUD() {
     }
 
     // Timer " and '
-    G->DrawSprite(GlobalDisplaySprite, 0, 12, STR_X + 48 + 8 * 1 - 8 + 3, 28 + 14 - 16, 0, IE_NOFLIP);
+	G->DrawSprite(GlobalDisplaySprite, 0, 12, STR_X + 48 + 8 * 1 - 8 + 3, 28 + 14 - 16, 0, IE_NOFLIP);
 
     // Timer value (Centiseconds)
     value = (Timer % 60) * 100 / 60;
@@ -3276,9 +3372,14 @@ PUBLIC void LevelScene::RenderHUD() {
     G->DrawSprite(GlobalDisplaySprite, 2, (int)Player->Character, iconX, iconY, 0, IE_NOFLIP);
 
     // x symbol
-    G->DrawSprite(GlobalDisplaySprite, 0, 14, iconX, iconY, 0, IE_NOFLIP);
+	if (Thremixed)
+		G->DrawSprite(GlobalDisplaySprite, 0, 14, iconX, iconY, 0, IE_NOFLIP);
 
     // Lives value
+	int LifeNumberAnim = 1;
+	if (!Thremixed)
+		LifeNumberAnim = 10;
+
     valen = 1;
     value = Player->Lives;
     if (value >= 10)
@@ -3286,12 +3387,12 @@ PUBLIC void LevelScene::RenderHUD() {
     if (value >= 99)
         value = 99;
     for (int i = 0; i < valen; i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, iconX + 32 + valen * 8 - i * 8, iconY, 0, IE_NOFLIP);
+        G->DrawSprite(GlobalDisplaySprite, LifeNumberAnim, value % 10, iconX + 32 + 2 * 8 - i * 8, iconY, 0, IE_NOFLIP);
         value /= 10;
     }
 
     if (Mobile) {
-        G->DrawAlpha = 0xC0 - (0xC0 * ControlsAnim >> 8);
+        G->SetDrawAlpha(0xC0 - (0xC0 * ControlsAnim >> 8));
         int bX = 48;
         int bY = App->HEIGHT - 48;
         if (App->Input->GetControllerInput(0)[IInput::I_UP])
@@ -3307,10 +3408,10 @@ PUBLIC void LevelScene::RenderHUD() {
 
         // A button
         if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM])
-            G->DrawAlpha = 0xFF;
+            G->SetDrawAlpha(0xFF);
 
         G->DrawSprite(MobileButtonsSprite, 0, 4, App->WIDTH - 48, bY, 0, IE_NOFLIP);
-        G->DrawAlpha = 0xFF;
+        G->SetDrawAlpha(0xFF);
 
         // Pause
         G->DrawSprite(MobileButtonsSprite, 0, 5, App->WIDTH - 22, 22, 0, IE_NOFLIP);
@@ -3519,7 +3620,76 @@ PUBLIC void LevelScene::RenderPauseScreen() {
     G->DrawSprite(PauseSprite, 10, 2,
                 baseX + 13 - 72 + oo, baseY + 16 + 72 - oo, 0, IE_NOFLIP);
 }
+PUBLIC void LevelScene::RenderResults() {
+	if (!ShowResults) return;
 
+	int value;
+
+	double resultsTimer = ResultsTimer / 60.0;
+
+	int anim_player_got;
+	int anim_through_act;
+	int anim_time_bonus;
+	int anim_ring_bonus;
+	int anim_total;
+
+	if (ResultsTimer > 390) {
+		resultsTimer = (60 - (ResultsTimer - 390)) / 60.0;
+	}
+
+	anim_player_got = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.0, 0.4) / 0.4) * App->WIDTH) - App->WIDTH;
+	anim_through_act = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.2, 0.6) / 0.4) * -App->WIDTH) + App->WIDTH;
+	anim_time_bonus = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.5, 0.8) / 0.3) * -App->WIDTH) + App->WIDTH;
+	anim_ring_bonus = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.6, 0.9) / 0.3) * -App->WIDTH) + App->WIDTH;
+	anim_total = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.7, 1.0) / 0.3) * -App->WIDTH) + App->WIDTH;
+
+	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
+	if (GlobalDisplaySpriteS3K) {
+		GlobalDisplaySprite = GlobalDisplaySpriteS3K;
+	}
+
+	// Player Name
+	G->DrawSprite(GlobalDisplaySprite, 3, (int)Player->Character, App->WIDTH / 2 + anim_player_got, 64, 0, IE_NOFLIP);
+
+	// Got
+	G->DrawSprite(GlobalDisplaySprite, 4, 0, App->WIDTH / 2 + anim_player_got, 64, 0, IE_NOFLIP);
+
+	// Through
+	G->DrawSprite(GlobalDisplaySprite, 4, 1, App->WIDTH / 2 + anim_through_act, 88, 0, IE_NOFLIP);
+
+	// Time Bonus
+	G->DrawSprite(GlobalDisplaySprite, 0, 1, App->WIDTH / 2 - 128 + anim_time_bonus, 128, 0, IE_NOFLIP);
+	G->DrawSprite(GlobalDisplaySprite, 0, 8, App->WIDTH / 2 - 128 + 40 + anim_time_bonus, 128, 0, IE_NOFLIP);
+
+	// Ring Bonus
+	G->DrawSprite(GlobalDisplaySprite, 0, 5, App->WIDTH / 2 - 128 + anim_ring_bonus, 144, 0, IE_NOFLIP);
+
+	G->DrawSprite(GlobalDisplaySprite, 0, 8, App->WIDTH / 2 - 128 + 40 + anim_ring_bonus, 144, 0, IE_NOFLIP);
+
+	// Total
+	G->DrawSprite(GlobalDisplaySprite, 0, 9, App->WIDTH / 2 - 112 + anim_total, 176, 0, IE_NOFLIP);
+
+	// Time Bonus Value
+	value = TimerTotal;
+	for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
+		G->DrawSprite(GlobalDisplaySprite, 1, value % 10, App->WIDTH / 2 + 112 - i * 8 - 4 + anim_time_bonus, 128 + 14, 0, IE_NOFLIP);
+		value /= 10;
+	}
+
+	// Ring Bonus Value
+	value = Player->Rings * 100;
+	for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
+		G->DrawSprite(GlobalDisplaySprite, 1, value % 10, App->WIDTH / 2 + 112 - i * 8 - 4 + anim_ring_bonus, 144 + 14, 0, IE_NOFLIP);
+		value /= 10;
+	}
+
+	// Total Value
+	value = TotalToAdd;
+	for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
+		G->DrawSprite(GlobalDisplaySprite, 1, value % 10, App->WIDTH / 2 + 112 - i * 8 - 4 + anim_total, 176 + 14, 0, IE_NOFLIP);
+		value /= 10;
+	}
+}
 PUBLIC VIRTUAL void LevelScene::RenderAboveBackground() {
 
 }
@@ -3593,7 +3763,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                             bufVal = layer.Width * 16;
                             fBX = (((-TileBaseX) % bufVal + bufVal) % bufVal);
 
-                            for (x = TileBaseX >> 4; x < 2 + ((TileBaseX + App->WIDTH) >> 4); x++) {
+                            for (x = (TileBaseX >> 4) - 1; x < 2 + ((TileBaseX + App->WIDTH) >> 4); x++) {
                                 tilindy = ((y + siT) >> 4);
                                 tilindy = (tilindy % layer.Height + layer.Height) % layer.Height; // so it loops
                                 tilindx = ((x % layer.Width + layer.Width) % layer.Width);
@@ -3671,98 +3841,141 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 TileBaseX -= layer.OffsetX;
                 TileBaseY -= layer.OffsetY;
 
-                EndTileBaseX = 2 + ((TileBaseX + App->WIDTH) >> 4);
-                EndTileBaseY = 2 + ((TileBaseY + App->HEIGHT) >> 4); // EndTileBaseX
+                // EndTileBaseX = 2 + ((TileBaseX + App->WIDTH) >> 4);
+                // EndTileBaseY = 2 + ((TileBaseY + App->HEIGHT) >> 4);
 
                 int lWid = layer.Width;
-                for (int x = TileBaseX >> 4; x < EndTileBaseX; x++) {
-                    baseX = (x << 4) - TileBaseX;
+                
+                int j;
+				int fBX;
+				int bufVal;
+				int tBX = (TileBaseX >> 4) - 1;
+				int tBW = 3 + (App->WIDTH >> 4);
+				int tBH = 2 + (App->HEIGHT >> 4);
+				int ix = tBX,
+					iy = (TileBaseY >> 4),
+					fx = 0,
+					fy = 0, 
+					tw = tBX + tBW,
+					th = (TileBaseY >> 4) + tBH;
+				int fullSize = tBW * tBH;
+				int anID;
+				for (int w = 0; w < fullSize; w++) {
+					fx = ix;
+					fy = iy;
+					if (layer.Flags & 0x2) {
+						if (fx < 0) {
+							// Increment
+							ix++;
+							if (ix >= tw) {
+								ix = tBX;
+								iy++;
+							}
+							continue;
+						}
+						if (fx >= layer.Width) {
+							// Increment
+							ix++;
+							if (ix >= tw) {
+								ix = tBX;
+								iy++;
+							}
+							continue;
+						}
+					}
+					if (layer.Flags & 0x4) {
+						if (fy < 0) {
+							// Increment
+							ix++;
+							if (ix >= tw) {
+								ix = tBX;
+								iy++;
+							}
+							continue;
+						}
+						if (fy >= layer.Height) {
+							// Increment
+							ix++;
+							if (ix >= tw) {
+								ix = tBX;
+								iy++;
+							}
+							continue;
+						}
+					}
 
-                    if (layer.Flags & 0x2) {
-                        spl = x;
-                        if (spl < 0)
-                            continue;
-                        if (spl >= layer.Width)
-                            continue;
-                    }
-                    else {
-                        spl = (x % lWid + lWid) % lWid;
-                    }
+					while (fx < 0) fx += layer.Width;
+					while (fx >= layer.Width) fx -= layer.Width;
 
-                    int j;
-                    for (int y = TileBaseY >> 4; y < EndTileBaseY; y++) {
-                        j = y;
-                        if ((layer.Flags & 0x4)) {
-                            if (j < 0)
-                                continue;
-                            if (j > layer.Height - 1)
-                                continue;
-                        }
-                        else {
-                            j = (j % layer.Height + layer.Height) % layer.Height;
-                        }
+					while (fy < 0) fy += layer.Height;
+					while (fy >= layer.Height) fy -= layer.Height;
 
-                        baseY = (y << 4) - TileBaseY + layer.TileOffsetY[((x % lWid) + lWid) % lWid];
-                        tile = layer.Tiles[spl + j * lWid];
-						fullFlip = (tile >> 10) & 3;
-                        tile = tile & 0x3FF;
+					baseX = (ix << 4) - TileBaseX;
+					baseY = (iy << 4) - TileBaseY + layer.TileOffsetY[fx];
 
-                        if (tile) {
-                            int anID = Data->isAnims[tile] & 0xFF;
-                            if (anID != 0xFF) {
-                                G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
-                            }
-                            else {
-                                G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, fullFlip);
-                            }
+					tile = layer.Tiles[fx + fy * layer.Width];
+					fullFlip = (tile >> 10) & 3;
+					tile = tile & 0x3FF;
 
-                            if (ViewTileCollision) {
-								flipX = ((tile >> 10) & 1);
-								flipY = ((tile >> 11) & 1);
-								int colTypeA = ((tile >> 12) & 3);
-								int colTypeB = ((tile >> 14) & 3);
+					if (tile) {
+						anID = Data->isAnims[tile] & 0xFF;
+						if (anID != 0xFF)
+							G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
+						else
+							G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, fullFlip);
 
-                                for (int c = 0; c < 16; c++) {
-                                    int eex = c;
-                                    if (flipX)
-                                        eex = 15 - c;
+						if (ViewTileCollision) {
+							flipX = ((tile >> 10) & 1);
+							flipY = ((tile >> 11) & 1);
+							int colTypeA = ((tile >> 12) & 3);
+							int colTypeB = ((tile >> 14) & 3);
 
-                                    int h1 = Data->tiles1[tile].Collision[c];
-                                    int h2 = Data->tiles2[tile].Collision[c];
+							for (int c = 0; c < 16; c++) {
+								int eex = c;
+								if (flipX)
+									eex = 15 - c;
 
-                                    if (Player->Layer == 0 && colTypeA) {
-                                        uint32_t col = colTypeA == 3 ? 0 : colTypeA == 2 ? 0xFFFF00 : 0xFFFFFF;
-                                        if (Data->tiles1[tile].HasCollision[c]) {
-                                            if (Data->tiles1[tile].IsCeiling ^ flipY) {
-                                                G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
-                                            }
-                                            else {
-                                                G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
-                                            }
-                                        }
-                                    }
-                                    else if (colTypeB) {
-                                        if (Data->tiles2[tile].HasCollision[c]) {
-                                            uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
-                                            if (Data->tiles2[tile].IsCeiling ^ flipY) {
-                                                G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
-                                            }
-                                            else {
-                                                G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
-                                            }
-                                        }
-                                    }
-                                }
+								int h1 = Data->tiles1[tile].Collision[c];
+								int h2 = Data->tiles2[tile].Collision[c];
 
-                                int mx = App->Input->MouseX;
-                                int my = App->Input->MouseY;
-                                if (mx >= baseX && my >= baseY && mx < baseX + 16 && my < baseY + 16) {
-                                    highlightedTile = tile;
-                                }
-                            }
-                        }
-                    }
-                }
+								if (Player->Layer == 0 && colTypeA) {
+									uint32_t col = colTypeA == 3 ? 0 : colTypeA == 2 ? 0xFFFF00 : 0xFFFFFF;
+									if (Data->tiles1[tile].HasCollision[c]) {
+										if (Data->tiles1[tile].IsCeiling ^ flipY) {
+											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
+										}
+										else {
+											G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
+										}
+									}
+								}
+								else if (colTypeB) {
+									if (Data->tiles2[tile].HasCollision[c]) {
+										uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
+										if (Data->tiles2[tile].IsCeiling ^ flipY) {
+											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
+										}
+										else {
+											G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
+										}
+									}
+								}
+							}
+
+							int mx = App->Input->MouseX;
+							int my = App->Input->MouseY;
+							if (mx >= baseX && my >= baseY && mx < baseX + 16 && my < baseY + 16) {
+								highlightedTile = tile;
+							}
+						}
+					}
+
+					ix++;
+					if (ix >= tw) {
+						ix = tBX;
+						iy++;
+					}
+				}
 
                 if (layer.Info[0].HeatWaveEnabled) {
                     if (ManiaLevel)
@@ -3772,15 +3985,18 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         }
 
         // Rendering above background
+		/*
         if (l == Data->cameraLayer - 1)
             RenderAboveBackground();
+		//*/
 
         G->DoDeform = DeformObjects;
 
         // Rendering objects
         for (int i = 0; i < ObjectCount; i++) {
             Object* obj = Objects[i];
-            if (obj->Active && (obj->OnScreen || obj->Priority)) {
+            //if (obj->Active && (obj->OnScreen || obj->Priority)) {
+			if (obj->Active && obj->OnScreen) {
                 if (l == Data->cameraLayer + obj->VisualLayer) {
                     obj->Render(CameraX, CameraY);
                 }
@@ -3793,8 +4009,9 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
         // Rendering temporary sprites
         for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
-            if ((*it)->Active && l == Data->cameraLayer + (*it)->VisualLayer)
-                (*it)->Render(CameraX, CameraY);
+            if ((*it)->Active)
+				if (l == Data->cameraLayer + (*it)->VisualLayer)
+					(*it)->Render(CameraX, CameraY);
         }
 
         G->DoDeform = DeformPlayer;
@@ -3806,15 +4023,17 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         }
 
         // Rendering above foreground
+		/*
         if (l == Data->layerCount - 1)
             RenderAboveForeground();
+		//*/
     }
 
     G->DoDeform = false;
 
     if (ZoneID == 2) {
         G->DrawModeOverlay = true;
-        G->DrawAlpha = 0x80;
+        G->SetDrawAlpha(0x80);
         if (WaterLevel - CameraY >= -16 &&
             WaterLevel - CameraY < App->HEIGHT + 16) {
             for (int x = CameraX; x <= CameraX + App->WIDTH + 32; x += 32) {
@@ -3823,12 +4042,12 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
             }
         }
         G->DrawModeOverlay = false;
-        G->DrawAlpha = 0xFF;
+        G->SetDrawAlpha(0xFF);
     }
 
     RenderHUD();
 
-    if (ViewPalettes) {
+	if (ViewPalettes) {
         char palettetitle[16];
         sprintf(palettetitle, "Normal");
         G->DrawTextShadow(App->WIDTH - 132, App->HEIGHT - 74, palettetitle, 0xFFFFFF);
@@ -3904,8 +4123,21 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         }
     }
     if (ViewPlayerStats) {
+		int Y = 0;
+		char tempStr[256];
+		G->DrawRectangle(0, 0, 200, 35, 0);
+		for (int i = 0; i < PlayerCount; i++) {
+			sprintf(tempStr, "Player %d Update: %0.2f ms", i, playerUpdateTimers[i]);
+			G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+			Y += 8;
+			sprintf(tempStr, "    Late Update: %0.2f ms", playerLateUpdateTimers[i]);
+			G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+			Y += 8;
+			Y += 2;
+		}
+
         int16_t X = Player->EZX;
-        int16_t Y = Player->EZY;
+        Y = Player->EZY;
 
         Y -= 32;
         char pooerp[256];
@@ -3916,7 +4148,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
             Y = CameraY;
         ///*
         sprintf(pooerp, "%04X %04X (%02X %d)", Player->EZX, Player->EZY, Player->Angle, Player->AngleMode);
-        G->DrawTextShadow(X - CameraX + 37, Y - CameraY, pooerp, 0xFFFFFF);
+        G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
 
         sprintf(pooerp, "Sensor A: %d", Player->SensorA);
@@ -4075,72 +4307,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     G->SetFilter(0);
     RenderTitleCard();
     G->SetFilter(filTemp);
-}
-
-PUBLIC void LevelScene::RenderResults() {
-    if (!ShowResults) return;
-
-    int value;
-
-    double resultsTimer = ResultsTimer / 60.0;
-
-    int anim_player_got;
-    int anim_through_act;
-    int anim_time_bonus;
-    int anim_ring_bonus;
-    int anim_total;
-
-    if (ResultsTimer > 390) {
-        resultsTimer = (60 - (ResultsTimer - 390)) / 60.0;
-    }
-
-    anim_player_got = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.0, 0.4) / 0.4) * App->WIDTH) - App->WIDTH;
-    anim_through_act = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.2, 0.6) / 0.4) * -App->WIDTH) + App->WIDTH;
-    anim_time_bonus = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.5, 0.8) / 0.3) * -App->WIDTH) + App->WIDTH;
-    anim_ring_bonus = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.6, 0.9) / 0.3) * -App->WIDTH) + App->WIDTH;
-    anim_total = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.7, 1.0) / 0.3) * -App->WIDTH) + App->WIDTH;
-
-    // Player Name
-    G->DrawSprite(GlobalDisplaySprite, 3, (int)Player->Character, App->WIDTH / 2 + anim_player_got, 64, 0, IE_NOFLIP);
-
-    // Got
-    G->DrawSprite(GlobalDisplaySprite, 4, 0, App->WIDTH / 2 + anim_player_got, 64, 0, IE_NOFLIP);
-
-    // Through
-    G->DrawSprite(GlobalDisplaySprite, 4, 1, App->WIDTH / 2 + anim_through_act, 88, 0, IE_NOFLIP);
-
-    // Time Bonus
-    G->DrawSprite(GlobalDisplaySprite, 0, 1, App->WIDTH / 2 - 128 + anim_time_bonus, 128, 0, IE_NOFLIP);
-    G->DrawSprite(GlobalDisplaySprite, 0, 8, App->WIDTH / 2 - 128 + 40 + anim_time_bonus, 128, 0, IE_NOFLIP);
-
-    // Ring Bonus
-    G->DrawSprite(GlobalDisplaySprite, 0, 5, App->WIDTH / 2 - 128 + anim_ring_bonus, 144, 0, IE_NOFLIP);
-
-    G->DrawSprite(GlobalDisplaySprite, 0, 8, App->WIDTH / 2 - 128 + 40 + anim_ring_bonus, 144, 0, IE_NOFLIP);
-
-    // Total
-    G->DrawSprite(GlobalDisplaySprite, 0, 9, App->WIDTH / 2 - 112 + anim_total, 176, 0, IE_NOFLIP);
-
-    // Time Bonus Value
-    value = TimerTotal;
-    for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, App->WIDTH / 2 + 112 - i * 8 - 4 + anim_time_bonus, 128 + 14, 0, IE_NOFLIP);
-        value /= 10;
-    }
-
-    // Ring Bonus Value
-    value = Player->Rings * 100;
-    for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, App->WIDTH / 2 + 112 - i * 8 - 4 + anim_ring_bonus, 144 + 14, 0, IE_NOFLIP);
-        value /= 10;
-    }
-
-    // Total Value
-    value = TotalToAdd;
-    for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
-        G->DrawSprite(GlobalDisplaySprite, 1, value % 10, App->WIDTH / 2 + 112 - i * 8 - 4 + anim_total, 176 + 14, 0, IE_NOFLIP);
-        value /= 10;
-    }
 }
 
 PUBLIC VIRTUAL void LevelScene::Render() {

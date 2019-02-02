@@ -9,7 +9,7 @@ var PathID:int;
 var Reverse:bool;
 var Launch:bool;
 
-var AutoTunnel_Data:short[0x1D];
+var AutoTunnel_Data:Sint16[0x1D];
 
 event Create() {
     Active = true;

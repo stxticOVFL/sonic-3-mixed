@@ -93,12 +93,27 @@ PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
     else {
         res->RW = SDL_RWFromFile(FullName, "rb");
         if (!res->RW) {
+			IApp::Print(2, "%s", SDL_GetError());
             return NULL;
         }
     }
     res->path = path;
 
     return res;
+}
+PUBLIC STATIC IResource* IResources::Open(const char* path) {
+	char FullName[256];
+	sprintf(FullName, "%s%s", IFILE(""), path);
+
+	IResource* res = new IResource();
+	res->ZipLoading = false;
+	res->RW = SDL_RWFromFile(FullName, "wb");
+	if (!res->RW) {
+		return NULL;
+	}
+	res->path = path;
+
+	return res;
 }
 
 PUBLIC STATIC bool IResources::Close(IResource* res) {

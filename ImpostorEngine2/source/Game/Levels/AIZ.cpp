@@ -209,15 +209,14 @@ int FireRiseValue2 = 0;
 int Timerrrr = 2;
 int TreeRevealRow = 32;
 Layer* FireLayerBackup = NULL;
+int FireInd = 0;
 
 ISprite* AIZShipTileSprite = NULL;
 ISprite* TileSpriteBackup = NULL;
-
 int CutsceneActTimer = 60;
 Uint32 ShipTimer = 0x40200000;
 int BombDelay = 0x1A4;
 int BombIndex = 0;
-int FireInd = 0;
 
 PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
     ZoneID = 1;
@@ -279,8 +278,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartY = 0x440;
     }
     else {
-        PlayerStartX = 0x4850;
-        PlayerStartY = 0x01B0;
+        // PlayerStartX = 0x4850;
+        // PlayerStartY = 0x01B0;
     }
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
@@ -316,8 +315,8 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
         WaterLevel = 0x528;
 
         ShipTimer = 0x40200000;
+		BombDelay = 0x1A4;
         BombIndex = 0;
-        BombDelay = 0x1A4;
 
         if (VisualAct == 1) {
             if (SavedPositionX == -1) {
@@ -590,6 +589,10 @@ PUBLIC void Level_AIZ::Subupdate() {
                 AddExplosion(5, false, IMath::randRange(CameraX, CameraX + App->WIDTH), IMath::randRange(CameraY, CameraY + App->HEIGHT));
             }
 
+			if (!Data->layers[4].NoBuffer) {
+				Data->layers[4].NoBuffer = true;
+			}
+
             if (Data->layers[4].OffsetY <= -0x68) {
                 int d0 = FireRiseValue + 0x2800;
                 if (d0 > 0xA0000)
@@ -833,7 +836,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                     ts_af.W = ts_af.H = 16;
                     ts_af.OffX = ts_af.OffY = -8;
                     an.Frames[i] = ts_af;
-                    G->MakeFrameBufferID(TileSprite, an.Frames + i);
+                    G->MakeFrameBufferID(AIZShipTileSprite, an.Frames + i);
                 }
                 AIZShipTileSprite->Animations.push_back(an);
                 AIZShipTileSprite->LinkPalette(TileSprite);
@@ -1123,6 +1126,8 @@ PUBLIC void Level_AIZ::HandleCamera() {
                     TileSprite->SetPalette(0x1D, 0x666688);
                     TileSprite->SetPalette(0x1E, 0x444466);
                     TileSprite->UpdatePalette();
+
+					AIZBossSprite->LinkPalette(TileSprite);
                 }
             }
             // Knuckles' Path
@@ -1136,8 +1141,10 @@ PUBLIC void Level_AIZ::HandleCamera() {
             if (RoutineNumber == 4) {
                 if (Player->EZX < 0x4580 && CameraY < 0x480 && CameraX >= 0x4580 - App->WIDTH) {
                     CameraX -= 0x200;
-                    Player->EZX -= 0x200;
-
+					for (int p = 0; p < PlayerCount; p++) {
+						IPlayer* Player = Players[p];
+						Player->EZX -= 0x200;
+					}
                     for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
                         (*it)->X -= 0x200;
                     }

@@ -24,6 +24,8 @@ public:
 //#include <Game/Levels/TDZ.h>
 #include <Game/Levels/SpecialStage.h>
 
+#include <Game/SaveGame.h>
+
 #include <Game/Scenes/LevelSelect.h>
 
 int character = 0;
@@ -35,11 +37,12 @@ PUBLIC Scene_LevelSelect::Scene_LevelSelect(IApp* app, IGraphics* g) {
     Sound::Audio = App->Audio;
     Sound::Init();
 
-    if (!Sound::SoundBank[0]) {
-    	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
-    	// Sound::Audio->LoopPoint[0] = 131859;
-        Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
-    }
+    // Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
+    // Sound::Audio->LoopPoint[0] = 131859;
+	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Data Select.ogg")) {
+		Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
+		Sound::Audio->LoopPoint[0] = 40308;
+	}
 
     selected = 1;
 }
@@ -54,6 +57,8 @@ PUBLIC void Scene_LevelSelect::Init() {
 
     FadeTimerMax = 30;
     FadeIn = true;
+
+	SaveGame::CurrentSaveFile = -1;
 }
 
 bool HaveStage[12] = {
@@ -124,13 +129,13 @@ PUBLIC void Scene_LevelSelect::Update() {
                             break;
                     }
 
-                    ((LevelScene*)App->NextScene)->CharacterFlag = character;
+                    SaveGame::CurrentCharacterFlag = character;
                 }
             }
         }
     }
 
-    if (FadeIn) {
+    if (FadeTimer == -1) {
         if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
             selected--;
             if (selected < 0)
@@ -236,5 +241,5 @@ PUBLIC void Scene_LevelSelect::Render() {
         sprintf(poop, "%s", "Mighty");
     else if (character == 4)
         sprintf(poop, "%s", "Ray");
-    G->DrawTextShadow(App->WIDTH - 4 - strlen(poop) * 8, App->HEIGHT - 4 - 8, poop, character == 3 ? 0x999999 : 0xFFFFFF);
+    G->DrawTextShadow(App->WIDTH - 4 - strlen(poop) * 8, App->HEIGHT - 4 - 8, poop, 0xFFFFFF);
 }

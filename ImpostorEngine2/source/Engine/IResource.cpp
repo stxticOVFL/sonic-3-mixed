@@ -42,7 +42,7 @@ PUBLIC size_t IResource::Read(void* dest, size_t size) {
     return 0;
 }
 PUBLIC size_t IResource::Write(void* src, size_t size) {
-    return 0;
+	return SDL_RWwrite(RW, src, 1, size);
 }
 PUBLIC size_t IResource::Seek(size_t where, int whence) {
     if (ZipLoading) {

@@ -21,6 +21,8 @@ event Create() {
 
     Y = InitialY;
 
+    Timer = 0;
+
     if (Vertical && FlipX) {
         W = 32;
         H = 32 * Size;

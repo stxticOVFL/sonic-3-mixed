@@ -80,6 +80,21 @@ PUBLIC IInput::IInput(IApp* app) {
         { "pause", I_PAUSE, SDL_SCANCODE_W },
     };
 
+	if (IApp::Platform == Platforms::Switch) {
+		tempStruct defaultKeysNx[8] = {
+			{ "up", I_UP, SDL_SCANCODE_UP },
+			{ "down", I_DOWN, SDL_SCANCODE_DOWN },
+			{ "left", I_LEFT, SDL_SCANCODE_LEFT },
+			{ "right", I_RIGHT, SDL_SCANCODE_RIGHT },
+
+			{ "confirm", I_CONFIRM, SDL_SCANCODE_A },
+			{ "deny", I_DENY, SDL_SCANCODE_S },
+			{ "extra", I_EXTRA, SDL_SCANCODE_Q },
+			{ "pause", I_PAUSE, SDL_SCANCODE_W },
+		};
+		memcpy(defaultKeys, defaultKeysNx, sizeof(defaultKeysNx));
+	}
+
     for (int i = 0; i < 8; i++) {
         if (!App->Settings->GetInteger("input1", defaultKeys[i].key, &ControllerMaps[0][defaultKeys[i].where]))
             ControllerMaps[0][defaultKeys[i].where] = defaultKeys[i].scancodeDefault;

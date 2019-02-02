@@ -14,22 +14,22 @@ class AIZMinibossCutscene;
 
 class AIZMinibossCutscene: public Enemy {
 public:    
-    enum BossAction {
-        STOP_AND_EMERGE = 6,
-        START_MOVING = 5,
-        WAIT_LONG = 2,
-        HIDE_BEHIND = 4,
-        WAIT_SHORT = 3,
-        SOMEKINDAWAIT = 1,
-        START_FIGHT = 0,
-    };
     enum BossState {
-        SHIFT_CAMERA = 5,
-        WAIT_NO_MOVE = 4,
         WAIT = 3,
-        WATER_DRY = 2,
-        EMERGE_FROM_WATER = 1,
         WAITING_FOR_PLAYER = 0,
+        EMERGE_FROM_WATER = 1,
+        WAIT_NO_MOVE = 4,
+        WATER_DRY = 2,
+        SHIFT_CAMERA = 5,
+    };
+    enum BossAction {
+        START_MOVING = 5,
+        START_FIGHT = 0,
+        SOMEKINDAWAIT = 1,
+        WAIT_LONG = 2,
+        STOP_AND_EMERGE = 6,
+        WAIT_SHORT = 3,
+        HIDE_BEHIND = 4,
     };
     
     int TimerAction;

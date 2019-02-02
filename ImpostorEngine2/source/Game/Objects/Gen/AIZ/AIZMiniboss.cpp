@@ -98,10 +98,10 @@ int AIZMiniboss::OnHit() {
 }
 
 void AIZMiniboss::DoExplosionDebris() {
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation, 14, FlipX, false, -0x400, -0x400, 0x38);
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation, 15, FlipX, false, 0x400, -0x400, 0x38);
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation, 16, FlipX, false, -0x400, -0x400, 0x48);
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation, 17, FlipX, false, 0x400, -0x400, 0x48);
+    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 0, FlipX, false, -0x400, -0x400, 0x38);
+    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 1, FlipX, false, 0x400, -0x400, 0x38);
+    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 2, FlipX, false, -0x400, -0x400, 0x48);
+    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 3, FlipX, false, 0x400, -0x400, 0x48);
     Object* Signpost = Scene->AddNewObject(Obj_Signpost, 0x00, X, Scene->CameraY - 64, false, false);
     Signpost->VisualLayer = VisualLayer;
 }
@@ -134,7 +134,7 @@ void AIZMiniboss::HandleDamage() {
         VisualLayer = 1;
         if (ExplosionTimer > 0) {
             if (ExplosionTimer % 3 == 0) {
-                Scene->AddExplosion(5, false, X + Math::randRange(-W / 2, W / 2), Y + Math::randRange(-H / 2, H / 2));
+                Scene->AddExplosion(5, false, X + Math::randRange(-W / 2, W / 2), Y + Math::randRange(-H / 2, H / 2), VisualLayer);
                 Sound::Play(Sound::SFX_BOSSEXPLOSION);
             }
 

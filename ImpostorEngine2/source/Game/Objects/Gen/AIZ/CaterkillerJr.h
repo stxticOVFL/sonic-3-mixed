@@ -16,7 +16,7 @@ class CaterkillerJr: public Enemy {
 public:    
     
     int Routine;
-    uint32_t PosTable[0x80];
+    Uint32 PosTable[0x80];
     
     void Create();
     void OnSwingFinish();

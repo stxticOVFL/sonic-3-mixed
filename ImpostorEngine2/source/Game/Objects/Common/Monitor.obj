@@ -193,14 +193,14 @@ event Render(CamX:int, CamY:int) {
         if (CurrentAnimation == 4) {
             G.DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
 
-            //G.DrawAlpha = 0xFF;
+            //G.SetDrawAlpha(0xFF);
             G.DrawModeOverlay = true;
             G.DrawSprite(Sprite, 3, Scene.Frame >> 1 & 1,
                 X - CamX,
                 Y - CamY - 2,
                 0, IE_NOFLIP);
             G.DrawModeOverlay = false;
-            //G.DrawAlpha = 0xFF;
+            //G.SetDrawAlpha(0xFF);
         }
         else {
             G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
@@ -232,10 +232,10 @@ event Render(CamX:int, CamY:int) {
     /*
     if (CurrentAnimation == 4) {
         G.DrawModeOverlay = true;
-        G.DrawAlpha = 0x80;
+        G.SetDrawAlpha(0x80);
         G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - 2, 0, IE_NOFLIP);
         G.DrawModeOverlay = false;
-        G.DrawAlpha = 0xFF;
+        G.SetDrawAlpha(0xFF);
     }
     */
 }

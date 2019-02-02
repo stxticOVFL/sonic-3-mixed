@@ -27,6 +27,7 @@ public:
 //#include <Game/Levels/TDZ.h>
 #include <Game/Levels/SpecialStage.h>
 
+#include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
 
 #include <Game/Scenes/MainMenu.h>
@@ -72,104 +73,145 @@ int paletteToCycle[18] = {
 };
 
 PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
-    App = app;
-    G = g;
+	App = app;
+	G = g;
 
-    Sound::Audio = App->Audio;
-    Sound::Init();
+	Sound::Audio = App->Audio;
+	Sound::Init();
 
 	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
-    // Sound::Audio->LoopPoint[0] = 131859;
-    Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
-
-    MenuSprite = new ISprite("UI/MainMenu.gif", App);
-    MenuSprite->LoadAnimation("UI/MainMenu.bin");
-    for (int i = 0; i < 9; i++)
-        MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
-    MenuSprite->SetTransparentColorIndex(0x2C);
-    MenuSprite->UpdatePalette();
-
-    // \->Palette(Alt)?\[(.*)\] = (.*);
-    // ->SetPalette$1($2, $3);
-
-    SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
-    SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
-    SuperButtonsSprite->SetPalette(1, 0x282028);
-    SuperButtonsSprite->UpdatePalette();
+	// Sound::Audio->LoopPoint[0] = 131859;
+	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Data Select.ogg")) {
+		Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
+		Sound::Audio->LoopPoint[0] = 40308;
+	}
 }
 
 PUBLIC void Scene_MainMenu::Init() {
-    App->Audio->ClearMusic();
-    App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
-    // App->Audio->PushMusic(Sound::SoundBank[0], false, Sound::Audio->LoopPoint[0]);
+    // \->Palette(Alt)?\[(.*)\] = (.*);
+    // ->SetPalette$1($2, $3);
+    if (!MenuSprite) {
+        MenuSprite = new ISprite("UI/MainMenu.gif", App);
+        MenuSprite->LoadAnimation("UI/MainMenu.bin");
+        for (int i = 0; i < 9; i++)
+            MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
+        MenuSprite->SetTransparentColorIndex(0x2C);
+        MenuSprite->UpdatePalette();
+    }
+    if (!SuperButtonsSprite) {
+        SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
+        SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
+        SuperButtonsSprite->SetPalette(1, 0x282028);
+        SuperButtonsSprite->UpdatePalette();
+    }
+
+	if (!App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
+		App->Audio->ClearMusic();
+		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	}
 
     App->Input->UseTouchController = false;
+
+	FadeTimerMax = 30;
+	FadeIn = true;
 }
 
 PUBLIC void Scene_MainMenu::Update() {
-    bool CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
+	if (FadeTimer == -1 && FadeTimerMax > 1)
+		FadeTimer = FadeTimerMax;
+	if (FadeTimer > 0) {
+		FadeTimer--;
+		if (!FadeIn)
+			G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));
+		else
+			G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
+	}
 
-    int cenX = App->WIDTH - 164;
-    int cenY = App->HEIGHT / 2;
+	// Do Fade actions
+	if (FadeTimer == 0) {
+		FadeTimer = -1;
+		FadeTimerMax = 0;
 
-    int mx = App->Input->MouseX;
-    int my = App->Input->MouseY;
-    if (App->Input->MousePressed) {
-        int sel = selected;
-        int tosel = -1;
-        if (mx >= cenX - 129 && my >= cenY - 79 &&
-            mx <  cenX - 129 + 100 && my <  cenY - 79 + 50)
-            tosel = 0;
-        else if (mx >= cenX + 29 && my >= cenY - 79 &&
-            mx <  cenX + 29 + 100 && my <  cenY - 79 + 50)
-            tosel = 1;
-        else if (mx >= cenX - 129 && my >= cenY + 29 &&
-            mx <  cenX - 129 + 100 && my <  cenY + 29 + 50)
-            tosel = 2;
-        else if (mx >= cenX + 29 && my >= cenY + 29 &&
-            mx <  cenX + 29 + 100 && my <  cenY + 29 + 50)
-            tosel = 3;
+		if (!FadeIn) {
+			if (selected == 0) {
+				Scene_DataSelect* NextScene = new Scene_DataSelect(App, G);
+				NextScene->MenuSprite = MenuSprite;
+				NextScene->SuperButtonsSprite = SuperButtonsSprite;
 
-        if (tosel >= 0) {
-            selected = tosel;
-            if (sel == selected) {
-                CONFIRM_PRESSED = true;
-            }
-            else {
-                Sound::Play(Sound::SFX_MENUBLEEP);
-            }
-        }
-    }
+				App->NextScene = NextScene;
+			}
+			else
+				App->NextScene = new Scene_LevelSelect(App, G);
+		}
+	}
 
-    if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
-        if (selected >= 2)
-            selected -= 2;
+	bool CONFIRM_PRESSED = false;
+	if (FadeTimer == -1) {
+		CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
 
-        Sound::Play(Sound::SFX_MENUBLEEP);
-    }
-    if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
-        if (selected <= 1)
-            selected += 2;
+		int cenX = App->WIDTH - 164;
+		int cenY = App->HEIGHT / 2;
 
-        Sound::Play(Sound::SFX_MENUBLEEP);
-    }
+		int mx = App->Input->MouseX;
+		int my = App->Input->MouseY;
+		if (App->Input->MousePressed) {
+			int sel = selected;
+			int tosel = -1;
+			if (mx >= cenX - 129 && my >= cenY - 79 &&
+				mx < cenX - 129 + 100 && my < cenY - 79 + 50)
+				tosel = 0;
+			else if (mx >= cenX + 29 && my >= cenY - 79 &&
+				mx < cenX + 29 + 100 && my < cenY - 79 + 50)
+				tosel = 1;
+			else if (mx >= cenX - 129 && my >= cenY + 29 &&
+				mx < cenX - 129 + 100 && my < cenY + 29 + 50)
+				tosel = 2;
+			else if (mx >= cenX + 29 && my >= cenY + 29 &&
+				mx < cenX + 29 + 100 && my < cenY + 29 + 50)
+				tosel = 3;
 
-    if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED]) {
-        if ((selected & 1) == 1)
-            selected--;
+			if (tosel >= 0) {
+				selected = tosel;
+				if (sel == selected) {
+					CONFIRM_PRESSED = true;
+				}
+				else {
+					Sound::Play(Sound::SFX_MENUBLEEP);
+				}
+			}
+		}
 
-        Sound::Play(Sound::SFX_MENUBLEEP);
-    }
-    if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
-        if ((selected & 1) == 0)
-            selected++;
+		if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
+			if (selected >= 2)
+				selected -= 2;
 
-        Sound::Play(Sound::SFX_MENUBLEEP);
-    }
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+			if (selected <= 1)
+				selected += 2;
+
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+
+		if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED]) {
+			if ((selected & 1) == 1)
+				selected--;
+
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+		if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
+			if ((selected & 1) == 0)
+				selected++;
+
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+	}
 
     if (CONFIRM_PRESSED) {
         Sound::Play(Sound::SFX_MENUACCEPT);
-        App->NextScene = new Scene_LevelSelect(App, G);
+		FadeIn = false;
+		FadeTimerMax = 30;
     }
 
     FrameCircle = (FrameCircle + 1) & 0xFF;
@@ -197,7 +239,9 @@ PUBLIC void Scene_MainMenu::Update() {
 }
 
 PUBLIC void Scene_MainMenu::Render() {
-    G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0x00FF00);
+	G->SetFilter(IE_FILTER_FADEABLE);
+
+    G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0xF0F0F0);
 
     int cenX = App->WIDTH - 164;
     int cenY = App->HEIGHT / 2;
@@ -255,9 +299,11 @@ PUBLIC void Scene_MainMenu::Render() {
     G->DrawSprite(MenuSprite, 13, 1, 259, 49 + (yup >> 15), 0, IE_NOFLIP);
 
     // Black
-    G->DrawSprite(MenuSprite, 1, 0, 0, 0, 0, IE_NOFLIP);
-    G->DrawSprite(MenuSprite, 1, 1, 0, App->HEIGHT, 0, IE_NOFLIP);
+    G->DrawSprite(MenuSprite, 1, 0, App->WIDTH - 424, 0, 0, IE_NOFLIP);
+    G->DrawSprite(MenuSprite, 1, 1, App->WIDTH - 424, App->HEIGHT, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
+	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
+	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
     // Menu Title
     G->DrawSprite(MenuSprite, 9, 0, App->WIDTH, 12, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);

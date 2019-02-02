@@ -45,10 +45,11 @@ PUBLIC size_t IStreamer::Skip(int64_t offset) {
     return distance;
 }
 
-PUBLIC unsigned char IStreamer::ReadByte() {
+/// Read functions
+PUBLIC unsigned char  IStreamer::ReadByte() {
     if (res) {
         unsigned char data = 0;
-        res->Read(&data, 1 * sizeof(data));
+        res->Read(&data, 1);
         return data;
     }
     unsigned char data = *ptr;
@@ -56,7 +57,6 @@ PUBLIC unsigned char IStreamer::ReadByte() {
     distance++;
     return data;
 }
-
 PUBLIC unsigned char* IStreamer::ReadByte4() {
     if (res) {
         unsigned char* data = (unsigned char*)malloc(4);
@@ -80,67 +80,57 @@ PUBLIC unsigned char* IStreamer::ReadBytes(int n) {
     distance += n;
     return data;
 }
+PUBLIC unsigned char* IStreamer::ReadBytesTo(unsigned char* data, int n) {
+    if (res) {
+        res->Read(data, n);
+        return data;
+    }
+    memcpy(data, ptr, n);
+    ptr += n;
+    distance += n;
+    return data;
+}
 
 PUBLIC unsigned short IStreamer::ReadUInt16() {
-    if (res) {
-        unsigned short data = 0;
-        res->Read(&data, 2);
-        return data;
-    }
-    unsigned short data = 0;
-    data += (unsigned char)(*ptr); ptr++;
-    data += (unsigned char)(*ptr) << 8; ptr++;
-    distance += 2;
-    return (unsigned short)data;
+	unsigned short data = 0;
+	if (res) {
+		res->Read(&data, sizeof(data));
+		return data;
+	}
+	memcpy(&data, ptr, sizeof(data));
+	ptr += sizeof(data);
+	distance += sizeof(data);
+	return data;
 }
-PUBLIC unsigned short IStreamer::ReadUInt16E() {
-    if (res) {
-        return (unsigned short)(ReadByte() << 8 | ReadByte());
-    }
-    unsigned short data = 0;
-    data += (unsigned char)(*ptr) << 8; ptr++;
-    data += (unsigned char)(*ptr); ptr++;
-    distance += 2;
-    return (unsigned short)data;
+PUBLIC unsigned short IStreamer::ReadUInt16BE() {
+    return (unsigned short)(ReadByte() << 8 | ReadByte());
 }
-PUBLIC unsigned int IStreamer::ReadUInt32() {
-    if (res) {
-        unsigned int data = 0;
-        res->Read(&data, 4);
-        return data;
-    }
+PUBLIC unsigned int   IStreamer::ReadUInt32() {
     unsigned int data = 0;
-    data += (*ptr) << 0; ptr++;
-    data += (*ptr) << 8; ptr++;
-    data += (*ptr) << 16; ptr++;
-    data += (*ptr) << 24; ptr++;
-    distance += 4;
-    return (unsigned int)data;
+	if (res) {
+		res->Read(&data, sizeof(data));
+		return data;
+	}
+	memcpy(&data, ptr, sizeof(data));
+	ptr += sizeof(data);
+	distance += sizeof(data);
+	return data;
 }
-PUBLIC unsigned int IStreamer::ReadUInt32BE() {
-    if (res) {
-        return ReadByte() << 24 | ReadByte() << 16 | ReadByte() << 8 | ReadByte();
-    }
-    unsigned int data = 0;
-    data += (*ptr) << 24; ptr++;
-    data += (*ptr) << 16; ptr++;
-    data += (*ptr) << 8; ptr++;
-    data += (*ptr) << 0; ptr++;
-    distance += 4;
-    return (unsigned int)data;
+PUBLIC unsigned int   IStreamer::ReadUInt32BE() {
+    return ReadByte() << 24 | ReadByte() << 16 | ReadByte() << 8 | ReadByte();
 }
 
-PUBLIC short IStreamer::ReadInt16() {
-    return (short)ReadUInt16();
+PUBLIC signed short   IStreamer::ReadInt16() {
+    return (signed short)ReadUInt16();
 }
-PUBLIC short IStreamer::ReadInt16BE() {
-    return (short)ReadUInt16E();
+PUBLIC signed short   IStreamer::ReadInt16BE() {
+    return (signed short)ReadUInt16BE();
 }
-PUBLIC int IStreamer::ReadInt32() {
-    return (int)ReadUInt32();
+PUBLIC signed int     IStreamer::ReadInt32() {
+    return (signed int)ReadUInt32();
 }
-PUBLIC int IStreamer::ReadInt32BE() {
-    return (int)ReadUInt32BE();
+PUBLIC signed int     IStreamer::ReadInt32BE() {
+    return (signed int)ReadUInt32BE();
 }
 
 PUBLIC char* IStreamer::ReadLine() {
@@ -183,7 +173,73 @@ PUBLIC char* IStreamer::ReadRSDKString() {
     return data;
 }
 
-PUBLIC unsigned long IStreamer::Decompress(void* dst, int dstLen, void* src, int srcLen) {
+/// Write functions
+PUBLIC void IStreamer::WriteByte(unsigned char data) {
+    if (res) {
+        res->Write(&data, sizeof(data));
+        return;
+    }
+    *ptr = data;
+    ptr++;
+    distance++;
+}
+PUBLIC void IStreamer::WriteBytes(unsigned char* data, int n) {
+    if (res) {
+        res->Write(data, n);
+        return;
+    }
+    memcpy(ptr, data, n);
+    ptr += n;
+    distance += n;
+}
+
+PUBLIC void IStreamer::WriteUInt16(unsigned short data) {
+    WriteBytes((uint8_t*)&data, sizeof(data));
+}
+PUBLIC void IStreamer::WriteUInt16BE(unsigned short data) {
+    WriteByte(data >> 8 & 0xFF);
+    WriteByte(data & 0xFF);
+}
+PUBLIC void IStreamer::WriteUInt32(unsigned int data) {
+    WriteBytes((uint8_t*)&data, sizeof(data));
+}
+PUBLIC void IStreamer::WriteUInt32BE(unsigned int data) {
+    WriteByte(data >> 24 & 0xFF);
+    WriteByte(data >> 16 & 0xFF);
+    WriteByte(data >> 8 & 0xFF);
+    WriteByte(data & 0xFF);
+}
+
+PUBLIC void IStreamer::WriteInt16(signed short data) {
+    return WriteUInt16((unsigned short)data);
+}
+PUBLIC void IStreamer::WriteInt16BE(signed short data) {
+    return WriteUInt16BE((unsigned short)data);
+}
+PUBLIC void IStreamer::WriteInt32(signed int data) {
+    return WriteUInt32((unsigned int)data);
+}
+PUBLIC void IStreamer::WriteInt32BE(signed int data) {
+    return WriteUInt32BE((unsigned int)data);
+}
+
+PUBLIC void IStreamer::WriteString(char* string) {
+    while (*string) {
+        WriteByte((unsigned char)(*string));
+        string++;
+    }
+    WriteByte(0);
+}
+PUBLIC void IStreamer::WriteRSDKString(char* string) {
+    WriteByte(strlen(string) + 1);
+    while (*string) {
+        WriteByte((unsigned char)(*string));
+        string++;
+    }
+    WriteByte(0);
+}
+
+PUBLIC unsigned long  IStreamer::Decompress(void* dst, int dstLen, void* src, int srcLen) {
     z_stream strm  = {0};
     strm.total_in  = strm.avail_in  = srcLen;
     strm.total_out = strm.avail_out = dstLen;
@@ -216,7 +272,6 @@ PUBLIC unsigned long IStreamer::Decompress(void* dst, int dstLen, void* src, int
     inflateEnd(&strm);
     return ret;
 }
-
 PUBLIC unsigned char* IStreamer::ReadCompressed() {
     unsigned int compressed_size = ReadUInt32() - 4; // 0x47 = 71 - 4 = 67
     unsigned int uncompressed_size = ReadUInt32BE(); // 0x200 = 512
@@ -239,8 +294,7 @@ PUBLIC unsigned char* IStreamer::ReadCompressed() {
     }
     return out;
 }
-
-PUBLIC unsigned long IStreamer::Distance() {
+PUBLIC unsigned long  IStreamer::Distance() {
     return distance;
 }
 

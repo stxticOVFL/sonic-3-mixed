@@ -17,7 +17,6 @@ public:
     
     
     void Create();
-    void Update();
     void Render(int CamX, int CamY);
 };
 

@@ -283,6 +283,8 @@ PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
 PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 	if (!SpriteMap["HCZ"]) {
 		SpriteMap["HCZ"] = new ISprite("Sprites/HCZ/Objects.gif", App);
+		SpriteMap["HCZ"]->Print = true;
+
 		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Button.bin");
 		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Fan.bin");
 		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/HandLauncher.bin");
@@ -497,7 +499,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
         if (Player->EZX >= 0x0680 && !WallStopped) {
             WallMoving = true;
         }
-        if (WallStopped && !WallMoving) {
+        if (WallStopped && !WallMoving && ShakeTimer == -1) {
             ShakeTimer = 0;
         }
         if (WallMoving) {
@@ -519,7 +521,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                 ShakeTimer = 20;
                 Sound::Play(Sound::SFX_IMPACT4);
             }
-            if (Player->EZX >= 0xCD0 || (Player->EZY < 0x5A0 && Player->Action != ActionType::Dead)) {
+            else if (Player->EZX >= 0xCD0 || (Player->EZY < 0x5A0 && Player->Action != ActionType::Dead)) {
                 WallMoving = false;
                 WallStopped = true;
                 ShakeTimer = 0;
@@ -702,16 +704,16 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
                         py2 <  HCZ_WaterTunnels[i * 7 + 3]) {
                         if ((HCZ_WaterTunnels[i * 7 + 6] & 0x200) == 0x200) {
                             if (Player->Action == ActionType::InStream) {
-                                Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4];
-                                Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5];
+                                Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4] << 1;
+                                Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5] << 1;
                                 Player->Ground = false;
                                 Found = true;
                             }
                         }
                         else {
                             Player->Action = ActionType::InStream;
-                            Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4];
-                            Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5];
+                            Player->XSpeed = HCZ_WaterTunnels[i * 7 + 4] << 1;
+                            Player->YSpeed = HCZ_WaterTunnels[i * 7 + 5] << 1;
                             Player->Ground = false;
                             Found = true;
                         }
@@ -753,6 +755,8 @@ PUBLIC void Level_HCZ::Subupdate() {
                     Player->EZX = (WallX >> 16) + 0x200 + 11;
                     if (Player->XSpeed < 0)
                         Player->XSpeed = 0;
+					if (Player->GroundSpeed < 0)
+						Player->GroundSpeed = 0;
                 }
             }
 

@@ -23,7 +23,7 @@ private:
     void ScanLine(long x1, long y1, long x2, long y2);
 
 public:
-    IApp* App = NULL;
+    IApp * App = NULL;
     SDL_Surface* Screen = NULL;
     uint32_t* FrameBuffer = NULL;
     int WindowWidth = 16;
@@ -68,15 +68,18 @@ public:
     virtual void Present();
     virtual void Cleanup();
     void     SetPixelNormal(int x, int y, uint32_t pixel);
+    void     SetPixelAlpha(int x, int y, uint32_t pixel);
     void     SetPixelAdditive(int x, int y, uint32_t pixel);
     uint32_t FilterNone(uint32_t pixel);
     uint32_t FilterGrayscale(uint32_t pixel);
     uint32_t FilterInversionRadius(uint32_t pixel);
-    uint32_t FilterFade(uint32_t pixel);
+    uint32_t FilterFadeToBlack(uint32_t pixel);
+    uint32_t FilterFadeToWhite(uint32_t pixel);
     virtual void SetPixelTrue(SDL_Surface* surface, int x, int y, uint32_t pixel);
     virtual void SetPixel(SDL_Surface* surface, int x, int y, uint32_t pixel);
     virtual uint32_t GetPixelSPR(ISprite* sprite, int x, int y);
     virtual uint32_t GetPixelSPR(ISprite* sprite, int x, int y, uint32_t* pal);
+    virtual void SetDrawAlpha(int a);
     virtual void SetFade(int fade);
     virtual void SetFilter(int filter);
     virtual int  GetFilter();
@@ -90,6 +93,7 @@ public:
     virtual void DrawRectangleSkewedH(int x, int y, int w, int h, int sk, uint32_t col);
     virtual void DrawRectangleStroke(int x, int y, int w, int h, uint32_t col);
     virtual void DrawSprite(SDL_Surface* surface, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY);
+    virtual void DrawSpriteNormal(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, bool FlipX, bool FlipY, int RealCenterX, int RealCenterY);
     virtual void DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip);
     virtual void DrawSpriteSized(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip, int width, int height);
     virtual void DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY);
@@ -99,6 +103,8 @@ public:
     virtual void DrawText(int x, int y, const char* string, unsigned int pixel);
     virtual void DrawTextShadow(int x, int y, const char* string, unsigned int pixel);
     virtual void DrawLine(int x0, int y0, int x1, int y1, uint32_t col);
+    virtual void DrawTextSprite(ISprite* sprite, int animation, char first, int x, int y, const char* string);
+    virtual int  MeasureTextSprite(ISprite* sprite, int animation, char first, const char* string);
     virtual void DrawModelOn2D(IModel* model, int x, int y, double scale, int rx, int ry, int rz, uint32_t color, bool wireframe);
     virtual void DrawSpriteIn3D(ISprite* sprite, int animation, int frame, int x, int y, int z, double scale, int rx, int ry, int rz);
     uint32_t ColorBlend(uint32_t color1, uint32_t color2, double percent);

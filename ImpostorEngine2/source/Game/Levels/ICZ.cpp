@@ -13,6 +13,7 @@ public:
 #include <Game/Objects/Gen/ObjectListing.h>
 
 #include <Game/Levels/ICZ.h>
+#include <Game/Levels/LBZ.h>
 
 // Find: \$([A-F0-9])([A-F0-9])([A-F0-9]),
 // Replace: 0x$3$3$2$2$1$1,\n
@@ -205,6 +206,8 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
     if (!ICZObjectSprite) {
         ICZObjectSprite = new ISprite("Sprites/ICZ/Objects.gif", App);
+        ICZObjectSprite->Print = true;
+        
         ICZObjectSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 1.bin");
         ICZObjectSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 2.bin");
         ICZObjectSprite->LoadAnimation("Sprites/ICZ/Cork Floor.bin");
@@ -227,6 +230,44 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
     }
+}
+
+PUBLIC void Level_ICZ::FinishResults() {
+	if (VisualAct == 1) {
+		LevelScene::FinishResults();
+	}
+	else {
+		FadeAction = FadeActionType::NEXT_ZONE;
+		FadeTimerMax = 90;
+		FadeMax = 0x140;
+		G->FadeToWhite = false;
+	}
+}
+PUBLIC void Level_ICZ::GoToNextAct() {
+	if (VisualAct == 1) {
+		Level_ICZ* NextAct = new Level_ICZ(App, G, 2);
+
+		TransferCommonLevelData(NextAct);
+		NextAct->ICZObjectSprite = ICZObjectSprite;
+		// Enable Title Card with no fade-in
+		NextAct->LevelCardTimer = 0.0;
+		NextAct->FadeTimer = 0;
+		NextAct->FadeAction = 0;
+		NextAct->LevelCardHide = false;
+		// Transfer over current frame
+		NextAct->Frame = Frame;
+		// Set player spawn position relative to their previous position
+		NextAct->SpecialSpawnPositionX = 0x60;
+		NextAct->SpecialSpawnPositionY = 0x3D0;
+		NextAct->RoutineNumber = 0x00;
+
+		App->NextScene = NextAct;
+	}
+	else {
+		Level_LBZ* NextAct = new Level_LBZ(App, G, 1);
+		TransferCommonLevelData(NextAct);
+		App->NextScene = NextAct;
+	}
 }
 
 PUBLIC void Level_ICZ::EarlyUpdate() {

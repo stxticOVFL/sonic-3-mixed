@@ -50,7 +50,8 @@
     	memset(&discordPresence, 0, sizeof(discordPresence));
     	discordPresence.details = header;
     	discordPresence.state = state;
-    	discordPresence.largeImageKey = imgkey;
+		if (imgkey)
+    		discordPresence.largeImageKey = imgkey;
     	bool multiplayer = false;
     	if (multiplayer) {
     		//discordPresence.partyId = 0;
@@ -93,17 +94,36 @@ int HandleAppEvents(void* data, SDL_Event* event) {
 }
 
 int main(int argc, char* args[]) {
-	#if MSVC | MACOSX
+#if MSVC | MACOSX
 		Discord_Init();
-	#endif
+#endif
+
+#if NX
+		/*
+		"333 MHz (underclocked, very slow)", 
+		"710 MHz (underclocked, slow)", 
+		"1020 MHz (standard, not overclocked)", 
+		"1224 MHz (slightly overclocked)", 
+		"1581 MHz (overclocked)", 
+		"1785 MHz (strong overclock)"
+		*/
+		int clock_rates[] = { 333000000, 710000000, 1020000000, 1224000000, 1581000000, 1785000000 };
+
+		pcvInitialize();
+		pcvSetClockRate(PcvModule_Cpu, clock_rates[4]);
+#endif
 
     IApp* app = new IApp();
     SDL_SetEventFilter(HandleAppEvents, app);
     app->Run();
     app->Cleanup();
 
-	#if MSVC | MACOSX
+#if NX
+	pcvExit();
+#endif
+
+#if MSVC | MACOSX
 		Discord_Shutdown();
-	#endif
+#endif
     return 0;
 }

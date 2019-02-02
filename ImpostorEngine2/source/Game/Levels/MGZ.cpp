@@ -119,6 +119,7 @@ PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
 	if (!MGZObjectsSprite) {
 		MGZObjectsSprite = new ISprite("Sprites/MGZ/Objects.gif", App);
         MGZObjectsSprite->Print = true;
+
         MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Collapsing Bridge.bin");
         MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Dash Trigger.bin");
         MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Floating Platform.bin");

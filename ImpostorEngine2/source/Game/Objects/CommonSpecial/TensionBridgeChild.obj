@@ -8,10 +8,10 @@ event Create() {
     Scene.AddSelfToRegistry(this, "Solid");
 
     Rotation = false;
-}
-event Update() {
 
+    AutoAnimate = true;
 }
+
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

@@ -19,11 +19,23 @@
     <Filter Include="Source Files\Game\Levels">
       <UniqueIdentifier>{000499c5-7615-457e-97cf-66dbb93b5f43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Scenes">
+      <UniqueIdentifier>{0cefb2e0-3426-4705-98ee-a9341124cdf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{23d2f713-4320-4084-aca6-d55fb67b3ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{c511fc76-76e3-48d9-85c9-5d8767216c88}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\Game\Objects">
-      <UniqueIdentifier>{84c28ce3-8e32-4ca3-bdae-f252735fcc11}</UniqueIdentifier>
+      <UniqueIdentifier>{c82ee6d8-2d17-40ff-8459-6a7a25f74aec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game\Objects\AIZ">
       <UniqueIdentifier>{12775cd0-1830-4b58-ab87-5cabbef0b2a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Objects\CNZ">
+      <UniqueIdentifier>{6de18c10-00ef-457e-9197-318c7ad6aaa0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game\Objects\Common">
       <UniqueIdentifier>{d9654368-003e-4b16-9d64-e611c454a303}</UniqueIdentifier>
@@ -36,18 +48,6 @@
     </Filter>
     <Filter Include="Source Files\Game\Objects\MGZ">
       <UniqueIdentifier>{5517d566-c106-4049-aa3d-4cea0dcf35aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game\Scenes">
-      <UniqueIdentifier>{0cefb2e0-3426-4705-98ee-a9341124cdf6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Engine">
-      <UniqueIdentifier>{23d2f713-4320-4084-aca6-d55fb67b3ff9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utils">
-      <UniqueIdentifier>{c511fc76-76e3-48d9-85c9-5d8767216c88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Game\Objects\CNZ">
-      <UniqueIdentifier>{6de18c10-00ef-457e-9197-318c7ad6aaa0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +75,6 @@
     <ClCompile Include="..\source\Game\Scenes\MainMenu.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDashTrigger.cpp">
       <Filter>Source Files\Game\Objects\MGZ</Filter>
     </ClCompile>
@@ -96,37 +93,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZTriggerPlatform.cpp">
       <Filter>Source Files\Game\Objects\MGZ</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Animal.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\BubbleCountdown.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Explosion.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\FallingTile.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\MovingSprite.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\ObjectNames.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Ring.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\ScoreGhost.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\LevelScene.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Object.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Player.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Engine\IApp.cpp">
@@ -417,15 +384,48 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Signpost.cpp">
       <Filter>Source Files\Game\Objects\CommonSpecial</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Animal.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\BubbleCountdown.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Explosion.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\FallingTile.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\MovingSprite.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\ObjectNames.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Ring.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\ScoreGhost.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Object.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Player.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\SaveGame.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Game\Object.h">
-      <Filter>Source Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Game\Player.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Engine\IHeader.hh">
@@ -451,6 +451,12 @@
     </ClInclude>
     <ClInclude Include="..\source\Utils\unzip.h">
       <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Game\Object.h">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Game\Player.h">
+      <Filter>Source Files\Game\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

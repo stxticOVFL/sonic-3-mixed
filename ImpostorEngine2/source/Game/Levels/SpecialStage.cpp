@@ -75,10 +75,10 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
         IStreamer reader(LayoutBin);
         Layout = (uint8_t*)malloc(0x400);
         LayoutCopy = reader.ReadBytes(0x400);
-        StartAngle = reader.ReadUInt16E();
-        StartX = reader.ReadUInt16E();
-        StartY = reader.ReadUInt16E();
-        PerfectAmount = reader.ReadUInt16E();
+        StartAngle = reader.ReadUInt16BE();
+        StartX = reader.ReadUInt16BE();
+        StartY = reader.ReadUInt16BE();
+        PerfectAmount = reader.ReadUInt16BE();
         IResources::Close(LayoutBin);
     }
 }
@@ -325,14 +325,14 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
     }
 
     G->DrawModeOverlay = true;
-    G->DrawAlpha = 0x80;
+    G->SetDrawAlpha(0x80);
     G->DrawSprite(Horizon, 0, 144, 256, 112, App->WIDTH / 2, 38, 0, IE_NOFLIP, -256, 0);
     G->DrawSprite(Horizon, 0, 144, 256, 112, App->WIDTH / 2, 38, 0, IE_FLIPX, 0, 0);
-    G->DrawAlpha = 0x40;
+    G->SetDrawAlpha(0x40);
     G->DrawSprite(Horizon, 0, 0, 256, 143, App->WIDTH / 2, 0, 0, IE_NOFLIP, -256, 0);
     G->DrawSprite(Horizon, 0, 0, 256, 143, App->WIDTH / 2, 0, 0, IE_FLIPX, 0, 0);
     G->DrawModeOverlay = false;
-    G->DrawAlpha = 0xFF;
+    G->SetDrawAlpha(0xFF);
 
     idx = (idx >> 1) & 0xF;
 
@@ -623,7 +623,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
     }
 
     // Player
-    G->DrawAlpha = 0x80;
+    G->SetDrawAlpha(0x80);
     G->DrawSprite(GlobeSpin,
         GlobeSpin->Animations[1].Frames[0].X,
         GlobeSpin->Animations[1].Frames[0].Y,
@@ -635,7 +635,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
         IE_NOFLIP,
         GlobeSpin->Animations[1].Frames[0].OffX,
         GlobeSpin->Animations[1].Frames[0].OffY);
-    G->DrawAlpha = 0xFF;
+    G->SetDrawAlpha(0xFF);
 
     G->DrawSprite(Players,
         Players->Animations[0].Frames[0].X,

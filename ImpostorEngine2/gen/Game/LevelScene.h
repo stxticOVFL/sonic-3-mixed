@@ -216,6 +216,7 @@ public:
     Object* AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY);
     virtual void EarlyUpdate();
     virtual void Subupdate();
+    virtual void DoResults();
     virtual void FinishResults();
     virtual void GoToNextAct();
     virtual void TransferCommonLevelData(LevelScene* NextAct);
@@ -228,11 +229,11 @@ public:
     void RenderHUD();
     void RenderTitleCard();
     void RenderPauseScreen();
+    void RenderResults();
     virtual void RenderAboveBackground();
     virtual void RenderAboveForeground();
     void DrawThing(int l);
     virtual void RenderEverything();
-    void RenderResults();
     virtual void Render();
     virtual void Cleanup();
 };

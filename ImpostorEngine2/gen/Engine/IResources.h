@@ -14,6 +14,7 @@ class IResources {
 public:
     static IResource* Load(const char* path);
     static IResource* Load(const char* path, bool inMemory);
+    static IResource* Open(const char* path);
     static bool Close(IResource* res);
     static uint64_t Decompress(void* dst, int dstLen, const void* src, int srcLen);
 };
