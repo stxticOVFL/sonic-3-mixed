@@ -111,7 +111,7 @@ enum {
     Obj_RopePeg = 0x00A,
     Obj_SpikedLog = 0x02E,
     Obj_SwingVine = 0x00C,
-    Obj_Balloon = 0x1041,
+    Obj_Balloon = 0x041,
     Obj_Bouncepad = 0x04B,
     Obj_AnimSprite = 0x030,
     Obj_AutomaticTunnel = 0x024,

@@ -1,1 +1,68 @@
-object 0x1041;
+object 0x41;
+
+var Color:int;
+var CreateBubble:bool;
+var Popped:bool;
+
+event Create() {
+    Priority = false;
+
+    W = 32;
+    H = 32;
+    VisW = 16;
+    VisH = 64;
+
+    Color = SubType & 0x7F;
+    CreateBubble = (SubType & 0x80) == 0x80;
+    
+    MaxAccel = 0xC0;
+    YSpeed = 0xC0;
+    Acceleration = 0x10;
+    SwingDirection = 0;
+    
+    Popped = false;
+
+    CurrentAnimation = Sprite.FindAnimation("Default") + Color;
+    AutoAnimate = true;
+}
+
+event Update() {
+    Swing_UpAndDown();
+}
+
+event OnAnimationFinish() {
+    if (Popped) {
+        Active = false;
+    }
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    var Player:IPlayer = Scene.Players[PlayerID];
+    if (Player == 0) {
+        return false;
+    }
+    
+    if (Popped) {
+        return false;
+    }
+
+    Player.YSpeed = -0x700;
+    if (Player.Underwater)
+        Player.YSpeed >>= 1; // Divide by 2
+    Player.Ground = false;
+    Player.JumpVariable = 0;
+
+    if (CreateBubble && Y > Scene.WaterLevel) {
+        var Bubble:Object = Scene.AddNewObject(Obj_BubbleAir, 0, X, Y, false, false);
+        Bubble.CurrentAnimation = 3;
+    }
+
+    Popped = true;
+    CurrentAnimation += 5; // Move to appropiate popping animation
+    AnimationFrame = -2;
+    Frame = 0;
+    
+    Sound.Play(Sound.SFX_BALLOON_POP);
+
+    return true;
+}

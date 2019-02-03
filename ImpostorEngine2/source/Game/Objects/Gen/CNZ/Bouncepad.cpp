@@ -29,7 +29,7 @@ int Bouncepad::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     Player->YSpeed = (FlipY & 1) ? 0x800 : -0x800;
     Player->GroundSpeed = Player->XSpeed;
     Player->InputAlarm = 0x0f;
-    if (Player->Action == ActionType::Rolling) {
+    if (Player->Action == ActionType::Rolling) { 
         Player->Action = ActionType::Normal;
     }
 

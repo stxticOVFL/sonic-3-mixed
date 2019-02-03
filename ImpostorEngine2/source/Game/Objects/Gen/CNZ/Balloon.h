@@ -15,7 +15,14 @@ class Balloon;
 class Balloon: public Object {
 public:    
     
+    int Color;
+    bool CreateBubble;
+    bool Popped;
     
+    void Create();
+    void Update();
+    void OnAnimationFinish();
+    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
 #endif /* BALLOON_H */
