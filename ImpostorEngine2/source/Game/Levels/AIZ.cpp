@@ -636,6 +636,7 @@ PUBLIC void Level_AIZ::Subupdate() {
         }
     }
     else if (Act == 2) {
+        bool wantUnderwaterFireEffect = false;
         if (Frame & 0x1) {
             int water = VisualWaterLevel - CameraY;
             if (water < 0) {
@@ -652,8 +653,14 @@ PUBLIC void Level_AIZ::Subupdate() {
                 -2,     1,    2,    2,-1,    2,    2,    1,    2,-1,-2,-2,-2,    1,-1,-1,
                 -1,     0,-2,    0,    0,    0,-2,    0,-2,    2,    0,-2,    2,    2,-1,-2,
             };
-            for (int i = 0; i < App->HEIGHT; i++) {
-               Data->layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+            if (wantUnderwaterFireEffect) {
+                for (int i = 0; i < App->HEIGHT; i++) {
+                   Data->layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                }
+            } else {
+                for (int i = 0; i < App->HEIGHT; i++) {
+                   Data->layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                }  
             }
 
             memset(Data->layers[1].Deform, 0, water);
@@ -676,6 +683,13 @@ PUBLIC void Level_AIZ::Subupdate() {
             };
             for (int i = water; i < App->HEIGHT; i++) {
                 Data->layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+            }
+            
+            // Also apply the effect to the BG.
+            if (!wantUnderwaterFireEffect) {
+                for (int i = water; i < App->HEIGHT; i++) {
+                    Data->layers[0].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                }
             }
 
             memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
