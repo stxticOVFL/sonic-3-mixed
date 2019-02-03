@@ -1,0 +1,261 @@
+﻿  IApp.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iapp.cpp(35): fatal error C1083: Cannot open include file: 'Engine/IApp.h': No such file or directory
+  IAudio.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iaudio.cpp(48): fatal error C1083: Cannot open include file: 'Engine/IAudio.h': No such file or directory
+  IGLGraphics.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iglgraphics.cpp(52): fatal error C1083: Cannot open include file: 'Engine/IGLGraphics.h': No such file or directory
+  IGraphics.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\igraphics.cpp(56): fatal error C1083: Cannot open include file: 'Engine/IResource.h': No such file or directory
+  IINI.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iini.cpp(20): fatal error C1083: Cannot open include file: 'Engine/IINI.h': No such file or directory
+  IInput.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iinput.cpp(46): fatal error C1083: Cannot open include file: 'Engine/IInput.h': No such file or directory
+  IMath.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\imath.cpp(14): fatal error C1083: Cannot open include file: 'Engine/IMath.h': No such file or directory
+  IModel.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\imodel.cpp(23): fatal error C1083: Cannot open include file: 'Engine/IModel.h': No such file or directory
+  IResource.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iresource.cpp(26): fatal error C1083: Cannot open include file: 'Engine/IApp.h': No such file or directory
+  IResources.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iresources.cpp(10): fatal error C1083: Cannot open include file: 'Engine/IApp.h': No such file or directory
+  IScene.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\iscene.cpp(18): fatal error C1083: Cannot open include file: 'Engine/IScene.h': No such file or directory
+  ISound.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\isound.cpp(34): fatal error C1083: Cannot open include file: 'Engine/ISound.h': No such file or directory
+  ISprite.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\isprite.cpp(52): fatal error C1083: Cannot open include file: 'Engine/IApp.h': No such file or directory
+  IStreamer.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\engine\istreamer.cpp(14): fatal error C1083: Cannot open include file: 'Engine/IStreamer.h': No such file or directory
+  Animal.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\animal.cpp(24): fatal error C1083: Cannot open include file: 'Game/Animal.h': No such file or directory
+  BubbleCountdown.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\bubblecountdown.cpp(23): fatal error C1083: Cannot open include file: 'Game/BubbleCountdown.h': No such file or directory
+  Explosion.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\explosion.cpp(16): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  FallingTile.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\fallingtile.cpp(21): fatal error C1083: Cannot open include file: 'Game/FallingTile.h': No such file or directory
+  LevelScene.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levelscene.cpp(209): fatal error C1083: Cannot open include file: 'Game/Ring.h': No such file or directory
+  AIZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\aiz.cpp(19): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  Generating Code...
+  Compiling...
+  CNZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\cnz.cpp(11): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  FBZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\fbz.cpp(10): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  HCZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\hcz.cpp(15): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  ICZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\icz.cpp(10): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  LBZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\lbz.cpp(11): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  MGZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\mgz.cpp(12): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  MHZ.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\mhz.cpp(10): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  SpecialStage.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\levels\specialstage.cpp(17): fatal error C1083: Cannot open include file: 'Game/Explosion.h': No such file or directory
+  MovingSprite.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\movingsprite.cpp(34): fatal error C1083: Cannot open include file: 'Game/MovingSprite.h': No such file or directory
+  Object.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\object.cpp(1): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  ObjectNames.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objectnames.cpp(34): fatal error C1083: Cannot open include file: 'Game/ObjectNames.h': No such file or directory
+  Act1TreeBark.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\act1treebark.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AirshipBomb.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\airshipbomb.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AIZBoss.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\aizboss.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AIZMiniboss.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\aizminiboss.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AIZMinibossBomb.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\aizminibossbomb.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AIZMinibossCutscene.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\aizminibosscutscene.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AIZMinibossFlame.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\aizminibossflame.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Bloominator.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\bloominator.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  BloominatorSpore.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\bloominatorspore.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Generating Code...
+  Compiling...
+  CaterkillerJr.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\caterkillerjr.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  CollapsingLogBridge.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\collapsinglogbridge.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  DisappearingFloor.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\disappearingfloor.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Drawbridge.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\drawbridge.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  FallingLog.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\fallinglog.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  FlippingBridge.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\flippingbridge.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  ForegroundPlant.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\foregroundplant.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HollowTree.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\hollowtree.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MonkeyDude.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\monkeydude.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MonkeyDudeCoconut.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\monkeydudecoconut.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  RhinoBot.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\rhinobot.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  RideVine.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\ridevine.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  RopePeg.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\ropepeg.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  SpikedLog.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\spikedlog.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  SwingVine.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\swingvine.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Balloon.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\cnz\balloon.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  CorkFloor.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\corkfloor.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  CutsceneKnuckles.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\cutsceneknuckles.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Door.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\door.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  EggCapsule.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\eggcapsule.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Generating Code...
+  Compiling...
+  EggCapsuleButton.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\eggcapsulebutton.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Rock.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\rock.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Signpost.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\signpost.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  TensionBridge.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\tensionbridge.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  TensionBridgeChild.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\commonspecial\tensionbridgechild.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AnimSprite.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\animsprite.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  AutomaticTunnel.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\automatictunnel.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  BreakableWall.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\breakablewall.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  BubbleAir.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\bubbleair.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Bubbler.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\bubbler.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Button.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\button.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  CollapsingBridge.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\collapsingbridge.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  CollapsingPlatform.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\collapsingplatform.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  FloatingPlatform.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\floatingplatform.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HiddenMonitor.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\hiddenmonitor.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  InvisibleDeath.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\invisibledeath.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  InvisibleSolid.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\invisiblesolid.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  InvisibleSpikes.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\invisiblespikes.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Monitor.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\monitor.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  NonAnim.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\nonanim.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Generating Code...
+  Compiling...
+  Ridge.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\ridge.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  RollEnforcer.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\rollenforcer.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  SpecialRing.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\specialring.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Spikes.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\spikes.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Spring.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\spring.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  StarPost.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\common\starpost.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Blastoid.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\blastoid.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  BlastoidShot.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\blastoidshot.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Block.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\block.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  BreakBar.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\breakbar.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Buggernaut.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\buggernaut.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Fan.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\fan.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HandLauncher.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\handlauncher.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HCZConveyorBelt.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hczconveyorbelt.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HCZConveyorSpike.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hczconveyorspike.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HCZSlide.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hczslide.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HCZSnakeBlocks.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hczsnakeblocks.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HCZVWaterStream.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hczvwaterstream.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HCZWaterSplash.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hczwatersplash.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  HCZWaterWall.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hczwaterwall.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Generating Code...
+  Compiling...
+  HCZ_Miniboss.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\hcz_miniboss.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Jawz.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\jawz.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  LargeFan.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\largefan.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MegaChomper.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\megachomper.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Pointdexter.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\pointdexter.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  SpinningColumn.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\spinningcolumn.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  TurboSpiker.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\hcz\turbospiker.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MGZDashTrigger.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\mgz\mgzdashtrigger.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MGZHeadTrigger.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\mgz\mgzheadtrigger.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MGZHeadTrigger_Eye.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\mgz\mgzheadtrigger_eye.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MGZQuickMud.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\mgz\mgzquickmud.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MGZSwingingPlatform.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\mgz\mgzswingingplatform.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  MGZTriggerPlatform.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\mgz\mgztriggerplatform.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  ObjectListing.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\objects\gen\aiz\act1treebark.h(6): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  Player.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\player.cpp(1): fatal error C1083: Cannot open include file: 'Game/Player.h': No such file or directory
+  Ring.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\ring.cpp(20): fatal error C1083: Cannot open include file: 'Game/Ring.h': No such file or directory
+  SaveGame.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\savegame.cpp(26): fatal error C1083: Cannot open include file: 'Engine/IApp.h': No such file or directory
+  DataSelect.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\scenes\dataselect.cpp(24): fatal error C1083: Cannot open include file: 'Game/LevelScene.h': No such file or directory
+  LevelSelect.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\scenes\levelselect.cpp(10): fatal error C1083: Cannot open include file: 'Game/LevelScene.h': No such file or directory
+  MainMenu.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\scenes\mainmenu.cpp(13): fatal error C1083: Cannot open include file: 'Game/LevelScene.h': No such file or directory
+  Generating Code...
+  Compiling...
+  ScoreGhost.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\scoreghost.cpp(20): fatal error C1083: Cannot open include file: 'Game/ScoreGhost.h': No such file or directory
+  Sound.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\game\sound.cpp(82): fatal error C1083: Cannot open include file: 'Game/Sound.h': No such file or directory
+  main.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\main.cpp(7): fatal error C1083: Cannot open include file: 'Utils/Standard.h': No such file or directory
+  gifdec.cpp
+c:\users\theclashingfritz\documents\sonic-3-mixed\impostorengine2\source\utils\gifdec.h(9): fatal error C1083: Cannot open include file: 'Utils/StandardSDL2.h': No such file or directory
+  Generating Code...

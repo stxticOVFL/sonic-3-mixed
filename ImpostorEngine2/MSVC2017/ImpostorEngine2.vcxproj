@@ -71,6 +71,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\SpikedLog.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\SwingVine.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Balloon.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CutsceneKnuckles.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Door.cpp" />

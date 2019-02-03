@@ -423,6 +423,9 @@
     <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp">
+      <Filter>Source Files\Game\Objects\CNZ</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

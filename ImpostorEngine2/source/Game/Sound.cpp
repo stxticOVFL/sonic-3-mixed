@@ -38,6 +38,7 @@ public:
         SFX_BOSSHIT = 0x6E,
 
         SFX_BALLOON_POP = 0x77,
+        SFX_PAD_BOUNCE = 0x7B,
 
         SFX_GRAB = 0x4A,
         SFX_SHOT = 0x4D,
@@ -137,6 +138,7 @@ PUBLIC STATIC void Sound::Init() {
     LOADSOUND(SFX_BOSSEXPLOSION, "Sounds/Explosion2.wav")
 
     LOADSOUND(SFX_BALLOON_POP, "Sounds/S3K_77.wav")
+    LOADSOUND(SFX_PAD_BOUNCE, "Sounds/S3K_7B.wav")
 
 
     LOADSOUND(SFX_FAN_BIG, "Sounds/BigFan.wav")
