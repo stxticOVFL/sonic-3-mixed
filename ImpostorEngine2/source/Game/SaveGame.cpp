@@ -14,7 +14,7 @@ public:
         uint32_t TargetScore;
         uint16_t UsedZoneRings[16];
     };
-    
+
     static SaveFile Savefiles[8];
     static int32_t  CurrentSaveFile;
 	static int32_t  CurrentZoneID;
@@ -71,14 +71,19 @@ PUBLIC STATIC void SaveGame::Init() {
     }
     // If file does not exist, create one.
     else {
-		for (int s = 0; s < 8; s++) {
-			SaveGame::Savefiles[s].Lives = StartingLives;
-			// Savefiles[s].Continues = reader.ReadByte();
-			// Savefiles[s].Score = reader.ReadUInt32();
-			// Savefiles[s].TargetScore = reader.ReadUInt32();
-		}
 		SaveGame::Flush();
     }
+}
+
+PUBLIC STATIC void SaveGame::InitializeSaveGame() {
+    if (SaveGame::CurrentSaveFile == -1) return;
+    SaveGame::InitializeSaveGame(SaveGame::CurrentSaveFile);
+}
+PUBLIC STATIC void SaveGame::InitializeSaveGame(int s) {
+    SaveGame::Savefiles[s].Lives = StartingLives;
+    // Savefiles[s].Continues = reader.ReadByte();
+    // Savefiles[s].Score = reader.ReadUInt32();
+    // Savefiles[s].TargetScore = reader.ReadUInt32();
 }
 
 PUBLIC STATIC void SaveGame::Flush() {

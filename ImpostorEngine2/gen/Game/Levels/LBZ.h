@@ -8,14 +8,12 @@
 #define VIRTUAL
 
 class ISprite;
-class ISprite;
 
 #include <Game/LevelScene.h>
 
 class Level_LBZ : public LevelScene {
 public:
-    ISprite* AIZ1Sprite = NULL;
-    ISprite* AIZ2Sprite = NULL;
+    ISprite* LBZObjectsSprite = NULL;
 
     Level_LBZ(IApp* app, IGraphics* g, int act);
     void RestartStage(bool doActTransition, bool drawBackground);

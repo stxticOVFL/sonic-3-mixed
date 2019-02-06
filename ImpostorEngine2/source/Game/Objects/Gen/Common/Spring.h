@@ -25,6 +25,7 @@ public:
     
     void Create();
     void Update();
+    void OnAnimationFinish();
     int OnLeaveScreen();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);

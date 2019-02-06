@@ -96,7 +96,7 @@ public:
     CollideSide BreakableByRoll = CollideSide::NONE;
     CollideSide BreakableByJump = CollideSide::NONE;
     CollideSide BreakableByGlide = CollideSide::NONE;
-	// CollideSide BreakableBySuper = CollideSide::NONE;
+	CollideSide BreakableBySuper = CollideSide::NONE;
     CollideSide BreakableBySpring = CollideSide::NONE;
     CollideSide BreakableByKnuckles = CollideSide::NONE;
 

@@ -3,8 +3,7 @@
 
 class Level_LBZ : public LevelScene {
 public:
-    ISprite* AIZ1Sprite = NULL;
-    ISprite* AIZ2Sprite = NULL;
+    ISprite* LBZObjectsSprite = NULL;
 };
 #endif
 
@@ -63,67 +62,65 @@ PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
 
 PUBLIC void Level_LBZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
-    
+
 	SpriteMapIDs[0x01] = ItemsSprite;
-    SpriteMapIDs[0x04] = AIZ2Sprite;
-    SpriteMapIDs[0x05] = AIZ2Sprite;
-    SpriteMapIDs[0x06] = AIZ1Sprite;
+    SpriteMapIDs[0x04] = LBZObjectsSprite;
+    SpriteMapIDs[0x05] = LBZObjectsSprite;
+    SpriteMapIDs[0x06] = LBZObjectsSprite;
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;
-    SpriteMapIDs[0x09] = AIZ1Sprite;
-    SpriteMapIDs[0x0A] = AIZ1Sprite;
-    SpriteMapIDs[0x0C] = AIZ1Sprite;
-    SpriteMapIDs[0x0D] = AIZ2Sprite;
-    SpriteMapIDs[0x0F] = AIZ2Sprite;
-	SpriteMapIDs[0x2F] = AIZ1Sprite;
+    SpriteMapIDs[0x09] = LBZObjectsSprite;
+    SpriteMapIDs[0x0A] = LBZObjectsSprite;
+    SpriteMapIDs[0x0C] = LBZObjectsSprite;
+    SpriteMapIDs[0x0D] = LBZObjectsSprite;
+    SpriteMapIDs[0x0F] = LBZObjectsSprite;
+	SpriteMapIDs[0x2F] = LBZObjectsSprite;
 	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x34] = ObjectsSprite;
-    SpriteMapIDs[0x35] = AIZ1Sprite;
+    SpriteMapIDs[0x35] = LBZObjectsSprite;
 
-	SpriteMapIDs[0x51] = AIZ2Sprite;
-    SpriteMapIDs[0x8C] = AIZ1Sprite;
+	SpriteMapIDs[0x51] = LBZObjectsSprite;
+    SpriteMapIDs[0x8C] = LBZObjectsSprite;
 }
 
 PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
-    if (!AIZ1Sprite) {
-		AIZ1Sprite = new ISprite("Sprites/AIZ/Objects.gif", App);
-		AIZ1Sprite->Print = true;
+    if (!LBZObjectsSprite) {
+		LBZObjectsSprite = new ISprite("Sprites/AIZ/Objects.gif", App);
+		LBZObjectsSprite->Print = true;
 
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Act 1 Tree.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Act 1 Zipline Peg.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Animated Sprites.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Breakable Wall.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Caterkiller Jr.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Collapsing Log Bridge.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Collapsing Platform.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Collapsing Platform 2.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Cork Floor.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Cork Floor 2.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Disappearing Floor.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Disappearing Floor Water.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Drawbridge.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Draw Bridge Fire.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 1).bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 2).bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 1).bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 2).bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Flipping Bridge.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Floating Platform.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Floating Platform 2.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Foreground Plant.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Monkey Dude.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Non Animated Sprites.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rhinobot.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/RhinoBot Dust.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Ride Vine.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock Bits.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock 2.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Rock Bits 2.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Spiked Log.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/AIZ/Tulipon.bin");
-
-        AIZ2Sprite = AIZ1Sprite;
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Tree.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Zipline Peg.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Animated Sprites.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Breakable Wall.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Caterkiller Jr.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Log Bridge.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform 2.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor 2.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor Water.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Drawbridge.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Draw Bridge Fire.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 1).bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 2).bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 1).bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 2).bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Flipping Bridge.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform 2.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Foreground Plant.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Monkey Dude.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Non Animated Sprites.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rhinobot.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot Dust.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Ride Vine.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock 2.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits 2.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Spiked Log.bin");
+        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Tulipon.bin");
 	}
 
 	if (!KnuxSprite[0]) {

@@ -1794,6 +1794,12 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 
     DoneSpinning = false;
 
+    StopTimer = false;
+    ShowResults = false;
+	ResultsTimer = 0;
+	TimerTotal = 0;
+	TotalToAdd = 0;
+
     ObjectSolidCount = 0;
     ObjectSpringCount = 0;
     ObjectEnemiesCount = 0;

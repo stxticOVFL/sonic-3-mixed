@@ -32,7 +32,7 @@ void Monitor::Create() {
         SubTypeFrame = 7 + int(Scene->Player->Character);
         break;
         case ItemTypes::TYPE_ROBOTNIK:
-        SubTypeFrame = 10;
+        SubTypeFrame = 12;
         break;
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;

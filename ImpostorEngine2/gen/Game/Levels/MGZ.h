@@ -13,8 +13,8 @@ class ISprite;
 
 class Level_MGZ : public LevelScene {
 public:
-    int32_t FloorY = 0; //
     ISprite* MGZObjectsSprite = NULL;
+    int32_t FloorY = 0; //
 
     Level_MGZ(IApp* app, IGraphics* g, int act);
     void Init();
