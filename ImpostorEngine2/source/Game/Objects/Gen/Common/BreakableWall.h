@@ -15,6 +15,8 @@ class BreakableWall;
 class BreakableWall: public Object {
 public:    
     
+    int Behavior;
+    bool LevelTriggered;
     
     void Create();
     void DrawAIZ(int CamX, int CamY);

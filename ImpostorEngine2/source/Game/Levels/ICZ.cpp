@@ -3,7 +3,7 @@
 
 class Level_ICZ : public LevelScene {
 public:
-    ISprite* ICZObjectSprite = NULL;
+    ISprite* ICZObjectsSprite = NULL;
 };
 #endif
 
@@ -186,35 +186,35 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
 	SpriteMapIDs[0x01] = ItemsSprite;
-    SpriteMapIDs[0x04] = ICZObjectSprite;
-    SpriteMapIDs[0x05] = ICZObjectSprite;
+    SpriteMapIDs[0x04] = ICZObjectsSprite;
+    SpriteMapIDs[0x05] = ICZObjectsSprite;
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;
-    SpriteMapIDs[0x09] = ICZObjectSprite;
-    SpriteMapIDs[0x0A] = ICZObjectSprite;
-    SpriteMapIDs[0x0C] = ICZObjectSprite;
-    SpriteMapIDs[0x0D] = ICZObjectSprite;
-    SpriteMapIDs[0x0F] = ICZObjectSprite;
-	SpriteMapIDs[0x2F] = ICZObjectSprite;
+    SpriteMapIDs[0x09] = ICZObjectsSprite;
+    SpriteMapIDs[0x0A] = ICZObjectsSprite;
+    SpriteMapIDs[0x0C] = ICZObjectsSprite;
+    SpriteMapIDs[0x0D] = ICZObjectsSprite;
+    SpriteMapIDs[0x0F] = ICZObjectsSprite;
+	SpriteMapIDs[0x2F] = ICZObjectsSprite;
 
 	SpriteMapIDs[0x34] = ObjectsSprite;
-    SpriteMapIDs[0x35] = ICZObjectSprite;
+    SpriteMapIDs[0x35] = ICZObjectsSprite;
 
-	SpriteMapIDs[0x51] = ICZObjectSprite;
+	SpriteMapIDs[0x51] = ICZObjectsSprite;
 }
 
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
-    if (!ICZObjectSprite) {
-        ICZObjectSprite = new ISprite("Sprites/ICZ/Objects.gif", App);
-        ICZObjectSprite->Print = true;
-        
-        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 1.bin");
-        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 2.bin");
-        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Cork Floor.bin");
-        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Cork Floor 2.bin");
-        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Platforms.bin");
-        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Tension Bridge.bin");
-        ICZObjectSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
+    if (!ICZObjectsSprite) {
+        ICZObjectsSprite = new ISprite("Sprites/ICZ/Objects.gif", App);
+        ICZObjectsSprite->Print = true;
+
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 1.bin");
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 2.bin");
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Cork Floor.bin");
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Cork Floor 2.bin");
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms.bin");
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Tension Bridge.bin");
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
     }
 
 	if (!KnuxSprite[0]) {
@@ -248,7 +248,7 @@ PUBLIC void Level_ICZ::GoToNextAct() {
 		Level_ICZ* NextAct = new Level_ICZ(App, G, 2);
 
 		TransferCommonLevelData(NextAct);
-		NextAct->ICZObjectSprite = ICZObjectSprite;
+		NextAct->ICZObjectsSprite = ICZObjectsSprite;
 		// Enable Title Card with no fade-in
 		NextAct->LevelCardTimer = 0.0;
 		NextAct->FadeTimer = 0;

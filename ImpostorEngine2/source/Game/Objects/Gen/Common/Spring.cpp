@@ -58,18 +58,13 @@ void Spring::Create() {
 }
 
 void Spring::Update() {
-    if (DoAnimate) {
-        if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
-        else if (Sprite->Animations[CurrentAnimation].Frames[Frame / 0x100].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame / 0x100].Duration;
-
-    }
-
-    if (Frame / 0x100 >= Sprite->Animations[CurrentAnimation].FrameCount - 1) {
-        Frame = Sprite->Animations[CurrentAnimation].FrameToLoop * 0x100;
-        DoAnimate = false;
-    }
-
+    AutoAnimate = DoAnimate;
     Object::Update();
+}
+
+void Spring::OnAnimationFinish() {
+    DoAnimate = false;
+    Frame = 0;
 }
 
 int Spring::OnLeaveScreen() {
@@ -79,7 +74,7 @@ int Spring::OnLeaveScreen() {
 }
 
 void Spring::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
     }
 
 int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
@@ -111,6 +106,7 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (HitFrom == CollideSide::TOP && Rotation == 0 && Scene->Players[PlayerID]->YSpeed >= 0) {
         Scene->Players[PlayerID]->YSpeed = -SpringPower;
         Scene->Players[PlayerID]->Ground = false;
+        Scene->Players[PlayerID]->InputAlarm = 16;
         Scene->Players[PlayerID]->Action = ActionType::Spring;
         Scene->Players[PlayerID]->SpringFlip = Twirl;
         Scene->Players[PlayerID]->AngleMode = 0;
@@ -124,11 +120,12 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     else if (HitFrom == CollideSide::BOTTOM && Rotation == 180) {
         Scene->Players[PlayerID]->YSpeed = SpringPower;
         Scene->Players[PlayerID]->Ground = false;
-        Scene->Players[PlayerID]->Action = ActionType::Jumping;
         Scene->Players[PlayerID]->InputAlarm = 16;
+        Scene->Players[PlayerID]->Action = ActionType::Jumping;
         Scene->Players[PlayerID]->SpringFlip = Twirl;
-        if (SubType & 0xC) Scene->Players[PlayerID]->Layer = 1 - ((SubType >> 2) & 0x1);
-
+        Scene->Players[PlayerID]->AngleMode = 0;
+        Scene->Players[PlayerID]->Angle = 0;
+        Scene->Players[PlayerID]->EZY += 4;
         Scene->Players[PlayerID]->Vibrate(VibrationType::ImpactSmall);
         Sound::Play(Sound::SFX_SPRING);
         DoAnimate = true;

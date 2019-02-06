@@ -13,34 +13,68 @@ void BreakableWall::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     W = 32;
     H = 64;
-    if (Scene->ZoneID == 1) {
+    Behavior = SubType & 0xF;
+    LevelTriggered = (SubType & 0x80) == 0x80;
+    if (Scene->ZoneID == 6 || Scene->ZoneID == 7 || Scene->ZoneID == 9) Behavior |= 2;
+
+    if (!LevelTriggered) {
+        if (Behavior == 0) {
+            BreakableByRoll = CollideSide::SIDES;
+            BreakableBySuper = CollideSide::SIDES;
+        }
+
+        BreakableByGlide = CollideSide::SIDES;
+        BreakableByKnuckles = CollideSide::SIDES;
+        Scene->AddSelfToRegistry(this, "Breakable");
+    }
+
+    switch (Scene->ZoneID) {
+        case 1:
         W = 32;
         H = 80;
         Priority = true;
         CurrentAnimation = 3;
-    }
-    else if (Scene->ZoneID == 2) {
+        break;
+        case 2:
         W = 32;
         H = 64;
-        BreakableByRoll = CollideSide::SIDES;
-        BreakableByGlide = CollideSide::SIDES;
-        BreakableByKnuckles = CollideSide::SIDES;
-        if (SubType == 2) {
-            BreakableByRoll = CollideSide::NONE;
-            W = 48;
-        }
+        if (Behavior == 2) W = 48;
 
-        Scene->AddSelfToRegistry(this, "Breakable");
         VisualLayer = 1;
-    }
-    else if (Scene->ZoneID == 3) {
+        break;
+        case 3:
         W = 64;
         H = 80;
         CurrentAnimation = 5;
-        BreakableByRoll = CollideSide::SIDES;
-        BreakableByGlide = CollideSide::SIDES;
-        BreakableByKnuckles = CollideSide::SIDES;
-        Scene->AddSelfToRegistry(this, "Breakable");
+        break;
+        case 4:
+        W = 32;
+        H = 64;
+        CurrentAnimation = 0;
+        break;
+        case 5:
+        W = 64;
+        H = 128;
+        CurrentAnimation = 0;
+        break;
+        case 6:
+        W = 32;
+        H = 64;
+        break;
+        case 7:
+        case 8:
+        case 9:
+        W = 32;
+        H = 64;
+        if (Behavior == 4) H = 96;
+
+        break;
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        break;
     }
 
 }
@@ -106,7 +140,7 @@ void BreakableWall::DrawMGZ(int CamX, int CamY) {
 void BreakableWall::BreakHCZ(int HitSide) {
     if (Scene->ZoneID != 2) return;
 
-    if (SubType == 2) {
+    if (Behavior == 2) {
         Scene->AddFallingTile(0x2B, X, Y - 16, -24, -16, IE_NOFLIP, false, HitSide * 0x400, -0x500);
         Scene->AddFallingTile(0xAE, X, Y - 16, -8, -16, IE_NOFLIP, false, HitSide * 0x600, -0x600);
         Scene->AddFallingTile(0x2B, X + 8, Y - 16, -0, -16, true, false, HitSide * 0x500, -0x400);
@@ -157,17 +191,22 @@ void BreakableWall::BreakMGZ(int HitSide) {
 }
 
 void BreakableWall::Update() {
-    if (Scene->LevelTriggerFlag > 0 && SubType & 0xF0) {
-        if (Y > Scene->Player->EZY) {
-            Y += 8;
-            if (Y - InitialY > 160) Active = false;
+    if (Scene->LevelTriggerFlag > 0 && LevelTriggered) {
+        switch (Scene->ZoneID) {
+            case 1:
+            if (Y > Scene->Player->EZY) {
+                Y += 8;
+                if (Y - InitialY > 160) Active = false;
 
-        }
-        else {
-            Y -= 8;
-            if (InitialY - Y > 160) Active = false;
+            }
+            else {
+                Y -= 8;
+                if (InitialY - Y > 160) Active = false;
 
+            }
+            break;
         }
+
     }
 
     Object::Update();
@@ -180,6 +219,8 @@ void BreakableWall::Render(int CamX, int CamY) {
     DrawAIZ(CamX, CamY);
     DrawHCZ(CamX, CamY);
     DrawMGZ(CamX, CamY);
+    if (Scene->ZoneID >= 4 && CurrentAnimation >= 0) G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+
     }
 
 int BreakableWall::OnBreakHorizontal(int PlayerID, int HitFrom) {
@@ -187,6 +228,7 @@ int BreakableWall::OnBreakHorizontal(int PlayerID, int HitFrom) {
     BreakableByRoll = CollideSide::NONE;
     BreakableByJump = CollideSide::NONE;
     BreakableByGlide = CollideSide::NONE;
+    BreakableBySuper = CollideSide::NONE;
     BreakableByKnuckles = CollideSide::NONE;
     Solid = false;
     int HitSide = -1;

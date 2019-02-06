@@ -1447,6 +1447,7 @@ void IPlayer::Update() {
 	// Handle ABCD Sensors (Floor and ceiling collisions)
 	int CheckStepsMax = 4;
 	int CheckSteps = CheckStepsMax;
+	bool CanModeChange = true;
 
 	if (Ground) {
 		XSpeed = (GroundSpeed * IMath::cosHex(Angle)) >> 16;
@@ -1673,7 +1674,7 @@ void IPlayer::Update() {
 
 		// CheckSensorsAB:
 		int d0 = (Angle + 0x20) & 0xFF;
-		if (CheckSteps > 0) {
+		if (CanModeChange) {
 			if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; }
 			else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
 			if (ForceRoll) d0++;
@@ -1801,7 +1802,7 @@ void IPlayer::Update() {
 							DoStick = true;
 						}
 					}
-					if (DoStick) {
+					if (DoStick && CanModeChange) {
 						d0 = (Angle + 0x20) & 0xFF;
 						if (d0 >= 0x80) { d0 = Angle; if (d0 >= 0x80) d0--; d0 += 0x20; }
 						else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
@@ -1812,6 +1813,8 @@ void IPlayer::Update() {
 							case 0x80: AngleMode = 2; break;
 							case 0xC0: AngleMode = 1; break;
 						}
+						if (AngleMode != 0 && !ForceRoll)
+							CanModeChange = false;
 					}
 
 					if ((Angle & 0x3F) == 0 && value > H / 2 && AngleMode != 0 && !ForceRoll) DoStick = false;
@@ -2423,8 +2426,10 @@ void IPlayer::Update() {
 		YSpeed = rel;
 	// Change Animation to Air Walk after springed
 	if (Action == ActionType::Spring && YSpeed >= 0) {
-		Action = ActionType::Normal;
-		ChangeAnimation((int)AnimationEnum::AirWalk + superflag);
+		if (SpringFlip <= 1) {
+			Action = ActionType::Normal;
+			ChangeAnimation((int)AnimationEnum::AirWalk + superflag);
+		}
 	}
 	// Produce Dust particles when necessary
 	if (Action == ActionType::Skid || Action == ActionType::GlideSlide) {

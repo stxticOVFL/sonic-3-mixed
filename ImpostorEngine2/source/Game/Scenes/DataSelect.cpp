@@ -225,6 +225,7 @@ PUBLIC void Scene_DataSelect::Update() {
 
 				int i = SaveGame::CurrentSaveFile;
 				if (SaveGame::Savefiles[i].State == 0) {
+					SaveGame::InitializeSaveGame();
 					SaveGame::CurrentCharacterFlag = CharacterFlag;
 					if (i >= 0)
 						SaveGame::Savefiles[i].CharacterFlag = CharacterFlag;

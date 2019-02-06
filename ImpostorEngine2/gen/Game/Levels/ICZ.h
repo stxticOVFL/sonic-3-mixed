@@ -13,7 +13,7 @@ class ISprite;
 
 class Level_ICZ : public LevelScene {
 public:
-    ISprite* ICZObjectSprite = NULL;
+    ISprite* ICZObjectsSprite = NULL;
 
     Level_ICZ(IApp* app, IGraphics* g, int act);
     void RestartStage(bool doActTransition, bool drawBackground);

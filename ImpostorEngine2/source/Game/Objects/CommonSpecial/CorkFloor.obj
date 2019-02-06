@@ -14,57 +14,75 @@ event Create() {
     if (SubType == 1)
         BreakableFromTop = true;
 
+    W = 32;
+    H = 80;
+
     var i:int = 0;
-    if (Scene.ZoneID == 1) {
-        W = 32;
-        H = 80;
-        if (Scene.Act == 2)
-            H = 88;
+    switch (Scene.ZoneID) {
+        case 1: // AIZ
+            if (Scene.Act == 2)
+                H = 88;
 
-        VisualLayer = 1;
+            VisualLayer = 1;
 
-        // dc.w \$([A-F0-9]+)
-        // Rock0Vels[i++] = 0x$1;
+            // dc.w \$([A-F0-9]+)
+            // Rock0Vels[i++] = 0x$1;
 
-        i = 0;
-        PieceVels[i++] = 0xFF00; PieceVels[i++] = 0xFE00;
-		PieceVels[i++] = 0x0100; PieceVels[i++] = 0xFE00;
-		PieceVels[i++] = 0xFF20; PieceVels[i++] = 0xFE40;
-		PieceVels[i++] = 0x00E0; PieceVels[i++] = 0xFE40;
-		PieceVels[i++] = 0xFF40; PieceVels[i++] = 0xFE80;
-		PieceVels[i++] = 0x00C0; PieceVels[i++] = 0xFE80;
-		PieceVels[i++] = 0xFF60; PieceVels[i++] = 0xFEC0;
-		PieceVels[i++] = 0x00A0; PieceVels[i++] = 0xFEC0;
-		PieceVels[i++] = 0xFF80; PieceVels[i++] = 0xFF00;
-		PieceVels[i++] = 0x0080; PieceVels[i++] = 0xFF00;
-		PieceVels[i++] = 0xFFA0; PieceVels[i++] = 0xFF40;
-		PieceVels[i++] = 0x0060; PieceVels[i++] = 0xFF40;
+            i = 0;
+            PieceVels[i++] = 0xFF00; PieceVels[i++] = 0xFE00;
+    		PieceVels[i++] = 0x0100; PieceVels[i++] = 0xFE00;
+    		PieceVels[i++] = 0xFF20; PieceVels[i++] = 0xFE40;
+    		PieceVels[i++] = 0x00E0; PieceVels[i++] = 0xFE40;
+    		PieceVels[i++] = 0xFF40; PieceVels[i++] = 0xFE80;
+    		PieceVels[i++] = 0x00C0; PieceVels[i++] = 0xFE80;
+    		PieceVels[i++] = 0xFF60; PieceVels[i++] = 0xFEC0;
+    		PieceVels[i++] = 0x00A0; PieceVels[i++] = 0xFEC0;
+    		PieceVels[i++] = 0xFF80; PieceVels[i++] = 0xFF00;
+    		PieceVels[i++] = 0x0080; PieceVels[i++] = 0xFF00;
+    		PieceVels[i++] = 0xFFA0; PieceVels[i++] = 0xFF40;
+    		PieceVels[i++] = 0x0060; PieceVels[i++] = 0xFF40;
 
-        CurrentAnimation = 8;
-        if (Scene.Act == 2)
-            CurrentAnimation = 9;
-
-        BreakableByJump = CollideSide.BOTTOM;
-        if (BreakableFromTop)
-            BreakableByJump = CollideSide.TOP;
-        BreakableByRoll = BreakableByJump;
-
-        if (!BreakableFromTop)
-            BreakableBySpring = CollideSide.BOTTOM;
-        Scene.AddSelfToRegistry(this, "Breakable");
+            CurrentAnimation = 8;
+            if (Scene.Act == 2)
+                CurrentAnimation = 9;
+            break;
+        case 4: // CNZ
+            W = 64;
+            H = 64;
+            CurrentAnimation = 12;
+            break;
+        case 5: // ICZ
+            W = 32;
+            H = 64;
+            break;
+        case 6: // LBZ
+            W = 64;
+            H = 64;
+            break;
+        case 7: // MHZ
+        case 8: // LBZ
+            W = 32;
+            H = 32;
+            break;
+        case 9: // SOZ
+            W = 32;
+            H = 32;
+            break;
+        case 10: // LRZ
+        case 11: // HPZ
+        case 12: // SSZ
+        case 13: // DEZ
+        case 14: // DDZ
+            break;
     }
-    else {
-        BreakableByJump = CollideSide.BOTTOM;
-        if (BreakableFromTop)
-            BreakableByJump = CollideSide.TOP;
-        BreakableByRoll = BreakableByJump;
-    }
-}
 
-event DrawAIZ(CamX:int, CamY:int) {
-    if (Scene.ZoneID != 1) return;
-
-    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    BreakableByJump = CollideSide.BOTTOM;
+    if (BreakableFromTop)
+        BreakableByJump = CollideSide.TOP;
+    else
+        BreakableBySpring = CollideSide.BOTTOM;
+    BreakableByRoll = BreakableByJump;
+    Scene.AddSelfToRegistry(this, "Breakable");
 }
 
 event BreakAIZ(HitSide:int) {
@@ -109,7 +127,10 @@ event BreakAIZ(HitSide:int) {
 event Render(CamX:int, CamY:int) {
     if (!Solid) return;
 
-    DrawAIZ(CamX, CamY);
+    if (CurrentAnimation >= 0)
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    else
+        G.DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);
 }
 
 event OnBreakVertical(PlayerID:int, HitFrom:int) : int {

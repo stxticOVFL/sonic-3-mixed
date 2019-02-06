@@ -30,6 +30,8 @@ public:
     static uint16_t CurrentUsedZoneRings;
 
     static void Init();
+    static void InitializeSaveGame();
+    static void InitializeSaveGame(int s);
     static void Flush();
     static void SetZone(int ZID);
     static int GetLives();

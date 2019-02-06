@@ -15,35 +15,16 @@ void Bouncepad::Create() {
 
 int Bouncepad::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     IPlayer* Player = Scene->Players[PlayerID];
-    if (Player == 0) {
+    if (Player->Action == ActionType::Dead) {
         return 0;
     }
 
-    if (Player->DisplayFlip == 1) {
-        Player->XSpeed = 0x800;
-    }
-    else {
-        Player->XSpeed = -0x800;
-    }
     Player->Ground = false;
-    Player->YSpeed = (FlipY & 1) ? 0x800 : -0x800;
-    Player->GroundSpeed = Player->XSpeed;
+    Player->XSpeed = FlipX ? -0x800 : 0x800;
+    Player->YSpeed = FlipY ? 0x800 : -0x800;
     Player->InputAlarm = 0x0f;
-    if (Player->Action == ActionType::Rolling) { 
-        Player->Action = ActionType::Normal;
-    }
-
-    if (Player->Angle == 0) {
-        Player->Action = ActionType::Normal;
-        if (Player->DisplayFlip == 1) {
-            Player->Angle = 1;
-        }
-        else {
-            Player->Angle = -1;
-        }
-        Player->SpringFlip = 3;
-    }
-
+    Player->Action = ActionType::Spring;
+    Player->SpringFlip = 3;
     Sound::Play(Sound::SFX_PAD_BOUNCE);
     return 1;
 }
