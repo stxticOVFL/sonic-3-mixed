@@ -14,10 +14,11 @@ void CorkFloor::Create() {
     BreakableFromTop = false;
     if (SubType == 1) BreakableFromTop = true;
 
+    W = 32;
+    H = 80;
     int i = 0;
-    if (Scene->ZoneID == 1) {
-        W = 32;
-        H = 80;
+    switch (Scene->ZoneID) {
+        case 1:
         if (Scene->Act == 2) H = 88;
 
         VisualLayer = 1;
@@ -49,26 +50,42 @@ void CorkFloor::Create() {
         CurrentAnimation = 8;
         if (Scene->Act == 2) CurrentAnimation = 9;
 
-        BreakableByJump = CollideSide::BOTTOM;
-        if (BreakableFromTop) BreakableByJump = CollideSide::TOP;
-
-        BreakableByRoll = BreakableByJump;
-        if (!BreakableFromTop) BreakableBySpring = CollideSide::BOTTOM;
-
-        Scene->AddSelfToRegistry(this, "Breakable");
+        break;
+        case 4:
+        W = 64;
+        H = 64;
+        CurrentAnimation = 12;
+        break;
+        case 5:
+        W = 32;
+        H = 64;
+        break;
+        case 6:
+        W = 64;
+        H = 64;
+        break;
+        case 7:
+        case 8:
+        W = 32;
+        H = 32;
+        break;
+        case 9:
+        W = 32;
+        H = 32;
+        break;
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        break;
     }
-    else {
-        BreakableByJump = CollideSide::BOTTOM;
-        if (BreakableFromTop) BreakableByJump = CollideSide::TOP;
 
-        BreakableByRoll = BreakableByJump;
-    }
-}
-
-void CorkFloor::DrawAIZ(int CamX, int CamY) {
-    if (Scene->ZoneID != 1) return;
-
-    G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    BreakableByJump = CollideSide::BOTTOM;
+    if (BreakableFromTop) BreakableByJump = CollideSide::TOP;
+    else BreakableBySpring = CollideSide::BOTTOM;
+    BreakableByRoll = BreakableByJump;
+    Scene->AddSelfToRegistry(this, "Breakable");
 }
 
 void CorkFloor::BreakAIZ(int HitSide) {
@@ -106,7 +123,8 @@ void CorkFloor::BreakAIZ(int HitSide) {
 void CorkFloor::Render(int CamX, int CamY) {
     if (!Solid) return;
 
-    DrawAIZ(CamX, CamY);
+    if (CurrentAnimation >= 0) G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    else G->DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);
     }
 
 int CorkFloor::OnBreakVertical(int PlayerID, int HitFrom) {

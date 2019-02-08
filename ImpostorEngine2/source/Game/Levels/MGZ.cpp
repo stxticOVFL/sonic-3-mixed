@@ -3,9 +3,8 @@
 
 class Level_MGZ : public LevelScene {
 public:
-    int32_t FloorY = 0; //
-
     ISprite* MGZObjectsSprite = NULL;
+    int32_t FloorY = 0; //
 };
 #endif
 

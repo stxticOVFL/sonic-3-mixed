@@ -3,8 +3,7 @@
 
 class Level_CNZ : public LevelScene {
 public:
-    ISprite* AIZ1Sprite = NULL;
-    ISprite* AIZ2Sprite = NULL;
+    ISprite* CNZObjectsSprite = NULL;
 };
 #endif
 
@@ -415,70 +414,67 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
 
     if (Act <= 1) {
     	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZ1Sprite;
-        SpriteMapIDs[0x05] = AIZ1Sprite;
+        SpriteMapIDs[0x04] = CNZObjectsSprite;
+        SpriteMapIDs[0x05] = CNZObjectsSprite;
     	SpriteMapIDs[0x07] = ObjectsSprite;
     	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZ1Sprite;
-        SpriteMapIDs[0x0A] = AIZ1Sprite;
-        SpriteMapIDs[0x0C] = AIZ1Sprite;
-        SpriteMapIDs[0x0D] = AIZ1Sprite;
-        SpriteMapIDs[0x0F] = AIZ1Sprite;
-    	SpriteMapIDs[0x2F] = AIZ1Sprite;
+        SpriteMapIDs[0x09] = CNZObjectsSprite;
+        SpriteMapIDs[0x0A] = CNZObjectsSprite;
+        SpriteMapIDs[0x0C] = CNZObjectsSprite;
+        SpriteMapIDs[0x0D] = CNZObjectsSprite;
+        SpriteMapIDs[0x0F] = CNZObjectsSprite;
+    	SpriteMapIDs[0x2F] = CNZObjectsSprite;
     	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
     	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZ1Sprite;
+        SpriteMapIDs[0x35] = CNZObjectsSprite;
 
-    	SpriteMapIDs[0x51] = AIZ1Sprite;
+    	SpriteMapIDs[0x51] = CNZObjectsSprite;
     }
     else {
     	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = AIZ2Sprite;
-        SpriteMapIDs[0x05] = AIZ2Sprite;
-        SpriteMapIDs[0x06] = AIZ1Sprite;
+        SpriteMapIDs[0x04] = CNZObjectsSprite;
+        SpriteMapIDs[0x05] = CNZObjectsSprite;
+        SpriteMapIDs[0x06] = CNZObjectsSprite;
     	SpriteMapIDs[0x07] = ObjectsSprite;
     	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = AIZ1Sprite;
-        SpriteMapIDs[0x0A] = AIZ1Sprite;
-        SpriteMapIDs[0x0C] = AIZ1Sprite;
-        SpriteMapIDs[0x0D] = AIZ2Sprite;
-        SpriteMapIDs[0x0F] = AIZ2Sprite;
-    	SpriteMapIDs[0x2F] = AIZ1Sprite;
+        SpriteMapIDs[0x09] = CNZObjectsSprite;
+        SpriteMapIDs[0x0A] = CNZObjectsSprite;
+        SpriteMapIDs[0x0C] = CNZObjectsSprite;
+        SpriteMapIDs[0x0D] = CNZObjectsSprite;
+        SpriteMapIDs[0x0F] = CNZObjectsSprite;
+    	SpriteMapIDs[0x2F] = CNZObjectsSprite;
     	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
     	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = AIZ1Sprite;
+        SpriteMapIDs[0x35] = CNZObjectsSprite;
 
-    	SpriteMapIDs[0x51] = AIZ2Sprite;
-        SpriteMapIDs[0x8C] = AIZ1Sprite;
+    	SpriteMapIDs[0x51] = CNZObjectsSprite;
+        SpriteMapIDs[0x8C] = CNZObjectsSprite;
     }
 }
 
 PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
-    if (!AIZ1Sprite) {
-		AIZ1Sprite = new ISprite("Sprites/CNZ/Objects.gif", App);
-		AIZ1Sprite->Print = true;
+    if (!CNZObjectsSprite) {
+		CNZObjectsSprite = new ISprite("Sprites/CNZ/Objects.gif", App);
+		CNZObjectsSprite->Print = true;
 
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Breakable Wall.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Balloon.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Button.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Cork Floor.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Cylinder.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Door Horizontal.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/End Boss.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Light Bulb.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Miniboss.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Rising Platform.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Trap Door.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Cannon.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Cannon Ball.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Cannon Base.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Bumper.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Clamer.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Batbot.bin");
-        AIZ1Sprite->LoadAnimation("Sprites/CNZ/Sparkle.bin");
-
-
-        AIZ2Sprite = AIZ1Sprite;
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Breakable Wall.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Balloon.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Button.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cork Floor.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cylinder.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Door Horizontal.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/End Boss.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Light Bulb.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Miniboss.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Rising Platform.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Trap Door.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Ball.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Base.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Bumper.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Clamer.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Batbot.bin");
+        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Sparkle.bin");
 	}
 
 	if (!KnuxSprite[0]) {
@@ -512,7 +508,7 @@ PUBLIC void Level_CNZ::GoToNextAct() {
 		Level_CNZ* NextAct = new Level_CNZ(App, G, 2);
 
 		TransferCommonLevelData(NextAct);
-		NextAct->AIZ1Sprite = AIZ1Sprite;
+		NextAct->CNZObjectsSprite = CNZObjectsSprite;
 		// Enable Title Card with no fade-in
 		NextAct->LevelCardTimer = 0.0;
 		NextAct->FadeTimer = 0;

@@ -19,7 +19,6 @@ public:
     bool BreakableFromTop;
     
     void Create();
-    void DrawAIZ(int CamX, int CamY);
     void BreakAIZ(int HitSide);
     void Render(int CamX, int CamY);
     int OnBreakVertical(int PlayerID, int HitFrom);
