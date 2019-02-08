@@ -384,8 +384,7 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		}
-		else {
+		} else {
 			Sprites[0] = new ISprite("Player/Sonic1.gif", App);
 			Sprites[1] = new ISprite("Player/Sonic2.gif", App);
 			Sprites[2] = new ISprite("Player/Sonic3.gif", App);
@@ -416,36 +415,44 @@ void IPlayer::Create() {
 			Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
 			Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
 		}
-	}
-	else if (Character == CharacterType::Tails) {
+	} else if (Character == CharacterType::Tails) {
 		H = 32;
 		OrigH = H;
-		Thremixed = true;
+		if (!Thremixed && false) {
+			int i = 0;
+			Sprites[0] = new ISprite("Player/S3/Tails.gif", App);
 
-		Sprites[0] = new ISprite("Player/Tails1.gif", App);
-		Sprites[1] = new ISprite("Player/Tails2.gif", App);
-		Sprites[2] = new ISprite("Player/Tails3.gif", App);
-		Sprites[3] = new ISprite("Player/TailsCutsceneCPZ.gif", App);
+			Sprites[0]->LoadAnimation("Player/S3/Tails.bin");
+			for (; i < Sprites[0]->AnimCount; i++) {
+				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+			}
+			for (; i < Sprites[0]->AnimCount; i++) {
+				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
+			}
+		} else {
+            Sprites[0] = new ISprite("Player/Tails1.gif", App);
+            Sprites[1] = new ISprite("Player/Tails2.gif", App);
+            Sprites[2] = new ISprite("Player/Tails3.gif", App);
+            Sprites[3] = new ISprite("Player/TailsCutsceneCPZ.gif", App);
 
-		Sprites[0]->LoadAnimation("Player/Tails.bin");
-		Sprites[0]->LoadAnimation("Player/TailSprite.bin");
-		Sprites[1]->LinkAnimation(Sprites[0]->Animations);
-		Sprites[2]->LinkAnimation(Sprites[0]->Animations);
-		Sprites[3]->LinkAnimation(Sprites[0]->Animations);
+            Sprites[0]->LoadAnimation("Player/Tails.bin");
+            Sprites[0]->LoadAnimation("Player/TailSprite.bin");
+            Sprites[1]->LinkAnimation(Sprites[0]->Animations);
+            Sprites[2]->LinkAnimation(Sprites[0]->Animations);
+            Sprites[3]->LinkAnimation(Sprites[0]->Animations);
 
-		for (int i = 0; i < Sprites[0]->AnimCount; i++) {
-			AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
-		}
-	}
-	else if (Character == CharacterType::Knuckles) {
+            for (int i = 0; i < Sprites[0]->AnimCount; i++) {
+                AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+            }
+        }
+	} else if (Character == CharacterType::Knuckles) {
 		H = 40;
 		OrigH = H;
 		if (Scene->KnuxSprite[0]) {
 			for (int i = 0; i < 5; i++) {
 				Sprites[i] = Scene->KnuxSprite[i];
 			}
-		}
-		else {
+		} else {
 			Sprites[0] = new ISprite("Player/Knux1.gif", App);
 			Sprites[1] = new ISprite("Player/Knux2.gif", App);
 			Sprites[2] = new ISprite("Player/Knux3.gif", App);
@@ -463,8 +470,7 @@ void IPlayer::Create() {
 		for (int i = 0; i < Sprites[0]->AnimCount; i++) {
 			AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 		}
-	}
-	else if (Character == CharacterType::Mighty) {
+	} else if (Character == CharacterType::Mighty) {
 		Thremixed = true;
 		Sprites[0] = new ISprite("Player/Mighty1.gif", App);
 		Sprites[1] = new ISprite("Player/Mighty2.gif", App);
@@ -479,8 +485,7 @@ void IPlayer::Create() {
 		for (int i = 0; i < Sprites[0]->AnimCount; i++) {
 			AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 		}
-	}
-	else if (Character == CharacterType::Ray) {
+	} else if (Character == CharacterType::Ray) {
 		Thremixed = true;
 		Sprites[0] = new ISprite("Player/Ray1.gif", App);
 		Sprites[1] = new ISprite("Player/Ray2.gif", App);
@@ -2738,123 +2743,110 @@ void IPlayer::LateUpdate() {
 
 		// Overriding animations
 		if (Action == ActionType::Peril) {
-			if ((int)AnimationEnum::Flume)
+			if ((int)AnimationEnum::Flume) {
 				ChangeAnimation((int)AnimationEnum::Flume + superflag);
-			else
+			} else {
 				ChangeAnimation((int)AnimationEnum::Hurt + superflag, 0x300);
-		}
-		else if (Action == ActionType::Slide) {
-			if ((int)AnimationEnum::Flume)
+			}
+		} else if (Action == ActionType::Slide) {
+			if ((int)AnimationEnum::Flume) {
 				ChangeAnimation((int)AnimationEnum::Flume + superflag);
-			else
+			} else {
 				ChangeAnimation((int)AnimationEnum::Hurt + superflag, 0x300);
-		}
-		else if (Action == ActionType::Hurt) {
+			}
+		} else if (Action == ActionType::Hurt) {
 			ChangeAnimation((int)AnimationEnum::Hurt + superflag);
-		}
-		else if (Action == ActionType::InStream) {
+		} else if (Action == ActionType::InStream) {
 			ChangeAnimation((int)AnimationEnum::Fan + superflag);
 			DisplayFlip = 1;
-		}
-		else if (Action == ActionType::InStreamGrab) {
+		} else if (Action == ActionType::InStreamGrab) {
 			ChangeAnimation((int)AnimationEnum::Cling + superflag);
 			DisplayFlip = 1;
-		}
-		else if (Action == ActionType::Glide) {
+		} else if (Action == ActionType::Glide) {
 			ChangeAnimation((int)AnimationEnum::Glide, 0x500);
 			//if (CurrentFrame >= 0x400)
 			//CurrentFrame = 0x400;
-		}
-		else if (Action == ActionType::GlideFall) {
+		} else if (Action == ActionType::GlideFall) {
 			ChangeAnimation((int)AnimationEnum::GlideDrop);
-		}
-		else if (Action == ActionType::Climb) {
-			if (YSpeed == 0)
+		} else if (Action == ActionType::Climb) {
+			if (YSpeed == 0) {
 				ChangeAnimation((int)AnimationEnum::ClimbIdle);
-			else if (YSpeed < 0)
+			} else if (YSpeed < 0) {
 				ChangeAnimation((int)AnimationEnum::ClimbUp);
-			else
+			} else {
 				ChangeAnimation((int)AnimationEnum::ClimbDown);
-		}
-		else if (Action == ActionType::ClimbRise) {
+			}
+		} else if (Action == ActionType::ClimbRise) {
 			ChangeAnimation((int)AnimationEnum::LedgePullup);
-		}
-		else if (Action == ActionType::Dead) {
-			if (Underwater)
+		} else if (Action == ActionType::Dead) {
+			if (Underwater) {
 				ChangeAnimation((int)AnimationEnum::Drown + superflag);
-			else
+			} else {
 				ChangeAnimation((int)AnimationEnum::Die + superflag);
-		}
-		else if (Action == ActionType::Grab) {
+			}
+		} else if (Action == ActionType::Grab) {
 			ChangeAnimation((int)AnimationEnum::Hang + superflag);
 			if (GrabSwingValue != -1) {
 				CurrentFrame = (Sprites[0]->Animations[CurrentAnimation].FrameCount - 1 - 1) * GrabSwingValue;
 			}
-		}
-		else if (Action == ActionType::GrabFall) {
+		} else if (Action == ActionType::GrabFall) {
 			ChangeAnimation((int)AnimationEnum::Hang + superflag);
 			CurrentFrame = 0;
-		}
-		else if (Action == ActionType::Corkscrew) {
+		} else if (Action == ActionType::Corkscrew) {
 			ChangeAnimation((int)AnimationEnum::Bubble + superflag);
 			if (GrabSwingValue != -1) {
 				CurrentFrame = (Sprites[0]->Animations[CurrentAnimation].FrameCount - 1 - 1) * GrabSwingValue;
 			}
-		}
-		else if (Action == ActionType::Conveyor) {
+		} else if (Action == ActionType::Conveyor) {
 			if (IMath::abs(XSpeed) == 0x200) {
 				ChangeAnimation((int)AnimationEnum::ShimmyIdle + superflag);
-			}
-			else if (IMath::abs(XSpeed) > 0x200) {
+			} else if (IMath::abs(XSpeed) > 0x200) {
 				ChangeAnimation((int)AnimationEnum::ShimmyMove + superflag);
 				DisplayFlip = 1 * IMath::sign(XSpeed);
-			}
-			else {
+			} else {
 				ChangeAnimation((int)AnimationEnum::ShimmyMove + superflag);
 				DisplayFlip = -1 * IMath::sign(XSpeed);
 			}
-		}
-		else if (Action == ActionType::Spinning) {
+		} else if (Action == ActionType::Spinning) {
 			ChangeAnimation2((int)AnimationEnum::Twister + superflag, (Scene->Frame >> 2) % 24);
-		}
-		else if (Action == ActionType::Fly) {
+		} else if (Action == ActionType::Fly) {
 			if (Underwater) {
 				if (HoldingPlayer) {
 					ChangeAnimation((int)AnimationEnum::SwimLift);
-				}
-				else {
-					if (FlyTimer > 0)
+				} else {
+					if (FlyTimer > 0) {
 						ChangeAnimation((int)AnimationEnum::Swim);
-					else
+					} else {
 						ChangeAnimation((int)AnimationEnum::SwimTired);
+					}
 				}
-			}
-			else {
+			} else {
 				if (HoldingPlayer) {
-					if (FlyTimer > 0 && YSpeed > 0)
+					if (FlyTimer > 0 && YSpeed > 0) {
 						ChangeAnimation((int)AnimationEnum::Fly);
-					else if (FlyTimer > 0)
+					} else if (FlyTimer > 0) {
 						ChangeAnimation((int)AnimationEnum::FlyLift);
-					else
+					} else {
 						ChangeAnimation((int)AnimationEnum::FlyLiftTired);
-				}
-				else {
-					if (FlyTimer > 0)
+					}
+				} else {
+					if (FlyTimer > 0) {
 						ChangeAnimation((int)AnimationEnum::Fly);
-					else
+					} else {
 						ChangeAnimation((int)AnimationEnum::FlyTired);
+					}
 				}
 			}
-		}
-		else if (Action == ActionType::Respawn) {
-			if (Character == CharacterType::Tails)
+		} else if (Action == ActionType::Respawn) {
+			if (Character == CharacterType::Tails) {
 				ChangeAnimation((int)AnimationEnum::Fly);
-			else if (Character == CharacterType::Knuckles)
+			} else if (Character == CharacterType::Knuckles) {
 				ChangeAnimation((int)AnimationEnum::Fly);
-			else if (Character == CharacterType::Ray)
+			} else if (Character == CharacterType::Ray) {
 				ChangeAnimation((int)AnimationEnum::RayFlyUp);
-			else
+			} else {
 				ChangeAnimation((int)AnimationEnum::Fly);
+			}
 		}
 
 		if (!Ground && (CurrentAnimation == 5 || CurrentAnimation == 6 || CurrentAnimation == 7)) {
@@ -2875,9 +2867,9 @@ void IPlayer::LateUpdate() {
 
 	if (animation.AnimationSpeed > 0 && animation.Frames[CurrentFrame / 0x100].Duration != 0) {
 		CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[CurrentFrame / 0x100].Duration;
-	}
-	else if (Action == ActionType::Transform)
+	} else if (Action == ActionType::Transform) {
 		CurrentFrame += 0x100;
+	}
 
 	if (Action == ActionType::ClimbRise) {
 		int offsetsX[7] = { 0x00, 0x00,  0x05,  0x0A,  0x0F,  0x14,  0x14 };
@@ -3790,8 +3782,7 @@ void IPlayer::HandleMonitors() {
 					ringsparkle->Y = obj.Y + ry[i];
 					Scene->Explosions.push_back(ringsparkle);
 				}
-			}
-			else {
+			} else {
 				Explosion* ringsparkle;
 				ringsparkle = new Explosion();
 				ringsparkle->G = G;

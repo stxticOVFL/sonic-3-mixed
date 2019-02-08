@@ -4150,8 +4150,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
             X = CameraX;
         if (Y < CameraY)
             Y = CameraY;
+        
         ///*
         sprintf(pooerp, "%04X %04X (%02X %d)", Player->EZX, Player->EZY, Player->Angle, Player->AngleMode);
+        G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
+        Y += 8;
+        
+        sprintf(pooerp, "%04X %04X", CameraX, CameraY);
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
 
