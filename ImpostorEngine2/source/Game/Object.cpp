@@ -41,6 +41,76 @@ void Object::Animate() {
         }
     }
 }
+
+void Object::AnimationProgress(int16_t animationData[]) {
+	--Timer;
+	if (Timer < 0)
+	{
+		++AnimationFrame;
+		int OldAnimationFrame = AnimationFrame;
+		int16_t dataAnimationFrame = animationData[AnimationFrame + 1];
+		if (dataAnimationFrame < 0)
+		{
+			AnimationFrame = 0;
+			//App->Print(0, "Object: dataAnimationFrame in AnimationProgress is: %d", dataAnimationFrame);
+			switch (dataAnimationFrame) {
+				// Each switch repersents a case of a function from a base address of 0x084430, (0x084434, 0x084438, 0x08443c)
+				// All of which are 4 bytes apart. 
+				// Of course we don't use these addresses but it's a recreation on how the ASM worked.
+				case -4:  // FC - AnimateRaw_Restart
+					Frame = animationData[1];
+					Timer = animationData[0];
+					break;
+				case -8:  // F8 - AnimateRaw_Jump
+					//animationData += animationData[OldAnimationFrame + 2];
+					//objA0.value30 = animationData;
+					Frame = animationData[1];
+					Timer = animationData[0];
+					break;
+				case -12:  // F4 - AnimateRaw_CustomCode
+					Timer = 0;
+					// TODO: Add a condition branch function? It's in the ASM but unsure if we even need it.
+					break;
+				default:
+					break;
+			}
+		}
+		else
+		{
+			Timer = animationData[0];
+			Frame = dataAnimationFrame;
+		}
+	}
+}
+
+void Object::DelayedAnimationProgress(int16_t animationData[]) {
+	Timer -= 1;
+	if (Timer < 0) {
+		int NewAnimationFrame = AnimationFrame += 2;
+		AnimationFrame = NewAnimationFrame;
+		int16_t dataAnimationFrame = animationData[NewAnimationFrame];
+		//App->Print(0, "Object: dataAnimationFrame in DelayedAnimationProgress is: %d", D1);
+
+		if (dataAnimationFrame < 0) {
+			AnimationFrame = 0;
+
+			switch (dataAnimationFrame) {
+				case -4: // FC
+					break;
+				case -8: // F8
+					break;
+				case -12: // F4
+					break;
+				default:
+					break;
+			}
+		} else {
+			Frame = dataAnimationFrame;
+			Timer = animationData[NewAnimationFrame + 1];
+		}
+	}
+}
+
 void Object::OnAnimationFinish() {
 
 }

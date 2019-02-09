@@ -3,6 +3,8 @@ object 0xA5;
 subclass Enemy;
 
 var Children:Object[2];
+var WorkingChild:Object;
+var AnimationData:int16_t[6];
 
 event Create() {
     Active = true;
@@ -17,11 +19,29 @@ event Create() {
     Frame = 0;
     CurrentAnimation = 35;
     
-    for (var i:int = 0; i < 2; i++) {
-        Children[i] = Scene.AddNewObject(Obj_BatbrightParts, 0, X, Y, false, false);
-        Children[i].Sprite = Sprite;
-        Children[i].CurrentAnimation = CurrentAnimation + i;
-        Children[i].Parent = this;
+    // Animation Timer data:
+    // 2, 0, 1, 2, 1, $FC
+    
+    // The parse doesn't allow you init array's directly, So we have to do it like this.
+    // Nasty.
+    AnimationData[0] = 2; 
+    AnimationData[1] = 0;
+    AnimationData[2] = 1;
+    AnimationData[3] = 2;
+    AnimationData[4] = 1;
+    AnimationData[5] = -4; // 0xFC
+    
+    for (var i:int = 0; i < 2; i++) { 
+        WorkingChild = Scene.AddNewObject(Obj_BatbrightParts, 0, X, Y, false, false);
+        WorkingChild.Sprite = Sprite;
+        WorkingChild.Parent = this;
+        if (i == 0) {
+            WorkingChild.CurrentAnimation = 36;
+		} else if (i == 1) {
+            WorkingChild.CurrentAnimation = 37;
+        }
+        Children[i] = WorkingChild;
+        WorkingChild = NULL;
     }
     
     VisualLayer = 1;
@@ -34,6 +54,7 @@ event Update() {
         return;
     }
     
+    AnimationProgress(AnimationData);
     
     XSpeed = 0x200;
     if (PlayerRelativeXDirection == 0) {
@@ -49,6 +70,8 @@ event OnAnimationFinish() {
 }
 
 event OnHit() : int {
+    Children[0].Frame = 0;
+    
     Children[0].Active = false;
     Children[1].Active = false;
     return OnDeath();
@@ -64,8 +87,5 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 }
 
 event Render(CamX:int, CamY:int) {
-    // Animation Timer data:
-    // 2, 0, 1, 2, 1, $FC
-
     G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

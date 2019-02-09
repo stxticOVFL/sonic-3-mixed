@@ -139,6 +139,8 @@ public:
     };
 
     void Animate();
+	void AnimationProgress(int16_t animationData[]);
+	void DelayedAnimationProgress(int16_t animationData[]);
     void MoveSprite();
     void MoveWithParent();
     int  Swing_UpAndDown();

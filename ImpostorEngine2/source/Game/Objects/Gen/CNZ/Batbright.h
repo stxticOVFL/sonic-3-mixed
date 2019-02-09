@@ -16,6 +16,8 @@ class Batbright: public Enemy {
 public:    
     
     Object* Children[2];
+    Object* WorkingChild;
+    int16_t AnimationData[6];
     
     void Create();
     void Update();

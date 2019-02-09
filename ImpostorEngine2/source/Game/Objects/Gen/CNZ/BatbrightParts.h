@@ -15,6 +15,8 @@ class BatbrightParts;
 class BatbrightParts: public Object {
 public:    
     
+    bool IsLight;
+    int16_t AnimationData[14];
     
     void Create();
     void Update();

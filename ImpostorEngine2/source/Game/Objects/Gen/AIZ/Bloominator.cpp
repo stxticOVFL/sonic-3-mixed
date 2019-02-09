@@ -59,7 +59,7 @@ int Bloominator::OnHit() {
 void Bloominator::Render(int CamX, int CamY) {
     int Subframe = 0;
     int Keyframe = Frame - 1;
-    if (Keyframe >= 14 && Keyframe < 2 + 6) {
+    if (Keyframe >= 14 && Keyframe < 62 + 6) {
         if (Keyframe >= 14 && Keyframe < 14 + 11) {
             Subframe = 1;
         }

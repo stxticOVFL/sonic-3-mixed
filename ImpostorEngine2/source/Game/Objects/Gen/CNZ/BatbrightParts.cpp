@@ -15,11 +15,32 @@ void BatbrightParts::Create() {
     VisH = 16;
     Gravity = 0;
     Frame = 0;
+    IsLight = false;
+    AnimationData[0] = 3;
+    AnimationData[1] = 29;
+    AnimationData[2] = 4;
+    AnimationData[3] = 2;
+    AnimationData[4] = 3;
+    AnimationData[5] = 1;
+    AnimationData[6] = 4;
+    AnimationData[7] = 2;
+    AnimationData[8] = 3;
+    AnimationData[9] = 14;
+    AnimationData[10] = 4;
+    AnimationData[11] = 2;
+    AnimationData[12] = -4;
+    AnimationData[13] = 0;
     VisualLayer = 1;
 }
 
 void BatbrightParts::Update() {
     MoveWithParent();
+    IsLight = (CurrentAnimation == 37);
+    if (!IsLight) {
+        Y += 3;
+        Frame = 1;
+    }
+
     Object::Update();
 }
 

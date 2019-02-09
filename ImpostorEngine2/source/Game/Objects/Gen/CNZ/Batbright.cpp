@@ -16,12 +16,26 @@ void Batbright::Create() {
     Gravity = 0;
     Frame = 0;
     CurrentAnimation = 35;
+    AnimationData[0] = 2;
+    AnimationData[1] = 0;
+    AnimationData[2] = 1;
+    AnimationData[3] = 2;
+    AnimationData[4] = 1;
+    AnimationData[5] = -4;
     for (int i = 0; i < 2; i++)
 {
-        Children[i] = Scene->AddNewObject(Obj_BatbrightParts, 0, X, Y, false, false);
-        Children[i]->Sprite = Sprite;
-        Children[i]->CurrentAnimation = CurrentAnimation + i;
-        Children[i]->Parent = this;
+        WorkingChild = Scene->AddNewObject(Obj_BatbrightParts, 0, X, Y, false, false);
+        WorkingChild->Sprite = Sprite;
+        WorkingChild->Parent = this;
+        if (i == 0) {
+            WorkingChild->CurrentAnimation = 36;
+        }
+        else if (i == 1) {
+            WorkingChild->CurrentAnimation = 37;
+        }
+
+        Children[i] = WorkingChild;
+        WorkingChild = NULL;
     }
     VisualLayer = 1;
 }
@@ -33,6 +47,7 @@ void Batbright::Update() {
         return;
     }
 
+    AnimationProgress(AnimationData);
     XSpeed = 0x200;
     if (PlayerRelativeXDirection == 0) {
         XSpeed = -XSpeed;
@@ -47,6 +62,7 @@ void Batbright::OnAnimationFinish() {
 }
 
 int Batbright::OnHit() {
+    Children[0]->Frame = 0;
     Children[0]->Active = false;
     Children[1]->Active = false;
     return OnDeath();
