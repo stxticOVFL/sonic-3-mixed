@@ -232,6 +232,7 @@ public:
     int                 Lives = 0;
     int                 Rings = 0;
     int                 RingLifeValue = 100;
+    bool                LoseAllRings = true;
     bool                HyperRings = false;
     bool                Sidekick = false;
 
