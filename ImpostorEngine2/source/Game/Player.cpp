@@ -374,8 +374,10 @@ void IPlayer::Create() {
 		if (!Thremixed) {
 			int i = 0;
 			Sprites[0] = new ISprite("Player/S3/Sonic.gif", App);
+			// Sprites[0] = new ISprite("Player/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
 
 			Sprites[0]->LoadAnimation("Player/S3/Sonic.bin");
+			// Sprites[0]->LoadAnimation("Player/S3/Sonic - Copy.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
@@ -384,7 +386,8 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		} else {
+		} 
+		else {
 			Sprites[0] = new ISprite("Player/Sonic1.gif", App);
 			Sprites[1] = new ISprite("Player/Sonic2.gif", App);
 			Sprites[2] = new ISprite("Player/Sonic3.gif", App);
@@ -415,10 +418,11 @@ void IPlayer::Create() {
 			Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
 			Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
 		}
-	} else if (Character == CharacterType::Tails) {
+	} 
+	else if (Character == CharacterType::Tails) {
 		H = 32;
 		OrigH = H;
-		if (!Thremixed && false) {
+		if (!Thremixed) {
 			int i = 0;
 			Sprites[0] = new ISprite("Player/S3/Tails.gif", App);
 
@@ -429,7 +433,8 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		} else {
+		} 
+		else {
             Sprites[0] = new ISprite("Player/Tails1.gif", App);
             Sprites[1] = new ISprite("Player/Tails2.gif", App);
             Sprites[2] = new ISprite("Player/Tails3.gif", App);
@@ -445,7 +450,8 @@ void IPlayer::Create() {
                 AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
             }
         }
-	} else if (Character == CharacterType::Knuckles) {
+	} 
+	else if (Character == CharacterType::Knuckles) {
 		H = 40;
 		OrigH = H;
 		if (Scene->KnuxSprite[0]) {
@@ -470,7 +476,8 @@ void IPlayer::Create() {
 		for (int i = 0; i < Sprites[0]->AnimCount; i++) {
 			AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 		}
-	} else if (Character == CharacterType::Mighty) {
+	} 
+	else if (Character == CharacterType::Mighty) {
 		Thremixed = true;
 		Sprites[0] = new ISprite("Player/Mighty1.gif", App);
 		Sprites[1] = new ISprite("Player/Mighty2.gif", App);
@@ -485,7 +492,8 @@ void IPlayer::Create() {
 		for (int i = 0; i < Sprites[0]->AnimCount; i++) {
 			AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 		}
-	} else if (Character == CharacterType::Ray) {
+	} 
+	else if (Character == CharacterType::Ray) {
 		Thremixed = true;
 		Sprites[0] = new ISprite("Player/Ray1.gif", App);
 		Sprites[1] = new ISprite("Player/Ray2.gif", App);
