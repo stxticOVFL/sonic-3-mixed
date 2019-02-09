@@ -59,6 +59,16 @@ void Object::MoveSprite() {
     SubY += YSpeed << 8;
 }
 
+void Object::MoveWithParent() {
+    Object *host = (Object *)Parent;
+    if (host == NULL) {
+        return;
+    }
+    
+    X = host->X;
+    Y = host->Y;
+}
+
 int Object::Swing_UpAndDown() {
     int d0;
     int d1;
@@ -190,11 +200,11 @@ void Enemy::MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t
 	int16_t oldSpeed = speed;
     bool dontApplySpeed = 0;
     
-	if (X == Player->X) {
+	if (X == Player->EZX) {
 		dontApplySpeed = true;
 	} else {
 		dontApplySpeed = false;
-		if (X > Player->X) {
+		if (X > Player->EZX) {
 			speed = -speed;
         }
 
@@ -204,8 +214,8 @@ void Enemy::MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t
 		}
 	}
 
-	if (Y != Player->Y) {
-		if (Y >= Player->Y) {
+	if (Y != Player->EZY) {
+		if (Y >= Player->EZY) {
 			oldSpeed = -oldSpeed;
         }
 

@@ -1,0 +1,25 @@
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 16;
+    H = 16;
+    VisW = 16;
+    VisH = 16;
+    Gravity = 0;
+    Frame = 0;
+    
+    VisualLayer = 1;
+}
+
+event Update() {
+    MoveWithParent();
+}
+
+event Render(CamX:int, CamY:int) {
+    // Animation Timer Data for Subobject:
+    // 3, $1D, 4, 2, 3, 1, 4, 2, 3, $E, 4, 2, $FC, 0
+
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

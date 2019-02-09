@@ -1,7 +1,7 @@
-#ifndef BATBRIGHT_H
-#define BATBRIGHT_H
+#ifndef BATBRIGHTPARTS_H
+#define BATBRIGHTPARTS_H
 
-class Batbright;
+class BatbrightParts;
 
 #include <Utils/Standard.h>
 
@@ -12,17 +12,13 @@ class Batbright;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class Batbright: public Enemy {
+class BatbrightParts: public Object {
 public:    
     
-    Object* Children[2];
     
     void Create();
     void Update();
-    void OnAnimationFinish();
-    int OnHit();
-    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
     void Render(int CamX, int CamY);
 };
 
-#endif /* BATBRIGHT_H */
+#endif /* BATBRIGHTPARTS_H */

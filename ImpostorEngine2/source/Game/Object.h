@@ -33,6 +33,8 @@ bool operator==(const int& left, const CollideSide& right);
 bool operator!=(const CollideSide& left, const int& right);
 bool operator!=(const int& left, const CollideSide& right);
 
+class Object;
+
 class Object {
 public:
     IApp* App;
@@ -40,6 +42,8 @@ public:
     LevelScene* Scene;
 
     ISprite* Sprite = NULL;
+    
+    void *Parent = NULL;
 
     uint32_t InitialX;
     uint32_t InitialY;
@@ -136,6 +140,7 @@ public:
 
     void Animate();
     void MoveSprite();
+    void MoveWithParent();
     int  Swing_UpAndDown();
 };
 
