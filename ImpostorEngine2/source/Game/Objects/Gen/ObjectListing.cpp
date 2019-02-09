@@ -77,6 +77,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x41:
             return new Balloon();
             break;
+        case 0xA5:
+            return new Batbright();
+            break;
         case 0x4B:
             return new Bouncepad();
             break;

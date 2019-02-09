@@ -1,0 +1,58 @@
+object 0xA5;
+
+subclass Enemy;
+
+var Children:Object[2];
+
+event Create() {
+    Active = true;
+    Priority = true;
+
+    W = 16;
+    H = 16;
+    VisW = 16;
+    VisH = 16;
+    
+    //CurrentAnimation = Sprite.FindAnimation("Batbot");
+    CurrentAnimation = 0;
+    
+    /*
+    for (var i:int = 0; i < 2; i++) {
+        Children[i] = Scene.AddNewObject(Obj_BloominatorSpore, 0, 0, 0, false, false);
+        Children[i].Sprite = Sprite;
+        Children[i].CurrentAnimation = CurrentAnimation;
+    }
+    */
+    
+    VisualLayer = 1;
+}
+
+event Update() {
+    CheckDistanceToPlayers();
+    if (PlayerXDistance >= 0x40) {
+        App.Print(-1, "Not attacking player.");
+        return;
+    }
+    XSpeed = 0x200;
+    
+    MoveTowardsTargetPosition(ClosetPlayer, 0x200, 8);
+}
+
+event OnAnimationFinish() {
+
+}
+
+event OnHit() : int {
+    //Children[0].Active = false;
+    //Children[1].Active = false;
+    return OnDeath();
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    var Player:IPlayer = Scene.Players[PlayerID];
+    if (Player == 0) {
+        return false;
+    }
+    
+    return 1;
+}

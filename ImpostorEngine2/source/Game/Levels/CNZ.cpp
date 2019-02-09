@@ -503,6 +503,7 @@ PUBLIC void Level_CNZ::FinishResults() {
 		G->FadeToWhite = false;
 	}
 }
+
 PUBLIC void Level_CNZ::GoToNextAct() {
 	if (VisualAct == 1) {
 		Level_CNZ* NextAct = new Level_CNZ(App, G, 2);

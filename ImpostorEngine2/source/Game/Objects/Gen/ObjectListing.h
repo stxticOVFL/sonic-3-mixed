@@ -26,6 +26,7 @@
 #include "AIZ/SpikedLog.h"
 #include "AIZ/SwingVine.h"
 #include "CNZ/Balloon.h"
+#include "CNZ/Batbright.h"
 #include "CNZ/Bouncepad.h"
 #include "Common/AnimSprite.h"
 #include "Common/AutomaticTunnel.h"
@@ -112,6 +113,7 @@ enum {
     Obj_SpikedLog = 0x02E,
     Obj_SwingVine = 0x00C,
     Obj_Balloon = 0x041,
+    Obj_Batbright = 0x0A5,
     Obj_Bouncepad = 0x04B,
     Obj_AnimSprite = 0x030,
     Obj_AutomaticTunnel = 0x024,

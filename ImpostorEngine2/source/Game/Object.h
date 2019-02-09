@@ -4,6 +4,7 @@
 #define Scene_AddSelfToRegistry(boots) Scene->Objects##boots[Scene->Object##boots##Count++] = this
 
 class LevelScene;
+class IPlayer;
 
 struct Rect {
     int  Left = 0x0;
@@ -26,6 +27,7 @@ enum class CollideSide {
     TOP_SIDES = 7,
     BOTTOM = 8,
 };
+
 bool operator==(const CollideSide& left, const int& right);
 bool operator==(const int& left, const CollideSide& right);
 bool operator!=(const CollideSide& left, const int& right);
@@ -148,8 +150,16 @@ public:
     bool Boss = false;
 
     Rect HitboxEnemy;
+    
+    IPlayer *ClosetPlayer = 0;
+    bool PlayerRelativeXDirection = 0;
+    bool PlayerRelativeYDirection = 0;
+    int16_t PlayerXDistance = 0;
+    int16_t PlayerYDistance = 0;
 
     virtual void Create();
+    virtual void CheckDistanceToPlayers();
+    virtual void MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t speed);
     virtual int  OnDeath();
     virtual int  OnHit();
 };
