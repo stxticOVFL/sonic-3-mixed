@@ -14001,3 +14001,683 @@ IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scro
       LOG: SDL_Init succeeded!
       LOG: Starting scene
       LOG: Running...
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.005s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.000s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: "Sprites/HCZ/Button.bin"
+      LOG:     "Vertical" (0) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Horizontal" (1) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG: "Sprites/HCZ/Fan.bin"
+      LOG:     "Vertical" (2) (Flags: 00, FtL: 0, Spd: 128, Frames: 6)
+      LOG:     "Horizontal" (3) (Flags: 00, FtL: 0, Spd: 128, Frames: 6)
+      LOG: "Sprites/HCZ/HandLauncher.bin"
+      LOG:     "Base" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Hand Up" (5) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG:     "Hand Grab" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Hand Down" (7) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG:     "Hand Release" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/HCZ/BreakBar.bin"
+      LOG:     "Vertical" (9) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Horizontal" (10) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG: "Sprites/HCZ/Decoration.bin"
+      LOG:     "Bridge Post" (11) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG:     "Large Propeller" (12) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Waterfall Splash" (13) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG: "Sprites/HCZ/Platform.bin"
+      LOG:     "Main" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 7)
+      LOG:     "Spin" (15) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Big" (16) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/HCZ/Wake.bin"
+      LOG:     "New Animation 0" (17) (Flags: 00, FtL: 0, Spd: 1, Frames: 8)
+      LOG: "Sprites/HCZ/Bridge.bin"
+      LOG:     "Log" (18) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (23) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1152) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1152) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Moving Wall): Width (32) Height (32) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+  WARNING: Object 6E (Obj_WaterDrop) has not been implemented!
+  WARNING: Object 9A (Obj_HCZ_EndBoss) has not been implemented!
+      LOG: "Sprites/MGZ/Collapsing Bridge.bin"
+      LOG:     "Collapsing Bridge" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/MGZ/Dash Trigger.bin"
+      LOG:     "Dash Trigger" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG: "Sprites/MGZ/Floating Platform.bin"
+      LOG:     "Floating Platform" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/MGZ/Head Trigger.bin"
+      LOG:     "Head Trigger" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 8)
+      LOG: "Sprites/MGZ/Pulley.bin"
+      LOG:     "Pulley" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 7)
+      LOG: "Sprites/MGZ/Breakable Wall.bin"
+      LOG:     "Breakable Wall" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/MGZ/Trigger Platform.bin"
+      LOG:     "Trigger Platform" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/MGZ/Swinging Platform.bin"
+      LOG:     "Swinging Platform" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/MGZ/Moving Spike Platform.bin"
+      LOG:     "Moving Spike Platform" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/MGZ/Smashing Pillar.bin"
+      LOG:     "Smashing Pillar" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/MGZ/Swinging Spike Ball.bin"
+      LOG:     "Swinging Spike Ball" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/MGZ/Top Platform.bin"
+      LOG:     "Platform" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Launcher" (12) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/MGZ/Miniboss.bin"
+      LOG:     "Main" (13) (Flags: 00, FtL: 0, Spd: 256, Frames: 3)
+      LOG:     "Pieces" (14) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Spires" (15) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/MGZ/End Boss.bin"
+      LOG:     "End Boss" (16) (Flags: 00, FtL: 0, Spd: 1, Frames: 46)
+      LOG:     "Pieces" (17) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Debris" (18) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/MGZ/Non Animated Sprites.bin"
+      LOG:     "Signs" (19) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/MGZ/Bubbles Badnik.bin"
+      LOG:     "Bubbles Moving" (20) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Spiking" (21) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/MGZ/Spiker.bin"
+      LOG:     "Spiker Idle" (22) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Shooter" (23) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Shot" (24) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/MGZ/Mantis.bin"
+      LOG:     "Mantis" (25) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Antennae" (26) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background): Width (32) Height (16) Infos (14) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (768) Height (256) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (768) Height (256) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 50 (Obj_MGZ_RunAroundPole) has not been implemented!
+  WARNING: Object 52 (Obj_MGZ_LBZSmashingPillar) has not been implemented!
+  WARNING: Object 56 (Obj_MGZ_MovingSpikePlatform) has not been implemented!
+  WARNING: Object 58 (Obj_MGZ_SwingingSpikeBall) has not been implemented!
+  WARNING: Object 5B (Obj_MGZ_TopPlatform) has not been implemented!
+  WARNING: Object 5C (Obj_MGZ_TopLauncher) has not been implemented!
+  WARNING: Object 9B (Obj_BubblesBadnik) has not been implemented!
+  WARNING: Object 9C (Obj_Spiker) has not been implemented!
+  WARNING: Object 9E (Obj_MGZ_CutsceneMiniBoss) has not been implemented!
+  WARNING: Object 9F (Obj_MGZ_MiniBoss) has not been implemented!
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.005s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/CNZ/Breakable Wall.bin"
+      LOG:     "Breakable Wall" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/CNZ/Balloon.bin"
+      LOG:     "Default" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Blue" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Yellow" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Black" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Red" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Default (Popped)" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Blue (Popped)" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Yellow (Popped)" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Black (Popped)" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Red (Popped)" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/CNZ/Button.bin"
+      LOG:     "Button" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/CNZ/Cork Floor.bin"
+      LOG:     "Cork Floor" (12) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/CNZ/Cylinder.bin"
+      LOG:     "Cylinder" (13) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/CNZ/Door Horizontal.bin"
+      LOG:     "Door Horizontal" (14) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/CNZ/End Boss.bin"
+      LOG:     "End Boss Main" (15) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Bulb" (16) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Bulb Lit" (17) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Ball" (18) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Lightning" (19) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Pieces" (20) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/CNZ/Light Bulb.bin"
+      LOG:     "Light Bulb" (21) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/CNZ/Miniboss.bin"
+      LOG:     "Miniboss Body" (22) (Flags: 00, FtL: 0, Spd: 1, Frames: 7)
+      LOG:     "Spinning Top" (23) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Lightning" (24) (Flags: 00, FtL: 0, Spd: 1, Frames: 7)
+      LOG:     "Pieces" (25) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/CNZ/Rising Platform.bin"
+      LOG:     "Rising Platform" (26) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/CNZ/Trap Door.bin"
+      LOG:     "Trap Door" (27) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/CNZ/Cannon.bin"
+      LOG:     "Cannon" (28) (Flags: 00, FtL: 0, Spd: 1, Frames: 9)
+      LOG: "Sprites/CNZ/Cannon Ball.bin"
+      LOG:     "Cannon Ball" (29) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/CNZ/Cannon Base.bin"
+      LOG:     "Cannon Base" (30) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/CNZ/Bumper.bin"
+      LOG:     "Bumper" (31) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/CNZ/Clamer.bin"
+      LOG:     "Clamer Blinking" (32) (Flags: 00, FtL: 0, Spd: 1, Frames: 7)
+      LOG:     "Shooting" (33) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Shot" (34) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/CNZ/Batbot.bin"
+      LOG:     "Batbot Body" (35) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Eyes" (36) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Bulb" (37) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/CNZ/Sparkle.bin"
+      LOG:     "Sparkle Body" (38) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG:     "Lightning" (39) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Spark" (40) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background): Width (32) Height (32) Infos (5) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Boss Area Foreground): Width (40) Height (72) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (896) Height (200) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (896) Height (200) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 42 (Obj_CNZ_Cannon) has not been implemented!
+  WARNING: Object 43 (Obj_CNZ_RisingPlatform) has not been implemented!
+  WARNING: Object 44 (Obj_CNZ_TrapDoor) has not been implemented!
+  WARNING: Object 46 (Obj_CNZ_HoverFan) has not been implemented!
+  WARNING: Object 47 (Obj_CNZ_RotatingBarrels) has not been implemented!
+  WARNING: Object 48 (Obj_CNZ_VacuumTubes) has not been implemented!
+  WARNING: Object 49 (Obj_CNZ_RotatingWheel) has not been implemented!
+  WARNING: Object 4A (Obj_CNZ_Bumper) has not been implemented!
+  WARNING: Object 4C (Obj_CNZ_Corkscrew) has not been implemented!
+  WARNING: Object 4D (Obj_CNZ_BarberPoleSprite) has not been implemented!
+  WARNING: Object 4E (Obj_CNZ_RotatingMesh) has not been implemented!
+  WARNING: Object A3 (Obj_Clamer) has not been implemented!
+  WARNING: Object A4 (Obj_CNZ_Blastoid) has not been implemented!
+  WARNING: Object A5 (Obj_Batbot) has not been implemented!
+  WARNING: Object A6 (Obj_CNZ_Miniboss) has not been implemented!
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+      LOG: Running...
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 1 Constructor took 0.001s to run.
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/End Boss.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Miniboss.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (784) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: Starting AIZ...
+      LOG: Angel Island Act 2 Constructor took 0.001s to run.
+IMPORTANT: Layer 0 (Background): Width (32) Height (80) Infos (25) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (1224) Height (160) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (Airship Low): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Airship High): Width (40) Height (8) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+  WARNING: Object 83 (Obj_CutsceneButton) has not been implemented!
+      LOG: "Sprites/HCZ/Button.bin"
+      LOG:     "Vertical" (0) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Horizontal" (1) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG: "Sprites/HCZ/Fan.bin"
+      LOG:     "Vertical" (2) (Flags: 00, FtL: 0, Spd: 128, Frames: 6)
+      LOG:     "Horizontal" (3) (Flags: 00, FtL: 0, Spd: 128, Frames: 6)
+      LOG: "Sprites/HCZ/HandLauncher.bin"
+      LOG:     "Base" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Hand Up" (5) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG:     "Hand Grab" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Hand Down" (7) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG:     "Hand Release" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG: "Sprites/HCZ/BreakBar.bin"
+      LOG:     "Vertical" (9) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Horizontal" (10) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG: "Sprites/HCZ/Decoration.bin"
+      LOG:     "Bridge Post" (11) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG:     "Large Propeller" (12) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Waterfall Splash" (13) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG: "Sprites/HCZ/Platform.bin"
+      LOG:     "Main" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 7)
+      LOG:     "Spin" (15) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Big" (16) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/HCZ/Wake.bin"
+      LOG:     "New Animation 0" (17) (Flags: 00, FtL: 0, Spd: 1, Frames: 8)
+      LOG: "Sprites/HCZ/Bridge.bin"
+      LOG:     "Log" (18) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+IMPORTANT: Layer 0 (Background): Width (32) Height (64) Infos (15) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (FG Low): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 2 (FG High): Width (896) Height (192) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
