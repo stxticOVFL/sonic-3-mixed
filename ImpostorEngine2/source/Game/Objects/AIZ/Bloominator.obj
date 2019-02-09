@@ -59,7 +59,7 @@ event OnHit() : int {
 event Render(CamX:int, CamY:int) {
     var Subframe:int = 0;
     var Keyframe:int = Frame - 1;
-    if (Keyframe >= 14 && Keyframe < 2 + 6) {
+    if (Keyframe >= 14 && Keyframe < 62 + 6) {
         if (Keyframe >= 14 && Keyframe < 14 + 11) {
             Subframe = 1;
         }
