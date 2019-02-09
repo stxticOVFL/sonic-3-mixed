@@ -3576,13 +3576,25 @@ void IPlayer::CreateRingLoss() {
 	int angle = 72;
 	bool n = false;
 	int spd = 0x400;
-
-	if (Rings > 32)
-		Rings = 32;
+    int LossRings = Rings;
+    
+    if (LoseAllRings) {
+        if (Rings > 32) {
+            Rings = 0;
+            LossRings = 32;
+        }
+    } else {
+        if (Rings > 32) {
+            Rings = Rings - 32;
+            LossRings = 32;
+        } else {
+            Rings = 0;
+        }
+    }
 
 	RingAlarm = 64;
 
-	while (t < Rings) {
+	while (t < LossRings) {
 		int xspd = (spd * IMath::cosHex(angle)) >> 16;
 		int yspd = (spd * IMath::sinHex(angle)) >> 16;
 		if (n) {
@@ -3601,8 +3613,6 @@ void IPlayer::CreateRingLoss() {
 	}
 
 	Sound::Play(Sound::SFX_RINGLOSS);
-
-	Rings = 0;
 }
 void IPlayer::Vibrate(VibrationType v) {
 	double strengths[7] = {
