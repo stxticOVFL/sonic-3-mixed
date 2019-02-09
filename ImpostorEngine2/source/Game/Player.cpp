@@ -3580,10 +3580,10 @@ void IPlayer::CreateRingLoss() {
     
     if (LoseAllRings) {
         if (Rings > 32) {
-            Rings = 0;
             LossRings = 32;
         }
-    } else {
+		Rings = 0;
+    } else if (!LoseAllRings) {
         if (Rings > 32) {
             Rings = Rings - 32;
             LossRings = 32;
