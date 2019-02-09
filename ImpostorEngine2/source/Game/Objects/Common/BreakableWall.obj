@@ -62,7 +62,7 @@ event Create() {
         case 6: // LBZ
             W = 32;
             H = 64;
-            // CurrentAnimation = 0;
+            CurrentAnimation = 1;
             break;
         case 7: // MHZ
         case 8: // FBZ

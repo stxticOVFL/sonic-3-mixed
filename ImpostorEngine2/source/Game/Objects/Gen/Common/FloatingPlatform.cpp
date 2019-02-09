@@ -51,14 +51,19 @@ void FloatingPlatform::Create() {
         Amplitude = 0x08 << MoveType;
     }
 
-    if (Scene->ZoneID == 1) {
+    switch (Scene->ZoneID) {
+        case 1:
         CurrentAnimation = 19;
         if (Scene->Act == 2) CurrentAnimation = 20;
 
         Frame = 0;
-    }
-    else if (Scene->ZoneID == 2) {
+        break;
+        case 2:
         CurrentAnimation = 14;
+        break;
+        case 6:
+        CurrentAnimation = 14;
+        break;
     }
 
 }

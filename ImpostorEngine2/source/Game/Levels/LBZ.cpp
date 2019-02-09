@@ -48,7 +48,7 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         PlayerStartY = 0x076C;
     }
     else {
-
+		VisualWaterLevel = WaterLevel = 0x660;
     }
 }
 
@@ -85,42 +85,34 @@ PUBLIC void Level_LBZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
     if (!LBZObjectsSprite) {
-		LBZObjectsSprite = new ISprite("Sprites/AIZ/Objects.gif", App);
+		LBZObjectsSprite = new ISprite("Sprites/LBZ/Objects.gif", App);
 		LBZObjectsSprite->Print = true;
 
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Tree.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Zipline Peg.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Animated Sprites.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Breakable Wall.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Caterkiller Jr.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Log Bridge.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform 2.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor 2.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor Water.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Drawbridge.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Draw Bridge Fire.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 1).bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 2).bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 1).bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 2).bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Flipping Bridge.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform 2.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Foreground Plant.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Monkey Dude.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Non Animated Sprites.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rhinobot.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot Dust.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Ride Vine.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock 2.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits 2.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Spiked Log.bin");
-        LBZObjectsSprite->LoadAnimation("Sprites/AIZ/Tulipon.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Tunnel Exhaust.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Breakable Wall.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Collapsing Bridge.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Collapsing Ledge.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Cork Floor.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Cup Elevator.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Exploding Trigger.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Flame Thrower.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Exploding Trigger.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Gate Laser.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Knuckles Bomb.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Knuckles Pillar.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Lowering Grapple.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Floating Platform.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/PipePlug.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Player Launcher.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Ride Grapple.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Smashing Spikes.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Spin Launcher.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Trigger Bridge.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Tube Elevator.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Miniboss.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/End Boss.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Final Boss.bin");
+		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Non Animated Sprites.bin");
 	}
 
 	if (!KnuxSprite[0]) {
@@ -136,6 +128,44 @@ PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
     }
+}
+
+PUBLIC void Level_LBZ::FinishResults() {
+	if (VisualAct == 1) {
+		LevelScene::FinishResults();
+	}
+	else {
+		FadeAction = FadeActionType::NEXT_ZONE;
+		FadeTimerMax = 90;
+		FadeMax = 0x140;
+		G->FadeToWhite = false;
+	}
+}
+PUBLIC void Level_LBZ::GoToNextAct() {
+	if (VisualAct == 1) {
+		Level_LBZ* NextAct = new Level_LBZ(App, G, 2);
+
+		TransferCommonLevelData(NextAct);
+		NextAct->LBZObjectsSprite = LBZObjectsSprite;
+		// Enable Title Card with no fade-in
+		NextAct->LevelCardTimer = 0.0;
+		NextAct->FadeTimer = 0;
+		NextAct->FadeAction = 0;
+		NextAct->LevelCardHide = false;
+		// Transfer over current frame
+		NextAct->Frame = Frame;
+		// Set player spawn position relative to their previous position  
+		NextAct->SpecialSpawnPositionX = Player->EZX - 0x3A00;
+		NextAct->SpecialSpawnPositionY = Player->EZY;
+		NextAct->RoutineNumber = 0x00;
+
+		App->NextScene = NextAct;
+	}
+	else {
+		//Level_CNZ* NextAct = new Level_CNZ(App, G, 1);
+		//TransferCommonLevelData(NextAct);
+		//App->NextScene = NextAct;
+	}
 }
 
 PUBLIC void Level_LBZ::EarlyUpdate() {

@@ -375,10 +375,24 @@ PUBLIC VIRTUAL uint32_t IGraphics::GetPixelSPR(ISprite* sprite, int x, int y, ui
 
 PUBLIC VIRTUAL void IGraphics::SetDrawAlpha(int a) {
 	DrawAlpha = a;
+
+	if (SetPixelFunction != &IGraphics::SetPixelNormal && SetPixelFunction != &IGraphics::SetPixelAlpha) return;
+
 	if (DrawAlpha == 0xFF)
 		SetPixelFunction = &IGraphics::SetPixelNormal;
 	else
 		SetPixelFunction = &IGraphics::SetPixelAlpha;
+}
+PUBLIC VIRTUAL void IGraphics::SetDrawFunc(int a) {
+	switch (a) {
+		case 1:
+			SetPixelFunction = &IGraphics::SetPixelAdditive;
+			break;
+		default:
+			SetPixelFunction = &IGraphics::SetPixelNormal;
+			SetDrawAlpha(DrawAlpha);
+			break;
+	}
 }
 
 PUBLIC VIRTUAL void IGraphics::SetFade(int fade) {

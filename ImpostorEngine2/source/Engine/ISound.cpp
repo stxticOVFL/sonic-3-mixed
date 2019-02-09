@@ -72,7 +72,7 @@ PRIVATE STATIC long ISound::StaticTell(void* datasource) {
 }
 PUBLIC bool ISound::LoadOGG_RW(IResource* src, int freesrc, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len) {
     OggVorbis_File vf;
-    ov_callbacks callbacks;
+    ov_callbacks callbacks = OV_CALLBACKS_NOCLOSE;
     vorbis_info *info;
     Uint8 *buf;
     int bitstream = -1;

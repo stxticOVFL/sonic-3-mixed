@@ -97,6 +97,8 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Players[PlayerID]->Vibrate(VibrationType::ImpactSmall);
         Sound::Play(Sound::SFX_SPRING);
         DoAnimate = true;
+        if (SubType & 0xC) Scene->Players[PlayerID]->Layer = 1 - ((SubType >> 2) & 0x1);
+
         if (FlipX) SpringPower = -SpringPower;
 
         Scene->Players[PlayerID]->XSpeed = SpringPower;
@@ -115,6 +117,8 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Players[PlayerID]->Vibrate(VibrationType::ImpactSmall);
         Sound::Play(Sound::SFX_SPRING);
         DoAnimate = true;
+        if (SubType & 0xC) Scene->Players[PlayerID]->Layer = 1 - ((SubType >> 2) & 0x1);
+
         return 1;
     }
     else if (HitFrom == CollideSide::BOTTOM && Rotation == 180) {
@@ -129,6 +133,8 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Players[PlayerID]->Vibrate(VibrationType::ImpactSmall);
         Sound::Play(Sound::SFX_SPRING);
         DoAnimate = true;
+        if (SubType & 0xC) Scene->Players[PlayerID]->Layer = 1 - ((SubType >> 2) & 0x1);
+
         return 1;
     }
     else if ((Rotation == 90 && HitFrom == CollideSide::LEFT) || (Rotation == 270 && HitFrom == CollideSide::RIGHT)) {

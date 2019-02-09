@@ -384,7 +384,8 @@ PUBLIC void IApp::Cleanup() {
 
 PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
 #if !ANDROID
-    if (sev < 0) return;
+    if (sev < 0)
+		return;
 #endif
 
     va_list args;

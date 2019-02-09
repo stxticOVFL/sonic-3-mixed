@@ -54,10 +54,13 @@ event Create() {
         case 5: // ICZ
             W = 32;
             H = 64;
+            CurrentAnimation = 3;
+            BreakableFromTop = true;
             break;
         case 6: // LBZ
             W = 64;
             H = 64;
+            CurrentAnimation = 4;
             break;
         case 7: // MHZ
         case 8: // LBZ

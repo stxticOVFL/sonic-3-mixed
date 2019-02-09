@@ -80,6 +80,7 @@ public:
     virtual uint32_t GetPixelSPR(ISprite* sprite, int x, int y);
     virtual uint32_t GetPixelSPR(ISprite* sprite, int x, int y, uint32_t* pal);
     virtual void SetDrawAlpha(int a);
+    virtual void SetDrawFunc(int a);
     virtual void SetFade(int fade);
     virtual void SetFilter(int filter);
     virtual int  GetFilter();

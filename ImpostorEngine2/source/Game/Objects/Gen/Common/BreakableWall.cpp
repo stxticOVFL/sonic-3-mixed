@@ -60,6 +60,7 @@ void BreakableWall::Create() {
         case 6:
         W = 32;
         H = 64;
+        CurrentAnimation = 1;
         break;
         case 7:
         case 8:

@@ -20,7 +20,8 @@ void CollapsingPlatform::Create() {
     SolidTop = true;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");
-    if (Scene->ZoneID == 1) {
+    switch (Scene->ZoneID) {
+        case 1:
         W = 0x30;
         H = 0x20;
         if (Scene->Act == 2) H = 0x18;
@@ -29,17 +30,26 @@ void CollapsingPlatform::Create() {
         if (Scene->Act == 2) CurrentAnimation = 7;
 
         Frame = 0;
-    }
-    else if (Scene->ZoneID == 2) {
-    }
-    else if (Scene->ZoneID == 3) {
-    }
-    else if (Scene->ZoneID == 5) {
+        break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
         W = 0x30;
         H = 0x2C;
         CurrentAnimation = 0;
-    }
-    else if (Scene->ZoneID == 6) {
+        break;
+        case 6:
+        break;
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        break;
     }
 
     VisW = W;
@@ -66,10 +76,12 @@ void CollapsingPlatform::Break() {
     Sound::Play(Sound::SFX_COLLAPSE);
     if (!Sprite) return;
 
-    int x = X - W / 2 + 8;
-    int y = Y - H / 2 + 8;
-    int w = W >> 4;
-    int h = H >> 4;
+    if (CurrentAnimation < 0) return;
+
+    int x = X + Sprite->Animations[CurrentAnimation].Frames[Frame].OffX + 8;
+    int y = Y + Sprite->Animations[CurrentAnimation].Frames[Frame].OffY + 8;
+    int w = Sprite->Animations[CurrentAnimation].Frames[Frame].W >> 4;
+    int h = Sprite->Animations[CurrentAnimation].Frames[Frame].H >> 4;
     int left = Sprite->Animations[CurrentAnimation].Frames[Frame].X;
     int top = Sprite->Animations[CurrentAnimation].Frames[Frame].Y;
     switch (Scene->ZoneID) {

@@ -32,6 +32,7 @@ public:
     void BreakHCZ();
     void BreakMGZ();
     void BreakICZ();
+    void Break();
     void Render(int CamX, int CamY);
     int CustomSolidityCheck(int probeX, int probeY, int PlayerID, int checkJumpThrough);
 };

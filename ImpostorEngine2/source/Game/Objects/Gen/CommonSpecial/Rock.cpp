@@ -118,6 +118,7 @@ void Rock::Create() {
                 }
                 else {
                     BreakableByRoll = CollideSide::SIDES;
+                    BreakableBySuper = CollideSide::SIDES;
                 }
             }
 
@@ -220,6 +221,7 @@ int Rock::OnBreakHorizontal(int PlayerID, int HitFrom) {
     Sound::Play(Sound::SFX_COLLAPSE);
     BreakableByRoll = CollideSide::NONE;
     BreakableByJump = CollideSide::NONE;
+    BreakableBySuper = CollideSide::NONE;
     BreakableByGlide = CollideSide::NONE;
     BreakableByKnuckles = CollideSide::NONE;
     Solid = false;
