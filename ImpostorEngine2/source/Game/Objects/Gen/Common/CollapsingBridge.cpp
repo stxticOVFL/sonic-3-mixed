@@ -25,16 +25,17 @@ void CollapsingBridge::Create() {
     if (UseTrigger) TriggerID = SubType & 0xF;
     else Delay = SubType & 0xF;
     Allotted = Delay * 16 + 8;
-    if (Scene->ZoneID == 1) {
+    switch (Scene->ZoneID) {
+        case 1:
         W = 120;
         H = 0x40;
-    }
-    else if (Scene->ZoneID == 2) {
+        break;
+        case 2:
         W = 0x40;
         H = 0x10;
         VisualLayer = 1;
-    }
-    else if (Scene->ZoneID == 3) {
+        break;
+        case 3:
         CurrentAnimation = 0;
         Frame = BridgeType;
         switch (BridgeType) {
@@ -49,21 +50,37 @@ void CollapsingBridge::Create() {
             break;
         }
 
-    }
-    else if (Scene->ZoneID == 5) {
+        break;
+        case 4:
+        case 5:
         W = 80;
         H = 16;
         CurrentAnimation = 1;
-    }
-    else if (Scene->ZoneID == 6) {
-        if (SubType >> 6 & 1) {
+        break;
+        case 6:
+        UseTrigger = false;
+        Delay = SubType & 0xF;
+        Allotted = Delay * 16 + 8;
+        if (BridgeType == 4) {
             W = 0x20;
             H = 0x20;
+            CurrentAnimation = 3;
         }
         else {
             W = 0x40;
             H = 0x10;
+            CurrentAnimation = 2;
         }
+        break;
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        break;
     }
 
     VisW = W;
@@ -102,6 +119,7 @@ void CollapsingBridge::Update() {
             BreakHCZ();
             BreakMGZ();
             BreakICZ();
+            Break();
         }
 
     }
@@ -250,6 +268,40 @@ void CollapsingBridge::BreakICZ() {
     }
 }
 
+void CollapsingBridge::Break() {
+    if (Scene->ZoneID < 6) return;
+
+    if (!Sprite) return;
+
+    if (CurrentAnimation < 0) return;
+
+    int x = X + Sprite->Animations[CurrentAnimation].Frames[Frame].OffX + 8;
+    int y = Y + Sprite->Animations[CurrentAnimation].Frames[Frame].OffY + 8;
+    int w = Sprite->Animations[CurrentAnimation].Frames[Frame].W >> 4;
+    int h = Sprite->Animations[CurrentAnimation].Frames[Frame].H >> 4;
+    int left = Sprite->Animations[CurrentAnimation].Frames[Frame].X;
+    int top = Sprite->Animations[CurrentAnimation].Frames[Frame].Y;
+    bool side = FlipX;
+    if (side) {
+        for (int i = 0; i < w; i++)
+{
+            for (int j = 0; j < h; j++)
+{
+                Scene->AddMovingSprite(Sprite, x + i * 0x10, y + j * 0x10, left + (w - 1 - i) * 0x10, top + j * 0x10, 0x10, 0x10, -8, -8, side, false, 0, 0, 0x70, (h - 1 - j) * 2 + i * h * 2);
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < w; i++)
+{
+            for (int j = 0; j < h; j++)
+{
+                Scene->AddMovingSprite(Sprite, x + i * 0x10, y + j * 0x10, left + i * 0x10, top + j * 0x10, 0x10, 0x10, -8, -8, side, false, 0, 0, 0x70, (h - 1 - j) * 2 + (w - 1 - i) * h * 2);
+            }
+        }
+    }
+}
+
 void CollapsingBridge::Render(int CamX, int CamY) {
     if (!this->SolidTop) return;
 
@@ -352,9 +404,14 @@ int CollapsingBridge::CustomSolidityCheck(int probeX, int probeY, int PlayerID, 
 
     if (!this->SolidTop) return 0;
 
+    int spriteoffset = -H / 2;
+    if (CurrentAnimation != -1) {
+        spriteoffset = Sprite->Animations[CurrentAnimation].Frames[Frame].OffY;
+    }
+
     BreakSide = probeX > X;
     if (Scene->ZoneID != 3) {
-        if (probeX >= this->X - this->W / 2 && probeY >= this->Y - this->H / 2 && probeX < this->X + this->W / 2 && probeY < this->Y + this->H / 2) {
+        if (probeX >= X - W / 2 && probeY >= Y + spriteoffset && probeX < X + W / 2 && probeY < Y + spriteoffset + H) {
             if (!UseTrigger && this->f == -1 && Scene->Players[PlayerID]->Ground) {
                 this->f = this->Allotted;
                 this->Priority = true;

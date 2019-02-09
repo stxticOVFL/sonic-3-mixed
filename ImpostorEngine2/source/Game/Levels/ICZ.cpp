@@ -170,7 +170,7 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         PlayerStartY = 0x6C8;
     }
     else if (Act == 2) {
-
+        VisualWaterLevel = WaterLevel = 0xAD8;
     }
 }
 

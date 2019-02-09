@@ -26,32 +26,59 @@ event Create() {
     SolidCustomized = true;
     Scene.AddSelfToRegistry(this, "Solid");
 
-    if (Scene.ZoneID == 1) { // AIZ
-        W = 0x30;
-        H = 0x20;
-        if (Scene.Act == 2)
-            H = 0x18;
+    switch (Scene.ZoneID) {
+        case 1: // AIZ
+            W = 0x30;
+            H = 0x20;
+            if (Scene.Act == 2)
+                H = 0x18;
 
-        CurrentAnimation = 6;
-        if (Scene.Act == 2)
-            CurrentAnimation = 7;
+            CurrentAnimation = 6;
+            if (Scene.Act == 2)
+                CurrentAnimation = 7;
 
-        Frame = 0;
+            Frame = 0;
+            break;
+        case 2: // HCZ
+        case 3: // MGZ
+        case 4: // CNZ
+        case 5: // ICZ
+            W = 0x30;
+            H = 0x2C;
+            CurrentAnimation = 0;
+            break;
+        case 6: // LBZ
+            break;
+        case 7: // MHZ
+        case 8: // LBZ
+        case 9: // SOZ
+        case 10: // LRZ
+        case 11: // HPZ
+        case 12: // SSZ
+        case 13: // DEZ
+        case 14: // DDZ
+            break;
     }
-    else if (Scene.ZoneID == 2) { // HCZ
+    /*
+    switch (Scene.ZoneID) {
+        case 1: // AIZ
+        case 2: // HCZ
+        case 3: // MGZ
+        case 4: // CNZ
+        case 5: // ICZ
+        case 6: // LBZ
+        case 7: // MHZ
+        case 8: // LBZ
+        case 9: // SOZ
+        case 10: // LRZ
+        case 11: // HPZ
+        case 12: // SSZ
+        case 13: // DEZ
+        case 14: // DDZ
+            break;
+    }
+    //*/
 
-    }
-    else if (Scene.ZoneID == 3) { // MGZ
-
-    }
-    else if (Scene.ZoneID == 5) { // ICZ
-        W = 0x30;
-        H = 0x2C;
-        CurrentAnimation = 0;
-    }
-    else if (Scene.ZoneID == 6) { // LBZ
-
-    }
     VisW = W;
     VisH = H * 2 + 16;
 
@@ -75,11 +102,12 @@ event Break() {
     Sound.Play(Sound.SFX_COLLAPSE);
 
     if (!Sprite) return;
+    if (CurrentAnimation < 0) return;
 
-    var x:int = X - W / 2 + 8;
-    var y:int = Y - H / 2 + 8;
-    var w:int = W >> 4;
-    var h:int = H >> 4;
+    var x:int = X + Sprite.Animations[CurrentAnimation].Frames[Frame].OffX + 8;
+    var y:int = Y + Sprite.Animations[CurrentAnimation].Frames[Frame].OffY + 8;
+    var w:int = Sprite.Animations[CurrentAnimation].Frames[Frame].W >> 4;
+    var h:int = Sprite.Animations[CurrentAnimation].Frames[Frame].H >> 4;
     var left:int = Sprite.Animations[CurrentAnimation].Frames[Frame].X;
     var top:int = Sprite.Animations[CurrentAnimation].Frames[Frame].Y;
 

@@ -295,6 +295,9 @@ PUBLIC unsigned char* IStreamer::ReadCompressed() {
     return out;
 }
 PUBLIC unsigned long  IStreamer::Distance() {
+	if (res) {
+		return res->Position();
+	}
     return distance;
 }
 

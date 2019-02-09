@@ -2605,7 +2605,7 @@ PUBLIC void LevelScene::Update() {
         }
 
         if (App->Input->GetControllerInput(0)[1 + 8]) {
-            if (maxLayer == 1) {
+            if (maxLayer == 1 && Player) {
                 Player->XSpeed = 0;
                 Player->YSpeed = 0;
                 Player->GroundSpeed = 0;

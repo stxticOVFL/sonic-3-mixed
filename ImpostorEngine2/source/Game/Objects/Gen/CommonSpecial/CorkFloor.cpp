@@ -59,10 +59,13 @@ void CorkFloor::Create() {
         case 5:
         W = 32;
         H = 64;
+        CurrentAnimation = 3;
+        BreakableFromTop = true;
         break;
         case 6:
         W = 64;
         H = 64;
+        CurrentAnimation = 4;
         break;
         case 7:
         case 8:

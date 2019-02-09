@@ -2742,7 +2742,6 @@ void IPlayer::LateUpdate() {
 			else if (Action == ActionType::Transform) {
 				ChangeAnimation((int)AnimationEnum::Transform);
 			}
-			//else if (Action == ActionType::Normal && !ObjectControlled)
 			//ChangeAnimation((int)AnimationEnum::AirWalk + superflag);
 		}
 
@@ -2854,7 +2853,7 @@ void IPlayer::LateUpdate() {
 			}
 		}
 
-		if (!Ground && (CurrentAnimation == 5 || CurrentAnimation == 6 || CurrentAnimation == 7)) {
+		if (!Ground && (CurrentAnimation == 5 + superflag || CurrentAnimation == 6 + superflag || CurrentAnimation == 7 + superflag)) {
 			AnimationSpeedMult = 0x10000 / (0x800 - IMath::min(0x400, IMath::abs(GroundSpeed)));
 		}
 	}
@@ -2872,9 +2871,9 @@ void IPlayer::LateUpdate() {
 
 	if (animation.AnimationSpeed > 0 && animation.Frames[CurrentFrame / 0x100].Duration != 0) {
 		CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[CurrentFrame / 0x100].Duration;
-	} else if (Action == ActionType::Transform) {
-		CurrentFrame += 0x100;
 	}
+	else if (Action == ActionType::Transform)
+		CurrentFrame += 0x100;
 
 	if (Action == ActionType::ClimbRise) {
 		int offsetsX[7] = { 0x00, 0x00,  0x05,  0x0A,  0x0F,  0x14,  0x14 };
@@ -3580,7 +3579,7 @@ void IPlayer::CreateRingLoss() {
 	bool n = false;
 	int spd = 0x400;
     int LossRings = Rings;
-    
+
     if (LoseAllRings) {
         if (Rings > 32) {
             LossRings = 32;
@@ -4045,6 +4044,22 @@ void IPlayer::HandleMonitors() {
 								Vibrate(VibrationType::ImpactSmall);
 							}
 						}
+					}
+
+					bool NonSonicSuperCanBreak = true;
+
+					Connect = false;
+					if (obj->BreakableBySuper != CollideSide::NONE) {
+						Side = (int)obj->BreakableBySuper;
+						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+					}
+
+					if (Connect && (Character == CharacterType::Sonic || NonSonicSuperCanBreak) && (SuperForm || HyperForm)) {
+						SubX -= IMath::abs(GroundSpeed) << 8;
+						obj->OnBreakHorizontal(PlayerID, hitFrom);
 					}
 
 					Connect = false;

@@ -58,6 +58,7 @@ void DisappearingFloor::Update() {
             else {
                 Frame = -1;
             }
+            Frame++;
         }
 
     }
@@ -66,9 +67,8 @@ void DisappearingFloor::Update() {
 }
 
 void DisappearingFloor::Render(int CamX, int CamY) {
-    if (Frame >= 0) G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
-
-    if (Frame >= 3) G->DrawSprite(Sprite, CurrentAnimation + 1, (Scene->Frame >> 2) & 3, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (Frame >= 4) G->DrawSprite(Sprite, CurrentAnimation + 1, (Scene->Frame >> 2) & 3, X - CamX, Y - CamY, 0, IE_NOFLIP);
 
     }
 

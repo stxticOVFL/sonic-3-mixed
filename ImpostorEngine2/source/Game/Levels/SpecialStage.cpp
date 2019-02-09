@@ -43,7 +43,7 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     ZoneID = 20;
     Act = 1;
 
-    Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg");
+    Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg", true);
     Sound::Audio->LoopPoint[0] = 5309957;
 
     Globe = new ISprite("Stages/Special/Globe.gif", App);
@@ -109,43 +109,49 @@ PUBLIC void Level_SpecialStage::Init() {
             }
         }
 
+		// Byte
+		// Int32
+		// Int32
 
-        for (int i = 0; i < 15; i++) {
-            reader.ReadByte();
-            /*
+        for (int i = 0; i < 14; i++) {
+            //reader.ReadByte();
+            //*
             char bin[9];
             Uint8 a = reader.ReadByte();
             for (int b = 0; b < 8; b++) {
-                bin[b] = '0' + (a >> 7 & 1);
-                a <<= 1;
+                bin[b] = '0' + (a >> (7 - b) & 1);
             }
             bin[8] = 0;
             //*/
 
-            reader.ReadUInt32();
-            //App->Print(1, "Value %d: %s %X", i, bin, b);
+            int c = reader.ReadUInt32();
+			App->Print(1, "Value %d: %s (%X) %X", i, bin, a, c);
         }
 
+		reader.ReadByte();
+		reader.ReadUInt32();
         int count = reader.ReadUInt32();
         for (int i = 0; i < count; i++) {
-            reader.ReadUInt32();
-            //App->Print(1, "Value %d: %X", i, reader.ReadUInt32());
+            // reader.ReadUInt32();
+            App->Print(3, "Value %d: %X", i, reader.ReadUInt32());
         }
 
         for (int p = 0; p < 6; p++) {
-            reader.ReadByte();
+			int jimmy = reader.ReadByte();
             reader.ReadUInt32();
-            int jimmy = reader.ReadUInt32();
-            MapThing[p][0] = jimmy;
+            MapThing[p][0] = reader.ReadUInt32();
 
-            //App->Print(0, "Count [%d]: %X (%X)", p, MapThing[p][0], jimmy);
+            App->Print(0, "Count [%d]: %X (%X)", p, MapThing[p][0], jimmy);
 
             for (int i = 0; i < MapThing[p][0]; i++) {
                 MapThing[p][i + 1] = reader.ReadUInt32();
 
-                //App->Print(2, "%X: %X", i, MapThing[p][i + 1]);
+				if ((p >= 2 || p <= 5) && i < 0x10)
+					App->Print(2, "%X: %X", i, MapThing[p][i + 1]);
             }
         }
+
+		App->Print(2, "reader.Distance(): %X", reader.Distance());
 
         IResources::Close(BSS_Setup_Bin);
     }
@@ -324,15 +330,17 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
             0);
     }
 
-    G->DrawModeOverlay = true;
-    G->SetDrawAlpha(0x80);
-    G->DrawSprite(Horizon, 0, 144, 256, 112, App->WIDTH / 2, 38, 0, IE_NOFLIP, -256, 0);
-    G->DrawSprite(Horizon, 0, 144, 256, 112, App->WIDTH / 2, 38, 0, IE_FLIPX, 0, 0);
+	///*
+	G->SetDrawFunc(1);
+	G->SetDrawAlpha(0x80);
+    G->DrawSprite(Horizon, 0, 1, App->WIDTH / 2, 0, 0, IE_NOFLIP);
+    G->DrawSprite(Horizon, 0, 1, App->WIDTH / 2, 0, 0, IE_FLIPX);
     G->SetDrawAlpha(0x40);
-    G->DrawSprite(Horizon, 0, 0, 256, 143, App->WIDTH / 2, 0, 0, IE_NOFLIP, -256, 0);
-    G->DrawSprite(Horizon, 0, 0, 256, 143, App->WIDTH / 2, 0, 0, IE_FLIPX, 0, 0);
-    G->DrawModeOverlay = false;
+    G->DrawSprite(Horizon, 0, 0, App->WIDTH / 2, 0, 0, IE_NOFLIP);
+    G->DrawSprite(Horizon, 0, 0, App->WIDTH / 2, 0, 0, IE_FLIPX);
+    G->SetDrawFunc(0);
     G->SetDrawAlpha(0xFF);
+	//*/
 
     idx = (idx >> 1) & 0xF;
 
@@ -458,31 +466,74 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
     // 2: distances (Y-position)
     // 3: ???
     // 4: column width at distance index (curvature)!!!!!!!!!!!
-
     // 5: is the sprite index at distance index
 
 
     // Draw order
     int sh[9] = { -4, 4, -3, 3, -2, 2, -1, 1, 0 };
-    for (int s = 0; s < 9 && ((PlayerAngle & 0xC000) == PlayerAngle); s++) {
+    for (int s = 0; s < 9; s++) {
         int c = sh[s];
         for (int i = MapThing[2][0] - 1; i >= 0; i--) {
+            if ((i & 0xF) != ((n & 0xF) ^ 0xF)) continue;
 
-            if ((i & 0xF) != ((n & 0xF) ^ 0xF))
-                continue;
-
-            if (i >= 0x60)
-                continue;
+            // if (i >= 0x60) continue;
 
             // 5 visible at a time
 
-            int x = c * MapThing[4][i + 1];
-            int y = MapThing[2][i + 1]; //(MapThing[3][i + 1] >> 8);
-            int fr = MapThing[5][i + 1];
+            int x = MapThing[4][i + 1] * c;
+            int y = MapThing[2][i + 1];
+            int f = MapThing[5][i + 1];
             int j = i >> 4;
-            //int dis = ((y << 8) / MapThing[3][i + 1]) >> 8;
 
-			y = GetPushDownY(y, x);
+			y += (x * x) / MapThing[3][i + 1];
+
+			/*
+			
+			
+
+			For rotating spheres, see SSPossibleRenderCode_sub_49AB60 in Mania Disasm:
+
+			switch ( player->AngleMode )
+			{
+				case 0:
+					player->dwordA4 = v5->X;
+					player->dwordA8 = v5->Y;
+					break;
+				case 1:
+					player->dwordA4 = -v5->Y;
+					player->dwordA8 = v5->X;
+					break;
+				case 2:
+					player->dwordA4 = v5->X;
+					player->dwordA8 = -v5->Y;
+					break;
+				case 3:
+					player->dwordA4 = v5->Y;
+					player->dwordA8 = v5->X;
+					break;
+				default:
+					break;
+			}
+
+			v23 = *(2 * (((player->dwordA8 + player->RoundedY) & 0x1F) + 32 * ((player->dwordA4 + player->RoundedX) & 0x1F)) + 0x1438);
+
+			finalPos = (MEMORY[0])(v1);
+			xCos = player->dwordA4 * (MEMORY[0])(player->Angle);
+			finalPos->X = (xCos + player->dwordA8 * (MEMORY[0])(player->Angle)) >> 4;
+			yCos = player->dwordA8 * (MEMORY[0])(player->Angle);
+			v11 = (yCos - player->dwordA4 * (MEMORY[0])(player->Angle)) >> 4;
+			finalPos->Y = v11;
+			v12 = -(v11 + player->TilePosition - 16);
+			finalPos->Y = v12;
+
+			->TilePosition: Where the player is linearly on the tile regardless of direction (0x0 - 0xF), think n & 0xF or whatever
+
+
+
+			Rotation matrix
+			You've got this.
+			
+			//*/
 
             int XIndex = 2;
             int YIndex = 2;
@@ -511,7 +562,6 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
                     break;
             }
 
-            //if ((PlayerAngle & 0xC000) != PlayerAngle)
             //rotate_point(&x, &y, ((StoredAngle << 12) - PlayerAngle + 0xC000) * 3.14159265f / 0x8000, 0, 0xA0);
 
             int a = 0;
@@ -526,31 +576,40 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
                 a = 13;
             else if (Layout[YIndex << 5 | XIndex] == 5)
                 a = 7;
-            else
-                continue;
-            //*/
+            else continue;
+
+			/*
+			v23 = *(2 * (((player->dwordA8 + player->RoundedY) & 0x1F) + 32 * ((player->dwordA4 + player->RoundedX) & 0x1F)) + 0x1438);
+
+			finalPos = (MEMORY[0])(v1);
+			
+			finalPos->X = (XIndex * cos(player->Angle) + YIndex * sin(player->Angle)) >> 4;
+			v11 = (YIndex * cos(player->Angle) - XIndex * sin(player->Angle)) >> 4;
+			v12 = -(v11 + player->TilePosition - 16);
+			finalPos->Y = v12;
+			
+			*/
+
+			f = (f * 2 - abs(c * 3)) / 2;
+			if (f < 0) continue;
 
             ///*
             G->DrawSprite(Objects,
-                Objects->Animations[a].Frames[fr].X,
-                Objects->Animations[a].Frames[fr].Y,
-                Objects->Animations[a].Frames[fr].W,
-                Objects->Animations[a].Frames[fr].H,
+                Objects->Animations[a].Frames[f].X,
+                Objects->Animations[a].Frames[f].Y,
+                Objects->Animations[a].Frames[f].W,
+                Objects->Animations[a].Frames[f].H,
                 x + App->WIDTH / 2,
                 y,
                 0,
                 IE_NOFLIP,
-                -Objects->Animations[a].Frames[fr].W / 2,
-                Objects->Animations[a].Frames[fr].OffY);
+                -Objects->Animations[a].Frames[f].W / 2,
+                Objects->Animations[a].Frames[f].OffY);
             //*/
         }
     }
 
-
-    for (int i = 0; i < MapThing[3][0]; i++) {
-        //G->DrawRectangle(2 + i * 2, 2, 2, (MapThing[3][i + 1] >> 5), 0);
-    }
-
+	return;
 
 	char poop[40];
     sprintf(poop, "Direction: %d", Direction);
