@@ -426,6 +426,12 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp">
       <Filter>Source Files\Game\Objects\CNZ</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Batbright.cpp">
+      <Filter>Source Files\Game\Objects\CNZ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\BatbrightParts.cpp">
+      <Filter>Source Files\Game\Objects\CNZ</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

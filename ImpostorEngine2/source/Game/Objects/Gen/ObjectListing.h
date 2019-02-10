@@ -26,6 +26,8 @@
 #include "AIZ/SpikedLog.h"
 #include "AIZ/SwingVine.h"
 #include "CNZ/Balloon.h"
+#include "CNZ/Batbright.h"
+#include "CNZ/BatbrightParts.h"
 #include "CNZ/Bouncepad.h"
 #include "Common/AnimSprite.h"
 #include "Common/AutomaticTunnel.h"
@@ -112,11 +114,13 @@ enum {
     Obj_SpikedLog = 0x02E,
     Obj_SwingVine = 0x00C,
     Obj_Balloon = 0x041,
+    Obj_Batbright = 0x0A5,
+    Obj_BatbrightParts = 0x405,
     Obj_Bouncepad = 0x04B,
     Obj_AnimSprite = 0x030,
     Obj_AutomaticTunnel = 0x024,
     Obj_BreakableWall = 0x00D,
-    Obj_BubbleAir = 0x405,
+    Obj_BubbleAir = 0x406,
     Obj_Bubbler = 0x054,
     Obj_Button = 0x033,
     Obj_CollapsingBridge = 0x00F,
@@ -138,13 +142,13 @@ enum {
     Obj_CutsceneKnuckles = 0x082,
     Obj_Door = 0x03C,
     Obj_EggCapsule = 0x081,
-    Obj_EggCapsuleButton = 0x406,
+    Obj_EggCapsuleButton = 0x407,
     Obj_Rock = 0x005,
-    Obj_Signpost = 0x407,
+    Obj_Signpost = 0x408,
     Obj_TensionBridge = 0x06C,
-    Obj_TensionBridgeChild = 0x408,
+    Obj_TensionBridgeChild = 0x409,
     Obj_Blastoid = 0x094,
-    Obj_BlastoidShot = 0x409,
+    Obj_BlastoidShot = 0x40A,
     Obj_Block = 0x040,
     Obj_BreakBar = 0x036,
     Obj_Buggernaut = 0x095,
@@ -166,7 +170,7 @@ enum {
     Obj_TurboSpiker = 0x096,
     Obj_MGZDashTrigger = 0x059,
     Obj_MGZHeadTrigger = 0x055,
-    Obj_MGZHeadTrigger_Eye = 0x40A,
+    Obj_MGZHeadTrigger_Eye = 0x40B,
     Obj_MGZQuickMud = 0x04F,
     Obj_MGZSwingingPlatform = 0x053,
     Obj_MGZTriggerPlatform = 0x057,

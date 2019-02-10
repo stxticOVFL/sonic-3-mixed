@@ -3496,6 +3496,7 @@ void IPlayer::Jump() {
 	Action = ActionType::Jumping;
 	Sound::Play(Sound::SFX_JUMP);
 }
+
 void IPlayer::Hurt(int x, bool spike) {
 	if (Action == ActionType::Hurt ||
 		Shield == ShieldType::Instashield ||
@@ -3554,6 +3555,7 @@ void IPlayer::Hurt(int x, bool spike) {
 		}
 	}
 }
+
 void IPlayer::Die(bool drown) {
 	Action = ActionType::Dead;
 	XSpeed = 0;
@@ -3575,6 +3577,7 @@ void IPlayer::Die(bool drown) {
 	VisualLayer = 1;
 	Invincibility = InvincibilityType::None;
 }
+
 void IPlayer::CreateRingLoss() {
 	if (Cutscene) return;
 	if (Sidekick) return;
@@ -3621,11 +3624,12 @@ void IPlayer::CreateRingLoss() {
 
 	Sound::Play(Sound::SFX_RINGLOSS);
 }
+
 void IPlayer::Vibrate(VibrationType v) {
-	double strengths[7] = {
+	double strengths[7] = { 
 		0.0,
 		0.35,
-		0.75,
+		0.75, 
 		0.35,
 		0.75,
 		0.15,
@@ -3641,7 +3645,7 @@ void IPlayer::Vibrate(VibrationType v) {
 		350,
 	};
 	App->Input->Vibrate(0, strengths[(int)v], durations[(int)v]);
-}
+} 
 
 void IPlayer::Deform() {
 	if (!SuperForm) return;
@@ -3652,6 +3656,7 @@ void IPlayer::Deform() {
 	InvincibilityTimer = 0;
 	Invincibility = InvincibilityType::None;
 }
+
 void IPlayer::CheckDespawn() {
 	if (!Sidekick) return;
 	if (Action == ActionType::Respawn) return;

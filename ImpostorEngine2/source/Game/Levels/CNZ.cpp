@@ -429,6 +429,7 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
         SpriteMapIDs[0x35] = CNZObjectsSprite;
 
     	SpriteMapIDs[0x51] = CNZObjectsSprite;
+        SpriteMapIDs[0xA5] = CNZObjectsSprite;
     }
     else {
     	SpriteMapIDs[0x01] = ItemsSprite;
@@ -449,6 +450,7 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
 
     	SpriteMapIDs[0x51] = CNZObjectsSprite;
         SpriteMapIDs[0x8C] = CNZObjectsSprite;
+        SpriteMapIDs[0xA5] = CNZObjectsSprite;
     }
 }
 
@@ -503,6 +505,7 @@ PUBLIC void Level_CNZ::FinishResults() {
 		G->FadeToWhite = false;
 	}
 }
+
 PUBLIC void Level_CNZ::GoToNextAct() {
 	if (VisualAct == 1) {
 		Level_CNZ* NextAct = new Level_CNZ(App, G, 2);

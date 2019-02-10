@@ -77,6 +77,12 @@ Object* GetNewObjectFromID(int ID) {
         case 0x41:
             return new Balloon();
             break;
+        case 0xA5:
+            return new Batbright();
+            break;
+        case 0x405:
+            return new BatbrightParts();
+            break;
         case 0x4B:
             return new Bouncepad();
             break;
@@ -89,7 +95,7 @@ Object* GetNewObjectFromID(int ID) {
         case 0x0D:
             return new BreakableWall();
             break;
-        case 0x405:
+        case 0x406:
             return new BubbleAir();
             break;
         case 0x54:
@@ -155,25 +161,25 @@ Object* GetNewObjectFromID(int ID) {
         case 0x81:
             return new EggCapsule();
             break;
-        case 0x406:
+        case 0x407:
             return new EggCapsuleButton();
             break;
         case 0x05:
             return new Rock();
             break;
-        case 0x407:
+        case 0x408:
             return new Signpost();
             break;
         case 0x6C:
             return new TensionBridge();
             break;
-        case 0x408:
+        case 0x409:
             return new TensionBridgeChild();
             break;
         case 0x94:
             return new Blastoid();
             break;
-        case 0x409:
+        case 0x40A:
             return new BlastoidShot();
             break;
         case 0x40:
@@ -239,7 +245,7 @@ Object* GetNewObjectFromID(int ID) {
         case 0x55:
             return new MGZHeadTrigger();
             break;
-        case 0x40A:
+        case 0x40B:
             return new MGZHeadTrigger_Eye();
             break;
         case 0x4F:

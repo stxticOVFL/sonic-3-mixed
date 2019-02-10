@@ -608,7 +608,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0xA2] = "Obj_MGZ_KnucklesBoss";
             ObjectName[0xA3] = "Obj_Clamer";
             ObjectName[0xA4] = "Obj_CNZ_Blastoid";
-            ObjectName[0xA5] = "Obj_Batbot";
+            ObjectName[0xA5] = "Obj_Batbright";
             ObjectName[0xA6] = "Obj_CNZ_Miniboss";
             ObjectName[0xA7] = "Obj_CNZ_EndBoss";
             ObjectName[0xA8] = "Obj_Blaster";

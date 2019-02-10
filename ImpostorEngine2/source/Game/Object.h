@@ -4,6 +4,7 @@
 #define Scene_AddSelfToRegistry(boots) Scene->Objects##boots[Scene->Object##boots##Count++] = this
 
 class LevelScene;
+class IPlayer;
 
 struct Rect {
     int  Left = 0x0;
@@ -26,10 +27,13 @@ enum class CollideSide {
     TOP_SIDES = 7,
     BOTTOM = 8,
 };
+
 bool operator==(const CollideSide& left, const int& right);
 bool operator==(const int& left, const CollideSide& right);
 bool operator!=(const CollideSide& left, const int& right);
 bool operator!=(const int& left, const CollideSide& right);
+
+class Object;
 
 class Object {
 public:
@@ -38,6 +42,8 @@ public:
     LevelScene* Scene;
 
     ISprite* Sprite = NULL;
+    
+    void *Parent = NULL;
 
     uint32_t InitialX;
     uint32_t InitialY;
@@ -133,7 +139,11 @@ public:
     };
 
     void Animate();
+	void AnimationProgress(int16_t animationData[]);
+	int16_t DelayedAnimationProgress(int16_t animationData[]);
+	int16_t Object::DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
     void MoveSprite();
+    void MoveWithParent();
     int  Swing_UpAndDown();
 };
 
@@ -148,8 +158,16 @@ public:
     bool Boss = false;
 
     Rect HitboxEnemy;
+    
+    IPlayer *ClosetPlayer = 0;
+    bool PlayerRelativeXDirection = 0;
+    bool PlayerRelativeYDirection = 0;
+    int16_t PlayerXDistance = 0;
+    int16_t PlayerYDistance = 0;
 
     virtual void Create();
+    virtual void CheckDistanceToPlayers();
+    virtual void MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t speed);
     virtual int  OnDeath();
     virtual int  OnHit();
 };
