@@ -17,20 +17,26 @@ event Create() {
     // Animation Timer Data for Subobject:
     // 3, $1D, 4, 2, 3, 1, 4, 2, 3, $E, 4, 2, $FC, 0
     
-    AnimationData[0] = 3;
-    AnimationData[1] = 29; // 0x1D
-    AnimationData[2] = 4;
-    AnimationData[3] = 2;
-    AnimationData[4] = 3;
-    AnimationData[5] = 1;
-    AnimationData[6] = 4;
-    AnimationData[7] = 2;
-    AnimationData[8] = 3;
-    AnimationData[9] = 14; // 0xE
-    AnimationData[10] = 4;
-    AnimationData[11] = 2;
-    AnimationData[12] = -4; // 0xFC
-    AnimationData[13] = 0;
+    // I had to add 1 to all of the frames to get it working right.
+    // I have no clue why this was needed. But it was.
+    
+    // Also I have also turned the parts used for frames into the proper frame instead of the
+    // original number plus one.
+    
+    AnimationData[0] = 0; // Restart Start Frame
+    AnimationData[1] = 29; // Restart Timer (Unused)
+    AnimationData[2] = 1; // Frame 1
+    AnimationData[3] = 2; // Frame 1 Timer
+    AnimationData[4] = 0; // Frame 2
+    AnimationData[5] = 1; // Frame 2 Timer
+    AnimationData[6] = 1; // Frame 3
+    AnimationData[7] = 2; // Frame 3 Timer
+    AnimationData[8] = 0; // Frame 4
+    AnimationData[9] = 14; // Frame 4 timer
+    AnimationData[10] = 1; // Frame 5
+    AnimationData[11] = 2; // Frame 5 Timer
+    AnimationData[12] = -4; // Restart - 0xFC
+    AnimationData[13] = 0; // End Timer
     
     VisualLayer = 1;
 }
@@ -41,10 +47,9 @@ event Update() {
     if (!IsLight) {
         Y += 3;
         Frame = 1;
-    } 
-    //else if (IsLight) {
-    //    DelayedAnimationProgress(AnimationData);
-    //}
+    } else if (IsLight) {
+        DelayedAnimationProgress(AnimationData);
+    }
     
 }
 

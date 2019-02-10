@@ -16,17 +16,17 @@ void BatbrightParts::Create() {
     Gravity = 0;
     Frame = 0;
     IsLight = false;
-    AnimationData[0] = 3;
+    AnimationData[0] = 0;
     AnimationData[1] = 29;
-    AnimationData[2] = 4;
+    AnimationData[2] = 1;
     AnimationData[3] = 2;
-    AnimationData[4] = 3;
+    AnimationData[4] = 0;
     AnimationData[5] = 1;
-    AnimationData[6] = 4;
+    AnimationData[6] = 1;
     AnimationData[7] = 2;
-    AnimationData[8] = 3;
+    AnimationData[8] = 0;
     AnimationData[9] = 14;
-    AnimationData[10] = 4;
+    AnimationData[10] = 1;
     AnimationData[11] = 2;
     AnimationData[12] = -4;
     AnimationData[13] = 0;
@@ -39,6 +39,9 @@ void BatbrightParts::Update() {
     if (!IsLight) {
         Y += 3;
         Frame = 1;
+    }
+    else if (IsLight) {
+        DelayedAnimationProgress(AnimationData);
     }
 
     Object::Update();

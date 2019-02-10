@@ -64,8 +64,6 @@ void Object::AnimationProgress(int16_t animationData[]) {
 				case -8:  // F8 - AnimateRaw_Jump
 					//animationData += animationData[OldAnimationFrame + 2];
 					//objA0.value30 = animationData;
-					Frame = animationData[1];
-					Timer = animationData[0];
 					break;
 				case -12:  // F4 - AnimateRaw_CustomCode
 					Timer = 0;
@@ -83,23 +81,30 @@ void Object::AnimationProgress(int16_t animationData[]) {
 	}
 }
 
-void Object::DelayedAnimationProgress(int16_t animationData[]) {
+int16_t Object::DelayedAnimationProgress(int16_t animationData[]) {
+	int16_t retValue = 0;
+
 	Timer -= 1;
 	if (Timer < 0) {
 		int NewAnimationFrame = AnimationFrame += 2;
 		AnimationFrame = NewAnimationFrame;
 		int16_t dataAnimationFrame = animationData[NewAnimationFrame];
-		//App->Print(0, "Object: dataAnimationFrame in DelayedAnimationProgress is: %d", D1);
 
 		if (dataAnimationFrame < 0) {
 			AnimationFrame = 0;
 
 			switch (dataAnimationFrame) {
-				case -4: // FC
+				case -4: // FC - AnimateRawNoSSTMultiDelay_Restart
+					Frame = animationData[0];
+					Timer = animationData[1];
+					retValue = 1;
 					break;
-				case -8: // F8
+				case -8: // F8 - AnimateRawNoSSTMultiDelay_Jump
+					//animationData += animationData[AnimationFrame + 1];
+					//objA0.value30 = animationData;
 					break;
-				case -12: // F4
+				case -12: // F4 - AnimateRawNoSSTMultiDelay_CustomCode
+					retValue = -1;
 					break;
 				default:
 					break;
@@ -107,8 +112,53 @@ void Object::DelayedAnimationProgress(int16_t animationData[]) {
 		} else {
 			Frame = dataAnimationFrame;
 			Timer = animationData[NewAnimationFrame + 1];
+			retValue = 1;
 		}
+		//App->Print(0, "Object::DelayedAnimationProgress: %d, %d, %d", dataAnimationFrame, Frame, AnimationFrame);
+	} else {
+		retValue = 0;
 	}
+	return retValue;
+}
+
+int16_t Object::DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation) {
+	int16_t retValue = 0;
+
+	Timer -= 1;
+	if (Timer < 0) {
+		int NewAnimationFrame = AnimationFrame += 2;
+		AnimationFrame = NewAnimationFrame;
+		int16_t dataAnimationFrame = animationData[NewAnimationFrame];
+
+		if (dataAnimationFrame < 0) {
+			AnimationFrame = 0;
+
+			switch (dataAnimationFrame) {
+				case -4: // FC - AnimateRawNoSSTMultiDelay_Restart
+					Frame = animationData[0] % Animation.FrameCount;
+					Timer = animationData[1];
+					retValue = 1;
+					break;
+				case -8: // F8 - AnimateRawNoSSTMultiDelay_Jump
+					//animationData += animationData[AnimationFrame + 1];
+					//objA0.value30 = animationData;
+					break;
+				case -12: // F4 - AnimateRawNoSSTMultiDelay_CustomCode
+					retValue = -1;
+					break;
+				default:
+					break;
+			}
+		} else {
+			Frame = dataAnimationFrame % Animation.FrameCount;
+			Timer = animationData[NewAnimationFrame + 1];
+			retValue = 1;
+		}
+		//App->Print(0, "Object::DelayedAnimationProgress: %d, %d, %d", dataAnimationFrame, Frame, AnimationFrame);
+	} else {
+		retValue = 0;
+	}
+	return retValue;
 }
 
 void Object::OnAnimationFinish() {
