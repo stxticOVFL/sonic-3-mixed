@@ -374,10 +374,8 @@ void IPlayer::Create() {
 		if (!Thremixed) {
 			int i = 0;
 			Sprites[0] = new ISprite("Player/S3/Sonic.gif", App);
-			// Sprites[0] = new ISprite("Player/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
 
 			Sprites[0]->LoadAnimation("Player/S3/Sonic.bin");
-			// Sprites[0]->LoadAnimation("Player/S3/Sonic - Copy.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
@@ -386,37 +384,55 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		} 
-		else {
-			Sprites[0] = new ISprite("Player/Sonic1.gif", App);
-			Sprites[1] = new ISprite("Player/Sonic2.gif", App);
-			Sprites[2] = new ISprite("Player/Sonic3.gif", App);
-			Sprites[3] = new ISprite("Player/Sonic4.gif", App);
-			Sprites[4] = new ISprite("Player/SonicCutsceneCPZ.gif", App);
+		} else {
+            bool Tria = false;
+            if (Tria) {
+                Sprites[0] = new ISprite("Player/Sonic1.gif", App);
+                Sprites[1] = new ISprite("Player/Sonic2.gif", App);
+                Sprites[2] = new ISprite("Player/Sonic3.gif", App);
+                Sprites[3] = new ISprite("Player/Sonic4.gif", App);
+                Sprites[4] = new ISprite("Player/SonicCutsceneCPZ.gif", App);
 
-			Sprites[0]->LoadAnimation("Player/Sonic.bin");
+                Sprites[0]->LoadAnimation("Player/Sonic.bin");
 
-			int i = 0;
-			for (; i < Sprites[0]->AnimCount; i++) {
-				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
-			}
+                int i = 0;
+                for (; i < Sprites[0]->AnimCount; i++) {
+                    AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+                }
 
-			Sprites[0]->LoadAnimation("Player/SuperSonic.bin");
-			for (; i < Sprites[0]->AnimCount; i++) {
-				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
-			}
+                Sprites[0]->LoadAnimation("Player/SuperSonic.bin");
+                for (; i < Sprites[0]->AnimCount; i++) {
+                    AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
+                }
 
-			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
-			Sprites[2]->LinkAnimation(Sprites[0]->Animations);
-			Sprites[3]->LinkAnimation(Sprites[0]->Animations);
-			Sprites[4]->LinkAnimation(Sprites[0]->Animations);
+                Sprites[1]->LinkAnimation(Sprites[0]->Animations);
+                Sprites[2]->LinkAnimation(Sprites[0]->Animations);
+                Sprites[3]->LinkAnimation(Sprites[0]->Animations);
+                Sprites[4]->LinkAnimation(Sprites[0]->Animations);
 
-			Sprites[0]->Animations[54 + (int)AnimationEnum::Walk].AnimationSpeed = 0x100;
-			Sprites[0]->Animations[54 + (int)AnimationEnum::AirWalk].AnimationSpeed = 0x100;
-			Sprites[0]->Animations[54 + (int)AnimationEnum::Jog].AnimationSpeed = 0x100;
-			Sprites[0]->Animations[54 + (int)AnimationEnum::Run].AnimationSpeed = 0x100;
-			Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
-			Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
+                Sprites[0]->Animations[54 + (int)AnimationEnum::Walk].AnimationSpeed = 0x100;
+                Sprites[0]->Animations[54 + (int)AnimationEnum::AirWalk].AnimationSpeed = 0x100;
+                Sprites[0]->Animations[54 + (int)AnimationEnum::Jog].AnimationSpeed = 0x100;
+                Sprites[0]->Animations[54 + (int)AnimationEnum::Run].AnimationSpeed = 0x100;
+                Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
+                Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
+            } else {
+                int i = 0;
+                Sprites[0] = new ISprite("Player/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
+                Sprites[1] = new ISprite("Player/S3/Sonic.gif", App);
+
+                Sprites[0]->LoadAnimation("Player/S3/Sonic3MClassic.bin");
+                for (; i < Sprites[0]->AnimCount; i++) {
+                    AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+                }
+                
+                Sprites[0]->LoadAnimation("Player/S3/Super Sonic.bin");
+                for (; i < Sprites[0]->AnimCount; i++) {
+                    AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
+                }
+                
+                Sprites[1]->LinkAnimation(Sprites[0]->Animations);
+            }
 		}
 	} 
 	else if (Character == CharacterType::Tails) {

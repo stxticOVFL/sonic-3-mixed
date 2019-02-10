@@ -228,7 +228,7 @@ bool ViewPathswitchers = false;
 bool ViewPlayerStats = false;
 bool ViewTileInfo = false;
 bool ViewTileCollision = false;
-const char* ObjectName[0x100];
+const char* ObjectName[0x225];
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App = app;
@@ -440,6 +440,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         AssignSpriteMapIDs();
         IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "AssignSpriteMapIDs", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
+        
+        // Instead of filling it on a per by per basis, Fill the whole thing and 
+        // have the replacements fill the spots needed.
+        for (int i = 0x0; i <= 0x224; i++) {
+            ObjectName[i] = "Unused";
+        }
 
         // If Sonic 3 level...
         if (ZoneID < 7) {
@@ -698,10 +704,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0xFC] = "Obj_Ring";
             ObjectName[0xFD] = "Obj_Ring";
             ObjectName[0xFE] = "Obj_Ring";
-            ObjectName[0xFF] = "Obj_FBZ_MagneticPendulum";
+			ObjectName[0xFF] = "Obj_FBZ_MagneticPendulum";
         }
         // If Sonic & Knuckles level...
-        else {
+        else if (ZoneID < 13) {
             ObjectName[0x00] = "Obj_Ring";
             ObjectName[0x01] = "Obj_Monitor";
             ObjectName[0x02] = "Obj_PathSwap";
@@ -875,20 +881,390 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0xAA] = "Obj_SOZ_Ghosts";
             ObjectName[0xAB] = "Obj_SOZ2_GhostCapsuleLoader";
             ObjectName[0xAC] = "Obj_SOZ2_GhostCapsule";
-            ObjectName[0xAD] = "Obj_LRZ_3Platforms";
+            ObjectName[0xAD] = "Obj_LRZ3_Platforms";
             ObjectName[0xAE] = "Obj_LRZ_KnucklesEndHelper";
             ObjectName[0xAF] = "Obj_SSZ_KnucklesButton";
             ObjectName[0xB0] = "Obj_HPZ_MasterEmerald";
             ObjectName[0xB1] = "Obj_HPZ_MidwayPalleteChanger";
             ObjectName[0xB2] = "Obj_SSZ_EggRobo";
             ObjectName[0xB3] = "Obj_ContactLevelChanger";
-            ObjectName[0xB4] = "Obj_HPZ_SuperEmerals";
+            ObjectName[0xB4] = "Obj_HPZ_SuperEmeralds";
             ObjectName[0xB5] = "Obj_HPZ_SpecialStageCreater";
             ObjectName[0xB6] = "Obj_DDZ_BossShip";
             ObjectName[0xB7] = "Obj_DDZ_Asteroid";
             ObjectName[0xB8] = "Obj_DDZ_Missile";
-            for (int i = 0xB9; i <= 0xFF; i++)
-                ObjectName[i] = "unused";
+        }
+        // If 3'Mixed level...
+        else {
+            ObjectName[0x00] = "Obj_Ring";
+            ObjectName[0x01] = "Obj_Monitor";
+            ObjectName[0x02] = "Obj_PathSwap";
+            ObjectName[0x03] = "Obj_CollapsingPlatform";
+            ObjectName[0x04] = "Obj_Spring";
+            ObjectName[0x05] = "Obj_Spikes";
+            ObjectName[0x06] = "Obj_BreakableWall";
+            ObjectName[0x07] = "Obj_Ridge";
+            ObjectName[0x08] = "Obj_CollapsingBridge";
+            ObjectName[0x09] = "Obj_ContactFirceFallAnimator"; // Unused
+            ObjectName[0x0A] = "Obj_AutomaticTunnel";
+            ObjectName[0x0B] = "Obj_RollEnforcer";
+            ObjectName[0x0C] = "Obj_LavaCollisionMarker"; // Unused
+            ObjectName[0x0D] = "Obj_InvisibleBarrier";
+            ObjectName[0x0E] = "Obj_CorkFloor";
+            ObjectName[0x0F] = "Obj_StillSprite";
+            ObjectName[0x10] = "Obj_AnimatedStillSprite";
+            ObjectName[0x11] = "Obj_Button";
+            ObjectName[0x12] = "Obj_StarPost";
+            ObjectName[0x13] = "Obj_BreakableBar";
+            ObjectName[0x14] = "Obj_Door";
+            ObjectName[0x15] = "Obj_RetractingSpring";
+            ObjectName[0x16] = "Obj_FloatingPlatform";
+            ObjectName[0x17] = "Obj_Bubbler";
+            ObjectName[0x18] = "Obj_InvisibleHurtBlockHorizontal";
+            ObjectName[0x19] = "Obj_InvisibleHurtBlockVertical";
+            ObjectName[0x1A] = "Obj_TensionBridge";
+            ObjectName[0x1B] = "Obj_WaterDrop";
+            ObjectName[0x1C] = "Obj_HiddenMonitor";
+            ObjectName[0x1D] = "Obj_EggCapsule";
+            ObjectName[0x1E] = "Obj_CutsceneKnuckles";
+            ObjectName[0x1F] = "Obj_CutsceneButton";
+            ObjectName[0x20] = "Obj_SpriteMasker";
+            ObjectName[0x21] = "Obj_Tulipon";
+            ObjectName[0x22] = "Obj_RhinoBot";
+            ObjectName[0x23] = "Obj_MonkeyDude";
+            ObjectName[0x24] = "Obj_CaterKillerJr";
+            ObjectName[0x25] = "Obj_Jawz";
+            ObjectName[0x26] = "Obj_Blastoid";
+            ObjectName[0x27] = "Obj_Buggernaut";
+            ObjectName[0x28] = "Obj_TurboSpiker";
+            ObjectName[0x29] = "Obj_MegaChomper";
+            ObjectName[0x2A] = "Obj_Poindexter";
+            ObjectName[0x2B] = "Obj_BubblesBadnik";
+            ObjectName[0x2C] = "Obj_Spiker";
+            ObjectName[0x2E] = "Obj_Mantis";
+            ObjectName[0x2F] = "Obj_Clamer";
+            ObjectName[0x30] = "Obj_Batbright";
+            ObjectName[0x31] = "Obj_Blaster";
+            ObjectName[0x32] = "Obj_TechnoSqueek";
+            ObjectName[0x33] = "Obj_Penguinator";
+            ObjectName[0x34] = "Obj_StarPointer";
+            ObjectName[0x35] = "Obj_SnaleBlaster";
+            ObjectName[0x36] = "Obj_Ribot";
+            ObjectName[0x37] = "Obj_Orbinaut";
+            ObjectName[0x38] = "Obj_Corkey";
+            ObjectName[0x39] = "Obj_Flybot767";
+            ObjectName[0x3A] = "Obj_GumballItem";
+            ObjectName[0x3B] = "Obj_MagneticOrb";
+            ObjectName[0x3C] = "Obj_TiltingBridge";
+            ObjectName[0x3D] = "Obj_ElectricInvisibleBlock";
+            ObjectName[0x3E] = "Obj_FlamingInvisibleBlock";
+            ObjectName[0x3F] = "Obj_Madmole";
+            ObjectName[0x40] = "Obj_Mushmeanie";
+            ObjectName[0x41] = "Obj_Dragonfly";
+            ObjectName[0x42] = "Obj_Butterdroid";
+            ObjectName[0x43] = "Obj_Cluckoid";
+            ObjectName[0x44] = "Obj_Skorp";
+            ObjectName[0x45] = "Obj_Sandworm";
+            ObjectName[0x46] = "Obj_Rockn";
+            ObjectName[0x47] = "Obj_Fireworm";
+            ObjectName[0x48] = "Obj_Toxomister";
+            ObjectName[0x49] = "Obj_EggRobo";
+            ObjectName[0x4A] = "Obj_Spikebonker";
+            ObjectName[0x4B] = "Obj_Chainspike";
+            ObjectName[0x4C] = "Obj_ContactLevelChanger";
+            
+            ObjectName[0x4D] = "Obj_P2RotateObject"; // Purpose unknown.
+            
+            ObjectName[0x4E] = "Obj_2PRetractingSpring";
+            ObjectName[0x4F] = "Obj_2PItem";
+            ObjectName[0x50] = "Obj_2PGoalMarker";
+            
+            ObjectName[0x51] = "Obj_AIZ_HollowTree";
+            ObjectName[0x52] = "Obj_AIZ_LRZEMZRock";
+            ObjectName[0x53] = "Obj_AIZ_RideVine";
+            ObjectName[0x54] = "Obj_AIZ_SwingVine";
+            ObjectName[0x55] = "Obj_AIZ_DisappearingFloor";
+            ObjectName[0x56] = "Obj_AIZ_FlippingBridge";
+            ObjectName[0x57] = "Obj_AIZ_CollapsingLogBridge";
+            ObjectName[0x58] = "Obj_AIZ_FallingLog";
+            ObjectName[0x59] = "Obj_AIZ_SpikedLog";
+            ObjectName[0x5A] = "Obj_AIZ_DrawBridge";
+            ObjectName[0x5B] = "Obj_AIZ_ForegroundPlant";
+            ObjectName[0x5C] = "Obj_AIZ_CutsceneSonic";
+            ObjectName[0x5E] = "Obj_AIZ_Miniboss_Cutscene";
+            ObjectName[0x5F] = "Obj_AIZ_Miniboss";
+            ObjectName[0x60] = "Obj_AIZ_EndBoss";
+            ObjectName[0x61] = "Obj_AIZ1_TreeBark";
+            ObjectName[0x62] = "Obj_AIZ1_RopePeg";
+            
+            ObjectName[0x63] = "Obj_HCZ_VWaterStream";
+            ObjectName[0x64] = "Obj_HCZ_CGZFan";
+            ObjectName[0x65] = "Obj_HCZ_LargeFan";
+            ObjectName[0x66] = "Obj_HCZ_HandLauncher";
+            ObjectName[0x67] = "Obj_HCZ_WaterWall";
+            ObjectName[0x68] = "Obj_HCZ_ConveyorBelt";
+            ObjectName[0x69] = "Obj_HCZ_ConveyorSpike";
+            ObjectName[0x6A] = "Obj_HCZ_Block";
+            ObjectName[0x6B] = "Obj_HCZ_SnakeBlocks";
+            ObjectName[0x6C] = "Obj_HCZ_SpinningColumn";
+            ObjectName[0x6D] = "Obj_HCZ_Slide";
+            ObjectName[0x6E] = "Obj_HCZ_WaterSplash";
+            ObjectName[0x6F] = "Obj_HCZ_Miniboss";
+            ObjectName[0x70] = "Obj_HCZ_EndBoss";
+            
+            ObjectName[0x71] = "Obj_MGZ_LBZSmashingPillar";
+            ObjectName[0x72] = "Obj_MGZ_QuickMud";
+            ObjectName[0x73] = "Obj_MGZ_RunAroundPole";
+            ObjectName[0x74] = "Obj_MGZ_LBZSmashingPillar";
+            ObjectName[0x75] = "Obj_MGZ_SwingingPlatform";
+            ObjectName[0x76] = "Obj_MGZ_HeadTrigger";
+            ObjectName[0x77] = "Obj_MGZ_MovingSpikePlatform";
+            ObjectName[0x78] = "Obj_MGZ_TriggerPlatform";
+            ObjectName[0x79] = "Obj_MGZ_SwingingSpikeBall";
+            ObjectName[0x7A] = "Obj_MGZ_DashTrigger";
+            ObjectName[0x7B] = "Obj_MGZ_Pulley";
+            ObjectName[0x7C] = "Obj_MGZ_TopPlatform";
+            ObjectName[0x7D] = "Obj_MGZ_TopLauncher";
+            ObjectName[0x7E] = "Obj_MGZ_CutsceneMiniBoss";
+            ObjectName[0x7F] = "Obj_MGZ_CTwistVine";
+            ObjectName[0x80] = "Obj_MGZ_MiniBoss";
+            ObjectName[0x81] = "Obj_MGZ_Boss";
+            ObjectName[0x82] = "Obj_MGZ_KnucklesBoss";
+            ObjectName[0x83] = "Obj_MGZ2_DrillingEggman";
+            
+            ObjectName[0x84] = "Obj_CNZ_Balloon";
+            ObjectName[0x85] = "Obj_CNZ_Cannon";
+            ObjectName[0x86] = "Obj_CNZ_RisingPlatform";
+            ObjectName[0x87] = "Obj_CNZ_TrapDoor";
+            ObjectName[0x88] = "Obj_CNZ_LightBulb";
+            ObjectName[0x89] = "Obj_CNZ_HoverFan";
+            ObjectName[0x8A] = "Obj_CNZ_RotatingBarrels";
+            ObjectName[0x8B] = "Obj_CNZ_VacuumTubes";
+            ObjectName[0x8C] = "Obj_CNZ_RotatingWheel";
+            ObjectName[0x8D] = "Obj_CNZ_Bumper";
+            ObjectName[0x8C] = "Obj_CNZ_BouncepadSprings";
+            ObjectName[0x8F] = "Obj_CNZ_Corkscrew";
+            ObjectName[0x90] = "Obj_CNZ_BarberPoleSprite";
+            ObjectName[0x91] = "Obj_CNZ_RotatingMesh";
+            ObjectName[0x92] = "Obj_CNZ_BreakableWaterRisingFloor";
+            ObjectName[0x93] = "Obj_CNZ_LightSwitch";
+            ObjectName[0x94] = "Obj_CNZ_Blastoid";
+            ObjectName[0x95] = "Obj_CNZ_Miniboss";
+            ObjectName[0x96] = "Obj_CNZ_EndBoss";
+            
+            ObjectName[0x97] = "Obj_ICZ_CrushingColumn";
+            ObjectName[0x98] = "Obj_ICZ_PathFollowPlatform";
+            ObjectName[0x99] = "Obj_ICZ_BreakableWall";
+            ObjectName[0x9A] = "Obj_ICZ_Freezer";
+            ObjectName[0x9B] = "Obj_ICZ_SegmentColumn";
+            ObjectName[0x9C] = "Obj_ICZ_SwingingPlatform";
+            ObjectName[0x9D] = "Obj_ICZ_Stalagtite";
+            ObjectName[0x9E] = "Obj_ICZ_IceCube";
+            ObjectName[0x9F] = "Obj_ICZ_IceSpikes";
+            ObjectName[0x100] = "Obj_ICZ_HarmfulIce";
+            ObjectName[0x101] = "Obj_ICZ_SnowPile";
+            ObjectName[0x102] = "Obj_ICZ_TensionPlatform";
+            ObjectName[0x103] = "Obj_ICZ_RightTrampolineSupport";
+            ObjectName[0x104] = "Obj_ICZ_Miniboss";
+            ObjectName[0x105] = "Obj_ICZ_EndBoss";
+            
+            ObjectName[0x106] = "Obj_MHZ_PulleyLift";
+            ObjectName[0x107] = "Obj_MHZ_CurledVine";
+            ObjectName[0x108] = "Obj_MHZ_StickyVine";
+            ObjectName[0x109] = "Obj_MHZ_SwingBarHorizontal";
+            ObjectName[0x10A] = "Obj_MHZ_SwingBarVertical";
+            ObjectName[0x10B] = "Obj_MHZ_SwingVine";
+            ObjectName[0x10C] = "Obj_MHZ_MushroomPlatform";
+            ObjectName[0x10D] = "Obj_MHZ_MushroomParachute";
+            ObjectName[0x10E] = "Obj_MHZ_MushroomCatapult";
+            ObjectName[0x10F] = "Obj_MHZ_MushroomCap";
+            ObjectName[0x110] = "Obj_MHZ_WindTunnel";
+            ObjectName[0x111] = "Obj_MHZ_ChopTree";
+            ObjectName[0x112] = "Obj_MHZ_ForceCrouch";
+            ObjectName[0x113] = "Obj_MHZ_KnucklesButton";
+            ObjectName[0x114] = "Obj_MHZ_Miniboss";
+            ObjectName[0x115] = "Obj_MHZ_EndBoss";
+            
+            ObjectName[0x116] = "Obj_FBZ_RotatingMesh";
+            ObjectName[0x117] = "Obj_FBZ_TwistingCylinders";
+            ObjectName[0x118] = "Obj_FBZ_FloatingPlatform";
+            ObjectName[0x119] = "Obj_FBZ_ChainLink";
+            ObjectName[0x11A] = "Obj_FBZ_MagneticSpikeBall";
+            ObjectName[0x11B] = "Obj_FBZ_MagneticPlatform";
+            ObjectName[0x11C] = "Obj_FBZ_SnakePlatform";
+            ObjectName[0x11D] = "Obj_FBZ_BentPipe";
+            ObjectName[0x11E] = "Obj_FBZ_RotatingPlatform";
+            ObjectName[0x11F] = "Obj_FBZ_DEZPlayerLauncher";
+            ObjectName[0x120] = "Obj_FBZ_DisappearingPlatform";
+            ObjectName[0x121] = "Obj_FBZ_ScrewDoor";
+            ObjectName[0x122] = "Obj_FBZ_FanPole";
+            ObjectName[0x123] = "Obj_FBZ_Propeller";
+            ObjectName[0x124] = "Obj_FBZ_Piston";
+            ObjectName[0x125] = "Obj_FBZ_PlatformBlocks";
+            ObjectName[0x126] = "Obj_FBZ_MissileLauncher";
+            ObjectName[0x127] = "Obj_FBZ_ExitDoor";
+            ObjectName[0x128] = "Obj_FBZ_EggPrison";
+            ObjectName[0x129] = "Obj_FBZ_SpringPlunger";
+            ObjectName[0x12A] = "Obj_FBZ_WallMissile";
+            ObjectName[0x12B] = "Obj_FBZ_Mine";
+            ObjectName[0x12C] = "Obj_FBZ_Elevator";
+            ObjectName[0x12E] = "Obj_FBZ_TrapSpring";
+            ObjectName[0x12F] = "Obj_FBZ_Flamethrower";
+            ObjectName[0x130] = "Obj_FBZ_SpiderCrane";
+            ObjectName[0x131] = "Obj_FBZ_MagneticPendulum";
+            ObjectName[0x132] = "Obj_FBZ_Laser_Boss";
+            ObjectName[0x133] = "Obj_FBZ_EndBoss";
+            ObjectName[0x134] = "Obj_FBZ1_Boss";
+            ObjectName[0x135] = "Obj_FBZ2_CutsceneObjects";
+            
+            ObjectName[0x136] = "Obj_LRZ_TubeElevator";
+            ObjectName[0x137] = "Obj_LRZ_MovingPlatform";
+            ObjectName[0x138] = "Obj_LRZ_FlagPlatform"; // Unused
+            ObjectName[0x139] = "Obj_LRZ_Door";
+            ObjectName[0x13A] = "Obj_LRZ_BigDoor";
+            ObjectName[0x13B] = "Obj_LRZ_ExplodingTrigger";
+            ObjectName[0x13C] = "Obj_LRZ_TriggerBridge";
+            ObjectName[0x13D] = "Obj_LRZ_PlayerLauncher";
+            ObjectName[0x13E] = "Obj_LRZ_FlameThrower";
+            ObjectName[0x13F] = "Obj_LRZ_RideGrapple";
+            ObjectName[0x140] = "Obj_LRZ_CupElevator";
+            ObjectName[0x141] = "Obj_LRZ_CupElevatorPole";
+            ObjectName[0x142] = "Obj_LRZ_PipePlug";
+            ObjectName[0x143] = "Obj_LRZ_HangPlatform";
+            ObjectName[0x144] = "Obj_LRZ_FireballLauncher";
+            ObjectName[0x145] = "Obj_LRZ_ButtonHorizontal";
+            ObjectName[0x146] = "Obj_LRZ_ShootingTrigger";
+            ObjectName[0x147] = "Obj_LRZ_DashElevator";
+            ObjectName[0x148] = "Obj_LRZ_LavaFall";
+            ObjectName[0x149] = "Obj_LRZ_SwingingSpikeBall";
+            ObjectName[0x14A] = "Obj_LRZ_SmashingSpikePlatform";
+            ObjectName[0x14B] = "Obj_LRZ_SpikeBall";
+            ObjectName[0x14C] = "Obj_LRZ_SpikeBallLauncher";
+            ObjectName[0x14E] = "Obj_LRZ_OrbitingSpikeBallHorizontal";
+            ObjectName[0x14F] = "Obj_LRZ_OrbitingSpikeBallVertical";
+            ObjectName[0x150] = "Obj_LRZ_SolidMovingPlatforms";
+            ObjectName[0x151] = "Obj_LRZ_SolidRock";
+            ObjectName[0x152] = "Obj_LRZ_SpinLauncher";
+            ObjectName[0x153] = "Obj_LRZ_LoweringGrapple";
+            ObjectName[0x154] = "Obj_LRZ_GateLaser";
+            ObjectName[0x155] = "Obj_LRZ_Siren";
+            ObjectName[0x156] = "Obj_LRZ_ChainedPlatforms";
+            ObjectName[0x157] = "Obj_LRZ_FallingSpike";
+            ObjectName[0x158] = "Obj_LRZ_SinkingRock";
+            ObjectName[0x159] = "Obj_LRZ_ExplodingRock";
+            ObjectName[0x15A] = "Obj_LRZ_RockCrusher";
+            ObjectName[0x15B] = "Obj_LRZ_TorpedoLauncher";
+            ObjectName[0x15C] = "Obj_LRZ_RotatingCylinders";
+            ObjectName[0x15E] = "Obj_LRZ_VerticalCylinder";
+            ObjectName[0x15F] = "Obj_LRZ_CollapsingBridge";
+            ObjectName[0x160] = "Obj_LRZ_TurbineSprites";
+            ObjectName[0x161] = "Obj_LRZ_TwirlTunnel";
+            ObjectName[0x162] = "Obj_LRZ_KnucklesEndHelper";
+            ObjectName[0x163] = "Obj_LRZ_Miniboss";
+            ObjectName[0x164] = "Obj_LRZ_FinalBoss1";
+            ObjectName[0x165] = "Obj_LRZ_FinalBoss2";
+            ObjectName[0x166] = "Obj_LRZ_EndBoss";
+            ObjectName[0x167] = "Obj_LRZ1_Eggman";
+            ObjectName[0x168] = "Obj_LRZ1_MiniBoss";
+            ObjectName[0x169] = "Obj_LRZ1_KnucklesMiniBossBox";
+            ObjectName[0x16A] = "Obj_LRZ2_EggMobile";
+            ObjectName[0x16B] = "Obj_LRZ2_TallBoss";
+            ObjectName[0x16C] = "Obj_LRZ3_Platforms";
+            
+            ObjectName[0x16E] = "Obj_SOZ_SandFalls";
+            ObjectName[0x16F] = "Obj_SOZ_SpawningSandBlocks";
+            ObjectName[0x170] = "Obj_SOZ_DoubleLoopPathSwapper";
+            ObjectName[0x171] = "Obj_SOZ_SpringLoopPathSwapper";
+            ObjectName[0x172] = "Obj_SOZ_PushableRock";
+            ObjectName[0x173] = "Obj_SOZ_SpringVine";
+            ObjectName[0x174] = "Obj_SOZ_RisingSandWall";
+            ObjectName[0x175] = "Obj_SOZ_LightSwitch";
+            ObjectName[0x176] = "Obj_SOZ_FloatingPillar";
+            ObjectName[0x177] = "Obj_SOZ_SwingingPlatform";
+            ObjectName[0x178] = "Obj_SOZ_BreakableSandRock";
+            ObjectName[0x179] = "Obj_SOZ_PushSwitch";
+            ObjectName[0x17A] = "Obj_SOZ_Door";
+            ObjectName[0x17B] = "Obj_SOZ_SandCork";
+            ObjectName[0x17C] = "Obj_SOZ_RapelWire";
+            ObjectName[0x17E] = "Obj_SOZ_SolidSprites";
+            ObjectName[0x17F] = "Obj_SOZ_Ghosts";
+            ObjectName[0x180] = "Obj_SOZ_Miniboss";
+            ObjectName[0x181] = "Obj_SOZ_EndBoss";
+            ObjectName[0x182] = "Obj_SOZ2_GhostCapsuleLoader";
+            ObjectName[0x183] = "Obj_SOZ2_GhostCapsule";
+            
+            ObjectName[0x184] = "Obj_HPZ_MasterEmerald";
+            ObjectName[0x185] = "Obj_HPZ_MidwayPalleteChanger";
+            ObjectName[0x186] = "Obj_HPZ_SuperEmeralds";
+            ObjectName[0x187] = "Obj_HPZ_SpecialStageCreater";
+            
+            ObjectName[0x188] = "Obj_SSZ_RetractingSpring";
+            ObjectName[0x189] = "Obj_SSZ_SwingingCarrier";
+            ObjectName[0x18A] = "Obj_SSZ_RotatingPlatform";
+            ObjectName[0x18B] = "Obj_SSZ_RetractingBridge";
+            ObjectName[0x18C] = "Obj_SSZ_HPZTeleporter";
+            ObjectName[0x18D] = "Obj_SSZ_ElevatorBar";
+            ObjectName[0x18E] = "Obj_SSZ_CollapsingBridgeDiagonal";
+            ObjectName[0x18F] = "Obj_SSZ_CollapsingBridge";
+            ObjectName[0x190] = "Obj_SSZ_BouncyCloud";
+            ObjectName[0x191] = "Obj_SSZ_CollapsingColumn";
+            ObjectName[0x192] = "Obj_SSZ_FloatingPlatform";
+            ObjectName[0x193] = "Obj_SSZ_KnucklesButton";
+            ObjectName[0x194] = "Obj_SSZ_EggRobo";
+            ObjectName[0x195] = "Obj_SSZ_GHZBoss";
+            ObjectName[0x196] = "Obj_SSZ_MTZBoss";
+            ObjectName[0x197] = "Obj_SSZ_MechaSonicBoss";
+            
+            ObjectName[0x198] = "Obj_DEZ_FloatingPlatform";
+            ObjectName[0x199] = "Obj_DEZ_HangCarrier";
+            ObjectName[0x19A] = "Obj_DEZ_TorpedoLauncher";
+            ObjectName[0x19B] = "Obj_DEZ_LiftPad";
+            ObjectName[0x19C] = "Obj_DEZ_Staircase";
+            ObjectName[0x19E] = "Obj_DEZ_ConveyorBelt";
+            ObjectName[0x19F] = "Obj_DEZ_Lightning";
+            ObjectName[0x200] = "Obj_DEZ_ConveyorPad";
+            ObjectName[0x201] = "Obj_DEZ_EnergyBridge";
+            ObjectName[0x202] = "Obj_DEZ_CurvedEnergyBridge";
+            ObjectName[0x203] = "Obj_DEZ_TunnelLauncher";
+            ObjectName[0x204] = "Obj_DEZ_GravitySwitch";
+            ObjectName[0x205] = "Obj_DEZ_ReverseGravityTunnel";
+            ObjectName[0x206] = "Obj_DEZ_TwirlTunnel";
+            ObjectName[0x207] = "Obj_DEZ_GravityReverser";
+            ObjectName[0x208] = "Obj_DEZ_TunnelJunction";
+            ObjectName[0x209] = "Obj_DEZ_RetractingSpring";
+            ObjectName[0x20A] = "Obj_DEZ_HoverMachine";
+            ObjectName[0x20B] = "Obj_DEZ_SpecialEngineController";
+            ObjectName[0x20C] = "Obj_DEZ_BumperWall";
+            ObjectName[0x20E] = "Obj_DEZ_GravityPuzzle";
+            ObjectName[0x20F] = "Obj_DEZ_Miniboss";
+            ObjectName[0x210] = "Obj_DEZ_EndBoss";
+            ObjectName[0x211] = "Obj_DeathEgg_LaunchTowers";
+            
+            ObjectName[0x212] = "Obj_DDZ_BossShip";
+            ObjectName[0x213] = "Obj_DDZ_Asteroid";
+            ObjectName[0x214] = "Obj_DDZ_Missile";
+            
+            ObjectName[0x215] = "Obj_CGZ_TriangularSprings";
+            ObjectName[0x216] = "Obj_CGZ_BladePlatform";
+            
+            ObjectName[0x217] = "Obj_BPZ_ElephantBlock";
+            ObjectName[0x218] = "Obj_BPZ_Balloon";
+            
+            ObjectName[0x219] = "Obj_DPZ_DisolvingSandBar";
+            ObjectName[0x21A] = "Obj_DPZ_Button";
+            
+            ObjectName[0x21B] = "Obj_EMZ_Dripper";
+            
+            ObjectName[0x21C] = "Obj_SS_EntryRing";
+            ObjectName[0x21D] = "Obj_SS_GumballLevel";
+            ObjectName[0x21E] = "Obj_SS_GumballSideSpring";
+            
+            ObjectName[0x21F] = "Obj_Pachinko_TriangleBumper";
+            ObjectName[0x220] = "Obj_Pachinko_Flipper";
+            ObjectName[0x221] = "Obj_Pachinko_EnergyTrap";
+            ObjectName[0x222] = "Obj_Pachinko_InvisibleUnknown";
+            ObjectName[0x223] = "Obj_Pachinko_Platform";
+            ObjectName[0x224] = "Obj_Pachinko_ItemOrb";
         }
 
         IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Object Name Assignments", (SDL_GetTicks() - startTime) / 1000.0);
