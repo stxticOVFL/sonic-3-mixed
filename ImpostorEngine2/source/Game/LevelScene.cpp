@@ -444,7 +444,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         
         // Instead of filling it on a per by per basis, Fill the whole thing and 
         // have the replacements fill the spots needed.
-        for (int i = 0x0; i <= 0x224; i++) {
+        for (int i = 0x0; i <= 346; i++) {
             ObjectName[i] = "Unused";
         }
 
