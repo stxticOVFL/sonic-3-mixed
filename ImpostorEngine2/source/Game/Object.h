@@ -114,7 +114,7 @@ namespace ThremixedIDS {
 		GoalMarker2P,
 
 		AIZ_HollowTree,
-		AIZ_LRZEMZRock,
+		AIZ_LRZ_EMZ_Rock,
 		AIZ_RideVine,
 		AIZ_SwingVine,
 		AIZ_DisappearingFloor,
@@ -132,7 +132,7 @@ namespace ThremixedIDS {
 		AIZ1_RopePeg,
 
 		HCZ_VWaterStream,
-		HCZ_CGZFan,
+		HCZ_CGZ_Fan,
 		HCZ_LargeFan,
 		HCZ_HandLauncher,
 		HCZ_WaterWall,

@@ -229,7 +229,7 @@ bool ViewPathswitchers = false;
 bool ViewPlayerStats = false;
 bool ViewTileInfo = false;
 bool ViewTileCollision = false;
-const char* ObjectName[0x225];
+const char* ObjectName[347];
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App = app;
@@ -455,7 +455,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x02] = "Obj_PathSwap";
             ObjectName[0x03] = "Obj_AIZ_HollowTree";
             ObjectName[0x04] = "Obj_CollapsingPlatform";
-            ObjectName[0x05] = "Obj_AIZ_LRZEMZRock";
+            ObjectName[0x05] = "Obj_AIZ_LRZ_EMZ_Rock";
             ObjectName[0x06] = "Obj_AIZ_RideVine";
             ObjectName[0x07] = "Obj_Spring";
             ObjectName[0x08] = "Obj_Spikes";
@@ -506,7 +506,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x35] = "Obj_AIZ_ForegroundPlant";
             ObjectName[0x36] = "Obj_BreakableBar";
             ObjectName[0x37] = "Obj_HCZ_VWaterStream";
-            ObjectName[0x38] = "Obj_HCZ_CGZFan";
+            ObjectName[0x38] = "Obj_HCZ_CGZ_Fan";
             ObjectName[0x39] = "Obj_HCZ_LargeFan";
             ObjectName[0x3A] = "Obj_HCZ_HandLauncher";
             ObjectName[0x3B] = "Obj_HCZ_WaterWall";
@@ -546,13 +546,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x5D] = "Obj_CGZ_TriangularSprings";
             ObjectName[0x5E] = "Obj_CGZ_BladePlatform";
             ObjectName[0x5F] = "Obj_RetractingSpring2P";
-            ObjectName[0x60] = "Obj_BPZElephantBlock";
-            ObjectName[0x61] = "Obj_BPZBalloon";
-            ObjectName[0x62] = "Obj_DPZDisolvingSandBar";
-            ObjectName[0x63] = "Obj_DPZButton";
+            ObjectName[0x60] = "Obj_BPZ_ElephantBlock";
+            ObjectName[0x61] = "Obj_BPZ_Balloon";
+            ObjectName[0x62] = "Obj_DPZ_DisolvingSandBar";
+            ObjectName[0x63] = "Obj_DPZ_Button";
             ObjectName[0x64] = "Obj_Item2P";
             ObjectName[0x65] = "Obj_GoalMarker2P";
-            ObjectName[0x66] = "Obj_EMZDripper";
+            ObjectName[0x66] = "Obj_EMZ_Dripper";
             ObjectName[0x67] = "Obj_HCZ_SnakeBlocks";
             ObjectName[0x68] = "Obj_HCZ_SpinningColumn";
             ObjectName[0x69] = "Obj_HCZ_Slide";
@@ -714,7 +714,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x02] = "Obj_PathSwap";
             ObjectName[0x03] = "Obj_MGZ_CTwistVine";
             ObjectName[0x04] = "Obj_CollapsingPlatform";
-            ObjectName[0x05] = "Obj_AIZ_LRZEMZRock";
+            ObjectName[0x05] = "Obj_AIZ_LRZ_EMZ_Rock";
             ObjectName[0x06] = "Obj_MHZ_PulleyLift";
             ObjectName[0x07] = "Obj_Spring";
             ObjectName[0x08] = "Obj_Spikes";
@@ -981,7 +981,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[ThremixedIDS::GoalMarker2P] = "Obj_GoalMarker2P";
 
             ObjectName[ThremixedIDS::AIZ_HollowTree] = "Obj_AIZ_HollowTree";
-            ObjectName[ThremixedIDS::AIZ_LRZEMZRock] = "Obj_AIZ_LRZEMZRock";
+            ObjectName[ThremixedIDS::AIZ_LRZ_EMZ_Rock] = "Obj_AIZ_LRZ_EMZ_Rock";
             ObjectName[ThremixedIDS::AIZ_RideVine] = "Obj_AIZ_RideVine";
             ObjectName[ThremixedIDS::AIZ_SwingVine] = "Obj_AIZ_SwingVine";
             ObjectName[ThremixedIDS::AIZ_DisappearingFloor] = "Obj_AIZ_DisappearingFloor";
@@ -999,7 +999,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[ThremixedIDS::AIZ1_RopePeg] = "Obj_AIZ1_RopePeg";
 
             ObjectName[ThremixedIDS::HCZ_VWaterStream] = "Obj_HCZ_VWaterStream";
-            ObjectName[ThremixedIDS::HCZ_CGZFan] = "Obj_HCZ_CGZFan";
+            ObjectName[ThremixedIDS::HCZ_CGZ_Fan] = "Obj_HCZ_CGZ_Fan";
             ObjectName[ThremixedIDS::HCZ_LargeFan] = "Obj_HCZ_LargeFan";
             ObjectName[ThremixedIDS::HCZ_HandLauncher] = "Obj_HCZ_HandLauncher";
             ObjectName[ThremixedIDS::HCZ_WaterWall] = "Obj_HCZ_WaterWall";
