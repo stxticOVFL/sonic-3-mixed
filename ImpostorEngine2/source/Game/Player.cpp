@@ -1132,25 +1132,24 @@ void IPlayer::Update() {
 					if (!((ySpeedLessThan != ySpeedGreaterThan) || ySpeedEquals)
 						|| RayBoostCount == 0x100
 						|| (Underwater && YSpeed > 0x180)) {
-						int v10 = XSpeed;
-						int v11 = v10;
-						ySpeedLessThan = v10 < 0;
-						if (v10 < 0) {
-							v11 = -v10;
-							ySpeedLessThan = v10 < 0;
+						int YCalcSpeed = YSpeed;
+						if (YCalcSpeed < 0) {
+							YCalcSpeed = -YCalcSpeed;
+						}
+                        
+                        /*
+                        int XCalcSpeed = XSpeed;
+						if (XCalcSpeed < 0) {
+							XCalcSpeed = -XSpeed;
 						}
 
-						int v13 = XSpeed;
-						if (ySpeedLessThan) {
-							v13 = -v10;
-							if (v10 < 0)
-								v10 = -v10;
-						}
-
-						int v15 = -(RayBoostCount * ((v11 >> 1) + (v13 >> 2) + (v10 >> 4)) >> 8);
-						GlideSpeedStore = v15;
+						int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (XCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
+                        */
+                        
+                        int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (YCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
+						GlideSpeedStore = speedStore;
 						if (Underwater)
-							GlideSpeedStore = (v15 >> 1) + (v15 >> 3);
+							GlideSpeedStore = (speedStore >> 1) + (speedStore >> 3);
 						if (RayBoostCount > 0x10)
 							RayBoostCount = RayBoostCount - 0x20;
 						if (GlideSpeedStore < -0x600)
@@ -2391,22 +2390,18 @@ void IPlayer::Update() {
 						bool goingLeft = (XSpeed >> 1) < 0;
 						XSpeed >>= 1;
 
-						int v8 = XSpeed;
-						int v9 = XSpeed;
+						int leftSpeed = XSpeed;
 						if (goingLeft)
-							v9 = -v9;
-						int v10 = XSpeed;
+							leftSpeed = -leftSpeed;
 
-						if (v8 < 0) {
-							v10 = -v8;
-							if (v8 < 0)
-								v8 = -v8;
+						if (XSpeed < 0) {
+                            XSpeed = -XSpeed;
 						}
-						int v11 = -((v9 >> 1) + (v10 >> 2) + (v8 >> 4)) >> (int)Underwater;
-						if (v11 > 0x400)
-							v11 = 0x400;
+						int speedStore = -((leftSpeed >> 1) + (XSpeed >> 2) + (XSpeed >> 4)) >> (int)Underwater;
+						if (speedStore > 0x400)
+							speedStore = 0x400;
 
-						GlideSpeedStore = v11;
+						GlideSpeedStore = speedStore;
 					}
 					else {
 						ChangeAnimation((int)AnimationEnum::RayFlyDown, 3);
