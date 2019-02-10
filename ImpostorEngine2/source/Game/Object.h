@@ -141,7 +141,7 @@ public:
     void Animate();
 	void AnimationProgress(int16_t animationData[]);
 	int16_t DelayedAnimationProgress(int16_t animationData[]);
-	int16_t Object::DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
+	int16_t DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
     void MoveSprite();
     void MoveWithParent();
     int  Swing_UpAndDown();
