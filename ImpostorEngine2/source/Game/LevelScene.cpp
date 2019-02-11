@@ -3187,6 +3187,8 @@ PUBLIC void LevelScene::Update() {
             
             if (App->Input->MousePressed) {
 				if (Player->DebugObject) {
+					uint8_t oldSubType = Player->DebugObject->SubType;
+
 					Player->DebugObject->isHeldDebugObject = false;
 					Player->DebugObject = NULL;
 
@@ -3204,7 +3206,7 @@ PUBLIC void LevelScene::Update() {
 						obj->ID = objId;
 						obj->Sprite = SpriteMapIDs[objId];
 
-						obj->SubType = 0;
+						obj->SubType = oldSubType;
 
 						obj->isDebugModeObject = true;
 						obj->isHeldDebugObject = true;
