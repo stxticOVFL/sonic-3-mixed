@@ -2080,8 +2080,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
                 int FLIPY = 0;
                 ADD_OBJECT();
                 obj->Create();
-            }
-            else {
+            } else {
                 int X = 0x3D00;
                 int Y = 0x720;
                 int ID = 0x81;
@@ -2104,8 +2103,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
                 int FLIPY = 1;
                 ADD_OBJECT();
                 obj->Create();
-            }
-            else {
+            } else {
                 int X = 0x4940;
                 int Y = 0x270;
                 int ID = 0x81;
@@ -2128,8 +2126,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 				int FLIPY = 0;
 				ADD_OBJECT();
 				obj->Create();
-			}
-			else {
+			} else {
 				int X = 0x4590;
 				int Y = 0x0680;
 				int ID = 0x81;
@@ -4311,10 +4308,15 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 							G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, fullFlip);
 
 						if (ViewTileCollision) {
+                            
+							// This is currently broken to shit. It needs a massive fucking redo.
+
 							flipX = ((tile >> 10) & 1);
 							flipY = ((tile >> 11) & 1);
-							int colTypeA = ((tile >> 12) & 3);
-							int colTypeB = ((tile >> 14) & 3);
+							//int colTypeA = ((tile >> 12) & 3);
+							//int colTypeB = ((tile >> 13) & 3);
+							int colTypeA = ((tile >> 4) & 3);
+							int colTypeB = ((tile >> 5) & 3);
 
 							for (int c = 0; c < 16; c++) {
 								int eex = c;
@@ -4329,19 +4331,16 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 									if (Data->tiles1[tile].HasCollision[c]) {
 										if (Data->tiles1[tile].IsCeiling ^ flipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
 										}
 									}
-								}
-								else if (colTypeB) {
+								} else if (colTypeB) {
 									if (Data->tiles2[tile].HasCollision[c]) {
 										uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
 										if (Data->tiles2[tile].IsCeiling ^ flipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
 										}
 									}

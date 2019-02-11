@@ -14,8 +14,8 @@ public:
 #include <Game/Levels/AIZ.h>
 #include <Game/Levels/HCZ.h>
 #include <Game/Levels/MGZ.h>
-//#include <Game/Levels/CNZ.h>
-//#include <Game/Levels/ICZ.h>
+#include <Game/Levels/CNZ.h>
+#include <Game/Levels/ICZ.h>
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
 //#include <Game/Levels/FBZ.h>

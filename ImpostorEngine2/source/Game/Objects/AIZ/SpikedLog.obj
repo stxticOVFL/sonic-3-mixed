@@ -35,8 +35,7 @@ event Update() {
     if (WaterCount != Scene.WaterEnteredCounter) {
         if (Period < 0x80) {
             Direction = 1;
-        }
-        else {
+        } else {
             WaterCount = Scene.WaterEnteredCounter;
         }
     }
