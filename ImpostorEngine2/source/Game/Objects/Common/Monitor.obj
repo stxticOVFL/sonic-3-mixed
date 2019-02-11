@@ -7,18 +7,18 @@ var SubTypeFrame:int;
 var PlayerAggressor:int;
 
 enum ItemTypes {
-    TYPE_STATIC,
-    TYPE_1UP,
-    TYPE_ROBOTNIK,
     TYPE_RINGS,
-    TYPE_SPEED_SHOES,
+    TYPE_SHIELD_BUBBLE,
     TYPE_SHIELD_FIRE,
     TYPE_SHIELD_LIGHTNING,
-    TYPE_SHIELD_BUBBLE,
+    TYPE_SPEED_SHOES,
     TYPE_INVINCIBILITY,
     TYPE_SUPER,
+    TYPE_1UP,
     TYPE_BROKEN,
+    TYPE_STATIC,
     TYPE_HYPER_RING,
+    TYPE_ROBOTNIK,
 }
 
 event Create() {
@@ -84,6 +84,49 @@ event Create() {
 
     CurrentAnimation = 4;
 }
+
+event UpdateSubType() {
+    switch (SubType) {
+        case ItemTypes.TYPE_STATIC:
+            SubTypeFrame = 14;
+            break;
+        case ItemTypes.TYPE_1UP:
+            SubTypeFrame = 7 + int(Scene.Player.Character);
+            break;
+        case ItemTypes.TYPE_ROBOTNIK:
+            SubTypeFrame = 12;
+            break;
+        case ItemTypes.TYPE_RINGS:
+            SubTypeFrame = 0;
+            break;
+        case ItemTypes.TYPE_SPEED_SHOES:
+            SubTypeFrame = 6;
+            break;
+        case ItemTypes.TYPE_SHIELD_FIRE:
+            SubTypeFrame = 3;
+            break;
+        case ItemTypes.TYPE_SHIELD_LIGHTNING:
+            SubTypeFrame = 4;
+            break;
+        case ItemTypes.TYPE_SHIELD_BUBBLE:
+            SubTypeFrame = 2;
+            break;
+        case ItemTypes.TYPE_INVINCIBILITY:
+            SubTypeFrame = 5;
+            break;
+        case ItemTypes.TYPE_SUPER:
+            SubTypeFrame = 12;
+            break;
+        case ItemTypes.TYPE_HYPER_RING:
+            SubTypeFrame = 11;
+            break;
+    }
+}
+
+event GetSubTypeMax() : uint8_t {
+    return ItemTypes.TYPE_ROBOTNIK;
+}
+
 event Update() {
     if (!CanFall && (YSpeed != 0)) {
         CanFall = true;

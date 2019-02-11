@@ -430,6 +430,9 @@ public:
     uint8_t  SubType = 0x0;
     bool     FlipX = false;
     bool     FlipY = false;
+    
+    bool isDebugModeObject = false;
+    bool isHeldDebugObject = false;
 
     int16_t  W = 32;
     int16_t  H = 32;
@@ -448,6 +451,7 @@ public:
     bool     Active = false;
     bool     Priority = false;
     bool     OnScreen = false;
+	bool     Visible = true;
     int      VisualLayer = 0;
 
     bool     AutoAnimate = false;
@@ -485,7 +489,12 @@ public:
 
     virtual void Create();
     virtual void Update();
+	virtual void UpdateSubType();
+    virtual uint8_t GetSubTypeIncrement();
+	virtual uint8_t GetSubTypeMax();
     virtual void Render(int CamX, int CamY);
+
+	virtual void DebugCreate();
 
     virtual int  OnTouchHitbox(int) { return 0; };
 

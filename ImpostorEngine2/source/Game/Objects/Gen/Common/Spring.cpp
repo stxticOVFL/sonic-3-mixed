@@ -165,3 +165,52 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     return 0;
 }
 
+void Spring::UpdateSubType() {
+    SpringType = 1;
+    if ((SubType & 0x2) != 0x0) SpringType = 0;
+
+    CurrentAnimation = SpringType;
+    Rotation = 0;
+    DoAnimate = false;
+    SpringPower = 0x1000;
+    if (SpringType == 0) SpringPower = 0xA00;
+
+    KillTransverseSpeed = (SubType & 0x80) == 0x80;
+    if ((SubType & 0xF0) == 0x10) {
+        W = 18;
+        H = 32;
+        CurrentAnimation = SpringType + 2;
+        Rotation = 270;
+        if (FlipX) Rotation = 90;
+
+    }
+    else if ((SubType & 0xF0) == 0x20) {
+        Rotation = 180;
+        FlipY = true;
+    }
+    else if ((SubType & 0xF0) == 0x30) {
+        Diagonal = -1;
+        CurrentAnimation = SpringType + 4;
+        Solid = false;
+        W = 28;
+        H = 28;
+    }
+    else if ((SubType & 0xF0) == 0x40) {
+        Diagonal = 1;
+        CurrentAnimation = SpringType + 4;
+        Solid = false;
+        FlipY = true;
+        W = 28;
+        H = 28;
+    }
+
+}
+
+uint8_t Spring::GetSubTypeIncrement() {
+    return 0x2;
+}
+
+uint8_t Spring::GetSubTypeMax() {
+    return 0x8;
+}
+

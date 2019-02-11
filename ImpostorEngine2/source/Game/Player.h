@@ -242,6 +242,9 @@ public:
     int                 GrabTimer = 0;
     bool                CheckJumpThrough = false;
     int                 PlayerID = 0;
+    
+    Object*             DebugObject = NULL;
+    int16_t             DebugObjectIndex = -1;
 
     int                 Angle = 0;
     int                 AngleMode = 0;

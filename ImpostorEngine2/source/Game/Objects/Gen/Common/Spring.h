@@ -29,6 +29,9 @@ public:
     int OnLeaveScreen();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
+    void UpdateSubType();
+    uint8_t GetSubTypeIncrement();
+    uint8_t GetSubTypeMax();
 };
 
 #endif /* SPRING_H */

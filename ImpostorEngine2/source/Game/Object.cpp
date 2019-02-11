@@ -16,10 +16,27 @@ void Object::Create() {
     Active = true;
 }
 
+void Object::DebugCreate() {
+    App->Print(0, "Peforming Debug Create!");
+    Create();
+}
+
 void Object::Update() {
     // TODO: Do animation shit here
     MoveSprite();
     Animate();
+}
+
+void Object::UpdateSubType() {
+
+}
+
+uint8_t Object::GetSubTypeIncrement() {
+	return 1;
+}
+
+uint8_t Object::GetSubTypeMax() {
+	return 0;
 }
 
 void Object::Animate() {
@@ -168,7 +185,7 @@ void Object::OnAnimationFinish() {
 void Object::Render(int CamX, int CamY) {
     if (CurrentAnimation == -1) return;
     if (Frame < 0) return;
-    // if (!Visible) return;
+    if (!Visible) return;
 
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, Rotation, FlipX | FlipY << 1);
 }

@@ -206,6 +206,8 @@ public:
 };
 #endif
 
+#include <Engine/IInput.h>
+
 #include <Game/Ring.h>
 #include <Game/FallingTile.h>
 #include <Game/MovingSprite.h>
@@ -2637,15 +2639,19 @@ PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
     Objects[ObjectCount++] = ring;
     ObjectNewCount++;
 }
+
 PUBLIC Explosion* LevelScene::AddExplosion(int animation, bool flip, int x, int y) {
     return AddExplosion(ExplosionSprite, animation, flip, x, y, 0);
 }
+
 PUBLIC Explosion* LevelScene::AddExplosion(int animation, bool flip, int x, int y, int vl) {
     return AddExplosion(ExplosionSprite, animation, flip, x, y, vl);
 }
+
 PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y) {
     return AddExplosion(sprite, animation, flip, x, y, 0);
 }
+
 PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y, int vl) {
     Explosion* dropdashdust;
     dropdashdust = new Explosion();
@@ -2662,6 +2668,7 @@ PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool 
 
     return dropdashdust;
 }
+
 PUBLIC void LevelScene::AddScoreGhost(int frame, int x, int y) {
     ScoreGhost* dropdashdust;
     dropdashdust = new ScoreGhost();
@@ -2677,6 +2684,7 @@ PUBLIC void LevelScene::AddScoreGhost(int frame, int x, int y) {
     dropdashdust->SubY = y - 32;
     Explosions.push_back(dropdashdust);
 }
+
 PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY, bool flipX, bool flipY, int hold) {
     FallingTile* tile = new FallingTile();
     tile->G = G;
@@ -2691,6 +2699,7 @@ PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY
     tile->Y = y + offY;
     Explosions.push_back(tile);
 }
+
 PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed) {
     FallingTile* tile = new FallingTile();
     tile->G = G;
@@ -2708,6 +2717,7 @@ PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY
     tile->YSpeed = yspeed;
     Explosions.push_back(tile);
 }
+
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left, int top, int w, int h, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int hold) {
     MovingSprite* tile = new MovingSprite();
     tile->G = G;
@@ -2733,12 +2743,15 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left,
         tile->VisualLayer = LastObjectUpdated->VisualLayer;
     Explosions.push_back(tile);
 }
+
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left, int top, int w, int h, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed, int grv) {
     AddMovingSprite(sprite, x, y, left, top, w, h, offX, offY, flipX, flipY, xspeed, yspeed, grv, 0);
 }
+
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv) {
     AddMovingSprite(sprite, x, y, animation, frame, flipX, flipY, xspeed, yspeed, grv, -1, 0);
 }
+
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life, int hold) {
     ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 
@@ -2767,6 +2780,7 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int anima
         tile->VisualLayer = LastObjectUpdated->VisualLayer;
     Explosions.push_back(tile);
 }
+
 PUBLIC void LevelScene::AddAnimal(int x, int y, bool flipX, bool flipY, int xspeed, int yspeed, bool escaping) {
     int animalZones[14 * 2] = {
         0, 5,
@@ -2815,6 +2829,7 @@ PUBLIC void LevelScene::AddAnimal(int x, int y, bool flipX, bool flipY, int xspe
     flicky->JumpSpeed = animalSpeeds[animalType * 2 + 1];
     Explosions.push_back(flicky);
 }
+
 PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY) {
     ObjectNewCount++;
 
@@ -2958,7 +2973,7 @@ PUBLIC void LevelScene::Update() {
     // Pause function
     if (FadeAction == 0 && !ShowResults) {
         // Toggle pause
-        if (App->Input->GetControllerInput(0)[8] && LevelCardTimer >= 4.0) {
+        if (App->Input->GetControllerInput(0)[IInput::I_PAUSE_PRESSED] && LevelCardTimer >= 4.0) {
             if (!Paused && !PauseFinished) {
                 PauseFinished = true;
                 Paused = true;
@@ -2977,14 +2992,25 @@ PUBLIC void LevelScene::Update() {
             }
         }
 
-        if (App->Input->GetControllerInput(0)[1 + 8]) {
+        if (App->Input->GetControllerInput(0)[IInput::I_EXTRA_PRESSED]) {
             if (maxLayer == 1 && Player) {
                 Player->XSpeed = 0;
                 Player->YSpeed = 0;
                 Player->GroundSpeed = 0;
                 Player->ObjectControlled = 0;
+                Player->DoCollision = 0;
                 Player->Action = ActionType::Normal;
-            }
+			} else if (maxLayer == 0 && Player) {
+				Player->DoCollision = 1;
+                Player->DebugObjectIndex = -1;
+				if (Player->DebugObject != NULL && Player->DebugObject->isHeldDebugObject) {
+                    Player->DebugObject->Active = false;
+                    Player->DebugObject = NULL;
+				}
+                if (Player->Hidden) {
+                    Player->Hidden = false;
+                }
+			}
     		maxLayer = 1 - maxLayer;
         }
     }
@@ -3084,13 +3110,14 @@ PUBLIC void LevelScene::Update() {
         }
 
 		if (!maxLayer) {
+			// We're in debug mode! Time to have fun!
+
             if (Player->InputLeft || Player->InputRight || Player->InputUp || Player->InputDown) {
                 Player->GroundSpeed += 0x40;
                 if (Player->GroundSpeed >= 0x1800) {
                     Player->GroundSpeed = 0x1800;
                 }
-            }
-            else {
+            } else {
                 Player->GroundSpeed = 0;
             }
             if (Player->GroundSpeed >= 0x400) {
@@ -3100,17 +3127,107 @@ PUBLIC void LevelScene::Update() {
     			Player->EZY += (Player->InputDown) * (Player->GroundSpeed >> 8);
             }
             else {
-                Player->EZX -= App->Input->GetControllerInput(0)[13];
-    			Player->EZX += App->Input->GetControllerInput(0)[12];
-    			Player->EZY -= App->Input->GetControllerInput(0)[15];
-    			Player->EZY += App->Input->GetControllerInput(0)[14];
+                Player->EZX -= App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED];
+    			Player->EZX += App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED];
+    			Player->EZY -= App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED];
+    			Player->EZY += App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED];
             }
-
-            if (Player->InputJump)
-                Player->Rings++;
-
+            
 			Player->DisplayX = Player->EZX;
 			Player->DisplayY = Player->EZY;
+
+			if (Player->DebugObject) {
+				Player->DebugObject->X = Player->DisplayX;
+				Player->DebugObject->Y = Player->DisplayY;
+			}
+            
+            int16_t DebugObjectIDList[2] = {0x01, 0x07};
+            const int32_t DebugObjectIDListLength = 2;
+
+			if (Player->InputJump) {
+                Player->Hidden = true;
+				Player->DebugObjectIndex++;
+				Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDListLength;
+
+				if (Player->DebugObject && Player->DebugObject->isHeldDebugObject) {
+					Player->DebugObject->Active = false;
+					Player->DebugObject = NULL;
+				}
+                int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
+                Object* obj = GetNewObjectFromID(objId);
+				if (obj != NULL) {
+					obj->G = G;
+					obj->App = App;
+					obj->Scene = this;
+					obj->InitialX = Player->EZX;
+					obj->InitialY = Player->EZY;
+					obj->FlipX = 0;
+					obj->FlipY = 0;
+					obj->ID = objId;
+                    obj->Sprite = SpriteMapIDs[objId];
+
+					obj->SubType = 0;
+
+					obj->isDebugModeObject = true;
+					obj->isHeldDebugObject = true;
+					obj->DebugCreate();
+
+					obj->Active = true;
+
+					Objects[ObjectCount++] = obj;
+                    Player->DebugObject = obj;
+
+					//App->Print(0, "Created Object %d via Debug Mode!", objId);
+				} else {
+					Player->Hidden = false;
+					Player->DebugObjectIndex = -1;
+					Player->DebugObject = NULL;
+				}
+			}
+            
+            if (App->Input->MousePressed) {
+				if (Player->DebugObject) {
+					Player->DebugObject->isHeldDebugObject = false;
+					Player->DebugObject = NULL;
+
+					// We want to create a copy for easy use, So we do.
+					int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
+					Object* obj = GetNewObjectFromID(objId);
+					if (obj != NULL) {
+						obj->G = G;
+						obj->App = App;
+						obj->Scene = this;
+						obj->InitialX = Player->EZX;
+						obj->InitialY = Player->EZY;
+						obj->FlipX = 0;
+						obj->FlipY = 0;
+						obj->ID = objId;
+						obj->Sprite = SpriteMapIDs[objId];
+
+						obj->SubType = 0;
+
+						obj->isDebugModeObject = true;
+						obj->isHeldDebugObject = true;
+						obj->DebugCreate();
+
+						obj->Active = true;
+
+						Objects[ObjectCount++] = obj;
+						Player->DebugObject = obj;
+					} else {
+						Player->Hidden = false;
+						Player->DebugObjectIndex = -1;
+						Player->DebugObject = NULL;
+					}
+				}
+            }
+            
+            if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
+                if (Player->DebugObject) {
+					Player->DebugObject->SubType = (Player->DebugObject->SubType + Player->DebugObject->GetSubTypeIncrement()) % Player->DebugObject->GetSubTypeMax();
+					Player->DebugObject->UpdateSubType();
+                }
+            }
 
             Player->YSpeed = 0;
 		}
@@ -4381,6 +4498,10 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
         for (int i = 0; i < ObjectCount; i++) {
             Object* obj = Objects[i];
             //if (obj->Active && (obj->OnScreen || obj->Priority)) {
+			if (obj == NULL) {
+				App->Print(1, "An object was NULL on render attempt!");
+				break;
+			}
 			if (obj->Active && obj->OnScreen) {
                 if (l == Data->cameraLayer + obj->VisualLayer) {
                     obj->Render(CameraX, CameraY);
