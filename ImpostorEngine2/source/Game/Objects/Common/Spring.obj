@@ -185,6 +185,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 }
 
 event UpdateSubType() {
+    Diagonal = 0;
     SpringType = 1;
     if ((SubType & 0x2) != 0x0)
         SpringType = 0;
@@ -229,9 +230,9 @@ event UpdateSubType() {
 }
 
 event GetSubTypeIncrement() : uint8_t {
-    return 0x2;
+    return 0x10;
 }
 
 event GetSubTypeMax() : uint8_t {
-    return 0x8;
+    return 0x40;
 }

@@ -166,6 +166,7 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 }
 
 void Spring::UpdateSubType() {
+    Diagonal = 0;
     SpringType = 1;
     if ((SubType & 0x2) != 0x0) SpringType = 0;
 
@@ -207,10 +208,10 @@ void Spring::UpdateSubType() {
 }
 
 uint8_t Spring::GetSubTypeIncrement() {
-    return 0x2;
+    return 0x10;
 }
 
 uint8_t Spring::GetSubTypeMax() {
-    return 0x8;
+    return 0x40;
 }
 
