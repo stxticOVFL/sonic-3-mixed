@@ -190,6 +190,10 @@ void Monitor::Update() {
             break;
             case ItemTypes::TYPE_SUPER:
             Player = Scene->Players[PlayerAggressor];
+            if (Player->HyperEnabled) {
+                Player->HyperEnabled = false;
+            }
+
             Player->Action = ActionType::Transform;
             Player->SuperFormAnim = SuperFormAnimType::Transforming;
             Player->GiveRing(100);
