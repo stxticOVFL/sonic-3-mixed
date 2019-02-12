@@ -312,6 +312,7 @@ void IPlayer::Create() {
 	FlyTimerMax = 480;
 
 	SuperForm = false;
+    HyperForm = false;
 	SuperFormAnim = SuperFormAnimType::None;
 	Layer = 0;
 	VisualLayer = 0;
@@ -865,7 +866,7 @@ void IPlayer::Update() {
 	}
 
 	int superflag = 0;
-	if (SuperForm && Character == CharacterType::Sonic)
+	if ((SuperForm || HyperForm) && Character == CharacterType::Sonic)
 		superflag = 54;
 
 	if (Underwater) {
@@ -889,7 +890,7 @@ void IPlayer::Update() {
 		air *= 2;
 		frc *= 2;
 	}
-	if (SuperForm) {
+	if (SuperForm || HyperForm) {
 		acc = 0x30;
 		dec = 0x100;
 		frc = 0xC;
@@ -925,7 +926,7 @@ void IPlayer::Update() {
 			if (YSpeed < 0x80) YSpeed += 0x20;
 			if (YSpeed > 0x80) YSpeed -= 0x20;
 
-			if (SuperForm) {
+			if (SuperForm || HyperForm) {
 				if (XSpeed < 0)
 					XSpeed -= 0xC;
 				else
@@ -1004,7 +1005,7 @@ void IPlayer::Update() {
 			air = 0;
 			YSpeed = 0;
 			XSpeed = 0;
-			if (!SuperForm) {
+			if (!SuperForm && !HyperForm) {
 				if (InputUp) {
 					YSpeed = -0x100;
 				}
@@ -2015,7 +2016,7 @@ void IPlayer::Update() {
 							if (InputLeft)
 								DisplayFlip = -1;
 
-							if (SuperForm) {
+							if (SuperForm || HyperForm) {
 								dashspeed = 0xC00;
 								maxspeed = 0xD00;
 
@@ -2513,7 +2514,7 @@ void IPlayer::Update() {
 	if (RingAlarm > 0)
 		RingAlarm--;
 
-	if (SuperForm && Rings > 0) {
+	if ((SuperForm || HyperForm) && Rings > 0) {
 		if (Scene->Frame % 60 == 0)
 			Rings--;
 
@@ -2604,7 +2605,7 @@ void IPlayer::LateUpdate() {
 	// Apply animations based on Action states
 	if (!Cutscene) {
 		int superflag = 0;
-		if (SuperForm && Character == CharacterType::Sonic)
+		if ((SuperForm || HyperForm) && Character == CharacterType::Sonic)
 			superflag = 54;
 
 		if (Ground) {
@@ -2947,7 +2948,11 @@ void IPlayer::LateUpdate() {
 		}
 
 		if (Action == ActionType::Transform) {
-			SuperForm = true;
+            if (HyperEnabled) {
+                HyperForm = true;
+            } else {
+                SuperForm = true;
+            }
 			Action = ActionType::Normal;
 			SuperFormAnim = SuperFormAnimType::Super;
 			XSpeed = 0;
@@ -3231,6 +3236,125 @@ void IPlayer::LateUpdate() {
 	PlayerStatusTable[PlayerStatusTableIndex] = status;
 	PlayerStatusTableIndex = (PlayerStatusTableIndex + 1) & 0x1F;
 }
+
+void IPlayer::UpdatePlayerPallete() {
+	int palWhere, palCount = 6;
+	Uint32 *palSuper, *palNormal, *palSuperHCZ, *palNormalHCZ, *palSuperPulse, *palSuperPulseHCZ;
+
+	if (Character == CharacterType::Sonic) {
+		palWhere = 0x40;
+		palSuper = SonicPaletteSuper;
+		palNormal = SonicPaletteNormal;
+		palSuperHCZ = SonicPaletteSuperHCZ;
+		palNormalHCZ = SonicPaletteNormalHCZ;
+		palSuperPulse = SonicPaletteSuperPulse;
+		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
+		if (!Thremixed) {
+			palWhere = 0x2;
+			palCount = 3;
+			palSuper = SonicPaletteS3Super;
+			palNormal = SonicPaletteS3Normal;
+			palSuperHCZ = SonicPaletteS3SuperHCZ;
+			palNormalHCZ = SonicPaletteS3NormalHCZ;
+			palSuperPulse = SonicPaletteS3SuperPulse;
+			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
+		}
+	}
+	else if (Character == CharacterType::Tails) {
+		palWhere = 0x46;
+		palSuper = TailsPaletteSuper;
+		palNormal = TailsPaletteNormal;
+		palSuperHCZ = TailsPaletteSuperHCZ;
+		palNormalHCZ = TailsPaletteNormalHCZ;
+		palSuperPulse = TailsPaletteSuperPulse;
+		palSuperPulseHCZ = TailsPaletteSuperPulseHCZ;
+	}
+	else if (Character == CharacterType::Knuckles) {
+		palWhere = 0x50;
+		palSuper = KnuxPaletteSuper;
+		palNormal = KnuxPaletteNormal;
+		palSuperHCZ = KnuxPaletteSuperHCZ;
+		palNormalHCZ = KnuxPaletteNormalHCZ;
+		palSuperPulse = KnuxPaletteSuperPulse;
+		palSuperPulseHCZ = KnuxPaletteSuperPulseHCZ;
+	}
+	else {
+		// Default to Sonic
+		palWhere = 0x40;
+		palSuper = SonicPaletteSuper;
+		palNormal = SonicPaletteNormal;
+		palSuperHCZ = SonicPaletteSuperHCZ;
+		palNormalHCZ = SonicPaletteNormalHCZ;
+		palSuperPulse = SonicPaletteSuperPulse;
+		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
+		if (!Thremixed) {
+			palWhere = 0x2;
+			palCount = 3;
+			palSuper = SonicPaletteS3Super;
+			palNormal = SonicPaletteS3Normal;
+			palSuperHCZ = SonicPaletteS3SuperHCZ;
+			palNormalHCZ = SonicPaletteS3NormalHCZ;
+			palSuperPulse = SonicPaletteS3SuperPulse;
+			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
+		}
+	}
+
+
+	if (SuperFormAnim == SuperFormAnimType::Super) {
+		double superblend = Cos[(Scene->Frame << 1) & 0xFF] / 2.0 + 0.5;
+		for (int i = 0; i < 4; i++) {
+			if (!Sprites[i]) continue;
+
+			for (int p = 0; p < palCount; p++) {
+				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
+
+				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
+			}
+			Sprites[i]->UpdatePalette();
+		}
+	} else if (SuperFormAnim == SuperFormAnimType::Transforming) {
+		if (SuperFormTimer < 40)
+			SuperFormTimer++;
+
+		double superblend = SuperFormTimer / 40.0;
+		for (int i = 0; i < 4; i++) {
+			if (!Sprites[i]) continue;
+
+			for (int p = 0; p < palCount; p++) {
+				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
+
+				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
+			}
+			Sprites[i]->UpdatePalette();
+		}
+	} else if (SuperFormAnim == SuperFormAnimType::Deforming) {
+		if (SuperFormTimer < 20)
+			SuperFormTimer++;
+
+		double superblend = SuperFormTimer / 20.0;
+		for (int i = 0; i < 4; i++) {
+			if (!Sprites[i]) continue;
+
+			for (int p = 0; p < palCount; p++) {
+				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
+
+				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
+			}
+			Sprites[i]->UpdatePalette();
+		}
+	} else {
+		for (int i = 0; i < 4; i++) {
+			if (!Sprites[i]) break;
+
+			for (int p = 0; p < palCount; p++) {
+				Sprites[i]->SetPalette(palWhere + p, palNormal[p]);
+				Sprites[i]->SetPaletteAlt(palWhere + p, palNormalHCZ[p]);
+			}
+			Sprites[i]->UpdatePalette();
+		}
+	}
+}
+
 void IPlayer::Render(int CamX, int CamY) {
 	if (Hidden) return;
 
@@ -3486,7 +3610,7 @@ void IPlayer::Jump() {
 	if (Underwater)
 		jmp -= 0x300;
 
-	if (Character == CharacterType::Sonic && SuperForm) {
+	if (Character == CharacterType::Sonic && (SuperForm || HyperForm)) {
 		jmp = 0x800;
 		if (Underwater)
 			jmp = 0x380;
@@ -3513,7 +3637,7 @@ void IPlayer::Hurt(int x, bool spike) {
 		Shield == ShieldType::Instashield ||
 		Action == ActionType::Dead ||
 		Invincibility != InvincibilityType::None ||
-		SuperForm ||
+		SuperForm || HyperForm ||
 		Action == ActionType::Transform)
 		return;
 
@@ -3659,9 +3783,10 @@ void IPlayer::Vibrate(VibrationType v) {
 } 
 
 void IPlayer::Deform() {
-	if (!SuperForm) return;
+	if (!SuperForm && !HyperForm) return;
 
 	SuperForm = false;
+    HyperForm = false;
 	SuperFormTimer = 0;
 	SuperFormAnim = SuperFormAnimType::Deforming;
 	InvincibilityTimer = 0;

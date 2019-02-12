@@ -53,7 +53,10 @@ void Monitor::Create() {
         SubTypeFrame = 5;
         break;
         case ItemTypes::TYPE_SUPER:
-        SubTypeFrame = 12;
+        SubTypeFrame = 7 + int(Scene->Player->Character);
+        break;
+        case ItemTypes::TYPE_HYPER:
+        SubTypeFrame = 7 + int(Scene->Player->Character);
         break;
         case ItemTypes::TYPE_HYPER_RING:
         SubTypeFrame = 11;
@@ -93,7 +96,10 @@ void Monitor::UpdateSubType() {
         SubTypeFrame = 5;
         break;
         case ItemTypes::TYPE_SUPER:
-        SubTypeFrame = 12;
+        SubTypeFrame = 7 + int(Scene->Player->Character);
+        break;
+        case ItemTypes::TYPE_HYPER:
+        SubTypeFrame = 7 + int(Scene->Player->Character);
         break;
         case ItemTypes::TYPE_HYPER_RING:
         SubTypeFrame = 11;
@@ -183,8 +189,23 @@ void Monitor::Update() {
 
             break;
             case ItemTypes::TYPE_SUPER:
-            Scene->Players[PlayerAggressor]->SuperForm = true;
-            Scene->Players[PlayerAggressor]->GiveRing(100);
+            Player = Scene->Players[PlayerAggressor];
+            if (Player->HyperEnabled) {
+                Player->HyperEnabled = false;
+            }
+
+            Player->Action = ActionType::Transform;
+            Player->SuperFormAnim = SuperFormAnimType::Transforming;
+            Player->GiveRing(100);
+            Player = NULL;
+            break;
+            case ItemTypes::TYPE_HYPER:
+            Player = Scene->Players[PlayerAggressor];
+            Player->HyperEnabled = true;
+            Player->Action = ActionType::Transform;
+            Player->SuperFormAnim = SuperFormAnimType::Transforming;
+            Player->GiveRing(100);
+            Player = NULL;
             break;
             case ItemTypes::TYPE_HYPER_RING:
             Scene->Players[PlayerAggressor]->HyperRings = true;
