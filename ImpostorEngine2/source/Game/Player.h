@@ -339,6 +339,7 @@ public:
     bool                HyperForm = false;
     bool                SuperFlight = false;
     bool                SuperEnabled = true;
+    bool                HyperEnabled = false;
     int                 SuperFormTimer = 0;
     SuperFormAnimType   SuperFormAnim = SuperFormAnimType::None;
     int                 SuperFormAnimTimer = -1;
@@ -413,6 +414,7 @@ public:
     void Create();
     void Update();
     void LateUpdate();
+	void UpdatePlayerPallete();
     void Render(int CamX, int CamY);
 
     void AnimSet(int Start, int End, int Speed, bool Stop);

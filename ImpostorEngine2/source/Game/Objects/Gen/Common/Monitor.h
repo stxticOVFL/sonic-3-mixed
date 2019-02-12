@@ -19,14 +19,15 @@ public:
         TYPE_RINGS = 0,
         TYPE_SPEED_SHOES = 4,
         TYPE_SHIELD_BUBBLE = 1,
-        TYPE_1UP = 7,
+        TYPE_1UP = 8,
+        TYPE_HYPER = 7,
         TYPE_SHIELD_FIRE = 2,
         TYPE_SHIELD_LIGHTNING = 3,
         TYPE_INVINCIBILITY = 5,
-        TYPE_BROKEN = 8,
-        TYPE_STATIC = 9,
-        TYPE_HYPER_RING = 10,
-        TYPE_ROBOTNIK = 11,
+        TYPE_BROKEN = 9,
+        TYPE_STATIC = 10,
+        TYPE_HYPER_RING = 11,
+        TYPE_ROBOTNIK = 12,
     };
     
     int SubY;
@@ -34,6 +35,7 @@ public:
     double GhostY;
     int SubTypeFrame;
     int PlayerAggressor;
+    IPlayer* Player;
     
     void Create();
     void UpdateSubType();
