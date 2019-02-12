@@ -197,7 +197,7 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
     }
 
     if (Direction == 0) {
-        if (App->Input->GetControllerInput(0)[5]) {
+        if (App->Input->GetControllerInput(0)[IInput::I_LEFT]) {
             Direction = 1;
 
             if ((PlayerX & 0xF) != 0 || (PlayerY & 0xF) != 0) {
@@ -209,7 +209,7 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
                 GlobeSpin->SetPalette(144, Globe->GetPalette(1));
             }
         }
-        if (App->Input->GetControllerInput(0)[4]) {
+        if (App->Input->GetControllerInput(0)[IInput::I_RIGHT]) {
             Direction = -1;
 
             if ((PlayerX & 0xF) != 0 || (PlayerY & 0xF) != 0) {

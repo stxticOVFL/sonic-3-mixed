@@ -19,20 +19,22 @@ public:
     enum {
         I_PAUSE = 0,
         I_EXTRA = 1,
-        I_DENY = 2,
-        I_CONFIRM = 3,
-        I_RIGHT = 4,
-        I_LEFT = 5,
-        I_DOWN = 6,
-        I_UP = 7,
-        I_PAUSE_PRESSED = 8,
-        I_EXTRA_PRESSED = 9,
-        I_DENY_PRESSED = 10,
-        I_CONFIRM_PRESSED = 11,
-        I_RIGHT_PRESSED = 12,
-        I_LEFT_PRESSED = 13,
-        I_DOWN_PRESSED = 14,
-        I_UP_PRESSED = 15,
+        I_EXTRA2 = 2,
+        I_DENY = 3,
+        I_CONFIRM = 4,
+        I_RIGHT = 5,
+        I_LEFT = 6,
+        I_DOWN = 7,
+        I_UP = 8,
+        I_PAUSE_PRESSED = 9,
+        I_EXTRA_PRESSED = 10,
+        I_EXTRA2_PRESSED = 11,
+        I_DENY_PRESSED = 12,
+        I_CONFIRM_PRESSED = 13,
+        I_RIGHT_PRESSED = 14,
+        I_LEFT_PRESSED = 15,
+        I_DOWN_PRESSED = 16,
+        I_UP_PRESSED = 17,
     };
 
     int* ControllerMaps[4];
@@ -49,7 +51,7 @@ PUBLIC IInput::IInput(IApp* app) {
     App = app;
 
     for (int i = 0; i < 4; i++)
-        Controllers[i] = (uint8_t*)calloc(1, 16);
+        Controllers[i] = (uint8_t*)calloc(1, 18);
 
     for (int i = 0; i < 4; i++)
         ControllerType[i] = 0xFF;
@@ -60,7 +62,7 @@ PUBLIC IInput::IInput(IApp* app) {
     #endif
 
     for (int i = 0; i < 4; i++)
-        ControllerMaps[i] = (int*)calloc(2, 16);
+        ControllerMaps[i] = (int*)calloc(2, 18);
 
     struct tempStruct {
         const char* key;
@@ -68,7 +70,7 @@ PUBLIC IInput::IInput(IApp* app) {
         int scancodeDefault;
     };
 
-    tempStruct defaultKeys[8] = {
+    tempStruct defaultKeys[9] = {
         { "up", I_UP, SDL_SCANCODE_UP },
         { "down", I_DOWN, SDL_SCANCODE_DOWN },
         { "left", I_LEFT, SDL_SCANCODE_LEFT },
@@ -76,12 +78,13 @@ PUBLIC IInput::IInput(IApp* app) {
 
         { "confirm", I_CONFIRM, SDL_SCANCODE_A },
         { "deny", I_DENY, SDL_SCANCODE_S },
+		{ "extra2", I_EXTRA2, SDL_SCANCODE_D },
         { "extra", I_EXTRA, SDL_SCANCODE_Q },
         { "pause", I_PAUSE, SDL_SCANCODE_W },
     };
 
 	if (IApp::Platform == Platforms::Switch) {
-		tempStruct defaultKeysNx[8] = {
+		tempStruct defaultKeysNx[9] = {
 			{ "up", I_UP, SDL_SCANCODE_UP },
 			{ "down", I_DOWN, SDL_SCANCODE_DOWN },
 			{ "left", I_LEFT, SDL_SCANCODE_LEFT },
@@ -89,6 +92,7 @@ PUBLIC IInput::IInput(IApp* app) {
 
 			{ "confirm", I_CONFIRM, SDL_SCANCODE_A },
 			{ "deny", I_DENY, SDL_SCANCODE_S },
+			{ "extra2", I_EXTRA2, SDL_SCANCODE_D },
 			{ "extra", I_EXTRA, SDL_SCANCODE_Q },
 			{ "pause", I_PAUSE, SDL_SCANCODE_W },
 		};
@@ -153,7 +157,7 @@ PUBLIC void IInput::Poll() {
     }
 
     for (int i = 0; i < ControllerCount; i++) {
-        bool UP = false, DOWN = false, LEFT = false, RIGHT = false, CONFIRM = false, DENY = false, EXTRA = false, PAUSE = false;
+        bool UP = false, DOWN = false, LEFT = false, RIGHT = false, CONFIRM = false, DENY = false, EXTRA = false, EXTRA2 = false, PAUSE = false;
 
         if (ControllerType[i] == 0x00) { // Keyboard
             const unsigned char *state = SDL_GetKeyboardState(NULL);
@@ -165,6 +169,7 @@ PUBLIC void IInput::Poll() {
 
             CONFIRM = state[ControllerMaps[i][I_CONFIRM]];
             DENY = state[ControllerMaps[i][I_DENY]];
+			EXTRA2 = state[ControllerMaps[i][I_EXTRA2]];
             EXTRA = state[ControllerMaps[i][I_EXTRA]];
             PAUSE = state[ControllerMaps[i][I_PAUSE]];
         }
@@ -228,23 +233,25 @@ PUBLIC void IInput::Poll() {
             }
         }
 
-        Controllers[i][15] = UP && !Controllers[i][15 - 8];
-        Controllers[i][14] = DOWN && !Controllers[i][14 - 8];
-        Controllers[i][13] = LEFT && !Controllers[i][13 - 8];
-        Controllers[i][12] = RIGHT && !Controllers[i][12 - 8];
-        Controllers[i][11] = CONFIRM && !Controllers[i][11 - 8];
-        Controllers[i][10] = DENY && !Controllers[i][10 - 8];
-        Controllers[i][9] = EXTRA && !Controllers[i][9 - 8];
-        Controllers[i][8] = PAUSE && !Controllers[i][8 - 8];
+        Controllers[i][I_UP_PRESSED] = UP && !Controllers[i][I_UP_PRESSED - 8];
+        Controllers[i][I_DOWN_PRESSED] = DOWN && !Controllers[i][I_DOWN_PRESSED - 8];
+        Controllers[i][I_LEFT_PRESSED] = LEFT && !Controllers[i][I_LEFT_PRESSED - 8];
+        Controllers[i][I_RIGHT_PRESSED] = RIGHT && !Controllers[i][I_RIGHT_PRESSED - 8];
+        Controllers[i][I_CONFIRM_PRESSED] = CONFIRM && !Controllers[i][I_CONFIRM_PRESSED - 8];
+        Controllers[i][I_DENY_PRESSED] = DENY && !Controllers[i][I_DENY_PRESSED - 8];
+		Controllers[i][I_EXTRA2_PRESSED] = EXTRA2 && !Controllers[i][I_EXTRA2_PRESSED - 8];
+        Controllers[i][I_EXTRA_PRESSED] = EXTRA && !Controllers[i][I_EXTRA_PRESSED - 8];
+        Controllers[i][I_PAUSE_PRESSED] = PAUSE && !Controllers[i][I_PAUSE_PRESSED - 8];
 
-        Controllers[i][7] = UP;
-        Controllers[i][6] = DOWN;
-        Controllers[i][5] = LEFT;
-        Controllers[i][4] = RIGHT;
-        Controllers[i][3] = CONFIRM;
-        Controllers[i][2] = DENY;
-        Controllers[i][1] = EXTRA;
-        Controllers[i][0] = PAUSE;
+        Controllers[i][I_UP] = UP;
+        Controllers[i][I_DOWN] = DOWN;
+        Controllers[i][I_LEFT] = LEFT;
+        Controllers[i][I_RIGHT] = RIGHT;
+        Controllers[i][I_CONFIRM] = CONFIRM;
+        Controllers[i][I_DENY] = DENY;
+		Controllers[i][I_EXTRA2] = EXTRA2;
+        Controllers[i][I_EXTRA] = EXTRA;
+        Controllers[i][I_PAUSE] = PAUSE;
 
     }
 }

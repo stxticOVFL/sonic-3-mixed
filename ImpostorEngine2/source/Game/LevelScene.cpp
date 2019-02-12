@@ -3080,14 +3080,14 @@ PUBLIC void LevelScene::Update() {
 
         if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
             if (Player) {
-                Player->InputUp = App->Input->GetControllerInput(0)[7];
-                Player->InputDown = App->Input->GetControllerInput(0)[6];
-                Player->InputLeftPress = App->Input->GetControllerInput(0)[13];
-                Player->InputLeft = App->Input->GetControllerInput(0)[5];
-                Player->InputRightPress = App->Input->GetControllerInput(0)[12];
-                Player->InputRight = App->Input->GetControllerInput(0)[4];
-                Player->InputJump = App->Input->GetControllerInput(0)[11];
-                Player->InputJumpHold = App->Input->GetControllerInput(0)[3];
+                Player->InputUp = App->Input->GetControllerInput(0)[IInput::I_UP];
+                Player->InputDown = App->Input->GetControllerInput(0)[IInput::I_DOWN];
+                Player->InputLeftPress = App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED];
+                Player->InputLeft = App->Input->GetControllerInput(0)[IInput::I_LEFT];
+                Player->InputRightPress = App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED];
+                Player->InputRight = App->Input->GetControllerInput(0)[IInput::I_RIGHT];
+                Player->InputJump = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
+                Player->InputJumpHold = App->Input->GetControllerInput(0)[IInput::I_CONFIRM];
 
                 if (Player->Action == ActionType::Dead && Player->EZY > CameraY + App->HEIGHT + 32) {
                     if (Player->Lives > 0 && FadeAction == 0) {
@@ -3185,7 +3185,7 @@ PUBLIC void LevelScene::Update() {
 				}
 			}
             
-            if (App->Input->MousePressed) {
+            if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
 				if (Player->DebugObject) {
 					uint8_t oldSubType = Player->DebugObject->SubType;
 
@@ -3413,16 +3413,16 @@ PUBLIC void LevelScene::Update() {
                 PauseAnim[4 + i] = IMath::max(0, PauseAnim[4 + i] - 1);
 
         if (FadeAction == 0) {
-            if (App->Input->GetControllerInput(0)[7 + 8]) {
+            if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
                 PauseSelectedMenuItem--;
                 Sound::Play(Sound::SFX_MENUBLEEP);
             }
-            if (App->Input->GetControllerInput(0)[6 + 8]) {
+            if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
                 PauseSelectedMenuItem++;
                 Sound::Play(Sound::SFX_MENUBLEEP);
             }
 
-            if (App->Input->GetControllerInput(0)[3 + 8]) { // confirm
+            if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) { // confirm
                 if (PauseSelectedMenuItem == 0) {
                     Paused = false;
                     App->Audio->AudioUnpauseAll();
@@ -3449,7 +3449,7 @@ PUBLIC void LevelScene::Update() {
                     Sound::Play(Sound::SFX_MENUACCEPT);
                 }
             }
-            else if (App->Input->GetControllerInput(0)[2 + 8]) { // deny
+            else if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) { // deny
                 Paused = false;
             }
         }
