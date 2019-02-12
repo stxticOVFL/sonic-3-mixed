@@ -233,15 +233,15 @@ PUBLIC void IInput::Poll() {
             }
         }
 
-        Controllers[i][I_UP_PRESSED] = UP && !Controllers[i][I_UP_PRESSED - 8];
-        Controllers[i][I_DOWN_PRESSED] = DOWN && !Controllers[i][I_DOWN_PRESSED - 8];
-        Controllers[i][I_LEFT_PRESSED] = LEFT && !Controllers[i][I_LEFT_PRESSED - 8];
-        Controllers[i][I_RIGHT_PRESSED] = RIGHT && !Controllers[i][I_RIGHT_PRESSED - 8];
-        Controllers[i][I_CONFIRM_PRESSED] = CONFIRM && !Controllers[i][I_CONFIRM_PRESSED - 8];
-        Controllers[i][I_DENY_PRESSED] = DENY && !Controllers[i][I_DENY_PRESSED - 8];
-		Controllers[i][I_EXTRA2_PRESSED] = EXTRA2 && !Controllers[i][I_EXTRA2_PRESSED - 8];
-        Controllers[i][I_EXTRA_PRESSED] = EXTRA && !Controllers[i][I_EXTRA_PRESSED - 8];
-        Controllers[i][I_PAUSE_PRESSED] = PAUSE && !Controllers[i][I_PAUSE_PRESSED - 8];
+        Controllers[i][I_UP_PRESSED] = UP && !Controllers[i][I_UP];
+        Controllers[i][I_DOWN_PRESSED] = DOWN && !Controllers[i][I_DOWN];
+        Controllers[i][I_LEFT_PRESSED] = LEFT && !Controllers[i][I_LEFT];
+        Controllers[i][I_RIGHT_PRESSED] = RIGHT && !Controllers[i][I_RIGHT];
+        Controllers[i][I_CONFIRM_PRESSED] = CONFIRM && !Controllers[i][I_CONFIRM];
+        Controllers[i][I_DENY_PRESSED] = DENY && !Controllers[i][I_DENY];
+		Controllers[i][I_EXTRA2_PRESSED] = EXTRA2 && !Controllers[i][I_EXTRA2];
+        Controllers[i][I_EXTRA_PRESSED] = EXTRA && !Controllers[i][I_EXTRA];
+        Controllers[i][I_PAUSE_PRESSED] = PAUSE && !Controllers[i][I_PAUSE];
 
         Controllers[i][I_UP] = UP;
         Controllers[i][I_DOWN] = DOWN;
