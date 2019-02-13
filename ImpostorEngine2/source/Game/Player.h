@@ -418,7 +418,6 @@ public:
     void Create();
     void Update();
     void LateUpdate();
-	void UpdatePlayerPallete();
     void Render(int CamX, int CamY);
 
     void AnimSet(int Start, int End, int Speed, bool Stop);

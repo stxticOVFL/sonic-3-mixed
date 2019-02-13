@@ -1184,10 +1184,10 @@ PUBLIC uint32_t IGraphics::ColorAddHex(uint32_t color1, uint32_t color2, int per
 }
 
 PUBLIC uint32_t IGraphics::GetRetroColor(uint16_t RetroColor) {
-	unsigned char MeasuredGenesisColors[] = { 0x00, 0x34, 0x57, 0x74, 0x90, 0xAC, 0xCE, (unsigned char)0xFF };
+	uint8_t MeasuredGenesisColors[] = { 0x00, 0x34, 0x57, 0x74, 0x90, 0xAC, 0xCE, 0xFF };
 	uint32_t FullColor = 0x0;
 
-	unsigned char R, B, G = 0x00;
+	uint8_t R, B, G = 0x00;
 
 	R = MeasuredGenesisColors[((RetroColor >> 0) & 0xE) >> 1];
 	G = MeasuredGenesisColors[((RetroColor >> 4) & 0xE) >> 1];
