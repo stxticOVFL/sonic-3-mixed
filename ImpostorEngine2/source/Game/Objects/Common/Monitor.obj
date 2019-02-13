@@ -8,19 +8,21 @@ var PlayerAggressor:int;
 var Player:IPlayer;
 
 enum ItemTypes {
+    TYPE_STATIC,
+    TYPE_1UP,
+    TYPE_ROBOTNIK,
     TYPE_RINGS,
-    TYPE_SHIELD_BUBBLE,
+    TYPE_SPEED_SHOES,
     TYPE_SHIELD_FIRE,
     TYPE_SHIELD_LIGHTNING,
-    TYPE_SPEED_SHOES,
+    TYPE_SHIELD_BUBBLE,
     TYPE_INVINCIBILITY,
     TYPE_SUPER,
-    TYPE_HYPER,
-    TYPE_1UP,
     TYPE_BROKEN,
-    TYPE_STATIC,
+    
+    // New types
+    TYPE_HYPER,
     TYPE_HYPER_RING,
-    TYPE_ROBOTNIK,
 }
 
 event Create() {
@@ -49,20 +51,11 @@ event Create() {
 
     SubTypeFrame = 0;
     switch (SubType) {
-        case ItemTypes.TYPE_STATIC:
-            SubTypeFrame = 14;
-            break;
-        case ItemTypes.TYPE_1UP:
-            SubTypeFrame = 7 + int(Scene.Player.Character);
-            break;
-        case ItemTypes.TYPE_ROBOTNIK:
-            SubTypeFrame = 12;
-            break;
         case ItemTypes.TYPE_RINGS:
             SubTypeFrame = 0;
             break;
-        case ItemTypes.TYPE_SPEED_SHOES:
-            SubTypeFrame = 6;
+        case ItemTypes.TYPE_SHIELD_BUBBLE:
+            SubTypeFrame = 2;
             break;
         case ItemTypes.TYPE_SHIELD_FIRE:
             SubTypeFrame = 3;
@@ -70,20 +63,29 @@ event Create() {
         case ItemTypes.TYPE_SHIELD_LIGHTNING:
             SubTypeFrame = 4;
             break;
-        case ItemTypes.TYPE_SHIELD_BUBBLE:
-            SubTypeFrame = 2;
-            break;
         case ItemTypes.TYPE_INVINCIBILITY:
             SubTypeFrame = 5;
             break;
-        case ItemTypes.TYPE_SUPER:
+        case ItemTypes.TYPE_SPEED_SHOES:
+            SubTypeFrame = 6;
+            break;
+        case ItemTypes.TYPE_1UP:
             SubTypeFrame = 7 + int(Scene.Player.Character);
+            break;
+        case ItemTypes.TYPE_SUPER:
+            SubTypeFrame = 16;
             break;
         case ItemTypes.TYPE_HYPER:
-            SubTypeFrame = 7 + int(Scene.Player.Character);
+            SubTypeFrame = 16;
             break;
         case ItemTypes.TYPE_HYPER_RING:
-            SubTypeFrame = 11;
+            SubTypeFrame = 1;
+            break;
+        case ItemTypes.TYPE_ROBOTNIK:
+            SubTypeFrame = 12;
+            break;
+        case ItemTypes.TYPE_STATIC:
+            SubTypeFrame = 14;
             break;
     }
 
@@ -92,20 +94,11 @@ event Create() {
 
 event UpdateSubType() {
     switch (SubType) {
-        case ItemTypes.TYPE_STATIC:
-            SubTypeFrame = 14;
-            break;
-        case ItemTypes.TYPE_1UP:
-            SubTypeFrame = 7 + int(Scene.Player.Character);
-            break;
-        case ItemTypes.TYPE_ROBOTNIK:
-            SubTypeFrame = 12;
-            break;
         case ItemTypes.TYPE_RINGS:
             SubTypeFrame = 0;
             break;
-        case ItemTypes.TYPE_SPEED_SHOES:
-            SubTypeFrame = 6;
+        case ItemTypes.TYPE_SHIELD_BUBBLE:
+            SubTypeFrame = 2;
             break;
         case ItemTypes.TYPE_SHIELD_FIRE:
             SubTypeFrame = 3;
@@ -113,26 +106,35 @@ event UpdateSubType() {
         case ItemTypes.TYPE_SHIELD_LIGHTNING:
             SubTypeFrame = 4;
             break;
-        case ItemTypes.TYPE_SHIELD_BUBBLE:
-            SubTypeFrame = 2;
-            break;
         case ItemTypes.TYPE_INVINCIBILITY:
             SubTypeFrame = 5;
             break;
-        case ItemTypes.TYPE_SUPER:
+        case ItemTypes.TYPE_SPEED_SHOES:
+            SubTypeFrame = 6;
+            break;
+        case ItemTypes.TYPE_1UP:
             SubTypeFrame = 7 + int(Scene.Player.Character);
+            break;
+        case ItemTypes.TYPE_SUPER:
+            SubTypeFrame = 16;
             break;
         case ItemTypes.TYPE_HYPER:
-            SubTypeFrame = 7 + int(Scene.Player.Character);
+            SubTypeFrame = 16;
             break;
         case ItemTypes.TYPE_HYPER_RING:
-            SubTypeFrame = 11;
+            SubTypeFrame = 1;
+            break;
+        case ItemTypes.TYPE_ROBOTNIK:
+            SubTypeFrame = 12;
+            break;
+        case ItemTypes.TYPE_STATIC:
+            SubTypeFrame = 14;
             break;
     }
 }
 
 event GetSubTypeMax() : uint8_t {
-    return ItemTypes.TYPE_ROBOTNIK;
+    return ItemTypes.TYPE_HYPER_RING + 1;
 }
 
 event Update() {

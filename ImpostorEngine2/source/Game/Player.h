@@ -190,6 +190,7 @@ public:
     int AnimationSpeedMult = 1;
 
 	bool Thremixed = false;
+	bool OCMode = false;
 
     int SensorA = 20;
     int SensorB = 20;
@@ -344,6 +345,8 @@ public:
     SuperFormAnimType   SuperFormAnim = SuperFormAnimType::None;
     int                 SuperFormAnimTimer = -1;
     int                 SuperFormAnimTimerMax = 20;
+	int                 LastHyperIndex = 0;
+	int                 HyperLoopIndex = 0;
 
     bool                ForceRoll = false;
     int                 ForceRollBond = -1;

@@ -3213,7 +3213,7 @@ PUBLIC void LevelScene::Update() {
 						obj->DebugCreate();
 
 						obj->Active = true;
-
+						
 						Objects[ObjectCount++] = obj;
 						Player->DebugObject = obj;
 					} else {

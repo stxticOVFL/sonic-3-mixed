@@ -25,20 +25,11 @@ void Monitor::Create() {
     GhostY = 0.0;
     SubTypeFrame = 0;
     switch (SubType) {
-        case ItemTypes::TYPE_STATIC:
-        SubTypeFrame = 14;
-        break;
-        case ItemTypes::TYPE_1UP:
-        SubTypeFrame = 7 + int(Scene->Player->Character);
-        break;
-        case ItemTypes::TYPE_ROBOTNIK:
-        SubTypeFrame = 12;
-        break;
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
         break;
-        case ItemTypes::TYPE_SPEED_SHOES:
-        SubTypeFrame = 6;
+        case ItemTypes::TYPE_SHIELD_BUBBLE:
+        SubTypeFrame = 2;
         break;
         case ItemTypes::TYPE_SHIELD_FIRE:
         SubTypeFrame = 3;
@@ -46,20 +37,29 @@ void Monitor::Create() {
         case ItemTypes::TYPE_SHIELD_LIGHTNING:
         SubTypeFrame = 4;
         break;
-        case ItemTypes::TYPE_SHIELD_BUBBLE:
-        SubTypeFrame = 2;
-        break;
         case ItemTypes::TYPE_INVINCIBILITY:
         SubTypeFrame = 5;
         break;
-        case ItemTypes::TYPE_SUPER:
+        case ItemTypes::TYPE_SPEED_SHOES:
+        SubTypeFrame = 6;
+        break;
+        case ItemTypes::TYPE_1UP:
         SubTypeFrame = 7 + int(Scene->Player->Character);
+        break;
+        case ItemTypes::TYPE_SUPER:
+        SubTypeFrame = 16;
         break;
         case ItemTypes::TYPE_HYPER:
-        SubTypeFrame = 7 + int(Scene->Player->Character);
+        SubTypeFrame = 16;
         break;
         case ItemTypes::TYPE_HYPER_RING:
-        SubTypeFrame = 11;
+        SubTypeFrame = 1;
+        break;
+        case ItemTypes::TYPE_ROBOTNIK:
+        SubTypeFrame = 12;
+        break;
+        case ItemTypes::TYPE_STATIC:
+        SubTypeFrame = 14;
         break;
     }
 
@@ -68,20 +68,11 @@ void Monitor::Create() {
 
 void Monitor::UpdateSubType() {
     switch (SubType) {
-        case ItemTypes::TYPE_STATIC:
-        SubTypeFrame = 14;
-        break;
-        case ItemTypes::TYPE_1UP:
-        SubTypeFrame = 7 + int(Scene->Player->Character);
-        break;
-        case ItemTypes::TYPE_ROBOTNIK:
-        SubTypeFrame = 12;
-        break;
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
         break;
-        case ItemTypes::TYPE_SPEED_SHOES:
-        SubTypeFrame = 6;
+        case ItemTypes::TYPE_SHIELD_BUBBLE:
+        SubTypeFrame = 2;
         break;
         case ItemTypes::TYPE_SHIELD_FIRE:
         SubTypeFrame = 3;
@@ -89,27 +80,36 @@ void Monitor::UpdateSubType() {
         case ItemTypes::TYPE_SHIELD_LIGHTNING:
         SubTypeFrame = 4;
         break;
-        case ItemTypes::TYPE_SHIELD_BUBBLE:
-        SubTypeFrame = 2;
-        break;
         case ItemTypes::TYPE_INVINCIBILITY:
         SubTypeFrame = 5;
         break;
-        case ItemTypes::TYPE_SUPER:
+        case ItemTypes::TYPE_SPEED_SHOES:
+        SubTypeFrame = 6;
+        break;
+        case ItemTypes::TYPE_1UP:
         SubTypeFrame = 7 + int(Scene->Player->Character);
+        break;
+        case ItemTypes::TYPE_SUPER:
+        SubTypeFrame = 16;
         break;
         case ItemTypes::TYPE_HYPER:
-        SubTypeFrame = 7 + int(Scene->Player->Character);
+        SubTypeFrame = 16;
         break;
         case ItemTypes::TYPE_HYPER_RING:
-        SubTypeFrame = 11;
+        SubTypeFrame = 1;
+        break;
+        case ItemTypes::TYPE_ROBOTNIK:
+        SubTypeFrame = 12;
+        break;
+        case ItemTypes::TYPE_STATIC:
+        SubTypeFrame = 14;
         break;
     }
 
 }
 
 uint8_t Monitor::GetSubTypeMax() {
-    return ItemTypes::TYPE_ROBOTNIK;
+    return ItemTypes::TYPE_HYPER_RING + 1;
 }
 
 void Monitor::Update() {

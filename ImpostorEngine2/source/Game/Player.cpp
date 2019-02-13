@@ -26,6 +26,7 @@ Uint32 SonicPaletteSuper[6] = {
 	0x00F0E898,
 	0x00F0E8D0,
 };
+
 Uint32 SonicPaletteSuperPulse[6] = {
 	0x00F0D898,
 	0x00F0E0B0,
@@ -176,6 +177,29 @@ Uint32 SonicPaletteS3SuperPulse[3] = {
 	0xEEEEAA,
 };
 
+Uint32 SonicPaletteS3Hyper[17] = {
+	0x00ACCEFF,
+	0x0090ACFF,
+	0x00CEFFCE,
+	0x00ACFFAC,
+	0x0000FF34,
+	0x00CEFFAC,
+	0x00CEFF57,
+	0x00CECE00,
+	0x00FFFFCE,
+	0x00FFFF90,
+	0x00FFCE57,
+	0x00FFCECE,
+	0x00FFACAC,
+	0x00FFCEFF,
+	0x00CEACCE,
+};
+
+Uint32 SonicPaletteS3HyperPulse[3] = {
+	0xEEEECC,
+	0xEEEECC,
+	0xEEEEAA,
+};
 
 Uint32 SonicPaletteS3NormalHCZ[3] = {
 	0x2288AA,
@@ -3015,7 +3039,7 @@ void IPlayer::LateUpdate() {
 	DisplayY = EZY;
 
 	int palWhere, palCount = 6;
-	Uint32 *palSuper, *palNormal, *palSuperHCZ, *palNormalHCZ, *palSuperPulse, *palSuperPulseHCZ;
+	Uint32 *palSuper, *palHyper = NULL, *palNormal, *palSuperHCZ, *palHyperHCZ = NULL, *palNormalHCZ, *palSuperPulse, *palSuperPulseHCZ, *palHyperPulse = NULL, *palHyperPulseHCZ = NULL;
 
 	if (Character == CharacterType::Sonic) {
 		palWhere = 0x40;
@@ -3029,6 +3053,9 @@ void IPlayer::LateUpdate() {
 			palWhere = 0x2;
 			palCount = 3;
 			palSuper = SonicPaletteS3Super;
+			palHyper = SonicPaletteS3Hyper;
+			palHyperPulse = SonicPaletteS3HyperPulse;
+			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 			palNormal = SonicPaletteS3Normal;
 			palSuperHCZ = SonicPaletteS3SuperHCZ;
 			palNormalHCZ = SonicPaletteS3NormalHCZ;
@@ -3063,18 +3090,74 @@ void IPlayer::LateUpdate() {
 		palNormalHCZ = SonicPaletteNormalHCZ;
 		palSuperPulse = SonicPaletteSuperPulse;
 		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
+		if (!Thremixed) {
+			palWhere = 0x2;
+			palCount = 3;
+			palSuper = SonicPaletteS3Super;
+			palHyper = SonicPaletteS3Hyper;
+			palHyperPulse = SonicPaletteS3HyperPulse;
+			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
+			palNormal = SonicPaletteS3Normal;
+			palSuperHCZ = SonicPaletteS3SuperHCZ;
+			palNormalHCZ = SonicPaletteS3NormalHCZ;
+			palSuperPulse = SonicPaletteS3SuperPulse;
+			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
+		}
 	}
 
+	/*static bool looped = false;
+
+	if (!looped) {
+		unsigned char MeasuredGenesisColors[] = { 0x00, 0x34, 0x57, 0x74, 0x90, 0xAC, 0xCE, (unsigned char)0xFF };
+		uint16_t EncodedColors[] = { 0xEEC, 0xECA, 0xEA8, 0xCEC, 0xAEA, 0x2E0,
+									 0xAEC, 0x4EC, 0x0CC, 0xCEE, 0x8EE, 0x4CE, 0xCCE,
+									 0xAAE, 0xECE, 0xCAC, 0xEEE };
+
+		for (int p = 0; p < 17; p++) {
+            uint16_t color = G->GetRetroColor(EncodedColors[p]);
+		}
+	}
+	looped = true;*/
 
 	if (SuperFormAnim == SuperFormAnimType::Super) {
 		double superblend = Cos[(Scene->Frame << 1) & 0xFF] / 2.0 + 0.5;
+		const int hyperFullPalCount = 17;
+		if (HyperEnabled && OCMode && palHyper != NULL) {
+			palCount = 17;
+		}
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) continue;
 
 			for (int p = 0; p < palCount; p++) {
-				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
-
-				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
+				if (HyperEnabled && palHyper != NULL) {
+					if (!palHyperPulse || !palHyperPulseHCZ) {
+						palHyperPulse = palSuperPulse;
+						palHyperPulseHCZ = palSuperPulseHCZ;
+					}
+					if (OCMode) {
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
+					} else {
+						HyperLoopIndex++;
+						if (HyperLoopIndex >= 320) {
+							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
+							HyperLoopIndex = 0;
+						}
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend));
+					}
+				} else {
+					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
+					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
+				}
+                
+				/*int ABGR = Sprites[i]->GetPalette(palWhere + p);
+                int empty = ABGR >> 24;
+                int R = (ABGR & 0x00FFFFFF) >> 16;
+                int G = (ABGR & 0x0000FFFF) >> 8;
+                int B = ABGR & 0x000000FF;
+                
+                App->Print(0, "ABGR is: %02X, %02X, %02X, %02X", empty, R, G, B);*/
 			}
 			Sprites[i]->UpdatePalette();
 		}
@@ -3089,8 +3172,9 @@ void IPlayer::LateUpdate() {
 
 			for (int p = 0; p < palCount; p++) {
 				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
-
 				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
+                
+                
 			}
 			Sprites[i]->UpdatePalette();
 		}
@@ -3239,80 +3323,46 @@ void IPlayer::LateUpdate() {
 
 void IPlayer::UpdatePlayerPallete() {
 	int palWhere, palCount = 6;
-	Uint32 *palSuper, *palNormal, *palSuperHCZ, *palNormalHCZ, *palSuperPulse, *palSuperPulseHCZ;
-
-	if (Character == CharacterType::Sonic) {
-		palWhere = 0x40;
-		palSuper = SonicPaletteSuper;
-		palNormal = SonicPaletteNormal;
-		palSuperHCZ = SonicPaletteSuperHCZ;
-		palNormalHCZ = SonicPaletteNormalHCZ;
-		palSuperPulse = SonicPaletteSuperPulse;
-		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
-		if (!Thremixed) {
-			palWhere = 0x2;
-			palCount = 3;
-			palSuper = SonicPaletteS3Super;
-			palNormal = SonicPaletteS3Normal;
-			palSuperHCZ = SonicPaletteS3SuperHCZ;
-			palNormalHCZ = SonicPaletteS3NormalHCZ;
-			palSuperPulse = SonicPaletteS3SuperPulse;
-			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
-		}
-	}
-	else if (Character == CharacterType::Tails) {
-		palWhere = 0x46;
-		palSuper = TailsPaletteSuper;
-		palNormal = TailsPaletteNormal;
-		palSuperHCZ = TailsPaletteSuperHCZ;
-		palNormalHCZ = TailsPaletteNormalHCZ;
-		palSuperPulse = TailsPaletteSuperPulse;
-		palSuperPulseHCZ = TailsPaletteSuperPulseHCZ;
-	}
-	else if (Character == CharacterType::Knuckles) {
-		palWhere = 0x50;
-		palSuper = KnuxPaletteSuper;
-		palNormal = KnuxPaletteNormal;
-		palSuperHCZ = KnuxPaletteSuperHCZ;
-		palNormalHCZ = KnuxPaletteNormalHCZ;
-		palSuperPulse = KnuxPaletteSuperPulse;
-		palSuperPulseHCZ = KnuxPaletteSuperPulseHCZ;
-	}
-	else {
-		// Default to Sonic
-		palWhere = 0x40;
-		palSuper = SonicPaletteSuper;
-		palNormal = SonicPaletteNormal;
-		palSuperHCZ = SonicPaletteSuperHCZ;
-		palNormalHCZ = SonicPaletteNormalHCZ;
-		palSuperPulse = SonicPaletteSuperPulse;
-		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
-		if (!Thremixed) {
-			palWhere = 0x2;
-			palCount = 3;
-			palSuper = SonicPaletteS3Super;
-			palNormal = SonicPaletteS3Normal;
-			palSuperHCZ = SonicPaletteS3SuperHCZ;
-			palNormalHCZ = SonicPaletteS3NormalHCZ;
-			palSuperPulse = SonicPaletteS3SuperPulse;
-			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
-		}
-	}
-
+	Uint32 *palSuper, *palHyper = NULL, *palNormal, *palSuperHCZ, *palHyperHCZ = NULL, *palNormalHCZ, *palSuperPulse, *palSuperPulseHCZ, *palHyperPulse = NULL, *palHyperPulseHCZ = NULL;
 
 	if (SuperFormAnim == SuperFormAnimType::Super) {
 		double superblend = Cos[(Scene->Frame << 1) & 0xFF] / 2.0 + 0.5;
+		const int hyperFullPalCount = 17;
+		if (HyperEnabled && OCMode && palHyper != NULL) {
+			palCount = 17;
+		}
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) continue;
 
 			for (int p = 0; p < palCount; p++) {
-				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
-
-				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
+				if (HyperEnabled && palHyper != NULL) {
+					if (!palHyperPulse || !palHyperPulseHCZ) {
+						palHyperPulse = palSuperPulse;
+						palHyperPulseHCZ = palSuperPulseHCZ;
+					}
+					if (OCMode) {
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
+					}
+					else {
+						HyperLoopIndex++;
+						if (HyperLoopIndex >= 320) {
+							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
+							HyperLoopIndex = 0;
+						}
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend));
+					}
+				}
+				else {
+					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
+					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
+				}
 			}
 			Sprites[i]->UpdatePalette();
 		}
-	} else if (SuperFormAnim == SuperFormAnimType::Transforming) {
+	}
+	else if (SuperFormAnim == SuperFormAnimType::Transforming) {
 		if (SuperFormTimer < 40)
 			SuperFormTimer++;
 
@@ -3322,12 +3372,14 @@ void IPlayer::UpdatePlayerPallete() {
 
 			for (int p = 0; p < palCount; p++) {
 				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
-
 				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
+
+
 			}
 			Sprites[i]->UpdatePalette();
 		}
-	} else if (SuperFormAnim == SuperFormAnimType::Deforming) {
+	}
+	else if (SuperFormAnim == SuperFormAnimType::Deforming) {
 		if (SuperFormTimer < 20)
 			SuperFormTimer++;
 
@@ -3342,7 +3394,8 @@ void IPlayer::UpdatePlayerPallete() {
 			}
 			Sprites[i]->UpdatePalette();
 		}
-	} else {
+	}
+	else {
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) break;
 
