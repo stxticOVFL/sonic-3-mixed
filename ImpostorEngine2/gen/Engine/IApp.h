@@ -39,6 +39,7 @@ public:
     uint32_t MetricRenderTime = -1;
     bool UnlockedFramerate = false;
     static Platforms Platform; //
+    static bool      Mobile;
 
     IApp();
     void LoadSettings();

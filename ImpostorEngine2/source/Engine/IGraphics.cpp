@@ -800,7 +800,7 @@ PUBLIC VIRTUAL void IGraphics::DrawTextSprite(ISprite* sprite, int animation, ch
 	ISprite::AnimFrame animframe;
 	for (int i = 0; i < (int)strlen(string); i++) {
 		animframe = sprite->Animations[animation].Frames[string[i] - first];
-		IGraphics::DrawSprite(sprite, animation, string[i] - first, x - animframe.OffX, y, 0, 0);
+		DrawSprite(sprite, animation, string[i] - first, x - animframe.OffX, y, 0, 0);
 
 		x += animframe.W;
 	}

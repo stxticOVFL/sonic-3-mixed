@@ -156,9 +156,6 @@
     <ClCompile Include="..\source\Game\Levels\ICZ.cpp">
       <Filter>Source Files\Game\Levels</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Act1TreeBark.cpp">
-      <Filter>Source Files\Game\Objects\AIZ</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZBoss.cpp">
       <Filter>Source Files\Game\Objects\AIZ</Filter>
     </ClCompile>
@@ -434,6 +431,9 @@
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\VacuumTube.cpp">
       <Filter>Source Files\Game\Objects\CNZ</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZTreeBark.cpp">
+      <Filter>Source Files\Game\Objects\AIZ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

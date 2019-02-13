@@ -55,6 +55,7 @@ public:
     void Poll();
     void Vibrate(int c, double strength, int duration);
     uint8_t* GetControllerInput(int ControllerID);
+    bool GetControllerInput(int ControllerID, int Button);
 };
 
 #endif /* IINPUT_H */

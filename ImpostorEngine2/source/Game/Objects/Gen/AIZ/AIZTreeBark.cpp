@@ -1,11 +1,11 @@
 // Object ID: 0x09
-// Object Name: Act1TreeBark.cpp
+// Object Name: AIZTreeBark.cpp
 
-#include "Act1TreeBark.h"
+#include "AIZTreeBark.h"
 
 typedef IMath Math;
 
-void Act1TreeBark::Create() {
+void AIZTreeBark::Create() {
     Object::Create();
     Active = true;
     Priority = false;
@@ -15,7 +15,7 @@ void Act1TreeBark::Create() {
     Frame = 0;
 }
 
-void Act1TreeBark::Render(int CamX, int CamY) {
+void AIZTreeBark::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 

@@ -411,7 +411,7 @@ void IPlayer::Create() {
 			}
 		}
 		else {
-            bool Tria = false;
+            bool Tria = true;
             if (Tria) {
                 Sprites[0] = new ISprite("Player/Sonic1.gif", App);
                 Sprites[1] = new ISprite("Player/Sonic2.gif", App);
@@ -419,7 +419,7 @@ void IPlayer::Create() {
                 Sprites[3] = new ISprite("Player/Sonic4.gif", App);
                 Sprites[4] = new ISprite("Player/SonicCutsceneCPZ.gif", App);
 
-                Sprites[0]->LoadAnimation("Player/Sonic.bin");
+                Sprites[0]->LoadAnimation("Player/Sonicold.bin");
 
                 int i = 0;
                 for (; i < Sprites[0]->AnimCount; i++) {
@@ -442,7 +442,8 @@ void IPlayer::Create() {
                 Sprites[0]->Animations[54 + (int)AnimationEnum::Run].AnimationSpeed = 0x100;
                 Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
                 Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
-            } else {
+            }
+			else {
                 int i = 0;
                 Sprites[0] = new ISprite("Player/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
                 Sprites[1] = new ISprite("Player/S3/Sonic.gif", App);
@@ -1149,6 +1150,7 @@ void IPlayer::Update() {
 							GlideSpeedStore = 0;
 							Angle = 0;
 							ChangeAnimation((int)AnimationEnum::RayFlyDown, 0);
+							Sound::Play(Sound::SFX_RAY_DIVE);
 						}
 						did = false;
 					}
@@ -1158,6 +1160,7 @@ void IPlayer::Update() {
 						GlideSpeedStore = 0;
 						Angle = 0;
 						ChangeAnimation((int)AnimationEnum::RayFlyDown, 0);
+						Sound::Play(Sound::SFX_RAY_DIVE);
 					}
 					did = false;
 				}
@@ -1196,12 +1199,15 @@ void IPlayer::Update() {
 							GlideSpeedStore = -0x600;
 					}
 					ChangeAnimation((int)AnimationEnum::RayFlyUp, 0);
+					Sound::Play(Sound::SFX_RAY_SWOOP);
 				}
 			}
 
 			if (!InputJumpHold || XSpeed == 0 || EZY < Scene->CameraY) {
 				Action = ActionType::Jumping;
 				JumpVariable = 0;
+				Sound::Stop(Sound::SFX_RAY_DIVE);
+				Sound::Stop(Sound::SFX_RAY_SWOOP);
 			}
 			break;
 		}
@@ -2412,6 +2418,7 @@ void IPlayer::Update() {
 
 					if ((DisplayFlip < 0 || !InputRight) && (DisplayFlip > 0 || !InputLeft)) {
 						ChangeAnimation((int)AnimationEnum::RayFlyUp, 3);
+						Sound::Play(Sound::SFX_RAY_SWOOP);
 
 						Angle = 1; // Facing Up
 
@@ -2433,6 +2440,7 @@ void IPlayer::Update() {
 					}
 					else {
 						ChangeAnimation((int)AnimationEnum::RayFlyDown, 3);
+						Sound::Play(Sound::SFX_RAY_DIVE);
 						Angle = 0; // Facing Down
 						GlideSpeedStore = 0;
 					}
@@ -3516,7 +3524,7 @@ void IPlayer::Render(int CamX, int CamY) {
 			}
 			else if (CurrentAnimation >= (int)AnimationEnum::Fly) {
 				Ani = 0;
-				if (!Thremixed) {
+				if (!Thremixed && CurrentAnimation <= (int)AnimationEnum::FlyLiftTired) {
 					Ani = 62;
 					Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
 					Fra = (Scene->Frame) & 1;

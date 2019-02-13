@@ -176,6 +176,7 @@ public:
     int         Checkpoint = -1;
     int         SavedPositionX = -1;
     int         SavedPositionY = -1;
+	uint32_t*   SavedPalette = NULL;
 
     int         WaterEnteredCounter = 0;
 
@@ -233,6 +234,8 @@ bool ViewTileInfo = false;
 bool ViewTileCollision = false;
 const char* ObjectName[347];
 
+int BlankTile = 0;
+
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App = app;
     G = g;
@@ -247,6 +250,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
     Sound::Audio = App->Audio;
     Sound::Init();
+	SaveGame::Init();
 
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Sound::Init()", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
@@ -264,6 +268,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     RingProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
     AnimatedSprite0Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
     AnimatedSprite1Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
+
+	SavedPalette = (uint32_t*)calloc(0x100, sizeof(uint32_t));
 
     SoundBank = (ISound**)calloc(0x100, sizeof(ISound*));
 
@@ -384,23 +390,39 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             MobileButtonsSprite->UpdatePalette();
         }
         if (!ItemsSprite) {
-            ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
-            ItemsSprite->LoadAnimation("Sprites/GlobalS3K/ItemBox.bin");
-            ItemsSprite->LoadAnimation("Sprites/GlobalS3K/Ring.bin");
+			if (Thremixed) {
+				ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
+				ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
+				ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
+			}
+			else {
+				ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
+				ItemsSprite->LoadAnimation("Sprites/GlobalS3K/ItemBox.bin");
+				ItemsSprite->LoadAnimation("Sprites/GlobalS3K/Ring.bin");
+			}
         }
         if (!AnimalsSprite) {
             AnimalsSprite = new ISprite("Sprites/Global/Animals.gif", App);
             AnimalsSprite->LoadAnimation("Sprites/Global/Animals.bin");
         }
         if (!ObjectsSprite) {
-            ObjectsSprite = new ISprite("Sprites/GlobalS3K/Objects.gif", App);
-            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Springs.bin");
-            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Spikes.bin");
-            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/StarPost.bin");
-            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/ScoreBonus.bin");
+			if (Thremixed) {
+				ObjectsSprite = new ISprite("Sprites/Global/Objects.gif", App);
+				ObjectsSprite->LoadAnimation("Sprites/Global/Springs.bin");
+				ObjectsSprite->LoadAnimation("Sprites/Global/Spikes.bin");
+				ObjectsSprite->LoadAnimation("Sprites/Global/StarPost.bin");
+				ObjectsSprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
+			}
+			else {
+				ObjectsSprite = new ISprite("Sprites/GlobalS3K/Objects.gif", App);
+				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Springs.bin");
+				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Spikes.bin");
+				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/StarPost.bin");
+				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/ScoreBonus.bin");
 
-            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Gray Button.bin");
-            ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/EggPrison.bin");
+				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Gray Button.bin");
+				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/EggPrison.bin");
+			}
             // printf("\n");
         }
         if (!Objects2Sprite) {
@@ -422,9 +444,16 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             // printf("\n");
         }
         if (!ExplosionSprite) {
-            ExplosionSprite = new ISprite("Sprites/GlobalS3K/Explosions.gif", App);
-            ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Dust.bin");
-            ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Explosions.bin");
+			if (Thremixed) {
+				ExplosionSprite = new ISprite("Sprites/Global/Explosions.gif", App);
+				ExplosionSprite->LoadAnimation("Sprites/Global/Dust.bin");
+				ExplosionSprite->LoadAnimation("Sprites/Global/Explosions.bin");
+			}
+			else {
+				ExplosionSprite = new ISprite("Sprites/GlobalS3K/Explosions.gif", App);
+				ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Dust.bin");
+				ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Explosions.bin");
+			}
             // printf("\n");
         }
         if (!WaterSprite) {
@@ -443,8 +472,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         AssignSpriteMapIDs();
         IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "AssignSpriteMapIDs", (SDL_GetTicks() - startTime) / 1000.0);
         startTime = SDL_GetTicks();
-        
-        // Instead of filling it on a per by per basis, Fill the whole thing and 
+
+        // Instead of filling it on a per by per basis, Fill the whole thing and
         // have the replacements fill the spots needed.
         for (int i = 0x0; i <= 346; i++) {
             ObjectName[i] = "Unused";
@@ -455,38 +484,38 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x00] = "Obj_Ring";
             ObjectName[0x01] = "Obj_Monitor";
             ObjectName[0x02] = "Obj_PathSwap";
-            ObjectName[0x03] = "Obj_AIZ_HollowTree";
+            ObjectName[0x03] = "Obj_HollowTree";
             ObjectName[0x04] = "Obj_CollapsingPlatform";
-            ObjectName[0x05] = "Obj_AIZ_LRZ_EMZ_Rock";
-            ObjectName[0x06] = "Obj_AIZ_RideVine";
+            ObjectName[0x05] = "Obj_Rock";
+            ObjectName[0x06] = "Obj_RideVine";
             ObjectName[0x07] = "Obj_Spring";
             ObjectName[0x08] = "Obj_Spikes";
-            ObjectName[0x09] = "Obj_AIZ1_TreeBark";
-            ObjectName[0x0A] = "Obj_AIZ1_RopePeg";
+            ObjectName[0x09] = "Obj_AIZTreeBark";
+            ObjectName[0x0A] = "Obj_RopePeg";
             ObjectName[0x0B] = "Obj_Ring";
-            ObjectName[0x0C] = "Obj_AIZ_SwingVine";
+            ObjectName[0x0C] = "Obj_SwingVine";
             ObjectName[0x0D] = "Obj_BreakableWall";
             ObjectName[0x0E] = "Obj_Ridge";
             ObjectName[0x0F] = "Obj_CollapsingBridge";
-            ObjectName[0x10] = "Obj_LRZ_TubeElevator";
-            ObjectName[0x11] = "Obj_LRZ_MovingPlatform";
-            ObjectName[0x12] = "Obj_LRZ_FlagPlatform"; // Unused
-            ObjectName[0x13] = "Obj_LRZ_ExplodingTrigger";
-            ObjectName[0x14] = "Obj_LRZ_TriggerBridge";
-            ObjectName[0x15] = "Obj_LRZ_PlayerLauncher";
-            ObjectName[0x16] = "Obj_LRZ_FlameThrower";
-            ObjectName[0x17] = "Obj_LRZ_RideGrapple";
-            ObjectName[0x18] = "Obj_LRZ_CupElevator";
-            ObjectName[0x19] = "Obj_LRZ_CupElevatorPole";
+            ObjectName[0x10] = "Obj_LBZ_TubeElevator";
+            ObjectName[0x11] = "Obj_LBZ_MovingPlatform";
+            ObjectName[0x12] = "Obj_LBZ_FlagPlatform"; // Unused
+            ObjectName[0x13] = "Obj_LBZ_ExplodingTrigger";
+            ObjectName[0x14] = "Obj_LBZ_TriggerBridge";
+            ObjectName[0x15] = "Obj_LBZ_PlayerLauncher";
+            ObjectName[0x16] = "Obj_LBZ_FlameThrower";
+            ObjectName[0x17] = "Obj_LBZ_RideGrapple";
+            ObjectName[0x18] = "Obj_LBZ_CupElevator";
+            ObjectName[0x19] = "Obj_LBZ_CupElevatorPole";
             ObjectName[0x1A] = "Obj_P2RotateObject"; // Purpose unknown.
-            ObjectName[0x1B] = "Obj_LRZ_PipePlug";
+            ObjectName[0x1B] = "Obj_LBZ_PipePlug";
             ObjectName[0x1C] = "Obj_Ring";
-            ObjectName[0x1D] = "Obj_LRZ_HangPlatform";
-            ObjectName[0x1E] = "Obj_LRZ_SpinLauncher";
-            ObjectName[0x1F] = "Obj_LRZ_LoweringGrapple";
+            ObjectName[0x1D] = "Obj_LBZ_HangPlatform";
+            ObjectName[0x1E] = "Obj_LBZ_SpinLauncher";
+            ObjectName[0x1F] = "Obj_LBZ_LoweringGrapple";
             ObjectName[0x20] = "Obj_MGZ_LBZSmashingPillar";
-            ObjectName[0x21] = "Obj_LRZ_GateLaser";
-            ObjectName[0x22] = "Obj_LRZ_Siren";
+            ObjectName[0x21] = "Obj_LBZ_GateLaser";
+            ObjectName[0x22] = "Obj_LBZ_Siren";
             ObjectName[0x23] = "Obj_ContactFirceFallAnimator"; // Unused
             ObjectName[0x24] = "Obj_AutomaticTunnel";
             ObjectName[0x25] = "Obj_Ring";
@@ -524,7 +553,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x45] = "Obj_CNZ_LightBulb";
             ObjectName[0x46] = "Obj_CNZ_HoverFan";
             ObjectName[0x47] = "Obj_CNZ_RotatingBarrel";
-            ObjectName[0x48] = "VacuumTube";
+            ObjectName[0x48] = "Obj_VacuumTube";
             ObjectName[0x49] = "Obj_CNZ_RotatingWheel";
             ObjectName[0x4A] = "Obj_CNZ_Bumper";
             ObjectName[0x4B] = "Obj_CNZ_BouncepadSprings";
@@ -585,7 +614,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x82] = "Obj_CutsceneKnuckles";
             ObjectName[0x83] = "Obj_CutsceneButton";
             ObjectName[0x84] = "Obj_AIZ_CutsceneSonic";
-            ObjectName[0x85] = "Obj_SS_EntryRing";
+            ObjectName[0x85] = "Obj_SpecialRing";
             ObjectName[0x86] = "Obj_SS_GumballLevel";
             ObjectName[0x87] = "Obj_SS_GumbalSideSpring";
             ObjectName[0x88] = "Obj_CNZ_BreakableWaterRisingFloor";
@@ -1279,6 +1308,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             Player->Scene = this;
 			Player->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
             Player->PlayerID = 0;
+			Player->Thremixed = Thremixed;
             Player->Create();
             Player->Lives = SaveGame::GetLives();
 
@@ -1294,6 +1324,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Players[1]->Sidekick = true;
 				Players[1]->Character = (CharacterType)(SaveGame::CurrentCharacterFlag >> 4);
 				Players[1]->PlayerID = 1;
+				Player->Thremixed = Thremixed;
 				Players[1]->Create();
 
 				PlayerCount = 2;
@@ -1314,12 +1345,16 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
     TileSprite = new ISprite(Str_TileSprite, App);
 
-    AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
-    AnimTileSprite->LinkPalette(TileSprite);
+	if (Str_AnimatedSprites) {
+		AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
+		AnimTileSprite->LinkPalette(TileSprite);
+	}
 
-    ItemsSprite->LinkPalette(TileSprite);
-    ExplosionSprite->LinkPalette(TileSprite);
-    ObjectsSprite->LinkPalette(TileSprite);
+	if (!Thremixed) {
+		ItemsSprite->LinkPalette(TileSprite);
+		ExplosionSprite->LinkPalette(TileSprite);
+		ObjectsSprite->LinkPalette(TileSprite);
+	}
 
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite loading", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
@@ -1328,15 +1363,28 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
     an.Name = NULL;
     an.FrameCount = 0x400;
     an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
-    for (int i = 0; i < 0x400; i++) {
-        ISprite::AnimFrame ts_af;
-        ts_af.X = (i & 0x1F) << 4;
-        ts_af.Y = (i >>   5) << 4;
-        ts_af.W = ts_af.H = 16;
-        ts_af.OffX = ts_af.OffY = -8;
-        an.Frames[i] = ts_af;
-        G->MakeFrameBufferID(TileSprite, an.Frames + i);
-    }
+	if (TileSprite->Width > 16) {
+		for (int i = 0; i < 0x400; i++) {
+			ISprite::AnimFrame ts_af;
+			ts_af.X = (i & 0x1F) << 4;
+			ts_af.Y = (i >> 5) << 4;
+			ts_af.W = ts_af.H = 16;
+			ts_af.OffX = ts_af.OffY = -8;
+			an.Frames[i] = ts_af;
+			G->MakeFrameBufferID(TileSprite, an.Frames + i);
+		}
+	}
+	else {
+		for (int i = 0; i < 0x400; i++) {
+			ISprite::AnimFrame ts_af;
+			ts_af.X = 0;
+			ts_af.Y = i << 4;
+			ts_af.W = ts_af.H = 16;
+			ts_af.OffX = ts_af.OffY = -8;
+			an.Frames[i] = ts_af;
+			G->MakeFrameBufferID(TileSprite, an.Frames + i);
+		}
+	}
     TileSprite->Animations.push_back(an);
 
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite frame buffering", (SDL_GetTicks() - startTime) / 1000.0);
@@ -1406,6 +1454,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
             Data->layers[i].IsScrollingVertical = reader.ReadByte() == 1 ? true : false;
             Data->layers[i].Flags = reader.ReadByte();
+			if (Data->layers[i].Flags & 0x10)
+				Data->layers[i].Visible = false;
 
             Data->layers[i].Deform = (int8_t*)calloc(1, App->HEIGHT);
 
@@ -1441,6 +1491,17 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                 //App->Print(0, " > ScrollInfo %d: RelX (%X) ConstX (%X) %d %d", g, Data->layers[i].Info[g].RelativeX, Data->layers[i].Info[g].ConstantX, Data->layers[i].Info[g].HeatWaveEnabled, Data->layers[i].Info[g].Byte2);
             }
+
+			if ((mag >> 24) == 'S') {
+				Data->layers[i].Flags = 0;
+				if (Data->layers[i].RelativeY == 0x100 &&
+					Data->layers[i].ConstantY == 0x000 &&
+					Data->layers[i].Info[0].RelativeX == 0x100 &&
+					Data->layers[i].Info[0].ConstantX == 0x000 &&
+					Data->layers[i].Name[0] == 'F' &&
+					Data->layers[i].InfoCount == 1)
+					Data->layers[i].Flags = 1;
+			}
 
             // FUN FACT:
             // With all compressed data, we already know the size of the data. (using Width, Height, etc.)
@@ -1526,8 +1587,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
         PlaneSwitchers = (PlaneSwitch*)malloc(113 * sizeof(PlaneSwitch));
 
+		Data->isAnims = (short*)malloc(0x400 * sizeof(short));
+		memset(Data->isAnims, 0xFF, 0x400 * sizeof(short));
+
         // Mania-type Object Loading
         if ((mag >> 24) == 'S') {
+			BlankTile = 0x3FF;
+
             unordered_map<string, const char*> ObjectHashes;
             for (int i = 0; i < 554; i++) {
                 string hash = MD5I(string(ObjectNames(i)));
@@ -1544,10 +1610,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                     str[n] = reader.ReadByte();
                     sprintf(hashString, "%s%02x", hashString, (unsigned char)str[n]);
                 }
-
-                maxLayer = 0;
-
-
 
                 int ArgumentCount = reader.ReadByte();
 
@@ -1580,10 +1642,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                 int EntityCount = reader.ReadUInt16();
 
-                App->Print(2, "Object #%d (%s) Hash: %s Count: %d", i, ObjectHashes[hashString], hashString, EntityCount);
-                for (int n = 0; n < ArgumentCount; n++) {
-                    App->Print(0, "Argument %d type: %02X", n, ArgumentTypes[n]);
-                }
+
+				if (i == OBJ_SPRING) {
+					App->Print(2, "Object #%d (%s) Hash: %s Count: %d", i, ObjectHashes[hashString], hashString, EntityCount);
+					for (int n = 0; n < ArgumentCount; n++) {
+						App->Print(0, "Argument %d type: %02X", n, ArgumentTypes[n]);
+					}
+				}
                 if (i == OBJ_PLANESWITCHER)
                     PlaneSwitchCount = 0;
 
@@ -1656,12 +1721,26 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                         if ((args[0] & 0x1) == 0)
                             SubType |= 0x02;
 
-                        if ((args[0] & 0x2) == 2)
-                            SubType |= 0x10;
-
-                        bool FLIPX = args[1];
-                        bool FLIPY = false;
+						int ttty = args[0] >> 1 & 0x3;
+                        bool FLIPX = (args[1] >> 0) & 1;
+                        bool FLIPY = (args[1] >> 1) & 1;
                         bool PRIORITY = false;
+
+						if (ttty == 0) {
+							if (FLIPY)
+								SubType |= 0x20;
+							else
+								SubType |= 0x0;
+						}
+						else if (ttty == 1) {
+							SubType |= 0x10;
+						}
+						else if (ttty == 2) {
+							if (!FLIPY)
+								SubType |= 0x30;
+							else
+								SubType |= 0x40;
+						}
 
                         ADD_OBJECT();
                     }
@@ -1695,10 +1774,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                         ADD_OBJECT();
                     }
                     else if (i == OBJ_STARPOLE) {
-                        int ID = 0x07;
+                        int ID = Obj_StarPost;
                         int X = X2;
                         int Y = Y2;
-                        int SubType = 0x00;
+                        int SubType = args[0];
 
                         bool FLIPX = false;
                         bool FLIPY = false;
@@ -1720,6 +1799,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         }
         // ImpostorEngine2-type Loading
         else if ((mag >> 24) == 'U') {
+			BlankTile = 0;
+
             reader.ReadByte(); // to get rid of the leftover "ObjectCount"
             int pX = reader.ReadUInt16();
             int pY = reader.ReadUInt16();
@@ -1823,8 +1904,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                 RingProps[RingPropCount++] = op;
             }
 
-            Data->isAnims = (short*)malloc(0x400 * sizeof(short));
-			memset(Data->isAnims, 0xFF, 0x400 * sizeof(short));
             int animTilesCount = reader.ReadUInt16();
             vector<int> tils;
             for (int o = 0; o < animTilesCount; o++) {
@@ -1877,85 +1956,88 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                 }
                 AnimTileSprite->Animations.push_back(an);
             }
+        }
 
-			for (int i = 0; i < Data->layerCount; i++) {
-				// Build buffers for GL renderer
-				if (Data->layers[i].InfoCount) {
-					int y = 0;
-					int siT, x;
-					int tile = 0, flipY = 0, flags = 0;//, wheree = 0;
-					int heightSize = 0, tilindx = 0, tilindy = 0, tilindpos = 0, word = 0;
-					Layer layer = Data->layers[i];
+		for (int i = 0; i < Data->layerCount; i++) {
+			// Build buffers for GL renderer
+			if (Data->layers[i].InfoCount) {
+				int y = 0;
+				int siT, x;
+				int tile = 0, flipY = 0, flags = 0;//, wheree = 0;
+				int heightSize = 0, tilindx = 0, tilindy = 0, tilindpos = 0, word = 0;
+				Layer layer = Data->layers[i];
 
-					int bufHeight = 0;
-					for (int s = 0; s < layer.ScrollIndexCount; s++) {
-						for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
-							heightSize = 16;
-							if (heightSize > layer.ScrollIndexes[s].Size - siT)
-								heightSize = layer.ScrollIndexes[s].Size - siT;
-							if (heightSize > ((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
-								heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
+				int bufHeight = 0;
+				for (int s = 0; s < layer.ScrollIndexCount; s++) {
+					for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
+						heightSize = 16;
+						if (heightSize > layer.ScrollIndexes[s].Size - siT)
+							heightSize = layer.ScrollIndexes[s].Size - siT;
+						if (heightSize >((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
+							heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
 
-							bufHeight++;
-						}
-                        y += layer.ScrollIndexes[s].Size;
+						bufHeight++;
 					}
+					y += layer.ScrollIndexes[s].Size;
+				}
 
-					y = 0;
-					int buf = 0;
-                    int fullFlip;
-                    // layer.Width * bufHeight
-					layer.ScrollIndexes[0].TileBuffers = (int*)calloc(bufHeight, sizeof(int));
-					for (int s = 0; s < layer.ScrollIndexCount; s++) {
-						for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
-							heightSize = 16;
-							if (heightSize > layer.ScrollIndexes[s].Size - siT)
-								heightSize = layer.ScrollIndexes[s].Size - siT;
-							if (heightSize > ((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
-								heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
+				y = 0;
+				int buf = 0;
+				int fullFlip;
+				// layer.Width * bufHeight
+				layer.ScrollIndexes[0].TileBuffers = (int*)calloc(bufHeight, sizeof(int));
+				for (int s = 0; s < layer.ScrollIndexCount; s++) {
+					for (siT = 0; siT < layer.ScrollIndexes[s].Size; siT += heightSize) {
+						heightSize = 16;
+						if (heightSize > layer.ScrollIndexes[s].Size - siT)
+							heightSize = layer.ScrollIndexes[s].Size - siT;
+						if (heightSize >((y + siT + 0x10) & ~0xF) - (y + siT)) // Rounded-up
+							heightSize = ((y + siT + 0x10) & ~0xF) - (y + siT);
 
-                            G->BeginSpriteListBuffer();
+						G->BeginSpriteListBuffer();
 
-							for (x = 0; x < layer.Width; x++) {
-								tilindy = ((y + siT) >> 4);
-								tilindx = x;
-								tilindpos = x + (tilindy) * layer.Width;
+						for (x = 0; x < layer.Width; x++) {
+							tilindy = ((y + siT) >> 4);
+							tilindx = x;
+							tilindpos = x + (tilindy)* layer.Width;
 
-								word = layer.Tiles[tilindpos];
-                                fullFlip = ((word >> 10) & 3);
-								flipY = ((word >> 11) & 1);
-								tile = word & 0x3FF;
+							word = layer.Tiles[tilindpos];
+							fullFlip = ((word >> 10) & 3);
+							flipY = ((word >> 11) & 1);
+							tile = word & 0x3FF;
 
-								if (tile) {
-									int anID = Data->isAnims[tile] & 0xFF;
+							if (tile != BlankTile) {
+								int anID = Data->isAnims[tile] & 0xFF;
 
-									flags = 0;
-									if (flipY)
-										flags |= IE_FLIPY;
+								flags = 0;
+								if (flipY)
+									flags |= IE_FLIPY;
 
-									int wheree = (y + siT) & 0xF;
-									if (flipY)
-										wheree = 0x10 - wheree - heightSize;
+								int wheree = (y + siT) & 0xF;
+								if (flipY)
+									wheree = 0x10 - wheree - heightSize;
 
-                                    if (anID == 0xFF) {
-                                        /*
-                                        // Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
-											G->MakeFrameBufferID(TileSprite, &Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width], ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2, fullFlip);
-                                        //*/
-                                        G->AddToSpriteListBuffer(TileSprite, ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8 + (x << 4), -heightSize / 2, fullFlip);
-									}
+								if (anID == 0xFF) {
+									/*
+									// Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width] =
+									G->MakeFrameBufferID(TileSprite, &Data->layers[i].ScrollIndexes[0].TileBuffers[x + buf * layer.Width], ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8, -heightSize / 2, fullFlip);
+									//*/
+									if (TileSprite->Width > 16)
+										G->AddToSpriteListBuffer(TileSprite, ((tile & 0x1F) << 4), ((tile >> 5) << 4) + wheree, 16, heightSize, -8 + (x << 4), -heightSize / 2, fullFlip);
+									else
+										G->AddToSpriteListBuffer(TileSprite, 0, (tile << 4) + wheree, 16, heightSize, -8 + (x << 4), -heightSize / 2, fullFlip);
 								}
 							}
-
-                            Data->layers[i].ScrollIndexes[0].TileBuffers[buf] = G->FinishSpriteListBuffer();
-							buf++;
 						}
 
-						y += layer.ScrollIndexes[s].Size;
+						Data->layers[i].ScrollIndexes[0].TileBuffers[buf] = G->FinishSpriteListBuffer();
+						buf++;
 					}
+
+					y += layer.ScrollIndexes[s].Size;
 				}
 			}
-        }
+		}
 
         IResources::Close(SceneBin);
     }
@@ -2033,10 +2115,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         TileSprite->SplitPalette();
         TileSprite->UpdatePalette();
 
-        if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
-            AnimTileSprite->PaletteSize = 0x80;
-        AnimTileSprite->SplitPalette();
-        AnimTileSprite->UpdatePalette();
+		if (AnimTileSprite) {
+			if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
+				AnimTileSprite->PaletteSize = 0x80;
+			AnimTileSprite->SplitPalette();
+			AnimTileSprite->UpdatePalette();
+		}
 
         ItemsSprite->SplitPalette();
         ObjectsSprite->SplitPalette();
@@ -2154,6 +2238,11 @@ PUBLIC void LevelScene::LoadInBackground() {
 }
 
 PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBackground) {
+	if (Sound::SoundBank[0]) {
+		App->Audio->ClearMusic();
+		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	}
+
 	SaveGame::SetLives(Player->Lives);
 	SaveGame::SetZone(ZoneID - 1);
 	SaveGame::Flush();
@@ -2188,6 +2277,9 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 
     int pX = PlayerStartX;
     int pY = PlayerStartY;
+	if (SavedPalette && SavedPalette[0]) {
+		// TileSprite->SetPalette(0, 256, SavedPalette);
+	}
     if (SavedPositionX > 0) {
         pX = SavedPositionX;
         pY = SavedPositionY;
@@ -2391,6 +2483,11 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
                 int h1 = Data->tiles1[tileID].Collision[c];
                 int h2 = Data->tiles2[tileID].Collision[c];
+
+				if (BlankTile == 0x3FF && (Data->tiles1[tileID].IsCeiling || Data->tiles2[tileID].IsCeiling)) {
+					h1 = 15 - h1;
+					h2 = 15 - h2;
+				}
 
                 int which = 0;
                 if (anglemode == 0)
@@ -3132,7 +3229,7 @@ PUBLIC void LevelScene::Update() {
     			Player->EZY -= App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED];
     			Player->EZY += App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED];
             }
-            
+
 			Player->DisplayX = Player->EZX;
 			Player->DisplayY = Player->EZY;
 
@@ -3140,7 +3237,7 @@ PUBLIC void LevelScene::Update() {
 				Player->DebugObject->X = Player->DisplayX;
 				Player->DebugObject->Y = Player->DisplayY;
 			}
-            
+
             int16_t DebugObjectIDList[2] = {0x01, 0x07};
             const int32_t DebugObjectIDListLength = 2;
 
@@ -3184,7 +3281,7 @@ PUBLIC void LevelScene::Update() {
 					Player->DebugObject = NULL;
 				}
 			}
-            
+
             if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
 				if (Player->DebugObject) {
 					uint8_t oldSubType = Player->DebugObject->SubType;
@@ -3213,7 +3310,7 @@ PUBLIC void LevelScene::Update() {
 						obj->DebugCreate();
 
 						obj->Active = true;
-						
+
 						Objects[ObjectCount++] = obj;
 						Player->DebugObject = obj;
 					} else {
@@ -3223,7 +3320,7 @@ PUBLIC void LevelScene::Update() {
 					}
 				}
             }
-            
+
             if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
                 if (Player->DebugObject) {
 					Player->DebugObject->SubType = (Player->DebugObject->SubType + Player->DebugObject->GetSubTypeIncrement()) % Player->DebugObject->GetSubTypeMax();
@@ -3811,7 +3908,7 @@ PUBLIC void LevelScene::RenderHUD() {
     int STR_X = 16 - (HUDAnim >> 1);
 
 	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
-	if (GlobalDisplaySpriteS3K) {
+	if (!Thremixed) {
 		GlobalDisplaySprite = GlobalDisplaySpriteS3K;
 	}
     // Score
@@ -4279,7 +4376,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 								fullFlip = (word >> 10) & 3;
                                 tile = word & 0x3FF;
 
-                                if (tile) {
+                                if (tile != BlankTile) {
                                     int anID = Data->isAnims[tile] & 0xFF;
 
                                     if (anID != 0xFF) {
@@ -4313,7 +4410,10 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 											if (flipY)
 												wheree = 0x10 - wheree - heightSize;
 
-                                            G->DrawSprite(TileSprite, ((tile & 0x1F) << 4), wheree + ((tile >> 5) << 4), 16, heightSize, baseX + 8, baseY + heightSize / 2, 0, fullFlip, -8, -heightSize / 2 - (heightSize & flipY));
+											if (TileSprite->Width > 16)
+												G->DrawSprite(TileSprite, ((tile & 0x1F) << 4), wheree + ((tile >> 5) << 4), 16, heightSize, baseX + 8, baseY + heightSize / 2, 0, fullFlip, -8, -heightSize / 2 - (heightSize & flipY));
+											else
+												G->DrawSprite(TileSprite, 0, wheree + (tile << 4), 16, heightSize, baseX + 8, baseY + heightSize / 2, 0, fullFlip, -8, -heightSize / 2 - (heightSize & flipY));
                                         }
                                     }
                                 }
@@ -4416,10 +4516,14 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 					baseY = (iy << 4) - TileBaseY + layer.TileOffsetY[fx];
 
 					tile = layer.Tiles[fx + fy * layer.Width];
+
+					int colTypeA = ((tile >> 12) & 3);
+					int colTypeB = ((tile >> 14) & 3);
+
 					fullFlip = (tile >> 10) & 3;
 					tile = tile & 0x3FF;
 
-					if (tile) {
+					if (tile != BlankTile) {
 						anID = Data->isAnims[tile] & 0xFF;
 						if (anID != 0xFF)
 							G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
@@ -4427,15 +4531,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 							G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, fullFlip);
 
 						if (ViewTileCollision) {
-                            
-							// This is currently broken to shit. It needs a massive fucking redo.
-
-							flipX = ((tile >> 10) & 1);
-							flipY = ((tile >> 11) & 1);
-							//int colTypeA = ((tile >> 12) & 3);
-							//int colTypeB = ((tile >> 13) & 3);
-							int colTypeA = ((tile >> 4) & 3);
-							int colTypeB = ((tile >> 5) & 3);
+							flipX = ((fullFlip >> 0) & 1);
+							flipY = ((fullFlip >> 1) & 1);
 
 							for (int c = 0; c < 16; c++) {
 								int eex = c;
@@ -4445,21 +4542,31 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 								int h1 = Data->tiles1[tile].Collision[c];
 								int h2 = Data->tiles2[tile].Collision[c];
 
-								if (Player->Layer == 0 && colTypeA) {
+								if (BlankTile == 0x3FF && (Data->tiles1[tile].IsCeiling || Data->tiles2[tile].IsCeiling)) {
+									h1 = 15 - h1;
+									h2 = 15 - h2;
+								}
+
+								if (Player->Layer == 0 && (colTypeA & 1)) {
 									uint32_t col = colTypeA == 3 ? 0 : colTypeA == 2 ? 0xFFFF00 : 0xFFFFFF;
+
 									if (Data->tiles1[tile].HasCollision[c]) {
 										if (Data->tiles1[tile].IsCeiling ^ flipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
-										} else {
+										}
+										else {
 											G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
 										}
 									}
-								} else if (colTypeB) {
+								} 
+								else if (Player->Layer == 1 && (colTypeB & 1)) {
 									if (Data->tiles2[tile].HasCollision[c]) {
 										uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
+
 										if (Data->tiles2[tile].IsCeiling ^ flipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
-										} else {
+										}
+										else {
 											G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
 										}
 									}
@@ -4469,7 +4576,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 							int mx = App->Input->MouseX;
 							int my = App->Input->MouseY;
 							if (mx >= baseX && my >= baseY && mx < baseX + 16 && my < baseY + 16) {
-								highlightedTile = tile;
+								
 							}
 						}
 					}
@@ -4632,6 +4739,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     }
     if (ViewPlayerStats) {
 		int Y = 0;
+		/*
 		char tempStr[256];
 		G->DrawRectangle(0, 0, 200, 35, 0);
 		for (int i = 0; i < PlayerCount; i++) {
@@ -4643,6 +4751,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 			Y += 8;
 			Y += 2;
 		}
+		*/
 
         int16_t X = Player->EZX;
         Y = Player->EZY;
@@ -4654,12 +4763,12 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
             X = CameraX;
         if (Y < CameraY)
             Y = CameraY;
-        
+
         ///*
         sprintf(pooerp, "%04X %04X (%02X %d)", Player->EZX, Player->EZY, Player->Angle, Player->AngleMode);
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
-        
+
         sprintf(pooerp, "%04X %04X", CameraX, CameraY);
         G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
         Y += 8;
