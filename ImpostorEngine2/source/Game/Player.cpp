@@ -3108,7 +3108,6 @@ void IPlayer::LateUpdate() {
 	/*static bool looped = false;
 
 	if (!looped) {
-		unsigned char MeasuredGenesisColors[] = { 0x00, 0x34, 0x57, 0x74, 0x90, 0xAC, 0xCE, (unsigned char)0xFF };
 		uint16_t EncodedColors[] = { 0xEEC, 0xECA, 0xEA8, 0xCEC, 0xAEA, 0x2E0,
 									 0xAEC, 0x4EC, 0x0CC, 0xCEE, 0x8EE, 0x4CE, 0xCCE,
 									 0xAAE, 0xECE, 0xCAC, 0xEEE };
@@ -3118,10 +3117,11 @@ void IPlayer::LateUpdate() {
 		}
 	}
 	looped = true;*/
+	const int hyperFullPalCount = 17;
+	const unsigned int HyperLoopMaxIndex = 320;
 
 	if (SuperFormAnim == SuperFormAnimType::Super) {
 		double superblend = Cos[(Scene->Frame << 1) & 0xFF] / 2.0 + 0.5;
-		const int hyperFullPalCount = 17;
 		if (HyperEnabled && OCMode && palHyper != NULL) {
 			palCount = 17;
 		}
@@ -3139,7 +3139,7 @@ void IPlayer::LateUpdate() {
 						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
 					} else {
 						HyperLoopIndex++;
-						if (HyperLoopIndex >= 320) {
+						if (HyperLoopIndex >= HyperLoopMaxIndex) {
 							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
 							HyperLoopIndex = 0;
 						}
@@ -3171,12 +3171,33 @@ void IPlayer::LateUpdate() {
 			if (!Sprites[i]) continue;
 
 			for (int p = 0; p < palCount; p++) {
-				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
-				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
-                
-                
+				for (int p = 0; p < palCount; p++) {
+					if (HyperEnabled && palHyper != NULL) {
+						if (!palHyperPulse || !palHyperPulseHCZ) {
+							palHyperPulse = palSuperPulse;
+							palHyperPulseHCZ = palSuperPulseHCZ;
+						}
+						if (OCMode) {
+							Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
+							Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
+						}
+						else {
+							HyperLoopIndex++;
+							if (HyperLoopIndex >= HyperLoopMaxIndex) {
+								LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
+								HyperLoopIndex = 0;
+							}
+							Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend));
+							Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend));
+						}
+					}
+					else {
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
+					}
+				}
+				Sprites[i]->UpdatePalette();
 			}
-			Sprites[i]->UpdatePalette();
 		}
 	}
 	else if (SuperFormAnim == SuperFormAnimType::Deforming) {
@@ -3184,13 +3205,35 @@ void IPlayer::LateUpdate() {
 			SuperFormTimer++;
 
 		double superblend = SuperFormTimer / 20.0;
+		if (HyperEnabled && OCMode && palHyper != NULL) {
+			palCount = 17;
+		}
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) continue;
 
 			for (int p = 0; p < palCount; p++) {
-				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
-
-				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
+				if (HyperEnabled && palHyper != NULL) {
+					if (!palHyperPulse || !palHyperPulseHCZ) {
+						palHyperPulse = palSuperPulse;
+						palHyperPulseHCZ = palSuperPulseHCZ;
+					}
+					if (OCMode) {
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
+					}
+					else {
+						HyperLoopIndex++;
+						if (HyperLoopIndex >= HyperLoopMaxIndex) {
+							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
+							HyperLoopIndex = 0;
+						}
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palNormal[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palNormal[p], superblend));
+					}
+				} else {
+					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
+					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
+				}
 			}
 			Sprites[i]->UpdatePalette();
 		}
@@ -3325,9 +3368,10 @@ void IPlayer::UpdatePlayerPallete() {
 	int palWhere, palCount = 6;
 	Uint32 *palSuper, *palHyper = NULL, *palNormal, *palSuperHCZ, *palHyperHCZ = NULL, *palNormalHCZ, *palSuperPulse, *palSuperPulseHCZ, *palHyperPulse = NULL, *palHyperPulseHCZ = NULL;
 
+	const int hyperFullPalCount = 17;
+	const unsigned int HyperLoopMaxIndex = 320;
 	if (SuperFormAnim == SuperFormAnimType::Super) {
 		double superblend = Cos[(Scene->Frame << 1) & 0xFF] / 2.0 + 0.5;
-		const int hyperFullPalCount = 17;
 		if (HyperEnabled && OCMode && palHyper != NULL) {
 			palCount = 17;
 		}
@@ -3346,7 +3390,7 @@ void IPlayer::UpdatePlayerPallete() {
 					}
 					else {
 						HyperLoopIndex++;
-						if (HyperLoopIndex >= 320) {
+						if (HyperLoopIndex >= HyperLoopMaxIndex) {
 							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
 							HyperLoopIndex = 0;
 						}
@@ -3371,12 +3415,33 @@ void IPlayer::UpdatePlayerPallete() {
 			if (!Sprites[i]) continue;
 
 			for (int p = 0; p < palCount; p++) {
-				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
-				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
-
-
+				for (int p = 0; p < palCount; p++) {
+					if (HyperEnabled && palHyper != NULL) {
+						if (!palHyperPulse || !palHyperPulseHCZ) {
+							palHyperPulse = palSuperPulse;
+							palHyperPulseHCZ = palSuperPulseHCZ;
+						}
+						if (OCMode) {
+							Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
+							Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
+						}
+						else {
+							HyperLoopIndex++;
+							if (HyperLoopIndex >= HyperLoopMaxIndex) {
+								LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
+								HyperLoopIndex = 0;
+							}
+							Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend));
+							Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend));
+						}
+					}
+					else {
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
+					}
+				}
+				Sprites[i]->UpdatePalette();
 			}
-			Sprites[i]->UpdatePalette();
 		}
 	}
 	else if (SuperFormAnim == SuperFormAnimType::Deforming) {
@@ -3384,13 +3449,36 @@ void IPlayer::UpdatePlayerPallete() {
 			SuperFormTimer++;
 
 		double superblend = SuperFormTimer / 20.0;
+		if (HyperEnabled && OCMode && palHyper != NULL) {
+			palCount = 17;
+		}
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) continue;
 
 			for (int p = 0; p < palCount; p++) {
-				Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
-
-				Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
+				if (HyperEnabled && palHyper != NULL) {
+					if (!palHyperPulse || !palHyperPulseHCZ) {
+						palHyperPulse = palSuperPulse;
+						palHyperPulseHCZ = palSuperPulseHCZ;
+					}
+					if (OCMode) {
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
+					}
+					else {
+						HyperLoopIndex++;
+						if (HyperLoopIndex >= HyperLoopMaxIndex) {
+							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
+							HyperLoopIndex = 0;
+						}
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palNormal[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palNormal[p], superblend));
+					}
+				}
+				else {
+					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
+					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
+				}
 			}
 			Sprites[i]->UpdatePalette();
 		}
