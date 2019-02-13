@@ -8,7 +8,7 @@ typedef IMath Math;
 void Batbright::Create() {
     Enemy::Create();
     Active = true;
-    Priority = true;
+    Priority = false;
     W = 16;
     H = 16;
     VisW = 16;

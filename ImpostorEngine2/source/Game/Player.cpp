@@ -384,7 +384,8 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		} else {
+		}
+		else {
             bool Tria = false;
             if (Tria) {
                 Sprites[0] = new ISprite("Player/Sonic1.gif", App);
@@ -425,16 +426,16 @@ void IPlayer::Create() {
                 for (; i < Sprites[0]->AnimCount; i++) {
                     AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
                 }
-                
+
                 Sprites[0]->LoadAnimation("Player/S3/Super Sonic.bin");
                 for (; i < Sprites[0]->AnimCount; i++) {
                     AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
                 }
-                
+
                 Sprites[1]->LinkAnimation(Sprites[0]->Animations);
             }
 		}
-	} 
+	}
 	else if (Character == CharacterType::Tails) {
 		H = 32;
 		OrigH = H;
@@ -443,13 +444,11 @@ void IPlayer::Create() {
 			Sprites[0] = new ISprite("Player/S3/Tails.gif", App);
 
 			Sprites[0]->LoadAnimation("Player/S3/Tails.bin");
+			Sprites[0]->LoadAnimation("Player/S3/TailSprite.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
-			for (; i < Sprites[0]->AnimCount; i++) {
-				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
-			}
-		} 
+		}
 		else {
             Sprites[0] = new ISprite("Player/Tails1.gif", App);
             Sprites[1] = new ISprite("Player/Tails2.gif", App);
@@ -466,10 +465,11 @@ void IPlayer::Create() {
                 AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
             }
         }
-	} 
+	}
 	else if (Character == CharacterType::Knuckles) {
 		H = 40;
 		OrigH = H;
+		Thremixed = true;
 		if (Scene->KnuxSprite[0]) {
 			for (int i = 0; i < 5; i++) {
 				Sprites[i] = Scene->KnuxSprite[i];
@@ -487,12 +487,11 @@ void IPlayer::Create() {
 			Sprites[3]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[4]->LinkAnimation(Sprites[0]->Animations);
 		}
-		Thremixed = true;
 
 		for (int i = 0; i < Sprites[0]->AnimCount; i++) {
 			AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 		}
-	} 
+	}
 	else if (Character == CharacterType::Mighty) {
 		Thremixed = true;
 		Sprites[0] = new ISprite("Player/Mighty1.gif", App);
@@ -508,7 +507,7 @@ void IPlayer::Create() {
 		for (int i = 0; i < Sprites[0]->AnimCount; i++) {
 			AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 		}
-	} 
+	}
 	else if (Character == CharacterType::Ray) {
 		Thremixed = true;
 		Sprites[0] = new ISprite("Player/Ray1.gif", App);
@@ -1152,7 +1151,7 @@ void IPlayer::Update() {
 						if (YCalcSpeed < 0) {
 							YCalcSpeed = -YCalcSpeed;
 						}
-                        
+
                         /*
                         int XCalcSpeed = XSpeed;
 						if (XCalcSpeed < 0) {
@@ -1161,7 +1160,7 @@ void IPlayer::Update() {
 
 						int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (XCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
                         */
-                        
+
                         int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (YCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
 						GlideSpeedStore = speedStore;
 						if (Underwater)
@@ -2307,11 +2306,7 @@ void IPlayer::Update() {
 						}
 						else if (!SuperForm && !HyperForm) {
 							if (Rings >= 50 && !Scene->StopTimer) {
-								Action = ActionType::Transform;
-								SuperFormAnim = SuperFormAnimType::Transforming;
-								SuperFormTimer = 0;
-
-								Sound::Play(Sound::SFX_TRANSFORM);
+								DoSuperTransform();
 							}
 						}
 						ShieldUsable = false;
@@ -2351,11 +2346,7 @@ void IPlayer::Update() {
 				/*
 				if (!SuperForm && !HyperForm) {
 					if (Rings >= 50 && !Scene->StopTimer) {
-						Action = ActionType::Transform;
-						SuperFormAnim = SuperFormAnimType::Transforming;
-						SuperFormTimer = 0;
-
-						Sound::Play(Sound::SFX_TRANSFORM);
+						DoSuperTransform();
 					}
 				}
 				*/
@@ -2369,11 +2360,7 @@ void IPlayer::Update() {
 				}
 				else if (!SuperForm && !HyperForm) {
 					if (Rings >= 50 && !Scene->StopTimer) {
-						Action = ActionType::Transform;
-						SuperFormAnim = SuperFormAnimType::Transforming;
-						SuperFormTimer = 0;
-
-						Sound::Play(Sound::SFX_TRANSFORM);
+						DoSuperTransform();
 					}
 				}
 			}
@@ -3320,11 +3307,15 @@ void IPlayer::Render(int CamX, int CamY) {
 				Ani = 55;
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
 				Fra = (Scene->Frame >> 2) % 10;
+				if (!Thremixed)
+					Fra = (Scene->Frame >> 3) % 5;
 			}
 			else if (CurrentAnimation == 4) {
 				Ani = 61;
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
 				Fra = (Scene->Frame >> 2) % 10;
+				if (!Thremixed)
+					Fra = (Scene->Frame >> 3) % 5;
 				Ang = FinalAngle;
 			}
 			else if (CurrentAnimation >= 5 && CurrentAnimation <= 9) {
@@ -3335,7 +3326,11 @@ void IPlayer::Render(int CamX, int CamY) {
 				Ani = 56;
 				Ang = IMath::atanHex(XSpeed, -YSpeed);
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPY;
-				Fra = ((Scene->Frame >> 2) * IMath::clamp(IMath::abs(GroundSpeed) >> 7, 1, 8)) % 6;
+				Fra = IMath::clamp(IMath::abs(GroundSpeed) >> 7, 1, 8);
+				if (!Thremixed)
+					Fra = ((Scene->Frame >> 2) * IMath::clamp(IMath::abs(GroundSpeed) >> 9, 1, 2)) % 4;
+				else
+					Fra = ((Scene->Frame >> 2) * Fra) % 6;
 			}
 			else if (CurrentAnimation >= 11 && CurrentAnimation <= 12) {
 				// Do nothing, as these tails are in-sprite.
@@ -3345,12 +3340,16 @@ void IPlayer::Render(int CamX, int CamY) {
 				Ani = 57;
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
 				Fra = (Scene->Frame >> 2) % 6;
+				if (!Thremixed)
+					Fra = (Scene->Frame >> 2) % 4;
 				Ang = FinalAngle;
 			}
 			else if (CurrentAnimation == 15) {
 				Ani = 55;
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
 				Fra = (Scene->Frame >> 1) % 10;
+				if (!Thremixed)
+					Fra = (Scene->Frame >> 2) % 5;
 			}
 			else if (CurrentAnimation == 16) {
 				// Tails does not have a drop dash, but just in case...
@@ -3358,12 +3357,16 @@ void IPlayer::Render(int CamX, int CamY) {
 				Ang = IMath::atanHex(XSpeed, -YSpeed);
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPY;
 				Fra = ((Scene->Frame >> 2) * IMath::clamp(IMath::abs(GroundSpeed) >> 7, 1, 8)) % 6;
+				if (!Thremixed)
+					Fra = ((Scene->Frame >> 2) * IMath::clamp(IMath::abs(GroundSpeed) >> 7, 1, 8)) % 4;
 			}
 			else if (CurrentAnimation == 17) {
 				// Pushing
 				Ani = 55;
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
 				Fra = (Scene->Frame >> 2) % 10;
+				if (!Thremixed)
+					Fra = (Scene->Frame >> 3) % 5;
 			}
 			else if (CurrentAnimation >= 18 && CurrentAnimation <= 27) {
 				// Do nothing, as these tails are in-sprite.
@@ -3373,14 +3376,22 @@ void IPlayer::Render(int CamX, int CamY) {
 				Ani = 58;
 				Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
 				Fra = (Scene->Frame >> 2) % 6;
+				if (!Thremixed)
+					Fra = (Scene->Frame >> 2) % 4;
 				Ang = FinalAngle;
 			}
 			else if (CurrentAnimation >= (int)AnimationEnum::Fly) {
 				Ani = 0;
+				if (!Thremixed) {
+					Ani = 62;
+					Fli = DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX;
+					Fra = (Scene->Frame) & 1;
+					Ang = 0;
+				}
 			}
 
 			if (Ani > 0)
-				G->DrawSprite(Sprites[0], Ani, Fra, EZX + x - CamX, EZY + y - CamY, Ang, Fli);
+				G->DrawSprite(Sprites[0], Ani, Fra, X + x - CamX, Y + y - CamY, Ang, Fli);
 		}
 
 		ISprite::Animation animation = Sprites[0]->Animations[CurrentAnimation];
@@ -3637,10 +3648,10 @@ void IPlayer::CreateRingLoss() {
 }
 
 void IPlayer::Vibrate(VibrationType v) {
-	double strengths[7] = { 
+	double strengths[7] = {
 		0.0,
 		0.35,
-		0.75, 
+		0.75,
 		0.35,
 		0.75,
 		0.15,
@@ -3656,7 +3667,7 @@ void IPlayer::Vibrate(VibrationType v) {
 		350,
 	};
 	App->Input->Vibrate(0, strengths[(int)v], durations[(int)v]);
-} 
+}
 
 void IPlayer::Deform() {
 	if (!SuperForm) return;
@@ -4236,4 +4247,19 @@ void IPlayer::DoVictory() {
 	ControlLocked = true;
 	ObjectControlled = 0x80;
 	ChangeAnimation((int)AnimationEnum::Victory);
+}
+void IPlayer::DoSuperTransform() {
+	if (Action == ActionType::Transform) return;
+	if (SuperForm) return;
+	if (HyperForm) return;
+
+	Action = ActionType::Transform;
+	SuperFormAnim = SuperFormAnimType::Transforming;
+	SuperFormTimer = 0;
+	
+	GroundSpeed = 0x0;
+	XSpeed = 0x0;
+	YSpeed = 0x0;
+
+	Sound::Play(Sound::SFX_TRANSFORM);
 }

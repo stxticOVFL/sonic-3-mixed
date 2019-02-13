@@ -15,18 +15,18 @@ class Monitor;
 class Monitor: public Object {
 public:    
     enum ItemTypes {
-        TYPE_SUPER = 6,
-        TYPE_RINGS = 0,
+        TYPE_ROBOTNIK = 2,
+        TYPE_STATIC = 0,
+        TYPE_SHIELD_FIRE = 5,
+        TYPE_1UP = 1,
+        TYPE_RINGS = 3,
+        TYPE_SHIELD_BUBBLE = 7,
         TYPE_SPEED_SHOES = 4,
-        TYPE_SHIELD_BUBBLE = 1,
-        TYPE_1UP = 7,
-        TYPE_SHIELD_FIRE = 2,
-        TYPE_SHIELD_LIGHTNING = 3,
-        TYPE_INVINCIBILITY = 5,
-        TYPE_BROKEN = 8,
-        TYPE_STATIC = 9,
-        TYPE_HYPER_RING = 10,
-        TYPE_ROBOTNIK = 11,
+        TYPE_SHIELD_LIGHTNING = 6,
+        TYPE_INVINCIBILITY = 8,
+        TYPE_SUPER = 9,
+        TYPE_BROKEN = 10,
+        TYPE_HYPER_RING = 11,
     };
     
     int SubY;

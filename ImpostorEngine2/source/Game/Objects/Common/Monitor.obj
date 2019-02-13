@@ -7,18 +7,18 @@ var SubTypeFrame:int;
 var PlayerAggressor:int;
 
 enum ItemTypes {
+    TYPE_STATIC,
+    TYPE_1UP,
+    TYPE_ROBOTNIK,
     TYPE_RINGS,
-    TYPE_SHIELD_BUBBLE,
+    TYPE_SPEED_SHOES,
     TYPE_SHIELD_FIRE,
     TYPE_SHIELD_LIGHTNING,
-    TYPE_SPEED_SHOES,
+    TYPE_SHIELD_BUBBLE,
     TYPE_INVINCIBILITY,
     TYPE_SUPER,
-    TYPE_1UP,
     TYPE_BROKEN,
-    TYPE_STATIC,
     TYPE_HYPER_RING,
-    TYPE_ROBOTNIK,
 }
 
 event Create() {
@@ -203,8 +203,8 @@ event Update() {
                 }
                 break;
             case ItemTypes.TYPE_SUPER:
-                Scene.Players[PlayerAggressor].SuperForm = true;
                 Scene.Players[PlayerAggressor].GiveRing(100);
+                Scene.Players[PlayerAggressor].DoSuperTransform();
                 break;
             case ItemTypes.TYPE_HYPER_RING:
                 Scene.Players[PlayerAggressor].HyperRings = true;

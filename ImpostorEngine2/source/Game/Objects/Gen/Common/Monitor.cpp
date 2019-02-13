@@ -183,8 +183,8 @@ void Monitor::Update() {
 
             break;
             case ItemTypes::TYPE_SUPER:
-            Scene->Players[PlayerAggressor]->SuperForm = true;
             Scene->Players[PlayerAggressor]->GiveRing(100);
+            Scene->Players[PlayerAggressor]->DoSuperTransform();
             break;
             case ItemTypes::TYPE_HYPER_RING:
             Scene->Players[PlayerAggressor]->HyperRings = true;
