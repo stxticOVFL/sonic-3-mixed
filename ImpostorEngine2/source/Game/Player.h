@@ -190,6 +190,7 @@ public:
     int AnimationSpeedMult = 1;
 
 	bool Thremixed = false;
+	bool OCMode = false;
 
     int SensorA = 20;
     int SensorB = 20;
@@ -339,10 +340,13 @@ public:
     bool                HyperForm = false;
     bool                SuperFlight = false;
     bool                SuperEnabled = true;
+    bool                HyperEnabled = false;
     int                 SuperFormTimer = 0;
     SuperFormAnimType   SuperFormAnim = SuperFormAnimType::None;
     int                 SuperFormAnimTimer = -1;
     int                 SuperFormAnimTimerMax = 20;
+	int                 LastHyperIndex = 0;
+	int                 HyperLoopIndex = 0;
 
     bool                ForceRoll = false;
     int                 ForceRollBond = -1;
@@ -413,6 +417,7 @@ public:
     void Create();
     void Update();
     void LateUpdate();
+	void UpdatePlayerPallete();
     void Render(int CamX, int CamY);
 
     void AnimSet(int Start, int End, int Speed, bool Stop);

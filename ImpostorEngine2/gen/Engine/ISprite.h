@@ -7,6 +7,7 @@
 #define STATIC
 #define VIRTUAL
 
+class IApp;
 class IGraphics;
 class ISprite;
 
@@ -23,6 +24,7 @@ public:
     int PaletteSize = 0;
     int Paletted = 0;
     int TransparentColorIndex = 0;
+    IApp* App = NULL;
     struct AnimFrame {
     int X;
     int Y;

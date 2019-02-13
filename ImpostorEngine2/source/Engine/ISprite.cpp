@@ -12,6 +12,8 @@ public:
     int PaletteSize = 0;
     int Paletted = 0;
     int TransparentColorIndex = 0;
+    
+    IApp* App = NULL;
 
     struct AnimFrame {
         int X;
@@ -132,6 +134,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 
     Paletted = 1;
 
+    App = app;
     G = app->G;
     G->MakeTexture(this);
     UpdatePalette();
