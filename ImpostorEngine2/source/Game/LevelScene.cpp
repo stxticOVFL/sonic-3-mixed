@@ -523,8 +523,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x44] = "Obj_CNZ_TrapDoor";
             ObjectName[0x45] = "Obj_CNZ_LightBulb";
             ObjectName[0x46] = "Obj_CNZ_HoverFan";
-            ObjectName[0x47] = "Obj_CNZ_RotatingBarrels";
-            ObjectName[0x48] = "Obj_CNZ_VacuumTubes";
+            ObjectName[0x47] = "Obj_CNZ_RotatingBarrel";
+            ObjectName[0x48] = "VacuumTube";
             ObjectName[0x49] = "Obj_CNZ_RotatingWheel";
             ObjectName[0x4A] = "Obj_CNZ_Bumper";
             ObjectName[0x4B] = "Obj_CNZ_BouncepadSprings";
@@ -1286,7 +1286,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
             PlayerCount = 1;
 
-			if (CharacterFlag >> 4) {
+			if (SaveGame::CurrentCharacterFlag >> 4) {
 				Players[1] = new IPlayer();
 				Players[1]->G = G;
 				Players[1]->App = App;
@@ -1535,7 +1535,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             }
 
             Data->objectDefinitionCount = reader.ReadByte();
-            for (int i = 0; i < Data->objectDefinitionCount && false; i++) {
+            for (int i = 0; i < Data->objectDefinitionCount; i++) {
                 char str[16];
                 char hashString[33];
                 sprintf(hashString, "%s", "");
@@ -2992,15 +2992,15 @@ PUBLIC void LevelScene::Update() {
             }
         }
 
-        if (App->Input->GetControllerInput(0)[IInput::I_EXTRA_PRESSED]) {
-            if (maxLayer == 1 && Player) {
+        if (App->Input->GetControllerInput(0)[IInput::I_EXTRA_PRESSED] && Player) {
+            if (maxLayer == 1) {
                 Player->XSpeed = 0;
                 Player->YSpeed = 0;
                 Player->GroundSpeed = 0;
                 Player->ObjectControlled = 0;
                 Player->DoCollision = 0;
                 Player->Action = ActionType::Normal;
-			} else if (maxLayer == 0 && Player) {
+			} else if (maxLayer == 0) {
 				Player->DoCollision = 1;
                 Player->DebugObjectIndex = -1;
 				if (Player->DebugObject != NULL && Player->DebugObject->isHeldDebugObject) {

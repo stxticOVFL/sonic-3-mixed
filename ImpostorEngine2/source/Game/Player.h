@@ -243,7 +243,7 @@ public:
     int                 GrabTimer = 0;
     bool                CheckJumpThrough = false;
     int                 PlayerID = 0;
-    
+
     Object*             DebugObject = NULL;
     int16_t             DebugObjectIndex = -1;
 
@@ -527,6 +527,7 @@ public:
     void GiveLife(int n);
     void CheckDespawn();
     void DoVictory();
+    void DoSuperTransform();
 };
 
 #endif /* S3_PLAYER_H */

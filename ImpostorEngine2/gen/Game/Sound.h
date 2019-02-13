@@ -45,6 +45,8 @@ public:
     SFX_PUSHING = 0x69,
     SFX_WATERRUN = 0xDB,
     SFX_BOSSHIT = 0x6E,
+    SFX_73 = 0x73,
+    SFX_VACUUM_TUBE = 0x74,
     SFX_BALLOON_POP = 0x77,
     SFX_PAD_BOUNCE = 0x7B,
     SFX_GRAB = 0x4A,

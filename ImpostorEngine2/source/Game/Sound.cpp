@@ -37,6 +37,8 @@ public:
         SFX_WATERRUN = 0xDB,
         SFX_BOSSHIT = 0x6E,
 
+		SFX_73 = 0x73,
+		SFX_VACUUM_TUBE = 0x74,
         SFX_BALLOON_POP = 0x77,
         SFX_PAD_BOUNCE = 0x7B,
 
@@ -137,6 +139,8 @@ PUBLIC STATIC void Sound::Init() {
     LOADSOUND(SFX_BOSSHIT, "Sounds/BossHit.wav")
     LOADSOUND(SFX_BOSSEXPLOSION, "Sounds/Explosion2.wav")
 
+	LOADSOUND(SFX_73, "Sounds/S3K_73.wav")
+	LOADSOUND(SFX_VACUUM_TUBE, "Sounds/S3K_74.wav")
     LOADSOUND(SFX_BALLOON_POP, "Sounds/S3K_77.wav")
     LOADSOUND(SFX_PAD_BOUNCE, "Sounds/S3K_7B.wav")
 

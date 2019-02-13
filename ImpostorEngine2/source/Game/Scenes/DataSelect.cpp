@@ -192,14 +192,82 @@ PUBLIC void Scene_DataSelect::Init() {
 	Discord_UpdatePresence("Main Menu:", "Classic Mode", "icon");
 }
 
+bool MobileScrolling = false;
+bool MobileScrollStart = false;
+bool MobileScrollMoved = false;
+int  MobileScrollSpeed = 0x00;
+int  MobileScrollTouchStart = 0;
+int  MobileScrollLastTouch = 0;
+int* MobileScrollVariable = NULL;
+int  MobileScrollLeftBound = 0;
+int  MobileScrollRightBound = 7 * 10000;
+
 PUBLIC void Scene_DataSelect::Update() {
 	bool CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
+	bool CONFIRM_DOWN = App->Input->GetControllerInput(0)[IInput::I_CONFIRM] || App->Input->MouseDown;
+	bool BACK_PRESSED = App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED];
 
-	// int mx = App->Input->MouseX;
-	// int my = App->Input->MouseY;
-	if (App->Input->MousePressed) {
-		CONFIRM_PRESSED = true;
+	int mx = App->Input->MouseX;
+	int my = App->Input->MouseY;
+	if (App->Input->MouseReleased && mx < 128 && my > App->HEIGHT - 40)
+		BACK_PRESSED = true;
+
+	if (App->Input->MouseDown && !MobileScrollStart && my >= 40 && my < App->HEIGHT - 40) {
+		MobileScrollVariable = &viewOffX;
+		MobileScrollStart = true;
+		MobileScrollTouchStart = *MobileScrollVariable;
+		MobileScrollLastTouch = mx;
+		MobileScrollMoved = false;
 	}
+	if (MobileScrollVariable) {
+		if (MobileScrollStart) {
+			if (App->Input->MouseDown) {
+				MobileScrollSpeed = (MobileScrollLastTouch - mx) << 8;
+				MobileScrollLastTouch = mx;
+
+				if (*MobileScrollVariable < MobileScrollLeftBound)
+					MobileScrollSpeed /= IMath::abs(MobileScrollLeftBound - *MobileScrollVariable) / 32;
+				if (*MobileScrollVariable > MobileScrollRightBound)
+					MobileScrollSpeed /= IMath::abs(MobileScrollRightBound - *MobileScrollVariable) / 32;
+
+				if (IMath::abs(MobileScrollTouchStart - *MobileScrollVariable) >= 0x8)
+					MobileScrollMoved = true;
+			}
+			else {
+				MobileScrollStart = false;
+
+				if (!MobileScrollMoved) {
+					CONFIRM_PRESSED = true;
+				}
+			}
+		}
+		if (MobileScrolling && !App->Input->MouseDown) {
+			MobileScrollSpeed += (0 - MobileScrollSpeed) / 16;
+			if (IMath::abs(MobileScrollSpeed) < 0x100)
+				MobileScrollSpeed = 0;
+
+			if (*MobileScrollVariable < 0)
+				MobileScrollSpeed = (0 - *MobileScrollVariable) / 8;
+		}
+
+		*MobileScrollVariable += MobileScrollSpeed;
+		if (IMath::abs(MobileScrollLeftBound - *MobileScrollVariable) < 0x100)
+			*MobileScrollVariable = MobileScrollLeftBound;
+		if (IMath::abs(MobileScrollRightBound - *MobileScrollVariable) < 0x100)
+			*MobileScrollVariable = MobileScrollRightBound;
+
+		if (MobileScrolling && App->Input->MouseDown) {
+			if (selected != (*MobileScrollVariable + 5000) / 10000) {
+				CharacterFlag = 0;
+				selected = (*MobileScrollVariable + 5000) / 10000;
+				if (selected < 0)
+					selected = 0;
+				if (selected > 7)
+					selected = 7;
+			}
+		}
+	}
+
 
 	if (FadeTimer == -1 && FadeTimerMax > 1)
 		FadeTimer = FadeTimerMax;
@@ -226,6 +294,8 @@ PUBLIC void Scene_DataSelect::Update() {
 				int i = SaveGame::CurrentSaveFile;
 				if (SaveGame::Savefiles[i].State == 0) {
 					SaveGame::InitializeSaveGame();
+					if (CharacterFlag == 0)
+						CharacterFlag = 0x10 | CharacterFlag;
 					SaveGame::CurrentCharacterFlag = CharacterFlag;
 					if (i >= 0)
 						SaveGame::Savefiles[i].CharacterFlag = CharacterFlag;
@@ -269,6 +339,8 @@ PUBLIC void Scene_DataSelect::Update() {
 			}
 
 			Sound::Play(Sound::SFX_MENUBLEEP);
+
+			MobileScrolling = true;
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
 			if (selected < 7) {
@@ -277,6 +349,8 @@ PUBLIC void Scene_DataSelect::Update() {
 			}
 
 			Sound::Play(Sound::SFX_MENUBLEEP);
+
+			MobileScrolling = true;
 		}
 
 		if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
@@ -286,6 +360,8 @@ PUBLIC void Scene_DataSelect::Update() {
 				CharacterFlag = 0;
 
 			Sound::Play(Sound::SFX_MENUBLEEP);
+
+			MobileScrolling = true;
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
 			if (CharacterFlag > 0)
@@ -294,24 +370,32 @@ PUBLIC void Scene_DataSelect::Update() {
 				CharacterFlag = 4;
 
 			Sound::Play(Sound::SFX_MENUBLEEP);
+
+			MobileScrolling = true;
 		}
 
 		if (CONFIRM_PRESSED) {
-			Sound::Play(Sound::SFX_MENUACCEPT);
+			if (!MobileScrolling) {
+				MobileScrolling = true;
+			}
+			else {
+				Sound::Play(Sound::SFX_MENUACCEPT);
 
-			FadeIn = false;
-			FadeTimerMax = 30;
-			App->Audio->FadeMusic(0.5);
-			GoBack = false;
+				FadeIn = false;
+				FadeTimerMax = 30;
+				App->Audio->FadeMusic(0.5);
+				GoBack = false;
+			}
 		}
-		if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
+		if (BACK_PRESSED) {
 			GoBack = true;
 			FadeIn = false;
 			FadeTimerMax = 30;
 		}
 	}
 
-	viewOffX += (selected * 10000 - viewOffX) / 2;
+	if (!MobileScrolling || !App->Input->MouseDown)
+		viewOffX += (selected * 10000 - viewOffX) / 2;
 
 	FrameCircle = (FrameCircle + 1) & 0xFF;
 	FrameZigzag = (FrameZigzag + 1) % (40 * 4);
@@ -321,6 +405,10 @@ PUBLIC void Scene_DataSelect::Update() {
 	frame++;
 	if (frame > (32 << 1))
 		frame = 0;
+
+
+	if (App->Input->MousePressed)
+		MobileScrolling = true;
 }
 
 PUBLIC void Scene_DataSelect::Render() {
@@ -438,6 +526,8 @@ PUBLIC void Scene_DataSelect::Render() {
 		if (i != selected || SaveGame::Savefiles[i].State > 0)
 			cf = SaveGame::Savefiles[i].CharacterFlag;
 
+		cf &= 0xF;
+
 		if (cf >= 3)
 			cf++;
 
@@ -445,7 +535,7 @@ PUBLIC void Scene_DataSelect::Render() {
 		G->DrawSprite(SaveSelectSprite, 1, cf, myX + 80 / 2, myY + 100, 0, 0);
 
 		if (SaveGame::Savefiles[i].State > 0) {
-			G->DrawSprite(SaveSelectSprite, 3, SaveGame::Savefiles[i].CharacterFlag, myX + 80 / 2 - 10, myY + 150, 0, 0);
+			G->DrawSprite(SaveSelectSprite, 3, SaveGame::Savefiles[i].CharacterFlag & 0xF, myX + 80 / 2 - 10, myY + 150, 0, 0);
 			char lives[3];
 			snprintf(lives, 3, "%d", SaveGame::Savefiles[i].Lives);
 			G->DrawTextSprite(TextSprite, 6, '0' - 37, myX + 80 / 2 + 4, myY + 151, lives);
@@ -466,22 +556,6 @@ PUBLIC void Scene_DataSelect::Render() {
 		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, 160 + 6, 0xE00000);
 	}
 
-	// Buttons
-	int CurrAni = 4;
-	if (IApp::Platform == Platforms::Switch) {
-		CurrAni = 4;
-	}
-	if (CurrAni == 1) {
-		G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_CONFIRM], 14, App->HEIGHT - 12, 0, IE_NOFLIP);
-		G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_DENY], 104, App->HEIGHT - 12, 0, IE_NOFLIP);
-	}
-	else {
-		G->DrawSprite(SuperButtonsSprite, CurrAni, 1, 14, App->HEIGHT - 12, 0, IE_NOFLIP);
-		G->DrawSprite(SuperButtonsSprite, CurrAni, 0, 104, App->HEIGHT - 12, 0, IE_NOFLIP);
-	}
-
-	G->DrawTextSprite(TextSprite, 6, 'A', 14 + 16, App->HEIGHT - 12, "ACCEPT");
-	G->DrawTextSprite(TextSprite, 6, 'A', 104 + 16, App->HEIGHT - 12, "BACK");
 
 	// TODO: When making controllers mappable, use those
 	// 1 - Keyboard
@@ -491,7 +565,26 @@ PUBLIC void Scene_DataSelect::Render() {
 	// 5 - Saturn (Black)
 	// 6 - Saturn (White)
 
+	// Buttons
+
 	if (IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android) {
-		G->DrawRectangle(0, App->HEIGHT - 48, 96, 48, 0x000000);
+		G->DrawTextSprite(TextSprite, 6, 'A', 14, App->HEIGHT - 12, "BACK");
+	}
+	else {
+		int CurrAni = 1;
+		if (IApp::Platform == Platforms::Switch) {
+			CurrAni = 4;
+		}
+		if (CurrAni == 1) {
+			G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_CONFIRM], 104, App->HEIGHT - 12, 0, IE_NOFLIP);
+			G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_DENY], 14, App->HEIGHT - 12, 0, IE_NOFLIP);
+		}
+		else {
+			G->DrawSprite(SuperButtonsSprite, CurrAni, 1, 104, App->HEIGHT - 12, 0, IE_NOFLIP);
+			G->DrawSprite(SuperButtonsSprite, CurrAni, 0, 14, App->HEIGHT - 12, 0, IE_NOFLIP);
+		}
+
+		G->DrawTextSprite(TextSprite, 6, 'A', 14 + 16, App->HEIGHT - 12, "BACK");
+		G->DrawTextSprite(TextSprite, 6, 'A', 104 + 16, App->HEIGHT - 12, "ACCEPT");
 	}
 }

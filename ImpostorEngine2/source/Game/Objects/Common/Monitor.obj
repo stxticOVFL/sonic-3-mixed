@@ -19,7 +19,7 @@ enum ItemTypes {
     TYPE_INVINCIBILITY,
     TYPE_SUPER,
     TYPE_BROKEN,
-    
+
     // New types
     TYPE_HYPER,
     TYPE_HYPER_RING,
@@ -213,22 +213,18 @@ event Update() {
                 }
                 break;
             case ItemTypes.TYPE_SUPER:
-                Player = Scene.Players[PlayerAggressor];
-                if (Player.HyperEnabled) {
-                    Player.HyperEnabled = false;
+<<<<<<< HEAD
+                if (Scene.Players[PlayerAggressor].HyperEnabled) {
+                    Scene.Players[PlayerAggressor].HyperEnabled = false;
                 }
-                Player.Action = ActionType.Transform;
-				Player.SuperFormAnim = SuperFormAnimType.Transforming;
-                Player.GiveRing(100);
-                Player = NULL;
+                Scene.Players[PlayerAggressor].GiveRing(100);
+                Scene.Players[PlayerAggressor].DoSuperTransform();
                 break;
             case ItemTypes.TYPE_HYPER:
-                Player = Scene.Players[PlayerAggressor];
-                Player.HyperEnabled = true;
-                Player.Action = ActionType.Transform;
-				Player.SuperFormAnim = SuperFormAnimType.Transforming;
-                Player.GiveRing(100);
-                Player = NULL;
+                Scene.Players[PlayerAggressor].HyperEnabled = true;
+                Scene.Players[PlayerAggressor].GiveRing(100);
+                Scene.Players[PlayerAggressor].DoSuperTransform();
+>>>>>>> 612d972850525cf1b31e8aa51e1e8aa5f3eb484e
                 break;
             case ItemTypes.TYPE_HYPER_RING:
                 Scene.Players[PlayerAggressor].HyperRings = true;

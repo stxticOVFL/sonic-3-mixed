@@ -86,6 +86,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x4B:
             return new Bouncepad();
             break;
+        case 0x48:
+            return new VacuumTube();
+            break;
         case 0x30:
             return new AnimSprite();
             break;

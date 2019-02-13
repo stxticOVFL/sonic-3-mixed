@@ -29,6 +29,7 @@
 #include "CNZ/Batbright.h"
 #include "CNZ/BatbrightParts.h"
 #include "CNZ/Bouncepad.h"
+#include "CNZ/VacuumTube.h"
 #include "Common/AnimSprite.h"
 #include "Common/AutomaticTunnel.h"
 #include "Common/BreakableWall.h"
@@ -117,6 +118,7 @@ enum {
     Obj_Batbright = 0x0A5,
     Obj_BatbrightParts = 0x405,
     Obj_Bouncepad = 0x04B,
+    Obj_VacuumTube = 0x048,
     Obj_AnimSprite = 0x030,
     Obj_AutomaticTunnel = 0x024,
     Obj_BreakableWall = 0x00D,
