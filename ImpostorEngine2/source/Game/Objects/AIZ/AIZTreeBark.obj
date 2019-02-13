@@ -1,0 +1,17 @@
+object 0x09;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 16;
+    H = 16;
+
+    // VisualLayer = 1;
+
+    CurrentAnimation = 0;
+    Frame = 0;
+}
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

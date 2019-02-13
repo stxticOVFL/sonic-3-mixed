@@ -397,6 +397,7 @@ public:
     bool                InputRightPress = false;
     bool                InputJump = false;
     bool                InputJumpHold = false;
+	int                 InputController = -1;
     // </editor-fold> Player Variables
 
     // <editor-fold> Object-Use Variables

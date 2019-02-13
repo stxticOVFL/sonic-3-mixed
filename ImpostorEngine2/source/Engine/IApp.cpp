@@ -29,6 +29,7 @@ public:
     bool UnlockedFramerate = false;
 
     static Platforms Platform; //
+	static bool      Mobile;
 };
 #endif
 
@@ -63,18 +64,25 @@ public:
 
 #if   MSVC
     Platforms IApp::Platform = Platforms::Windows;
+	bool      IApp::Mobile   = false;
 #elif MACOSX
     Platforms IApp::Platform = Platforms::MacOSX;
+	bool      IApp::Mobile = false;
 #elif LINUX
     Platforms IApp::Platform = Platforms::Linux;
+	bool      IApp::Mobile = false;
 #elif UBUNTU
     Platforms IApp::Platform = Platforms::Ubuntu;
+	bool      IApp::Mobile = false;
 #elif NX
     Platforms IApp::Platform = Platforms::Switch;
+	bool      IApp::Mobile = false;
 #elif IOS
     Platforms IApp::Platform = Platforms::iOS;
+	bool      IApp::Mobile = true;
 #elif ANDROID
     Platforms IApp::Platform = Platforms::Android;
+	bool      IApp::Mobile = true;
 #else
     Platforms IApp::Platform = Platforms::Default;
 #endif
@@ -174,6 +182,8 @@ PUBLIC void IApp::ExecuteCommand(char* cmd) {
         Print(2, "Unrecognized command '%s'.", cmd);
 }
 
+#include <Game/SaveGame.h>
+
 PUBLIC void IApp::Run() {
     if (!Running)
         return;
@@ -193,6 +203,25 @@ PUBLIC void IApp::Run() {
         // Scene = new Level_HCZ(this, G, 1);
         // Scene = new Level_MGZ(this, G, 1);
         // Scene = new LevelScene(this, G);
+
+		/*
+		LevelScene* ls = new LevelScene(this, G);
+		Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
+		Sound::Audio->LoopPoint[0] = 179390 / 4;
+		ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
+		ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
+		ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
+		ls->PlayerStartX = 160;
+		ls->PlayerStartY = 1328;
+		ls->Thremixed = true;
+		ls->ZoneID = 1;
+		ls->VisualAct = 1;
+		SaveGame::CurrentCharacterFlag = (int)CharacterType::Ray;
+		sprintf(ls->LevelName, "MIRAGE SALOON");
+		sprintf(ls->LevelNameDiscord, "Mirage Saloon");
+		Scene = ls;
+		*/
+
         Scene->Init();
     }
 

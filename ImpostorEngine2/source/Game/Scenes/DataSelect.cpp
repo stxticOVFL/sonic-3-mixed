@@ -565,9 +565,9 @@ PUBLIC void Scene_DataSelect::Render() {
 	// 5 - Saturn (Black)
 	// 6 - Saturn (White)
 
-	// Buttons
+	// Buttons 
 
-	if (IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android) {
+	if (IApp::Mobile) {
 		G->DrawTextSprite(TextSprite, 6, 'A', 14, App->HEIGHT - 12, "BACK");
 	}
 	else {

@@ -213,7 +213,6 @@ event Update() {
                 }
                 break;
             case ItemTypes.TYPE_SUPER:
-<<<<<<< HEAD
                 if (Scene.Players[PlayerAggressor].HyperEnabled) {
                     Scene.Players[PlayerAggressor].HyperEnabled = false;
                 }
@@ -224,7 +223,6 @@ event Update() {
                 Scene.Players[PlayerAggressor].HyperEnabled = true;
                 Scene.Players[PlayerAggressor].GiveRing(100);
                 Scene.Players[PlayerAggressor].DoSuperTransform();
->>>>>>> 612d972850525cf1b31e8aa51e1e8aa5f3eb484e
                 break;
             case ItemTypes.TYPE_HYPER_RING:
                 Scene.Players[PlayerAggressor].HyperRings = true;

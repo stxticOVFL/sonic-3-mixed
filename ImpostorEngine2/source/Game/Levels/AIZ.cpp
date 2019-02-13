@@ -294,6 +294,8 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
     if (TileSpriteBackup && Act == 2) {
         TileSprite = TileSpriteBackup;
     }
+	AIZShipTileSprite = NULL;
+	TileSpriteBackup = NULL;
 
     LevelScene::RestartStage(doActTransition, drawBackground);
 

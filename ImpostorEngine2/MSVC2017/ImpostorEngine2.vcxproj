@@ -46,13 +46,13 @@
     <ClCompile Include="..\source\Game\MovingSprite.cpp" />
     <ClCompile Include="..\source\Game\Object.cpp" />
     <ClCompile Include="..\source\Game\ObjectNames.cpp" />
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Act1TreeBark.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AirshipBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZBoss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossCutscene.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossFlame.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZTreeBark.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Bloominator.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\BloominatorSpore.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\CaterkillerJr.cpp" />

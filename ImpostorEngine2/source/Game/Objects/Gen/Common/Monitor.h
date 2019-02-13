@@ -26,12 +26,8 @@ public:
         TYPE_INVINCIBILITY = 8,
         TYPE_SUPER = 9,
         TYPE_BROKEN = 10,
-<<<<<<< HEAD
-        TYPE_HYPER_RING = 11,
-=======
         TYPE_HYPER = 11,
         TYPE_HYPER_RING = 12,
->>>>>>> 612d972850525cf1b31e8aa51e1e8aa5f3eb484e
     };
     
     int SubY;

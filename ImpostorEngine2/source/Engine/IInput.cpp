@@ -99,7 +99,7 @@ PUBLIC IInput::IInput(IApp* app) {
 		memcpy(defaultKeys, defaultKeysNx, sizeof(defaultKeysNx));
 	}
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < sizeof(defaultKeys) / sizeof(tempStruct); i++) {
         if (!App->Settings->GetInteger("input1", defaultKeys[i].key, &ControllerMaps[0][defaultKeys[i].where]))
             ControllerMaps[0][defaultKeys[i].where] = defaultKeys[i].scancodeDefault;
     }
@@ -261,5 +261,10 @@ PUBLIC void IInput::Vibrate(int c, double strength, int duration) {
 }
 
 PUBLIC uint8_t* IInput::GetControllerInput(int ControllerID) {
+	if (ControllerID < 0) return NULL;
     return Controllers[ControllerID];
+}
+PUBLIC bool IInput::GetControllerInput(int ControllerID, int Button) {
+	if (ControllerID < 0) return false;
+	return !!Controllers[ControllerID][Button];
 }

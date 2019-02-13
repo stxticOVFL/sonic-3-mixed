@@ -72,7 +72,9 @@ public:
         SFX_MENUBLEEP = 0x04,
         SFX_MENUWOOSH = 0x05,
         SFX_MENUFAIL = 0x06,
-        SFX_AIRSHIP2 = 0x07
+        SFX_AIRSHIP2 = 0x07,
+		SFX_RAY_DIVE = 0x08,
+		SFX_RAY_SWOOP = 0x09,
     };
 
     static IAudio* Audio;
@@ -167,6 +169,9 @@ PUBLIC STATIC void Sound::Init() {
 
     LOADSOUND(SFX_AIRSHIP, "Sounds/S3K_BD.wav")
     LOADSOUND(SFX_AIRSHIP2, "Sounds/S3K_BD.wav")
+
+	LOADSOUND(SFX_RAY_DIVE, "Sounds/RayDive.wav")
+	LOADSOUND(SFX_RAY_SWOOP, "Sounds/RaySwoop.wav")
 
     Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
     Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);

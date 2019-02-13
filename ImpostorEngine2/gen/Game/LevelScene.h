@@ -165,6 +165,7 @@ public:
     int         Checkpoint = -1;
     int         SavedPositionX = -1;
     int         SavedPositionY = -1;
+    uint32_t*   SavedPalette = NULL;
     int         WaterEnteredCounter = 0;
     ISound**    SoundBank = NULL;
     uint8_t*    PerspectiveMap;
