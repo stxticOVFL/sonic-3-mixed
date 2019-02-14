@@ -195,6 +195,59 @@ Uint32 SonicPaletteS3Hyper[17] = {
 	0x00CEACCE,
 };
 
+Uint32 SonicPaletteS3HyperBlend[16] = {
+	0x00F693F2,
+	0x00F4FFF4,
+	0x0030FF14,
+	0x00FFFFCC,
+	0x00CEFF8B,
+	0x00DFF3FC,
+	0x00FFFB56,
+	0x00FFFFC8,
+	0x00FFF69B,
+	0x00FFDE52,
+	0x00FFFDF4,
+	0x00FFE693,
+	0x00FFF7F2,
+	0x00FFDFCB,
+    0x007B7078, // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
+	0x008DF4FF,
+};
+
+Uint32 SonicPaletteS3HyperExtended[31] = {
+	0x00ACCEFF,
+	0x00F693F2,
+	0x0090ACFF,
+	0x00F4FFF4,
+	0x00CEFFCE,
+	0x0030FF14,
+	0x00ACFFAC,
+	0x00FFFFCC,
+	0x0000FF34,
+	0x00CEFF8B,
+	0x00CEFFAC,
+	0x00DFF3FC,
+	0x00CEFF57,
+	0x00FFFB56,
+	0x00CECE00,
+	0x00FFFFC8,
+	0x00FFFFCE,
+	0x00FFF69B,
+	0x00FFFF90,
+	0x00FFDE52,
+	0x00FFCE57,
+	0x00FFFDF4,
+	0x00FFCECE,
+	0x00FFE693,
+	0x00FFACAC,
+	0x00FFF7F2,
+	0x00FFCEFF,
+	0x00FFDFCB,
+	0x00CEACCE,
+    0x007B7078,    // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
+	0x008DF4FF,
+};
+
 Uint32 SonicPaletteS3HyperPulse[3] = {
 	0xEEEECC,
 	0xEEEECC,
@@ -3041,21 +3094,32 @@ void IPlayer::LateUpdate() {
 		palSuper = SonicPaletteSuper;
 		palNormal = SonicPaletteNormal;
 		palSuperHCZ = SonicPaletteSuperHCZ;
+		if (ExtendedHyperPallete) {
+			palHyper = SonicPaletteS3HyperExtended;
+		} else {
+			palHyper = SonicPaletteS3Hyper;
+		}
 		palNormalHCZ = SonicPaletteNormalHCZ;
 		palSuperPulse = SonicPaletteSuperPulse;
 		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
+		palHyperPulse = SonicPaletteS3HyperPulse;
+		palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		if (!Thremixed) {
 			palWhere = 0x2;
 			palCount = 3;
 			palSuper = SonicPaletteS3Super;
-			palHyper = SonicPaletteS3Hyper;
-			palHyperPulse = SonicPaletteS3HyperPulse;
-			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
+			if (ExtendedHyperPallete) {
+				palHyper = SonicPaletteS3HyperExtended;
+			} else {
+				palHyper = SonicPaletteS3Hyper;
+			}
 			palNormal = SonicPaletteS3Normal;
 			palSuperHCZ = SonicPaletteS3SuperHCZ;
 			palNormalHCZ = SonicPaletteS3NormalHCZ;
 			palSuperPulse = SonicPaletteS3SuperPulse;
 			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
+			palHyperPulse = SonicPaletteS3HyperPulse;
+			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		}
 	}
 	else if (Character == CharacterType::Tails) {
@@ -3082,21 +3146,32 @@ void IPlayer::LateUpdate() {
 		palSuper = SonicPaletteSuper;
 		palNormal = SonicPaletteNormal;
 		palSuperHCZ = SonicPaletteSuperHCZ;
+		if (ExtendedHyperPallete) {
+			palHyper = SonicPaletteS3HyperExtended;
+		} else {
+			palHyper = SonicPaletteS3Hyper;
+		}
 		palNormalHCZ = SonicPaletteNormalHCZ;
 		palSuperPulse = SonicPaletteSuperPulse;
 		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
+		palHyperPulse = SonicPaletteS3HyperPulse;
+		palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		if (!Thremixed) {
 			palWhere = 0x2;
 			palCount = 3;
 			palSuper = SonicPaletteS3Super;
-			palHyper = SonicPaletteS3Hyper;
-			palHyperPulse = SonicPaletteS3HyperPulse;
-			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
+            if (ExtendedHyperPallete) {
+                palHyper = SonicPaletteS3HyperExtended;
+            } else {
+                palHyper = SonicPaletteS3Hyper;
+            }
 			palNormal = SonicPaletteS3Normal;
 			palSuperHCZ = SonicPaletteS3SuperHCZ;
 			palNormalHCZ = SonicPaletteS3NormalHCZ;
 			palSuperPulse = SonicPaletteS3SuperPulse;
 			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
+			palHyperPulse = SonicPaletteS3HyperPulse;
+			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		}
 	}
 
@@ -3112,7 +3187,12 @@ void IPlayer::LateUpdate() {
 		}
 	}
 	looped = true;*/
-	const int hyperFullPalCount = 17;
+    int hyperFullPalCount;
+    if (ExtendedHyperPallete) {
+        hyperFullPalCount = 31;
+    } else {
+        hyperFullPalCount = 17;
+    }
 	const unsigned int HyperLoopMaxIndex = 320;
 
 	if (SuperFormAnim == SuperFormAnimType::Super) {
@@ -3130,8 +3210,8 @@ void IPlayer::LateUpdate() {
 						palHyperPulseHCZ = palSuperPulseHCZ;
 					}
 					if (OCMode) {
-						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
-						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palSuperPulse[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palSuperPulseHCZ[p], superblend));
 					} else {
 						HyperLoopIndex++;
 						if (HyperLoopIndex >= HyperLoopMaxIndex) {
@@ -3147,14 +3227,23 @@ void IPlayer::LateUpdate() {
 					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
 					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
 				}
+
+				/*int ABGR = G->ColorBlend(palHyper[LastHyperIndex], palHyper[(LastHyperIndex - 1) % hyperFullPalCount], 100.0);
+				uint8_t RGB[4] = { };
+				G->ABGRToRGB(ABGR, RGB);
+
+				App->Print(0, "Blended Color is: %02X, %02X, %02X, %02X", RGB[0], RGB[1], RGB[2], RGB[3]);
+				//App->Print(0, "Blended Color is: %02X, %d, %d, %d", RGB[0], RGB[1], RGB[2], RGB[3]);
                 
-				/*int ABGR = Sprites[i]->GetPalette(palWhere + p);
-                int empty = ABGR >> 24;
-                int R = (ABGR & 0x00FFFFFF) >> 16;
-                int G = (ABGR & 0x0000FFFF) >> 8;
-                int B = ABGR & 0x000000FF;
-                
-                App->Print(0, "ABGR is: %02X, %02X, %02X, %02X", empty, R, G, B);*/
+				ABGR = palHyper[LastHyperIndex];
+				RGB[0] = 0x00;
+				RGB[1] = 0x00;
+				RGB[2] = 0x00;
+				RGB[3] = 0x00;
+				G->ABGRToRGB(ABGR, RGB);
+
+				App->Print(0, "ABGR is: %02X, %02X, %02X, %02X", RGB[0], RGB[1], RGB[2], RGB[3]);
+				//App->Print(0, "ABGR is: %02X, %d, %d, %d", RGB[0], RGB[1], RGB[2], RGB[3]);*/
 			}
 			Sprites[i]->UpdatePalette();
 		}

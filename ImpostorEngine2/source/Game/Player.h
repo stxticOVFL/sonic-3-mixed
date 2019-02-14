@@ -338,6 +338,7 @@ public:
 
     bool                SuperForm = false;
     bool                HyperForm = false;
+	bool                ExtendedHyperPallete = true;
     bool                SuperFlight = false;
     bool                SuperEnabled = true;
     bool                HyperEnabled = false;

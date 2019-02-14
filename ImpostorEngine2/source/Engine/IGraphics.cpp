@@ -1202,6 +1202,18 @@ PUBLIC uint32_t IGraphics::GetRetroColor(uint16_t RetroColor) {
 	return FullColor;
 }
 
+PUBLIC void IGraphics::ABGRToRGB(uint32_t ABGR, uint8_t output[4]) {
+	int empty = ABGR >> 24;
+	int R = (ABGR & 0x00FFFFFF) >> 16;
+	int G = (ABGR & 0x0000FFFF) >> 8;
+	int B = ABGR & 0x000000FF;
+
+	output[0] = empty;
+	output[1] = R;
+	output[2] = G;
+	output[3] = B;
+}
+
 PRIVATE void IGraphics::Flip() {
 
 }
