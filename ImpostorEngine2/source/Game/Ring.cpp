@@ -66,12 +66,13 @@ PUBLIC void Ring::Update() {
             CurrentFrame = ani.FrameToLoop * 0x100;
         }
 
-        if (ani.AnimationSpeed == 4)
+        if (ani.AnimationSpeed == 4) {
             CurrentFrame += 0x100;
-        else if (ani.AnimationSpeed > 2)
+        } else if (ani.AnimationSpeed > 2) {
             CurrentFrame += ani.AnimationSpeed;
-        else if (ani.Frames[CurrentFrame / 0x100].Duration != 0)
+        } else if (ani.Frames[CurrentFrame / 0x100].Duration != 0) {
             CurrentFrame += 0x100 / ani.Frames[CurrentFrame / 0x100].Duration;
+        }
     }
     // If magnetized to a player
     else {
@@ -83,34 +84,37 @@ PUBLIC void Ring::Update() {
         }
 
         if (PX < X) {
-            if (XSpeed < 0)
+            if (XSpeed < 0) {
                 XSpeed -= 0x30;
-            else
+            } else {
                 XSpeed -= 0xC0;
-        }
-        else {
-            if (XSpeed > 0)
+            }
+        } else {
+            if (XSpeed > 0) {
                 XSpeed += 0x30;
-            else
+            } else {
                 XSpeed += 0xC0;
+            }
         }
         if (PY < Y) {
-            if (YSpeed < 0)
+            if (YSpeed < 0) {
                 YSpeed -= 0x30;
-            else
+            } else {
                 YSpeed -= 0xC0;
-        }
-        else {
-            if (YSpeed > 0)
+            }
+        } else {
+            if (YSpeed > 0) {
                 YSpeed += 0x30;
-            else
+            } else {
                 YSpeed += 0xC0;
+            }
         }
 
-        if (Scene->Thremixed)
+        if (Scene->Thremixed) {
             CurrentFrame = Scene->RingAnimationFrame;
-        else
+        } else {
             CurrentFrame = Scene->RingAnimationFrame >> 2;
+        }
     }
 
     MyX += XSpeed;
@@ -151,8 +155,7 @@ PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
             ringsparkle->Y = Y + ry[i];
             Scene->Explosions.push_back(ringsparkle);
         }
-    }
-    else {
+    } else {
         Explosion* ringsparkle;
         ringsparkle = new Explosion();
         ringsparkle->G = G;
@@ -167,6 +170,5 @@ PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     }
 
     Active = false;
-
     return 1;
 }

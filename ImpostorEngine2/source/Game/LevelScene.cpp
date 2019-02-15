@@ -230,6 +230,7 @@ public:
 bool ViewPalettes = false;
 bool ViewPathswitchers = false;
 bool ViewPlayerStats = false;
+bool ViewPlayerUpdateStats = false;
 bool ViewTileInfo = false;
 bool ViewTileCollision = false;
 const char* ObjectName[347];
@@ -243,6 +244,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App->Settings->GetBool("dev", "viewPalettes", &ViewPalettes);
     App->Settings->GetBool("dev", "viewPathswitchers", &ViewPathswitchers);
     App->Settings->GetBool("dev", "viewPlayerStats", &ViewPlayerStats);
+	App->Settings->GetBool("dev", "viewPlayerUpdateStats", &ViewPlayerUpdateStats);
     App->Settings->GetBool("dev", "viewTileInfo", &ViewTileInfo);
     App->Settings->GetBool("dev", "viewTileCollision", &ViewTileCollision);
 
@@ -3696,6 +3698,8 @@ PUBLIC void LevelScene::Update() {
         }
         FadeTimer = -1;
     }
+    
+    CleanupObjects();
 }
 
 PUBLIC VIRTUAL void LevelScene::HandleCamera() {
@@ -3883,9 +3887,169 @@ PUBLIC void LevelScene::AddSelfToRegistry(Object* obj, const char* where) {
         ObjectsPathSwitcher[ObjectPathSwitcherCount++] = obj;
 }
 
+PUBLIC void LevelScene::CleanupObjects() {
+    // Clean up any un-needed Objects.
+    
+    Object** RefreshObjects = (Object**)calloc(2000, sizeof(Object*));
+    int NewObjectCount = 0;
+    int NewerObjectNewCount = ObjectNewCount;
+    
+    Object** RefreshObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
+    int NewObjectSolidCount = 0;
+    
+    Object** RefreshObjectsSpring = (Object**)calloc(100, sizeof(Object*));
+    int NewObjectSpringCount = 0;
+    
+    Enemy** RefreshObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
+    int NewObjectEnemiesCount = 0;
+    
+    Object** RefreshObjectsBreakable = (Object**)calloc(100, sizeof(Object*));
+    int NewObjectBreakableCount = 0;
+    
+    Object** UnrefreshedObjects = Objects;
+    int OldObjectCount = ObjectCount;
+    int OldObjectNewCount = ObjectNewCount;
+    
+    Object** UnrefreshedObjectsSolid = ObjectsSolid;
+    int OldObjectSolidCount = ObjectSolidCount;
+    
+    Object** UnrefreshedObjectsSpring = ObjectsSpring;
+    int OldObjectSpringCount = ObjectSpringCount;
+    
+    Enemy** UnrefreshedObjectsEnemies = ObjectsEnemies;
+    int OldObjectEnemiesCount = ObjectEnemiesCount;
+
+    Object** UnrefreshedObjectsBreakable = ObjectsBreakable;
+    int OldObjectBreakableCount = ObjectBreakableCount;
+    
+    for (int i = 0; i < ObjectCount; i++) {
+        if (Objects[i] == nullptr) {
+            continue;
+        } else if (!Objects[i]->Active && i >= ObjectCount + ObjectNewCount) {
+            NewerObjectNewCount--;
+            continue;
+        }
+        RefreshObjects[NewObjectCount] = Objects[i];
+        NewObjectCount++;
+    }
+    
+    for (int i = 0; i < ObjectSolidCount; i++) {
+        if (ObjectsSolid[i] == nullptr) {
+            continue;
+        } else if (!ObjectsSolid[i]->Active && ObjectsSolid[i]->isDebugModeObject) {
+            continue;
+        }
+        RefreshObjectsSolid[NewObjectSolidCount] = ObjectsSolid[i];
+        NewObjectSolidCount++;
+    }
+    
+    for (int i = 0; i < ObjectSpringCount; i++) {
+        if (ObjectsSpring[i] == nullptr) {
+            continue;
+        } else if (!ObjectsSpring[i]->Active && ObjectsSpring[i]->isDebugModeObject) {
+            continue;
+        }
+        RefreshObjectsSpring[NewObjectSpringCount] = ObjectsSpring[i];
+        NewObjectSpringCount++;
+    }
+    
+    for (int i = 0; i < ObjectEnemiesCount; i++) {
+        if (ObjectsEnemies[i] == nullptr) {
+            continue;
+        } else if (!ObjectsEnemies[i]->Active && ObjectsEnemies[i]->isDebugModeObject) {
+            continue;
+        }
+        RefreshObjectsEnemies[NewObjectEnemiesCount] = ObjectsEnemies[i];
+        NewObjectEnemiesCount++;
+    }
+    
+    for (int i = 0; i < ObjectBreakableCount; i++) {
+        if (ObjectsBreakable[i] == nullptr) {
+            continue;
+        } else if (!ObjectsBreakable[i]->Active && ObjectsBreakable[i]->isDebugModeObject) {
+            continue;
+        }
+        RefreshObjectsBreakable[NewObjectBreakableCount] = ObjectsBreakable[i];
+        NewObjectBreakableCount++;
+    }
+    
+    Objects = RefreshObjects;
+    ObjectCount = NewObjectCount;
+    ObjectNewCount = NewerObjectNewCount;
+    
+    ObjectsSolid = RefreshObjectsSolid;
+    ObjectSolidCount = NewObjectSolidCount;
+    
+    ObjectsSpring = RefreshObjectsSpring;
+    ObjectSpringCount = NewObjectSpringCount;
+    
+    ObjectsEnemies = RefreshObjectsEnemies;
+    ObjectEnemiesCount = NewObjectEnemiesCount;
+    
+    ObjectsBreakable = RefreshObjectsBreakable;
+    ObjectBreakableCount = NewObjectBreakableCount;
+    
+	for (int i = 0; i < OldObjectCount; i++) {
+		if (UnrefreshedObjects[i] == nullptr) {
+			continue;
+		}
+		if (!UnrefreshedObjects[i]->Active && i >= OldObjectCount + OldObjectNewCount) {
+			delete UnrefreshedObjects[i];
+			UnrefreshedObjects[i] = nullptr;
+		}
+	}
+    
+	for (int i = 0; i < OldObjectSolidCount; i++) {
+		if (UnrefreshedObjectsSolid[i] == nullptr) {
+			continue;
+		}
+		if (!UnrefreshedObjectsSolid[i]->Active && UnrefreshedObjectsSolid[i]->isDebugModeObject) {
+			delete UnrefreshedObjectsSolid[i];
+			UnrefreshedObjectsSolid[i] = nullptr;
+		}
+	}
+    
+    for (int i = 0; i < OldObjectSpringCount; i++) {
+		if (UnrefreshedObjectsSpring[i] == nullptr) {
+			continue;
+		}
+		if (!UnrefreshedObjectsSpring[i]->Active && UnrefreshedObjectsSpring[i]->isDebugModeObject) {
+			delete UnrefreshedObjectsSpring[i];
+			UnrefreshedObjectsSpring[i] = nullptr;
+		}
+	}
+    
+    for (int i = 0; i < OldObjectEnemiesCount; i++) {
+		if (UnrefreshedObjectsEnemies[i] == nullptr) {
+			continue;
+		}
+		if (!UnrefreshedObjectsEnemies[i]->Active && UnrefreshedObjectsEnemies[i]->isDebugModeObject) {
+			delete UnrefreshedObjectsEnemies[i];
+			UnrefreshedObjectsEnemies[i] = nullptr;
+		}
+	}
+    
+	for (int i = 0; i < OldObjectBreakableCount; i++) {
+		if (UnrefreshedObjectsBreakable[i] == nullptr) {
+			continue;
+		}
+		if (!UnrefreshedObjectsBreakable[i]->Active && UnrefreshedObjectsBreakable[i]->isDebugModeObject) {
+			delete UnrefreshedObjectsBreakable[i];
+			UnrefreshedObjectsBreakable[i] = nullptr;
+		}
+	}
+    
+    free(UnrefreshedObjects);
+    free(UnrefreshedObjectsSolid);
+    free(UnrefreshedObjectsSpring);
+    free(UnrefreshedObjectsEnemies);
+    free(UnrefreshedObjectsBreakable);
+}
+
 PUBLIC void LevelScene::RenderAnimatedSprites(int layer) {
 
 }
+
 PUBLIC void LevelScene::RenderRings() {
     for (unsigned int o = 0; o < (unsigned int)RingPropCount; o++) {
         ObjectProp obj = RingProps[o];
@@ -3916,6 +4080,7 @@ PUBLIC void LevelScene::RenderRings() {
         }
     }
 }
+
 PUBLIC void LevelScene::RenderHUD() {
     bool Mobile = IApp::Mobile;
 
@@ -3970,8 +4135,13 @@ PUBLIC void LevelScene::RenderHUD() {
         value = 9;
     G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 1 - 10, 28 + 14, 0, IE_NOFLIP);
 
-    // Ring value
-    value = Player->Rings;
+    // Ring value (Or object count value in Debug mode.)
+    if (!maxLayer) {
+        value = ObjectCount;
+    } else {
+        value = Player->Rings;
+    }
+    
     for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
         G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 44 + 14, 0, IE_NOFLIP);
         value /= 10;
@@ -4036,6 +4206,7 @@ PUBLIC void LevelScene::RenderHUD() {
         G->DrawSprite(MobileButtonsSprite, 0, 5, App->WIDTH - 22, 22, 0, IE_NOFLIP);
     }
 }
+
 PUBLIC void LevelScene::RenderTitleCard() {
     if (LevelCardHide)
         return;
@@ -4115,6 +4286,7 @@ PUBLIC void LevelScene::RenderTitleCard() {
         G->DrawSprite(GlobalDisplaySprite, 16, i, textX, textY, 0, IE_NOFLIP);
     }
 }
+
 PUBLIC void LevelScene::RenderPauseScreen() {
     if (!PauseFinished) {
         G->ClearClone();
@@ -4239,6 +4411,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
     G->DrawSprite(PauseSprite, 10, 2,
                 baseX + 13 - 72 + oo, baseY + 16 + 72 - oo, 0, IE_NOFLIP);
 }
+
 PUBLIC void LevelScene::RenderResults() {
 	if (!ShowResults) return;
 
@@ -4443,8 +4616,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                     }
                     y += layer.ScrollIndexes[s].Size;
                 }
-            }
-            else {
+            } else {
                 if (layer.Info[0].HeatWaveEnabled) {
                     if (ManiaLevel)
                         G->DoDeform = true;
@@ -4621,13 +4793,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		//*/
 
         G->DoDeform = DeformObjects;
+        
 
         // Rendering objects
         for (int i = 0; i < ObjectCount; i++) {
             Object* obj = Objects[i];
             //if (obj->Active && (obj->OnScreen || obj->Priority)) {
 			if (obj == NULL) {
-				App->Print(1, "An object was NULL on render attempt!");
 				break;
 			}
 			if (obj->Active && obj->OnScreen) {
@@ -4680,6 +4852,17 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     }
 
     RenderHUD();
+    
+    if (!ViewPlayerUpdateStats && !maxLayer) {
+        int Y = 0;
+        char tempStr[256];
+        G->DrawRectangle(0, 0, 64, 16, 0);
+        sprintf(tempStr, "%04X%04X", Player->EZX, Player->EZY);
+        G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+        Y += 8;
+        sprintf(tempStr, "%04X%04X", CameraX, CameraY);
+        G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+    }
 
 	if (ViewPalettes) {
         char palettetitle[16];
@@ -4758,19 +4941,20 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     }
     if (ViewPlayerStats) {
 		int Y = 0;
-		/*
-		char tempStr[256];
-		G->DrawRectangle(0, 0, 200, 35, 0);
-		for (int i = 0; i < PlayerCount; i++) {
-			sprintf(tempStr, "Player %d Update: %0.2f ms", i, playerUpdateTimers[i]);
-			G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
-			Y += 8;
-			sprintf(tempStr, "    Late Update: %0.2f ms", playerLateUpdateTimers[i]);
-			G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
-			Y += 8;
-			Y += 2;
+
+		if (ViewPlayerUpdateStats) {
+			char tempStr[256];
+			G->DrawRectangle(0, 0, 200, 35, 0);
+			for (int i = 0; i < PlayerCount; i++) {
+				sprintf(tempStr, "Player %d Update: %0.2f ms", i, playerUpdateTimers[i]);
+				G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+				Y += 8;
+				sprintf(tempStr, "    Late Update: %0.2f ms", playerLateUpdateTimers[i]);
+				G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+				Y += 8;
+				Y += 2;
+			}
 		}
-		*/
 
         int16_t X = Player->EZX;
         Y = Player->EZY;
