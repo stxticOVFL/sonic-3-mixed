@@ -3210,16 +3210,6 @@ PUBLIC void LevelScene::Update() {
 
 		if (!maxLayer) {
 			// We're in debug mode! Time to have fun!
-			if (!ViewPlayerUpdateStats) {
-				int Y = 0;
-				char tempStr[256];
-				G->DrawRectangle(0, 0, 64, 16, 0);
-				sprintf(tempStr, "%04X%04X", Player->EZX, Player->EZY);
-				G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
-				Y += 8;
-				sprintf(tempStr, "%04X%04X", CameraX, CameraY);
-				G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
-			}
 
             if (Player->InputLeft || Player->InputRight || Player->InputUp || Player->InputDown) {
                 Player->GroundSpeed += 0x40;
