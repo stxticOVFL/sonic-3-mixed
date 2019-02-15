@@ -225,6 +225,7 @@ public:
     void Update();
     virtual void HandleCamera();
     void AddSelfToRegistry(Object* obj, const char* where);
+    void CleanupObjects();
     void RenderAnimatedSprites(int layer);
     void RenderRings();
     void RenderHUD();

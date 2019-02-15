@@ -2961,11 +2961,16 @@ void IPlayer::LateUpdate() {
 	CurrentFrame += 0x100;
 	*/
 
-	if (animation.AnimationSpeed > 0 && animation.Frames[CurrentFrame / 0x100].Duration != 0) {
-		CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[CurrentFrame / 0x100].Duration;
+	try {
+		if (animation.AnimationSpeed > 0 && animation.Frames[CurrentFrame / 0x100].Duration != 0) {
+			CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[CurrentFrame / 0x100].Duration;
+		} else if (Action == ActionType::Transform) {
+			CurrentFrame += 0x100;
+		}
+	} catch (...) {
+		App->Print(1, "Player: An unexpected exception has occured when trying to advance the current animation frame!");
+		CurrentFrame = 0;
 	}
-	else if (Action == ActionType::Transform)
-		CurrentFrame += 0x100;
 
 	if (Action == ActionType::ClimbRise) {
 		int offsetsX[7] = { 0x00, 0x00,  0x05,  0x0A,  0x0F,  0x14,  0x14 };
@@ -2985,8 +2990,7 @@ void IPlayer::LateUpdate() {
 		if (GroundSpeed != 0) {
 			if ((CurrentFrame >> 8) >= 3)
 				CurrentFrame = 0x200;
-		}
-		else {
+		} else {
 			if ((CurrentFrame >> 8) >= animation.FrameCount - 1) {
 				CurrentFrame = (animation.FrameCount - 1) << 8;
 				Action = ActionType::Normal;
@@ -4259,155 +4263,156 @@ void IPlayer::HandleMonitors() {
 
 	for (int o = 0; o < Scene->ObjectBreakableCount; o++) {
 		Object* obj = Scene->ObjectsBreakable[o];
-		if (obj != NULL) {
-			if (obj->Active) {
-				if ((int)obj->X + obj->W / 2 >= EZX - (int)W / 2 + (XSpeed >> 8) - 2 &&
-					(int)obj->Y + obj->H / 2 + 2 >= EZY - (int)H / 2 + (YSpeed >> 8) * (Action == ActionType::Spring) &&
-					(int)obj->X - obj->W / 2     <   EZX + (int)W / 2 + (XSpeed >> 8) + 2 &&
-					(int)obj->Y - obj->H / 2 - 2 <   EZY + (int)H / 2 + (YSpeed >> 8)) {
-					int hitFrom = (int)CollideSide::RIGHT;
-					int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
-					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
+		if (obj == NULL || obj == nullptr) {
+			continue;
+		}
+		if (obj->Active) {
+			if ((int)obj->X + obj->W / 2 >= EZX - (int)W / 2 + (XSpeed >> 8) - 2 &&
+				(int)obj->Y + obj->H / 2 + 2 >= EZY - (int)H / 2 + (YSpeed >> 8) * (Action == ActionType::Spring) &&
+				(int)obj->X - obj->W / 2 < EZX + (int)W / 2 + (XSpeed >> 8) + 2 &&
+				(int)obj->Y - obj->H / 2 - 2 <   EZY + (int)H / 2 + (YSpeed >> 8)) {
+				int hitFrom = (int)CollideSide::RIGHT;
+				int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
+				int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
-					if (wy > hx)
-						if (wy > -hx)
-							hitFrom = (int)CollideSide::BOTTOM;
-						else
-							hitFrom = (int)CollideSide::LEFT;
+				if (wy > hx)
+					if (wy > -hx)
+						hitFrom = (int)CollideSide::BOTTOM;
 					else
-						if (wy > -hx)
-							hitFrom = (int)CollideSide::RIGHT;
-						else
-							hitFrom = (int)CollideSide::TOP;
+						hitFrom = (int)CollideSide::LEFT;
+				else
+					if (wy > -hx)
+						hitFrom = (int)CollideSide::RIGHT;
+					else
+						hitFrom = (int)CollideSide::TOP;
 
-					bool Connect;
-					int Side;
+				bool Connect;
+				int Side;
 
-					Connect = false;
-					if (obj->BreakableByRoll != CollideSide::NONE) {
-						Side = (int)obj->BreakableByRoll;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && GroundSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && GroundSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				Connect = false;
+				if (obj->BreakableByRoll != CollideSide::NONE) {
+					Side = (int)obj->BreakableByRoll;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && GroundSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && GroundSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Rolling) {
+					if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
+						obj->OnBreakVertical(PlayerID, hitFrom);
 					}
-
-					if (Connect && Action == ActionType::Rolling) {
-						if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
-							obj->OnBreakVertical(PlayerID, hitFrom);
-						}
-						else {
-							if (obj->OnBreakHorizontal(PlayerID, hitFrom)) {
-								Action = ActionType::Normal;
-								Vibrate(VibrationType::ImpactSmall);
-							}
-							else {
-								SubX -= IMath::abs(GroundSpeed) << 8;
-								Vibrate(VibrationType::ImpactSmall);
-							}
-						}
-					}
-
-					bool NonSonicSuperCanBreak = true;
-
-					Connect = false;
-					if (obj->BreakableBySuper != CollideSide::NONE) {
-						Side = (int)obj->BreakableBySuper;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && (Character == CharacterType::Sonic || NonSonicSuperCanBreak) && (SuperForm || HyperForm)) {
-						SubX -= IMath::abs(GroundSpeed) << 8;
-						obj->OnBreakHorizontal(PlayerID, hitFrom);
-					}
-
-					Connect = false;
-					if (obj->BreakableBySpring != CollideSide::NONE) {
-						Side = (int)obj->BreakableBySpring;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && Action == ActionType::Spring) {
-						if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
-							obj->OnBreakVertical(PlayerID, hitFrom);
-						}
-						else {
-							obj->OnBreakHorizontal(PlayerID, hitFrom);
-						}
-					}
-
-					Connect = false;
-					if (obj->BreakableByGlide != CollideSide::NONE) {
-						Side = (int)obj->BreakableByGlide;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && Action == ActionType::Glide) {
-						if (YSpeed > 0x600)
-							Vibrate(VibrationType::ImpactLarge);
-						else
+					else {
+						if (obj->OnBreakHorizontal(PlayerID, hitFrom)) {
+							Action = ActionType::Normal;
 							Vibrate(VibrationType::ImpactSmall);
-
-						if (hitFrom == CollideSide::RIGHT || hitFrom == CollideSide::LEFT) {
-							obj->OnBreakHorizontal(PlayerID, hitFrom);
 						}
 						else {
-							if (EZY < obj->Y)
-								YSpeed = -YSpeed;
-
-							obj->OnBreakVertical(PlayerID, hitFrom);
+							SubX -= IMath::abs(GroundSpeed) << 8;
+							Vibrate(VibrationType::ImpactSmall);
 						}
 					}
+				}
 
-					Connect = false;
-					if (obj->BreakableByJump != CollideSide::NONE) {
-						Side = (int)obj->BreakableByJump;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				bool NonSonicSuperCanBreak = true;
+
+				Connect = false;
+				if (obj->BreakableBySuper != CollideSide::NONE) {
+					Side = (int)obj->BreakableBySuper;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && (Character == CharacterType::Sonic || NonSonicSuperCanBreak) && (SuperForm || HyperForm)) {
+					SubX -= IMath::abs(GroundSpeed) << 8;
+					obj->OnBreakHorizontal(PlayerID, hitFrom);
+				}
+
+				Connect = false;
+				if (obj->BreakableBySpring != CollideSide::NONE) {
+					Side = (int)obj->BreakableBySpring;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Spring) {
+					if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
+						obj->OnBreakVertical(PlayerID, hitFrom);
 					}
-
-					if (Connect && Action == ActionType::Jumping) {
-						if (EZY < obj->Y + 8) { // add "|| Settings_SonicKnucklesMonitorBehavior"
-							if (obj->OnBreakVertical(PlayerID, hitFrom) == 1) {
-								if (YSpeed > 0x600)
-									Vibrate(VibrationType::ImpactLarge);
-								else
-									Vibrate(VibrationType::ImpactSmall);
-
-								YSpeed = -YSpeed;
-							}
-						}
-						else if (hitFrom == CollideSide::BOTTOM) {
-							obj->YSpeed = -0x300;
-							YSpeed = 0x100;
-							Vibrate(VibrationType::SpindashRev);
-						}
-					}
-
-					Connect = false;
-					if (obj->BreakableByKnuckles != CollideSide::NONE) {
-						Side = (int)obj->BreakableByKnuckles;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && Character == CharacterType::Knuckles) {
-						SubX -= IMath::abs(GroundSpeed) << 8;
+					else {
 						obj->OnBreakHorizontal(PlayerID, hitFrom);
 					}
+				}
+
+				Connect = false;
+				if (obj->BreakableByGlide != CollideSide::NONE) {
+					Side = (int)obj->BreakableByGlide;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Glide) {
+					if (YSpeed > 0x600)
+						Vibrate(VibrationType::ImpactLarge);
+					else
+						Vibrate(VibrationType::ImpactSmall);
+
+					if (hitFrom == CollideSide::RIGHT || hitFrom == CollideSide::LEFT) {
+						obj->OnBreakHorizontal(PlayerID, hitFrom);
+					}
+					else {
+						if (EZY < obj->Y)
+							YSpeed = -YSpeed;
+
+						obj->OnBreakVertical(PlayerID, hitFrom);
+					}
+				}
+
+				Connect = false;
+				if (obj->BreakableByJump != CollideSide::NONE) {
+					Side = (int)obj->BreakableByJump;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Jumping) {
+					if (EZY < obj->Y + 8) { // add "|| Settings_SonicKnucklesMonitorBehavior"
+						if (obj->OnBreakVertical(PlayerID, hitFrom) == 1) {
+							if (YSpeed > 0x600)
+								Vibrate(VibrationType::ImpactLarge);
+							else
+								Vibrate(VibrationType::ImpactSmall);
+
+							YSpeed = -YSpeed;
+						}
+					}
+					else if (hitFrom == CollideSide::BOTTOM) {
+						obj->YSpeed = -0x300;
+						YSpeed = 0x100;
+						Vibrate(VibrationType::SpindashRev);
+					}
+				}
+
+				Connect = false;
+				if (obj->BreakableByKnuckles != CollideSide::NONE) {
+					Side = (int)obj->BreakableByKnuckles;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Character == CharacterType::Knuckles) {
+					SubX -= IMath::abs(GroundSpeed) << 8;
+					obj->OnBreakHorizontal(PlayerID, hitFrom);
 				}
 			}
 		}

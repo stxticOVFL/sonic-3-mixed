@@ -504,7 +504,7 @@ public:
     virtual int  OnBreakVertical(int, int) { return 0; };
     virtual int  OnCollisionWithPlayer(int, int, int) { return 0; };
     virtual int  CustomSolidityCheck(int x, int y, int ID, int jumpthrough) { return false; };
-    virtual int  OnLeaveScreen() { return 0; };
+    virtual int  OnLeaveScreen();
     virtual void OnSwingFinish() { };
     virtual void OnAnimationFinish();
 
