@@ -70,6 +70,7 @@ public:
     void MakeClone();
     void DrawClone();
     void ClearClone();
+    void SetDrawFunc(int a);
     void SetFade(int fade);
     void SetFilter(int filter);
     void DrawTriangle(int p0_x, int p0_y, int p1_x, int p1_y, int p2_x, int p2_y, Uint32 col);

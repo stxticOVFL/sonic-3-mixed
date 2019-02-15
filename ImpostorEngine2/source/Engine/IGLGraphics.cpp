@@ -129,6 +129,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
             IApp::Print(2, "Could not create window!: %s", SDL_GetError());
             assert(Window);
         }
+		
         const char* pxFmt = "UNKNOWN";
         switch (SDL_PIXELORDER(SDL_GetWindowPixelFormat(Window))) {
             case SDL_ARRAYORDER_NONE:
@@ -171,7 +172,7 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         if (IApp::Platform == Platforms::iOS)
             Quality = 4;
         else if (IApp::Platform == Platforms::Android)
-            Quality = 1;
+            Quality = 3;
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -203,8 +204,14 @@ PUBLIC void IGLGraphics::SetDisplay(int DesiredWidth, int DesiredHeight, int IsS
         else
             glGenTextures(1, &renderedTexture);
         glBindTexture(GL_TEXTURE_2D, renderedTexture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		if (IsSharp || Quality > 1) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		}
+		else {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		}
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->WIDTH, App->HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
@@ -1047,6 +1054,17 @@ PUBLIC void IGLGraphics::ClearClone() {
     HaveClone = false;
 }
 
+PUBLIC void IGLGraphics::SetDrawFunc(int a) {
+	switch (a) {
+		case 1:
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+			break;
+		default:
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			break;
+	}
+}
+
 PUBLIC void IGLGraphics::SetFade(int fade) {
     IGraphics::SetFade(fade);
 
@@ -1062,17 +1080,13 @@ PUBLIC void IGLGraphics::SetFilter(int filter) {
 }
 
 PUBLIC void IGLGraphics::DrawTriangle(int p0_x, int p0_y, int p1_x, int p1_y, int p2_x, int p2_y, Uint32 col) {
-    #if NX
-        return;
-    #endif
-
     float r = (col >> 16 & 0xFF) / 255.f;
     float g = (col >> 8 & 0xFF) / 255.f;
     float b = (col & 0xFF) / 255.f;
 
     glUniform3f(LocTranslate, 0.0f, 0.0f, 0.0f);
-    glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
-    glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
+    // glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+    // glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
     glUniform4f(LocColor, r, g, b, DrawAlpha / 255.f);
 
     vector<VertexData> v;
@@ -1105,7 +1119,7 @@ PUBLIC void IGLGraphics::DrawRectangle(int x, int y, int w, int h, Uint32 col) {
     float b = (col & 0xFF) / 255.f;
 
     glUniform3f(LocTranslate, x, y, 0.0f);
-    glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+    //glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
     glUniform3f(LocScale, float(w), float(h), 0.0f);
     glUniform4f(LocColor, r, g, b, DrawAlpha / 255.f);
 
@@ -1117,6 +1131,8 @@ PUBLIC void IGLGraphics::DrawRectangle(int x, int y, int w, int h, Uint32 col) {
     // glVertexAttribPointer(LocColor,    4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(5 * sizeof(GLfloat)));
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
 }
 PUBLIC void IGLGraphics::DrawRectangleSkewedH(int x, int y, int w, int h, int sk, Uint32 col) {
     //w--;
@@ -1140,16 +1156,16 @@ PUBLIC void IGLGraphics::DrawRectangleStroke(int x, int y, int w, int h, Uint32 
 	float b = (col & 0xFF) / 255.f;
 
 	glUniform1i(LocUseTexture, 0);
-	glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+	//glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
 	glUniform4f(LocColor, r, g, b, DrawAlpha / 255.f);
 	glBindBuffer(GL_ARRAY_BUFFER, rectBufferID);
 
 	glUniform3f(LocTranslate, x, y, 0.0f);
-	glUniform3f(LocScale, float(w), 1.0f, 0.0f);
+	glUniform3f(LocScale, float(w - 1), 1.0f, 0.0f);
 	glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
 	glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glUniform3f(LocScale, 1.0f, float(h), 0.0f);
+	glUniform3f(LocScale, 1.0f, float(h - 1), 0.0f);
 	glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
 	glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
 	glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -1164,6 +1180,8 @@ PUBLIC void IGLGraphics::DrawRectangleStroke(int x, int y, int w, int h, Uint32 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
 }
 
 PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip) {
@@ -1181,10 +1199,12 @@ PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, i
     ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 
     glUniform3f(LocTranslate, x, y, 0.0f);
-    glUniform3f(LocRotate, 0.0f, 0.0f, angle);
-    glUniform3f(LocScale,
-        (flip & IE_FLIPX) ? -1.0f : 1.0f,
-        (flip & IE_FLIPY) ? -1.0f : 1.0f, 0.0f);
+	if (angle)
+		glUniform3f(LocRotate, 0.0f, 0.0f, angle);
+	if (flip)
+		glUniform3f(LocScale,
+			(flip & IE_FLIPX) ? -1.0f : 1.0f,
+			(flip & IE_FLIPY) ? -1.0f : 1.0f, 0.0f);
         //(float)SX / Width * ((flip & IE_FLIPX) ? -1.0f : 1.0f),
         //(float)SY / Height * ((flip & IE_FLIPY) ? -1.0f : 1.0f), 0.0f);
     glUniform4f(LocColor, ColorBlendR, ColorBlendG, ColorBlendB, DrawAlpha / 255.f);
@@ -1219,6 +1239,10 @@ PUBLIC void IGLGraphics::DrawSprite(ISprite* sprite, int animation, int frame, i
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glUniform1f(LocWaterLine, -0xFFFF);
+	if (angle)
+		glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+	if (flip)
+		glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
 
     ColorBlendR = 1.0f;
     ColorBlendG = 1.0f;
@@ -1241,7 +1265,8 @@ PUBLIC void IGLGraphics::DrawSpriteSized(ISprite* sprite, int animation, int fra
     glUniform3f(LocTranslate,
         x + animframe.OffX - (animframe.OffX * (float)w / animframe.W),
         y + animframe.OffY - (animframe.OffY * (float)h / animframe.H), 0.0f);
-    glUniform3f(LocRotate, 0.0f, 0.0f, angle);
+	if (angle)
+		glUniform3f(LocRotate, 0.0f, 0.0f, angle);
     glUniform3f(LocScale,
         // (flip & IE_FLIPX) ? -1.0f : 1.0f,
         // (flip & IE_FLIPY) ? -1.0f : 1.0f, 0.0f);
@@ -1279,6 +1304,9 @@ PUBLIC void IGLGraphics::DrawSpriteSized(ISprite* sprite, int animation, int fra
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glUniform1f(LocWaterLine, -0xFFFF);
+	if (angle)
+		glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+	glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
 
     ColorBlendR = 1.0f;
     ColorBlendG = 1.0f;
@@ -1395,7 +1423,7 @@ PUBLIC void IGLGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x
     if (!sprite->TextureID) return;
 
     glUniform3f(LocTranslate, x, y, 0.0f);
-    glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
+    // glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
 
     glUniform1i(LocUseTexture, 1);
     if (LastSprite != sprite) {
@@ -1440,8 +1468,8 @@ PUBLIC void IGLGraphics::DrawSpriteListBuffer(ISprite* sprite, int bufferID, int
     if (!sprite->TextureID) return;
 
     glUniform3f(LocTranslate, x, y, 0.0f);
-    glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
-	glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
+    // glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
+	// glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
 
     glUniform1i(LocUseTexture, 1);
     if (LastSprite != sprite) {
@@ -1556,6 +1584,8 @@ PUBLIC void IGLGraphics::DrawModelOn2D(IModel* model, int x, int y, double scale
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glUniform1f(LocWaterLine, -0xFFFF);
+	glUniform3f(LocScale, 1.0f, 1.0f, 0.0f);
+	glUniform3f(LocRotate, 0.0f, 0.0f, 0.0f);
 
     glDisableVertexAttribArray(LocNormals);
 

@@ -307,7 +307,7 @@ PUBLIC void Scene_DataSelect::Update() {
 					SaveGame::CurrentCharacterFlag = SaveGame::Savefiles[i].CharacterFlag;
 				}
 
-				SaveGame::Flush();
+				SaveGame::Flush();/*
 				switch (SaveGame::Savefiles[i].LastZoneID) {
 					case 0:
 						App->NextScene = new Level_AIZ(App, G, 1);
@@ -327,7 +327,25 @@ PUBLIC void Scene_DataSelect::Update() {
 					case 5:
 						App->NextScene = new Level_LBZ(App, G, 1);
 						break;
-				}
+				}*/
+
+
+				SaveGame::CurrentEmeralds = 0x0000;
+				LevelScene* ls = new LevelScene(App, G);
+				Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
+				Sound::Audio->LoopPoint[0] = 179390 / 4;
+				ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
+				ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
+				ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
+				ls->PlayerStartX = 160;
+				ls->PlayerStartY = 1328;
+				ls->Thremixed = true;
+				ls->ZoneID = 1;
+				ls->VisualAct = 1;
+				SaveGame::CurrentCharacterFlag = (int)CharacterType::Ray;
+				sprintf(ls->LevelName, "TEST BENIS");
+				sprintf(ls->LevelNameDiscord, "Mirage Saloon");
+				App->NextScene = ls;
 			}
 		}
 	}

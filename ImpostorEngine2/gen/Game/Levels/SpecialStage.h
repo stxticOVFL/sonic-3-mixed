@@ -28,11 +28,20 @@ public:
     Level_SpecialStage(IApp* app, IGraphics* g);
     void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
-    bool CheckSurround(int startX, int startY, int lastX, int lastY, int nX, int nY, int chkFor);
+    Uint8* LayoutAt(int ox, int oy);
+    Uint8* LayoutBackupAt(int ox, int oy);
+    Uint8* LayoutExtraAt(int ox, int oy);
+    bool   HasAllNonBlueNeighbors(int ox, int oy);
+    bool SphereCheckDirection(int ox, int oy, int dir);
+    bool SphereCheckUp(int ox, int oy);
+    bool SphereCheckDown(int ox, int oy);
+    bool SphereCheckLeft(int ox, int oy);
+    bool SphereCheckRight(int ox, int oy);
+    int SomethingUsefulMaybe(int ox, int oy);
+    bool CheckSurround();
     void EarlyUpdate();
     void Subupdate();
     void HandleCamera();
-    int GetPushDownY(int ScreenY, int X);
     void RenderEverything();
 };
 

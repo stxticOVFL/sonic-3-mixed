@@ -40,6 +40,7 @@ public:
     int* ControllerMaps[4];
 
     bool UseTouchController = false;
+	bool CenterPauseButton = false;
 
     SDL_TouchID TouchDevice;
 };
@@ -84,7 +85,7 @@ PUBLIC IInput::IInput(IApp* app) {
     };
 
 	if (IApp::Platform == Platforms::Switch) {
-		tempStruct defaultKeysNx[9] = {
+		tempStruct defaultKeysOverride[9] = {
 			{ "up", I_UP, SDL_SCANCODE_UP },
 			{ "down", I_DOWN, SDL_SCANCODE_DOWN },
 			{ "left", I_LEFT, SDL_SCANCODE_LEFT },
@@ -96,7 +97,22 @@ PUBLIC IInput::IInput(IApp* app) {
 			{ "extra", I_EXTRA, SDL_SCANCODE_Q },
 			{ "pause", I_PAUSE, SDL_SCANCODE_W },
 		};
-		memcpy(defaultKeys, defaultKeysNx, sizeof(defaultKeysNx));
+		memcpy(defaultKeys, defaultKeysOverride, sizeof(defaultKeysOverride));
+	}
+	else if (IApp::Platform == Platforms::Android) {
+		tempStruct defaultKeysOverride[9] = {
+			{ "up", I_UP, SDL_SCANCODE_UP },
+			{ "down", I_DOWN, SDL_SCANCODE_DOWN },
+			{ "left", I_LEFT, SDL_SCANCODE_LEFT },
+			{ "right", I_RIGHT, SDL_SCANCODE_RIGHT },
+
+			{ "confirm", I_CONFIRM, SDL_SCANCODE_A },
+			{ "deny", I_DENY, SDL_SCANCODE_AC_BACK },
+			{ "extra2", I_EXTRA2, SDL_SCANCODE_D },
+			{ "extra", I_EXTRA, SDL_SCANCODE_Q },
+			{ "pause", I_PAUSE, SDL_SCANCODE_W },
+			};
+			memcpy(defaultKeys, defaultKeysOverride, sizeof(defaultKeysOverride));
 	}
 
     for (int i = 0; i < sizeof(defaultKeys) / sizeof(tempStruct); i++) {
@@ -226,6 +242,8 @@ PUBLIC void IInput::Poll() {
                 }
 
                 bx = w - 20;
+				if (CenterPauseButton)
+					bx = w / 2;
                 by = 20;
                 if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 64 * 64) {
                     PAUSE = true;

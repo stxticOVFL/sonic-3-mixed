@@ -394,6 +394,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
 				ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
 				ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
+				ItemsSprite->LoadAnimation("Stages/Special/Ring.bin");
 			}
 			else {
 				ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
@@ -3066,6 +3067,23 @@ float    playerUpdateTimers[8];
 uint64_t playerLateUpdateCount[8];
 float    playerLateUpdateTimers[8];
 
+PUBLIC void LevelScene::OnEvent(Uint32 event) {
+	if (event != SDL_APP_WILLENTERBACKGROUND) return;
+
+	if (!Paused && !PauseFinished) {
+		LevelCardTimer = 6.0;
+
+		PauseFinished = true;
+		Paused = true;
+		memset(&PauseAnim[0], 0, 8 * sizeof(int));
+
+		PauseSelectedMenuItem = 0;
+
+		App->Audio->AudioPauseAll();
+		Sound::Play(Sound::SFX_MENUACCEPT);
+	}
+}
+
 PUBLIC void LevelScene::Update() {
     // Pause function
     if (FadeAction == 0 && !ShowResults) {
@@ -3899,8 +3917,7 @@ PUBLIC void LevelScene::RenderRings() {
     }
 }
 PUBLIC void LevelScene::RenderHUD() {
-    bool Mobile = IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android;
-    App->Input->UseTouchController = true;
+    bool Mobile = IApp::Mobile;
 
     int value;
     int valen;
@@ -3991,7 +4008,9 @@ PUBLIC void LevelScene::RenderHUD() {
         value /= 10;
     }
 
-    if (Mobile) {
+	App->Input->UseTouchController = true;
+	App->Input->CenterPauseButton = false;
+    if (Mobile && !PauseFinished) {
         G->SetDrawAlpha(0xC0 - (0xC0 * ControlsAnim >> 8));
         int bX = 48;
         int bY = App->HEIGHT - 48;
@@ -4192,7 +4211,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
           uint8_t B = 0xC0;
           uint8_t RG = IMath::clamp(((IMath::cosHex(PauseAnim[3]) * 0x60 >> 16) + 0x6000) / 0x100, 0x00, 0xFF);
 
-          G->DrawRectangle(baseX - 8 - o - i * 36, baseY + o + i * 36 + 4, 240, 22, RG << 16 | RG << 8 | B);
+          G->DrawRectangle(baseX - 8 - o - i * 36, baseY + o + i * 36 + 4, 320, 22, RG << 16 | RG << 8 | B);
           G->DrawTriangle(
               baseX - 30 - o - i * 36, baseY + o + i * 36 + 4,
               baseX - 8 - o - i * 36,  baseY + o + i * 36 + 4,
@@ -4200,7 +4219,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
               RG << 16 | RG << 8 | B);
       }
 
-      G->DrawRectangle(baseX - 8 + o - i * 36, baseY - o + i * 36 + 4, 240, 22, 0x000000);
+      G->DrawRectangle(baseX - 8 + o - i * 36, baseY - o + i * 36 + 4, 320, 22, 0x000000);
       G->DrawTriangle(
           baseX - 30 + o - i * 36, baseY - o + i * 36 + 4,
           baseX - 8 + o - i * 36,  baseY - o + i * 36 + 4,

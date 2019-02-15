@@ -412,7 +412,9 @@ PUBLIC VIRTUAL void IGraphics::SetFilter(int filter) {
 	SetFilterFunction[3] = &IGraphics::FilterNone;
 	if ((Filter & 0x1) == 0x1)
 		SetFilterFunction[0] = &IGraphics::FilterGrayscale;
-	if ((Filter & 0x4) == 0x4)
+	if ((Filter & 0x4) == 0x4 && FadeToWhite)
+		SetFilterFunction[3] = &IGraphics::FilterFadeToWhite;
+	if ((Filter & 0x4) == 0x4 && !FadeToWhite)
 		SetFilterFunction[3] = &IGraphics::FilterFadeToBlack;
 }
 PUBLIC VIRTUAL int  IGraphics::GetFilter() {
@@ -1193,11 +1195,7 @@ PUBLIC uint32_t IGraphics::GetRetroColor(uint16_t RetroColor) {
 	G = MeasuredGenesisColors[((RetroColor >> 4) & 0xE) >> 1];
 	B = MeasuredGenesisColors[((RetroColor >> 8) & 0xE) >> 1];
 
-	FullColor = B | (G << 8) | (R << 16) | (0x00 << 24);
-
-	//App->Print(0, "Full Color is : %04X", FullColor);
-	//App->Print(0, "ABGR is: 0x00 %02X %02X %02X", R, G, B);
-	//App->Print(0, "RGB is: %d, %d, %d", R, G, B);
+	FullColor = B | (G << 8) | (R << 16);
 
 	return FullColor;
 }
