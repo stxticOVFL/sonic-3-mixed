@@ -3874,6 +3874,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     
     Object** RefreshObjects = (Object**)calloc(2000, sizeof(Object*));
     int NewObjectCount = 0;
+    int NewerObjectNewCount = ObjectNewCount;
     
     Object** RefreshObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
     int NewObjectSolidCount = 0;
@@ -3889,6 +3890,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     
     Object** UnrefreshedObjects = Objects;
     int OldObjectCount = ObjectCount;
+    int OldObjectNewCount = ObjectNewCount;
     
     Object** UnrefreshedObjectsSolid = ObjectsSolid;
     int OldObjectSolidCount = ObjectSolidCount;
@@ -3905,7 +3907,8 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectCount; i++) {
         if (Objects[i] == nullptr) {
             continue;
-        } else if (!Objects[i]->Active && Objects[i]->isDebugModeObject) {
+        } else if (!Objects[i]->Active && i >= ObjectCount + ObjectNewCount) {
+            NewerObjectNewCount--;
             continue;
         }
         RefreshObjects[NewObjectCount] = Objects[i];
@@ -3954,6 +3957,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     
     Objects = RefreshObjects;
     ObjectCount = NewObjectCount;
+    ObjectNewCount = NewerObjectNewCount;
     
     ObjectsSolid = RefreshObjectsSolid;
     ObjectSolidCount = NewObjectSolidCount;
@@ -3971,7 +3975,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->isDebugModeObject) {
+		if (!UnrefreshedObjects[i]->Active && i >= OldObjectCount + OldObjectNewCount) {
 			delete UnrefreshedObjects[i];
 			UnrefreshedObjects[i] = nullptr;
 		}
