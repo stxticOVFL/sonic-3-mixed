@@ -3905,7 +3905,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectCount; i++) {
         if (Objects[i] == nullptr) {
             continue;
-        } else if (!Objects[i]->Active) {
+        } else if (!Objects[i]->Active && Objects[i]->isDebugModeObject) {
             continue;
         }
         RefreshObjects[NewObjectCount] = Objects[i];
@@ -3915,7 +3915,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectSolidCount; i++) {
         if (ObjectsSolid[i] == nullptr) {
             continue;
-        } else if (!ObjectsSolid[i]->Active) {
+        } else if (!ObjectsSolid[i]->Active && ObjectsSolid[i]->isDebugModeObject) {
             continue;
         }
         RefreshObjectsSolid[NewObjectSolidCount] = ObjectsSolid[i];
@@ -3925,7 +3925,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectSpringCount; i++) {
         if (ObjectsSpring[i] == nullptr) {
             continue;
-        } else if (!ObjectsSpring[i]->Active) {
+        } else if (!ObjectsSpring[i]->Active && ObjectsSpring[i]->isDebugModeObject) {
             continue;
         }
         RefreshObjectsSpring[NewObjectSpringCount] = ObjectsSpring[i];
@@ -3935,7 +3935,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectEnemiesCount; i++) {
         if (ObjectsEnemies[i] == nullptr) {
             continue;
-        } else if (!ObjectsEnemies[i]->Active) {
+        } else if (!ObjectsEnemies[i]->Active && ObjectsEnemies[i]->isDebugModeObject) {
             continue;
         }
         RefreshObjectsEnemies[NewObjectEnemiesCount] = ObjectsEnemies[i];
@@ -3945,7 +3945,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectBreakableCount; i++) {
         if (ObjectsBreakable[i] == nullptr) {
             continue;
-        } else if (!ObjectsBreakable[i]->Active) {
+        } else if (!ObjectsBreakable[i]->Active && ObjectsBreakable[i]->isDebugModeObject) {
             continue;
         }
         RefreshObjectsBreakable[NewObjectBreakableCount] = ObjectsBreakable[i];
@@ -3971,7 +3971,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjects[i]->Active) {
+		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->isDebugModeObject) {
 			delete UnrefreshedObjects[i];
 			UnrefreshedObjects[i] = nullptr;
 		}
@@ -3981,7 +3981,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsSolid[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsSolid[i]->Active) {
+		if (!UnrefreshedObjectsSolid[i]->Active && UnrefreshedObjectsSolid[i]->isDebugModeObject) {
 			delete UnrefreshedObjectsSolid[i];
 			UnrefreshedObjectsSolid[i] = nullptr;
 		}
@@ -3991,7 +3991,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsSpring[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsSpring[i]->Active) {
+		if (!UnrefreshedObjectsSpring[i]->Active && UnrefreshedObjectsSpring[i]->isDebugModeObject) {
 			delete UnrefreshedObjectsSpring[i];
 			UnrefreshedObjectsSpring[i] = nullptr;
 		}
@@ -4001,7 +4001,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsEnemies[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsEnemies[i]->Active) {
+		if (!UnrefreshedObjectsEnemies[i]->Active && UnrefreshedObjectsEnemies[i]->isDebugModeObject) {
 			delete UnrefreshedObjectsEnemies[i];
 			UnrefreshedObjectsEnemies[i] = nullptr;
 		}
@@ -4011,7 +4011,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsBreakable[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsBreakable[i]->Active) {
+		if (!UnrefreshedObjectsBreakable[i]->Active && UnrefreshedObjectsBreakable[i]->isDebugModeObject) {
 			delete UnrefreshedObjectsBreakable[i];
 			UnrefreshedObjectsBreakable[i] = nullptr;
 		}
