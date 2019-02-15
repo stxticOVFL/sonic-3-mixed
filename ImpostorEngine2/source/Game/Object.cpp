@@ -98,6 +98,13 @@ void Object::AnimationProgress(int16_t animationData[]) {
 	}
 }
 
+int Object::OnLeaveScreen() {
+	if (isDebugModeObject) {
+		Active = false;
+	}
+	return 0; 
+}
+
 int16_t Object::DelayedAnimationProgress(int16_t animationData[]) {
 	int16_t retValue = 0;
 

@@ -195,6 +195,59 @@ Uint32 SonicPaletteS3Hyper[17] = {
 	0x00CEACCE,
 };
 
+Uint32 SonicPaletteS3HyperBlend[16] = {
+	0x00F693F2,
+	0x00F4FFF4,
+	0x0030FF14,
+	0x00FFFFCC,
+	0x00CEFF8B,
+	0x00DFF3FC,
+	0x00FFFB56,
+	0x00FFFFC8,
+	0x00FFF69B,
+	0x00FFDE52,
+	0x00FFFDF4,
+	0x00FFE693,
+	0x00FFF7F2,
+	0x00FFDFCB,
+    0x007B7078, // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
+	0x008DF4FF,
+};
+
+Uint32 SonicPaletteS3HyperExtended[31] = {
+	0x00ACCEFF,
+	0x00F693F2,
+	0x0090ACFF,
+	0x00F4FFF4,
+	0x00CEFFCE,
+	0x0030FF14,
+	0x00ACFFAC,
+	0x00FFFFCC,
+	0x0000FF34,
+	0x00CEFF8B,
+	0x00CEFFAC,
+	0x00DFF3FC,
+	0x00CEFF57,
+	0x00FFFB56,
+	0x00CECE00,
+	0x00FFFFC8,
+	0x00FFFFCE,
+	0x00FFF69B,
+	0x00FFFF90,
+	0x00FFDE52,
+	0x00FFCE57,
+	0x00FFFDF4,
+	0x00FFCECE,
+	0x00FFE693,
+	0x00FFACAC,
+	0x00FFF7F2,
+	0x00FFCEFF,
+	0x00FFDFCB,
+	0x00CEACCE,
+    0x007B7078,    // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
+	0x008DF4FF,
+};
+
 Uint32 SonicPaletteS3HyperPulse[3] = {
 	0xEEEECC,
 	0xEEEECC,
@@ -2908,11 +2961,16 @@ void IPlayer::LateUpdate() {
 	CurrentFrame += 0x100;
 	*/
 
-	if (animation.AnimationSpeed > 0 && animation.Frames[CurrentFrame / 0x100].Duration != 0) {
-		CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[CurrentFrame / 0x100].Duration;
+	try {
+		if (animation.AnimationSpeed > 0 && animation.Frames[CurrentFrame / 0x100].Duration != 0) {
+			CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[CurrentFrame / 0x100].Duration;
+		} else if (Action == ActionType::Transform) {
+			CurrentFrame += 0x100;
+		}
+	} catch (...) {
+		App->Print(1, "Player: An unexpected exception has occured when trying to advance the current animation frame!");
+		CurrentFrame = 0;
 	}
-	else if (Action == ActionType::Transform)
-		CurrentFrame += 0x100;
 
 	if (Action == ActionType::ClimbRise) {
 		int offsetsX[7] = { 0x00, 0x00,  0x05,  0x0A,  0x0F,  0x14,  0x14 };
@@ -2932,8 +2990,7 @@ void IPlayer::LateUpdate() {
 		if (GroundSpeed != 0) {
 			if ((CurrentFrame >> 8) >= 3)
 				CurrentFrame = 0x200;
-		}
-		else {
+		} else {
 			if ((CurrentFrame >> 8) >= animation.FrameCount - 1) {
 				CurrentFrame = (animation.FrameCount - 1) << 8;
 				Action = ActionType::Normal;
@@ -3041,21 +3098,32 @@ void IPlayer::LateUpdate() {
 		palSuper = SonicPaletteSuper;
 		palNormal = SonicPaletteNormal;
 		palSuperHCZ = SonicPaletteSuperHCZ;
+		if (ExtendedHyperPallete) {
+			palHyper = SonicPaletteS3HyperExtended;
+		} else {
+			palHyper = SonicPaletteS3Hyper;
+		}
 		palNormalHCZ = SonicPaletteNormalHCZ;
 		palSuperPulse = SonicPaletteSuperPulse;
 		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
+		palHyperPulse = SonicPaletteS3HyperPulse;
+		palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		if (!Thremixed) {
 			palWhere = 0x2;
 			palCount = 3;
 			palSuper = SonicPaletteS3Super;
-			palHyper = SonicPaletteS3Hyper;
-			palHyperPulse = SonicPaletteS3HyperPulse;
-			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
+			if (ExtendedHyperPallete) {
+				palHyper = SonicPaletteS3HyperExtended;
+			} else {
+				palHyper = SonicPaletteS3Hyper;
+			}
 			palNormal = SonicPaletteS3Normal;
 			palSuperHCZ = SonicPaletteS3SuperHCZ;
 			palNormalHCZ = SonicPaletteS3NormalHCZ;
 			palSuperPulse = SonicPaletteS3SuperPulse;
 			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
+			palHyperPulse = SonicPaletteS3HyperPulse;
+			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		}
 	}
 	else if (Character == CharacterType::Tails) {
@@ -3082,21 +3150,32 @@ void IPlayer::LateUpdate() {
 		palSuper = SonicPaletteSuper;
 		palNormal = SonicPaletteNormal;
 		palSuperHCZ = SonicPaletteSuperHCZ;
+		if (ExtendedHyperPallete) {
+			palHyper = SonicPaletteS3HyperExtended;
+		} else {
+			palHyper = SonicPaletteS3Hyper;
+		}
 		palNormalHCZ = SonicPaletteNormalHCZ;
 		palSuperPulse = SonicPaletteSuperPulse;
 		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
+		palHyperPulse = SonicPaletteS3HyperPulse;
+		palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		if (!Thremixed) {
 			palWhere = 0x2;
 			palCount = 3;
 			palSuper = SonicPaletteS3Super;
-			palHyper = SonicPaletteS3Hyper;
-			palHyperPulse = SonicPaletteS3HyperPulse;
-			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
+            if (ExtendedHyperPallete) {
+                palHyper = SonicPaletteS3HyperExtended;
+            } else {
+                palHyper = SonicPaletteS3Hyper;
+            }
 			palNormal = SonicPaletteS3Normal;
 			palSuperHCZ = SonicPaletteS3SuperHCZ;
 			palNormalHCZ = SonicPaletteS3NormalHCZ;
 			palSuperPulse = SonicPaletteS3SuperPulse;
 			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
+			palHyperPulse = SonicPaletteS3HyperPulse;
+			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
 		}
 	}
 
@@ -3112,7 +3191,12 @@ void IPlayer::LateUpdate() {
 		}
 	}
 	looped = true;*/
-	const int hyperFullPalCount = 17;
+    int hyperFullPalCount;
+    if (ExtendedHyperPallete) {
+        hyperFullPalCount = 31;
+    } else {
+        hyperFullPalCount = 17;
+    }
 	const unsigned int HyperLoopMaxIndex = 320;
 
 	if (SuperFormAnim == SuperFormAnimType::Super) {
@@ -3130,29 +3214,40 @@ void IPlayer::LateUpdate() {
 						palHyperPulseHCZ = palSuperPulseHCZ;
 					}
 					if (OCMode) {
-						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
-						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
+						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palSuperPulse[p], superblend));
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palSuperPulseHCZ[p], superblend));
 					} else {
 						HyperLoopIndex++;
 						if (HyperLoopIndex >= HyperLoopMaxIndex) {
 							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
 							HyperLoopIndex = 0;
 						}
-						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend));
-						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend));
+						uint32_t blendColor = G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend);
+						uint32_t blendColorHCZ = G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend);
+						Sprites[i]->SetPalette(palWhere + p, blendColor);
+						Sprites[i]->SetPaletteAlt(palWhere + p, blendColorHCZ);
 					}
 				} else {
 					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
 					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
 				}
+
+				/*int ABGR = G->ColorBlend(palHyper[LastHyperIndex], palHyper[(LastHyperIndex - 1) % hyperFullPalCount], 100.0);
+				uint8_t RGB[4] = { };
+				G->ABGRToRGB(ABGR, RGB);
+
+				App->Print(0, "Blended Color is: %02X, %02X, %02X, %02X", RGB[0], RGB[1], RGB[2], RGB[3]);
+				//App->Print(0, "Blended Color is: %02X, %d, %d, %d", RGB[0], RGB[1], RGB[2], RGB[3]);
                 
-				/*int ABGR = Sprites[i]->GetPalette(palWhere + p);
-                int empty = ABGR >> 24;
-                int R = (ABGR & 0x00FFFFFF) >> 16;
-                int G = (ABGR & 0x0000FFFF) >> 8;
-                int B = ABGR & 0x000000FF;
-                
-                App->Print(0, "ABGR is: %02X, %02X, %02X, %02X", empty, R, G, B);*/
+				ABGR = palHyper[LastHyperIndex];
+				RGB[0] = 0x00;
+				RGB[1] = 0x00;
+				RGB[2] = 0x00;
+				RGB[3] = 0x00;
+				G->ABGRToRGB(ABGR, RGB);
+
+				App->Print(0, "ABGR is: %02X, %02X, %02X, %02X", RGB[0], RGB[1], RGB[2], RGB[3]);
+				//App->Print(0, "ABGR is: %02X, %d, %d, %d", RGB[0], RGB[1], RGB[2], RGB[3]);*/
 			}
 			Sprites[i]->UpdatePalette();
 		}
@@ -3175,18 +3270,18 @@ void IPlayer::LateUpdate() {
 						if (OCMode) {
 							Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
 							Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
-						}
-						else {
+						} else {
 							HyperLoopIndex++;
 							if (HyperLoopIndex >= HyperLoopMaxIndex) {
 								LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
 								HyperLoopIndex = 0;
 							}
-							Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend));
-							Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend));
+							uint32_t blendColor = G->ColorBlend(palHyper[LastHyperIndex], palHyperPulse[p], superblend);
+							uint32_t blendColorHCZ = G->ColorBlend(palHyper[LastHyperIndex], palHyperPulseHCZ[p], superblend);
+							Sprites[i]->SetPalette(palWhere + p, blendColor);
+							Sprites[i]->SetPaletteAlt(palWhere + p, blendColorHCZ);
 						}
-					}
-					else {
+					} else {
 						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
 						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
 					}
@@ -3194,8 +3289,7 @@ void IPlayer::LateUpdate() {
 				Sprites[i]->UpdatePalette();
 			}
 		}
-	}
-	else if (SuperFormAnim == SuperFormAnimType::Deforming) {
+	} else if (SuperFormAnim == SuperFormAnimType::Deforming) {
 		if (SuperFormTimer < 20)
 			SuperFormTimer++;
 
@@ -3214,16 +3308,17 @@ void IPlayer::LateUpdate() {
 					}
 					if (OCMode) {
 						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
-						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
-					}
-					else {
+						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palNormalHCZ[p], superblend));
+					} else {
 						HyperLoopIndex++;
 						if (HyperLoopIndex >= HyperLoopMaxIndex) {
 							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
 							HyperLoopIndex = 0;
 						}
-						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palNormal[p], superblend));
-						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palNormal[p], superblend));
+						uint32_t blendColor = G->ColorBlend(palHyper[LastHyperIndex], palNormal[p], superblend);
+						uint32_t blendColorHCZ = G->ColorBlend(palHyper[LastHyperIndex], palNormalHCZ[p], superblend);
+						Sprites[i]->SetPalette(palWhere + p, blendColor);
+						Sprites[i]->SetPaletteAlt(palWhere + p, blendColorHCZ);
 					}
 				} else {
 					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
@@ -3232,8 +3327,7 @@ void IPlayer::LateUpdate() {
 			}
 			Sprites[i]->UpdatePalette();
 		}
-	}
-	else {
+	} else {
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) break;
 
@@ -4169,155 +4263,156 @@ void IPlayer::HandleMonitors() {
 
 	for (int o = 0; o < Scene->ObjectBreakableCount; o++) {
 		Object* obj = Scene->ObjectsBreakable[o];
-		if (obj != NULL) {
-			if (obj->Active) {
-				if ((int)obj->X + obj->W / 2 >= EZX - (int)W / 2 + (XSpeed >> 8) - 2 &&
-					(int)obj->Y + obj->H / 2 + 2 >= EZY - (int)H / 2 + (YSpeed >> 8) * (Action == ActionType::Spring) &&
-					(int)obj->X - obj->W / 2     <   EZX + (int)W / 2 + (XSpeed >> 8) + 2 &&
-					(int)obj->Y - obj->H / 2 - 2 <   EZY + (int)H / 2 + (YSpeed >> 8)) {
-					int hitFrom = (int)CollideSide::RIGHT;
-					int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
-					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
+		if (obj == NULL || obj == nullptr) {
+			continue;
+		}
+		if (obj->Active) {
+			if ((int)obj->X + obj->W / 2 >= EZX - (int)W / 2 + (XSpeed >> 8) - 2 &&
+				(int)obj->Y + obj->H / 2 + 2 >= EZY - (int)H / 2 + (YSpeed >> 8) * (Action == ActionType::Spring) &&
+				(int)obj->X - obj->W / 2 < EZX + (int)W / 2 + (XSpeed >> 8) + 2 &&
+				(int)obj->Y - obj->H / 2 - 2 <   EZY + (int)H / 2 + (YSpeed >> 8)) {
+				int hitFrom = (int)CollideSide::RIGHT;
+				int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
+				int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
-					if (wy > hx)
-						if (wy > -hx)
-							hitFrom = (int)CollideSide::BOTTOM;
-						else
-							hitFrom = (int)CollideSide::LEFT;
+				if (wy > hx)
+					if (wy > -hx)
+						hitFrom = (int)CollideSide::BOTTOM;
 					else
-						if (wy > -hx)
-							hitFrom = (int)CollideSide::RIGHT;
-						else
-							hitFrom = (int)CollideSide::TOP;
+						hitFrom = (int)CollideSide::LEFT;
+				else
+					if (wy > -hx)
+						hitFrom = (int)CollideSide::RIGHT;
+					else
+						hitFrom = (int)CollideSide::TOP;
 
-					bool Connect;
-					int Side;
+				bool Connect;
+				int Side;
 
-					Connect = false;
-					if (obj->BreakableByRoll != CollideSide::NONE) {
-						Side = (int)obj->BreakableByRoll;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && GroundSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && GroundSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				Connect = false;
+				if (obj->BreakableByRoll != CollideSide::NONE) {
+					Side = (int)obj->BreakableByRoll;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && GroundSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && GroundSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Rolling) {
+					if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
+						obj->OnBreakVertical(PlayerID, hitFrom);
 					}
-
-					if (Connect && Action == ActionType::Rolling) {
-						if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
-							obj->OnBreakVertical(PlayerID, hitFrom);
-						}
-						else {
-							if (obj->OnBreakHorizontal(PlayerID, hitFrom)) {
-								Action = ActionType::Normal;
-								Vibrate(VibrationType::ImpactSmall);
-							}
-							else {
-								SubX -= IMath::abs(GroundSpeed) << 8;
-								Vibrate(VibrationType::ImpactSmall);
-							}
-						}
-					}
-
-					bool NonSonicSuperCanBreak = true;
-
-					Connect = false;
-					if (obj->BreakableBySuper != CollideSide::NONE) {
-						Side = (int)obj->BreakableBySuper;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && (Character == CharacterType::Sonic || NonSonicSuperCanBreak) && (SuperForm || HyperForm)) {
-						SubX -= IMath::abs(GroundSpeed) << 8;
-						obj->OnBreakHorizontal(PlayerID, hitFrom);
-					}
-
-					Connect = false;
-					if (obj->BreakableBySpring != CollideSide::NONE) {
-						Side = (int)obj->BreakableBySpring;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && Action == ActionType::Spring) {
-						if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
-							obj->OnBreakVertical(PlayerID, hitFrom);
-						}
-						else {
-							obj->OnBreakHorizontal(PlayerID, hitFrom);
-						}
-					}
-
-					Connect = false;
-					if (obj->BreakableByGlide != CollideSide::NONE) {
-						Side = (int)obj->BreakableByGlide;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && Action == ActionType::Glide) {
-						if (YSpeed > 0x600)
-							Vibrate(VibrationType::ImpactLarge);
-						else
+					else {
+						if (obj->OnBreakHorizontal(PlayerID, hitFrom)) {
+							Action = ActionType::Normal;
 							Vibrate(VibrationType::ImpactSmall);
-
-						if (hitFrom == CollideSide::RIGHT || hitFrom == CollideSide::LEFT) {
-							obj->OnBreakHorizontal(PlayerID, hitFrom);
 						}
 						else {
-							if (EZY < obj->Y)
-								YSpeed = -YSpeed;
-
-							obj->OnBreakVertical(PlayerID, hitFrom);
+							SubX -= IMath::abs(GroundSpeed) << 8;
+							Vibrate(VibrationType::ImpactSmall);
 						}
 					}
+				}
 
-					Connect = false;
-					if (obj->BreakableByJump != CollideSide::NONE) {
-						Side = (int)obj->BreakableByJump;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				bool NonSonicSuperCanBreak = true;
+
+				Connect = false;
+				if (obj->BreakableBySuper != CollideSide::NONE) {
+					Side = (int)obj->BreakableBySuper;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && (Character == CharacterType::Sonic || NonSonicSuperCanBreak) && (SuperForm || HyperForm)) {
+					SubX -= IMath::abs(GroundSpeed) << 8;
+					obj->OnBreakHorizontal(PlayerID, hitFrom);
+				}
+
+				Connect = false;
+				if (obj->BreakableBySpring != CollideSide::NONE) {
+					Side = (int)obj->BreakableBySpring;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Spring) {
+					if (hitFrom == CollideSide::TOP || hitFrom == CollideSide::BOTTOM) {
+						obj->OnBreakVertical(PlayerID, hitFrom);
 					}
-
-					if (Connect && Action == ActionType::Jumping) {
-						if (EZY < obj->Y + 8) { // add "|| Settings_SonicKnucklesMonitorBehavior"
-							if (obj->OnBreakVertical(PlayerID, hitFrom) == 1) {
-								if (YSpeed > 0x600)
-									Vibrate(VibrationType::ImpactLarge);
-								else
-									Vibrate(VibrationType::ImpactSmall);
-
-								YSpeed = -YSpeed;
-							}
-						}
-						else if (hitFrom == CollideSide::BOTTOM) {
-							obj->YSpeed = -0x300;
-							YSpeed = 0x100;
-							Vibrate(VibrationType::SpindashRev);
-						}
-					}
-
-					Connect = false;
-					if (obj->BreakableByKnuckles != CollideSide::NONE) {
-						Side = (int)obj->BreakableByKnuckles;
-						Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
-						Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
-						Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
-						Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
-					}
-
-					if (Connect && Character == CharacterType::Knuckles) {
-						SubX -= IMath::abs(GroundSpeed) << 8;
+					else {
 						obj->OnBreakHorizontal(PlayerID, hitFrom);
 					}
+				}
+
+				Connect = false;
+				if (obj->BreakableByGlide != CollideSide::NONE) {
+					Side = (int)obj->BreakableByGlide;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Glide) {
+					if (YSpeed > 0x600)
+						Vibrate(VibrationType::ImpactLarge);
+					else
+						Vibrate(VibrationType::ImpactSmall);
+
+					if (hitFrom == CollideSide::RIGHT || hitFrom == CollideSide::LEFT) {
+						obj->OnBreakHorizontal(PlayerID, hitFrom);
+					}
+					else {
+						if (EZY < obj->Y)
+							YSpeed = -YSpeed;
+
+						obj->OnBreakVertical(PlayerID, hitFrom);
+					}
+				}
+
+				Connect = false;
+				if (obj->BreakableByJump != CollideSide::NONE) {
+					Side = (int)obj->BreakableByJump;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Action == ActionType::Jumping) {
+					if (EZY < obj->Y + 8) { // add "|| Settings_SonicKnucklesMonitorBehavior"
+						if (obj->OnBreakVertical(PlayerID, hitFrom) == 1) {
+							if (YSpeed > 0x600)
+								Vibrate(VibrationType::ImpactLarge);
+							else
+								Vibrate(VibrationType::ImpactSmall);
+
+							YSpeed = -YSpeed;
+						}
+					}
+					else if (hitFrom == CollideSide::BOTTOM) {
+						obj->YSpeed = -0x300;
+						YSpeed = 0x100;
+						Vibrate(VibrationType::SpindashRev);
+					}
+				}
+
+				Connect = false;
+				if (obj->BreakableByKnuckles != CollideSide::NONE) {
+					Side = (int)obj->BreakableByKnuckles;
+					Connect |= (!!(Side & (int)CollideSide::RIGHT) && (hitFrom == CollideSide::RIGHT && XSpeed < -0x80));
+					Connect |= (!!(Side & (int)CollideSide::LEFT) && (hitFrom == CollideSide::LEFT && XSpeed > 0x80));
+					Connect |= (!!(Side & (int)CollideSide::TOP) && (hitFrom == CollideSide::TOP && YSpeed > 0));
+					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
+				}
+
+				if (Connect && Character == CharacterType::Knuckles) {
+					SubX -= IMath::abs(GroundSpeed) << 8;
+					obj->OnBreakHorizontal(PlayerID, hitFrom);
 				}
 			}
 		}

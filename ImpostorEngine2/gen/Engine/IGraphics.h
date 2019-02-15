@@ -112,6 +112,7 @@ public:
     uint32_t ColorBlendHex(uint32_t color1, uint32_t color2, int percent);
     uint32_t ColorAddHex(uint32_t color1, uint32_t color2, int percent);
     uint32_t GetRetroColor(uint16_t RetroColor);
+    void ABGRToRGB(uint32_t ABGR, uint8_t output[4]);
     double easeInBack(double t);
     double easeOutBack(double t);
     double easeInQuad(double t);
