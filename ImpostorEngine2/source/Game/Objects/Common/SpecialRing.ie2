@@ -13,7 +13,7 @@ event Create() {
 
     W = 8;
     H = 64;
-    VisW = 64;
+    VisW = 64; 
     VisH = 64;
 
     HyperColor = 0xFFFF00;

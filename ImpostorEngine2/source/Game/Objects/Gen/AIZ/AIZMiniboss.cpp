@@ -70,7 +70,7 @@ void AIZMiniboss::Create() {
     Sprite->SetPalette(0x10, 16, MainPalette);
     Sprite->UpdatePalette();
     if (Cutscene) {
-        Scene->AddNewObject(Obj_AIZTreeBark, 0, 0x2F78, 0x318, false, false);
+        Scene->AddNewObject(Obj_TreeBark, 0, 0x2F78, 0x318, false, false);
         SmallX = 0;
         SmallerX = 0;
         SmallestX = 0;

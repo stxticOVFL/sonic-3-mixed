@@ -37,6 +37,7 @@ public:
 //#include <Game/Levels/SSZ.h>
 //#include <Game/Levels/DEZ.h>
 //#include <Game/Levels/TDZ.h>
+#include <Game/Levels/SpecialStage.h>
 
 #include <Game/Scenes/MainMenu.h>
 #include <Game/Scenes/LevelSelect.h>
@@ -309,10 +310,27 @@ PUBLIC void Scene_DataSelect::Update() {
 
 				SaveGame::Flush();
 				switch (SaveGame::Savefiles[i].LastZoneID) {
-					case 0:
-						App->NextScene = new Level_AIZ(App, G, 1);
-						break;
+					LevelScene* ls;
+					case 0: App->NextScene = new Level_AIZ(App, G, 1); break;
 					case 1:
+						SaveGame::CurrentEmeralds = 0x0000;
+						ls = new LevelScene(App, G);
+						Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
+						Sound::Audio->LoopPoint[0] = 179390 / 4;
+						ls->Str_StageBin = "Stages/MSZ/StageConfig.bin";
+						ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
+						ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
+						ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
+						ls->PlayerStartX = 160;
+						ls->PlayerStartY = 1328;
+						ls->Thremixed = true;
+						ls->ZoneID = 1;
+						ls->VisualAct = 2;
+						sprintf(ls->LevelName, "BENT LETTUCE");
+						sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
+						App->NextScene = ls;
+						break;
+					//case 1:
 						App->NextScene = new Level_HCZ(App, G, 1);
 						break;
 					case 2:

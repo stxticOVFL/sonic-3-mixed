@@ -23,10 +23,52 @@ void Monitor::Create() {
     PlayerAggressor = 0;
     CanFall = false;
     GhostY = 0.0;
+    if (Attributes) {
+        switch (Attributes[0]) {
+            case 0:
+            SubType = ItemTypes::TYPE_RINGS;
+            break;
+            case 1:
+            SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
+            break;
+            case 2:
+            SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
+            break;
+            case 3:
+            SubType = ItemTypes::TYPE_SHIELD_FIRE;
+            break;
+            case 4:
+            SubType = ItemTypes::TYPE_SHIELD_LIGHTNING;
+            break;
+            case 5:
+            SubType = ItemTypes::TYPE_INVINCIBILITY;
+            break;
+            case 6:
+            SubType = ItemTypes::TYPE_SPEED_SHOES;
+            break;
+            case 7:
+            SubType = ItemTypes::TYPE_1UP;
+            break;
+            case 10:
+            SubType = ItemTypes::TYPE_ROBOTNIK;
+            break;
+            case 11:
+            SubType = ItemTypes::TYPE_HYPER_RING;
+            break;
+            case 14:
+            SubType = ItemTypes::TYPE_SUPER;
+            break;
+        }
+
+    }
+
     SubTypeFrame = 0;
     switch (SubType) {
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
+        break;
+        case ItemTypes::TYPE_SHIELD:
+        SubTypeFrame = 1;
         break;
         case ItemTypes::TYPE_SHIELD_BUBBLE:
         SubTypeFrame = 2;
@@ -53,7 +95,7 @@ void Monitor::Create() {
         SubTypeFrame = 16;
         break;
         case ItemTypes::TYPE_HYPER_RING:
-        SubTypeFrame = 1;
+        SubTypeFrame = 11;
         break;
         case ItemTypes::TYPE_ROBOTNIK:
         SubTypeFrame = 12;
@@ -71,6 +113,9 @@ void Monitor::UpdateSubType() {
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
         break;
+        case ItemTypes::TYPE_SHIELD:
+        SubTypeFrame = 1;
+        break;
         case ItemTypes::TYPE_SHIELD_BUBBLE:
         SubTypeFrame = 2;
         break;
@@ -96,7 +141,7 @@ void Monitor::UpdateSubType() {
         SubTypeFrame = 16;
         break;
         case ItemTypes::TYPE_HYPER_RING:
-        SubTypeFrame = 1;
+        SubTypeFrame = 11;
         break;
         case ItemTypes::TYPE_ROBOTNIK:
         SubTypeFrame = 12;
@@ -109,7 +154,7 @@ void Monitor::UpdateSubType() {
 }
 
 uint8_t Monitor::GetSubTypeMax() {
-    return ItemTypes::TYPE_HYPER_RING + 1;
+    return ItemTypes::END_LIST_DONT_MOVE;
 }
 
 void Monitor::Update() {
@@ -160,6 +205,10 @@ void Monitor::Update() {
             Scene->Players[PlayerAggressor]->SpeedSneakersActive = true;
             Scene->Players[PlayerAggressor]->SpeedSneakersTimer = 1200;
             App->Audio->PushMusic(Sound::SoundBank[0xFE], false, 0);
+            break;
+            case ItemTypes::TYPE_SHIELD:
+            Scene->Players[PlayerAggressor]->Shield = ShieldType::Basic;
+            Sound::Play(Sound::SFX_SHIELD);
             break;
             case ItemTypes::TYPE_SHIELD_FIRE:
             Scene->Players[PlayerAggressor]->Shield = ShieldType::Fire;
