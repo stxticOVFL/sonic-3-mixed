@@ -48,6 +48,7 @@ public:
     }; 
     int* ControllerMaps[4];
     bool UseTouchController = false;
+    bool CenterPauseButton = false;
     SDL_TouchID TouchDevice;
 
     IInput(IApp* app);

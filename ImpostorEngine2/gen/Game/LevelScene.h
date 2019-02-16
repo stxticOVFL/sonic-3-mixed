@@ -222,6 +222,7 @@ public:
     virtual void GoToNextAct();
     virtual void TransferCommonLevelData(LevelScene* NextAct);
     virtual void DoCustomFadeAction();
+    void OnEvent(Uint32 event);
     void Update();
     virtual void HandleCamera();
     void AddSelfToRegistry(Object* obj, const char* where);

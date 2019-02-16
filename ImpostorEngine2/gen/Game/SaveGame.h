@@ -28,6 +28,7 @@ public:
     static int32_t  CurrentZoneID;
     static uint8_t  CurrentCharacterFlag;
     static uint16_t CurrentUsedZoneRings;
+    static uint16_t CurrentEmeralds;
 
     static void Init();
     static void InitializeSaveGame();
@@ -36,6 +37,11 @@ public:
     static void SetZone(int ZID);
     static int GetLives();
     static void SetLives(int Lives);
+    static int GetEmerald(int id);
+    static int GetEmeralds();
+    static void SetEmerald(int id);
+    static void SetEmerald(int id, int value);
+    static void SetEmeralds(int value);
 };
 
 #endif /* SAVEGAME_H */

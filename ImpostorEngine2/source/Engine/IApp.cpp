@@ -153,7 +153,9 @@ PUBLIC void IApp::LoadSettings() {
 }
 
 PUBLIC void IApp::OnEvent(Uint32 event) {
+	if (!Scene) return;
 
+	Scene->OnEvent(event);
 }
 
 PUBLIC void IApp::ExecuteCommand(char* cmd) {
@@ -192,10 +194,12 @@ PUBLIC void IApp::Run() {
     unsigned long beginFrameBatch;
     int benchmarkFrameCount = 0;
 
+	SaveGame::Init();
+
     Print(0, "Starting scene");
     if (!Scene) {
-        Scene = new Scene_MainMenu(this, G);
-		// Scene = new Scene_DataSelect(this, G);
+        // Scene = new Scene_MainMenu(this, G);
+		Scene = new Scene_DataSelect(this, G);
         // Scene = new Scene_LevelSelect(this, G);
         // Scene = new Level_SpecialStage(this, G);
         // Scene = new Level_AIZ(this, G, 2);
@@ -205,6 +209,7 @@ PUBLIC void IApp::Run() {
         // Scene = new LevelScene(this, G);
 
 		/*
+		SaveGame::CurrentEmeralds = 0x0000;
 		LevelScene* ls = new LevelScene(this, G);
 		Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
 		Sound::Audio->LoopPoint[0] = 179390 / 4;
@@ -220,7 +225,7 @@ PUBLIC void IApp::Run() {
 		sprintf(ls->LevelName, "MIRAGE SALOON");
 		sprintf(ls->LevelNameDiscord, "Mirage Saloon");
 		Scene = ls;
-		*/
+		//*/
 
         Scene->Init();
     }
@@ -339,11 +344,13 @@ PUBLIC void IApp::Run() {
         // Show FPS counter
         bool ShowFPS = false;
         Settings->GetBool("dev", "viewPerformance", &ShowFPS);
+		if (Platform == Platforms::Android)
+			ShowFPS = true;
         if (ShowFPS) {
             int Y = 3;
             char fpstext[35];
             sprintf(fpstext, "%.1f FPS", FPS);
-            G->DrawText(WIDTH - 67, Y, fpstext, 0xFFFFFF);
+            G->DrawTextShadow(WIDTH - 67, Y, fpstext, 0xFFFFFF);
             Y += 8;
 
             sprintf(fpstext, "Upd: %03u ms", MetricUpdateTime);
@@ -449,7 +456,7 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     bool WriteToFile = false;
     char fullLine[4116];
 
-    #if NX | MSVC
+    #if NX
     WriteToFile = true;
     #endif
 

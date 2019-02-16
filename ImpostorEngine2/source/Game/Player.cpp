@@ -1025,7 +1025,7 @@ void IPlayer::Update() {
 					XSpeed = 0;
 			}
 
-			if (Scene->CollisionAtClimbable(EZX + 12 * IMath::sign(XSpeed), EZY - 10, NULL, XSpeed < 0 ? 3 : 1, this)) {
+			if (Scene->CollisionAtClimbable(EZX + 12 * Flip, EZY - 10, NULL, XSpeed < 0 ? 3 : 1, this)) {
 				if (SuperForm && IMath::abs(XSpeed) >= 0x480) {
 					// Sound::Play(0x49);
 					// Scene->ShakeTimer = 14;
@@ -1034,7 +1034,7 @@ void IPlayer::Update() {
 					Sound::Play(Sound::SFX_GRAB);
 				}
 
-				DisplayFlip = IMath::sign(XSpeed);
+				DisplayFlip = Flip;
 				XSpeed = 0;
 				Action = ActionType::Climb;
 
