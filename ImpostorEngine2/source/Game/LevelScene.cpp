@@ -3907,8 +3907,8 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectCount; i++) {
         if (Objects[i] == nullptr) {
             continue;
-        } else if (!Objects[i]->Active && i >= ObjectCount + ObjectNewCount) {
-            NewerObjectNewCount--;
+        } else if (!Objects[i]->Active && Objects[i]->isDebugModeObject) {
+            //NewerObjectNewCount--;
             continue;
         }
         RefreshObjects[NewObjectCount] = Objects[i];
@@ -3975,7 +3975,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjects[i]->Active && i >= OldObjectCount + OldObjectNewCount) {
+		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->isDebugModeObject) {
 			delete UnrefreshedObjects[i];
 			UnrefreshedObjects[i] = nullptr;
 		}
