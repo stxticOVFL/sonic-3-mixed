@@ -17,7 +17,6 @@ void Object::Create() {
 }
 
 void Object::DebugCreate() {
-    App->Print(0, "Peforming Debug Create!");
     Create();
 }
 
@@ -36,7 +35,7 @@ uint8_t Object::GetSubTypeIncrement() {
 }
 
 uint8_t Object::GetSubTypeMax() {
-	return 0;
+	return 1;
 }
 
 void Object::Animate() {

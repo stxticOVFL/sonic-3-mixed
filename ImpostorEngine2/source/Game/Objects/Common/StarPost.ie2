@@ -16,6 +16,7 @@ event Create() {
     Spin = 0;
     Blinking = false;
     this.Frame = 0;
+    CleanupInactiveObject = true;
 
     // TODO: Go through level editor and move all StarPosts out of the ground
 }

@@ -23,6 +23,7 @@ void Monitor::Create() {
     PlayerAggressor = 0;
     CanFall = false;
     GhostY = 0.0;
+    CleanupInactiveObject = true;
     if (Attributes) {
         switch (Attributes[0]) {
             case 0:

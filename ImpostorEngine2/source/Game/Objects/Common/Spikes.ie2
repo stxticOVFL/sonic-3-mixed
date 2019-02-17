@@ -22,6 +22,7 @@ event Create() {
     Y = InitialY;
 
     Timer = 0;
+    CleanupInactiveObject = true;
 
     if (Vertical && FlipX) {
         W = 32;

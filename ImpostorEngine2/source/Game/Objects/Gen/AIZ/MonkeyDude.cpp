@@ -14,6 +14,7 @@ void MonkeyDude::Create() {
     VisW = 64;
     VisH = 64;
     CurrentAnimation = 22;
+    CleanupInactiveObject = true;
     Children = Scene->AddNewObject(Obj_MonkeyDudeCoconut, 0, 0, 0, false, false);
     Children->Sprite = Sprite;
     Children->CurrentAnimation = CurrentAnimation;

@@ -21,6 +21,7 @@ void Balloon::Create() {
     Popped = false;
     CurrentAnimation = Sprite->FindAnimation("Default") + Color;
     AutoAnimate = true;
+    CleanupInactiveObject = true;
 }
 
 void Balloon::Update() {

@@ -30,6 +30,8 @@ event Create() {
     RockType = SubType & 0x7;
 
     Knux = (SubType & 0x80) != 0;
+    
+    CleanupInactiveObject = true;
 
 
     // dc.w \$([A-F0-9][A-F0-9])([A-F0-9][A-F0-9])

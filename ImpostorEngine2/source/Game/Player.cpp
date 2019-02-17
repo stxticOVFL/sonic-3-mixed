@@ -462,9 +462,8 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		}
-		else {
-            bool Tria = true;
+		} else {
+            bool Tria = false;
             if (Tria) {
                 Sprites[0] = new ISprite("Player/Sonic1.gif", App);
                 Sprites[1] = new ISprite("Player/Sonic2.gif", App);
@@ -495,8 +494,7 @@ void IPlayer::Create() {
                 Sprites[0]->Animations[54 + (int)AnimationEnum::Run].AnimationSpeed = 0x100;
                 Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
                 Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
-            }
-			else {
+            } else {
                 int i = 0;
                 Sprites[0] = new ISprite("Player/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
                 Sprites[1] = new ISprite("Player/S3/Sonic.gif", App);
@@ -527,8 +525,7 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
-		}
-		else {
+		} else {
             Sprites[0] = new ISprite("Player/Tails1.gif", App);
             Sprites[1] = new ISprite("Player/Tails2.gif", App);
             Sprites[2] = new ISprite("Player/Tails3.gif", App);
@@ -3150,6 +3147,18 @@ void IPlayer::LateUpdate() {
 		palSuperPulse = KnuxPaletteSuperPulse;
 		palSuperPulseHCZ = KnuxPaletteSuperPulseHCZ;
 	}
+	/*else if (Character == CharacterType::Mighty) {
+		palWhere = 0x60;
+		palSuper = SonicPaletteSuper;
+		palNormal = SonicPaletteNormal;
+		palNormalHCZ = SonicPaletteNormalHCZ;
+	}
+	else if (Character == CharacterType::Ray) {
+		palWhere = 0x70;
+		palSuper = SonicPaletteSuper;
+		palNormal = SonicPaletteNormal;
+		palNormalHCZ = SonicPaletteNormalHCZ;
+	}*/
 	else {
 		// Default to Sonic
 		palWhere = 0x40;

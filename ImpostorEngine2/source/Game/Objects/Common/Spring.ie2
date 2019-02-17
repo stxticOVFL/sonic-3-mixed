@@ -30,6 +30,7 @@ event Create() {
     CurrentAnimation = SpringType; // 0: yellow, +1: red
     Rotation = 0;
     DoAnimate = false;
+    CleanupInactiveObject = true;
 
     SpringPower = 0x1000;
     if (SpringType == 0)

@@ -16,6 +16,7 @@ void CaterkillerJr::Create() {
     Frame = 0;
     HitCount = 1;
     CurrentAnimation = 4;
+    CleanupInactiveObject = true;
     XSpeed = -0x100;
     Routine = 4;
     SwingCounter = 3;

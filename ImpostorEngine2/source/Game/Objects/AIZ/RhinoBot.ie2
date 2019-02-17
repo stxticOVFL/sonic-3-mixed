@@ -23,8 +23,8 @@ event Create() {
     HitCount = 1;
 
     CurrentAnimation = 24;
-
     
+    CleanupInactiveObject = true;
 }
 
 event Update() {

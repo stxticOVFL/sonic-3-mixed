@@ -15,6 +15,7 @@ event Create() {
     HitCount = 1;
 
     CurrentAnimation = 32;
+    CleanupInactiveObject = true;
 
     for (var i:int = 0; i < 2; i++) {
         Children[i] = Scene.AddNewObject(Obj_BloominatorSpore, 0, 0, 0, false, false);

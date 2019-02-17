@@ -16,6 +16,7 @@ void StarPost::Create() {
     Spin = 0;
     Blinking = false;
     this->Frame = 0;
+    CleanupInactiveObject = true;
 }
 
 void StarPost::Update() {

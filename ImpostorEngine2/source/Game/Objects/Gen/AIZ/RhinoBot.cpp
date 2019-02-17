@@ -19,6 +19,7 @@ void RhinoBot::Create() {
     Acceleration = -0x10;
     HitCount = 1;
     CurrentAnimation = 24;
+    CleanupInactiveObject = true;
 }
 
 void RhinoBot::Update() {

@@ -12,6 +12,7 @@ void Signpost::Create() {
     Active = true;
     Priority = true;
     CurrentAnimation = int(Scene->Players[0]->Character);
+    CleanupInactiveObject = true;
     SubX = X << 16;
     SubY = Y << 16;
     XSpeed = 0;

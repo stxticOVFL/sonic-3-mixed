@@ -432,8 +432,8 @@ public:
     bool     FlipX = false;
     bool     FlipY = false;
     
-    bool isDebugModeObject = false;
-    bool isHeldDebugObject = false;
+    bool     isDebugModeObject = false;
+    bool     isHeldDebugObject = false;
 
     int16_t  W = 32;
     int16_t  H = 32;
@@ -452,6 +452,7 @@ public:
     bool     Active = false;
     bool     Priority = false;
     bool     OnScreen = false;
+    bool     CleanupInactiveObject = false;
 	bool     Visible = true;
     int      VisualLayer = 0;
 

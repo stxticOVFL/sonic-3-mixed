@@ -11,6 +11,7 @@ void HiddenMonitor::Create() {
     Priority = false;
     W = 32;
     H = 32;
+    CleanupInactiveObject = true;
 }
 
 void HiddenMonitor::Render(int CamX, int CamY) {

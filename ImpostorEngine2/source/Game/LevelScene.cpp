@@ -1327,7 +1327,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Players[1]->Sidekick = true;
 				Players[1]->Character = (CharacterType)(SaveGame::CurrentCharacterFlag >> 4);
 				Players[1]->PlayerID = 1;
-				Player->Thremixed = Thremixed;
+				Players[1]->Thremixed = Thremixed;
 				Players[1]->Create();
 
 				PlayerCount = 2;
@@ -3347,8 +3347,8 @@ PUBLIC void LevelScene::Update() {
                 Player->DebugObjectIndex = -1;
             }
 
-            int16_t DebugObjectIDList[2] = {0x01, 0x07};
-            const int32_t DebugObjectIDListLength = 2;
+            int16_t DebugObjectIDList[3] = {0x00, 0x01, 0x07};
+            const int32_t DebugObjectIDListLength = 3;
 
 			if (Player->InputJump) {
                 Player->Hidden = true;
@@ -3360,7 +3360,28 @@ PUBLIC void LevelScene::Update() {
 					Player->DebugObject = NULL;
 				}
                 int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
-                Object* obj = GetNewObjectFromID(objId);
+                
+                Object* obj = NULL;
+                Ring *ring = NULL;
+                
+                switch (objId) {
+                    case 0x00:
+                        ring = new Ring();
+                        ring->X = Player->DisplayX;
+                        ring->Y = Player->DisplayY;
+                        ring->MyX = Player->DisplayX << 8;
+                        ring->MyY = Player->DisplayY << 8;
+                        ring->Scene = this;
+                        ring->Priority = true;
+                        ring->Timer = -1;
+                        ring->ShouldRingFall = false;
+                        obj = (Object *)ring;
+                        ring = NULL;
+                        break;
+                    default:
+                        obj = GetNewObjectFromID(objId);
+                        break;
+                }
 				if (obj != NULL) {
 					obj->G = G;
 					obj->App = App;
@@ -3400,7 +3421,28 @@ PUBLIC void LevelScene::Update() {
 
 					// We want to create a copy for easy use, So we do.
 					int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
-					Object* obj = GetNewObjectFromID(objId);
+                    
+                    Object* obj = NULL;
+                    Ring *ring = NULL;
+                    
+                    switch (objId) {
+                        case 0x00:
+                            ring = new Ring();
+                            ring->X = Player->DisplayX;
+                            ring->Y = Player->DisplayY;
+                            ring->MyX = Player->DisplayX << 8;
+                            ring->MyY = Player->DisplayY << 8;
+                            ring->Scene = this;
+                            ring->Priority = true;
+                            ring->Timer = -1;
+                            ring->ShouldRingFall = false;
+                            obj = (Object *)ring;
+                            ring = NULL;
+                            break;
+                        default:
+                            obj = GetNewObjectFromID(objId);
+                            break;
+                    }
 					if (obj != NULL) {
 						obj->G = G;
 						obj->App = App;
@@ -4013,9 +4055,14 @@ PUBLIC void LevelScene::CleanupObjects() {
 
     for (int i = 0; i < ObjectCount; i++) {
         if (Objects[i] == nullptr) {
+            if (i >= ObjectCount + ObjectNewCount) {
+                NewerObjectNewCount--;
+            }
             continue;
-        } else if (!Objects[i]->Active && Objects[i]->isDebugModeObject) {
-            //NewerObjectNewCount--;
+        } else if (!Objects[i]->Active && Objects[i]->CleanupInactiveObject) {
+            if (i >= ObjectCount + ObjectNewCount) {
+                NewerObjectNewCount--;
+            }
             continue;
         }
         RefreshObjects[NewObjectCount] = Objects[i];
@@ -4025,7 +4072,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectSolidCount; i++) {
         if (ObjectsSolid[i] == nullptr) {
             continue;
-        } else if (!ObjectsSolid[i]->Active && ObjectsSolid[i]->isDebugModeObject) {
+        } else if (!ObjectsSolid[i]->Active && ObjectsSolid[i]->CleanupInactiveObject) {
             continue;
         }
         RefreshObjectsSolid[NewObjectSolidCount] = ObjectsSolid[i];
@@ -4035,7 +4082,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectSpringCount; i++) {
         if (ObjectsSpring[i] == nullptr) {
             continue;
-        } else if (!ObjectsSpring[i]->Active && ObjectsSpring[i]->isDebugModeObject) {
+        } else if (!ObjectsSpring[i]->Active && ObjectsSpring[i]->CleanupInactiveObject) {
             continue;
         }
         RefreshObjectsSpring[NewObjectSpringCount] = ObjectsSpring[i];
@@ -4045,7 +4092,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectEnemiesCount; i++) {
         if (ObjectsEnemies[i] == nullptr) {
             continue;
-        } else if (!ObjectsEnemies[i]->Active && ObjectsEnemies[i]->isDebugModeObject) {
+        } else if (!ObjectsEnemies[i]->Active && ObjectsEnemies[i]->CleanupInactiveObject) {
             continue;
         }
         RefreshObjectsEnemies[NewObjectEnemiesCount] = ObjectsEnemies[i];
@@ -4055,7 +4102,7 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectBreakableCount; i++) {
         if (ObjectsBreakable[i] == nullptr) {
             continue;
-        } else if (!ObjectsBreakable[i]->Active && ObjectsBreakable[i]->isDebugModeObject) {
+        } else if (!ObjectsBreakable[i]->Active && ObjectsBreakable[i]->CleanupInactiveObject) {
             continue;
         }
         RefreshObjectsBreakable[NewObjectBreakableCount] = ObjectsBreakable[i];
@@ -4082,7 +4129,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->isDebugModeObject) {
+		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->CleanupInactiveObject) {
 			delete UnrefreshedObjects[i];
 			UnrefreshedObjects[i] = nullptr;
 		}
@@ -4092,7 +4139,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsSolid[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsSolid[i]->Active && UnrefreshedObjectsSolid[i]->isDebugModeObject) {
+		if (!UnrefreshedObjectsSolid[i]->Active && UnrefreshedObjectsSolid[i]->CleanupInactiveObject) {
 			delete UnrefreshedObjectsSolid[i];
 			UnrefreshedObjectsSolid[i] = nullptr;
 		}
@@ -4102,7 +4149,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsSpring[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsSpring[i]->Active && UnrefreshedObjectsSpring[i]->isDebugModeObject) {
+		if (!UnrefreshedObjectsSpring[i]->Active && UnrefreshedObjectsSpring[i]->CleanupInactiveObject) {
 			delete UnrefreshedObjectsSpring[i];
 			UnrefreshedObjectsSpring[i] = nullptr;
 		}
@@ -4112,7 +4159,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsEnemies[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsEnemies[i]->Active && UnrefreshedObjectsEnemies[i]->isDebugModeObject) {
+		if (!UnrefreshedObjectsEnemies[i]->Active && UnrefreshedObjectsEnemies[i]->CleanupInactiveObject) {
 			delete UnrefreshedObjectsEnemies[i];
 			UnrefreshedObjectsEnemies[i] = nullptr;
 		}
@@ -4122,7 +4169,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjectsBreakable[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsBreakable[i]->Active && UnrefreshedObjectsBreakable[i]->isDebugModeObject) {
+		if (!UnrefreshedObjectsBreakable[i]->Active && UnrefreshedObjectsBreakable[i]->CleanupInactiveObject) {
 			delete UnrefreshedObjectsBreakable[i];
 			UnrefreshedObjectsBreakable[i] = nullptr;
 		}

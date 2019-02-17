@@ -18,6 +18,7 @@ event Create() {
 
     Frame = 0;
     CurrentAnimation = 35;
+    CleanupInactiveObject = true;
 
     // Animation Timer data:
     // 2, 0, 1, 2, 1, $FC

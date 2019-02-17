@@ -14,6 +14,7 @@ void Bloominator::Create() {
     Frame = 0;
     HitCount = 1;
     CurrentAnimation = 32;
+    CleanupInactiveObject = true;
     for (int i = 0; i < 2; i++)
 {
         Children[i] = Scene->AddNewObject(Obj_BloominatorSpore, 0, 0, 0, false, false);

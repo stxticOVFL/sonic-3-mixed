@@ -6,6 +6,7 @@ event Create() {
 
     W = 32;
     H = 32;
+    CleanupInactiveObject = true;
 }
 
 event Render(CamX:int, CamY:int) {
