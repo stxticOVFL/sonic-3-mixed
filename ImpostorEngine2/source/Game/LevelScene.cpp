@@ -107,6 +107,9 @@ public:
 
     Object**    ObjectsPathSwitcher;
     int         ObjectPathSwitcherCount = 0;
+    
+    int16_t*    DebugObjectIDList;
+    int32_t     DebugObjectIDCount = 0;
 
 	unordered_map<string, ISprite*> SpriteMap;
     ISprite**   SpriteMapIDs;
@@ -267,6 +270,16 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     ObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
     ObjectsBreakable = (Object**)calloc(100, sizeof(Object*));
     ObjectsPathSwitcher = (Object**)calloc(100, sizeof(Object*));
+    
+    DebugObjectIDList = (int16_t*)calloc(0xFF, sizeof(int16_t));
+    for (int i = 0; i < 0xFF; i++) {
+        DebugObjectIDList[i] = 0;
+    }
+    AddNewDebugObjectID(0x00); // Ring
+    AddNewDebugObjectID(0x01); // Monitor
+    AddNewDebugObjectID(0x07); // Spring
+    AddNewDebugObjectID(0x08); // Spikes
+    AddNewDebugObjectID(0x85); // Special Ring
 
     ObjectProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
     RingProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
@@ -3042,6 +3055,10 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
     return obj;
 }
 
+PUBLIC void LevelScene::AddNewDebugObjectID(int16_t ID) {
+    DebugObjectIDList[DebugObjectIDCount++] = ID;
+}
+
 PUBLIC VIRTUAL void LevelScene::EarlyUpdate() {
 
 }
@@ -3353,13 +3370,10 @@ PUBLIC void LevelScene::Update() {
                 }
             }
 
-            int16_t DebugObjectIDList[3] = {0x00, 0x01, 0x07};
-            const int32_t DebugObjectIDListLength = 3;
-
 			if (Player->InputJump) {
                 Player->Hidden = true;
 				Player->DebugObjectIndex++;
-				Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDListLength;
+				Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDCount;
 
 				if (Player->DebugObject && Player->DebugObject->isHeldDebugObject) {
 					Player->DebugObject->Active = false;
@@ -3409,7 +3423,9 @@ PUBLIC void LevelScene::Update() {
 					obj->isHeldDebugObject = true;
 					obj->DebugCreate();
 
-					obj->Active = true;
+                    if (!obj->Active) {
+                        obj->Active = true;
+                    }
 
 					Objects[ObjectCount++] = obj;
                     Player->DebugObject = obj;
@@ -3470,7 +3486,9 @@ PUBLIC void LevelScene::Update() {
 						obj->isHeldDebugObject = true;
 						obj->DebugCreate();
 
-						obj->Active = true;
+                        if (!obj->Active) {
+                            obj->Active = true;
+                        }
 
 						Objects[ObjectCount++] = obj;
 						Player->DebugObject = obj;
@@ -5391,6 +5409,11 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
         delete Objects[i];
     }
     ObjectCount = 0;
+    
+    for (int i = 0; i < DebugObjectIDCount; i++) {
+        DebugObjectIDList[i] = 0;
+    }
+    DebugObjectIDCount = 0;
 
     free(Objects);
     free(ObjectsSolid);
@@ -5398,6 +5421,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
     free(ObjectsEnemies);
     free(ObjectsBreakable);
     free(ObjectsPathSwitcher);
+    free(DebugObjectIDList);
     free(ObjectProps);
     free(RingProps);
     free(AnimatedSprite0Props);

@@ -20,6 +20,7 @@ event Create() {
 
     // TODO: Go through level editor and move all StarPosts out of the ground
 }
+
 event Update() {
     // 2 full rotations, counter clockwise, takes 32 frames
     // blinks every 4 frames

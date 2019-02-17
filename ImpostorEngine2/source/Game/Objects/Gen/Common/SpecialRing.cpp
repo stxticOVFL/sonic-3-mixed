@@ -22,6 +22,7 @@ void SpecialRing::Create() {
     StoredY = 0;
     RingID = SubType & 0x7F;
     Used = (SaveGame::CurrentUsedZoneRings >> RingID & 1) == 1;
+    CleanupInactiveObject = true;
 }
 
 void SpecialRing::Update() {

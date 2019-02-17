@@ -114,6 +114,8 @@ public:
     int         ObjectBreakableCount = 0;
     Object**    ObjectsPathSwitcher;
     int         ObjectPathSwitcherCount = 0;
+    int16_t*    DebugObjectIDList;
+    int32_t     DebugObjectIDCount = 0;
     unordered_map<string, ISprite*> SpriteMap;
     ISprite**   SpriteMapIDs;
     int         ZoneID = 0;
@@ -215,6 +217,7 @@ public:
     void AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life, int hold);
     void AddAnimal(int x, int y, bool flipX, bool flipY, int xspeed, int yspeed, bool escaping);
     Object* AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY);
+    void AddNewDebugObjectID(int16_t ID);
     virtual void EarlyUpdate();
     virtual void Subupdate();
     virtual void DoResults();

@@ -25,109 +25,114 @@ void RhinoBot::Create() {
 void RhinoBot::Update() {
     int DisX = 0;
     int DisY = 0;
-    if (Speed == Math::sign(Acceleration) * 0x300) {
-        Acceleration = -Acceleration;
-    }
-
-    if (Speed == 0 && Timer == -1 && Math::abs(Speed) < 0x400) {
-        FlipX = !FlipX;
-        if (FlipX) Acceleration = -0x10;
-        else Acceleration = 0x10;
-    }
-
-    Speed += Acceleration;
-    SubX += Speed << 8;
-    X = SubX >> 16;
-    if (Timer == -1 && Math::abs(Speed) < 0x400) {
-        if (Math::sign(Speed) == Math::sign(Acceleration)) {
-            Frame = 0;
-            if (Math::abs(Speed) < 0x80) {
-                Frame = 3;
-            }
-
-            if (Math::abs(Speed) < 0x40) {
-                Frame = 1;
-            }
-
+    if (!isHeldDebugObject) {
+        if (Speed == Math::sign(Acceleration) * 0x300) {
+            Acceleration = -Acceleration;
         }
-        else {
-            Frame = 1;
-            if (Math::abs(Speed) < 0x280) {
-                Frame = 2;
-            }
 
+        if (Speed == 0 && Timer == -1 && Math::abs(Speed) < 0x400) {
+            FlipX = !FlipX;
+            if (FlipX) Acceleration = -0x10;
+            else Acceleration = 0x10;
         }
-        for (int p = 0; p < Scene->PlayerCount; p++)
-{
-            DisX = (Scene->Players[p]->EZX - X) * Math::sign(Speed);
-            DisY = Math::abs(Scene->Players[p]->EZY - Y);
-            if (DisX < 96 && DisX > 0 && DisY <= 32) {
-                Timer = 24;
-                Speed = 0;
-                Acceleration = 0;
+
+        Speed += Acceleration;
+        SubX += Speed << 8;
+        X = SubX >> 16;
+        if (Timer == -1 && Math::abs(Speed) < 0x400) {
+            if (Math::sign(Speed) == Math::sign(Acceleration)) {
                 Frame = 0;
+                if (Math::abs(Speed) < 0x80) {
+                    Frame = 3;
+                }
+
+                if (Math::abs(Speed) < 0x40) {
+                    Frame = 1;
+                }
+
+            }
+            else {
+                Frame = 1;
+                if (Math::abs(Speed) < 0x280) {
+                    Frame = 2;
+                }
+
+            }
+            for (int p = 0; p < Scene->PlayerCount; p++)
+{
+                DisX = (Scene->Players[p]->EZX - X) * Math::sign(Speed);
+                DisY = Math::abs(Scene->Players[p]->EZY - Y);
+                if (DisX < 96 && DisX > 0 && DisY <= 32) {
+                    Timer = 24;
+                    Speed = 0;
+                    Acceleration = 0;
+                    Frame = 0;
+                }
+
+            }
+        }
+
+        if (Timer == 0) {
+            if (FlipX) Speed = -0x400;
+            else Speed = 0x400;
+            Frame = 0;
+            Priority = true;
+        }
+
+        int Y1 = Y;
+        int Y2 = Y;
+        for (int y = Y + 8; y < Y + 32; y++)
+{
+            if (Scene->CollisionAt(X - 8, y)) {
+                Y1 = y;
+                break;
             }
 
         }
-    }
-
-    if (Timer == 0) {
-        if (FlipX) Speed = -0x400;
-        else Speed = 0x400;
-        Frame = 0;
-        Priority = true;
-    }
-
-    int Y1 = Y;
-    int Y2 = Y;
-    for (int y = Y + 8; y < Y + 32; y++)
+        for (int y = Y + 8; y < Y + 32; y++)
 {
-        if (Scene->CollisionAt(X - 8, y)) {
-            Y1 = y;
-            break;
+            if (Scene->CollisionAt(X + 8, y)) {
+                Y2 = y;
+                break;
+            }
+
+        }
+        if (Y1 < Y2 && Y1 > Y + 8) {
+            Y = Y1 - 16;
+        }
+        else if (Y2 > Y + 8) {
+            Y = Y2 - 16;
+        }
+
+        if (Y1 >= Y + 30 || Y1 == Y || Scene->CollisionAt(X - 8 - 1, Y)) {
+            Acceleration = 0x10;
+            Speed = 0x10;
+            Timer = -1;
+            SubX += 0x10000;
+            FlipX = false;
+            Priority = false;
+            while (!Scene->CollisionAt((SubX >> 16) - 8 - 1, Y + 20)) SubX += 0x10000;
+
+            X = (SubX >> 16);
+        }
+
+        if (Y2 >= Y + 30 || Y2 == Y || Scene->CollisionAt(X + 8 + 1, Y)) {
+            Acceleration = -0x10;
+            Speed = -0x10;
+            Timer = -1;
+            SubX -= 0x10000;
+            FlipX = true;
+            Priority = false;
+            while (!Scene->CollisionAt((SubX >> 16) + 8 + 1, Y + 20)) SubX -= 0x10000;
+
+            X = (SubX >> 16);
+        }
+
+        if (Timer >= 0) {
+            Timer--;
         }
 
     }
-    for (int y = Y + 8; y < Y + 32; y++)
-{
-        if (Scene->CollisionAt(X + 8, y)) {
-            Y2 = y;
-            break;
-        }
-
-    }
-    if (Y1 < Y2 && Y1 > Y + 8) {
-        Y = Y1 - 16;
-    }
-    else if (Y2 > Y + 8) {
-        Y = Y2 - 16;
-    }
-
-    if (Y1 >= Y + 30 || Y1 == Y || Scene->CollisionAt(X - 8 - 1, Y)) {
-        Acceleration = 0x10;
-        Speed = 0x10;
-        Timer = -1;
-        SubX += 0x10000;
-        FlipX = false;
-        Priority = false;
-        while (!Scene->CollisionAt((SubX >> 16) - 8 - 1, Y + 20)) SubX += 0x10000;
-
-        X = (SubX >> 16);
-    }
-
-    if (Y2 >= Y + 30 || Y2 == Y || Scene->CollisionAt(X + 8 + 1, Y)) {
-        Acceleration = -0x10;
-        Speed = -0x10;
-        Timer = -1;
-        SubX -= 0x10000;
-        FlipX = true;
-        Priority = false;
-        while (!Scene->CollisionAt((SubX >> 16) + 8 + 1, Y + 20)) SubX -= 0x10000;
-
-        X = (SubX >> 16);
-    }
-
-    if (Timer >= 0) Timer--;
 
     Object::Update();
 }

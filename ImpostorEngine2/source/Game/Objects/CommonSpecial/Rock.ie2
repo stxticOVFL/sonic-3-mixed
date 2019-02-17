@@ -242,6 +242,7 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     OnBreakHorizontal(PlayerID, HitFrom);
     return 1;
 }
+
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
     if (Math.abs(Scene.Players[PlayerID].GroundSpeed) < 0x480 && HitFrom != CollideSide.TOP && Scene.Players[PlayerID].Action == ActionType.Rolling) return 1;
 

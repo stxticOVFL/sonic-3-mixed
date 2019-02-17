@@ -41,26 +41,29 @@ void MonkeyDude::Update() {
     }
 
     frame_arm = (frame_arm + 1) & 0x7F;
-    if (HasCoconut) {
-        if ((Scene->Player->EZX < X - 16 && Scene->Player->EZX > X - 0x80 && Flip > 0) || (Scene->Player->EZX > X + 16 && Scene->Player->EZX < X + 0x80 && Flip < 0)) {
-            int final_x = 0;
-            int final_y = 0;
-            int angle = 0;
-            int offset = 1;
-            for (int i = 0; i < 5; i++)
+    if (!isHeldDebugObject) {
+        if (HasCoconut) {
+            if ((Scene->Player->EZX < X - 16 && Scene->Player->EZX > X - 0x80 && Flip > 0) || (Scene->Player->EZX > X + 16 && Scene->Player->EZX < X + 0x80 && Flip < 0)) {
+                int final_x = 0;
+                int final_y = 0;
+                int angle = 0;
+                int offset = 1;
+                for (int i = 0; i < 5; i++)
 {
-                final_x = X + Flip * -10;
-                final_y = Y - 2 - (frame_face / 8) * 2 * offset;
-                angle = ((Math::sinHex((frame_arm - i * 4) * 2) * 0x2A) >> 16) - 0x15;
-                final_x -= Flip * (Math::cosHex(angle) * i * 8) >> 16;
-                final_y -= (Math::sinHex(angle) * i * 8) >> 16;
+                    final_x = X + Flip * -10;
+                    final_y = Y - 2 - (frame_face / 8) * 2 * offset;
+                    angle = ((Math::sinHex((frame_arm - i * 4) * 2) * 0x2A) >> 16) - 0x15;
+                    final_x -= Flip * (Math::cosHex(angle) * i * 8) >> 16;
+                    final_y -= (Math::sinHex(angle) * i * 8) >> 16;
+                }
+                Children->X = final_x;
+                Children->Y = final_y;
+                Children->XSpeed = -0x200 * Flip;
+                Children->YSpeed = -0x400;
+                Sound::Play(Sound::SFX_DROP);
+                HasCoconut = false;
             }
-            Children->X = final_x;
-            Children->Y = final_y;
-            Children->XSpeed = -0x200 * Flip;
-            Children->YSpeed = -0x400;
-            Sound::Play(Sound::SFX_DROP);
-            HasCoconut = false;
+
         }
 
     }
@@ -84,7 +87,9 @@ void MonkeyDude::Render(int CamX, int CamY) {
     int angle = 0;
     int offset = 1;
     int f = 0;
-    if (frame_hand % (64 + 48) >= 64) offset = 0;
+    if (frame_hand % (64 + 48) >= 64) {
+        offset = 0;
+    }
 
     for (int i = 0; i < 5; i++)
 {

@@ -278,6 +278,10 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartX = 0x4850;
         // PlayerStartY = 0x01B0;
     }
+    
+    AddNewDebugObjectID(0x8C); // Bloominator
+    //AddNewDebugObjectID(0x8D); // RhinoBot - Currently doesn't work. (Doesn't activate?)
+    //AddNewDebugObjectID(0x8E); // MonkeyDude - Currently doesn't work. (Sprites do not Render.)
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
 }
