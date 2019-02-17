@@ -99,7 +99,7 @@ void Object::AnimationProgress(int16_t animationData[]) {
 }
 
 int Object::OnLeaveScreen() {
-	if (isDebugModeObject) {
+	if (isDebugModeObject && !isHeldDebugObject) {
 		Active = false;
 	}
 	return 0; 
