@@ -449,6 +449,7 @@ void IPlayer::Create() {
 	if (Character == CharacterType::Sonic) {
 		H = 40;
 		OrigH = H;
+        DropDashEnabled = true; // Default to true for now.
 		if (!Thremixed) {
 			int i = 0;
 			Sprites[0] = new ISprite("Player/S3/Sonic.gif", App);
@@ -2339,111 +2340,120 @@ void IPlayer::Update() {
 
 				Jump();
 			}
-		}
-		else if (Action == ActionType::CrouchDown) {
+		} else if (Action == ActionType::CrouchDown) {
 			Action = ActionType::Spindash;
 			SpindashRev = 0x200;
 			Vibrate(VibrationType::SpindashRev);
 			Sound::Play(Sound::SFX_SPINDASHREV);
-		}
-		else if (Action == ActionType::Spindash) {
+		} else if (Action == ActionType::Spindash) {
 			Vibrate(VibrationType::SpindashRev);
 			SpindashRev += 0x200;
 			if (SpindashRev > 0x800)
 				SpindashRev = 0x800;
 			ChangeAnimation2((int)AnimationEnum::Spindash + superflag);
 			Sound::Play(Sound::SFX_SPINDASHREV);
-		}
-		else if (Action == ActionType::Jumping && JumpVariable == 1) {
+		} else if (Action == ActionType::Jumping && JumpVariable == 1) {
 			if (HyperForm) {
 				if (ShieldUsable && Character == CharacterType::Sonic) {
 					if (InputUp) {
 						YSpeed = -0x800;
-					}
-					else if (InputDown) {
-						// Do nothing.
-						if (true) {
-							if (DropDashRev == 0)
+					} else if (InputDown) {
+						// Do nothing in terms of anything new.
+						if (DropDashEnabled) {
+							if (DropDashRev == 0) {
 								DropDashRev = 1;
+                            }
 						}
-					}
-					else {
+					} else {
 						XSpeed = 0x800 * DisplayFlip;
 						YSpeed = 0;
 						CameraLockTimer = 16;
 					}
 					ShieldUsable = false;
 				}
-			}
-			else if (Character == CharacterType::Sonic) {
+			} else if (Character == CharacterType::Sonic) {
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
 						if (InputDown) {
-							if (DropDashRev == 0)
-								DropDashRev = 1;
-						}
-						else if (!InputUp) {
+                            if (DropDashEnabled) {
+                                if (DropDashRev == 0) {
+                                    DropDashRev = 1;
+                                }
+                            }
+						} else if (!InputUp) {
 							ShieldAnimation = 8;
 							Shield = ShieldType::Instashield;
 							Sound::Play(Sound::SFX_INSTASHIELD);
-						}
-						else if (!SuperForm && !HyperForm) {
+						} else if (!SuperForm && !HyperForm) {
 							if (Rings >= 50 && !Scene->StopTimer) {
 								if (SaveGame::GetEmeralds() == 0x3FFF) {
 									// if (Character == CharacterType::Sonic) HyperEnabled = true;
 									DoSuperTransform();
-								}
-								else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
+								} else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
 									DoSuperTransform();
 								}
 							}
 						}
 						ShieldUsable = false;
-					}
-					else if (Shield == ShieldType::Fire) {
-						XSpeed = 0x800 * DisplayFlip;
-						YSpeed = 0;
-						CameraLockTimer = 16;
-						ShieldAnimation = 12;
-						Sound::Play(Sound::SFX_SHIELD_FIRE_DASH);
-					}
-					else if (Shield == ShieldType::Bubble) {
+					} else if (Shield == ShieldType::Fire) {
+                        if (InputDown) {
+                            if (DropDashEnabled) {
+                                if (DropDashRev == 0) {
+                                    DropDashRev = 1;
+                                }
+                            }
+                        } else {
+                            XSpeed = 0x800 * DisplayFlip;
+                            YSpeed = 0;
+                            CameraLockTimer = 16;
+                            ShieldAnimation = 12;
+                            Sound::Play(Sound::SFX_SHIELD_FIRE_DASH);
+                        }
+					} else if (Shield == ShieldType::Bubble) {
 						XSpeed = 0;
 						YSpeed = 0x800;
 						ShieldAction = true;
 						Sound::Play(Sound::SFX_SHIELD_BUBBLE_BOUNCE);
-					}
-					else if (Shield == ShieldType::Electric) {
+					} else if (Shield == ShieldType::Electric) {
 						YSpeed = -0x580;
 						Sound::Play(Sound::SFX_SHIELD_ELECTRIC_JUMP);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, -0x200, -0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, 0x200, -0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, -0x200, 0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, 0x200, 0x200, 0x18, 22, 0);
-					}
-					else if (Shield == ShieldType::Basic) {
-						// Do nothing.
+                        if (InputDown) {
+                            if (DropDashEnabled) {
+                                if (DropDashRev == 0) {
+                                    DropDashRev = 1;
+                                }
+                            }
+                        }
+					} else if (Shield == ShieldType::Basic) {
+						// Do nothing special.
+                        if (InputDown) {
+                            if (DropDashEnabled) {
+                                if (DropDashRev == 0) {
+                                    DropDashRev = 1;
+                                }
+                            }
+                        }
 					}
 
 					ShieldUsable = false;
 				}
-			}
-			else if (Character == CharacterType::Tails) {
+			} else if (Character == CharacterType::Tails) {
 				Action = ActionType::Fly;
 				FlyFlag = 0x8;
 				FlyTimer = FlyTimerMax;
-			}
-			else if (Character == CharacterType::Knuckles) {
+			} else if (Character == CharacterType::Knuckles) {
 				Action = ActionType::Glide;
 				XSpeed = DisplayFlip * 0x400;
 				if (YSpeed < 0)
 					YSpeed = 0;
-			}
-			else if (Character == CharacterType::Mighty) {
+			} else if (Character == CharacterType::Mighty) {
 				XSpeed = 0;
 				YSpeed = 0x800;
-			}
-			else if (Character == CharacterType::Ray) {
+			} else if (Character == CharacterType::Ray) {
 				// sub_4C8DF0
 				if (JumpVariable == 1) {
 					Action = ActionType::RayGlide;
@@ -2458,10 +2468,8 @@ void IPlayer::Update() {
 					if (DisplayFlip < 0) {
 						if (XSpeed > -maxx)
 							XSpeed = -maxx;
-					}
-					else {
-						if (XSpeed < maxx)
-							XSpeed = maxx;
+					} else if (XSpeed < maxx) {
+						XSpeed = maxx;
 					}
 
 					if ((DisplayFlip < 0 || !InputRight) && (DisplayFlip > 0 || !InputLeft)) {
@@ -2485,8 +2493,7 @@ void IPlayer::Update() {
 							speedStore = 0x400;
 
 						GlideSpeedStore = speedStore;
-					}
-					else {
+					} else {
 						ChangeAnimation((int)AnimationEnum::RayFlyDown, 3);
 						Sound::Play(Sound::SFX_RAY_DIVE);
 						Angle = 0; // Facing Down
@@ -2527,12 +2534,9 @@ void IPlayer::Update() {
 	if (Action == ActionType::Skid || Action == ActionType::GlideSlide) {
 		if (!Ground && Action == ActionType::Skid) {
 			Action = ActionType::Normal;
-		}
-		else {
-			if (Scene->Frame % 5 == 0 && GroundSpeed != 0 && Ground) {
-				Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
-			}
-		}
+		} else if (Scene->Frame % 5 == 0 && GroundSpeed != 0 && Ground) {
+            Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+        }
 	}
 	// Handle Fan action
 	if (Action == ActionType::Fan)

@@ -3208,7 +3208,9 @@ PUBLIC void LevelScene::Update() {
                 Player->Action = ActionType::Normal;
 			} else if (maxLayer == 0) {
 				Player->DoCollision = 1;
-                Player->DebugObjectIndex = -1;
+                if (Player->DebugObjectIndex > -1) {
+                    Player->DebugObjectIndex -= 1;
+                }
 				if (Player->DebugObject != NULL && Player->DebugObject->isHeldDebugObject) {
                     Player->DebugObject->Active = false;
                     Player->DebugObject = NULL;
@@ -3346,7 +3348,9 @@ PUBLIC void LevelScene::Update() {
 				Player->DebugObject->Y = Player->DisplayY;
 			} else if (Player->Hidden) {
                 Player->Hidden = false;
-                Player->DebugObjectIndex = -1;
+                if (Player->DebugObjectIndex > -1) {
+                    Player->DebugObjectIndex -= 1;
+                }
             }
 
             int16_t DebugObjectIDList[3] = {0x00, 0x01, 0x07};
@@ -3384,6 +3388,10 @@ PUBLIC void LevelScene::Update() {
                         obj = GetNewObjectFromID(objId);
                         break;
                 }
+                if (objId != Player->LastDebugObjId) {
+                    Player->LastDebugObjId = objId;
+                    Player->DebugObjectSubIndex = 0;
+                }
 				if (obj != NULL) {
 					obj->G = G;
 					obj->App = App;
@@ -3395,7 +3403,7 @@ PUBLIC void LevelScene::Update() {
 					obj->ID = objId;
                     obj->Sprite = SpriteMapIDs[objId];
 
-					obj->SubType = 0;
+                    obj->SubType = Player->DebugObjectSubIndex;
 
 					obj->isDebugModeObject = true;
 					obj->isHeldDebugObject = true;
@@ -3476,7 +3484,8 @@ PUBLIC void LevelScene::Update() {
 
             if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
                 if (Player->DebugObject) {
-					Player->DebugObject->SubType = (Player->DebugObject->SubType + Player->DebugObject->GetSubTypeIncrement()) % Player->DebugObject->GetSubTypeMax();
+                    Player->DebugObjectSubIndex = (Player->DebugObject->SubType + Player->DebugObject->GetSubTypeIncrement()) % Player->DebugObject->GetSubTypeMax();
+					Player->DebugObject->SubType = Player->DebugObjectSubIndex;
 					Player->DebugObject->UpdateSubType();
                 }
             }

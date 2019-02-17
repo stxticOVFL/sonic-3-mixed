@@ -246,6 +246,8 @@ public:
 
     Object*             DebugObject = NULL;
     int16_t             DebugObjectIndex = -1;
+	uint8_t             DebugObjectSubIndex = 0;
+	int16_t             LastDebugObjId = -1;
 
     int                 Angle = 0;
     int                 AngleMode = 0;
