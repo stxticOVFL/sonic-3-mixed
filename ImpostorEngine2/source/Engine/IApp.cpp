@@ -198,8 +198,8 @@ PUBLIC void IApp::Run() {
 
     Print(0, "Starting scene");
     if (!Scene) {
-        // Scene = new Scene_MainMenu(this, G);
-		Scene = new Scene_DataSelect(this, G);
+        Scene = new Scene_MainMenu(this, G);
+		// Scene = new Scene_DataSelect(this, G);
         // Scene = new Scene_LevelSelect(this, G);
         // Scene = new Level_SpecialStage(this, G);
         // Scene = new Level_AIZ(this, G, 2);

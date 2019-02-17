@@ -34,6 +34,7 @@ public:
     static void InitializeSaveGame();
     static void InitializeSaveGame(int s);
     static void Flush();
+    static void SetUsedZoneRings(int id);
     static void SetZone(int ZID);
     static int GetLives();
     static void SetLives(int Lives);

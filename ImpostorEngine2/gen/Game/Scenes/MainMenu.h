@@ -9,6 +9,7 @@
 
 class ISprite;
 class ISprite;
+class ISprite;
 
 #include <Engine/IScene.h>
 #include <Engine/ISprite.h>
@@ -18,6 +19,7 @@ public:
     int selected = 0;
     ISprite* MenuSprite = NULL;
     ISprite* SuperButtonsSprite = NULL;
+    ISprite* TextSprite = NULL;
 
     Scene_MainMenu(IApp* app, IGraphics* g);
     void Init();

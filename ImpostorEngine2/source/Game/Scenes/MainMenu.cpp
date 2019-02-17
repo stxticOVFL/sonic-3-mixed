@@ -7,6 +7,7 @@ public:
     int selected = 0;
     ISprite* MenuSprite = NULL;
     ISprite* SuperButtonsSprite = NULL;
+	ISprite* TextSprite = NULL;
 };
 #endif
 
@@ -88,8 +89,6 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 }
 
 PUBLIC void Scene_MainMenu::Init() {
-    // \->Palette(Alt)?\[(.*)\] = (.*);
-    // ->SetPalette$1($2, $3);
     if (!MenuSprite) {
         MenuSprite = new ISprite("UI/MainMenu.gif", App);
         MenuSprite->LoadAnimation("UI/MainMenu.bin");
@@ -104,6 +103,11 @@ PUBLIC void Scene_MainMenu::Init() {
         SuperButtonsSprite->SetPalette(1, 0x282028);
         SuperButtonsSprite->UpdatePalette();
     }
+	if (!TextSprite) {
+		TextSprite = new ISprite("UI/CreditsText.gif", App);
+		TextSprite->LoadAnimation("UI/CreditsText.bin");
+		TextSprite->UpdatePalette();
+	}
 
 	if (!App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
 		App->Audio->ClearMusic();
@@ -137,6 +141,7 @@ PUBLIC void Scene_MainMenu::Update() {
 				Scene_DataSelect* NextScene = new Scene_DataSelect(App, G);
 				NextScene->MenuSprite = MenuSprite;
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
+				NextScene->TextSprite = TextSprite;
 
 				App->NextScene = NextScene;
 			}
@@ -218,6 +223,8 @@ PUBLIC void Scene_MainMenu::Update() {
     FrameZigzag = (FrameZigzag + 1) % (40 * 4);
     FrameZigzagRed = (FrameZigzagRed + 1) % (117 * 4);
     FrameZigzagBlue = (FrameZigzagBlue + 1) % (110 * 4);
+
+	if (FrameCircle & 1) return;
 
     // Palette rotating
     palframe += 1 + 18;
@@ -302,6 +309,8 @@ PUBLIC void Scene_MainMenu::Render() {
     G->DrawSprite(MenuSprite, 1, 0, App->WIDTH - 424, 0, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 1, 1, App->WIDTH - 424, App->HEIGHT, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
+	G->DrawRectangle(0, 0, 96, App->HEIGHT, 0x000000);
+
 	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
     // Menu Title
@@ -324,14 +333,14 @@ PUBLIC void Scene_MainMenu::Render() {
     G->DrawSprite(MenuSprite, 6, 0, cenX, cenY, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 8, 3, cenX + 50 + 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
 
+	// Selection
+	for (int i = 0; i < 9; i++)
+		MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
+	MenuSprite->UpdatePalette();
+
     // Circle
     G->DrawSprite(MenuSprite, 7, selected, cenX, cenY, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 17, 0, cenX, cenY, 0, IE_NOFLIP);
-
-    // Selection
-    for (int i = 0; i < 9; i++)
-        MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
-    MenuSprite->UpdatePalette();
 
     G->DrawSprite(MenuSprite, 3 + selected, 3, cenX, cenY, 0, IE_NOFLIP);
 
@@ -352,24 +361,48 @@ PUBLIC void Scene_MainMenu::Render() {
     else
         G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 
-    // Buttons
-    G->DrawRectangle(6, App->HEIGHT - 42, 16, 38, 0x000000);
-    if (true) {
-        G->DrawSprite(SuperButtonsSprite, 1, App->Input->ControllerMaps[0][IInput::I_CONFIRM], 14, App->HEIGHT - 32, 0, IE_NOFLIP);
-        G->DrawSprite(SuperButtonsSprite, 1, App->Input->ControllerMaps[0][IInput::I_DENY], 14, App->HEIGHT - 12, 0, IE_NOFLIP);
-    }
-    else {
-        // TODO: When making controllers mappable, use those
-        // 2 - Xbox
-        // 3 - PS4
-        // 4 - Switch
-        // 5 - Saturn (Black)
-        // 6 - Saturn (White)
-        G->DrawSprite(SuperButtonsSprite, 4, 0, 14, App->HEIGHT - 34, 0, IE_NOFLIP);
-        G->DrawSprite(SuperButtonsSprite, 4, 1, 14, App->HEIGHT - 12, 0, IE_NOFLIP);
-    }
+	if (selected == 0) {
+		G->DrawTextSprite(TextSprite, 6, 'A', 4, 32, "PICK\nBETWEEN\nDIFFERENT\nGAMEPLAY\nMODES AND\nEXPERIENCE\nSONIC i AND\nKNUCKLES\nIN ANY WAY\nYOU CHOOSEr");
+	}
+	else if (selected == 1) {
+		G->DrawTextSprite(TextSprite, 6, 'A', 4, 32, "DUKE IT OUT\nWITH\nFRIENDS IN\nTWO\nDIFFERENT\nWAYSr");
+	}
+	else if (selected == 2) {
+		G->DrawTextSprite(TextSprite, 6, 'A', 4, 32, "ADJUST\nVARIOUS\nAUDIO AND\nVISUAL\nOPTIONS]\nAND REMAP\nYOUR\nCONTROLSr");
+	}
+	else if (selected == 3) {
+		G->DrawTextSprite(TextSprite, 6, 'A', 4, 32, "VARIOUS\nADDITIONAL\nFEATURES\nAND\nUNLOCKABLESr");
+	}
 
-    if (IApp::Platform == Platforms::iOS || IApp::Platform == Platforms::Android) {
-        G->DrawRectangle(0, App->HEIGHT - 48, 96, 48, 0x000000);
-    }
+    // Buttons
+	bool Back = false;
+	if (IApp::Mobile) {
+		if (Back) {
+			int ax = 8;
+			int ay = App->HEIGHT - 8;
+			int aheadsize = 32;
+			Uint32 col = 0xFF3434;
+			G->DrawTriangle(ax, ay, ax + aheadsize, ay - aheadsize, ax + aheadsize, ay, col);
+			G->DrawRectangle(ax + aheadsize, ay - 20, 64, 20, col);
+			G->DrawRectangle(ax + aheadsize + 64 - 24, ay - aheadsize + 4, 24, aheadsize - 4, col);
+			G->DrawTextSprite(TextSprite, 6, 'A', ax + aheadsize / 2 + 32 - 16, ay - 10, "BACK");
+		}
+	}
+	else {
+		int drawX = 14;
+		int CurrAni = 1;
+		if (IApp::Platform == Platforms::Switch) {
+			CurrAni = 4;
+		}
+
+		if (Back) {
+			G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_DENY], drawX, App->HEIGHT - 12, 0, IE_NOFLIP);
+			G->DrawTextSprite(TextSprite, 6, 'A', drawX + 16, App->HEIGHT - 12, "BACK");
+			drawX += 16 + G->MeasureTextSprite(TextSprite, 6, 'A', "BACK") + 24;
+		}
+
+		G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_CONFIRM], drawX, App->HEIGHT - 12, 0, IE_NOFLIP);
+		G->DrawTextSprite(TextSprite, 6, 'A', drawX + 16, App->HEIGHT - 12, "ACCEPT");
+		drawX += 16 + G->MeasureTextSprite(TextSprite, 6, 'A', "ACCEPT") + 24;
+	}
 }

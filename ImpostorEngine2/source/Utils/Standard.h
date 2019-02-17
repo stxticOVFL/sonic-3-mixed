@@ -50,6 +50,9 @@ enum class Platforms {
     Switch,
     iOS,
     Android,
+	PlayStation4,
+	XboxOne,
+	Vita,
 };
 
 void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey);
