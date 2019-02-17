@@ -203,6 +203,9 @@ int* MobileScrollVariable = NULL;
 int  MobileScrollLeftBound = 0;
 int  MobileScrollRightBound = 7 * 10000;
 
+int  ElementY = 40;
+int  ElementH = 150;
+
 PUBLIC void Scene_DataSelect::Update() {
 	bool CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
 	bool CONFIRM_DOWN = App->Input->GetControllerInput(0)[IInput::I_CONFIRM] || App->Input->MouseDown;
@@ -210,10 +213,10 @@ PUBLIC void Scene_DataSelect::Update() {
 
 	int mx = App->Input->MouseX;
 	int my = App->Input->MouseY;
-	if (App->Input->MouseReleased && mx < 128 && my > App->HEIGHT - 40)
+	if (App->Input->MouseReleased && mx < 128 && my > ElementY + ElementH)
 		BACK_PRESSED = true;
 
-	if (App->Input->MouseDown && !MobileScrollStart && my >= 40 && my < App->HEIGHT - 40) {
+	if (App->Input->MouseDown && !MobileScrollStart && my >= ElementY && my < ElementY + ElementH) {
 		MobileScrollVariable = &viewOffX;
 		MobileScrollStart = true;
 		MobileScrollTouchStart = *MobileScrollVariable;
@@ -287,7 +290,11 @@ PUBLIC void Scene_DataSelect::Update() {
 
 		if (!FadeIn) {
 			if (GoBack) {
-				App->NextScene = new Scene_MainMenu(App, G);
+				Scene_MainMenu* NextScene = new Scene_MainMenu(App, G);
+				NextScene->MenuSprite = MenuSprite;
+				NextScene->SuperButtonsSprite = SuperButtonsSprite;
+				NextScene->TextSprite = TextSprite;
+				App->NextScene = NextScene;
 			}
 			else {
 				SaveGame::CurrentSaveFile = selected;
@@ -308,29 +315,14 @@ PUBLIC void Scene_DataSelect::Update() {
 					SaveGame::CurrentCharacterFlag = SaveGame::Savefiles[i].CharacterFlag;
 				}
 
+				SaveGame::CurrentUsedZoneRings = SaveGame::Savefiles[i].UsedZoneRings[SaveGame::Savefiles[i].LastZoneID];
+				SaveGame::CurrentEmeralds = SaveGame::Savefiles[i].Emeralds;
+
 				SaveGame::Flush();
 				switch (SaveGame::Savefiles[i].LastZoneID) {
 					LevelScene* ls;
 					case 0: App->NextScene = new Level_AIZ(App, G, 1); break;
 					case 1:
-						SaveGame::CurrentEmeralds = 0x0000;
-						ls = new LevelScene(App, G);
-						Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
-						Sound::Audio->LoopPoint[0] = 179390 / 4;
-						ls->Str_StageBin = "Stages/MSZ/StageConfig.bin";
-						ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
-						ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
-						ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
-						ls->PlayerStartX = 160;
-						ls->PlayerStartY = 1328;
-						ls->Thremixed = true;
-						ls->ZoneID = 1;
-						ls->VisualAct = 2;
-						sprintf(ls->LevelName, "BENT LETTUCE");
-						sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
-						App->NextScene = ls;
-						break;
-					//case 1:
 						App->NextScene = new Level_HCZ(App, G, 1);
 						break;
 					case 2:
@@ -344,6 +336,24 @@ PUBLIC void Scene_DataSelect::Update() {
 						break;
 					case 5:
 						App->NextScene = new Level_LBZ(App, G, 1);
+						break;
+					case 6:
+						SaveGame::CurrentEmeralds = 0x0000;
+						ls = new LevelScene(App, G);
+						Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
+						Sound::Audio->LoopPoint[0] = 179390 / 4;
+						ls->Str_StageBin = "Stages/MSZ/StageConfig.bin";
+						ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
+						ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
+						ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
+						ls->PlayerStartX = 160;
+						ls->PlayerStartY = 1328;
+						ls->Thremixed = true;
+						ls->ZoneID = 7;
+						ls->VisualAct = 2;
+						sprintf(ls->LevelName, "BENT LETTUCE");
+						sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
+						App->NextScene = ls;
 						break;
 				}
 
@@ -519,16 +529,16 @@ PUBLIC void Scene_DataSelect::Render() {
 	// For shape masking, make a separate framebuffer and when applying pixel, compare to that buffer
 	for (int i = 0; i < 8; i++) {
 		int myX = App->WIDTH / 2 - 40 + i * 100 - (viewOffX + 50) / 100;
-		int myY = 38;
+		int myY = ElementY;
 
 		// Shadow
 		myX += 3;
 		myY += 3;
 		G->SetDrawAlpha(0x80);
 		G->DrawRectangle(myX - 2, myY - 2, 80 + 4, 56 + 6, 0x000000);
-		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, 160 + 10, 0x000000);
-		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, 160 + 8, 0x000000);
-		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, 160 + 6, 0x000000);
+		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, ElementH + 10, 0x000000);
+		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, ElementH + 8, 0x000000);
+		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, ElementH + 6, 0x000000);
 		G->SetDrawAlpha(0xFF);
 		myX -= 3;
 		myY -= 3;
@@ -565,32 +575,38 @@ PUBLIC void Scene_DataSelect::Render() {
 
 		cf &= 0xF;
 
-		if (cf >= 3)
-			cf++;
-
-		G->DrawSprite(SaveSelectSprite, 2, cf, myX + 80 / 2 + 4, myY + 100 + 4, 0, 0);
-		G->DrawSprite(SaveSelectSprite, 1, cf, myX + 80 / 2, myY + 100, 0, 0);
-
+		G->DrawSprite(SaveSelectSprite, 20, cf, myX + 80 / 2 + 4, myY + 85 + 4, 0, 0);
+		G->DrawSprite(SaveSelectSprite, 19, cf, myX + 80 / 2, myY + 85, 0, 0);
+		// 4 - emeralds
 		if (SaveGame::Savefiles[i].State > 0) {
-			G->DrawSprite(SaveSelectSprite, 3, SaveGame::Savefiles[i].CharacterFlag & 0xF, myX + 80 / 2 - 10, myY + 150, 0, 0);
+			G->DrawSprite(SaveSelectSprite, 3, SaveGame::Savefiles[i].CharacterFlag & 0xF, myX + 80 / 2 - 10, myY + ElementH - 10, 0, 0);
 			char lives[3];
 			snprintf(lives, 3, "%d", SaveGame::Savefiles[i].Lives);
-			G->DrawTextSprite(TextSprite, 6, '0' - 37, myX + 80 / 2 + 4, myY + 151, lives);
+			G->DrawTextSprite(TextSprite, 6, '0' - 37, myX + 80 / 2 + 4, myY + ElementH - 10 + 1, lives);
+		}
+
+		// Emerealds
+		G->DrawRectangle(myX - 2, myY + 110, 80 + 4, 20, 0x000000);
+		for (int v = 0; v < 7; v++) {
+			if (SaveGame::Savefiles[i].Emeralds >> v & 1)
+				G->DrawSprite(SaveSelectSprite, 4, v, myX + 3 + v * 12, myY + 120, 0, 0);
+			else
+				G->DrawSprite(SaveSelectSprite, 4, 7, myX + 3 + v * 12, myY + 120, 0, 0);
 		}
 
 		// Border
-		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, 160 + 10, 0x000000);
-		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, 160 + 8, 0x000000);
-		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, 160 + 6, 0x000000);
+		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, ElementH + 10, 0x000000);
+		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, ElementH + 8, 0x000000);
+		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, ElementH + 6, 0x000000);
 	}
 
 	// Border
 	int myX = App->WIDTH / 2 - 40;
-	int myY = 38;
+	int myY = ElementY;
 	if ((frame >> 4) & 1) {
-		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, 160 + 10, 0xE00000);
-		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, 160 + 8, 0xE00000);
-		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, 160 + 6, 0xE00000);
+		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, ElementH + 10, 0xE00000);
+		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, ElementH + 8, 0xE00000);
+		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, ElementH + 6, 0xE00000);
 	}
 
 
@@ -602,26 +618,35 @@ PUBLIC void Scene_DataSelect::Render() {
 	// 5 - Saturn (Black)
 	// 6 - Saturn (White)
 
-	// Buttons 
-
+	// Buttons
+	bool Back = true;
 	if (IApp::Mobile) {
-		G->DrawTextSprite(TextSprite, 6, 'A', 14, App->HEIGHT - 12, "BACK");
+		if (Back) {
+			int ax = 8;
+			int ay = App->HEIGHT - 8;
+			int aheadsize = 32;
+			Uint32 col = 0xFF3434;
+			G->DrawTriangle(ax, ay, ax + aheadsize, ay - aheadsize, ax + aheadsize, ay, col);
+			G->DrawRectangle(ax + aheadsize, ay - 20, 64, 20, col);
+			G->DrawRectangle(ax + aheadsize + 64 - 24, ay - aheadsize + 4, 24, aheadsize - 4, col);
+			G->DrawTextSprite(TextSprite, 6, 'A', ax + aheadsize / 2 + 32 - 16, ay - 10, "BACK");
+		}
 	}
 	else {
+		int drawX = 14;
 		int CurrAni = 1;
 		if (IApp::Platform == Platforms::Switch) {
 			CurrAni = 4;
 		}
-		if (CurrAni == 1) {
-			G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_CONFIRM], 104, App->HEIGHT - 12, 0, IE_NOFLIP);
-			G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_DENY], 14, App->HEIGHT - 12, 0, IE_NOFLIP);
-		}
-		else {
-			G->DrawSprite(SuperButtonsSprite, CurrAni, 1, 104, App->HEIGHT - 12, 0, IE_NOFLIP);
-			G->DrawSprite(SuperButtonsSprite, CurrAni, 0, 14, App->HEIGHT - 12, 0, IE_NOFLIP);
+
+		if (Back) {
+			G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_DENY], drawX, App->HEIGHT - 12, 0, IE_NOFLIP);
+			G->DrawTextSprite(TextSprite, 6, 'A', drawX + 16, App->HEIGHT - 12, "BACK");
+			drawX += 16 + G->MeasureTextSprite(TextSprite, 6, 'A', "BACK") + 24;
 		}
 
-		G->DrawTextSprite(TextSprite, 6, 'A', 14 + 16, App->HEIGHT - 12, "BACK");
-		G->DrawTextSprite(TextSprite, 6, 'A', 104 + 16, App->HEIGHT - 12, "ACCEPT");
+		G->DrawSprite(SuperButtonsSprite, CurrAni, App->Input->ControllerMaps[0][IInput::I_CONFIRM], drawX, App->HEIGHT - 12, 0, IE_NOFLIP);
+		G->DrawTextSprite(TextSprite, 6, 'A', drawX + 16, App->HEIGHT - 12, "ACCEPT");
+		drawX += 16 + G->MeasureTextSprite(TextSprite, 6, 'A', "ACCEPT") + 24;
 	}
 }

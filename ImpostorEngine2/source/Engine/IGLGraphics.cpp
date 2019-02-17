@@ -1580,7 +1580,10 @@ PUBLIC void IGLGraphics::DrawModelOn2D(IModel* model, int x, int y, double scale
     glVertexAttribPointer(LocPosition, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(0 * sizeof(GLfloat)));
     glVertexAttribPointer(LocTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(3 * sizeof(GLfloat)));
     glVertexAttribPointer(LocNormals,  3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(5 * sizeof(GLfloat)));
-    glDrawArrays(GL_TRIANGLES, 0, yep);
+	if (wireframe)
+	    glDrawArrays(GL_LINES, 0, yep);
+	else
+		glDrawArrays(GL_TRIANGLES, 0, yep);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glUniform1f(LocWaterLine, -0xFFFF);

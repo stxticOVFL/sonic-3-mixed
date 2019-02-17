@@ -223,6 +223,8 @@ public:
 #include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
 
+#include <Game/Levels/SpecialStage.h>
+
 #include <Game/SaveGame.h>
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; Objects[ObjectCount++] = obj; }
@@ -3805,9 +3807,9 @@ PUBLIC void LevelScene::Update() {
             //App->Running = false;
             //FadeAction = 0;
             //FadeTimerMax = 1;
-            // Cleanup();
+            //Cleanup();
 
-            App->NextScene = new Scene_DataSelect(App, G);
+			App->NextScene = new Scene_DataSelect(App, G);
         }
         else if (FadeAction == FadeActionType::FADEIN) {
             FadeAction = 0;
@@ -3816,6 +3818,18 @@ PUBLIC void LevelScene::Update() {
         else if (FadeAction == FadeActionType::TO_SPECIAL_STAGE) {
             FadeAction = 0;
             FadeTimerMax = 1;
+
+			Level_SpecialStage* NextScene = new Level_SpecialStage(App, G);
+			NextScene->ZoneID = 0x100 | VisualAct;
+			
+			int toLevel = 0;
+			while (toLevel < 16) {
+				if (!SaveGame::GetEmerald(toLevel)) break;
+				toLevel++;
+			}
+
+			NextScene->Act = toLevel;
+			App->NextScene = NextScene;
         }
         else if (FadeAction == FadeActionType::NEXT_ZONE) {
             FadeAction = 0;
@@ -5304,17 +5318,14 @@ PUBLIC VIRTUAL void LevelScene::Render() {
     }
 
     if (FadeAction != 0)
-        G->SetFilter(G->GetFilter() | 0x4);
+        G->SetFilter(G->GetFilter() | IE_FILTER_FADEABLE);
     else
-        G->SetFilter(G->GetFilter() & ~0x4);
+        G->SetFilter(G->GetFilter() & ~IE_FILTER_FADEABLE);
 
 	if (!G->HaveClone) {
 		G->SetFilter(G->GetFilter() | PauseFinished);
 		RenderEverything();
 		G->SetFilter(G->GetFilter() & ~PauseFinished);
-
-        // if (PauseFinished)
-        //     G->MakeClone();
     }
     else {
         G->DrawClone();

@@ -48,6 +48,31 @@ public:
 
 #include <Engine/IInput.h>
 
+enum {
+	NX_KEY_A = 0,
+	NX_KEY_B,
+	NX_KEY_X,
+	NX_KEY_Y,
+	NX_KEY_LSTICK, NX_KEY_RSTICK,
+	NX_KEY_L, NX_KEY_R,
+	NX_KEY_ZL, NX_KEY_ZR,
+	NX_KEY_PLUS, NX_KEY_MINUS,
+	NX_KEY_DLEFT, NX_KEY_DUP, NX_KEY_DRIGHT, NX_KEY_DDOWN,
+	NX_KEY_LSTICK_LEFT, NX_KEY_LSTICK_UP, NX_KEY_LSTICK_RIGHT, NX_KEY_LSTICK_DOWN,
+	NX_KEY_RSTICK_LEFT, NX_KEY_RSTICK_UP, NX_KEY_RSTICK_RIGHT, NX_KEY_RSTICK_DOWN,
+	NX_KEY_SL_LEFT, NX_KEY_SR_LEFT, NX_KEY_SL_RIGHT, NX_KEY_SR_RIGHT
+};
+
+namespace ControllerType {
+	enum {
+		None,
+		Keyboard,
+		Controller,
+		Touchscreen,
+		JoyconLibNX,
+	};
+}
+
 PUBLIC IInput::IInput(IApp* app) {
     App = app;
 
@@ -55,12 +80,16 @@ PUBLIC IInput::IInput(IApp* app) {
         Controllers[i] = (uint8_t*)calloc(1, 18);
 
     for (int i = 0; i < 4; i++)
-        ControllerType[i] = 0xFF;
+        ControllerType[i] = ControllerType::None;
 
-    ControllerType[ControllerCount++] = 0;
+    ControllerType[ControllerCount++] = ControllerType::Keyboard;
     #if NX
-        ControllerType[0] = 0xCA;
+        ControllerType[0] = ControllerType::JoyconLibNX;
     #endif
+
+	if (IApp::Mobile) {
+		ControllerType[0] = ControllerType::Touchscreen;
+	}
 
     for (int i = 0; i < 4; i++)
         ControllerMaps[i] = (int*)calloc(2, 18);
@@ -86,16 +115,16 @@ PUBLIC IInput::IInput(IApp* app) {
 
 	if (IApp::Platform == Platforms::Switch) {
 		tempStruct defaultKeysOverride[9] = {
-			{ "up", I_UP, SDL_SCANCODE_UP },
-			{ "down", I_DOWN, SDL_SCANCODE_DOWN },
-			{ "left", I_LEFT, SDL_SCANCODE_LEFT },
-			{ "right", I_RIGHT, SDL_SCANCODE_RIGHT },
+			{ "up", I_UP, NX_KEY_DUP },
+			{ "down", I_DOWN, NX_KEY_DDOWN },
+			{ "left", I_LEFT, NX_KEY_DLEFT },
+			{ "right", I_RIGHT, NX_KEY_DRIGHT },
 
-			{ "confirm", I_CONFIRM, SDL_SCANCODE_A },
-			{ "deny", I_DENY, SDL_SCANCODE_S },
-			{ "extra2", I_EXTRA2, SDL_SCANCODE_D },
-			{ "extra", I_EXTRA, SDL_SCANCODE_Q },
-			{ "pause", I_PAUSE, SDL_SCANCODE_W },
+			{ "confirm", I_CONFIRM, NX_KEY_A },
+			{ "deny", I_DENY, NX_KEY_B },
+			{ "extra2", I_EXTRA2, NX_KEY_Y },
+			{ "extra", I_EXTRA, NX_KEY_X },
+			{ "pause", I_PAUSE, NX_KEY_PLUS },
 		};
 		memcpy(defaultKeys, defaultKeysOverride, sizeof(defaultKeysOverride));
 	}
@@ -111,8 +140,8 @@ PUBLIC IInput::IInput(IApp* app) {
 			{ "extra2", I_EXTRA2, SDL_SCANCODE_D },
 			{ "extra", I_EXTRA, SDL_SCANCODE_Q },
 			{ "pause", I_PAUSE, SDL_SCANCODE_W },
-			};
-			memcpy(defaultKeys, defaultKeysOverride, sizeof(defaultKeysOverride));
+		};
+		memcpy(defaultKeys, defaultKeysOverride, sizeof(defaultKeysOverride));
 	}
 
     for (int i = 0; i < sizeof(defaultKeys) / sizeof(tempStruct); i++) {
@@ -161,7 +190,7 @@ PUBLIC void IInput::Poll() {
             }
         }
     }
-    else if (IApp::Platform != Platforms::Switch) {
+    else {
         int mx, my;
         Uint32 button = SDL_GetMouseState(&mx, &my);
         MouseX = mx * App->WIDTH / App->G->WindowWidth;
@@ -175,7 +204,7 @@ PUBLIC void IInput::Poll() {
     for (int i = 0; i < ControllerCount; i++) {
         bool UP = false, DOWN = false, LEFT = false, RIGHT = false, CONFIRM = false, DENY = false, EXTRA = false, EXTRA2 = false, PAUSE = false;
 
-        if (ControllerType[i] == 0x00) { // Keyboard
+        if (ControllerType[i] == ControllerType::Keyboard) { // Keyboard
             const unsigned char *state = SDL_GetKeyboardState(NULL);
 
             UP = state[ControllerMaps[i][I_UP]];
@@ -189,7 +218,7 @@ PUBLIC void IInput::Poll() {
             EXTRA = state[ControllerMaps[i][I_EXTRA]];
             PAUSE = state[ControllerMaps[i][I_PAUSE]];
         }
-        else if (ControllerType[i] == 0xCA) { // Joycons
+        else if (ControllerType[i] == ControllerType::JoyconLibNX) { // Joycons
             #if NX
                 hidScanInput();
                 //mainLoop = appletMainLoop();
@@ -206,50 +235,51 @@ PUBLIC void IInput::Poll() {
                 PAUSE = (hid & KEY_PLUS) != 0 || (hid & KEY_MINUS) != 0;
             #endif
         }
+		else if (ControllerType[i] == ControllerType::Touchscreen) {
+			if (touchEnabled) {
+				for (int t = 0; t < SDL_GetNumTouchFingers(touchID); t++) {
+					SDL_Finger* finger = SDL_GetTouchFinger(touchID, t);
+					int tx = int(finger->x * w);
+					int ty = int(finger->y * h);
 
-        if (touchEnabled) {
-            for (int t = 0; t < SDL_GetNumTouchFingers(touchID); t++) {
-                SDL_Finger* finger = SDL_GetTouchFinger(touchID, t);
-                int tx = int(finger->x * w);
-                int ty = int(finger->y * h);
+					int bx = 48;
+					int by = h - 48;
 
-                int bx = 48;
-                int by = h - 48;
+					if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 150 * 150) {
+						int ang = IMath::atanHex(tx - bx, ty - by);
+						if ((ang >= 0x00 && ang < 0x10) || (ang >= 0xF0 && ang <= 0xFF))
+							RIGHT = true;
+						else if (ang >= 0x10 && ang < 0x30)
+							UP = RIGHT = true;
+						else if (ang >= 0x30 && ang < 0x50)
+							UP = true;
+						else if (ang >= 0x50 && ang < 0x70)
+							LEFT = UP = true;
+						else if (ang >= 0x70 && ang < 0x90)
+							LEFT = true;
+						else if (ang >= 0x90 && ang < 0xB0)
+							DOWN = LEFT = true;
+						else if (ang >= 0xB0 && ang < 0xD0)
+							DOWN = true;
+						else if (ang >= 0xD0 && ang < 0xF0)
+							RIGHT = DOWN = true;
+					}
 
-                if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 150 * 150) {
-                    int ang = IMath::atanHex(tx - bx, ty - by);
-                    if ((ang >= 0x00 && ang < 0x10) || (ang >= 0xF0 && ang <= 0xFF))
-                        RIGHT = true;
-                    else if (ang >= 0x10 && ang < 0x30)
-                        UP = RIGHT = true;
-                    else if (ang >= 0x30 && ang < 0x50)
-                        UP = true;
-                    else if (ang >= 0x50 && ang < 0x70)
-                        LEFT = UP = true;
-                    else if (ang >= 0x70 && ang < 0x90)
-                        LEFT = true;
-                    else if (ang >= 0x90 && ang < 0xB0)
-                        DOWN = LEFT = true;
-                    else if (ang >= 0xB0 && ang < 0xD0)
-                        DOWN = true;
-                    else if (ang >= 0xD0 && ang < 0xF0)
-                        RIGHT = DOWN = true;
-                }
+					bx = w - 48;
+					if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 64 * 64) {
+						CONFIRM = true;
+					}
 
-                bx = w - 48;
-                if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 64 * 64) {
-                    CONFIRM = true;
-                }
-
-                bx = w - 20;
-				if (CenterPauseButton)
-					bx = w / 2;
-                by = 20;
-                if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 64 * 64) {
-                    PAUSE = true;
-                }
-            }
-        }
+					bx = w - 20;
+					if (CenterPauseButton)
+						bx = w / 2;
+					by = 20;
+					if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 64 * 64) {
+						PAUSE = true;
+					}
+				}
+			}
+		}
 
         Controllers[i][I_UP_PRESSED] = UP && !Controllers[i][I_UP];
         Controllers[i][I_DOWN_PRESSED] = DOWN && !Controllers[i][I_DOWN];
@@ -270,7 +300,6 @@ PUBLIC void IInput::Poll() {
 		Controllers[i][I_EXTRA2] = EXTRA2;
         Controllers[i][I_EXTRA] = EXTRA;
         Controllers[i][I_PAUSE] = PAUSE;
-
     }
 }
 

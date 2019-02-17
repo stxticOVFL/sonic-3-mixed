@@ -39,6 +39,7 @@ public:
     bool SphereCheckRight(int ox, int oy);
     int SomethingUsefulMaybe(int ox, int oy);
     bool CheckSurround();
+    void DoCustomFadeAction();
     void EarlyUpdate();
     void Subupdate();
     void HandleCamera();

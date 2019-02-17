@@ -278,6 +278,7 @@ PUBLIC uint32_t IGraphics::FilterInversionRadius(uint32_t pixel) {
 }
 PUBLIC uint32_t IGraphics::FilterFadeToBlack(uint32_t pixel) {
 	if (Fade == 0) return pixel;
+	if (FadeToWhite) return FilterFadeToWhite(pixel);
 
 	int fade = Fade + Fade + Fade;
 	if (fade > 0x2FD) fade = 0x2FD;
@@ -412,9 +413,7 @@ PUBLIC VIRTUAL void IGraphics::SetFilter(int filter) {
 	SetFilterFunction[3] = &IGraphics::FilterNone;
 	if ((Filter & 0x1) == 0x1)
 		SetFilterFunction[0] = &IGraphics::FilterGrayscale;
-	if ((Filter & 0x4) == 0x4 && FadeToWhite)
-		SetFilterFunction[3] = &IGraphics::FilterFadeToWhite;
-	if ((Filter & 0x4) == 0x4 && !FadeToWhite)
+	if ((Filter & 0x4) == 0x4)
 		SetFilterFunction[3] = &IGraphics::FilterFadeToBlack;
 }
 PUBLIC VIRTUAL int  IGraphics::GetFilter() {
@@ -799,12 +798,24 @@ PUBLIC VIRTUAL void IGraphics::DrawLine(int x0, int y0, int x1, int y1, uint32_t
 }
 
 PUBLIC VIRTUAL void IGraphics::DrawTextSprite(ISprite* sprite, int animation, char first, int x, int y, const char* string) {
+	int ox = x;
 	ISprite::AnimFrame animframe;
 	for (int i = 0; i < (int)strlen(string); i++) {
-		animframe = sprite->Animations[animation].Frames[string[i] - first];
-		DrawSprite(sprite, animation, string[i] - first, x - animframe.OffX, y, 0, 0);
+		if (string[i] == '\n') {
+			animframe = sprite->Animations[animation].Frames[0];
+			x = ox;
+			y += animframe.H + 2;
+		}
+		else if (string[i] == ' ') {
+			animframe = sprite->Animations[animation].Frames[0];
+			x += animframe.W;
+		}
+		else {
+			animframe = sprite->Animations[animation].Frames[string[i] - first];
+			DrawSprite(sprite, animation, string[i] - first, x - animframe.OffX, y, 0, 0);
 
-		x += animframe.W;
+			x += animframe.W;
+		}
 	}
 }
 PUBLIC VIRTUAL int  IGraphics::MeasureTextSprite(ISprite* sprite, int animation, char first, const char* string) {

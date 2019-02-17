@@ -20,6 +20,8 @@ void SpecialRing::Create() {
     GoTimer = -1;
     StoredX = 0;
     StoredY = 0;
+    RingID = SubType & 0x7F;
+    Used = (SaveGame::CurrentUsedZoneRings >> RingID & 1) == 1;
 }
 
 void SpecialRing::Update() {
@@ -60,8 +62,8 @@ void SpecialRing::Update() {
 
     if (GoTimer == 0) {
         Scene->FadeAction = 7;
-        Scene->FadeTimerMax = 24 + 24;
-        Scene->FadeMax = 0x104;
+        Scene->FadeTimerMax = 48 + 48;
+        Scene->FadeMax = 0x200;
         G->FadeToWhite = true;
         Sound::Play(Sound::SFX_SS_WARP);
         GoTimer = -1;
@@ -89,7 +91,12 @@ void SpecialRing::Render(int CamX, int CamY) {
         return;
     }
 
-    G->DrawModelOn2D(Scene->GiantRingModel, this->X - CamX, this->Y - CamY, 1.0, 0, Scene->Frame & 0xFF, (Scene->Frame / 5) & 0xFF, HyperColor, false);
+    if (Used) {
+        G->DrawModelOn2D(Scene->GiantRingModel, this->X - CamX, this->Y - CamY, 1.0, 0, Scene->Frame & 0xFF, (Scene->Frame / 5) & 0xFF, 0x999999, true);
+    }
+    else {
+        G->DrawModelOn2D(Scene->GiantRingModel, this->X - CamX, this->Y - CamY, 1.0, 0, Scene->Frame & 0xFF, (Scene->Frame / 5) & 0xFF, HyperColor, false);
+    }
     }
 
 int SpecialRing::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
@@ -97,21 +104,41 @@ int SpecialRing::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     if (GoTimer >= 0) return 0;
 
-    if (Scene->Player->HyperForm) {
+    if (Used) return 0;
+
+    if ((SaveGame::GetEmeralds() == 0x3FFF && HyperRing) || ((SaveGame::GetEmeralds() & 0x7F) == 0x7F && !HyperRing)) {
         Scene->Player->GiveRing(50);
         Active = false;
     }
-    else if (Scene->Player->SuperForm || true) {
-        Scene->Player->GiveRing(50);
-        Active = false;
+    else if (HyperRing) {
+        if (false) {
+        }
+        else if ((SaveGame::GetEmeralds() & 0x7F) != 0x7F) {
+            Scene->Player->ObjectControlled = 0xFF;
+            Scene->Player->Hidden = true;
+            Scene->StopTimer = true;
+            GoTimer = 48;
+            StoredX = Scene->Player->EZX;
+            StoredY = Scene->Player->EZY;
+            App->Audio->FadeMusic(1.0);
+            SaveGame::SetUsedZoneRings(RingID);
+            SaveGame::Flush();
+            Frame = 0;
+            CurrentAnimation = 0;
+        }
+        else {
+        }
     }
     else {
-        Scene->Player->GiveRing(50);
+        Scene->Player->ObjectControlled = 0xFF;
         Scene->Player->Hidden = true;
+        Scene->StopTimer = true;
         GoTimer = 48;
         StoredX = Scene->Player->EZX;
         StoredY = Scene->Player->EZY;
         App->Audio->FadeMusic(1.0);
+        SaveGame::SetUsedZoneRings(RingID);
+        SaveGame::Flush();
         Frame = 0;
         CurrentAnimation = 0;
     }

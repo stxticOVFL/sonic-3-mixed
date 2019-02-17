@@ -561,4 +561,6 @@ public:
     virtual void Create();
 };
 
+#include <Game/SaveGame.h>
+
 #endif /* S3_OBJECT_H */

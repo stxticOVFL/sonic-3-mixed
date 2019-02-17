@@ -21,6 +21,24 @@ public:
 
 #include <Game/Levels/SpecialStage.h>
 
+#include <Game/Levels/AIZ.h>
+#include <Game/Levels/HCZ.h>
+#include <Game/Levels/MGZ.h>
+#include <Game/Levels/CNZ.h>
+#include <Game/Levels/ICZ.h>
+#include <Game/Levels/LBZ.h>
+#include <Game/Levels/MHZ.h>
+#include <Game/Levels/FBZ.h>
+//#include <Game/Levels/FBZ.h>
+//#include <Game/Levels/SOZ.h>
+//#include <Game/Levels/LRZ.h>
+//#include <Game/Levels/HPZ.h>
+//#include <Game/Levels/SSZ.h>
+//#include <Game/Levels/DEZ.h>
+//#include <Game/Levels/TDZ.h>
+
+#include <Game/SaveGame.h>
+
 int PlayerAngle = 0x0000;
 int PlayerX = 0x0000;
 int PlayerY = 0x0000;
@@ -58,6 +76,8 @@ int RingCount = 0;
 
 bool ColorFlip = true;
 
+int GameState = 0;
+
 Uint8* LayoutBackup = NULL;
 Uint8* LayoutExtra = NULL;
 
@@ -72,6 +92,8 @@ enum {
 Uint32 ColorBG = 0x0044EE;
 Uint32 Color1 = 0xEE8800;
 Uint32 Color2 = 0x662200;
+Uint32 ColorSky = 0x00;
+Uint32 ColorGlobe = 0x00;
 Sint32 MapThing[0x10][0x100];
 
 PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelScene(app, g) {
@@ -123,37 +145,14 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     Str_TileSprite = ":";
     Str_ObjectsList = ":";
     Str_RingsList = ":";
-
-	int Stage = 2;
-	switch (Stage) {
-		case 1:
-			Color1 = G->GetRetroColor(0x08E);
-			Color2 = G->GetRetroColor(0x026);
-			ColorBG = G->GetRetroColor(0xE40);
-			break;
-		case 2:
-			Color1 = G->GetRetroColor(0x062);
-			Color2 = G->GetRetroColor(0xAE0);
-			ColorBG = G->GetRetroColor(0x604);
-			break;
-	}
-
-    IResource* LayoutBin = IResources::Load("Stages/Special/S3 4.bin");
-    if (LayoutBin) {
-        IStreamer reader(LayoutBin);
-        Layout = (uint8_t*)malloc(0x400);
-        LayoutCopy = reader.ReadBytes(0x400);
-        StartAngle = reader.ReadUInt16BE();
-        StartX = reader.ReadUInt16BE();
-        StartY = reader.ReadUInt16BE();
-        PerfectAmount = reader.ReadUInt16BE();
-        IResources::Close(LayoutBin);
-    }
 }
 
 PUBLIC void Level_SpecialStage::Init() {
 	PlayerCount = 0;
 
+	//FadeTimer = 0;
+	FadeTimerMax = 0x100;
+	FadeAction = FadeActionType::FADEIN;
 	G->FadeToWhite = true;
 
 	if (!MobileButtonsSprite) {
@@ -240,15 +239,54 @@ PUBLIC void Level_SpecialStage::Init() {
 		IResources::Close(BSS_Setup_Bin);
 	}
 
+	IResource* LayoutBin = NULL;
+	switch (Act) {
+		case 0: LayoutBin = IResources::Load("Stages/Special/S3 1.bin"); break;
+		case 1: LayoutBin = IResources::Load("Stages/Special/S3 2.bin"); break;
+		case 2: LayoutBin = IResources::Load("Stages/Special/S3 3.bin"); break;
+		case 3: LayoutBin = IResources::Load("Stages/Special/S3 4.bin"); break;
+		case 4: LayoutBin = IResources::Load("Stages/Special/S3 5.bin"); break;
+		case 5: LayoutBin = IResources::Load("Stages/Special/S3 6.bin"); break;
+		case 6: LayoutBin = IResources::Load("Stages/Special/S3 7.bin"); break;
+		case 7: LayoutBin = IResources::Load("Stages/Special/S3 8.bin"); break;
+	}
+	if (LayoutBin) {
+		IStreamer reader(LayoutBin);
+		Layout = (uint8_t*)malloc(0x400);
+		LayoutCopy = reader.ReadBytes(0x400);
+		StartAngle = reader.ReadUInt16BE();
+		StartX = reader.ReadUInt16BE();
+		StartY = reader.ReadUInt16BE();
+		PerfectAmount = reader.ReadUInt16BE();
+		IResources::Close(LayoutBin);
+	}
+
+	LayoutBin = IResources::Load("Stages/Special/Colors.bin");
+	if (LayoutBin) {
+		IStreamer reader(LayoutBin);
+		reader.Seek(Act * 0x10);
+
+		Color1 = G->GetRetroColor(reader.ReadUInt16BE());
+		Color2 = G->GetRetroColor(reader.ReadUInt16BE());
+		
+		ColorBG = G->GetRetroColor(reader.ReadUInt16BE());
+		reader.ReadUInt16BE();
+		reader.ReadUInt16BE();
+
+		reader.ReadUInt16(); // 0x0000
+		ColorSky = reader.ReadUInt16(); // Sky Alpha
+		ColorGlobe = reader.ReadUInt16(); // Globe Alpha
+		IResources::Close(LayoutBin);
+	}
 	RestartStage(true, true);
 
 	char levelname[50];
 	if (true) {
-		sprintf(levelname, "%s%s%d", "Special Stage", " ", 1);
+		sprintf(levelname, "%s%s%d", "Special Stage", " ", Act + 1);
 		Discord_UpdatePresence("Classic Mode:", levelname, "11");
 	}
 	else {
-		sprintf(levelname, "%s%s%d", "Blue Spheres", " Level ", 1);
+		sprintf(levelname, "%s%s%d", "Blue Spheres", " Level ", Act + 1);
 		Discord_UpdatePresence("Extras:", levelname, "11");
 	}
 }
@@ -287,7 +325,10 @@ PUBLIC void Level_SpecialStage::RestartStage(bool doActTransition, bool drawBack
 	Direction = 0;
 	DirectionStep = 0;
 
+	GameState = 0;
+
     BallCount = 0;
+	RingCount = 0;
     for (int i = 0; i < 0x400; i++) {
         if (Layout[i] == 2)
             BallCount++;
@@ -701,8 +742,43 @@ PUBLIC bool Level_SpecialStage::CheckSurround() {
 	return false;
 }
 
+PUBLIC void Level_SpecialStage::DoCustomFadeAction() {
+	if (ZoneID >= 0x100) {
+		int Acto = ZoneID & 0xF;
+		switch (SaveGame::CurrentZoneID) {
+			case 0:
+				App->NextScene = new Level_AIZ(App, G, Acto);
+				break;
+			case 1:
+				App->NextScene = new Level_HCZ(App, G, Acto);
+				break;
+			case 2:
+				App->NextScene = new Level_MGZ(App, G, Acto);
+				break;
+			case 3:
+				App->NextScene = new Level_CNZ(App, G, Acto);
+				break;
+			case 4:
+				App->NextScene = new Level_ICZ(App, G, Acto);
+				break;
+			case 5:
+				App->NextScene = new Level_LBZ(App, G, Acto);
+				break;
+		}
+	}
+}
 PUBLIC void Level_SpecialStage::EarlyUpdate() {
 	if (LevelCardTimer >= 1.5) LevelCardTimer = 6.0;
+
+	if (GameState == 1) { // Stepped on a Red
+		PlayerAngle = (PlayerAngle + 0x800) & 0xFFFF;
+		DirectionStep += 2;
+		if (DirectionStep > 0xF)
+			ColorFlip = !ColorFlip;
+		DirectionStep &= 0xF;
+		Direction = 1;
+		return;
+	}
 
 	if (PlayerMaxSpeed < 32) {
 		SpeedupTimer++;
@@ -754,7 +830,38 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 	}
 
 	if (PlayerZ == 0) {
-		if (*LayoutAt(XIndex, YIndex) == SPHERE_BLUE) {
+		if (*LayoutAt(XIndex, YIndex) == SPHERE_RED) {
+			if ((PlayerIsMovingBackwards && PlayerSteps < 0x20) ||
+				(!PlayerIsMovingBackwards && PlayerSteps > 0xE0)) {
+				PlayerLastTouchedObjectX = XIndex;
+				PlayerLastTouchedObjectY = YIndex;
+				PlayerSteps = 0x00;
+				if (!PlayerIsMovingBackwards) {
+					ColorFlip = !ColorFlip;
+					PlayerX = (PlayerX + (IMath::sign(-IMath::sinHex(PlayerAngle >> 8))) + 0x20) & 0x1F;
+					PlayerY = (PlayerY + (IMath::sign(-IMath::cosHex(PlayerAngle >> 8))) + 0x20) & 0x1F;
+				}
+				DirectionStep = 0;
+				GameState = 1;
+				// player->FuncMainMovement = sub_49BF30;
+				FadeAction = FadeActionType::CUSTOM_FADE_ACTION;
+				FadeTimer = -1;
+				FadeTimerMax = 64 + 48;
+				FadeMax = 0x100 + 0xC0;
+				G->FadeToWhite = false;
+				Sound::Play(Sound::SFX_SPECIALSTAGE_EXIT);
+				App->Audio->FadeMusic(1.0);
+			}
+		}
+		else if (*LayoutAt(XIndex, YIndex) == (0x80 | SPHERE_RED)) {
+			/*if ((PlayerIsMovingBackwards && PlayerSteps > 0x20) ||
+				(!PlayerIsMovingBackwards && PlayerSteps < 0xE0)) {
+				PlayerLastTouchedObjectX = XIndex;
+				PlayerLastTouchedObjectY = YIndex;
+				*LayoutAt(XIndex, YIndex) = SPHERE_RED;
+			}*/
+		}
+		else if (*LayoutAt(XIndex, YIndex) == SPHERE_BLUE) {
 			if ((PlayerIsMovingBackwards && PlayerSteps < 0x80) ||
 				(!PlayerIsMovingBackwards && PlayerSteps > 0x80)) {
 				PlayerLastTouchedObjectX = XIndex;
@@ -762,16 +869,28 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 				CheckSurround();
 				BallCount--;
 				if (!PlayerDwordC0) {
-					// (MEMORY[0])(MEMORY[0], 1, PlayerX, PlayerY);
 					*LayoutAt(XIndex, YIndex) = 0x80 | SPHERE_RED;
 				}
 				if (BallCount <= 0) {
 					BallCount = 0;
-					// player->FuncMainMovement = sub_49BCA0;
-					// v4 = MEMORY[0x2C44];
-					// goto LABEL_17;
+					GameState = 1; // 2
+					SaveGame::SetEmerald(Act);
+					SaveGame::Flush();
+					Sound::Play(Sound::SFX_SPECIALSTAGE_FLYAWAY);
+					App->Audio->FadeMusic(1.0);
+
+
+					DirectionStep = 0;
+					GameState = 1;
+					FadeAction = FadeActionType::CUSTOM_FADE_ACTION;
+					FadeTimer = -1;
+					FadeTimerMax = 64 + 48;
+					FadeMax = 0x100 + 0xC0;
+					G->FadeToWhite = false;
 				}
-				else Sound::Play(Sound::SFX_BLUEBALL);
+				else {
+					Sound::Play(Sound::SFX_BLUEBALL);
+				}
 			}
 		}
 		else if (*LayoutAt(XIndex, YIndex) == SPHERE_BUMPER) {
@@ -852,12 +971,12 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 		}
 	}
 
-	if (/*PlayerZ == 0 && */ (PlayerAngle & 0x3FFF) == 0 && App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
+	if (PlayerZ == 0 && (PlayerAngle & 0x3FFF) == 0 && App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
 		PlayerZSpeed = -0x100000;
 
 		Sound::Play(Sound::SFX_JUMP);
 	}
-	PlayerZSpeed += 0x10000;
+	PlayerZSpeed += PlayerMaxSpeed << 12;
 	PlayerZ += PlayerZSpeed;
 	if (PlayerZ > 0)
 		PlayerZ = PlayerZSpeed = 0;
@@ -869,18 +988,6 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 			if (Direction < 0)
 				ColorFlip = !ColorFlip;
 
-			/*bool Switch = (PlayerSpeed < 0) != Direction < 0 != (PlayerSpeed != 0);
-			if (Switch) {
-				GlobeSpin->SetPalette(128, Globe->GetPalette(17));
-				GlobeSpin->SetPalette(144, Globe->GetPalette(1));
-			}
-			else {
-			}*/
-
-
-			//GlobeSpin->SetPalette(128, Globe->GetPalette(1));
-			//GlobeSpin->SetPalette(144, Globe->GetPalette(17));
-			//GlobeSpin->UpdatePalette();
 			PlayerSteps = 0;
         }
         if (Direction > 0) {
@@ -942,11 +1049,11 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 	//*
 	G->SetDrawFunc(1);
 	// Sky
-	G->SetDrawAlpha(0xA0);
+	G->SetDrawAlpha(ColorSky);
     G->DrawSprite(Horizon, 0, 1, App->WIDTH / 2, 0, 0, IE_NOFLIP);
     G->DrawSprite(Horizon, 0, 1, App->WIDTH / 2, 0, 0, IE_FLIPX);
 	// Globe
-    G->SetDrawAlpha(0x60);
+    G->SetDrawAlpha(ColorGlobe);
     G->DrawSprite(Horizon, 0, 0, App->WIDTH / 2, 0, 0, IE_NOFLIP);
     G->DrawSprite(Horizon, 0, 0, App->WIDTH / 2, 0, 0, IE_FLIPX);
     G->SetDrawFunc(0);
@@ -993,7 +1100,12 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 			int TilePosition = ((PlayerSteps >> 4) + StepsOff) & 0xF;
 
 			int needsResize = 0;
-			int collectableType = *LayoutAt((dwordA4 + RoundedX + 0x20) & 0x1F, (dwordA8 + RoundedY + 0x20) & 0x1F) & 0x7F;
+			bool transparent = false;
+			int collectableType = *LayoutAt((dwordA4 + RoundedX + 0x20) & 0x1F, (dwordA8 + RoundedY + 0x20) & 0x1F);
+			if (collectableType == (0x80 | SPHERE_RED)) {
+				transparent = true;
+				collectableType  &= 0x7F;
+			}
 
 			if (collectableType == SPHERE_RED)
 				collectableType = 5;
@@ -1005,6 +1117,11 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 				collectableType = 7;
 			else if (collectableType == SPHERE_RING)
 				needsResize = collectableType = 12;
+
+			if (transparent)
+				G->SetDrawAlpha(0x80);
+			else
+				G->SetDrawAlpha(0xFF);
 
 			if (collectableType) {
 				int downPos, v20;
@@ -1113,7 +1230,8 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
     // Ring Count
     G->DrawSprite(Objects, 0, 1, App->WIDTH / 2 + 64, 13, 0, IE_NOFLIP);
     // Number
-	n = RingCount;
+	n = PerfectAmount - RingCount;
+	if (n < 0) n = 0;
 	for (int i = 2; i >= 0; i--) {
 		nn = n % 10;
 		n /= 10;

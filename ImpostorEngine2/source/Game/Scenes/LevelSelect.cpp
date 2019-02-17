@@ -59,6 +59,8 @@ PUBLIC void Scene_LevelSelect::Init() {
     FadeIn = true;
 
 	SaveGame::CurrentSaveFile = -1;
+	SaveGame::CurrentUsedZoneRings = 0x0000;
+	SaveGame::CurrentEmeralds = 0xFFFF;
 }
 
 bool HaveStage[12] = {

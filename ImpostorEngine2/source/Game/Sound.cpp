@@ -60,11 +60,11 @@ public:
         SFX_STARPOST = 0x63,
         SFX_64 = 0x64,
 		SFX_BLUEBALL = 0x65,
-        SFX_SPECIALSTAGEFLYAWAY = 0x66,
+        SFX_SPECIALSTAGE_FLYAWAY = 0x66,
         SFX_67 = 0x67,
         SFX_68 = 0x68,
         SFX_PUSHING = 0x69,
-        SFX_6A = 0x6A,
+        SFX_SPECIALSTAGE_EXIT = 0x6A,
         SFX_6B = 0x6B,
         SFX_6C = 0x6C,
         SFX_6D = 0x6D,
@@ -254,6 +254,8 @@ PUBLIC STATIC void Sound::Init() {
 	LOADSOUND(SFX_RAY_SWOOP, "Sounds/RaySwoop.wav");
 
 	LOADSOUND(SFX_BLUEBALL, "Sounds/BlueSphere.wav");
+	LOADSOUND(SFX_SPECIALSTAGE_EXIT, "Sounds/SSExit.wav");
+	LOADSOUND(SFX_SPECIALSTAGE_FLYAWAY, "Sounds/SSJettison.wav");
 
     Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
     Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);

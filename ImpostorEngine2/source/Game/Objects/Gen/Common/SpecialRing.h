@@ -21,6 +21,8 @@ public:
     int GoTimer;
     int StoredX;
     int StoredY;
+    bool Used;
+    int RingID;
     
     void Create();
     void Update();

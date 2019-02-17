@@ -739,7 +739,7 @@ void IPlayer::Update() {
 			InputJump = false;
 			InputJumpHold = status.InputJumpHold;
 
-			if (Ground || Action == ActionType::Fly || (InputUp && Character == CharacterType::Tails)) {
+			if (Ground || Action == ActionType::Fly || (InputUp && Character == CharacterType::Tails && player->Action != ActionType::Transform)) {
 				InputJump = status.InputJump;
 			}
 
@@ -2376,10 +2376,6 @@ void IPlayer::Update() {
 				}
 			}
 			else if (Character == CharacterType::Sonic) {
-				/*
-				if no shield,
-				then instashield
-				*/
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
 						if (InputDown) {
@@ -2389,11 +2385,17 @@ void IPlayer::Update() {
 						else if (!InputUp) {
 							ShieldAnimation = 8;
 							Shield = ShieldType::Instashield;
-							// Sound::Play(0x42);
+							Sound::Play(Sound::SFX_INSTASHIELD);
 						}
 						else if (!SuperForm && !HyperForm) {
 							if (Rings >= 50 && !Scene->StopTimer) {
-								DoSuperTransform();
+								if (SaveGame::GetEmeralds() == 0x3FFF) {
+									// if (Character == CharacterType::Sonic) HyperEnabled = true;
+									DoSuperTransform();
+								}
+								else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
+									DoSuperTransform();
+								}
 							}
 						}
 						ShieldUsable = false;
@@ -2430,26 +2432,16 @@ void IPlayer::Update() {
 				Action = ActionType::Fly;
 				FlyFlag = 0x8;
 				FlyTimer = FlyTimerMax;
-				/*
-				if (!SuperForm && !HyperForm) {
-					if (Rings >= 50 && !Scene->StopTimer) {
-						DoSuperTransform();
-					}
-				}
-				*/
 			}
 			else if (Character == CharacterType::Knuckles) {
-				if (!InputUp) {
-					Action = ActionType::Glide;
-					XSpeed = DisplayFlip * 0x400;
-					if (YSpeed < 0)
-						YSpeed = 0;
-				}
-				else if (!SuperForm && !HyperForm) {
-					if (Rings >= 50 && !Scene->StopTimer) {
-						DoSuperTransform();
-					}
-				}
+				Action = ActionType::Glide;
+				XSpeed = DisplayFlip * 0x400;
+				if (YSpeed < 0)
+					YSpeed = 0;
+			}
+			else if (Character == CharacterType::Mighty) {
+				XSpeed = 0;
+				YSpeed = 0x800;
 			}
 			else if (Character == CharacterType::Ray) {
 				// sub_4C8DF0

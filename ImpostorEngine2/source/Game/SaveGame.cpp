@@ -107,7 +107,19 @@ PUBLIC STATIC void SaveGame::Flush() {
     }
 }
 
+PUBLIC STATIC void SaveGame::SetUsedZoneRings(int id) {
+	SaveGame::CurrentUsedZoneRings |= 1 << id;
+
+	if (SaveGame::CurrentSaveFile == -1) return;
+	
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].UsedZoneRings[SaveGame::CurrentZoneID] = SaveGame::CurrentUsedZoneRings;
+}
+
 PUBLIC STATIC void SaveGame::SetZone(int ZID) {
+	if (SaveGame::CurrentZoneID != ZID) {
+		SaveGame::CurrentUsedZoneRings = 0x0000;
+	}
+
 	SaveGame::CurrentZoneID = ZID;
 	if (SaveGame::CurrentSaveFile == -1) return;
 
@@ -139,7 +151,7 @@ PUBLIC STATIC void SaveGame::SetEmerald(int id) {
 	SaveGame::SetEmerald(id, 1);
 }
 PUBLIC STATIC void SaveGame::SetEmerald(int id, int value) {
-	SaveGame::CurrentEmeralds = (value & 1) << id;
+	SaveGame::CurrentEmeralds |= (value & 1) << id;
 	if (SaveGame::CurrentSaveFile == -1) return;
 
 	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Emeralds = SaveGame::CurrentEmeralds;

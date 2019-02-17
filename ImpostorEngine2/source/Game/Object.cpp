@@ -21,7 +21,6 @@ void Object::DebugCreate() {
 }
 
 void Object::Update() {
-    // TODO: Do animation shit here
     MoveSprite();
     Animate();
 }
