@@ -613,8 +613,14 @@ void IPlayer::Create() {
 
 	SpriteDashDust = Scene->ExplosionSprite;
 
-	SpriteShields = new ISprite("Sprites/GlobalS3K/ShieldsOld.gif", App);
-	SpriteShields->LoadAnimation("Sprites/GlobalS3K/ShieldsOld.bin");
+	if (Thremixed) {
+		SpriteShields = new ISprite("Sprites/Global/ShieldsOld.gif", App);
+		SpriteShields->LoadAnimation("Sprites/Global/ShieldsOld.bin");
+	}
+	else {
+		SpriteShields = new ISprite("Sprites/GlobalS3K/ShieldsOld.gif", App);
+		SpriteShields->LoadAnimation("Sprites/GlobalS3K/ShieldsOld.bin");
+	}
 
 	SpriteShields2 = new ISprite("Sprites/Global/Shields.gif", App);
 	SpriteShields2->LoadAnimation("Sprites/Global/Invincible.bin");
@@ -2961,15 +2967,15 @@ void IPlayer::LateUpdate() {
 	CurrentFrame += 0x100;
 	*/
 
-	try {
-		if (animation.AnimationSpeed > 0 && animation.Frames[CurrentFrame / 0x100].Duration != 0) {
-			CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[CurrentFrame / 0x100].Duration;
-		} else if (Action == ActionType::Transform) {
-			CurrentFrame += 0x100;
-		}
-	} catch (...) {
-		App->Print(1, "Player: An unexpected exception has occured when trying to advance the current animation frame!");
-		CurrentFrame = 0;
+	int yiss = CurrentFrame / 0x100;
+	if (yiss < 0)
+		yiss = 0;
+	if (yiss > animation.FrameCount - 1)
+		yiss = animation.FrameCount - 1;
+	if (animation.AnimationSpeed > 0 && animation.Frames[yiss].Duration != 0) {
+		CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[yiss].Duration;
+	} else if (Action == ActionType::Transform) {
+		CurrentFrame += 0x100;
 	}
 
 	if (Action == ActionType::ClimbRise) {
@@ -3475,9 +3481,9 @@ void IPlayer::Render(int CamX, int CamY) {
 
 	// Draw water running waves
 	if (WaterRunning) {
-		G->DrawModeOverlay = true;
+		G->SetDrawFunc(1);
 		// G->DrawSprite(Scene->SpriteMapIDs[0x33], 17, (Scene->Frame >> 1) % Scene->SpriteMapIDs[0x33]->Animations[17].FrameCount, EZX - CamX, EZY + H / 2 - CamY, 0, XSpeed > 0 ? IE_NOFLIP : IE_FLIPX);
-		G->DrawModeOverlay = false;
+		G->SetDrawFunc(0);
 	}
 
 	// Draw shields (Behind player)
@@ -3687,7 +3693,7 @@ void IPlayer::Render(int CamX, int CamY) {
 	// Draw Invincibility stars
 	if (Invincibility == InvincibilityType::Full) {
 		int star = 0;
-		G->DrawModeOverlay = true;
+		G->SetDrawFunc(1);
 		for (int i = -5 - 8; i <= -1; i += 4) {
 			G->SetDrawAlpha(0xFF + i * 0x8);
 			PlayerStatus status = PlayerStatusTable[(PlayerStatusTableIndex + 0x20 + i) & 0x1F];
@@ -3711,7 +3717,7 @@ void IPlayer::Render(int CamX, int CamY) {
 
 			star++;
 		}
-		G->DrawModeOverlay = false;
+		G->SetDrawFunc(0);
 		G->SetDrawAlpha(0xFF);
 	}
 }

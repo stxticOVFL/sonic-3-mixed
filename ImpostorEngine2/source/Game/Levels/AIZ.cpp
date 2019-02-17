@@ -885,6 +885,12 @@ PUBLIC void Level_AIZ::Subupdate() {
 
     // Do palette stuffs
     if (Act <= 1) {
+		// TileSprite->SetPalette(0x21, G->GetRetroColor(0x4CA));
+		// TileSprite->SetPalette(0x29, G->GetRetroColor(0x2C8));
+		// TileSprite->SetPalette(0x26, G->GetRetroColor(0x0A4));
+		// TileSprite->SetPalette(0x2A, G->GetRetroColor(0x082));
+		// TileSprite->SetPalette(0x27, G->GetRetroColor(0x040));
+
         if (Frame % 8 == 0) {
             // Waterfalls
             TileSprite->RotatePaletteLeft(TileSprite->Palette + 0x2B, 4);

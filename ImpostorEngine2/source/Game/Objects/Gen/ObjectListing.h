@@ -8,7 +8,7 @@
 #include "AIZ/RideVine.h"
 #include "Common/Spring.h"
 #include "Common/Spikes.h"
-#include "AIZ/AIZTreeBark.h"
+#include "AIZ/TreeBark.h"
 #include "AIZ/RopePeg.h"
 #include "AIZ/SwingVine.h"
 #include "Common/BreakableWall.h"
@@ -16,7 +16,7 @@
 #include "Common/CollapsingBridge.h"
 #include "Common/AutomaticTunnel.h"
 #include "Common/RollEnforcer.h"
-#include "Common/InvisibleSolid.h"
+#include "Common/InvisibleBlock.h"
 #include "AIZ/DisappearingFloor.h"
 #include "CommonSpecial/CorkFloor.h"
 #include "AIZ/FlippingBridge.h"
@@ -73,7 +73,7 @@
 #include "HCZ/TurboSpiker.h"
 #include "HCZ/MegaChomper.h"
 #include "HCZ/Pointdexter.h"
-#include "HCZ/HCZ_Miniboss.h"
+#include "HCZ/HCZMiniboss.h"
 #include "CNZ/Batbright.h"
 #include "AIZ/AirshipBomb.h"
 #include "AIZ/AIZMinibossBomb.h"
@@ -87,6 +87,7 @@
 #include "CommonSpecial/TensionBridgeChild.h"
 #include "HCZ/BlastoidShot.h"
 #include "MGZ/MGZHeadTrigger_Eye.h"
+#include "Test/Platform.h"
 
 
 enum {
@@ -97,7 +98,7 @@ enum {
     Obj_RideVine = 0x006,
     Obj_Spring = 0x007,
     Obj_Spikes = 0x008,
-    Obj_AIZTreeBark = 0x009,
+    Obj_TreeBark = 0x009,
     Obj_RopePeg = 0x00A,
     Obj_SwingVine = 0x00C,
     Obj_BreakableWall = 0x00D,
@@ -105,7 +106,7 @@ enum {
     Obj_CollapsingBridge = 0x00F,
     Obj_AutomaticTunnel = 0x024,
     Obj_RollEnforcer = 0x026,
-    Obj_InvisibleSolid = 0x028,
+    Obj_InvisibleBlock = 0x028,
     Obj_DisappearingFloor = 0x029,
     Obj_CorkFloor = 0x02A,
     Obj_FlippingBridge = 0x02B,
@@ -162,7 +163,7 @@ enum {
     Obj_TurboSpiker = 0x096,
     Obj_MegaChomper = 0x097,
     Obj_Pointdexter = 0x098,
-    Obj_HCZ_Miniboss = 0x099,
+    Obj_HCZMiniboss = 0x099,
     Obj_Batbright = 0x0A5,
     Obj_AirshipBomb = 0x400,
     Obj_AIZMinibossBomb = 0x401,
@@ -176,6 +177,7 @@ enum {
     Obj_TensionBridgeChild = 0x409,
     Obj_BlastoidShot = 0x40A,
     Obj_MGZHeadTrigger_Eye = 0x40B,
+    Obj_Platform = 0x40C,
 };
 
 Object* GetNewObjectFromID(int ID);

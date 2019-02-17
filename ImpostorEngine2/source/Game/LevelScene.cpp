@@ -486,213 +486,213 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         if (ZoneID < 7) {
             ObjectName[0x00] = "Obj_Ring";
             ObjectName[0x01] = "Obj_Monitor";
-            ObjectName[0x02] = "Obj_PathSwap";
+            ObjectName[0x02] = "Obj_PlaneSwitch";
             ObjectName[0x03] = "Obj_HollowTree";
             ObjectName[0x04] = "Obj_CollapsingPlatform";
             ObjectName[0x05] = "Obj_Rock";
             ObjectName[0x06] = "Obj_RideVine";
             ObjectName[0x07] = "Obj_Spring";
             ObjectName[0x08] = "Obj_Spikes";
-            ObjectName[0x09] = "Obj_AIZTreeBark";
+            ObjectName[0x09] = "Obj_TreeBark";
             ObjectName[0x0A] = "Obj_RopePeg";
             ObjectName[0x0B] = "Obj_Ring";
             ObjectName[0x0C] = "Obj_SwingVine";
             ObjectName[0x0D] = "Obj_BreakableWall";
             ObjectName[0x0E] = "Obj_Ridge";
             ObjectName[0x0F] = "Obj_CollapsingBridge";
-            ObjectName[0x10] = "Obj_LBZ_TubeElevator";
-            ObjectName[0x11] = "Obj_LBZ_MovingPlatform";
-            ObjectName[0x12] = "Obj_LBZ_FlagPlatform"; // Unused
-            ObjectName[0x13] = "Obj_LBZ_ExplodingTrigger";
-            ObjectName[0x14] = "Obj_LBZ_TriggerBridge";
-            ObjectName[0x15] = "Obj_LBZ_PlayerLauncher";
-            ObjectName[0x16] = "Obj_LBZ_FlameThrower";
-            ObjectName[0x17] = "Obj_LBZ_RideGrapple";
-            ObjectName[0x18] = "Obj_LBZ_CupElevator";
-            ObjectName[0x19] = "Obj_LBZ_CupElevatorPole";
+            ObjectName[0x10] = "Obj_TubeElevator";
+            ObjectName[0x11] = "Obj_MovingPlatform";
+            ObjectName[0x12] = "Obj_FlagPlatform";
+            ObjectName[0x13] = "Obj_LBZExplodingTrigger";
+            ObjectName[0x14] = "Obj_TriggerBridge";
+            ObjectName[0x15] = "Obj_LBZPlayerLauncher";
+            ObjectName[0x16] = "Obj_LBZFlameThrower";
+            ObjectName[0x17] = "Obj_RideGrapple";
+            ObjectName[0x18] = "Obj_CupElevator";
+            ObjectName[0x19] = "Obj_CupElevatorPole";
             ObjectName[0x1A] = "Obj_P2RotateObject"; // Purpose unknown.
-            ObjectName[0x1B] = "Obj_LBZ_PipePlug";
+            ObjectName[0x1B] = "Obj_PipePlug";
             ObjectName[0x1C] = "Obj_Ring";
-            ObjectName[0x1D] = "Obj_LBZ_HangPlatform";
-            ObjectName[0x1E] = "Obj_LBZ_SpinLauncher";
-            ObjectName[0x1F] = "Obj_LBZ_LoweringGrapple";
-            ObjectName[0x20] = "Obj_MGZ_LBZSmashingPillar";
-            ObjectName[0x21] = "Obj_LBZ_GateLaser";
-            ObjectName[0x22] = "Obj_LBZ_Siren";
-            ObjectName[0x23] = "Obj_ContactFirceFallAnimator"; // Unused
+            ObjectName[0x1D] = "Obj_HangPlatform";
+            ObjectName[0x1E] = "Obj_SpinLauncher";
+            ObjectName[0x1F] = "Obj_LoweringGrapple";
+            ObjectName[0x20] = "Obj_SmashingPillar";
+            ObjectName[0x21] = "Obj_GateLaser";
+            ObjectName[0x22] = "Obj_Siren";
+            ObjectName[0x23] = "Obj_ContactForcePeril"; // Unused
             ObjectName[0x24] = "Obj_AutomaticTunnel";
             ObjectName[0x25] = "Obj_Ring";
             ObjectName[0x26] = "Obj_RollEnforcer";
             ObjectName[0x27] = "Obj_LavaCollisionMarker"; // Unused
-            ObjectName[0x28] = "Obj_InvisibleBarrier";
-            ObjectName[0x29] = "Obj_AIZ_DisappearingFloor";
+            ObjectName[0x28] = "Obj_InvisibleBlock";
+            ObjectName[0x29] = "Obj_DisappearingFloor";
             ObjectName[0x2A] = "Obj_CorkFloor";
-            ObjectName[0x2B] = "Obj_AIZ_FlippingBridge";
-            ObjectName[0x2C] = "Obj_AIZ_CollapsingLogBridge";
-            ObjectName[0x2D] = "Obj_AIZ_FallingLog";
-            ObjectName[0x2E] = "Obj_AIZ_SpikedLog";
-            ObjectName[0x2F] = "Obj_StillSprite";
-            ObjectName[0x30] = "Obj_AnimatedStillSprite";
-            ObjectName[0x31] = "Obj_LRZ_RotatingCylinders";
-            ObjectName[0x32] = "Obj_AIZ_DrawBridge";
+            ObjectName[0x2B] = "Obj_FlippingBridge";
+            ObjectName[0x2C] = "Obj_CollapsingLogBridge";
+            ObjectName[0x2D] = "Obj_FallingLog";
+            ObjectName[0x2E] = "Obj_SpikedLog";
+            ObjectName[0x2F] = "Obj_NonAnimSprite";
+            ObjectName[0x30] = "Obj_AnimSprite";
+            ObjectName[0x31] = "Obj_RotatingCylinder";
+            ObjectName[0x32] = "Obj_DrawBridge";
             ObjectName[0x33] = "Obj_Button";
             ObjectName[0x34] = "Obj_StarPost";
-            ObjectName[0x35] = "Obj_AIZ_ForegroundPlant";
+            ObjectName[0x35] = "Obj_ForegroundPlant";
             ObjectName[0x36] = "Obj_BreakableBar";
-            ObjectName[0x37] = "Obj_HCZ_VWaterStream";
-            ObjectName[0x38] = "Obj_HCZ_CGZ_Fan";
-            ObjectName[0x39] = "Obj_HCZ_LargeFan";
-            ObjectName[0x3A] = "Obj_HCZ_HandLauncher";
-            ObjectName[0x3B] = "Obj_HCZ_WaterWall";
+            ObjectName[0x37] = "Obj_VWaterStream";
+            ObjectName[0x38] = "Obj_Fan";
+            ObjectName[0x39] = "Obj_LargeFan";
+            ObjectName[0x3A] = "Obj_HandLauncher";
+            ObjectName[0x3B] = "Obj_WaterWall";
             ObjectName[0x3C] = "Obj_Door";
             ObjectName[0x3D] = "Obj_RetractingSpring";
-            ObjectName[0x3E] = "Obj_HCZ_ConveyorBelt";
-            ObjectName[0x3F] = "Obj_HCZ_ConveyorSpike";
-            ObjectName[0x40] = "Obj_HCZ_Block";
-            ObjectName[0x41] = "Obj_CNZ_Balloon";
-            ObjectName[0x42] = "Obj_CNZ_Cannon";
-            ObjectName[0x43] = "Obj_CNZ_RisingPlatform";
-            ObjectName[0x44] = "Obj_CNZ_TrapDoor";
-            ObjectName[0x45] = "Obj_CNZ_LightBulb";
-            ObjectName[0x46] = "Obj_CNZ_HoverFan";
-            ObjectName[0x47] = "Obj_CNZ_RotatingBarrel";
+            ObjectName[0x3E] = "Obj_ConveyorBelt";
+            ObjectName[0x3F] = "Obj_ConveyorSpike";
+            ObjectName[0x40] = "Obj_Block";
+            ObjectName[0x41] = "Obj_Balloon";
+            ObjectName[0x42] = "Obj_Cannon";
+            ObjectName[0x43] = "Obj_RisingPlatform";
+            ObjectName[0x44] = "Obj_TrapDoor";
+            ObjectName[0x45] = "Obj_LightBulb";
+            ObjectName[0x46] = "Obj_HoverFan";
+            ObjectName[0x47] = "Obj_RotatingBarrel";
             ObjectName[0x48] = "Obj_VacuumTube";
-            ObjectName[0x49] = "Obj_CNZ_RotatingWheel";
-            ObjectName[0x4A] = "Obj_CNZ_Bumper";
-            ObjectName[0x4B] = "Obj_CNZ_BouncepadSprings";
-            ObjectName[0x4C] = "Obj_CNZ_Corkscrew";
-            ObjectName[0x4D] = "Obj_CNZ_BarberPoleSprite";
-            ObjectName[0x4E] = "Obj_CNZ_RotatingMesh";
-            ObjectName[0x4F] = "Obj_MGZ_QuickMud";
-            ObjectName[0x50] = "Obj_MGZ_RunAroundPole";
+            ObjectName[0x49] = "Obj_RotatingWheel";
+            ObjectName[0x4A] = "Obj_Bumper";
+            ObjectName[0x4B] = "Obj_BouncepadSprings";
+            ObjectName[0x4C] = "Obj_Corkscrew";
+            ObjectName[0x4D] = "Obj_BarberPoleSprite";
+            ObjectName[0x4E] = "Obj_CNZRotatingMesh";
+            ObjectName[0x4F] = "Obj_QuickMud";
+            ObjectName[0x50] = "Obj_RunAroundPole";
             ObjectName[0x51] = "Obj_FloatingPlatform";
-            ObjectName[0x52] = "Obj_MGZ_LBZSmashingPillar";
-            ObjectName[0x53] = "Obj_MGZ_SwingingPlatform";
+            ObjectName[0x52] = "Obj_SmashingPillar";
+            ObjectName[0x53] = "Obj_MGZSwingingPlatform";
             ObjectName[0x54] = "Obj_Bubbler";
-            ObjectName[0x55] = "Obj_MGZ_HeadTrigger";
-            ObjectName[0x56] = "Obj_MGZ_MovingSpikePlatform";
-            ObjectName[0x57] = "Obj_MGZ_TriggerPlatform";
-            ObjectName[0x58] = "Obj_MGZ_SwingingSpikeBall";
-            ObjectName[0x59] = "Obj_MGZ_DashTrigger";
-            ObjectName[0x5A] = "Obj_MGZ_Pulley";
-            ObjectName[0x5B] = "Obj_MGZ_TopPlatform";
-            ObjectName[0x5C] = "Obj_MGZ_TopLauncher";
-            ObjectName[0x5D] = "Obj_CGZ_TriangularSprings";
-            ObjectName[0x5E] = "Obj_CGZ_BladePlatform";
+            ObjectName[0x55] = "Obj_Relief";
+            ObjectName[0x56] = "Obj_MovingSpikePlatform";
+            ObjectName[0x57] = "Obj_TriggerPlatform";
+            ObjectName[0x58] = "Obj_MGZSwingingSpikeBall";
+            ObjectName[0x59] = "Obj_DashTrigger";
+            ObjectName[0x5A] = "Obj_Pulley";
+            ObjectName[0x5B] = "Obj_TopPlatform";
+            ObjectName[0x5C] = "Obj_TopLauncher";
+            ObjectName[0x5D] = "Obj_TriangularSprings";
+            ObjectName[0x5E] = "Obj_BladePlatform";
             ObjectName[0x5F] = "Obj_RetractingSpring2P";
-            ObjectName[0x60] = "Obj_BPZ_ElephantBlock";
-            ObjectName[0x61] = "Obj_BPZ_Balloon";
-            ObjectName[0x62] = "Obj_DPZ_DisolvingSandBar";
-            ObjectName[0x63] = "Obj_DPZ_Button";
+            ObjectName[0x60] = "Obj_ElephantBlock";
+            ObjectName[0x61] = "Obj_BPZBalloon";
+            ObjectName[0x62] = "Obj_DisolvingSandBar";
+            ObjectName[0x63] = "Obj_DPZButton";
             ObjectName[0x64] = "Obj_Item2P";
             ObjectName[0x65] = "Obj_GoalMarker2P";
-            ObjectName[0x66] = "Obj_EMZ_Dripper";
-            ObjectName[0x67] = "Obj_HCZ_SnakeBlocks";
-            ObjectName[0x68] = "Obj_HCZ_SpinningColumn";
-            ObjectName[0x69] = "Obj_HCZ_Slide";
+            ObjectName[0x66] = "Obj_Dripper";
+            ObjectName[0x67] = "Obj_SnakeBlocks";
+            ObjectName[0x68] = "Obj_SpinningColumn";
+            ObjectName[0x69] = "Obj_Slide";
             ObjectName[0x6A] = "Obj_InvisibleHurtBlockHorizontal";
             ObjectName[0x6B] = "Obj_InvisibleHurtBlockVertical";
             ObjectName[0x6C] = "Obj_TensionBridge";
-            ObjectName[0x6D] = "Obj_HCZ_WaterSplash";
+            ObjectName[0x6D] = "Obj_WaterSplash";
             ObjectName[0x6E] = "Obj_WaterDrop";
-            ObjectName[0x6F] = "Obj_FBZ_RotatingMesh";
-            ObjectName[0x70] = "Obj_FBZ_TwistingCylinders";
-            ObjectName[0x71] = "Obj_FBZ_FloatingPlatform";
-            ObjectName[0x72] = "Obj_FBZ_ChainLink";
-            ObjectName[0x73] = "Obj_FBZ_MagneticSpikeBall";
-            ObjectName[0x74] = "Obj_FBZ_MagneticPlatform";
-            ObjectName[0x75] = "Obj_FBZ_SnakePlatform";
-            ObjectName[0x76] = "Obj_FBZ_BentPipe";
-            ObjectName[0x77] = "Obj_FBZ_RotatingPlatform";
-            ObjectName[0x78] = "Obj_FBZ_DEZPlayerLauncher";
-            ObjectName[0x79] = "Obj_FBZ_DisappearingPlatform";
-            ObjectName[0x7A] = "Obj_FBZ_ScrewDoor";
-            ObjectName[0x7B] = "Obj_FBZ_FanPole";
-            ObjectName[0x7C] = "Obj_FBZ_Propeller";
-            ObjectName[0x7D] = "Obj_FBZ_Piston";
-            ObjectName[0x7E] = "Obj_FBZ_PlatformBlocks";
-            ObjectName[0x7F] = "Obj_FBZ_MissileLauncher";
+            ObjectName[0x6F] = "Obj_FBZRotatingMesh"; //
+            ObjectName[0x70] = "Obj_TwistingCylinders";
+            ObjectName[0x71] = "Obj_FBZFloatingPlatform"; //
+            ObjectName[0x72] = "Obj_ChainLink";
+            ObjectName[0x73] = "Obj_MagneticSpikeBall";
+            ObjectName[0x74] = "Obj_MagneticPlatform";
+            ObjectName[0x75] = "Obj_SnakePlatform";
+            ObjectName[0x76] = "Obj_BentPipe";
+            ObjectName[0x77] = "Obj_FBZRotatingPlatform";
+            ObjectName[0x78] = "Obj_FBZDEZPlayerLauncher";
+            ObjectName[0x79] = "Obj_DisappearingPlatform";
+            ObjectName[0x7A] = "Obj_ScrewDoor";
+            ObjectName[0x7B] = "Obj_FanPole";
+            ObjectName[0x7C] = "Obj_Propeller";
+            ObjectName[0x7D] = "Obj_Piston";
+            ObjectName[0x7E] = "Obj_PlatformBlocks";
+            ObjectName[0x7F] = "Obj_MissileLauncher";
             ObjectName[0x80] = "Obj_HiddenMonitor";
             ObjectName[0x81] = "Obj_EggCapsule";
             ObjectName[0x82] = "Obj_CutsceneKnuckles";
             ObjectName[0x83] = "Obj_CutsceneButton";
-            ObjectName[0x84] = "Obj_AIZ_CutsceneSonic";
+            ObjectName[0x84] = "Obj_AIZCutsceneSonic";
             ObjectName[0x85] = "Obj_SpecialRing";
-            ObjectName[0x86] = "Obj_SS_GumballLevel";
-            ObjectName[0x87] = "Obj_SS_GumbalSideSpring";
-            ObjectName[0x88] = "Obj_CNZ_BreakableWaterRisingFloor";
-            ObjectName[0x89] = "Obj_CNZ_LightSwitch";
-            ObjectName[0x8A] = "Obj_FBZ2_CutsceneObjects";
+            ObjectName[0x86] = "Obj_GumballSetup";
+            ObjectName[0x87] = "Obj_GumballSideSpring";
+            ObjectName[0x88] = "Obj_BreakableWaterRisingFloor";
+            ObjectName[0x89] = "Obj_LightSwitch";
+            ObjectName[0x8A] = "Obj_FBZ2CutsceneObjects";
             ObjectName[0x8B] = "Obj_SpriteMasker";
-            ObjectName[0x8C] = "Obj_Tulipon";
+            ObjectName[0x8C] = "Obj_Bloominator";
             ObjectName[0x8D] = "Obj_RhinoBot";
             ObjectName[0x8E] = "Obj_MonkeyDude";
-            ObjectName[0x8F] = "Obj_CaterKillerJr";
-            ObjectName[0x90] = "Obj_AIZ_Miniboss_Cutscene";
-            ObjectName[0x91] = "Obj_AIZ_Miniboss";
-            ObjectName[0x92] = "Obj_AIZ_EndBoss";
+            ObjectName[0x8F] = "Obj_CaterkillerJr";
+            ObjectName[0x90] = "Obj_AIZMinibossCutscene";
+            ObjectName[0x91] = "Obj_AIZMiniboss";
+            ObjectName[0x92] = "Obj_AIZBoss";
             ObjectName[0x93] = "Obj_Jawz";
             ObjectName[0x94] = "Obj_Blastoid";
             ObjectName[0x95] = "Obj_Buggernaut";
             ObjectName[0x96] = "Obj_TurboSpiker";
             ObjectName[0x97] = "Obj_MegaChomper";
-            ObjectName[0x98] = "Obj_Poindexter";
-            ObjectName[0x99] = "Obj_HCZ_Miniboss";
-            ObjectName[0x9A] = "Obj_HCZ_EndBoss";
+            ObjectName[0x98] = "Obj_Pointdexter";
+            ObjectName[0x99] = "Obj_HCZMiniboss";
+            ObjectName[0x9A] = "Obj_HCZBoss";
             ObjectName[0x9B] = "Obj_BubblesBadnik";
             ObjectName[0x9C] = "Obj_Spiker";
             ObjectName[0x9D] = "Obj_Mantis";
-            ObjectName[0x9E] = "Obj_MGZ_CutsceneMiniBoss";
-            ObjectName[0x9F] = "Obj_MGZ_MiniBoss";
-            ObjectName[0xA0] = "Obj_MGZ2_DrillingEggman";
-            ObjectName[0xA1] = "Obj_MGZ_Boss";
-            ObjectName[0xA2] = "Obj_MGZ_KnucklesBoss";
+            ObjectName[0x9E] = "Obj_MGZMinibossCutscene";
+            ObjectName[0x9F] = "Obj_MGZMiniboss";
+            ObjectName[0xA0] = "Obj_MGZDrillingEggman";
+            ObjectName[0xA1] = "Obj_MGZBoss";
+            ObjectName[0xA2] = "Obj_MGZKnucklesBoss";
             ObjectName[0xA3] = "Obj_Clamer";
-            ObjectName[0xA4] = "Obj_CNZ_Blastoid";
+            ObjectName[0xA4] = "Obj_Sparkle";
             ObjectName[0xA5] = "Obj_Batbright";
-            ObjectName[0xA6] = "Obj_CNZ_Miniboss";
-            ObjectName[0xA7] = "Obj_CNZ_EndBoss";
+            ObjectName[0xA6] = "Obj_CNZMiniboss";
+            ObjectName[0xA7] = "Obj_CNZBoss";
             ObjectName[0xA8] = "Obj_Blaster";
             ObjectName[0xA9] = "Obj_TechnoSqueek";
-            ObjectName[0xAA] = "Obj_FBZ1_Boss";
-            ObjectName[0xAB] = "Obj_FBZ_Laser_Boss";
-            ObjectName[0xAC] = "Obj_FBZ_EndBoss";
+            ObjectName[0xAA] = "Obj_FBZMiniboss";
+            ObjectName[0xAB] = "Obj_FBZLaserBoss";
+            ObjectName[0xAC] = "Obj_FBZBoss";
             ObjectName[0xAD] = "Obj_Penguinator";
             ObjectName[0xAE] = "Obj_StarPointer";
-            ObjectName[0xAF] = "Obj_ICZ_CrushingColumn";
-            ObjectName[0xB0] = "Obj_ICZ_PathFollowPlatform";
-            ObjectName[0xB1] = "Obj_ICZ_BreakableWall";
-            ObjectName[0xB2] = "Obj_ICZ_Freezer";
-            ObjectName[0xB3] = "Obj_ICZ_SegmentColumn";
-            ObjectName[0xB4] = "Obj_ICZ_SwingingPlatform";
-            ObjectName[0xB5] = "Obj_ICZ_Stalagtite";
-            ObjectName[0xB6] = "Obj_ICZ_IceCube";
-            ObjectName[0xB7] = "Obj_ICZ_IceSpikes";
-            ObjectName[0xB8] = "Obj_ICZ_HarmfulIce";
-            ObjectName[0xB9] = "Obj_ICZ_SnowPile";
-            ObjectName[0xBA] = "Obj_ICZ_TensionPlatform";
-            ObjectName[0xBB] = "Obj_ICZ_RightTrampolineSupport";
-            ObjectName[0xBC] = "Obj_ICZ_Miniboss";
-            ObjectName[0xBD] = "Obj_ICZ_EndBoss";
+            ObjectName[0xAF] = "Obj_CrushingColumn";
+            ObjectName[0xB0] = "Obj_PathFollowPlatform";
+            ObjectName[0xB1] = "Obj_ICZBreakableWall";
+            ObjectName[0xB2] = "Obj_Freezer";
+            ObjectName[0xB3] = "Obj_SegmentColumn";
+            ObjectName[0xB4] = "Obj_ICZSwingingPlatform"; //
+            ObjectName[0xB5] = "Obj_Stalagtite";
+            ObjectName[0xB6] = "Obj_IceCube";
+            ObjectName[0xB7] = "Obj_IceSpikes";
+            ObjectName[0xB8] = "Obj_HarmfulIce";
+            ObjectName[0xB9] = "Obj_SnowPile";
+            ObjectName[0xBA] = "Obj_TensionPlatform";
+            ObjectName[0xBB] = "Obj_RightTrampolineSupport";
+            ObjectName[0xBC] = "Obj_ICZMiniboss";
+            ObjectName[0xBD] = "Obj_ICZBoss";
             ObjectName[0xBE] = "Obj_SnaleBlaster";
             ObjectName[0xBF] = "Obj_Ribot";
             ObjectName[0xC0] = "Obj_Orbinaut";
             ObjectName[0xC1] = "Obj_Corkey";
             ObjectName[0xC2] = "Obj_Flybot767";
-            ObjectName[0xC3] = "Obj_LRZ1_Eggman";
-            ObjectName[0xC4] = "Obj_LRZ1_MiniBoss";
-            ObjectName[0xC5] = "Obj_LRZ1_KnucklesMiniBossBox";
-            ObjectName[0xC6] = "Obj_LRZ2_EggMobile";
+            ObjectName[0xC3] = "Obj_LBZEggmanFlee";
+            ObjectName[0xC4] = "Obj_LBZMinibossBox";
+            ObjectName[0xC5] = "Obj_LBZMinibossBoxKnuckles";
+            ObjectName[0xC6] = "Obj_LRZEggMobile";
             ObjectName[0xC7] = "Obj_Ring";
-            ObjectName[0xC8] = "Obj_DeathEgg_LaunchTowers";
-            ObjectName[0xC9] = "Obj_LRZ_Miniboss";
-            ObjectName[0xCA] = "Obj_LRZFinalBoss1";
-            ObjectName[0xCB] = "Obj_LRZEndBoss";
-            ObjectName[0xCC] = "Obj_LRZFinalBoss2";
-            ObjectName[0xCD] = "Obj_LRZ2_TallBoss";
-            ObjectName[0xCE] = "Obj_FBZ_ExitDoor";
-            ObjectName[0xCF] = "Obj_FBZ_EggPrison";
-            ObjectName[0xD0] = "Obj_FBZ_SpringPlunger";
+            ObjectName[0xC8] = "Obj_LRZDeathEggLaunchTowers";
+            ObjectName[0xC9] = "Obj_LBZMiniboss";
+            ObjectName[0xCA] = "Obj_LBZBoss2";
+            ObjectName[0xCB] = "Obj_LBZBoss1";
+            ObjectName[0xCC] = "Obj_LBZBossBigArms";
+            ObjectName[0xCD] = "Obj_LBZBoss2Knuckles";
+            ObjectName[0xCE] = "Obj_FBZExitDoor";
+            ObjectName[0xCF] = "Obj_FBZEggCapsule";
+            ObjectName[0xD0] = "Obj_SpringPlunger";
             ObjectName[0xD1] = "Obj_Ring";
             ObjectName[0xD2] = "Obj_Ring";
             ObjectName[0xD3] = "Obj_Ring";
@@ -708,20 +708,20 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0xDD] = "Obj_Ring";
             ObjectName[0xDE] = "Obj_Ring";
             ObjectName[0xDF] = "Obj_Ring";
-            ObjectName[0xE0] = "Obj_FBZ_WallMissile";
-            ObjectName[0xE1] = "Obj_FBZ_Mine";
-            ObjectName[0xE2] = "Obj_FBZ_Elevator";
-            ObjectName[0xE3] = "Obj_FBZ_TrapSpring";
-            ObjectName[0xE4] = "Obj_FBZ_Flamethrower";
-            ObjectName[0xE5] = "Obj_FBZ_SpiderCrane";
-            ObjectName[0xE6] = "Obj_Pachinko_TriangleBumper";
-            ObjectName[0xE7] = "Obj_Pachinko_Flipper";
-            ObjectName[0xE8] = "Obj_Pachinko_EnergyTrap";
-            ObjectName[0xE9] = "Obj_Pachinko_InvisibleUnknown";
-            ObjectName[0xEA] = "Obj_Pachinko_Platform";
+            ObjectName[0xE0] = "Obj_WallMissile";
+            ObjectName[0xE1] = "Obj_Mine";
+            ObjectName[0xE2] = "Obj_Elevator";
+            ObjectName[0xE3] = "Obj_TrapSpring";
+            ObjectName[0xE4] = "Obj_FBZFlameThrower";
+            ObjectName[0xE5] = "Obj_SpiderCrane";
+            ObjectName[0xE6] = "Obj_PachinkoTriangleBumper";
+            ObjectName[0xE7] = "Obj_PachinkoFlipper";
+            ObjectName[0xE8] = "Obj_PachinkoEnergyTrap";
+            ObjectName[0xE9] = "Obj_PachinkoInvisibleUnknown";
+            ObjectName[0xEA] = "Obj_PachinkoPlatform";
             ObjectName[0xEB] = "Obj_GumballItem";
             ObjectName[0xEC] = "Obj_MagneticOrb";
-            ObjectName[0xED] = "Obj_Pachinko_ItemOrb";
+            ObjectName[0xED] = "Obj_PachinkoItemOrb";
             ObjectName[0xEE] = "Obj_Ring";
             ObjectName[0xEF] = "Obj_Ring";
             ObjectName[0xF0] = "Obj_Ring";
@@ -739,32 +739,32 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0xFC] = "Obj_Ring";
             ObjectName[0xFD] = "Obj_Ring";
             ObjectName[0xFE] = "Obj_Ring";
-			ObjectName[0xFF] = "Obj_FBZ_MagneticPendulum";
+			ObjectName[0xFF] = "Obj_FBZMagneticPendulum";
         }
         // If Sonic & Knuckles level...
         else if (ZoneID < 13) {
             ObjectName[0x00] = "Obj_Ring";
             ObjectName[0x01] = "Obj_Monitor";
             ObjectName[0x02] = "Obj_PathSwap";
-            ObjectName[0x03] = "Obj_MGZ_CTwistVine";
+            ObjectName[0x03] = "Obj_CTwistVine";
             ObjectName[0x04] = "Obj_CollapsingPlatform";
-            ObjectName[0x05] = "Obj_AIZ_LRZ_EMZ_Rock";
-            ObjectName[0x06] = "Obj_MHZ_PulleyLift";
+            ObjectName[0x05] = "Obj_Rock";
+            ObjectName[0x06] = "Obj_PulleyLift";
             ObjectName[0x07] = "Obj_Spring";
             ObjectName[0x08] = "Obj_Spikes";
-            ObjectName[0x09] = "Obj_MHZ_CurledVine";
-            ObjectName[0x0A] = "Obj_MHZ_StickyVine";
-            ObjectName[0x0B] = "Obj_MHZ_SwingBarHorizontal";
-            ObjectName[0x0C] = "Obj_MHZ_SwingBarVertical";
+            ObjectName[0x09] = "Obj_CurledVine";
+            ObjectName[0x0A] = "Obj_StickyVine";
+            ObjectName[0x0B] = "Obj_SwingBarHorizontal";
+            ObjectName[0x0C] = "Obj_SwingBarVertical";
             ObjectName[0x0D] = "Obj_BreakableWall";
             ObjectName[0x0E] = "Obj_Ridge";
             ObjectName[0x0F] = "Obj_CollapsingBridge";
-            ObjectName[0x10] = "Obj_MHZ_SwingVine";
-            ObjectName[0x11] = "Obj_MHZ_MushroomPlatform";
-            ObjectName[0x12] = "Obj_MHZ_MushroomParachute";
-            ObjectName[0x13] = "Obj_MHZ_MushroomCatapult";
-            ObjectName[0x14] = "Obj_MHZ_WindTunnel";
-            ObjectName[0x15] = "Obj_LRZ_VerticalCylinder";
+            ObjectName[0x10] = "Obj_MHZSwingVine";
+            ObjectName[0x11] = "Obj_MushroomPlatform";
+            ObjectName[0x12] = "Obj_MushroomParachute";
+            ObjectName[0x13] = "Obj_MushroomCatapult";
+            ObjectName[0x14] = "Obj_WindTunnel";
+            ObjectName[0x15] = "Obj_VerticalCylinder";
             ObjectName[0x16] = "Obj_LRZ_TwirlTunnel";
             ObjectName[0x17] = "Obj_LRZ_SinkingRock";
             ObjectName[0x18] = "Obj_LRZ_FallingSpike";
@@ -775,7 +775,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x1D] = "Obj_LRZ_ShootingTrigger";
             ObjectName[0x1E] = "Obj_LRZ_DashElevator";
             ObjectName[0x1F] = "Obj_LRZ_LavaFall";
-            ObjectName[0x20] = "Obj_LRZ_SwingingSpikeBall";
+            ObjectName[0x20] = "Obj_LRZSwingingSpikeBall";
             ObjectName[0x21] = "Obj_LRZ_SmashingSpikePlatform";
             ObjectName[0x22] = "Obj_LRZ_SpikeBall";
             ObjectName[0x23] = "Obj_MHZ_MushroomCap";
@@ -784,7 +784,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x26] = "Obj_RollEnforcer";
             ObjectName[0x27] = "Obj_LavaCollisionMarker";
             ObjectName[0x28] = "Obj_InvisibleBarrier";
-            ObjectName[0x29] = "Obj_LRZ_FlameThrower";
+            ObjectName[0x29] = "Obj_LRZFlameThrower";
             ObjectName[0x2A] = "Obj_CorkFloor";
             ObjectName[0x2B] = "Obj_LRZ_OrbitingSpikeBallHorizontal";
             ObjectName[0x2C] = "Obj_LRZ_OrbitingSpikeBallVertical";
@@ -796,7 +796,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x32] = "Obj_LRZ_TurbineSprites";
             ObjectName[0x33] = "Obj_Button";
             ObjectName[0x34] = "Obj_StarPost";
-            ObjectName[0x35] = "Obj_AIZ_ForegroundPlant";
+            ObjectName[0x35] = "Obj_ForegroundPlant";
             ObjectName[0x36] = "Obj_BreakableBar";
             ObjectName[0x37] = "Obj_LRZ_SpikeBallLauncher";
             ObjectName[0x38] = "Obj_SOZ_SandFalls";
@@ -808,22 +808,22 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x3E] = "Obj_SOZ_PushableRock";
             ObjectName[0x3F] = "Obj_SOZ_SpringVine";
             ObjectName[0x40] = "Obj_SOZ_RisingSandWall";
-            ObjectName[0x41] = "Obj_SOZ_LightSwitch";
+            ObjectName[0x41] = "Obj_SOZLightSwitch";
             ObjectName[0x42] = "Obj_SOZ_FloatingPillar";
-            ObjectName[0x43] = "Obj_SOZ_SwingingPlatform";
+            ObjectName[0x43] = "Obj_SOZSwingingPlatform"; //
             ObjectName[0x44] = "Obj_SOZ_BreakableSandRock";
             ObjectName[0x45] = "Obj_SOZ_PushSwitch";
             ObjectName[0x46] = "Obj_SOZ_Door";
             ObjectName[0x47] = "Obj_SOZ_SandCork";
             ObjectName[0x48] = "Obj_SOZ_RapelWire";
             ObjectName[0x49] = "Obj_SOZ_SolidSprites";
-            ObjectName[0x4A] = "Obj_DEZ_FloatingPlatform";
+            ObjectName[0x4A] = "Obj_DEZFloatingPlatform";
             ObjectName[0x4B] = "Obj_TiltingBridge";
             ObjectName[0x4C] = "Obj_DEZ_HangCarrier";
             ObjectName[0x4D] = "Obj_DEZ_TorpedoLauncher";
             ObjectName[0x4E] = "Obj_DEZ_LiftPad";
             ObjectName[0x4F] = "Obj_DEZ_Staircase";
-            ObjectName[0x50] = "Obj_DEZ_ConveyorBelt";
+            ObjectName[0x50] = "Obj_DEZConveyorBelt"; //
             ObjectName[0x51] = "Obj_FloatingPlatform";
             ObjectName[0x52] = "Obj_DEZ_Lightning";
             ObjectName[0x53] = "Obj_DEZ_ConveyorPad";
@@ -836,7 +836,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x5A] = "Obj_DEZ_TwirlTunnel";
             ObjectName[0x5B] = "Obj_DEZ_GravityReverser";
             ObjectName[0x5C] = "Obj_DEZ_TunnelJunction";
-            ObjectName[0x5D] = "Obj_DEZ_RetractingSpring";
+            ObjectName[0x5D] = "Obj_DEZRetractingSpring"; //
             ObjectName[0x5E] = "Obj_DEZ_HoverMachine";
             ObjectName[0x5F] = "Obj_DEZ_SpecialEngineController";
             ObjectName[0x60] = "Obj_DEZ_BumperWall";
@@ -859,29 +859,29 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             ObjectName[0x71] = "Obj_Ring";
             ObjectName[0x72] = "Obj_Ring";
             ObjectName[0x73] = "Obj_Ring";
-            ObjectName[0x74] = "Obj_SSZ_RetractingSpring";
+            ObjectName[0x74] = "Obj_SSZRetractingSpring"; //
             ObjectName[0x75] = "Obj_SSZ_SwingingCarrier";
-            ObjectName[0x76] = "Obj_SSZ_RotatingPlatform";
+            ObjectName[0x76] = "Obj_SSZRotatingPlatform"; //
             ObjectName[0x77] = "Obj_SSZ_RetractingBridge";
-            ObjectName[0x78] = "Obj_FBZ_DEZPlayerLauncher";
+            ObjectName[0x78] = "Obj_FBZDEZPlayerLauncher";
             ObjectName[0x79] = "Obj_SSZ_HPZTeleporter";
             ObjectName[0x7A] = "Obj_SSZ_ElevatorBar";
             ObjectName[0x7B] = "Obj_SSZ_CollapsingBridgeDiagonal";
             ObjectName[0x7C] = "Obj_SSZ_CollapsingBridge";
             ObjectName[0x7D] = "Obj_SSZ_BouncyCloud";
             ObjectName[0x7E] = "Obj_SSZ_CollapsingColumn";
-            ObjectName[0x7F] = "Obj_SSZ_FloatingPlatform";
+            ObjectName[0x7F] = "Obj_SSZFloatingPlatform";
             ObjectName[0x80] = "Obj_HiddenMonitor";
             ObjectName[0x81] = "Obj_EggCapsule";
             ObjectName[0x82] = "Obj_CutsceneKnuckles";
             ObjectName[0x83] = "Obj_CutsceneButton";
-            ObjectName[0x84] = "Obj_AIZ_CutsceneSonic";
-            ObjectName[0x85] = "Obj_SS_EntryRing";
-            ObjectName[0x86] = "Obj_SS_GumballLevel";
-            ObjectName[0x87] = "Obj_SS_GumballSideSpring";
-            ObjectName[0x88] = "Obj_CNZ_BreakableWaterRisingFloor";
-            ObjectName[0x89] = "Obj_CNZ_LightSwitch";
-            ObjectName[0x8A] = "Obj_FBZ2_CutsceneObjects";
+            ObjectName[0x84] = "Obj_AIZCutsceneSonic";
+            ObjectName[0x85] = "Obj_SpecialRing";
+            ObjectName[0x86] = "Obj_GumballSetup";
+            ObjectName[0x87] = "Obj_GumballSideSpring";
+            ObjectName[0x88] = "Obj_BreakableWaterRisingFloor";
+            ObjectName[0x89] = "Obj_LightSwitch";
+            ObjectName[0x8A] = "Obj_FBZ2CutsceneObjects";
             ObjectName[0x8B] = "Obj_SpriteMasker";
             ObjectName[0x8C] = "Obj_Madmole";
             ObjectName[0x8D] = "Obj_Mushmeanie";
@@ -1577,6 +1577,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             free(Tilesss);
         }
 
+		/*
         enum {
             OBJ_PLAYER = 9,
             OBJ_RING = 13,
@@ -1587,6 +1588,33 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             OBJ_PLANESWITCHER = 22,
             OBJ_SPECIALRING = 33,
         };
+		//*/
+
+		enum {
+			OBJ_PLAYER = 0x2E77DE70U,
+			OBJ_RING = 0x0EAA8554U,
+			OBJ_MONITOR = 0x161B7F56U, // 0xB3C47F67U
+			OBJ_SPRING = 0xDD50B0FCU,
+			OBJ_STARPOST = 0x58C873E2U,
+			OBJ_SPIKES = 0xA0E2B9BAU,
+			OBJ_PLANESWITCHER = 0x3D15927BU,
+			OBJ_SPECIALRING = 0xD06B97DFU,
+		};
+
+		enum {
+			ARG_UINT8,
+			ARG_UINT16,
+			ARG_UINT32,
+			ARG_INT8,
+			ARG_INT16,
+			ARG_INT32,
+			ARG_ENUM,
+			ARG_BOOL,
+			ARG_STRING,
+			ARG_POSITION,
+			ARG_UNKNOWN,
+			ARG_COLOR,
+		};
 
         PlaneSwitchers = (PlaneSwitch*)malloc(113 * sizeof(PlaneSwitch));
 
@@ -1614,30 +1642,19 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                     sprintf(hashString, "%s%02x", hashString, (unsigned char)str[n]);
                 }
 
+				const char* name = ObjectHashes[hashString];
+				uint32_t objHash = crc32((char*)name, strlen(name));
+
                 int ArgumentCount = reader.ReadByte();
+                int* ArgumentTypes = (int*)calloc(ArgumentCount, sizeof(int));
 
-                int ArgumentTypes[0xFF];
-                ArgumentTypes[0] = 0;
-
+				ArgumentTypes[0] = 9;
                 for (int n = 1; n < ArgumentCount; n++) {
-                    //App->Print(0, "Argument %d\n", n);
-
-                    ///*
-
-                    //App->Print(0, "IMPORTANT: Argument Hash: ");
                     char str2[17];
                     for (int n = 0; n < 16; n++) {
                         str2[n] = reader.ReadByte();
-                        //printf("%02X ", (unsigned char)str2[n]);
-                        fflush(stdout);
                     }
-                    //// printf("\n");
-                    fflush(stdout);
                     str2[16] = 0;
-                    str2[5] = str2[5];
-
-                    //*/
-
 
                     int ArgType = reader.ReadByte();
                     ArgumentTypes[n] = ArgType;
@@ -1645,160 +1662,214 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                 int EntityCount = reader.ReadUInt16();
 
+				App->Print(2, "Object Hash: %08X (%s) Count: %d", objHash, ObjectHashes[hashString], EntityCount);
 
-				if (i == OBJ_SPRING) {
-					App->Print(2, "Object #%d (%s) Hash: %s Count: %d", i, ObjectHashes[hashString], hashString, EntityCount);
+				if (objHash == OBJ_SPRING || objHash == 0xFD8527A9U) {
+					const char* ArgTypes[12] = { "Uint8", "Uint16", "Uint32", "Int8", "Int16", "Int32", "enum", "bool", "string", "position", "unknown", "color" };
 					for (int n = 0; n < ArgumentCount; n++) {
-						App->Print(0, "Argument %d type: %02X", n, ArgumentTypes[n]);
+						App->Print(0, "Argument %d type: %s", n, ArgTypes[ArgumentTypes[n]]);
 					}
 				}
-                if (i == OBJ_PLANESWITCHER)
+                if (objHash == OBJ_PLANESWITCHER)
                     PlaneSwitchCount = 0;
 
                 for (int n = 0; n < EntityCount; n++) {
-                    //int SlotID = reader.ReadUInt16();
                     reader.ReadUInt16();
 
                     unsigned int X1 = reader.ReadUInt16();
                     unsigned int X2 = reader.ReadUInt16();
                     unsigned int Y1 = reader.ReadUInt16();
                     unsigned int Y2 = reader.ReadUInt16();
-                    //App->Print(0, "Entity %d (%d) %04X %04X, %04X %04X     %d   %d\n", n, SlotID, X1, X2, Y1, Y2, PlaneSwitchCount, i);
 
                     int* args = (int*)calloc(sizeof(int), ArgumentCount);
                     if (ArgumentCount > 1) {
                         for (int a = 1; a < ArgumentCount; a++) {
                             int value = 0;
+							int UTF16_Count;
                             switch (ArgumentTypes[a]) {
-                                case 0x0: // Byte
-                                case 0x3:
-                                    value = (unsigned char)reader.ReadByte();//App->Print(0, "   Argument Value (Type: %02X): %02X\n", ArgumentTypes[a], (unsigned char)reader.ReadByte());
+                                case ARG_INT8:
+                                case ARG_UINT8:
+                                    value = (unsigned char)reader.ReadByte();
                                     break;
-                                case 0x1:
-                                case 0x4:
-                                    value = (unsigned short)reader.ReadUInt16();//App->Print(0, "   Argument Value (Type: %02X): %04X\n", ArgumentTypes[a], (unsigned short)reader.ReadUInt16());
+                                case ARG_INT16:
+                                case ARG_UINT16:
+                                    value = (unsigned short)reader.ReadUInt16();
                                     break;
-                                case 0x2:
-                                case 0x5:
-                                case 0x6: // Var
-                                case 0x7: // Bool
-                                case 0xB: // Color (Uint32)
-                                    value = (unsigned int)reader.ReadUInt32();//App->Print(0, "   Argument Value (Type: %02X): %08X\n", ArgumentTypes[a], (unsigned int)reader.ReadUInt32());
-                                    break;
-                                case 0x8: {
-                                    int WordCount = reader.ReadUInt16();
-                                    //App->Print(0, "   Argument Value (Type: %02X): %04X\n", ArgumentTypes[a], WordCount);
-                                    for (int wc = 0; wc < WordCount; wc++) {
-                                        reader.ReadUInt16();//App->Print(0, "      Value (Type: %02X): %04X\n", ArgumentTypes[a], (unsigned short)reader.ReadUInt16());
-                                    }
-                                }
-                                    break;
-                                case 0x9:
+								case ARG_ENUM:
+								case ARG_BOOL:
+								case ARG_COLOR:
+                                case ARG_INT32:
+                                case ARG_UINT32:
                                     value = (unsigned int)reader.ReadUInt32();
-            						reader.ReadUInt32();//App->Print(0, "   Argument Value (Type: %02X): %08X %08X\n", ArgumentTypes[a], (unsigned int)reader.ReadUInt32(), (unsigned int)reader.ReadUInt32());
+                                    break;
+                                case ARG_STRING:
+                                    UTF16_Count = reader.ReadUInt16();
+                                    for (int wc = 0; wc < UTF16_Count; wc++) {
+                                        reader.ReadUInt16();
+                                    }
+                                    break;
+                                case ARG_POSITION:
+                                    value  = (unsigned int)reader.ReadUInt32();
+            						value |= reader.ReadUInt32() >> 16;
                                     break;
                             }
                             args[a - 1] = value;
                         }
                     }
 
-                    if (i == OBJ_PLANESWITCHER) {
-                        PlaneSwitchers[PlaneSwitchCount].X = X2 + (X1 >> 16);
-                        PlaneSwitchers[PlaneSwitchCount].Y = Y2 + (Y1 >> 16);
+					switch (objHash) {
+						case OBJ_PLANESWITCHER:
+							PlaneSwitchers[PlaneSwitchCount].X = X2 + (X1 >> 16);
+							PlaneSwitchers[PlaneSwitchCount].Y = Y2 + (Y1 >> 16);
 
-                        PlaneSwitchers[PlaneSwitchCount].Flags = args[0];
-                        PlaneSwitchers[PlaneSwitchCount].Size = args[1];
-                        PlaneSwitchers[PlaneSwitchCount].Angle = args[2];
-                        PlaneSwitchers[PlaneSwitchCount].OnPath = args[3] == 1;
-                        PlaneSwitchCount++;
-                    }
-                    else if (i == OBJ_PLAYER && args[0] == CharacterFlag) {
-                        PlayerStartX = X2 + (X1 >> 16);
-                        PlayerStartY = Y2 + (Y1 >> 16) - 4;
-                    }
-                    else if (i == OBJ_SPRING) {
-                        int ID = 0x07;
-                        int X = X2;
-                        int Y = Y2;
-                        int SubType = 0x00;
-                        if ((args[0] & 0x1) == 0)
-                            SubType |= 0x02;
-
-						int ttty = args[0] >> 1 & 0x3;
-                        bool FLIPX = (args[1] >> 0) & 1;
-                        bool FLIPY = (args[1] >> 1) & 1;
-                        bool PRIORITY = false;
-
-						if (ttty == 0) {
-							if (FLIPY)
-								SubType |= 0x20;
-							else
-								SubType |= 0x0;
+							PlaneSwitchers[PlaneSwitchCount].Flags = args[0];
+							PlaneSwitchers[PlaneSwitchCount].Size = args[1];
+							PlaneSwitchers[PlaneSwitchCount].Angle = args[2];
+							PlaneSwitchers[PlaneSwitchCount].OnPath = args[3] == 1;
+							PlaneSwitchCount++;
+							break;
+						case OBJ_PLAYER:
+						{
+							if (args[0] == CharacterFlag) {
+								PlayerStartX = X2 + (X1 >> 16);
+								PlayerStartY = Y2 + (Y1 >> 16) - 4;
+							}
+							break;
 						}
-						else if (ttty == 1) {
-							SubType |= 0x10;
+						case OBJ_SPRING:
+						{
+							int ID = 0x07;
+							int X = X2;
+							int Y = Y2;
+							int SubType = 0x00;
+							if ((args[0] & 0x1) == 0)
+								SubType |= 0x02;
+
+							int ttty = args[0] >> 1 & 0x3;
+							bool FLIPX = (args[1] >> 0) & 1;
+							bool FLIPY = (args[1] >> 1) & 1;
+							bool PRIORITY = false;
+
+							if (ttty == 0) {
+								if (FLIPY)
+									SubType |= 0x20;
+								else
+									SubType |= 0x0;
+							}
+							else if (ttty == 1) {
+								SubType |= 0x10;
+							}
+							else if (ttty == 2) {
+								if (!FLIPY)
+									SubType |= 0x30;
+								else
+									SubType |= 0x40;
+							}
+
+							ADD_OBJECT();
+							break;
 						}
-						else if (ttty == 2) {
-							if (!FLIPY)
-								SubType |= 0x30;
-							else
+						case OBJ_SPECIALRING:
+						{
+							int ID = 0x85;
+							int X = X2;
+							int Y = Y2;
+							int SubType = args[0];
+							bool FLIPX = false;
+							bool FLIPY = false;
+							bool PRIORITY = false;
+
+							ADD_OBJECT();
+							break;
+						}
+						case OBJ_SPIKES:
+						{
+							int ID = 0x08;
+							int X = X2;
+							int Y = Y2;
+							int SubType = 0x00;
+							bool FLIPX = false;
+							bool FLIPY = false;
+							bool PRIORITY = false;
+
+							if (args[1] == 1)
+								SubType |= 0x02;
+							if (args[0] == 2) {
 								SubType |= 0x40;
+								FLIPX = true;
+							}
+
+							ADD_OBJECT();
+							break;
+						}
+						case OBJ_STARPOST:
+						{
+							int ID = Obj_StarPost;
+							int X = X2;
+							int Y = Y2;
+							int SubType = args[0];
+
+							bool FLIPX = false;
+							bool FLIPY = false;
+							bool PRIORITY = false;
+
+							ADD_OBJECT();
+							break;
+						}
+						case OBJ_RING:
+						{
+							ObjectProp op;
+							op.X = X2;
+							op.Y = Y2;
+							op.ID = 0xFF;
+							op.LoadFlag = true;
+
+							RingProps[RingPropCount++] = op;
+							break;
 						}
 
-                        ADD_OBJECT();
-                    }
-                    else if (i == OBJ_SPECIALRING) {
-                        int ID = 0x85;
-                        int X = X2;
-                        int Y = Y2;
-                        int SubType = args[0];
-                        bool FLIPX = false;
-                        bool FLIPY = false;
-                        bool PRIORITY = false;
+						case OBJ_MONITOR:
+							objHash = 0xB3C47F67U;
+						default:
+							Object* obj = GetNewObjectFromCRC32(objHash);
+							if (obj) {
+								if (objHash != 0xA5066DF4U &&
+									objHash != 0xB3C47F67U) {
+									IApp::Print(1, "Unimplemented object: %s", name);
+									break;
+								}
 
-                        ADD_OBJECT();
-                    }
-                    else if (i == OBJ_SPIKES) {
-                        int ID = 0x08;
-                        int X = X2;
-                        int Y = Y2;
-                        int SubType = 0x00;
-                        bool FLIPX = false;
-                        bool FLIPY = false;
-                        bool PRIORITY = false;
+								obj->X = X2;
+								obj->Y = Y2;
+								obj->G = G;
+								obj->App = App;
+								obj->Scene = this;
+								obj->InitialX = X2;
+								obj->InitialY = Y2;
+								obj->FlipX = false;
+								obj->FlipY = false;
+								obj->ID = 0;
+								//while (!SpriteMapIDs[ID])
+									//ID--;
+								//obj->Sprite = SpriteMapIDs[ID];
 
-                        if (args[1] == 1)
-                            SubType |= 0x02;
-                        if (args[0] == 2) {
-                            SubType |= 0x40;
-                            FLIPX = true;
-                        }
+								if (objHash == 0xB3C47F67U) {
+									obj->Sprite = ItemsSprite;
+								}
 
-                        ADD_OBJECT();
-                    }
-                    else if (i == OBJ_STARPOLE) {
-                        int ID = Obj_StarPost;
-                        int X = X2;
-                        int Y = Y2;
-                        int SubType = args[0];
+								obj->Attributes = (int*)calloc(ArgumentCount, sizeof(int));
+								memcpy(obj->Attributes, args, ArgumentCount * sizeof(int));
 
-                        bool FLIPX = false;
-                        bool FLIPY = false;
-                        bool PRIORITY = false;
+								Objects[ObjectCount++] = obj;
+							}
+							break;
+					}
 
-                        ADD_OBJECT();
-                    }
-                    else if (i == OBJ_RING) {
-                        ObjectProp op;
-                        op.X = X2;
-                        op.Y = Y2;
-                        op.ID = 0xFF;
-                        op.LoadFlag = true;
-
-                        RingProps[RingPropCount++] = op;
-                    }
+					free(args);
                 }
-            }
+
+				free(ArgumentTypes);
+			}
         }
         // ImpostorEngine2-type Loading
         else if ((mag >> 24) == 'U') {
@@ -2068,9 +2139,20 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             }
 
             // Read palette
+			TileSprite->PaletteSize = 0x100;
             int pp = 0;
             for (int i = 0; i < 8; i++) {
+				IApp::Print(0, "yup: %X", pp);
+				int ii = 0;
                 int bitmap = stageReader.ReadUInt16();
+
+				int size = 0;
+				for (int col = 0; col < 16; col++) {
+					if ((bitmap & (1 << col)) != 0) {
+						size += 0x10;
+					}
+				}
+				IApp::Print(0, "size: %X", size);
                 for (int col = 0; col < 16; col++) {
                     if ((bitmap & (1 << col)) != 0) {
                         for (int d = 0; d < 16; d++) {
@@ -2078,15 +2160,20 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                             uint8_t G = stageReader.ReadByte();
                             uint8_t B = stageReader.ReadByte();
 
-                            if (i >= 0) {
-                                if (pp < 256)
-                                    TileSprite->SetPaletteAlt(pp, R << 16 | G << 8 | B);
-                                pp++;
-                            }
+							if (i == 3) {
+								TileSprite->SetPalette(ii + 0x80, R << 16 | G << 8 | B);
+							}
+							if (i >= 3) {
+								TileSprite->SetPaletteAlt(pp - 0x40, R << 16 | G << 8 | B);
+							}
+
+                            pp++;
+							ii++;
                         }
                     }
                 }
             }
+			TileSprite->UpdatePalette();
 
             /*
             FILE* f;
@@ -3700,7 +3787,7 @@ PUBLIC void LevelScene::Update() {
         }
         FadeTimer = -1;
     }
-    
+
     CleanupObjects();
 }
 
@@ -3891,39 +3978,39 @@ PUBLIC void LevelScene::AddSelfToRegistry(Object* obj, const char* where) {
 
 PUBLIC void LevelScene::CleanupObjects() {
     // Clean up any un-needed Objects.
-    
+
     Object** RefreshObjects = (Object**)calloc(2000, sizeof(Object*));
     int NewObjectCount = 0;
     int NewerObjectNewCount = ObjectNewCount;
-    
+
     Object** RefreshObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
     int NewObjectSolidCount = 0;
-    
+
     Object** RefreshObjectsSpring = (Object**)calloc(100, sizeof(Object*));
     int NewObjectSpringCount = 0;
-    
+
     Enemy** RefreshObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
     int NewObjectEnemiesCount = 0;
-    
+
     Object** RefreshObjectsBreakable = (Object**)calloc(100, sizeof(Object*));
     int NewObjectBreakableCount = 0;
-    
+
     Object** UnrefreshedObjects = Objects;
     int OldObjectCount = ObjectCount;
     int OldObjectNewCount = ObjectNewCount;
-    
+
     Object** UnrefreshedObjectsSolid = ObjectsSolid;
     int OldObjectSolidCount = ObjectSolidCount;
-    
+
     Object** UnrefreshedObjectsSpring = ObjectsSpring;
     int OldObjectSpringCount = ObjectSpringCount;
-    
+
     Enemy** UnrefreshedObjectsEnemies = ObjectsEnemies;
     int OldObjectEnemiesCount = ObjectEnemiesCount;
 
     Object** UnrefreshedObjectsBreakable = ObjectsBreakable;
     int OldObjectBreakableCount = ObjectBreakableCount;
-    
+
     for (int i = 0; i < ObjectCount; i++) {
         if (Objects[i] == nullptr) {
             continue;
@@ -3934,7 +4021,7 @@ PUBLIC void LevelScene::CleanupObjects() {
         RefreshObjects[NewObjectCount] = Objects[i];
         NewObjectCount++;
     }
-    
+
     for (int i = 0; i < ObjectSolidCount; i++) {
         if (ObjectsSolid[i] == nullptr) {
             continue;
@@ -3944,7 +4031,7 @@ PUBLIC void LevelScene::CleanupObjects() {
         RefreshObjectsSolid[NewObjectSolidCount] = ObjectsSolid[i];
         NewObjectSolidCount++;
     }
-    
+
     for (int i = 0; i < ObjectSpringCount; i++) {
         if (ObjectsSpring[i] == nullptr) {
             continue;
@@ -3954,7 +4041,7 @@ PUBLIC void LevelScene::CleanupObjects() {
         RefreshObjectsSpring[NewObjectSpringCount] = ObjectsSpring[i];
         NewObjectSpringCount++;
     }
-    
+
     for (int i = 0; i < ObjectEnemiesCount; i++) {
         if (ObjectsEnemies[i] == nullptr) {
             continue;
@@ -3964,7 +4051,7 @@ PUBLIC void LevelScene::CleanupObjects() {
         RefreshObjectsEnemies[NewObjectEnemiesCount] = ObjectsEnemies[i];
         NewObjectEnemiesCount++;
     }
-    
+
     for (int i = 0; i < ObjectBreakableCount; i++) {
         if (ObjectsBreakable[i] == nullptr) {
             continue;
@@ -3974,23 +4061,23 @@ PUBLIC void LevelScene::CleanupObjects() {
         RefreshObjectsBreakable[NewObjectBreakableCount] = ObjectsBreakable[i];
         NewObjectBreakableCount++;
     }
-    
+
     Objects = RefreshObjects;
     ObjectCount = NewObjectCount;
     ObjectNewCount = NewerObjectNewCount;
-    
+
     ObjectsSolid = RefreshObjectsSolid;
     ObjectSolidCount = NewObjectSolidCount;
-    
+
     ObjectsSpring = RefreshObjectsSpring;
     ObjectSpringCount = NewObjectSpringCount;
-    
+
     ObjectsEnemies = RefreshObjectsEnemies;
     ObjectEnemiesCount = NewObjectEnemiesCount;
-    
+
     ObjectsBreakable = RefreshObjectsBreakable;
     ObjectBreakableCount = NewObjectBreakableCount;
-    
+
 	for (int i = 0; i < OldObjectCount; i++) {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
@@ -4000,7 +4087,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			UnrefreshedObjects[i] = nullptr;
 		}
 	}
-    
+
 	for (int i = 0; i < OldObjectSolidCount; i++) {
 		if (UnrefreshedObjectsSolid[i] == nullptr) {
 			continue;
@@ -4010,7 +4097,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			UnrefreshedObjectsSolid[i] = nullptr;
 		}
 	}
-    
+
     for (int i = 0; i < OldObjectSpringCount; i++) {
 		if (UnrefreshedObjectsSpring[i] == nullptr) {
 			continue;
@@ -4020,7 +4107,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			UnrefreshedObjectsSpring[i] = nullptr;
 		}
 	}
-    
+
     for (int i = 0; i < OldObjectEnemiesCount; i++) {
 		if (UnrefreshedObjectsEnemies[i] == nullptr) {
 			continue;
@@ -4030,7 +4117,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			UnrefreshedObjectsEnemies[i] = nullptr;
 		}
 	}
-    
+
 	for (int i = 0; i < OldObjectBreakableCount; i++) {
 		if (UnrefreshedObjectsBreakable[i] == nullptr) {
 			continue;
@@ -4040,7 +4127,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			UnrefreshedObjectsBreakable[i] = nullptr;
 		}
 	}
-    
+
     free(UnrefreshedObjects);
     free(UnrefreshedObjectsSolid);
     free(UnrefreshedObjectsSpring);
@@ -4143,7 +4230,7 @@ PUBLIC void LevelScene::RenderHUD() {
     } else {
         value = Player->Rings;
     }
-    
+
     for (int i = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
         G->DrawSprite(GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 44 + 14, 0, IE_NOFLIP);
         value /= 10;
@@ -4751,7 +4838,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 											G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
 										}
 									}
-								} 
+								}
 								else if (Player->Layer == 1 && (colTypeB & 1)) {
 									if (Data->tiles2[tile].HasCollision[c]) {
 										uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
@@ -4769,7 +4856,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 							int mx = App->Input->MouseX;
 							int my = App->Input->MouseY;
 							if (mx >= baseX && my >= baseY && mx < baseX + 16 && my < baseY + 16) {
-								
+
 							}
 						}
 					}
@@ -4795,7 +4882,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		//*/
 
         G->DoDeform = DeformObjects;
-        
+
 
         // Rendering objects
         for (int i = 0; i < ObjectCount; i++) {
@@ -4854,7 +4941,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     }
 
     RenderHUD();
-    
+
     if (!ViewPlayerUpdateStats && !maxLayer) {
         int Y = 0;
         char tempStr[256];

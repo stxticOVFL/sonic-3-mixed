@@ -418,9 +418,10 @@ public:
     
     void *Parent = NULL;
 
-    uint32_t InitialX;
-    uint32_t InitialY;
+    uint32_t  InitialX;
+    uint32_t  InitialY;
     uint32_t* InitialValues;
+	int*      Attributes = NULL;
 
     int32_t  SubX = 0;
     int32_t  SubY = 0;

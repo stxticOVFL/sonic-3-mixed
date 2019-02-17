@@ -23,11 +23,13 @@ public:
         TYPE_SHIELD_BUBBLE = 7,
         TYPE_SPEED_SHOES = 4,
         TYPE_SHIELD_LIGHTNING = 6,
+        TYPE_SHIELD = 13,
         TYPE_INVINCIBILITY = 8,
         TYPE_SUPER = 9,
         TYPE_BROKEN = 10,
         TYPE_HYPER = 11,
         TYPE_HYPER_RING = 12,
+        END_LIST_DONT_MOVE = 14,
     };
     
     int SubY;
