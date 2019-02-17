@@ -3331,8 +3331,7 @@ PUBLIC void LevelScene::Update() {
     			Player->EZX += (Player->InputRight) * (Player->GroundSpeed >> 8);
     			Player->EZY -= (Player->InputUp) * (Player->GroundSpeed >> 8);
     			Player->EZY += (Player->InputDown) * (Player->GroundSpeed >> 8);
-            }
-            else {
+            } else {
                 Player->EZX -= App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED];
     			Player->EZX += App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED];
     			Player->EZY -= App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED];
@@ -3342,10 +3341,13 @@ PUBLIC void LevelScene::Update() {
 			Player->DisplayX = Player->EZX;
 			Player->DisplayY = Player->EZY;
 
-			if (Player->DebugObject) {
+			if (Player->DebugObject != nullptr && Player->DebugObject->OnScreen) {
 				Player->DebugObject->X = Player->DisplayX;
 				Player->DebugObject->Y = Player->DisplayY;
-			}
+			} else if (Player->Hidden) {
+                Player->Hidden = false;
+                Player->DebugObjectIndex = -1;
+            }
 
             int16_t DebugObjectIDList[2] = {0x01, 0x07};
             const int32_t DebugObjectIDListLength = 2;
@@ -3392,7 +3394,7 @@ PUBLIC void LevelScene::Update() {
 			}
 
             if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
-				if (Player->DebugObject) {
+				if (Player->DebugObject && Player->DebugObject->OnScreen) {
 					uint8_t oldSubType = Player->DebugObject->SubType;
 
 					Player->DebugObject->isHeldDebugObject = false;
@@ -4026,8 +4028,8 @@ PUBLIC void LevelScene::CleanupObjects() {
     for (int i = 0; i < ObjectCount; i++) {
         if (Objects[i] == nullptr) {
             continue;
-        } else if (!Objects[i]->Active && i >= ObjectCount + ObjectNewCount) {
-            NewerObjectNewCount--;
+        } else if (!Objects[i]->Active && Objects[i]->isDebugModeObject) {
+            //NewerObjectNewCount--;
             continue;
         }
         RefreshObjects[NewObjectCount] = Objects[i];
@@ -4094,7 +4096,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjects[i]->Active && i >= OldObjectCount + OldObjectNewCount) {
+		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->isDebugModeObject) {
 			delete UnrefreshedObjects[i];
 			UnrefreshedObjects[i] = nullptr;
 		}

@@ -189,7 +189,7 @@ public:
     int TurnValue = 5;
     int AnimationSpeedMult = 1;
 
-	bool Thremixed = false;
+	bool Thremixed = true;
 	bool OCMode = false;
 
     int SensorA = 20;
