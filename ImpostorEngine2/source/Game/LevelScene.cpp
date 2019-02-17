@@ -4915,8 +4915,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 									h2 = 15 - h2;
 								}
 
+								// Yellow - Tiles that are solid from the top. Used for platforms.
+							    // Red - Tiles that are solid from the bottom and sides. Usually for walls and ceilings.
+								// White - Tiles that are solid all over. Usually for the ground.
+
 								if (Player->Layer == 0 && (colTypeA & 1)) {
-									uint32_t col = colTypeA == 3 ? 0 : colTypeA == 2 ? 0xFFFF00 : 0xFFFFFF;
+									//uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
+									uint32_t col = colTypeA == 3 ? 0xFFFFFF : colTypeA == 2 ? 0xFF0000 : 0xFFFF00;
 
 									if (Data->tiles1[tile].HasCollision[c]) {
 										if (Data->tiles1[tile].IsCeiling ^ flipY) {
@@ -4929,7 +4934,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 								}
 								else if (Player->Layer == 1 && (colTypeB & 1)) {
 									if (Data->tiles2[tile].HasCollision[c]) {
-										uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
+										uint32_t col = colTypeA == 3 ? 0xFFFFFF : colTypeA == 2 ? 0xFF0000 : 0xFFFF00;
 
 										if (Data->tiles2[tile].IsCeiling ^ flipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
