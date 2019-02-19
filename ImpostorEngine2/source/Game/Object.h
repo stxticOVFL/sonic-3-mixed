@@ -452,9 +452,12 @@ public:
     bool     Active = false;
     bool     Priority = false;
     bool     OnScreen = false;
+	bool     DrawCollisions = false;
     bool     CleanupInactiveObject = false;
 	bool     Visible = true;
     int      VisualLayer = 0;
+    uint32_t DrawCollisionsColor = 0x49ED80; // Green
+    uint32_t DrawNoCollisionsColor = 0xCC53D1; // Violet?
 
     bool     AutoAnimate = false;
     int      CurrentAnimation = -1;
@@ -528,7 +531,7 @@ public:
 	int16_t DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
     void MoveSprite();
     void MoveWithParent();
-    int  Swing_UpAndDown();
+    int Swing_UpAndDown();
 };
 
 class Enemy : public Object {

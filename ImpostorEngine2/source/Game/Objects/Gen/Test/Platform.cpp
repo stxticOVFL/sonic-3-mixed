@@ -62,7 +62,12 @@ void Platform::Update() {
 }
 
 void Platform::Render(int CamX, int CamY) {
-    G->DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
+    }
     }
 
 int Platform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

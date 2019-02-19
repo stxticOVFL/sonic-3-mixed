@@ -84,7 +84,11 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
+    }
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

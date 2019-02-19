@@ -153,9 +153,13 @@ event Render(CamX:int, CamY:int) {
 
     if (Frame == 3)
         Flip = -Flip;
-    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
-    if (Frame == 2)
-        G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
-    if (Timer != -1)
-        G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    if (DrawCollisions) {
+        G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    } else {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
+        if (Frame == 2)
+            G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+        if (Timer != -1)
+            G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    }
 }

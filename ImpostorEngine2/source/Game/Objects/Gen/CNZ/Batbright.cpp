@@ -79,6 +79,11 @@ int Batbright::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 }
 
 void Batbright::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
     }
 

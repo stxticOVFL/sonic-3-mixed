@@ -4926,20 +4926,17 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 									if (Data->tiles1[tile].HasCollision[c]) {
 										if (Data->tiles1[tile].IsCeiling ^ flipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
 										}
 									}
-								}
-								else if (Player->Layer == 1 && (colTypeB & 1)) {
+								} else if (Player->Layer == 1 && (colTypeB & 1)) {
 									if (Data->tiles2[tile].HasCollision[c]) {
 										uint32_t col = colTypeA == 3 ? 0xFFFFFF : colTypeA == 2 ? 0xFF0000 : 0xFFFF00;
 
 										if (Data->tiles2[tile].IsCeiling ^ flipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
 										}
 									}

@@ -83,6 +83,10 @@ event Render(CamX:int, CamY:int) {
             Subframe = 3;
         }
     }
-
-    G.DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
 }

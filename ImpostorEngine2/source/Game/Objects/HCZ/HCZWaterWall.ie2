@@ -12,7 +12,9 @@ event Create() {
     this.VisualLayer = 1;
 }
 event Render(CamX:int, CamY:int) {
-    //G.DrawRectangle(this.X - this.W / 2 - CamX, this.Y - this.H / 2 - CamY, this.W, this.H, 0xFFFFFF);
+	if (DrawCollisions) {
+		G.DrawRectangle(this.X - this.W / 2 - CamX, this.Y - this.H / 2 - CamY, this.W, this.H, 0xFFFFFF);
+	}
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

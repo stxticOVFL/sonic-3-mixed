@@ -206,7 +206,7 @@ event Render(CamX:int, CamY:int) {
     if (!Solid) return;
 
     DrawAIZ(CamX, CamY);
-    // DrawMGZ(CamX, CamY);
+    //DrawMGZ(CamX, CamY);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

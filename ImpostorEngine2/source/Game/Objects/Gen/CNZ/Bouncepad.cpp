@@ -11,6 +11,8 @@ void Bouncepad::Create() {
     Priority = true;
     W = (SubType & 0xF0) << 1;
     H = 16;
+    VisW = (SubType & 0xF0) << 1;
+    VisH = 16;
 }
 
 int Bouncepad::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
@@ -28,4 +30,11 @@ int Bouncepad::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     Sound::Play(Sound::SFX_PAD_BOUNCE);
     return 1;
 }
+
+void Bouncepad::Render(int CamX, int CamY) {
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+
+    }
 

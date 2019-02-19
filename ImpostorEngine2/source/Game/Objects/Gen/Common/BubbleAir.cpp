@@ -38,7 +38,16 @@ int BubbleAir::OnLeaveScreen() {
 }
 
 void BubbleAir::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        if (CurrentAnimation != 3) return;
+
+        if (Frame < 13) return;
+
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
     }
 
 int BubbleAir::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

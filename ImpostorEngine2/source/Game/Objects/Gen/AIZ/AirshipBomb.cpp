@@ -59,6 +59,11 @@ void AirshipBomb::Update() {
 void AirshipBomb::Render(int CamX, int CamY) {
     X = Scene->Signal[6] + InitialX + CamX;
     Y = Scene->Signal[7] + (WeY >> 16) + CamY;
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
     }
 

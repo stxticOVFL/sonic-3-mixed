@@ -6,6 +6,8 @@ event Create() {
 
 	W = (SubType & 0xF0) << 1;
 	H = 16;
+    VisW = (SubType & 0xF0) << 1;
+    VisH = 16;
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
@@ -44,4 +46,15 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 
     Sound.Play(Sound.SFX_PAD_BOUNCE);
     return 1;
+}
+
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	}
+    /*
+    else {
+		G.DrawSprite(Sprite, 0, Frame, X - CamX, Y - CamY, Rotation, FlipX | FlipY << 1);
+    }
+    */
 }

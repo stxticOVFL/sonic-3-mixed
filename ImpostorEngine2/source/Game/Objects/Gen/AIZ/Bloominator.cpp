@@ -85,6 +85,11 @@ void Bloominator::Render(int CamX, int CamY) {
 
     }
 
-    G->DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
     }
 
