@@ -42,64 +42,133 @@ class IGenesisPseudoRegister {
             return (int32_t)pseudoRegister; 
         }
 
-		inline uint8_t operator=(const uint8_t& other)
-		{
+		inline int64_t operator+() {
+			return +pseudoRegister;
+		}
+
+		inline int64_t operator-() {
+			return -pseudoRegister;
+		}
+
+		inline int64_t operator~() {
+			return ~pseudoRegister;
+		}
+
+		inline uint32_t operator+(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister + other);
+		}
+		inline int32_t operator+(const int32_t& other) {
+			return (int32_t)(pseudoRegister + other);
+		}
+
+		inline uint32_t operator-(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister - other);
+		}
+		inline int32_t operator-(const int32_t& other) {
+			return (int32_t)(pseudoRegister - other);
+		}
+
+		inline uint32_t operator*(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister * other);
+		}
+		inline int32_t operator*(const int32_t& other) {
+			return (int32_t)(pseudoRegister * other);
+		}
+
+		inline uint32_t operator/(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister / other);
+		}
+		inline int32_t operator/(const int32_t& other) {
+			return (int32_t)(pseudoRegister / other);
+		}
+
+		inline uint32_t operator%(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister % other);
+		}
+		inline int32_t operator%(const int32_t& other) {
+			return (int32_t)(pseudoRegister % other);
+		}
+
+		inline uint32_t operator&(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister & other);
+		}
+		inline int32_t operator&(const int32_t& other) {
+			return (int32_t)(pseudoRegister & other);
+		}
+
+		inline uint32_t operator|(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister | other);
+		}
+		inline int32_t operator|(const int32_t& other) {
+			return (int32_t)(pseudoRegister | other);
+		}
+
+		inline uint32_t operator^(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister ^ other);
+		}
+		inline int32_t operator^(const int32_t& other) {
+			return (int32_t)(pseudoRegister ^ other);
+		}
+
+		inline uint32_t operator<<(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister << other);
+		}
+		inline int32_t operator<<(const int32_t& other) {
+			return (int32_t)(pseudoRegister << other);
+		}
+
+		inline uint32_t operator>>(const uint32_t& other) {
+			return (uint32_t)(pseudoRegister >> other);
+		}
+		inline int32_t operator>>(const int32_t& other) {
+			return (int32_t)(pseudoRegister >> other);
+		}
+
+		inline uint8_t operator=(const uint8_t& other) {
 			if (pseudoRegister != other) {
 				pseudoRegister = (uint32_t)other;
 			}
 			return (uint8_t)pseudoRegister;
 		}
-
-		inline uint16_t operator=(const uint16_t& other)
-		{
+		inline uint16_t operator=(const uint16_t& other) {
 			if (pseudoRegister != other) {
 				pseudoRegister = (uint32_t)other;
 			}
 			return (uint16_t)pseudoRegister;
 		}
-        
-        inline uint32_t operator=(const uint32_t& other)
-        {
+        inline uint32_t operator=(const uint32_t& other) {
             if (pseudoRegister != other) { 
                 pseudoRegister = other;
             }
             return (uint32_t)pseudoRegister;
         }
 
-		inline int8_t operator=(const int8_t& other)
-		{
+		inline int8_t operator=(const int8_t& other) {
 			if (pseudoRegister != other) {
 				pseudoRegister = other;
 			}
 			return (int8_t)pseudoRegister;
 		}
-
-		inline int16_t operator=(const int16_t& other)
-		{
+		inline int16_t operator=(const int16_t& other) {
 			if (pseudoRegister != other) {
 				pseudoRegister = other;
 			}
 			return (int16_t)pseudoRegister;
 		}
-
-		inline int32_t operator=(const int32_t& other)
-		{
+		inline int32_t operator=(const int32_t& other) {
 			if (pseudoRegister != other) {
 				pseudoRegister = other;
 			}
 			return (int32_t)pseudoRegister;
 		}
         
-        inline int32_t operator++()
-        {
+        inline int32_t operator++() {
             // Actual increment takes place here.
             pseudoRegister++;
             
             return (int32_t)pseudoRegister;
         }
-        
-        inline int32_t operator--()
-        {
+        inline int32_t operator--() {
             // Actual decrement takes place here.
             pseudoRegister--;
             
@@ -110,111 +179,91 @@ class IGenesisPseudoRegister {
 			pseudoRegister += rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator+=(const int32_t& rhs) {
 			pseudoRegister += rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator-=(const uint32_t& rhs) {
 			pseudoRegister -= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator-=(const int32_t& rhs) {
 			pseudoRegister -= rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator*=(const uint32_t& rhs) {
 			pseudoRegister *= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator*=(const int32_t& rhs) {
 			pseudoRegister *= rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator/=(const uint32_t& rhs) {
 			pseudoRegister /= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator/=(const int32_t& rhs) {
 			pseudoRegister /= rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator%=(const uint32_t& rhs) {
 			pseudoRegister %= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator%=(const int32_t& rhs) {
 			pseudoRegister %= rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator&=(const uint32_t& rhs) {
 			pseudoRegister &= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator&=(const int32_t& rhs) {
 			pseudoRegister &= rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator|=(const uint32_t& rhs) {
 			pseudoRegister |= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator|=(const int32_t& rhs) {
 			pseudoRegister |= rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator^=(const uint32_t& rhs) {
 			pseudoRegister ^= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator^=(const int32_t& rhs) {
 			pseudoRegister ^= rhs;
 			return (int32_t)pseudoRegister;
 		}
-        
 
 		inline uint32_t operator<<=(const uint32_t& rhs) {
 			pseudoRegister <<= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator<<=(const int32_t& rhs) {
 			pseudoRegister <<= rhs;
 			return (int32_t)pseudoRegister;
 		}
 
-
 		inline uint32_t operator>>=(const uint32_t& rhs) {
 			pseudoRegister >>= rhs;
 			return (uint32_t)pseudoRegister;
 		}
-
 		inline int32_t operator>>=(const int32_t& rhs) {
 			pseudoRegister >>= rhs;
 			return (int32_t)pseudoRegister;
 		}
-
         
         inline bool operator< (const uint32_t& rhs) { 
             return pseudoRegister < rhs;
@@ -223,7 +272,6 @@ class IGenesisPseudoRegister {
             return pseudoRegister < rhs;
         }
         
-        
         inline bool operator> (const uint32_t& rhs) { 
             return rhs < pseudoRegister; 
         }
@@ -231,14 +279,12 @@ class IGenesisPseudoRegister {
             return rhs < pseudoRegister;  
         }
         
-        
         inline bool operator<=(const uint32_t& rhs) { 
             return pseudoRegister <= rhs;
         }
         inline bool operator<=(const int32_t& rhs) { 
             return pseudoRegister <= rhs;
         }
-        
         
         inline bool operator>=(const uint32_t& rhs) { 
             return pseudoRegister >= rhs; 
@@ -253,7 +299,13 @@ class IGenesisPseudoRegister {
         inline bool operator==(const int32_t& rhs) { 
             return pseudoRegister == rhs;
         }
-        
+
+		inline bool operator!=(const uint32_t& rhs) {
+			return pseudoRegister != rhs;
+		}
+		inline bool operator!=(const int32_t& rhs) {
+			return pseudoRegister != rhs;
+		}
         
         inline uint8_t u8() {
             return (uint8_t)pseudoRegister;
