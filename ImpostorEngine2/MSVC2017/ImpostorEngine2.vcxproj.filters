@@ -488,6 +488,9 @@
     <ClInclude Include="..\source\Game\Player.h">
       <Filter>Source Files\Game\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\Engine\IGenesis.hh">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\source\Game\Objects\Common\SpecialRing.ie2">

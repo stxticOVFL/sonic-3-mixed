@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Engine\I3D.hh" />
+    <ClInclude Include="..\source\Engine\IGenesis.hh" />
     <ClInclude Include="..\source\Engine\IHeader.hh" />
     <ClInclude Include="..\source\Game\LevelSceneExt.h" />
     <ClInclude Include="..\source\Game\Object.h" />
