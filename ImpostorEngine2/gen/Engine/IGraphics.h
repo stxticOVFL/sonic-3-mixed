@@ -105,7 +105,7 @@ public:
     virtual void DrawTextShadow(int x, int y, const char* string, unsigned int pixel);
     virtual void DrawLine(int x0, int y0, int x1, int y1, uint32_t col);
     virtual void DrawTextSprite(ISprite* sprite, int animation, char first, int x, int y, const char* string);
-    virtual int  MeasureTextSprite(ISprite* sprite, int animation, char first, const char* string);
+    virtual int MeasureTextSprite(ISprite* sprite, int animation, char first, const char* string);
     virtual void DrawModelOn2D(IModel* model, int x, int y, double scale, int rx, int ry, int rz, uint32_t color, bool wireframe);
     virtual void DrawSpriteIn3D(ISprite* sprite, int animation, int frame, int x, int y, int z, double scale, int rx, int ry, int rz);
     uint32_t ColorBlend(uint32_t color1, uint32_t color2, double percent);

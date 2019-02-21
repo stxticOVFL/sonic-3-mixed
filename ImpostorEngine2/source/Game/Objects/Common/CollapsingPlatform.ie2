@@ -139,8 +139,7 @@ event Break() {
                     -8, -8, side, false, 0, 0, 0x70, (h - 1 - j) * 2 + i * h * 2);
             }
         }
-    }
-    else {
+    } else {
         for (var i:int = 0; i < w; i++) {
             for (var j:int = 0; j < h; j++) {
                 Scene.AddMovingSprite(Sprite,
@@ -159,19 +158,34 @@ event OnLeaveScreen() : int {
 }
 
 event Render(CamX:int, CamY:int) {
-    if (!SolidTop)
+    if (!Visible) {
         return;
-
+    }
+    if (!SolidTop) {
+        return;
+    }
+    
     if (Scene.ZoneID == 1) {
         G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
-    }
-    else if (CurrentAnimation >= 0) {
+    } else if (CurrentAnimation >= 0) {
         G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
-    }
-    else {
+    } else {
         G.DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);
     }
+    
+    if (!Scene.maxLayer && !isHeldDebugObject) {
+        var widthPixels:int32_t = Sprite.Animations[CurrentAnimation].Frames[Frame].W;
+        var heightPixels:int32_t = Sprite.Animations[CurrentAnimation].Frames[Frame].H;
+        var x0:int32_t = (X + widthPixels / -2) - CamX;
+        var x1:int32_t = (X + widthPixels / 2) - CamX;
+        var y0:int32_t = (Y + heightPixels / - 2) - CamY;
+        var y1:int32_t = (Y + heightPixels / 2) - CamY;
 
+        G.DrawLine(x0, y0, x0, y1, 0xFFFFFFFF);
+        G.DrawLine(x0, y0, x1, y0, 0xFFFFFFFF);
+        G.DrawLine(x1, y1, x0, y1, 0xFFFFFFFF);
+        G.DrawLine(x1, y1, x1, y0, 0xFFFFFFFF);
+    }
 
     //G.DrawSprite(Scene.TileSprite, 0, 0x8C, 8 + X - CamX + (0), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
 

@@ -5035,7 +5035,11 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     if (!ViewPlayerUpdateStats && !maxLayer) {
         int Y = 0;
         char tempStr[256];
-        G->DrawRectangle(0, 0, 64, 16, 0);
+		if (Player->EZY >= WaterLevel) {
+			G->DrawRectangle(0, 0, 64, 16, TileSprite->GetPaletteAlt(31));
+		} else {
+			G->DrawRectangle(0, 0, 64, 16, TileSprite->GetPalette(31));
+		}
         sprintf(tempStr, "%04X%04X", Player->EZX, Player->EZY);
         G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
         Y += 8;

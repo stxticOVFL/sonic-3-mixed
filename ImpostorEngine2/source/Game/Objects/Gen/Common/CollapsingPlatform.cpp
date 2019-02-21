@@ -130,7 +130,13 @@ int CollapsingPlatform::OnLeaveScreen() {
 }
 
 void CollapsingPlatform::Render(int CamX, int CamY) {
-    if (!SolidTop) return;
+    if (!Visible) {
+        return;
+    }
+
+    if (!SolidTop) {
+        return;
+    }
 
     if (Scene->ZoneID == 1) {
         G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
@@ -141,6 +147,19 @@ void CollapsingPlatform::Render(int CamX, int CamY) {
     else {
         G->DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);
     }
+    if (!Scene->maxLayer && !isHeldDebugObject) {
+        int32_t widthPixels = Sprite->Animations[CurrentAnimation].Frames[Frame].W;
+        int32_t heightPixels = Sprite->Animations[CurrentAnimation].Frames[Frame].H;
+        int32_t x0 = (X + widthPixels / -2) - CamX;
+        int32_t x1 = (X + widthPixels / 2) - CamX;
+        int32_t y0 = (Y + heightPixels / -2) - CamY;
+        int32_t y1 = (Y + heightPixels / 2) - CamY;
+        G->DrawLine(x0, y0, x0, y1, 0xFFFFFFFF);
+        G->DrawLine(x0, y0, x1, y0, 0xFFFFFFFF);
+        G->DrawLine(x1, y1, x0, y1, 0xFFFFFFFF);
+        G->DrawLine(x1, y1, x1, y0, 0xFFFFFFFF);
+    }
+
     }
 
 int CollapsingPlatform::CustomSolidityCheck(int probeX, int probeY, int PlayerID, int checkJumpThrough) {

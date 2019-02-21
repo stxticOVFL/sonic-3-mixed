@@ -100,32 +100,44 @@ PUBLIC VIRTUAL IGraphics::~IGraphics() {
 PUBLIC VIRTUAL void IGraphics::MakeAllTexturesAndFrameBuffers() {
 
 }
+
 PUBLIC VIRTUAL void IGraphics::MakeTexture(ISprite* sprite) {
 
 }
+
 PUBLIC VIRTUAL void IGraphics::UpdatePalette(ISprite* sprite) {
 
 }
+
+
 PUBLIC VIRTUAL int  IGraphics::MakeFrameBufferID(ISprite* sprite, void* f) {
 	return -2;
 }
+
 PUBLIC VIRTUAL int  IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY, int flip) {
 	return -2;
 }
+
 PUBLIC VIRTUAL int  IGraphics::MakeVertexBuffer(vector<IVertex> vert) {
 	return -2;
 }
+
 PUBLIC VIRTUAL int  IGraphics::MakeVertexBuffer(IModel* m, bool verts) {
 	return -2;
 }
+
 PUBLIC VIRTUAL void IGraphics::DeleteBufferID(int buffID) {
 
 }
 
 PUBLIC VIRTUAL void IGraphics::BeginSpriteListBuffer() {
+    
 }
+
 PUBLIC VIRTUAL void IGraphics::AddToSpriteListBuffer(ISprite* sprite, int X, int Y, int W, int H, int OffX, int OffY, int Flip) {
+    
 }
+
 PUBLIC VIRTUAL int  IGraphics::FinishSpriteListBuffer() {
 	return -2;
 }
@@ -226,8 +238,7 @@ PUBLIC VIRTUAL void IGraphics::Present() {
 		SDL_UpdateTexture(ScreenTexture, NULL, Screen->pixels, Screen->pitch);
 		SDL_RenderCopy(Renderer, ScreenTexture, NULL, NULL);
 		SDL_RenderPresent(Renderer);
-	}
-	else {
+	} else {
 		SDL_RenderClear(Renderer);
 
 		//* // Higher quality, working
@@ -256,9 +267,11 @@ PUBLIC VIRTUAL void IGraphics::Cleanup() {
 PUBLIC void     IGraphics::SetPixelNormal(int x, int y, uint32_t pixel) {
 	*(FrameBuffer + y * RENDER_WIDTH + x) = pixel;
 }
+
 PUBLIC void     IGraphics::SetPixelAlpha(int x, int y, uint32_t pixel) {
 	*(FrameBuffer + y * RENDER_WIDTH + x) = ColorBlendHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
 }
+
 PUBLIC void     IGraphics::SetPixelAdditive(int x, int y, uint32_t pixel) {
 	*(FrameBuffer + y * RENDER_WIDTH + x) = ColorAddHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
 }
@@ -266,16 +279,19 @@ PUBLIC void     IGraphics::SetPixelAdditive(int x, int y, uint32_t pixel) {
 PUBLIC uint32_t IGraphics::FilterNone(uint32_t pixel) {
 	return pixel;
 }
+
 PUBLIC uint32_t IGraphics::FilterGrayscale(uint32_t pixel) {
 	pixel = (DivTable[(pixel >> 16) & 0xFF] + DivTable[(pixel >> 8) & 0xFF] + DivTable[(pixel) & 0xFF]) & 0xFF;
 	pixel = pixel << 16 | pixel << 8 | pixel;
 	return pixel;
 }
+
 PUBLIC uint32_t IGraphics::FilterInversionRadius(uint32_t pixel) {
 	// if ((x - 200) * (x - 200) + (y - App->HEIGHT / 2) * (y - App->HEIGHT / 2) < invertRadius * invertRadius)
 	//     pixel = pixel ^ 0xFFFFFF;
 	return pixel;
 }
+
 PUBLIC uint32_t IGraphics::FilterFadeToBlack(uint32_t pixel) {
 	if (Fade == 0) return pixel;
 	if (FadeToWhite) return FilterFadeToWhite(pixel);
@@ -351,6 +367,7 @@ PUBLIC VIRTUAL void IGraphics::SetPixelTrue(SDL_Surface* surface, int x, int y, 
 	}
 	//*/
 }
+
 PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint32_t pixel) {
 	if (DoDeform) x += Deform[y];
 
@@ -370,6 +387,7 @@ PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint
 PUBLIC VIRTUAL uint32_t IGraphics::GetPixelSPR(ISprite* sprite, int x, int y) {
 	return GetPixelSPR(sprite, x, y, sprite->Palette);
 }
+
 PUBLIC VIRTUAL uint32_t IGraphics::GetPixelSPR(ISprite* sprite, int x, int y, uint32_t* pal) {
 	return pal[*(sprite->Data + y * sprite->Width + x)];
 }
@@ -404,6 +422,7 @@ PUBLIC VIRTUAL void IGraphics::SetFade(int fade) {
 	else
 		Fade = fade;
 }
+
 PUBLIC VIRTUAL void IGraphics::SetFilter(int filter) {
 	Filter = filter;
 
@@ -416,9 +435,11 @@ PUBLIC VIRTUAL void IGraphics::SetFilter(int filter) {
 	if ((Filter & 0x4) == 0x4)
 		SetFilterFunction[3] = &IGraphics::FilterFadeToBlack;
 }
+
 PUBLIC VIRTUAL int  IGraphics::GetFilter() {
 	return Filter;
 }
+
 PUBLIC VIRTUAL void IGraphics::SetClip(int x, int y, int w, int h) {
 	Clip[0] = x;
 	Clip[1] = y;
@@ -445,6 +466,7 @@ PUBLIC VIRTUAL void IGraphics::MakeClone() {
 	HaveClone = true;
 	memcpy(FrameBufferClone, FrameBuffer, App->WIDTH * App->HEIGHT * PixelScale * sizeof(uint32_t));
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawClone() {
 	if (HaveClone) {
 		// Faster, but unfadeable
@@ -462,6 +484,7 @@ PUBLIC VIRTUAL void IGraphics::DrawClone() {
 		}
 	}
 }
+
 PUBLIC VIRTUAL void IGraphics::ClearClone() {
 	HaveClone = false;
 }
@@ -495,6 +518,7 @@ PUBLIC VIRTUAL void IGraphics::DrawTriangle(int p0_x, int p0_y, int p1_x, int p1
 		}
 	}
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawRectangle(int x, int y, int w, int h, uint32_t col) {
 	int bx = x + w;
 	for (int b = 0; b < w * h; b++) {
@@ -507,6 +531,7 @@ PUBLIC VIRTUAL void IGraphics::DrawRectangle(int x, int y, int w, int h, uint32_
 		}
 	}
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawRectangleSkewedH(int x, int y, int w, int h, int sk, uint32_t col) {
 	DrawTriangle(
 		x, y,
@@ -518,6 +543,7 @@ PUBLIC VIRTUAL void IGraphics::DrawRectangleSkewedH(int x, int y, int w, int h, 
 		x + sk, y + h,
 		x + w + sk, y + h, col);
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawRectangleStroke(int x, int y, int w, int h, uint32_t col) {
 	int x1, x2, y1, y2;
 
@@ -546,6 +572,7 @@ PUBLIC VIRTUAL void IGraphics::DrawRectangleStroke(int x, int y, int w, int h, u
 		SetPixel(Screen, x2, b, col);
 	}
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawSprite(SDL_Surface* surface, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY) {
 	/*
 	int FlipX = (Flip & 0x1) / 0x1;
@@ -652,6 +679,7 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int fr
 	ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 	IGraphics::DrawSprite(sprite, animframe.X, animframe.Y, animframe.W, animframe.H, x, y, angle, flip, animframe.OffX, animframe.OffY);
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawSpriteSized(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip, int width, int height) {
 	if (!sprite) return;
 	if (animation < 0 || animation >= (int)sprite->Animations.size()) {
@@ -666,9 +694,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteSized(ISprite* sprite, int animation, i
 	ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 	IGraphics::DrawSprite(sprite, animframe.X, animframe.Y, animframe.W, animframe.H, x, y, angle, flip, animframe.OffX, animframe.OffY, width, height);
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY) {
 	DrawSprite(sprite, SrcX, SrcY, Width, Height, CenterX, CenterY, Angle, Flip, RealCenterX, RealCenterY, Width, Height);
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY, int SX, int SY) {
 	int FlipX = (Flip & IE_FLIPX);
 	int FlipY = (Flip & IE_FLIPY);
@@ -761,9 +791,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
 		}
 	}
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawSpriteBuffered(ISprite* sprite, int bufferID, int x, int y, int angle, int flip) {
 
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawSpriteListBuffer(ISprite* sprite, int bufferID, int count, int x, int y) {
 
 }
@@ -778,10 +810,12 @@ PUBLIC VIRTUAL void IGraphics::DrawText(int x, int y, const char* string, unsign
 		}
 	}
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawTextShadow(int x, int y, const char* string, unsigned int pixel) {
 	DrawText(x + 1, y + 1, string, 0);
 	DrawText(x, y, string, pixel);
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawLine(int x0, int y0, int x1, int y1, uint32_t col) {
 	int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
 	int dy = abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
@@ -818,7 +852,8 @@ PUBLIC VIRTUAL void IGraphics::DrawTextSprite(ISprite* sprite, int animation, ch
 		}
 	}
 }
-PUBLIC VIRTUAL int  IGraphics::MeasureTextSprite(ISprite* sprite, int animation, char first, const char* string) {
+
+PUBLIC VIRTUAL int IGraphics::MeasureTextSprite(ISprite* sprite, int animation, char first, const char* string) {
 	int x = 0;
 	ISprite::AnimFrame animframe;
 	for (int i = 0; i < (int)strlen(string); i++) {
@@ -992,6 +1027,7 @@ PUBLIC VIRTUAL void IGraphics::DrawModelOn2D(IModel* model, int x, int y, double
 
 	free(zBuffer);
 }
+
 PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, int frame, int x, int y, int z, double scale, int rx, int ry, int rz) {
 	rx &= 0xFF;
 	IMatrix3 rotateX = IMatrix3(
@@ -1180,6 +1216,7 @@ PUBLIC uint32_t IGraphics::ColorBlendHex(uint32_t color1, uint32_t color2, int p
 	return r << 16 | g << 8 | b;
 	*/
 }
+
 PUBLIC uint32_t IGraphics::ColorAddHex(uint32_t color1, uint32_t color2, int percent) {
 	uint32_t r = color1 >> 16 & 0xFF;
 	uint32_t g = color1 >> 8 & 0xFF;
