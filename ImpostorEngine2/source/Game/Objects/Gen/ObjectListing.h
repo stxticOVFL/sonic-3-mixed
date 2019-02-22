@@ -85,6 +85,7 @@
 #include "CommonSpecial/EggCapsuleButton.h"
 #include "CommonSpecial/Signpost.h"
 #include "CommonSpecial/TensionBridgeChild.h"
+#include "CommonSpecial/ViewCollisionToggler.h"
 #include "HCZ/BlastoidShot.h"
 #include "MGZ/MGZHeadTrigger_Eye.h"
 #include "Test/Platform.h"
@@ -175,9 +176,10 @@ enum {
     Obj_EggCapsuleButton = 0x407,
     Obj_Signpost = 0x408,
     Obj_TensionBridgeChild = 0x409,
-    Obj_BlastoidShot = 0x40A,
-    Obj_MGZHeadTrigger_Eye = 0x40B,
-    Obj_Platform = 0x40C,
+    Obj_ViewCollisionToggler = 0x40A,
+    Obj_BlastoidShot = 0x40B,
+    Obj_MGZHeadTrigger_Eye = 0x40C,
+    Obj_Platform = 0x40D,
 };
 
 Object* GetNewObjectFromID(int ID);

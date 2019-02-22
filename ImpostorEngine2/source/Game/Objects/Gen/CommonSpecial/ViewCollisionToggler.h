@@ -1,7 +1,7 @@
-#ifndef BATBRIGHTPARTS_H
-#define BATBRIGHTPARTS_H
+#ifndef VIEWCOLLISIONTOGGLER_H
+#define VIEWCOLLISIONTOGGLER_H
 
-class BatbrightParts;
+class ViewCollisionToggler;
 
 #include <Utils/Standard.h>
 
@@ -12,15 +12,13 @@ class BatbrightParts;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class BatbrightParts: public Enemy {
+class ViewCollisionToggler: public Object {
 public:    
     
-    bool IsLight;
-    int16_t AnimationData[14];
     
     void Create();
     void Update();
     void Render(int CamX, int CamY);
 };
 
-#endif /* BATBRIGHTPARTS_H */
+#endif /* VIEWCOLLISIONTOGGLER_H */

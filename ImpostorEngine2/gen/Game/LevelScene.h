@@ -103,6 +103,8 @@ public:
     }; 
     int         maxLayer = 1;
     bool        Thremixed = false;
+    bool        DeformObjects = true;
+    bool        DeformPlayer = false;
     Object**    Objects;
     int         ObjectCount = 0;
     int         ObjectNewCount = 0;
@@ -189,6 +191,12 @@ public:
     uint32_t    BackgroundColor = 0x000000;
     bool        SepThread = false;
     uint16_t    Signal[8]; //
+    bool ViewPalettes = false;
+    bool ViewPathswitchers = false;
+    bool ViewPlayerStats = false;
+    bool ViewPlayerUpdateStats = false;
+    bool ViewTileInfo = false;
+    bool ViewTileCollision = false;
 
     LevelScene(IApp* app, IGraphics* g);
     virtual void AssignSpriteMapIDs();

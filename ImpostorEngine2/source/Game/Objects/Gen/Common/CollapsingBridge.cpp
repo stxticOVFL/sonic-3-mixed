@@ -9,6 +9,7 @@ void CollapsingBridge::Create() {
     Object::Create();
     this->Active = true;
     this->Priority = false;
+    this->DoDeform = true;
     this->W = 96;
     this->H = 64;
     f = -1;

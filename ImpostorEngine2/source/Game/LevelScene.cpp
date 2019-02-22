@@ -89,6 +89,8 @@ public:
 
     int         maxLayer = 1;
     bool        Thremixed = false;
+    bool        DeformObjects = false;
+	bool        DeformPlayer = false;
 
     Object**    Objects;
     int         ObjectCount = 0;
@@ -208,6 +210,13 @@ public:
     uint32_t    BackgroundColor = 0x000000;
     bool        SepThread = false;
     uint16_t    Signal[8]; //
+    
+    bool ViewPalettes = false;
+    bool ViewPathswitchers = false;
+    bool ViewPlayerStats = false;
+    bool ViewPlayerUpdateStats = false;
+    bool ViewTileInfo = false;
+    bool ViewTileCollision = false;
 };
 #endif
 
@@ -233,12 +242,6 @@ public:
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; Objects[ObjectCount++] = obj; }
 
-bool ViewPalettes = false;
-bool ViewPathswitchers = false;
-bool ViewPlayerStats = false;
-bool ViewPlayerUpdateStats = false;
-bool ViewTileInfo = false;
-bool ViewTileCollision = false;
 const char* ObjectName[347];
 
 int BlankTile = 0;
@@ -247,12 +250,14 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     App = app;
     G = g;
 
-    App->Settings->GetBool("dev", "viewPalettes", &ViewPalettes);
-    App->Settings->GetBool("dev", "viewPathswitchers", &ViewPathswitchers);
-    App->Settings->GetBool("dev", "viewPlayerStats", &ViewPlayerStats);
-	App->Settings->GetBool("dev", "viewPlayerUpdateStats", &ViewPlayerUpdateStats);
-    App->Settings->GetBool("dev", "viewTileInfo", &ViewTileInfo);
-    App->Settings->GetBool("dev", "viewTileCollision", &ViewTileCollision);
+    if (App->DEV) {
+        App->Settings->GetBool("dev", "viewPalettes", &ViewPalettes);
+        App->Settings->GetBool("dev", "viewPathswitchers", &ViewPathswitchers);
+        App->Settings->GetBool("dev", "viewPlayerStats", &ViewPlayerStats);
+        App->Settings->GetBool("dev", "viewPlayerUpdateStats", &ViewPlayerUpdateStats);
+        App->Settings->GetBool("dev", "viewTileInfo", &ViewTileInfo);
+        App->Settings->GetBool("dev", "viewTileCollision", &ViewTileCollision);
+    }
 
     uint64_t startTime = SDL_GetTicks();
 
@@ -277,16 +282,17 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
         DebugObjectIDList[i] = 0;
     }
     AddNewDebugObjectID(0x00); // Ring
-    AddNewDebugObjectID(0x01); // Monitor
-    AddNewDebugObjectID(0x07); // Spring
-    AddNewDebugObjectID(0x08); // Spikes
-    AddNewDebugObjectID(0x85); // Special Ring
+    AddNewDebugObjectID(Obj_Monitor); // Monitor
+    AddNewDebugObjectID(Obj_Spring); // Spring
+    AddNewDebugObjectID(Obj_Spikes); // Spikes
+    AddNewDebugObjectID(Obj_SpecialRing); // Special Ring
     if (App->DEV) {
-        AddNewDebugObjectID(0x24); // Automatic Tunnel
-        AddNewDebugObjectID(0x26); // Roll Enforcer
-        AddNewDebugObjectID(0x28); // Invisible Block
-        AddNewDebugObjectID(0x6A); // Invisible Spikes
-        AddNewDebugObjectID(0x6B); // Invisible Death
+        AddNewDebugObjectID(Obj_AutomaticTunnel); // Automatic Tunnel
+        AddNewDebugObjectID(Obj_RollEnforcer); // Roll Enforcer
+        AddNewDebugObjectID(Obj_InvisibleBlock); // Invisible Block
+        AddNewDebugObjectID(Obj_InvisibleSpikes); // Invisible Spikes
+        AddNewDebugObjectID(Obj_InvisibleDeath); // Invisible Death
+        AddNewDebugObjectID(Obj_ViewCollisionToggler); // View Collision Toggler
     }
 
     ObjectProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
@@ -388,8 +394,11 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         }
 		if (!GlobalDisplaySprite) {
 			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
+            GlobalDisplaySprite->Print = App->DEV;
 			GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
 			GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
+            GlobalDisplaySprite->LoadAnimation("Sprites/Global/PlaneSwitch.bin");
+            GlobalDisplaySprite->LoadAnimation("Sprites/Global/TicMark.bin");
 		}
 		if (!GlobalDisplaySpriteS3K) {
 			GlobalDisplaySpriteS3K = new ISprite("Sprites/GlobalS3K/Display.gif", App);
@@ -3418,9 +3427,9 @@ PUBLIC void LevelScene::Update() {
                         obj = (Object *)ring;
                         ring = NULL;
                         break;
-					case 0x6A: // Invisible Spikes
-					case 0x6B: // Invisible Death
-					case 0x28: // Invisible Block
+					case Obj_InvisibleSpikes: // Invisible Spikes
+					case Obj_InvisibleDeath: // Invisible Death
+					case Obj_InvisibleBlock: // Invisible Block
 						obj = GetNewObjectFromID(objId);
 						Player->DebugObjectSubIndex = 17;
                     default:
@@ -4709,8 +4718,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
     int tile, flipX, flipY, baseX, baseY, wheree;
     int index, TileBaseX, TileBaseY;
     // int EndTileBaseX, EndTileBaseY;
-	bool DeformObjects = false;
-	bool DeformPlayer = false;
 
     for (int l = 0; l < Data->layerCount; l++) {
         y = 0;
@@ -4993,15 +5000,24 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		//*/
 
         G->DoDeform = DeformObjects;
-
-
+    
         // Rendering objects
         for (int i = 0; i < ObjectCount; i++) {
             Object* obj = Objects[i];
             //if (obj->Active && (obj->OnScreen || obj->Priority)) {
 			if (obj == NULL) {
-				break;
-			}
+				continue;
+			} else if (DeformObjects && obj->DoDeform) {
+                // Render deforming object
+                G->DoDeform = true;
+                if (obj->Active && obj->OnScreen) {
+                    if (l == Data->cameraLayer + obj->VisualLayer) {
+                        obj->Render(CameraX, CameraY);
+                    }
+                }
+                G->DoDeform = false;
+                continue;
+            }
 			if (obj->Active && obj->OnScreen) {
                 if (l == Data->cameraLayer + obj->VisualLayer) {
                     obj->Render(CameraX, CameraY);

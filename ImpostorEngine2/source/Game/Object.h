@@ -431,6 +431,7 @@ public:
     uint8_t  SubType = 0x0;
     bool     FlipX = false;
     bool     FlipY = false;
+    bool     DoDeform = false;
     
     bool     isDebugModeObject = false;
     bool     isHeldDebugObject = false;
@@ -539,6 +540,7 @@ public:
     bool Harmful = true;
     bool Hurting = false;
     bool Invincible = false;
+	bool IsBodyExtension = false;
     int  Radius = 1;
     int  HitCount = 1;
 

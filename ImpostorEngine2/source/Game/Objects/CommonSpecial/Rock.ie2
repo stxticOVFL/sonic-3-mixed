@@ -17,6 +17,7 @@ var Knux:bool;
 event Create() {
     Active = true;
     Priority = false;
+    DoDeform = true;
 
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");

@@ -1,0 +1,18 @@
+
+event Create() {
+    Active = true;
+    CleanupInactiveObject = true;
+}
+
+event Update() {
+    if (!isHeldDebugObject) {
+        Scene.ViewTileCollision = !Scene.ViewTileCollision;
+        Active = false;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    if (!Scene.maxLayer) {
+        G.DrawSprite(Scene.GlobalDisplaySprite, 18, 4, X - CamX, Y - CamY, 0, 0);
+    }
+}

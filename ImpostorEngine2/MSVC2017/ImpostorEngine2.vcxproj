@@ -85,6 +85,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Signpost.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridgeChild.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\ViewCollisionToggler.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\AnimSprite.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\AutomaticTunnel.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BreakableWall.cpp" />
@@ -201,6 +202,7 @@
     <None Include="..\source\Game\Objects\CommonSpecial\Signpost.ie2" />
     <None Include="..\source\Game\Objects\CommonSpecial\TensionBridge.ie2" />
     <None Include="..\source\Game\Objects\CommonSpecial\TensionBridgeChild.ie2" />
+    <None Include="..\source\Game\Objects\CommonSpecial\ViewCollisionToggler.ie2" />
     <None Include="..\source\Game\Objects\Common\AnimSprite.ie2" />
     <None Include="..\source\Game\Objects\Common\AutomaticTunnel.ie2" />
     <None Include="..\source\Game\Objects\Common\BreakableWall.ie2" />

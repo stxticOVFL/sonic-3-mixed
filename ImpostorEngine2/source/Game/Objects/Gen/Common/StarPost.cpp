@@ -9,6 +9,7 @@ void StarPost::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    DoDeform = false;
     W = 16;
     H = 64;
     Rotation = 0;

@@ -1215,14 +1215,14 @@ PUBLIC void Level_AIZ::HandleCamera() {
 PUBLIC void Level_AIZ::FinishResults() {
     if (VisualAct == 1) {
         LevelScene::FinishResults();
-    }
-    else {
+    } else {
         FadeAction = FadeActionType::NEXT_ZONE;
         FadeTimerMax = 90;
         FadeMax = 0x140;
         G->FadeToWhite = false;
     }
 }
+
 PUBLIC void Level_AIZ::GoToNextAct() {
     if (Act == 1 && VisualAct == 1) {
         Level_AIZ* NextAct = new Level_AIZ(App, G, 2);

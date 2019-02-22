@@ -9,6 +9,7 @@ var AnimationData:int16_t[6];
 event Create() {
     Active = true;
     Priority = false;
+    CleanupInactiveObject = true;
 
     W = 16;
     H = 16;
@@ -18,7 +19,6 @@ event Create() {
 
     Frame = 0;
     CurrentAnimation = 35;
-    CleanupInactiveObject = true;
 
     // Animation Timer data:
     // 2, 0, 1, 2, 1, $FC

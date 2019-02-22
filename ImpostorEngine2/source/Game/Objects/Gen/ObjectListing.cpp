@@ -255,12 +255,15 @@ Object* GetNewObjectFromID(int ID) {
             return new TensionBridgeChild();
             break;
         case 0x40AU:
-            return new BlastoidShot();
+            return new ViewCollisionToggler();
             break;
         case 0x40BU:
-            return new MGZHeadTrigger_Eye();
+            return new BlastoidShot();
             break;
         case 0x40CU:
+            return new MGZHeadTrigger_Eye();
+            break;
+        case 0x40DU:
             return new Platform();
             break;
 
@@ -523,6 +526,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x37C54796U:
             return new TensionBridgeChild();
+            break;
+        case 0x7D412B08U:
+            return new ViewCollisionToggler();
             break;
         case 0x4D41692EU:
             return new BlastoidShot();

@@ -8,6 +8,7 @@ var Allotted:int;
 event Create() {
     Active = true;
     Priority = false;
+    DoDeform = true;
 
     W = 180;
     H = 16;

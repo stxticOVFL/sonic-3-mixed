@@ -9,6 +9,7 @@ void BreakableWall::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    DoDeform = true;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
     W = 32;

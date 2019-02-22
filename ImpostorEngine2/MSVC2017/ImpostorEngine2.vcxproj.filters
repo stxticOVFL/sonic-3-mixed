@@ -453,6 +453,9 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZBoss.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\ViewCollisionToggler.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">
@@ -753,6 +756,9 @@
     </None>
     <None Include="..\source\Game\Objects\Test\Platform.ie2">
       <Filter>Source Files\Game\Objects\Test</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\CommonSpecial\ViewCollisionToggler.ie2">
+      <Filter>Source Files\Game\Objects\CommonSpecial</Filter>
     </None>
   </ItemGroup>
 </Project>

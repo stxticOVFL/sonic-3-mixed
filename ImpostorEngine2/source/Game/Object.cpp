@@ -374,6 +374,10 @@ void Enemy::MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t
 }
 
 int Enemy::OnHit() {
+	if (Parent != NULL && IsBodyExtension) {
+		Enemy *parent = (Enemy *)Parent;
+		return parent->OnHit();
+	}
     HitCount--;
     if (HitCount <= 0)
         return OnDeath();

@@ -9,6 +9,7 @@ void FloatingPlatform::Create() {
     Object::Create();
     Active = true;
     Priority = true;
+    DoDeform = true;
     SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");
     Timer = 0;

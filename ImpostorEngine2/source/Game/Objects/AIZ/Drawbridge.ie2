@@ -5,6 +5,7 @@ var Activated:bool;
 event Create() {
     Active = true;
     Priority = false;
+    DoDeform = true;
 
     W = 16;
     H = 192;

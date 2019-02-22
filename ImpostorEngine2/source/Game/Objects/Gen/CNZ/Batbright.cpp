@@ -9,6 +9,7 @@ void Batbright::Create() {
     Enemy::Create();
     Active = true;
     Priority = false;
+    CleanupInactiveObject = true;
     W = 16;
     H = 16;
     VisW = 16;
@@ -16,7 +17,6 @@ void Batbright::Create() {
     Gravity = 0;
     Frame = 0;
     CurrentAnimation = 35;
-    CleanupInactiveObject = true;
     AnimationData[0] = 2;
     AnimationData[1] = 0;
     AnimationData[2] = 1;

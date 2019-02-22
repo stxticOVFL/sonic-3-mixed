@@ -9,6 +9,7 @@ void BloominatorSpore::Create() {
     Enemy::Create();
     Active = true;
     Priority = true;
+    CleanupInactiveObject = true;
     W = 16;
     H = 16;
     Invincible = true;

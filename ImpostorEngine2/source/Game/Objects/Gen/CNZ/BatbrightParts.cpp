@@ -6,9 +6,11 @@
 typedef IMath Math;
 
 void BatbrightParts::Create() {
-    Object::Create();
+    Enemy::Create();
     Active = true;
     Priority = true;
+    CleanupInactiveObject = true;
+    IsBodyExtension = true;
     W = 16;
     H = 16;
     VisW = 16;
