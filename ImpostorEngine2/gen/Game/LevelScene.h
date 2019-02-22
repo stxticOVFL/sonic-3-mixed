@@ -22,6 +22,7 @@ class ISprite;
 class ISprite;
 class ISprite;
 class ISprite;
+class ISprite;
 class IModel;
 class ISound;
 
@@ -69,6 +70,7 @@ public:
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;
+    ISprite*    EditorSprite = NULL;
     ISprite*    ItemsSprite = NULL;
     ISprite*    AnimalsSprite = NULL;
     ISprite*    ObjectsSprite = NULL;

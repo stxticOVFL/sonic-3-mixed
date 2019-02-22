@@ -31,7 +31,9 @@ event Update() {
 
 event Render(CamX:int, CamY:int) {
 	if (DrawCollisions) {
-		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        var spriteWidth:int32_t = Sprite.Animations[CurrentAnimation].Frames[4].W;
+        var spriteHeight:int32_t = Sprite.Animations[CurrentAnimation].Frames[4].H;
+		G.DrawRectangle(X - CamX, Y - CamY, spriteWidth, spriteHeight, DrawCollisionsColor);
 	} else {
         G.DrawSprite(Sprite, CurrentAnimation, 4, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }

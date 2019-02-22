@@ -110,6 +110,10 @@ void AutomaticTunnel::Update() {
 }
 
 void AutomaticTunnel::Render(int CamX, int CamY) {
+    if (!Scene->maxLayer) {
+        G->DrawSprite(Scene->EditorSprite, 1, 4, X - CamX, Y - CamY, 0, 0);
+    }
+
     }
 
 int AutomaticTunnel::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

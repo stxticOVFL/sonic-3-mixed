@@ -33,7 +33,9 @@ void BloominatorSpore::Update() {
 
 void BloominatorSpore::Render(int CamX, int CamY) {
     if (DrawCollisions) {
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        int32_t spriteWidth = Sprite->Animations[CurrentAnimation].Frames[4].W;
+        int32_t spriteHeight = Sprite->Animations[CurrentAnimation].Frames[4].H;
+        G->DrawRectangle(X - CamX, Y - CamY, spriteWidth, spriteHeight, DrawCollisionsColor);
     }
     else {
         G->DrawSprite(Sprite, CurrentAnimation, 4, X - CamX, Y - CamY, 0, IE_NOFLIP);

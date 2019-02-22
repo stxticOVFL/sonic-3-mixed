@@ -32,21 +32,21 @@ public:
 	uint8_t Fade = 0;
 	bool    FadeToWhite = false;
 
-	int     PixelScale = 2;
-	int     RENDER_WIDTH = 400;
+	int    PixelScale = 2;
+	int    RENDER_WIDTH = 400;
 
 	long    ContourX[800][2];
-	int     DivTable[0x100];
+	int    DivTable[0x100];
 
-	int     WaterPaletteStartLine = 0xFFFF;
+	int    WaterPaletteStartLine = 0xFFFF;
 
-	int     Clip[4];
+	int    Clip[4];
 
 	int8_t* Deform = NULL;
 	bool    DoDeform = false;
 
-	int     DrawAlpha = 0xFF;
-	int     DrawModeOverlay = false;
+	int    DrawAlpha = 0xFF;
+	int    DrawModeOverlay = false;
 
 	double  MyCos[256];
 	double  MySin[256]; ////
@@ -59,7 +59,7 @@ public:
 #include <Engine/IMath.h>
 
 unsigned char Font8x8_basic[128][8];
-void     (IGraphics::*SetPixelFunction)(int, int, uint32_t);
+void (IGraphics::*SetPixelFunction)(int, int, uint32_t);
 uint32_t (IGraphics::*SetFilterFunction[4])(uint32_t);
 
 PUBLIC IGraphics::IGraphics() {
@@ -110,19 +110,19 @@ PUBLIC VIRTUAL void IGraphics::UpdatePalette(ISprite* sprite) {
 }
 
 
-PUBLIC VIRTUAL int  IGraphics::MakeFrameBufferID(ISprite* sprite, void* f) {
+PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* f) {
 	return -2;
 }
 
-PUBLIC VIRTUAL int  IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY, int flip) {
+PUBLIC VIRTUAL int IGraphics::MakeFrameBufferID(ISprite* sprite, void* where, int X, int Y, int W, int H, int OffX, int OffY, int flip) {
 	return -2;
 }
 
-PUBLIC VIRTUAL int  IGraphics::MakeVertexBuffer(vector<IVertex> vert) {
+PUBLIC VIRTUAL int IGraphics::MakeVertexBuffer(vector<IVertex> vert) {
 	return -2;
 }
 
-PUBLIC VIRTUAL int  IGraphics::MakeVertexBuffer(IModel* m, bool verts) {
+PUBLIC VIRTUAL int IGraphics::MakeVertexBuffer(IModel* m, bool verts) {
 	return -2;
 }
 
@@ -138,7 +138,7 @@ PUBLIC VIRTUAL void IGraphics::AddToSpriteListBuffer(ISprite* sprite, int X, int
     
 }
 
-PUBLIC VIRTUAL int  IGraphics::FinishSpriteListBuffer() {
+PUBLIC VIRTUAL int IGraphics::FinishSpriteListBuffer() {
 	return -2;
 }
 
@@ -264,15 +264,15 @@ PUBLIC VIRTUAL void IGraphics::Cleanup() {
 	SDL_FreeSurface(Screen);
 }
 
-PUBLIC void     IGraphics::SetPixelNormal(int x, int y, uint32_t pixel) {
+PUBLIC void IGraphics::SetPixelNormal(int x, int y, uint32_t pixel) {
 	*(FrameBuffer + y * RENDER_WIDTH + x) = pixel;
 }
 
-PUBLIC void     IGraphics::SetPixelAlpha(int x, int y, uint32_t pixel) {
+PUBLIC void IGraphics::SetPixelAlpha(int x, int y, uint32_t pixel) {
 	*(FrameBuffer + y * RENDER_WIDTH + x) = ColorBlendHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
 }
 
-PUBLIC void     IGraphics::SetPixelAdditive(int x, int y, uint32_t pixel) {
+PUBLIC void IGraphics::SetPixelAdditive(int x, int y, uint32_t pixel) {
 	*(FrameBuffer + y * RENDER_WIDTH + x) = ColorAddHex(*(FrameBuffer + y * RENDER_WIDTH + x), pixel, DrawAlpha);
 }
 
@@ -380,7 +380,7 @@ PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint
 	// pixel = (this->*SetFilterFunction[1])(pixel);
 	// pixel = (this->*SetFilterFunction[2])(pixel);
 	pixel = (this->*SetFilterFunction[3])(pixel);
-
+	
 	SetPixelTrue(surface, x, y, pixel);
 }
 
@@ -436,7 +436,7 @@ PUBLIC VIRTUAL void IGraphics::SetFilter(int filter) {
 		SetFilterFunction[3] = &IGraphics::FilterFadeToBlack;
 }
 
-PUBLIC VIRTUAL int  IGraphics::GetFilter() {
+PUBLIC VIRTUAL int IGraphics::GetFilter() {
 	return Filter;
 }
 

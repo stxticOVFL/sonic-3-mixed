@@ -35,6 +35,7 @@ public:
     int WIDTH = 424;
     int HEIGHT = 240;
     const bool DEBUG = true;
+    const bool DEV = true;
     uint32_t MetricUpdateTime = -1;
     uint32_t MetricRenderTime = -1;
     bool UnlockedFramerate = false;

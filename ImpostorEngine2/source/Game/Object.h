@@ -470,7 +470,7 @@ public:
     bool     SolidTop = false;
     bool     SolidCustomized = false;
     Rect     HitboxSolid;
-
+	
     bool     Pushable = false;
 	// bool     Climbable = false;
 

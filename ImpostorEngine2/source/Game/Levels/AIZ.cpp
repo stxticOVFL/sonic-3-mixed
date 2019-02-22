@@ -279,9 +279,13 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartY = 0x01B0;
     }
     
+    AddNewDebugObjectID(0x04); // Collapsing Platform
+    AddNewDebugObjectID(0x0D); // Breakable Wall
+    //AddNewDebugObjectID(0x2E); // Spiked Log - Currently doesn't work. (Sprites do not render.)
     AddNewDebugObjectID(0x8C); // Bloominator
-    //AddNewDebugObjectID(0x8D); // RhinoBot - Currently doesn't work. (Doesn't activate?)
-    //AddNewDebugObjectID(0x8E); // MonkeyDude - Currently doesn't work. (Sprites do not Render.)
+    //AddNewDebugObjectID(0x8D); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
+    //AddNewDebugObjectID(0x8E); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
+    //AddNewDebugObjectID(0x8F); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
 }
@@ -377,6 +381,7 @@ PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
     SpriteMapIDs[0x0C] = AIZObjectsSprite;
     SpriteMapIDs[0x0D] = AIZObjectsSprite;
     SpriteMapIDs[0x0F] = AIZObjectsSprite;
+    //SpriteMapIDs[0x24] = EditorSprite;
 	SpriteMapIDs[0x2F] = AIZObjectsSprite;
     SpriteMapIDs[0x35] = AIZObjectsSprite;
 	SpriteMapIDs[0x51] = AIZObjectsSprite;

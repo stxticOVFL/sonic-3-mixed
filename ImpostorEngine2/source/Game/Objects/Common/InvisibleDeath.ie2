@@ -8,6 +8,7 @@ var Size:int;
 event Create() {
     Active = true;
     Priority = false;
+    CleanupInactiveObject = true;
 
     // Change this for InvisibleSpikes and InvisibleDeath
     Painful = false;
@@ -26,6 +27,47 @@ event Create() {
     if (Deadly) {
         //W -= 2;
         //H -= 2;
+    }
+}
+
+event UpdateSubType() {
+    Size = 1 + (SubType & 0xF0) / 0x10;
+    W = (SubType & 0xF0) + 0x10;
+    H = ((SubType & 0x0F) << 4) + 0x10;
+    
+    if (Deadly) {
+        //W -= 2;
+        //H -= 2;
+    }
+}
+
+event GetSubTypeIncrement() : uint8_t {
+	return 1;
+}
+
+event GetSubTypeMax() : uint8_t {
+	return 99;
+}
+
+event Render(CamX:int, CamY:int) {   
+    if (!Scene.maxLayer) {
+        if (DrawCollisions) {
+            G.DrawRectangle(X - CamX - 16, Y - 16 - CamY, W, H, 0);
+        } else {
+            var x0:int32_t = ((X + 32 / - 2) + 8) - CamX;
+            var y0:int32_t = ((Y + 32 / - 2) + 8) - CamY;
+            var x1:int32_t = ((X + 32 / 2) - 8) - CamX;
+            var y1:int32_t = ((Y + 32 / 2) - 8) - CamY;
+            
+            G.DrawSprite(Scene.ItemsSprite, 2, 12, x0, y0, 0, 0);
+            G.DrawSprite(Scene.ItemsSprite, 2, 12, x0, y1, 0, 0);
+            G.DrawSprite(Scene.ItemsSprite, 2, 12, x1, y0, 0, 0);
+            G.DrawSprite(Scene.ItemsSprite, 2, 12, x1, y1, 0, 0);
+            
+            if (isHeldDebugObject) {
+                G.DrawRectangle(X - CamX - 16, Y - 16 - CamY, W, H, 0);
+            }
+        }
     }
 }
 

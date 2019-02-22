@@ -51,6 +51,7 @@ public:
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;
+    ISprite*    EditorSprite = NULL;
     ISprite*    ItemsSprite = NULL;
     ISprite*    AnimalsSprite = NULL;
     ISprite*    ObjectsSprite = NULL;
@@ -280,6 +281,13 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     AddNewDebugObjectID(0x07); // Spring
     AddNewDebugObjectID(0x08); // Spikes
     AddNewDebugObjectID(0x85); // Special Ring
+    if (App->DEV) {
+        AddNewDebugObjectID(0x24); // Automatic Tunnel
+        AddNewDebugObjectID(0x26); // Roll Enforcer
+        AddNewDebugObjectID(0x28); // Invisible Block
+        AddNewDebugObjectID(0x6A); // Invisible Spikes
+        AddNewDebugObjectID(0x6B); // Invisible Death
+    }
 
     ObjectProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
     RingProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
@@ -405,6 +413,11 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             MobileButtonsSprite->Animations.push_back(an);
             MobileButtonsSprite->SetTransparentColorIndex(0x05);
             MobileButtonsSprite->UpdatePalette();
+        }
+        if (!EditorSprite) {
+            EditorSprite = new ISprite("Sprites/Editor/Icons.gif", App);
+            EditorSprite->LoadAnimation("Sprites/Editor/PlayerIcons.bin");
+            EditorSprite->LoadAnimation("Sprites/Editor/EditorIcons.bin");
         }
         if (!ItemsSprite) {
 			if (Thremixed) {
@@ -3112,6 +3125,7 @@ PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 
     NextAct->GlobalDisplaySprite = GlobalDisplaySprite;
     NextAct->MobileButtonsSprite = MobileButtonsSprite;
+    NextAct->EditorSprite = EditorSprite;
     NextAct->ItemsSprite = ItemsSprite;
     NextAct->AnimalsSprite = AnimalsSprite;
     NextAct->ObjectsSprite = ObjectsSprite;
@@ -3141,6 +3155,7 @@ PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
     PauseSprite = NULL;
     GlobalDisplaySprite = NULL;
     MobileButtonsSprite = NULL;
+    EditorSprite = NULL;
     ItemsSprite = NULL;
     AnimalsSprite = NULL;
     ObjectsSprite = NULL;
@@ -3383,9 +3398,14 @@ PUBLIC void LevelScene::Update() {
                 
                 Object* obj = NULL;
                 Ring *ring = NULL;
+
+				if (objId != Player->LastDebugObjId) {
+					Player->LastDebugObjId = objId;
+					Player->DebugObjectSubIndex = 0;
+				}
                 
                 switch (objId) {
-                    case 0x00:
+                    case 0x00: // Ring
                         ring = new Ring();
                         ring->X = Player->DisplayX;
                         ring->Y = Player->DisplayY;
@@ -3398,13 +3418,14 @@ PUBLIC void LevelScene::Update() {
                         obj = (Object *)ring;
                         ring = NULL;
                         break;
+					case 0x6A: // Invisible Spikes
+					case 0x6B: // Invisible Death
+					case 0x28: // Invisible Block
+						obj = GetNewObjectFromID(objId);
+						Player->DebugObjectSubIndex = 17;
                     default:
                         obj = GetNewObjectFromID(objId);
                         break;
-                }
-                if (objId != Player->LastDebugObjId) {
-                    Player->LastDebugObjId = objId;
-                    Player->DebugObjectSubIndex = 0;
                 }
 				if (obj != NULL) {
 					obj->G = G;

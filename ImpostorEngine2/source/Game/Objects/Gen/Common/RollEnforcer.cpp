@@ -17,6 +17,10 @@ void RollEnforcer::Update() {
 }
 
 void RollEnforcer::Render(int CamX, int CamY) {
+    if (!Scene->maxLayer) {
+        G->DrawSprite(Scene->EditorSprite, 1, 6, X - CamX, Y - CamY, 0, 0);
+    }
+
     }
 
 int RollEnforcer::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

@@ -141,10 +141,17 @@ void RhinoBot::Render(int CamX, int CamY) {
     int Flip = 1;
     if (FlipX) Flip = -1;
 
-    if (Frame == 3) Flip = -Flip;
+    if (Frame == 3) {
+        Flip = -Flip;
+    }
 
     if (DrawCollisions) {
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        if (Frame == 2) {
+            G->DrawRectangle(X - CamX + Flip * 14, Y - CamY + 1, W, H, DrawCollisionsColor);
+        }
+        else {
+            G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        }
     }
     else {
         G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);

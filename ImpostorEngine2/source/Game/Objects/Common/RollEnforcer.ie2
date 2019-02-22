@@ -5,12 +5,17 @@ event Create() {
     W = 28;
     H = 28;
 }
+
 event Update() {
 
 }
-event Render(CamX:int, CamY:int) {
 
+event Render(CamX:int, CamY:int) {
+    if (!Scene.maxLayer) {
+        G.DrawSprite(Scene.EditorSprite, 1, 6, X - CamX, Y - CamY, 0, 0);
+    }
 }
+
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     var player:IPlayer = Scene.Players[PlayerID];
     if (!player.Ground) return 0;
