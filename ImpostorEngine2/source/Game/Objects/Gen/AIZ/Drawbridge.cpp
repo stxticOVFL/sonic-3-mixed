@@ -9,6 +9,7 @@ void Drawbridge::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    DoDeform = true;
     W = 16;
     H = 192;
     CurrentAnimation = 12;

@@ -103,7 +103,7 @@ public:
     }; 
     int         maxLayer = 1;
     bool        Thremixed = false;
-    bool        DeformObjects = true;
+    bool        DeformObjects = false;
     bool        DeformPlayer = false;
     Object**    Objects;
     int         ObjectCount = 0;

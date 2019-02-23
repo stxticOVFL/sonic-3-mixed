@@ -5071,17 +5071,30 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
     if (!ViewPlayerUpdateStats && !maxLayer) {
         int Y = 0;
-        char tempStr[256];
+        size_t strSize1, strSize2, strSizeFinal;
+        char tempStr1_X[128], tempStr1_Y[128], tempStr2_X[128], tempStr2_Y[128];
+        
+        sprintf(tempStr1_X, "%04X", (Player->EZX<0)?-Player->EZX:Player->EZX);
+        sprintf(tempStr1_Y, "%04X", (Player->EZY<0)?-Player->EZY:Player->EZY);
+        strSize1 = strlen(tempStr1_X) + strlen(tempStr1_Y);
+        
+        sprintf(tempStr2_X, "%04X", CameraX<0?-CameraX:CameraX);
+        sprintf(tempStr2_Y, "%04X", CameraY<0?-CameraY:CameraY);
+        strSize2 = strlen(tempStr2_X) + strlen(tempStr2_Y);
+        
+        strSizeFinal = std::max(strSize1, strSize2);
+        
 		if (Player->EZY >= WaterLevel) {
-			G->DrawRectangle(0, 0, 64, 16, TileSprite->GetPaletteAlt(31));
+			G->DrawRectangle(59, 10, 8 * strSizeFinal, 16, TileSprite->GetPaletteAlt(31));
 		} else {
-			G->DrawRectangle(0, 0, 64, 16, TileSprite->GetPalette(31));
+			G->DrawRectangle(59, 10, 8 * strSizeFinal, 16, TileSprite->GetPalette(31));
 		}
-        sprintf(tempStr, "%04X%04X", Player->EZX, Player->EZY);
-        G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+        
+        G->DrawTextShadow(59, Y + 10, tempStr1_X, (Player->EZX < 0) ? 0xFF0000 : 0xFFFFFF);
+        G->DrawTextShadow(59 + (8 * strlen(tempStr1_X)), Y + 10, tempStr1_Y, (Player->EZY < 0) ? 0xFF0000 : 0xFFFFFF);
         Y += 8;
-        sprintf(tempStr, "%04X%04X", CameraX, CameraY);
-        G->DrawTextShadow(0, Y, tempStr, 0xFFFFFF);
+        G->DrawTextShadow(59, Y + 10, tempStr2_X, (CameraX < 0) ? 0xFF0000 : 0xFFFFFF);
+        G->DrawTextShadow(59 + (8 * strlen(tempStr2_X)), Y + 10, tempStr2_Y, (CameraY < 0) ? 0xFF0000 : 0xFFFFFF);
     }
 
 	if (ViewPalettes) {

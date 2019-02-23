@@ -9,6 +9,7 @@ void CollapsingLogBridge::Create() {
     Solid::Create();
     Active = true;
     Priority = false;
+    DoDeform = true;
     W = 180;
     H = 16;
     VisW = 116;
