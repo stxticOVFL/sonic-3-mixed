@@ -46,7 +46,7 @@ void HoverFan::Update() {
                 Scene->Players[i]->Action = ActionType::Fan;
             }
             else {
-                Active = true;
+                Active = false;
             }
         }
 
@@ -64,9 +64,7 @@ void HoverFan::Update() {
     if (OnScreen && Active) {
         Sound::Loop(Sound::SFX_CARNIVAL_FAN, 0);
     }
-    else {
-        Sound::Stop(Sound::SFX_CARNIVAL_FAN);
-    }
+
     if (!Underwater) {
         if (Out) {
             if (OutX >= 0) X = Math::max(InitialX, X - 8);

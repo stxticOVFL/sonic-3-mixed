@@ -1,0 +1,57 @@
+object 0xA1;
+
+subclass Enemy;
+
+var MainPalette:Uint32[16];
+var HurtPalette:Uint32[16];
+
+var TimerAction:int;
+var InvulnTimer:int;
+var ExplosionTimer:int;
+var State:int;
+
+event Create() {
+    this.Active = true;
+    this.Priority = false;
+
+    this.W = 32;
+    this.H = 32;
+
+    this.CurrentAnimation = 16;
+
+    HitCount = 8;
+
+    
+
+    this.Y += 1;
+}
+
+event OnHit():int {
+    Scene.LevelTriggerFlag |= 1 << SubType;
+    return OnDeath();
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+    }
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    var Player:IPlayer = Scene.Players[PlayerID];
+    if (Player == 0) {
+        return false;
+    }
+   
+
+    Player.YSpeed = -Player.YSpeed;
+    Player.XSpeed = -Player.XSpeed;
+
+    return true;
+}

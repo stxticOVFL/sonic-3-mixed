@@ -112,6 +112,13 @@ PUBLIC void Level_MGZ::AssignSpriteMapIDs() {
     SpriteMapIDs[0x0F] = MGZObjectsSprite;
 	SpriteMapIDs[0x2F] = MGZObjectsSprite;
 	SpriteMapIDs[0x51] = MGZObjectsSprite;
+	SpriteMapIDs[0x9B] = MGZObjectsSprite;
+	SpriteMapIDs[0x9C] = MGZObjectsSprite;
+	SpriteMapIDs[0x9D] = MGZObjectsSprite;
+	SpriteMapIDs[0x9E] = MGZObjectsSprite;
+	SpriteMapIDs[0x9F] = MGZObjectsSprite;
+	SpriteMapIDs[0xA0] = MGZObjectsSprite;
+	SpriteMapIDs[0xA1] = MGZObjectsSprite;
 }
 
 PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
@@ -137,7 +144,6 @@ PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
         MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Bubbles Badnik.bin");
         MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Spiker.bin");
         MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Mantis.bin");
-		// printf("\n");
 	}
 
     if (!KnuxSprite[0]) {
