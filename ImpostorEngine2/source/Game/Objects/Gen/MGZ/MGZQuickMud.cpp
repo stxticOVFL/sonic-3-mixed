@@ -29,7 +29,7 @@ int MGZQuickMud::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Players[PlayerID]->Jump();
     }
 
-    if (Scene->Players[PlayerID]->Y == (Y + 0x2E)) {
+    if (Scene->Players[PlayerID]->Y == Y) {
         Scene->Players[PlayerID]->Die(false);
     }
 

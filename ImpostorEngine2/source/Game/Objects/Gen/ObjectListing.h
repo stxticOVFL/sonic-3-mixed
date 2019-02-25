@@ -40,6 +40,7 @@
 #include "HCZ/HCZConveyorSpike.h"
 #include "HCZ/Block.h"
 #include "CNZ/Balloon.h"
+#include "CNZ/HoverFan.h"
 #include "CNZ/VacuumTube.h"
 #include "CNZ/Bouncepad.h"
 #include "MGZ/MGZQuickMud.h"
@@ -131,6 +132,7 @@ enum {
     Obj_HCZConveyorSpike = 0x03F,
     Obj_Block = 0x040,
     Obj_Balloon = 0x041,
+    Obj_HoverFan = 0x046,
     Obj_VacuumTube = 0x048,
     Obj_Bouncepad = 0x04B,
     Obj_MGZQuickMud = 0x04F,
