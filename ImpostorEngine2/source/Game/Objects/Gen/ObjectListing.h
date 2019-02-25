@@ -82,6 +82,7 @@
 #include "AIZ/MonkeyDudeCoconut.h"
 #include "CNZ/BatbrightParts.h"
 #include "Common/BubbleAir.h"
+#include "Common/PlatformOutliner.h"
 #include "CommonSpecial/EggCapsuleButton.h"
 #include "CommonSpecial/Signpost.h"
 #include "CommonSpecial/TensionBridgeChild.h"
@@ -173,13 +174,14 @@ enum {
     Obj_MonkeyDudeCoconut = 0x404,
     Obj_BatbrightParts = 0x405,
     Obj_BubbleAir = 0x406,
-    Obj_EggCapsuleButton = 0x407,
-    Obj_Signpost = 0x408,
-    Obj_TensionBridgeChild = 0x409,
-    Obj_ViewCollisionToggler = 0x40A,
-    Obj_BlastoidShot = 0x40B,
-    Obj_MGZHeadTrigger_Eye = 0x40C,
-    Obj_Platform = 0x40D,
+    Obj_PlatformOutliner = 0x407,
+    Obj_EggCapsuleButton = 0x408,
+    Obj_Signpost = 0x409,
+    Obj_TensionBridgeChild = 0x40A,
+    Obj_ViewCollisionToggler = 0x40B,
+    Obj_BlastoidShot = 0x40C,
+    Obj_MGZHeadTrigger_Eye = 0x40D,
+    Obj_Platform = 0x40E,
 };
 
 Object* GetNewObjectFromID(int ID);

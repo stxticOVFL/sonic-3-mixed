@@ -246,24 +246,27 @@ Object* GetNewObjectFromID(int ID) {
             return new BubbleAir();
             break;
         case 0x407U:
-            return new EggCapsuleButton();
+            return new PlatformOutliner();
             break;
         case 0x408U:
-            return new Signpost();
+            return new EggCapsuleButton();
             break;
         case 0x409U:
-            return new TensionBridgeChild();
+            return new Signpost();
             break;
         case 0x40AU:
-            return new ViewCollisionToggler();
+            return new TensionBridgeChild();
             break;
         case 0x40BU:
-            return new BlastoidShot();
+            return new ViewCollisionToggler();
             break;
         case 0x40CU:
-            return new MGZHeadTrigger_Eye();
+            return new BlastoidShot();
             break;
         case 0x40DU:
+            return new MGZHeadTrigger_Eye();
+            break;
+        case 0x40EU:
             return new Platform();
             break;
 
@@ -517,6 +520,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x6697FD9CU:
             return new BubbleAir();
+            break;
+        case 0xDFA4EF69U:
+            return new PlatformOutliner();
             break;
         case 0x5C72AD12U:
             return new EggCapsuleButton();

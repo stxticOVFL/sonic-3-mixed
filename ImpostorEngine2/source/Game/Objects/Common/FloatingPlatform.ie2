@@ -11,6 +11,7 @@ var SizeIndex:int;
 var MoveType:int;
 var BackupX:int;
 var Amplitude:int;
+var Outliner:Object;
 
 event Create() {
     Active = true;
@@ -19,6 +20,9 @@ event Create() {
 
     SolidTop = true;
     Scene.AddSelfToRegistry(this, "Solid");
+    
+    Outliner = Scene.AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
+    Outliner.Parent = this;
 
     Timer = 0;
 
@@ -78,6 +82,7 @@ event Create() {
             break;
     }
 }
+
 event Update() {
     if (MoveType == 0) {
         if (BeingStoodOn) {
@@ -170,10 +175,11 @@ event Update() {
         if (!RisingType) {
             LastX = X;
 
-            if (Vertical)
+            if (Vertical) {
                 Y = InitialY - 32 * Math.abs(YS) + (Math.cosHex(Scene.Frame + 1) * 32 * YS >> 16);
-            else
+            } else {
                 X = InitialX + 32 * Math.abs(YS) + (Math.cosHex(Scene.Frame + 1) * 32 * YS >> 16);
+            }
 
             XSpeed = (X - LastX) << 8;
         }
@@ -181,6 +187,20 @@ event Update() {
             Y -= 1;
         }
     }
+    
+    if (!Scene.maxLayer && !isHeldDebugObject) {
+        if (Scene.ZoneID == 2) {
+            Outliner.W = Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].W;
+            Outliner.H = Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].H;
+        } else {
+            Outliner.W = Sprite.Animations[CurrentAnimation].Frames[Frame].W;
+            Outliner.H = Sprite.Animations[CurrentAnimation].Frames[Frame].H;
+        }
+        Outliner.Visible = true;
+    } else {
+        Outliner.Visible = false;
+    }
+    
     return;
 }
 event Render(CamX:int, CamY:int) {
@@ -189,10 +209,11 @@ event Render(CamX:int, CamY:int) {
 
     if (Moving) {
         if (!RisingType) {
-            if (Vertical)
+            if (Vertical) {
                 nY = InitialY - 32 * Math.abs(YS) + (Math.cosHex(Scene.Frame + 0) * 32 * YS >> 16);
-            else
+            } else {
                 nX = InitialX + 32 * Math.abs(YS) + (Math.cosHex(Scene.Frame + 0) * 32 * YS >> 16);
+            }
         }
     }
 
@@ -201,14 +222,11 @@ event Render(CamX:int, CamY:int) {
 
     if (Scene.ZoneID == 1) {
         G.DrawSprite(Sprite, CurrentAnimation, 0, nX - CamX, nY - 2 - CamY, 0, IE_NOFLIP);
-    }
-    else if (Scene.ZoneID == 2) {
+    } else if (Scene.ZoneID == 2) {
         G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, nX - CamX, nY - CamY, 0, IE_NOFLIP);
-    }
-    else if (Scene.ZoneID == 3) {
+    } else if (Scene.ZoneID == 3) {
         G.DrawSprite(Sprite, 2, 0, nX - CamX, nY - 2 - CamY, 0, IE_NOFLIP);
-    }
-    else {
+    } else {
         G.DrawRectangle(nX - CamX - W / 2, nY - CamY - H / 2, W, H, 0xFF0000);
     }
 }

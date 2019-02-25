@@ -18,6 +18,8 @@ void CollapsingPlatform::Create() {
     Sections = 8;
     Vsect = 2;
     CurrentAnimation = -1;
+    Outliner = Scene->AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
+    Outliner->Parent = this;
     SolidTop = true;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");
@@ -60,15 +62,27 @@ void CollapsingPlatform::Create() {
 }
 
 void CollapsingPlatform::Update() {
+    if (!Scene->maxLayer && !isHeldDebugObject) {
+        Outliner->W = Sprite->Animations[CurrentAnimation].Frames[Frame].W;
+        Outliner->H = Sprite->Animations[CurrentAnimation].Frames[Frame].H;
+        Outliner->Visible = true;
+    }
+    else {
+        Outliner->Visible = false;
+    }
     SolidTop = true;
     if (f > -1 && f <= Allotted) {
         SolidTop = false;
         Solid = false;
-        if (f == Allotted) Break();
+        if (f == Allotted) {
+            Break();
+        }
 
     }
 
-    if (f > 0) f -= 1;
+    if (f > 0) {
+        f -= 1;
+    }
 
     Object::Update();
 }
@@ -148,25 +162,6 @@ void CollapsingPlatform::Render(int CamX, int CamY) {
     else {
         G->DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);
     }
-    if (!Scene->maxLayer && !isHeldDebugObject) {
-        int32_t widthPixels = Sprite->Animations[CurrentAnimation].Frames[Frame].W;
-        int32_t heightPixels = Sprite->Animations[CurrentAnimation].Frames[Frame].H;
-        int32_t x0 = (X + widthPixels / -2) - CamX;
-        int32_t x1 = (X + widthPixels / 2) - CamX;
-        int32_t y0 = (Y + heightPixels / -2) - CamY;
-        int32_t y1 = (Y + heightPixels / 2) - CamY;
-        int32_t FlipYOnly = 0 | 1 << 1;
-        int32_t FlipBoth = 1 | 1 << 1;
-        G->DrawLine(x0, y0, x0, y1, 0xFFFFFFFF);
-        G->DrawLine(x0, y0, x1, y0, 0xFFFFFFFF);
-        G->DrawLine(x1, y1, x0, y1, 0xFFFFFFFF);
-        G->DrawLine(x1, y1, x1, y0, 0xFFFFFFFF);
-        G->DrawSprite(Scene->GlobalDisplaySprite, 19, 0, x0 + 1, y0 + 1, 0, 0);
-        G->DrawSprite(Scene->GlobalDisplaySprite, 19, 0, x0 + 1, y1, 0, FlipYOnly);
-        G->DrawSprite(Scene->GlobalDisplaySprite, 19, 0, x1, y0 + 1, 0, 1);
-        G->DrawSprite(Scene->GlobalDisplaySprite, 19, 0, x1, y1, 0, FlipBoth);
-    }
-
     }
 
 int CollapsingPlatform::CustomSolidityCheck(int probeX, int probeY, int PlayerID, int checkJumpThrough) {
