@@ -39,14 +39,14 @@ void HoverFan::Update() {
         if (On) {
             Neck = Math::sinHex(Scene->Frame << 2) >> 13;
             if (Scene->Players[i]->EZX + 10 >= X - (Amount * 16) && Scene->Players[i]->EZX - 10 < X + (Amount * 16) && Scene->Players[i]->EZY < Y + 12 && Scene->Players[i]->EZY >= Y - BlowHeight - 0x30 + Neck) {
-                Active = true;
+                InUse = true;
                 Scene->Players[i]->SubY += (Y - BlowHeight - 0x30 + Neck - (Scene->Players[i]->SubY >> 16)) << 10;
                 Scene->Players[i]->Ground = false;
                 Scene->Players[i]->YSpeed = -1;
                 Scene->Players[i]->Action = ActionType::Fan;
             }
             else {
-                Active = true;
+                InUse = false;
             }
         }
 
@@ -61,12 +61,10 @@ void HoverFan::Update() {
 
     }
 
-    if (OnScreen && Active) {
+    if (OnScreen && InUse) {
         Sound::Loop(Sound::SFX_CARNIVAL_FAN, 0);
     }
-    else {
-        Sound::Stop(Sound::SFX_CARNIVAL_FAN);
-    }
+
     if (!Underwater) {
         if (Out) {
             if (OutX >= 0) X = Math::max(InitialX, X - 8);

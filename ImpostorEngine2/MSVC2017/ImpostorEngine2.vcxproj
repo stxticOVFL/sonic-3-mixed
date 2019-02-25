@@ -135,6 +135,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZHeadTrigger.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZHeadTrigger_Eye.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZQuickMud.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSmashingPillar.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSwingingPlatform.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZTriggerPlatform.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp" />

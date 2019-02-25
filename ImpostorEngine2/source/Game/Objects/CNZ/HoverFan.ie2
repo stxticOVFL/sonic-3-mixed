@@ -11,7 +11,7 @@ var OnOff:bool;
 var NeedsActivation:bool;
 var On:bool;
 var PlayingSound:bool;
-var Active:bool;
+var InUse:bool;
 var Amount:int;
 
 event Create() {
@@ -84,13 +84,13 @@ event Update() {
                 Scene.Players[i].EZX - 10 < X + (Amount * 16) &&
                 Scene.Players[i].EZY <  Y + 12 &&
                 Scene.Players[i].EZY >= Y - BlowHeight - 0x30 + Neck) {
-                Active = true;
+                InUse = true;
                 Scene.Players[i].SubY += (Y - BlowHeight - 0x30 + Neck - (Scene.Players[i].SubY >> 16)) << 10;
                 Scene.Players[i].Ground = false;
                 Scene.Players[i].YSpeed = -1;
                 Scene.Players[i].Action = ActionType.Fan;
             }
-            else {Active = false;}
+            else {InUse = false;}
         }
     }
 
@@ -105,7 +105,7 @@ event Update() {
         }
     }
 
-    if (OnScreen && Active) {
+    if (OnScreen && InUse) {
         Sound.Loop(Sound.SFX_CARNIVAL_FAN, 0);
     }
 

@@ -134,6 +134,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x51U:
             return new FloatingPlatform();
             break;
+        case 0x52U:
+            return new MGZSmashingPillar();
+            break;
         case 0x53U:
             return new MGZSwingingPlatform();
             break;
@@ -409,6 +412,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x2DF7EC71U:
             return new FloatingPlatform();
+            break;
+        case 0x60978FE5U:
+            return new MGZSmashingPillar();
             break;
         case 0xD690B204U:
             return new MGZSwingingPlatform();

@@ -24,7 +24,7 @@ public:
     bool NeedsActivation;
     bool On;
     bool PlayingSound;
-    bool Active;
+    bool InUse;
     int Amount;
     
     void Create();

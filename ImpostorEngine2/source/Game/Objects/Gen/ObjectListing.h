@@ -45,6 +45,7 @@
 #include "CNZ/Bouncepad.h"
 #include "MGZ/MGZQuickMud.h"
 #include "Common/FloatingPlatform.h"
+#include "MGZ/MGZSmashingPillar.h"
 #include "MGZ/MGZSwingingPlatform.h"
 #include "Common/Bubbler.h"
 #include "MGZ/MGZHeadTrigger.h"
@@ -137,6 +138,7 @@ enum {
     Obj_Bouncepad = 0x04B,
     Obj_MGZQuickMud = 0x04F,
     Obj_FloatingPlatform = 0x051,
+    Obj_MGZSmashingPillar = 0x052,
     Obj_MGZSwingingPlatform = 0x053,
     Obj_Bubbler = 0x054,
     Obj_MGZHeadTrigger = 0x055,

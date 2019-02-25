@@ -1,0 +1,10 @@
+object 0x52;
+
+event Create() {
+
+    Active = true;
+    Priority = false;
+    W = 64;
+    H = 80;
+    CurrentAnimation = 10;
+}  
