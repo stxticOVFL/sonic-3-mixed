@@ -1,5 +1,7 @@
 object 0x55;
 
+
+
 event Create() {
     Active = true;
     Priority = false;
@@ -13,7 +15,7 @@ event Create() {
     VisualLayer = 1;
 
     var Child:Object;
-    Child = Scene.AddNewObject(Obj_MGZHeadTrigger_Eye, SubType, X, Y, FlipX, false);
+    Child = Scene.AddNewObject(Obj_ReliefEye, SubType, X, Y, FlipX, false);
     Child.Sprite = Sprite;
     Scene.AddSelfToRegistry(Child, "Enemies");
 }

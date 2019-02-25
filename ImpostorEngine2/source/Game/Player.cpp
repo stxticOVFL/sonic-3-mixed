@@ -429,7 +429,6 @@ void IPlayer::Create() {
 	SpeedSneakersTimer = 0;
 	SpeedSneakersActive = false;
 
-
 	if (Sprites[0]) { // prevent re-loading sprites on restart
 		goto PlayerSetPalettes;
 	}
@@ -799,7 +798,6 @@ void IPlayer::Update() {
 					HoldingPlayer->Action = ActionType::GrabFall;
 				}
 			}
-
 
 			if (Action == ActionType::Respawn) {
 				VisualLayer = 1;
@@ -2027,7 +2025,6 @@ void IPlayer::Update() {
 					Ground = true;
 				}
 				else if (Action == ActionType::InStream || Action == ActionType::InStreamGrab) {
-
 				}
 				else {
 					if (Angle >= 0xF0 && Angle <= 0xFF)
@@ -2072,7 +2069,6 @@ void IPlayer::Update() {
 						isHurt = false;
 					}
 					else if (Action == ActionType::Spindash) {
-
 					}
 					else {
 						if (DropDashRev >= 21 && Action == ActionType::Jumping) {
@@ -2581,7 +2577,6 @@ void IPlayer::Update() {
 		}
 	}
 
-
 	if (RingAlarm > 0)
 		RingAlarm--;
 
@@ -3049,8 +3044,6 @@ void IPlayer::LateUpdate() {
 	if (CurrentFrame < 0)
 		CurrentFrame = 0;
 
-
-
 	if (Shield != ShieldType::None) {
 		ISprite::Animation ani = SpriteShields2->Animations[0];
 
@@ -3249,7 +3242,7 @@ void IPlayer::LateUpdate() {
 
 				App->Print(0, "Blended Color is: %02X, %02X, %02X, %02X", RGB[0], RGB[1], RGB[2], RGB[3]);
 				//App->Print(0, "Blended Color is: %02X, %d, %d, %d", RGB[0], RGB[1], RGB[2], RGB[3]);
-                
+
 				ABGR = palHyper[LastHyperIndex];
 				RGB[0] = 0x00;
 				RGB[1] = 0x00;
@@ -3387,7 +3380,6 @@ void IPlayer::LateUpdate() {
 		if ((DisplayAngle >> 8) > FinalAngle)
 			DisplayAngle = FinalAngle << 8;
 	}
-
 
 	// For animations that don't rotate, set DisplayAngle to 0
 	bool noRotate =
@@ -3995,7 +3987,6 @@ void IPlayer::HandlePathSwitchers() {
 			EZX - 10 + sz_r <  Scene->PlaneSwitchers[i].X + W &&
 			EZY + 10 + 00 >= Scene->PlaneSwitchers[i].Y - H &&
 			EZY - 10 - 00 <  Scene->PlaneSwitchers[i].Y + H) {
-
 			if (Scene->PlaneSwitchers[i].OnPath) {
 				if (Ground) {
 					int dot = 0;
@@ -4441,7 +4432,6 @@ bool IPlayer::HandleSprings() {
 					obj->Y + obj->H / 2 + co >= EZY - H / 2 &&
 					obj->X - obj->W / 2 - si + co * 2 <  EZX + (XSpeed >> 8) + W / 2 + 8 &&
 					obj->Y - obj->H / 2 - co          <  EZY + H / 2) {
-
 					int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
 					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
@@ -4504,7 +4494,7 @@ void IPlayer::DoSuperTransform() {
 	Action = ActionType::Transform;
 	SuperFormAnim = SuperFormAnimType::Transforming;
 	SuperFormTimer = 0;
-	
+
 	GroundSpeed = 0x0;
 	XSpeed = 0x0;
 	YSpeed = 0x0;

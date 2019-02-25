@@ -1,11 +1,11 @@
 // Object ID: 0x55
-// Object Name: MGZHeadTrigger.cpp
+// Object Name: Relief.cpp
 
-#include "MGZHeadTrigger.h"
+#include "Relief.h"
 
 typedef IMath Math;
 
-void MGZHeadTrigger::Create() {
+void Relief::Create() {
     Object::Create();
     Active = true;
     Priority = false;
@@ -15,12 +15,12 @@ void MGZHeadTrigger::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     VisualLayer = 1;
     Object* Child;
-    Child = Scene->AddNewObject(Obj_MGZHeadTrigger_Eye, SubType, X, Y, FlipX, false);
+    Child = Scene->AddNewObject(Obj_ReliefEye, SubType, X, Y, FlipX, false);
     Child->Sprite = Sprite;
     Scene->AddSelfToRegistry(Child, "Enemies");
 }
 
-void MGZHeadTrigger::Render(int CamX, int CamY) {
+void Relief::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 3, 6, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 

@@ -288,12 +288,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZQuickMud.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZHeadTrigger_Eye.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZHeadTrigger.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDashTrigger.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
@@ -457,6 +451,39 @@
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\PlatformOutliner.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\HoverFan.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZBoss.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\BubblesBadnik.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\DrillerEggman.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Mantis.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZBoss.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDriller.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZMiniBoss.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Spiker.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Relief.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\ReliefEye.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
   </ItemGroup>
@@ -739,12 +766,6 @@
     <None Include="..\source\Game\Objects\HCZ\TurboSpiker.ie2">
       <Filter>Source Files\Game\Objects\HCZ</Filter>
     </None>
-    <None Include="..\source\Game\Objects\MGZ\MGZHeadTrigger.ie2">
-      <Filter>Source Files\Game\Objects\MGZ</Filter>
-    </None>
-    <None Include="..\source\Game\Objects\MGZ\MGZHeadTrigger_Eye.ie2">
-      <Filter>Source Files\Game\Objects\MGZ</Filter>
-    </None>
     <None Include="..\source\Game\Objects\MGZ\MGZQuickMud.ie2">
       <Filter>Source Files\Game\Objects\MGZ</Filter>
     </None>
@@ -762,6 +783,33 @@
     </None>
     <None Include="..\source\Game\Objects\CommonSpecial\ViewCollisionToggler.ie2">
       <Filter>Source Files\Game\Objects\CommonSpecial</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\Relief.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\BubblesBadnik.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\DrillerEggman.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\Mantis.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\MGZBoss.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\MGZDriller.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\MGZMiniBoss.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\ReliefEye.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\Spiker.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
     </None>
   </ItemGroup>
 </Project>

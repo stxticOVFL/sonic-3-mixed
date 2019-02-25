@@ -1,0 +1,19 @@
+object 0x52;
+
+event Create() {
+    Active = true;
+    Priority = false;
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+    W = 64;
+    H = 80;
+    CurrentAnimation = 10;
+    X += 0x10;
+}  
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+    }
+}

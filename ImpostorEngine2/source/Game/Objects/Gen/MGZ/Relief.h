@@ -1,7 +1,7 @@
-#ifndef MGZHEADTRIGGER_EYE_H
-#define MGZHEADTRIGGER_EYE_H
+#ifndef RELIEF_H
+#define RELIEF_H
 
-class MGZHeadTrigger_Eye;
+class Relief;
 
 #include <Utils/Standard.h>
 
@@ -12,15 +12,12 @@ class MGZHeadTrigger_Eye;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class MGZHeadTrigger_Eye: public Enemy {
+class Relief: public Object {
 public:    
     
     
     void Create();
-    void Update();
-    int OnHit();
-    int OnDeath();
     void Render(int CamX, int CamY);
 };
 
-#endif /* MGZHEADTRIGGER_EYE_H */
+#endif /* RELIEF_H */

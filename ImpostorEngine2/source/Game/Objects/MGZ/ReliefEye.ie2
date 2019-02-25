@@ -1,0 +1,57 @@
+subclass Enemy;
+
+var InvulnTimer:int;
+var ExplosionTimer:int;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    W = 16;
+    H = 16;
+
+    HitCount = 3;
+
+    Timer = 0;
+    Radius = 8;
+
+    VisualLayer = 1;
+}
+
+event Update() {
+	HandleDamage();
+}
+event OnHit() : int {
+    Timer = 0x20;
+
+    HitCount--;
+    if (HitCount == 0) {
+        HitCount = -1;
+        return 0;
+    }
+    return 0;
+}
+
+event HandleDamage() {
+    if (HitCount > 0) {
+        if (InvulnTimer > 0) {
+            InvulnTimer -= 1;
+            Invincible = true;
+            Harmful = false;
+        }
+        else {
+            Invincible = false;
+            Harmful = true;
+        }
+    }
+
+    if (HitCount < 0) {
+		OnDeath();
+        }
+        XSpeed = 0;
+        YSpeed = 0;
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, 3, 1, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+}

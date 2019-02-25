@@ -119,6 +119,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x41U:
             return new Balloon();
             break;
+        case 0x46U:
+            return new HoverFan();
+            break;
         case 0x48U:
             return new VacuumTube();
             break;
@@ -131,6 +134,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x51U:
             return new FloatingPlatform();
             break;
+        case 0x52U:
+            return new MGZSmashingPillar();
+            break;
         case 0x53U:
             return new MGZSwingingPlatform();
             break;
@@ -138,7 +144,7 @@ Object* GetNewObjectFromID(int ID) {
             return new Bubbler();
             break;
         case 0x55U:
-            return new MGZHeadTrigger();
+            return new Relief();
             break;
         case 0x57U:
             return new MGZTriggerPlatform();
@@ -221,6 +227,30 @@ Object* GetNewObjectFromID(int ID) {
         case 0x99U:
             return new HCZMiniboss();
             break;
+        case 0x9AU:
+            return new HCZBoss();
+            break;
+        case 0x9BU:
+            return new BubblesBadnik();
+            break;
+        case 0x9CU:
+            return new Spiker();
+            break;
+        case 0x9DU:
+            return new Mantis();
+            break;
+        case 0x9EU:
+            return new MGZDriller();
+            break;
+        case 0x9FU:
+            return new MGZMiniBoss();
+            break;
+        case 0xA0U:
+            return new DrillerEggman();
+            break;
+        case 0xA1U:
+            return new MGZBoss();
+            break;
         case 0xA5U:
             return new Batbright();
             break;
@@ -264,7 +294,7 @@ Object* GetNewObjectFromID(int ID) {
             return new BlastoidShot();
             break;
         case 0x40DU:
-            return new MGZHeadTrigger_Eye();
+            return new ReliefEye();
             break;
         case 0x40EU:
             return new Platform();
@@ -395,6 +425,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x36EADD72U:
             return new Balloon();
             break;
+        case 0x68E27C69U:
+            return new HoverFan();
+            break;
         case 0x592DBA0EU:
             return new VacuumTube();
             break;
@@ -407,14 +440,17 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x2DF7EC71U:
             return new FloatingPlatform();
             break;
+        case 0x60978FE5U:
+            return new MGZSmashingPillar();
+            break;
         case 0xD690B204U:
             return new MGZSwingingPlatform();
             break;
         case 0x1DEA5E31U:
             return new Bubbler();
             break;
-        case 0xECB747B3U:
-            return new MGZHeadTrigger();
+        case 0x9A39B25AU:
+            return new Relief();
             break;
         case 0xE722BDDCU:
             return new MGZTriggerPlatform();
@@ -497,6 +533,30 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0xEBAA93DBU:
             return new HCZMiniboss();
             break;
+        case 0x330382AEU:
+            return new HCZBoss();
+            break;
+        case 0x3DDE24B3U:
+            return new BubblesBadnik();
+            break;
+        case 0xD7E5892CU:
+            return new Spiker();
+            break;
+        case 0xE2A6F79BU:
+            return new Mantis();
+            break;
+        case 0xE1611041U:
+            return new MGZDriller();
+            break;
+        case 0x332430DDU:
+            return new MGZMiniBoss();
+            break;
+        case 0x4839048AU:
+            return new DrillerEggman();
+            break;
+        case 0xFAAAEF1FU:
+            return new MGZBoss();
+            break;
         case 0xC3D653C4U:
             return new Batbright();
             break;
@@ -539,8 +599,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x4D41692EU:
             return new BlastoidShot();
             break;
-        case 0x5E30EBAAU:
-            return new MGZHeadTrigger_Eye();
+        case 0x5DA9F78DU:
+            return new ReliefEye();
             break;
         case 0xA5066DF4U:
             return new Platform();

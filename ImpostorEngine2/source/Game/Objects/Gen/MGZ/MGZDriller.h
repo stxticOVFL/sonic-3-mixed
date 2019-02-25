@@ -1,7 +1,7 @@
-#ifndef HCZMINIBOSS_H
-#define HCZMINIBOSS_H
+#ifndef MGZDRILLER_H
+#define MGZDRILLER_H
 
-class HCZMiniboss;
+class MGZDriller;
 
 #include <Utils/Standard.h>
 
@@ -12,25 +12,28 @@ class HCZMiniboss;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class HCZMiniboss: public Enemy {
+class MGZDriller: public Enemy {
 public:    
+    enum BossState {
+        RISING = 1,
+        IDLE = 0,
+        DRILLING = 2,
+        LOWERING = 3,
+    };
     
-    int TimerSpin;
-    int SpinSpeed;
-    int RocketTurn;
-    int InvulnTimer;
-    bool Started;
-    int ExplosionTimer;
     Uint32 MainPalette[16];
-    Uint32 MainPaletteWater[16];
     Uint32 HurtPalette[16];
+    int TimerAction;
+    int InvulnTimer;
+    int ExplosionTimer;
+    int State;
     
     void Create();
     int OnHit();
     void HandleDamage();
     void Update();
-    void DrawRocket(int Rock, int Ang, int Flip, int Side, int CamX, int CamY);
     void Render(int CamX, int CamY);
+    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
-#endif /* HCZMINIBOSS_H */
+#endif /* MGZDRILLER_H */
