@@ -48,7 +48,7 @@
 #include "MGZ/MGZSmashingPillar.h"
 #include "MGZ/MGZSwingingPlatform.h"
 #include "Common/Bubbler.h"
-#include "MGZ/MGZHeadTrigger.h"
+#include "MGZ/Relief.h"
 #include "MGZ/MGZTriggerPlatform.h"
 #include "MGZ/MGZDashTrigger.h"
 #include "HCZ/HCZSnakeBlocks.h"
@@ -76,6 +76,14 @@
 #include "HCZ/MegaChomper.h"
 #include "HCZ/Pointdexter.h"
 #include "HCZ/HCZMiniboss.h"
+#include "HCZ/HCZBoss.h"
+#include "MGZ/BubblesBadnik.h"
+#include "MGZ/Spiker.h"
+#include "MGZ/Mantis.h"
+#include "MGZ/MGZDriller.h"
+#include "MGZ/MGZMiniBoss.h"
+#include "MGZ/DrillerEggman.h"
+#include "MGZ/MGZBoss.h"
 #include "CNZ/Batbright.h"
 #include "AIZ/AirshipBomb.h"
 #include "AIZ/AIZMinibossBomb.h"
@@ -89,7 +97,7 @@
 #include "CommonSpecial/TensionBridgeChild.h"
 #include "CommonSpecial/ViewCollisionToggler.h"
 #include "HCZ/BlastoidShot.h"
-#include "MGZ/MGZHeadTrigger_Eye.h"
+#include "MGZ/ReliefEye.h"
 #include "Test/Platform.h"
 
 
@@ -141,7 +149,7 @@ enum {
     Obj_MGZSmashingPillar = 0x052,
     Obj_MGZSwingingPlatform = 0x053,
     Obj_Bubbler = 0x054,
-    Obj_MGZHeadTrigger = 0x055,
+    Obj_Relief = 0x055,
     Obj_MGZTriggerPlatform = 0x057,
     Obj_MGZDashTrigger = 0x059,
     Obj_HCZSnakeBlocks = 0x067,
@@ -169,6 +177,14 @@ enum {
     Obj_MegaChomper = 0x097,
     Obj_Pointdexter = 0x098,
     Obj_HCZMiniboss = 0x099,
+    Obj_HCZBoss = 0x09A,
+    Obj_BubblesBadnik = 0x09B,
+    Obj_Spiker = 0x09C,
+    Obj_Mantis = 0x09D,
+    Obj_MGZDriller = 0x09E,
+    Obj_MGZMiniBoss = 0x09F,
+    Obj_DrillerEggman = 0x0A0,
+    Obj_MGZBoss = 0x0A1,
     Obj_Batbright = 0x0A5,
     Obj_AirshipBomb = 0x400,
     Obj_AIZMinibossBomb = 0x401,
@@ -182,7 +198,7 @@ enum {
     Obj_TensionBridgeChild = 0x409,
     Obj_ViewCollisionToggler = 0x40A,
     Obj_BlastoidShot = 0x40B,
-    Obj_MGZHeadTrigger_Eye = 0x40C,
+    Obj_ReliefEye = 0x40C,
     Obj_Platform = 0x40D,
 };
 

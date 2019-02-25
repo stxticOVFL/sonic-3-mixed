@@ -1,0 +1,52 @@
+object 0x9B;
+
+subclass Enemy;
+
+var sinAngle:int;
+var reversesin:bool;
+
+event Create() {
+    this.Active = true;
+    this.Priority = false;
+
+    this.W = 32;
+    this.H = 32;
+
+    this.CurrentAnimation = 20;
+
+    HitCount = 1;
+}
+
+event OnHit():int {
+    return OnDeath();
+}
+
+event Update() {
+    CheckDistanceToPlayers();
+    if (PlayerXDistance <= 0x100) {
+		if (sinAngle > 360)
+		{
+			reversesin = true;
+		}
+		if (sinAngle < 0)
+		{
+			reversesin = false;
+		}
+	if (reversesin == false) 
+	{
+		Y += Math.sinHex(sinAngle++);
+		X += Math.sinHex(sinAngle++);
+	}
+		Y -= Math.sinHex(sinAngle--);
+		X -= Math.sinHex(sinAngle--);
+	}
+    MoveSprite();
+}
+
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+    }
+}

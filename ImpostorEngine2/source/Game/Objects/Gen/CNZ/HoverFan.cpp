@@ -49,7 +49,6 @@ void HoverFan::Update() {
                 InUse = false;
             }
         }
-
     }
     if (On) {
         if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
@@ -58,7 +57,6 @@ void HoverFan::Update() {
         if (Frame / 0x100 >= Sprite->Animations[CurrentAnimation].FrameCount - 1) {
             Frame = Sprite->Animations[CurrentAnimation].FrameToLoop * 0x100;
         }
-
     }
 
     if (OnScreen && InUse) {
@@ -83,7 +81,6 @@ void HoverFan::Update() {
     if (NeedsActivation) {
         On = false;
         if (Scene->LevelTriggerFlag & 1) On = true;
-
     }
 
     Out = false;
@@ -101,7 +98,5 @@ void HoverFan::Render(int CamX, int CamY) {
             G->DrawSprite(Scene->TileSprite, 0, 0x8D, 8 + X - CamX + (-16), 8 + Y - CamY + (0), 0, IE_NOFLIP);
             G->DrawSprite(Scene->TileSprite, 0, 0x8E, 8 + X - CamX + (0), 8 + Y - CamY + (0), 0, IE_NOFLIP);
         }
-
     }
     }
-

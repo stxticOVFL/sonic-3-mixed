@@ -1,0 +1,54 @@
+object 0x9D;
+
+subclass Enemy;
+
+var StartYpos:int;
+var wentUp:bool;
+
+event Create() {
+    this.Active = true;
+    this.Priority = false;
+
+    this.W = 32;
+    this.H = 32;
+
+    this.CurrentAnimation = 25;
+
+    HitCount = 1;
+
+	wentUp = false;
+    
+	StartYpos = this.Y;
+    this.Y += 64;
+}
+
+event OnHit():int {
+    return OnDeath();
+}
+
+event Update() {
+    CheckDistanceToPlayers();
+    if (PlayerXDistance <= 0x200) {
+		if (Y < StartYpos + 32)
+		{
+			Y+=4; //rise, my child
+		}
+		else
+		{
+			wentUp=true;
+		}
+    }
+	if (wentUp && Y > StartYpos)
+	{
+		Y-=4; //lower, my child
+	}
+	MoveSprite();
+}
+
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+    }
+}
