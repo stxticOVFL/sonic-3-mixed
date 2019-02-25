@@ -203,6 +203,7 @@
     <None Include="..\source\Game\Objects\CNZ\Batbright.ie2" />
     <None Include="..\source\Game\Objects\CNZ\BatbrightParts.ie2" />
     <None Include="..\source\Game\Objects\CNZ\Bouncepad.ie2" />
+    <None Include="..\source\Game\Objects\CNZ\HoverFan.ie2" />
     <None Include="..\source\Game\Objects\CNZ\VacuumTube.ie2" />
     <None Include="..\source\Game\Objects\CommonSpecial\CorkFloor.ie2" />
     <None Include="..\source\Game\Objects\CommonSpecial\CutsceneKnuckles.ie2" />
@@ -265,6 +266,7 @@
     <None Include="..\source\Game\Objects\MGZ\MGZDashTrigger.ie2" />
     <None Include="..\source\Game\Objects\MGZ\MGZDriller.ie2" />
     <None Include="..\source\Game\Objects\MGZ\MGZMiniBoss.ie2" />
+    <None Include="..\source\Game\Objects\MGZ\MGZSmashingPillar.ie2" />
     <None Include="..\source\Game\Objects\MGZ\Relief.ie2" />
     <None Include="..\source\Game\Objects\MGZ\ReliefEye.ie2" />
     <None Include="..\source\Game\Objects\MGZ\MGZQuickMud.ie2" />

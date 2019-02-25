@@ -486,6 +486,9 @@
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\ReliefEye.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSmashingPillar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">
@@ -809,6 +812,12 @@
       <Filter>Source Files\Game\Objects\MGZ</Filter>
     </None>
     <None Include="..\source\Game\Objects\MGZ\Spiker.ie2">
+      <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\CNZ\HoverFan.ie2">
+      <Filter>Source Files\Game\Objects\CNZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\MGZ\MGZSmashingPillar.ie2">
       <Filter>Source Files\Game\Objects\MGZ</Filter>
     </None>
   </ItemGroup>
