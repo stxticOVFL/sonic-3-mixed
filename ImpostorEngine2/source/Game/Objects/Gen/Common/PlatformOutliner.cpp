@@ -16,7 +16,18 @@ void PlatformOutliner::Create() {
 }
 
 void PlatformOutliner::Update() {
+    if (Parent == NULL) {
+        return;
+    }
+
     MoveWithParent();
+    if (IsParentFloatingPlatform()) {
+        if (Scene->ZoneID == 1 || Scene->ZoneID == 3) {
+            Y -= 2;
+        }
+
+    }
+
     Object::Update();
 }
 

@@ -10,6 +10,7 @@ void FloatingPlatform::Create() {
     Active = true;
     Priority = true;
     DoDeform = true;
+    IsFloatingPlatform = true;
     SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");
     Outliner = Scene->AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
@@ -129,7 +130,9 @@ void FloatingPlatform::Update() {
         XSpeed = (X - LastX) << 8;
     }
     else if (MoveType == 7) {
-        if (BeingStoodOn) Rising = true;
+        if (BeingStoodOn) {
+            Rising = true;
+        }
 
         LastY = Y;
         if (Rising && Y > InitialY - 0x140) {
@@ -173,8 +176,8 @@ void FloatingPlatform::Update() {
     if (!Scene->maxLayer && !isHeldDebugObject) {
         int32_t AnimCount = Sprite->AnimCount;
         if (Scene->ZoneID == 3) {
-            Outliner->W = Sprite->Animations[0].Frames[Frame].W;
-            Outliner->H = Sprite->Animations[0].Frames[Frame].H;
+            Outliner->W = Sprite->Animations[2].Frames[0].W;
+            Outliner->H = Sprite->Animations[2].Frames[0].H;
         }
         else if (Scene->ZoneID == 2) {
             int32_t FrameCount = Sprite->Animations[CurrentAnimation % AnimCount].FrameCount;

@@ -216,6 +216,24 @@ void Object::MoveWithParent() {
     Y = host->Y;
 }
 
+bool Object::IsParentFloatingPlatform() {
+    Object *host = (Object *)Parent;
+    if (host == NULL) {
+        return false;
+    }
+    
+    return host->IsFloatingPlatform;
+}
+
+Object* Object::GetObjectParent() {
+    Object *host = (Object *)Parent;
+    if (host == NULL) {
+        return NULL;
+    }
+    
+    return host;
+}
+
 int Object::Swing_UpAndDown() {
     // MaxAccel is the maximum acceleration before "swinging"
     int NewYSpeed = YSpeed; // New Velocity

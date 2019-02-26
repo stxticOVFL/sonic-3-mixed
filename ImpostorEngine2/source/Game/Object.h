@@ -455,6 +455,7 @@ public:
     bool     OnScreen = false;
 	bool     DrawCollisions = false;
     bool     CleanupInactiveObject = false;
+    bool     IsFloatingPlatform = false;
 	bool     Visible = true;
     int      VisualLayer = 0;
     uint32_t DrawCollisionsColor = 0x49ED80; // Green
@@ -532,6 +533,8 @@ public:
 	int16_t DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
     void MoveSprite();
     void MoveWithParent();
+    inline bool IsParentFloatingPlatform();
+    inline Object* GetObjectParent();
     int Swing_UpAndDown();
 };
 
