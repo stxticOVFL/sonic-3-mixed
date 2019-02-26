@@ -49,7 +49,7 @@ int Spiker::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     }
 
     if (HitFrom == CollideSide::TOP) {
-        Player->YSpeed = -0x40;
+        Player->EZY = -0x04;
         Player->Action = ActionType::Jumping;
         Sound::Play(Sound::SFX_SPRING);
         return 1;
