@@ -21,6 +21,7 @@ void Signpost::Create() {
     SpinSpeed = 0x600;
     Rot = 0;
     Falling = true;
+    StartResults = false;
     Timer = -1;
 }
 
@@ -31,15 +32,27 @@ void Signpost::Update() {
     SubY += YSpeed << 8;
     X = SubX >> 16;
     Y = SubY >> 16;
+    if (X + 24 >= Scene->CameraX + App->WIDTH || X - 24 <= Scene->CameraX) {
+        if (Falling) {
+            XSpeed = -XSpeed;
+        }
+
+    }
+
     for (int i = 0; i <= 8; i++)
 {
         if (Scene->CollisionAt(SubX >> 16, Y + 24) || Y + 24 >= Scene->CameraY + App->HEIGHT) {
             if (Falling) {
+                YSpeed = -YSpeed;
+                XSpeed = -XSpeed;
                 Falling = false;
                 Timer = 0x48;
             }
-
-            YSpeed = 0;
+            else {
+                YSpeed = 0;
+                XSpeed = 0;
+                Timer = 0;
+            }
             SubY -= 0x10000;
             SubY &= 0xFFFF0000;
             Y = SubY >> 16;
@@ -47,17 +60,25 @@ void Signpost::Update() {
 
     }
     Rot += SpinSpeed;
-    if (Timer > 0) {
+    if (Timer > 0 && !StartResults) {
         Timer--;
     }
 
-    if (Timer == 0 && (Rot >> 8 & 0xFF) == 0x80) {
+    if (!Falling && Timer >= 0) {
+        Rot = 0x0;
         SpinSpeed = 0;
+        StartResults = true;
+    }
+
+    if (StartResults) {
+        SpinSpeed = 0;
+        YSpeed = 0;
+        XSpeed = 0;
         App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
         Scene->DoResults();
         Timer = -1;
+        StartResults = false;
     }
-
     Object::Update();
 }
 
@@ -89,14 +110,16 @@ void Signpost::Render(int CamX, int CamY) {
     }
 
 int Signpost::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
-    return 0;
     if (Scene->Players[PlayerID]->Action != ActionType::Jumping) return 0;
 
     if (Scene->Players[PlayerID]->YSpeed > 0) return 0;
 
     if (YSpeed < 0) return 0;
 
-    if (Falling) YSpeed = -0x200;
+    if (Falling) {
+        YSpeed = -0x200;
+        XSpeed = Scene->Players[PlayerID]->XSpeed;
+    }
 
     SpinSpeed = 0xC00;
     return 1;

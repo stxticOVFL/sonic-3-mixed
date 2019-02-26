@@ -20,6 +20,7 @@ public:
     int SpinSpeed;
     int Rot;
     bool Falling;
+    bool StartResults;
     
     void Create();
     void Update();

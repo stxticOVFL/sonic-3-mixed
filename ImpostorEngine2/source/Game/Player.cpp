@@ -1669,7 +1669,6 @@ void IPlayer::Update() {
 				EZX = (EZX - 1 + (SensorEFWidth + 1 - SensorE));
 				XSpeed = 0;
 			}
-
 			// Check Sensor F
 			SensorF = -1;
 			for (int x = 0; x <= SensorEFWidth && DoCollision; x++) {
@@ -2011,9 +2010,15 @@ void IPlayer::Update() {
 						YSpeed = -0x400;
 					else
 						YSpeed = -0x780;
+					XSpeed = 0;
+					if (Angle > 0)
+					{
+						XSpeed = Angle;
+						if (XSpeed < 180) { XSpeed += 180;  XSpeed = -XSpeed; }
+						XSpeed = -XSpeed;
+						XSpeed *= 10;
+					}
 					JumpVariable = 1;
-					Angle = 0;
-					AngleMode = 0;
 				}
 				else if (Action == ActionType::GlideFall) {
 					XSpeed = 0;
@@ -4525,7 +4530,7 @@ bool IPlayer::HandleSprings() {
 
 void IPlayer::DoVictory() {
 	if (!Ground) return;
-
+	
 	bool DoJump = false;
 	GroundSpeed = 0x0;
 	XSpeed = 0x0;

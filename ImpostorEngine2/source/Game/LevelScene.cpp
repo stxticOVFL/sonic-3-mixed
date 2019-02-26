@@ -3775,7 +3775,14 @@ PUBLIC void LevelScene::Update() {
 			ControlsVisible = false;
 			if (!DoneSpinning) {
 				if (App->Input->GetControllerInput(0)[IInput::I_PAUSE]) {
-					while (TimerTotal > 0) {
+					bool skipTotal = false;
+					while (TimerTotal > 0 && !skipTotal) {
+
+						if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM] || App->Input->GetControllerInput(0)[IInput::I_EXTRA] || App->Input->GetControllerInput(0)[IInput::I_EXTRA2] || App->Input->GetControllerInput(0)[IInput::I_PAUSE] || App->Input->GetControllerInput(0)[IInput::I_DENY]) {
+							skipTotal = true;
+							break;
+						}
+
 						int amountToSubtract = 100;
 						if (TimerTotal < amountToSubtract)
 							amountToSubtract = TimerTotal;
@@ -3784,9 +3791,24 @@ PUBLIC void LevelScene::Update() {
 						TotalToAdd += amountToSubtract;
 					}
 
-					while (Player->Rings > 0) {
+					while (Player->Rings > 0 && !skipTotal) {
+
+						if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM] || App->Input->GetControllerInput(0)[IInput::I_EXTRA] || App->Input->GetControllerInput(0)[IInput::I_EXTRA2] || App->Input->GetControllerInput(0)[IInput::I_PAUSE] || App->Input->GetControllerInput(0)[IInput::I_DENY]) {
+							skipTotal = true;
+							break;
+						}
+
 						Player->Rings--;
 						TotalToAdd += 100;
+					}
+
+					if (skipTotal)
+					{
+						TotalToAdd += TimerTotal;
+						TimerTotal = 0;
+						TotalToAdd += Player->Rings * 100;
+						Player->Rings = 0;
+						DoneSpinning = true;
 					}
 
 					DoneSpinning = true;
