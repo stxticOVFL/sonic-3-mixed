@@ -189,12 +189,21 @@ event Update() {
     }
     
     if (!Scene.maxLayer && !isHeldDebugObject) {
-        if (Scene.ZoneID == 2) {
-            Outliner.W = Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].W;
-            Outliner.H = Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].H;
+        var AnimCount:int32_t = Sprite.AnimCount;
+        if (Scene.ZoneID == 3) {
+            Outliner.W = Sprite.Animations[0].Frames[Frame].W;
+            Outliner.H = Sprite.Animations[0].Frames[Frame].H;
+        } else if (Scene.ZoneID == 2) {
+			var FrameCount:int32_t = Sprite.Animations[CurrentAnimation % AnimCount].FrameCount;
+            var CaculatedFrame:int32_t = Frame >> 8;
+            if (CaculatedFrame >= FrameCount) {
+                CaculatedFrame = Frame;
+            }
+            Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].W;
+            Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].H;
         } else {
-            Outliner.W = Sprite.Animations[CurrentAnimation].Frames[Frame].W;
-            Outliner.H = Sprite.Animations[CurrentAnimation].Frames[Frame].H;
+            Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[Frame].W;
+            Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[Frame].H;
         }
         Outliner.Visible = true;
     } else {

@@ -171,13 +171,24 @@ void FloatingPlatform::Update() {
     }
 
     if (!Scene->maxLayer && !isHeldDebugObject) {
-        if (Scene->ZoneID == 2) {
-            Outliner->W = Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].W;
-            Outliner->H = Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].H;
+        int32_t AnimCount = Sprite->AnimCount;
+        if (Scene->ZoneID == 3) {
+            Outliner->W = Sprite->Animations[0].Frames[Frame].W;
+            Outliner->H = Sprite->Animations[0].Frames[Frame].H;
+        }
+        else if (Scene->ZoneID == 2) {
+            int32_t FrameCount = Sprite->Animations[CurrentAnimation % AnimCount].FrameCount;
+            int32_t CaculatedFrame = Frame >> 8;
+            if (CaculatedFrame >= FrameCount) {
+                CaculatedFrame = Frame;
+            }
+
+            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].W;
+            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].H;
         }
         else {
-            Outliner->W = Sprite->Animations[CurrentAnimation].Frames[Frame].W;
-            Outliner->H = Sprite->Animations[CurrentAnimation].Frames[Frame].H;
+            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[Frame].W;
+            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[Frame].H;
         }
         Outliner->Visible = true;
     }
