@@ -317,7 +317,7 @@ public:
     int                 RayBoostCount = 0;
     int                 GrabSwingValue = -1;
     bool                AngleBothSensors = false;                  // - If set to true, both sensors must return a terrain object to check for angles.
-    int                 AngleModeSwitchMode = 0;                     // - If set to 0, it will follow a more accurate angle mode switch(Reccomended).
+    int                 AngleModeSwitchMode = 0;                   // - If set to 0, it will follow a more accurate angle mode switch (Reccomended).
     int                 AngleSensorHeight = 90;
     int                 AngleSensorWidth = 6;
     int                 GroundSensorHeight = -1;
