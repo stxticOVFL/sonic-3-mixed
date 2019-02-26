@@ -34,7 +34,7 @@ void MGZDashTrigger::Render(int CamX, int CamY) {
 
 int MGZDashTrigger::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     int i;
-    if (Scene->Players[PlayerID]->Action == ActionType::Spindash) {
+    if ((Scene->Players[PlayerID]->Action == ActionType::Spindash) || (Scene->Players[PlayerID]->DropDashRev >= 71)) {
         Scene->LevelTriggerFlag = (Scene->LevelTriggerFlag & 0xFFF0) | ((SubType & 0xF) + 1);
         Rev = 60;
     }
