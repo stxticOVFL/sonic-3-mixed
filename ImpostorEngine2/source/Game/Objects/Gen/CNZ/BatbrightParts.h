@@ -12,7 +12,7 @@ class BatbrightParts;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class BatbrightParts: public Object {
+class BatbrightParts: public Enemy {
 public:    
     
     bool IsLight;

@@ -59,6 +59,11 @@ void Blastoid::Update() {
 }
 
 void Blastoid::Render(int CamX, int CamY) {
-    G->DrawSprite(this->Sprite, CurrentAnimation, Frame >> 8, this->X - CamX, this->Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(this->Sprite, CurrentAnimation, Frame >> 8, this->X - CamX, this->Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+    }
     }
 

@@ -20,6 +20,7 @@ public:
     int Separation;
     int Sections;
     int Vsect;
+    Object* Outliner;
     
     void Create();
     void Update();

@@ -9,6 +9,7 @@ void DisappearingFloor::Create() {
     Object::Create();
     Active = true;
     Priority = true;
+    DoDeform = true;
     SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");
     Rotation = 0;
@@ -67,8 +68,15 @@ void DisappearingFloor::Update() {
 }
 
 void DisappearingFloor::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    if (Frame >= 4) G->DrawSprite(Sprite, CurrentAnimation + 1, (Scene->Frame >> 2) & 3, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        if (Frame >= 4) {
+            G->DrawSprite(Sprite, CurrentAnimation + 1, (Scene->Frame >> 2) & 3, X - CamX, Y - CamY, 0, IE_NOFLIP);
+        }
 
+    }
     }
 

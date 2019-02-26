@@ -19,6 +19,7 @@ event Create() {
     HitCount = 1;
 
     CurrentAnimation = 4;
+    CleanupInactiveObject = true;
 
     XSpeed = -0x100;
 

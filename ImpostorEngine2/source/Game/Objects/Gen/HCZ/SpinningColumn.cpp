@@ -87,7 +87,12 @@ void SpinningColumn::Update() {
 void SpinningColumn::Render(int CamX, int CamY) {
     int nX = LastX;
     int nY = Y;
-    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, nX - CamX, nY - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        G->DrawRectangle(nX - CamX, nY - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, nX - CamX, nY - CamY, 0, IE_NOFLIP);
+    }
     }
 
 int SpinningColumn::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

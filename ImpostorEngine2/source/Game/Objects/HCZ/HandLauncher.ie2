@@ -26,6 +26,7 @@ event Create() {
 
     lastOutY2 = -1;
 }
+
 event Update() {
     Near = false;
     Spinning = false;
@@ -123,13 +124,17 @@ event Update() {
         coolDown = -1;
     }
 }
-event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
 
-    if (Timer > 0) {
-        G.DrawSprite(Sprite, 6, 0, X - CamX, Y - CamY + 68 - outY - lastOutY2, 0, IE_NOFLIP);
-    }
-    else if (Near) {
-        G.DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY + 64 - outY - lastOutY2, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
+
+        if (Timer > 0) {
+            G.DrawSprite(Sprite, 6, 0, X - CamX, Y - CamY + 68 - outY - lastOutY2, 0, IE_NOFLIP);
+        } else if (Near) {
+            G.DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
+        }
     }
 }

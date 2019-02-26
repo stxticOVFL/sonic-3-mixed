@@ -8,6 +8,7 @@ var Allotted:int;
 event Create() {
     Active = true;
     Priority = false;
+    DoDeform = true;
 
     W = 180;
     H = 16;
@@ -91,8 +92,7 @@ event Render(CamX:int, CamY:int) {
         G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX + 16, Y - CamY, 0, IE_NOFLIP);
         G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX + 48, Y - CamY, 0, IE_NOFLIP);
         G.DrawSprite(Sprite, CurrentAnimation, 2, X - CamX + 80, Y - CamY, 0, IE_NOFLIP);
-    }
-    else {
+    } else {
         G.DrawSprite(Sprite, CurrentAnimation, 1, X - CamX - 75, Y - CamY, 0, IE_NOFLIP);
         G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX - 45, Y - CamY, 0, IE_NOFLIP);
         G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX - 15, Y - CamY, 0, IE_NOFLIP);

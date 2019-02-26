@@ -9,8 +9,11 @@ void FloatingPlatform::Create() {
     Object::Create();
     Active = true;
     Priority = true;
+    DoDeform = true;
     SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");
+    Outliner = Scene->AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
+    Outliner->Parent = this;
     Timer = 0;
     LastX = X;
     LastY = Y;
@@ -152,8 +155,12 @@ void FloatingPlatform::Update() {
     if (Moving) {
         if (!RisingType) {
             LastX = X;
-            if (Vertical) Y = InitialY - 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 1) * 32 * YS >> 16);
-            else X = InitialX + 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 1) * 32 * YS >> 16);
+            if (Vertical) {
+                Y = InitialY - 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 1) * 32 * YS >> 16);
+            }
+            else {
+                X = InitialX + 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 1) * 32 * YS >> 16);
+            }
             XSpeed = (X - LastX) << 8;
         }
 
@@ -163,6 +170,31 @@ void FloatingPlatform::Update() {
 
     }
 
+    if (!Scene->maxLayer && !isHeldDebugObject) {
+        int32_t AnimCount = Sprite->AnimCount;
+        if (Scene->ZoneID == 3) {
+            Outliner->W = Sprite->Animations[0].Frames[Frame].W;
+            Outliner->H = Sprite->Animations[0].Frames[Frame].H;
+        }
+        else if (Scene->ZoneID == 2) {
+            int32_t FrameCount = Sprite->Animations[CurrentAnimation % AnimCount].FrameCount;
+            int32_t CaculatedFrame = Frame >> 8;
+            if (CaculatedFrame >= FrameCount) {
+                CaculatedFrame = Frame;
+            }
+
+            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].W;
+            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].H;
+        }
+        else {
+            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[Frame].W;
+            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[Frame].H;
+        }
+        Outliner->Visible = true;
+    }
+    else {
+        Outliner->Visible = false;
+    }
     return;
     Object::Update();
 }
@@ -172,8 +204,12 @@ void FloatingPlatform::Render(int CamX, int CamY) {
     int nY = Y;
     if (Moving) {
         if (!RisingType) {
-            if (Vertical) nY = InitialY - 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 0) * 32 * YS >> 16);
-            else nX = InitialX + 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 0) * 32 * YS >> 16);
+            if (Vertical) {
+                nY = InitialY - 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 0) * 32 * YS >> 16);
+            }
+            else {
+                nX = InitialX + 32 * Math::abs(YS) + (Math::cosHex(Scene->Frame + 0) * 32 * YS >> 16);
+            }
         }
 
     }

@@ -9,6 +9,7 @@ void FlippingBridge::Create() {
     Object::Create();
     Active = true;
     Priority = true;
+    DoDeform = true;
     SolidTop = true;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");

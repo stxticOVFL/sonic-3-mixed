@@ -53,6 +53,7 @@ event Create() {
 
     CanFall = false;
     GhostY = 0.0;
+    CleanupInactiveObject = true;
 
     if (Attributes) {
         // New style of Attributes (instead of SubType)

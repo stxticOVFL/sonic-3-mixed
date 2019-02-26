@@ -26,6 +26,7 @@ public:
     int MoveType;
     int BackupX;
     int Amplitude;
+    Object* Outliner;
     
     void Create();
     void Update();

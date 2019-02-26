@@ -1,3 +1,6 @@
 out/
 config.ini
+save.bin
 ImpostorEngine2.log
+.DS_Store
+.vscode/

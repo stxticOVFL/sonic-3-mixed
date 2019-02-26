@@ -1,0 +1,67 @@
+object 0x52;
+
+var OGY:int;
+var Direction:bool;
+var Timer:int;
+
+event Create() {
+    Active = true;
+    Priority = false;
+    Solid = true;
+    DoDeform = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+    W = 62;
+    H = 80;
+    CurrentAnimation = 9;
+    OGY = Y - 5 + 5; //keeping var?  
+    YSpeed = -0x50;
+    Direction = true;
+    VisualLayer = 1;
+    Visible = false;
+}  
+
+event Update() {
+    if (Direction) {
+        if (Y == OGY) {
+            
+        }
+        if (Y == OGY - 20) {
+            YSpeed = 0;
+            while (Timer < 200) {
+                Timer++;
+            }
+            Timer = 0;
+            YSpeed = 0x250;
+            Direction = false;
+            Visible = true;
+            Solid = true;
+        }
+    }
+    else {
+        if (Y == OGY + 80) {    
+            YSpeed = 0;
+            while (Timer < 2000) {
+                Timer++;
+            }
+            Timer = 0;
+            YSpeed = -0x50;
+            Direction = true;
+        }
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    /* var flag:int = IE_NOFLIP;
+    if (Rotation == 0xC0)
+        flag = IE_FLIPX;*/
+    if (!Visible) return;
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (!Solid) return 0;
+    if (HitFrom == CollideSide.BOTTOM && Scene.Players[PlayerID].YSpeed <= 0 && Visible) {
+        Scene.Players[PlayerID].Hurt(X, true);
+    }
+    return 1;
+}

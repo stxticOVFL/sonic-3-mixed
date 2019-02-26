@@ -17,6 +17,7 @@ var BreakSide:bool;
 event Create() {
     this.Active = true;
     this.Priority = false;
+    this.DoDeform = true;
 
     this.W = 96;
     this.H = 64;

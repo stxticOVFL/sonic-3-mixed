@@ -43,6 +43,7 @@ event Create() {
         // dc\.w   \$([A-F0-9]+), *\$([A-F0-9]+)
         // AutoTunnel_Data[i++] = 0x$1; AutoTunnel_Data[i++] = 0x$2;
 }
+
 event Update() {
     var d0:int;
     var d1:int;
@@ -115,9 +116,13 @@ event Update() {
         }
     }
 }
-event Render(CamX:int, CamY:int) {
 
+event Render(CamX:int, CamY:int) {
+    if (!Scene.maxLayer) {
+        G.DrawSprite(Scene.EditorSprite, 1, 4, X - CamX, Y - CamY, 0, 0);
+    }
 }
+
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     var player:IPlayer = Scene.Players[PlayerID];
     if (!player.Ground) return 0;

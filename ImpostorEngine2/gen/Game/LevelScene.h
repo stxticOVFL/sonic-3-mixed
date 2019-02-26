@@ -71,6 +71,7 @@ public:
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;
     ISprite*    SuperButtonsSprite = NULL;
+    ISprite*    EditorSprite = NULL;
     ISprite*    ItemsSprite = NULL;
     ISprite*    AnimalsSprite = NULL;
     ISprite*    ObjectsSprite = NULL;
@@ -100,9 +101,11 @@ public:
     TO_SPECIAL_STAGE = 7,
     NEXT_ZONE = 8,
     CUSTOM_FADE_ACTION = 9,
-    }; 
+    };
     int         maxLayer = 1;
     bool        Thremixed = false;
+    bool        DeformObjects = false;
+    bool        DeformPlayer = false;
     Object**    Objects;
     int         ObjectCount = 0;
     int         ObjectNewCount = 0;
@@ -116,6 +119,8 @@ public:
     int         ObjectBreakableCount = 0;
     Object**    ObjectsPathSwitcher;
     int         ObjectPathSwitcherCount = 0;
+    int16_t*    DebugObjectIDList;
+    int32_t     DebugObjectIDCount = 0;
     unordered_map<string, ISprite*> SpriteMap;
     ISprite**   SpriteMapIDs;
     int         ZoneID = 0;
@@ -133,7 +138,7 @@ public:
     bool LoadFlag = false;
     bool FlipX = false;
     bool FlipY = false;
-    }; 
+    };
     ObjectProp* ObjectProps = NULL;
     int         ObjectPropCount = 0;
     ObjectProp* RingProps = NULL;
@@ -187,6 +192,12 @@ public:
     uint32_t    BackgroundColor = 0x000000;
     bool        SepThread = false;
     uint16_t    Signal[8]; //
+    bool ViewPalettes = false;
+    bool ViewPathswitchers = false;
+    bool ViewPlayerStats = false;
+    bool ViewPlayerUpdateStats = false;
+    bool ViewTileInfo = false;
+    bool ViewTileCollision = false;
 
     LevelScene(IApp* app, IGraphics* g);
     virtual void AssignSpriteMapIDs();
@@ -219,6 +230,7 @@ public:
     void AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life, int hold);
     void AddAnimal(int x, int y, bool flipX, bool flipY, int xspeed, int yspeed, bool escaping);
     Object* AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY);
+    void AddNewDebugObjectID(int16_t ID);
     virtual void EarlyUpdate();
     virtual void Subupdate();
     virtual void DoResults();

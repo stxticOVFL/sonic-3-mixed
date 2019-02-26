@@ -9,6 +9,7 @@ void Rock::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    DoDeform = true;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
     i = 0;
@@ -17,6 +18,7 @@ void Rock::Create() {
     RockSize = SubType >> 4 & 0x7;
     RockType = SubType & 0x7;
     Knux = (SubType & 0x80) != 0;
+    CleanupInactiveObject = true;
     i = 0;
     Rock0Pos[i++] = 0xF8;
     Rock0Pos[i++] = 0xE8;

@@ -25,6 +25,7 @@ event Create() {
     SubTimer = 1;
     BubblesToMake = 1;
 }
+
 event Update() {
     if (Y < Scene.WaterLevel) {
         Active = false;

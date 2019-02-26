@@ -9,6 +9,7 @@ var AnimationData:int16_t[6];
 event Create() {
     Active = true;
     Priority = false;
+    CleanupInactiveObject = true;
 
     W = 16;
     H = 16;
@@ -87,5 +88,9 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
 }

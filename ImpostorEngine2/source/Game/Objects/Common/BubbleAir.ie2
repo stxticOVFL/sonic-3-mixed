@@ -14,6 +14,7 @@ event Create() {
     YSpeed = -0x88;
     Timer = 0;
 }
+
 event Update() {
     X = ((Math.sinHex(Timer << 1) * 3) >> 16) + InitialX;
     Timer++;
@@ -21,15 +22,25 @@ event Update() {
     if (Y < Scene.WaterLevel)
         Active = false;
 }
+
 event OnAnimationFinish() {
     // Frame = 5;
 }
+
 event OnLeaveScreen() : int {
     Active = false;
     return 0;
 }
+
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+	if (DrawCollisions) {
+        if (CurrentAnimation != 3) return;
+        if (Frame < 13) return;
+        
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

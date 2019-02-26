@@ -30,7 +30,6 @@ public:
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
 #include <Game/Levels/FBZ.h>
-//#include <Game/Levels/FBZ.h>
 //#include <Game/Levels/SOZ.h>
 //#include <Game/Levels/LRZ.h>
 //#include <Game/Levels/HPZ.h>
@@ -302,17 +301,29 @@ PUBLIC void Scene_DataSelect::Update() {
 				int i = SaveGame::CurrentSaveFile;
 				if (SaveGame::Savefiles[i].State == 0) {
 					SaveGame::InitializeSaveGame();
-					if (CharacterFlag == 0)
-						CharacterFlag = 0x10 | CharacterFlag;
+					if (CharacterFlag == 0) //Buddy?
+					{
+						//we have a buddy! so do nothing!
+						//CharacterFlag = 0x10 | CharacterFlag;
+					}
+					else
+					{
+						PartnerFlag = 0xFF;
+					}
 					SaveGame::CurrentCharacterFlag = CharacterFlag;
+					SaveGame::CurrentPartnerFlag = PartnerFlag;
 					if (i >= 0)
+					{
 						SaveGame::Savefiles[i].CharacterFlag = CharacterFlag;
+						SaveGame::Savefiles[i].PartnerFlag = PartnerFlag;
+					}
 
 					SaveGame::Savefiles[i].State = 1;
 					SaveGame::Flush();
 				}
 				else {
 					SaveGame::CurrentCharacterFlag = SaveGame::Savefiles[i].CharacterFlag;
+					SaveGame::CurrentPartnerFlag = SaveGame::Savefiles[i].PartnerFlag;
 				}
 
 				SaveGame::CurrentUsedZoneRings = SaveGame::Savefiles[i].UsedZoneRings[SaveGame::Savefiles[i].LastZoneID];
@@ -419,6 +430,49 @@ PUBLIC void Scene_DataSelect::Update() {
 				CharacterFlag--;
 			else
 				CharacterFlag = 4;
+
+			Sound::Play(Sound::SFX_MENUBLEEP);
+
+			MobileScrolling = true;
+		}
+
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
+			if (PartnerFlag < 4 && PartnerFlag != 0xFF)
+			{
+				PartnerFlag++;
+			}
+			else
+			{
+				if (PartnerFlag == 0xFF)
+				{
+					PartnerFlag = 0;
+				}
+				else
+				{
+					PartnerFlag = 0xFF;
+				}
+			}
+
+			Sound::Play(Sound::SFX_MENUBLEEP);
+
+			MobileScrolling = true;
+		}
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2]) {
+			if (PartnerFlag > 0 && PartnerFlag != 0xFF)
+			{
+				PartnerFlag--;
+			}
+			else
+			{
+				if (PartnerFlag == 0xFF)
+				{
+					CharacterFlag = 4;
+				}
+				else
+				{
+					PartnerFlag = 0xFF;
+				}
+			}
 
 			Sound::Play(Sound::SFX_MENUBLEEP);
 
@@ -574,8 +628,12 @@ PUBLIC void Scene_DataSelect::Render() {
 		}
 
 		int cf = CharacterFlag;
+		int pf = PartnerFlag;
 		if (i != selected || SaveGame::Savefiles[i].State > 0)
+		{
 			cf = SaveGame::Savefiles[i].CharacterFlag;
+			pf = SaveGame::Savefiles[i].PartnerFlag;
+		}
 
 		cf &= 0xF;
 

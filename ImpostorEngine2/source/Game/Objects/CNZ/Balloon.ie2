@@ -24,6 +24,7 @@ event Create() {
 
     CurrentAnimation = Sprite.FindAnimation("Default") + Color;
     AutoAnimate = true;
+    CleanupInactiveObject = true;
 }
 
 event Update() {

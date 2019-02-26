@@ -78,7 +78,7 @@ public:
     SFX_RUMBLE = 0x6F,
     SFX_70 = 0x70,
     SFX_71 = 0x71,
-    SFX_72 = 0x72,
+    SFX_CARNIVAL_FAN = 0x72,
     SFX_73 = 0x73,
     SFX_VACUUM_TUBE = 0x74,
     SFX_75 = 0x75,

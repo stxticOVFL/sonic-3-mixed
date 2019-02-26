@@ -9,6 +9,7 @@ void ForegroundPlant::Create() {
     Object::Create();
     Active = true;
     Priority = true;
+    DoDeform = true;
     W = 1;
     H = 1;
     CamMult = (SubType >> 2) & 0x3C;

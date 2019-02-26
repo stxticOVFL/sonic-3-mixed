@@ -9,6 +9,7 @@ void BloominatorSpore::Create() {
     Enemy::Create();
     Active = true;
     Priority = true;
+    CleanupInactiveObject = true;
     W = 16;
     H = 16;
     Invincible = true;
@@ -32,6 +33,13 @@ void BloominatorSpore::Update() {
 }
 
 void BloominatorSpore::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, 4, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        int32_t spriteWidth = Sprite->Animations[CurrentAnimation].Frames[4].W;
+        int32_t spriteHeight = Sprite->Animations[CurrentAnimation].Frames[4].H;
+        G->DrawRectangle(X - CamX, Y - CamY, spriteWidth, spriteHeight, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, 4, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
     }
 

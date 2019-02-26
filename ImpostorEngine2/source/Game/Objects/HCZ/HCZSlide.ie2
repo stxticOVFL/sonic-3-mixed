@@ -134,6 +134,7 @@ event GetX(TheY:int) : int {
 
     return finalX;
 }
+
 event GetWidth() : int {
     switch (SlideType) {
         case 0:
@@ -149,6 +150,7 @@ event GetWidth() : int {
     }
     return 0;
 }
+
 event GetHeight() : int {
     switch (SlideType) {
         case 0:

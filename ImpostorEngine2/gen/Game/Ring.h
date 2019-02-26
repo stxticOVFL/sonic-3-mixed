@@ -22,6 +22,7 @@ public:
     uint32_t MyY = 0;
     int CurrentFrame = 0;
     int MagnetizedTo = -1;
+    bool ShouldRingFall = true;
 
     Ring();
     void Update();

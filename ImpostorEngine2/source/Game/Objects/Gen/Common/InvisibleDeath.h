@@ -21,6 +21,10 @@ public:
     int Size;
     
     void Create();
+    void UpdateSubType();
+    uint8_t GetSubTypeIncrement();
+    uint8_t GetSubTypeMax();
+    void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 

@@ -119,6 +119,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x41U:
             return new Balloon();
             break;
+        case 0x46U:
+            return new HoverFan();
+            break;
         case 0x48U:
             return new VacuumTube();
             break;
@@ -131,6 +134,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x51U:
             return new FloatingPlatform();
             break;
+        case 0x52U:
+            return new MGZSmashingPillar();
+            break;
         case 0x53U:
             return new MGZSwingingPlatform();
             break;
@@ -138,7 +144,7 @@ Object* GetNewObjectFromID(int ID) {
             return new Bubbler();
             break;
         case 0x55U:
-            return new MGZHeadTrigger();
+            return new Relief();
             break;
         case 0x57U:
             return new MGZTriggerPlatform();
@@ -221,6 +227,30 @@ Object* GetNewObjectFromID(int ID) {
         case 0x99U:
             return new HCZMiniboss();
             break;
+        case 0x9AU:
+            return new HCZBoss();
+            break;
+        case 0x9BU:
+            return new BubblesBadnik();
+            break;
+        case 0x9CU:
+            return new Spiker();
+            break;
+        case 0x9DU:
+            return new Mantis();
+            break;
+        case 0x9EU:
+            return new MGZDriller();
+            break;
+        case 0x9FU:
+            return new MGZMiniBoss();
+            break;
+        case 0xA0U:
+            return new DrillerEggman();
+            break;
+        case 0xA1U:
+            return new MGZBoss();
+            break;
         case 0xA5U:
             return new Batbright();
             break;
@@ -246,21 +276,27 @@ Object* GetNewObjectFromID(int ID) {
             return new BubbleAir();
             break;
         case 0x407U:
-            return new EggCapsuleButton();
+            return new PlatformOutliner();
             break;
         case 0x408U:
-            return new Signpost();
+            return new EggCapsuleButton();
             break;
         case 0x409U:
-            return new TensionBridgeChild();
+            return new Signpost();
             break;
         case 0x40AU:
-            return new BlastoidShot();
+            return new TensionBridgeChild();
             break;
         case 0x40BU:
-            return new MGZHeadTrigger_Eye();
+            return new ViewCollisionToggler();
             break;
         case 0x40CU:
+            return new BlastoidShot();
+            break;
+        case 0x40DU:
+            return new ReliefEye();
+            break;
+        case 0x40EU:
             return new Platform();
             break;
 

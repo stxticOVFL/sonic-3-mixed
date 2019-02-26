@@ -23,124 +23,127 @@ event Create() {
     HitCount = 1;
 
     CurrentAnimation = 24;
-
     
+    CleanupInactiveObject = true;
 }
 
 event Update() {
     var DisX:int = 0;
     var DisY:int = 0;
-
-    if (Speed == Math.sign(Acceleration) * 0x300) {
-        Acceleration = -Acceleration;
-        //Sound.Play(0x48);
-    }
-
-    if (Speed == 0 && Timer == -1 && Math.abs(Speed) < 0x400) {
-        FlipX = !FlipX;
-        if (FlipX)
-            Acceleration = -0x10;
-        else
-            Acceleration = 0x10;
-    }
-
-    Speed += Acceleration;
-    SubX += Speed << 8;
-    X = SubX >> 16;
-
-    if (Timer == -1 && Math.abs(Speed) < 0x400) {
-        if (Math.sign(Speed) == Math.sign(Acceleration)) {
-            Frame = 0;
-            if (Math.abs(Speed) < 0x80) {
-                Frame = 3;
-            }
-            if (Math.abs(Speed) < 0x40) {
-                Frame = 1;
-            }
-        }
-        else {
-            // for 7 frames, looks like this
-            Frame = 1;
-            // for 40 looks like this
-            if (Math.abs(Speed) < 0x280) {
-                Frame = 2;
-            }
+    
+    if (!isHeldDebugObject) {
+        if (Speed == Math.sign(Acceleration) * 0x300) {
+            Acceleration = -Acceleration;
+            //Sound.Play(0x48);
         }
 
-        for (var p:int = 0; p < Scene.PlayerCount; p++) {
-            DisX = (Scene.Players[p].EZX - X) * Math.sign(Speed);
-            DisY = Math.abs(Scene.Players[p].EZY - Y);
-            if (DisX < 96 && DisX > 0 && DisY <= 32) {
-                Timer = 24;
-                Speed = 0;
-                Acceleration = 0;
+        if (Speed == 0 && Timer == -1 && Math.abs(Speed) < 0x400) {
+            FlipX = !FlipX;
+            if (FlipX)
+                Acceleration = -0x10;
+            else
+                Acceleration = 0x10;
+        }
+
+        Speed += Acceleration;
+        SubX += Speed << 8;
+        X = SubX >> 16;
+
+        if (Timer == -1 && Math.abs(Speed) < 0x400) {
+            if (Math.sign(Speed) == Math.sign(Acceleration)) {
                 Frame = 0;
+                if (Math.abs(Speed) < 0x80) {
+                    Frame = 3;
+                }
+                if (Math.abs(Speed) < 0x40) {
+                    Frame = 1;
+                }
+            }
+            else {
+                // for 7 frames, looks like this
+                Frame = 1;
+                // for 40 looks like this
+                if (Math.abs(Speed) < 0x280) {
+                    Frame = 2;
+                }
+            }
+
+            for (var p:int = 0; p < Scene.PlayerCount; p++) {
+                DisX = (Scene.Players[p].EZX - X) * Math.sign(Speed);
+                DisY = Math.abs(Scene.Players[p].EZY - Y);
+                if (DisX < 96 && DisX > 0 && DisY <= 32) {
+                    Timer = 24;
+                    Speed = 0;
+                    Acceleration = 0;
+                    Frame = 0;
+                }
             }
         }
-    }
 
-    if (Timer == 0) {
-        if (FlipX)
-            Speed = -0x400;
-        else
-            Speed = 0x400;
-        Frame = 0;
-        Priority = true;
-    }
-
-    var Y1:int = Y;
-    var Y2:int = Y;
-    for (var y:int = Y + 8; y < Y + 32; y++) {
-        if (Scene.CollisionAt(X - 8, y)) {
-            Y1 = y;
-            break;
+        if (Timer == 0) {
+            if (FlipX)
+                Speed = -0x400;
+            else
+                Speed = 0x400;
+            Frame = 0;
+            Priority = true;
         }
-    }
-    for (var y:int = Y + 8; y < Y + 32; y++) {
-        if (Scene.CollisionAt(X + 8, y)) {
-            Y2 = y;
-            break;
+
+        var Y1:int = Y;
+        var Y2:int = Y;
+        for (var y:int = Y + 8; y < Y + 32; y++) {
+            if (Scene.CollisionAt(X - 8, y)) {
+                Y1 = y;
+                break;
+            }
         }
-    }
+        for (var y:int = Y + 8; y < Y + 32; y++) {
+            if (Scene.CollisionAt(X + 8, y)) {
+                Y2 = y;
+                break;
+            }
+        }
 
-    if (Y1 < Y2 && Y1 > Y + 8) {
-        Y = Y1 - 16;
-    }
-    else if (Y2 > Y + 8) {
-        Y = Y2 - 16;
-    }
+        if (Y1 < Y2 && Y1 > Y + 8) {
+            Y = Y1 - 16;
+        }
+        else if (Y2 > Y + 8) {
+            Y = Y2 - 16;
+        }
 
-    if (Y1 >= Y + 30 || Y1 == Y || Scene.CollisionAt(X - 8 - 1, Y)) {
-        Acceleration = 0x10;
-        Speed = 0x10;
-        Timer = -1;
-        SubX += 0x10000;
-        FlipX = false;
-
-        Priority = false;
-
-        while (!Scene.CollisionAt((SubX >> 16) - 8 - 1, Y + 20))
+        if (Y1 >= Y + 30 || Y1 == Y || Scene.CollisionAt(X - 8 - 1, Y)) {
+            Acceleration = 0x10;
+            Speed = 0x10;
+            Timer = -1;
             SubX += 0x10000;
+            FlipX = false;
 
-        X = (SubX >> 16);
-    }
-    if (Y2 >= Y + 30 || Y2 == Y || Scene.CollisionAt(X + 8 + 1, Y)) {
-        Acceleration = -0x10;
-        Speed = -0x10;
-        Timer = -1;
-        SubX -= 0x10000;
-        FlipX = true;
+            Priority = false;
 
-        Priority = false;
+            while (!Scene.CollisionAt((SubX >> 16) - 8 - 1, Y + 20))
+                SubX += 0x10000;
 
-        while (!Scene.CollisionAt((SubX >> 16) + 8 + 1, Y + 20))
+            X = (SubX >> 16);
+        }
+        if (Y2 >= Y + 30 || Y2 == Y || Scene.CollisionAt(X + 8 + 1, Y)) {
+            Acceleration = -0x10;
+            Speed = -0x10;
+            Timer = -1;
             SubX -= 0x10000;
+            FlipX = true;
 
-        X = (SubX >> 16);
+            Priority = false;
+
+            while (!Scene.CollisionAt((SubX >> 16) + 8 + 1, Y + 20))
+                SubX -= 0x10000;
+
+            X = (SubX >> 16);
+        }
+
+        if (Timer >= 0) {
+            Timer--;
+        }
     }
-
-    if (Timer >= 0)
-        Timer--;
 }
 
 event Render(CamX:int, CamY:int) {
@@ -148,11 +151,20 @@ event Render(CamX:int, CamY:int) {
     if (FlipX)
         Flip = -1;
 
-    if (Frame == 3)
+    if (Frame == 3) {
         Flip = -Flip;
-    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
-    if (Frame == 2)
-        G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
-    if (Timer != -1)
-        G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    }
+    if (DrawCollisions) {
+        if (Frame == 2) {
+            G.DrawRectangle(X - CamX + Flip * 14, Y - CamY + 1, W, H, DrawCollisionsColor);
+        } else {
+            G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        }
+    } else {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
+        if (Frame == 2)
+            G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+        if (Timer != -1)
+            G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    }
 }

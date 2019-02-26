@@ -13,6 +13,7 @@ public:
     uint32_t MyY = 0;
     int CurrentFrame = 0;
     int MagnetizedTo = -1;
+    bool ShouldRingFall = true;
 };
 
 #endif
@@ -25,6 +26,7 @@ public:
 
 PUBLIC Ring::Ring() {
     Timer = 0xFF;
+    CleanupInactiveObject = true;
 }
 
 PUBLIC void Ring::Update() {
@@ -58,7 +60,9 @@ PUBLIC void Ring::Update() {
             }
         }
 
-        Timer--;
+        if (ShouldRingFall) {
+            Timer--;
+        }
 
         ISprite::Animation ani = Scene->ItemsSprite->Animations[7];
 
@@ -119,16 +123,18 @@ PUBLIC void Ring::Update() {
 
     MyX += XSpeed;
     MyY += YSpeed;
-
-    X = MyX >> 8;
-    Y = MyY >> 8;
+    
+    if (ShouldRingFall) {
+        X = MyX >> 8;
+        Y = MyY >> 8;
+    }
 
     if (Timer == 0)
         Active = false;
 }
 
 PUBLIC void Ring::Render(int CamX, int CamY) {
-    if (Timer < 64 && ((Timer >> 1) & 1) == 0) return;
+    if (ShouldRingFall && Timer < 64 && ((Timer >> 1) & 1) == 0) return;
 
     G->DrawSprite(Scene->ItemsSprite, 7, CurrentFrame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }

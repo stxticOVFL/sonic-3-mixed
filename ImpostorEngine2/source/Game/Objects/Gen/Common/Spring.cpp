@@ -22,6 +22,7 @@ void Spring::Create() {
     CurrentAnimation = SpringType;
     Rotation = 0;
     DoAnimate = false;
+    CleanupInactiveObject = true;
     SpringPower = 0x1000;
     if (SpringType == 0) SpringPower = 0xA00;
 

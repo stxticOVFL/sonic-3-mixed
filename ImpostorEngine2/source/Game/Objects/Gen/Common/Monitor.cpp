@@ -23,6 +23,7 @@ void Monitor::Create() {
     PlayerAggressor = 0;
     CanFall = false;
     GhostY = 0.0;
+    CleanupInactiveObject = true;
     if (Attributes) {
         if (Scene->ManiaLevel) {
             switch (Attributes[0]) {

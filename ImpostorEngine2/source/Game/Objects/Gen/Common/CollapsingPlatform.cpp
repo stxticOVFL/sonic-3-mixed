@@ -9,6 +9,7 @@ void CollapsingPlatform::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    DoDeform = true;
     W = 48;
     H = 32;
     f = -1;
@@ -17,6 +18,8 @@ void CollapsingPlatform::Create() {
     Sections = 8;
     Vsect = 2;
     CurrentAnimation = -1;
+    Outliner = Scene->AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
+    Outliner->Parent = this;
     SolidTop = true;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");
@@ -59,15 +62,27 @@ void CollapsingPlatform::Create() {
 }
 
 void CollapsingPlatform::Update() {
+    if (!Scene->maxLayer && !isHeldDebugObject) {
+        Outliner->W = Sprite->Animations[CurrentAnimation].Frames[Frame].W;
+        Outliner->H = Sprite->Animations[CurrentAnimation].Frames[Frame].H;
+        Outliner->Visible = true;
+    }
+    else {
+        Outliner->Visible = false;
+    }
     SolidTop = true;
     if (f > -1 && f <= Allotted) {
         SolidTop = false;
         Solid = false;
-        if (f == Allotted) Break();
+        if (f == Allotted) {
+            Break();
+        }
 
     }
 
-    if (f > 0) f -= 1;
+    if (f > 0) {
+        f -= 1;
+    }
 
     Object::Update();
 }
@@ -130,7 +145,13 @@ int CollapsingPlatform::OnLeaveScreen() {
 }
 
 void CollapsingPlatform::Render(int CamX, int CamY) {
-    if (!SolidTop) return;
+    if (!Visible) {
+        return;
+    }
+
+    if (!SolidTop) {
+        return;
+    }
 
     if (Scene->ZoneID == 1) {
         G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);

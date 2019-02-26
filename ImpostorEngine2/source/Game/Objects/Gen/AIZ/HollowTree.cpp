@@ -9,6 +9,7 @@ void HollowTree::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    DoDeform = true;
     W = 0xD0;
     H = 0x168;
     Status = 0;

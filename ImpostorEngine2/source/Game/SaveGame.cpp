@@ -38,16 +38,16 @@ States:
 
 Starting a State 0 file initalizes all the scores and target scores etc..
 */
-
 int32_t             SaveGame::CurrentSaveFile = -1;
 int32_t             SaveGame::CurrentZoneID = -1;
 uint8_t             SaveGame::CurrentCharacterFlag = 0;
+uint8_t             SaveGame::CurrentPartnerFlag = 0xFF;
 uint16_t            SaveGame::CurrentUsedZoneRings = 0x0000; // resets on every zone
 uint16_t            SaveGame::CurrentEmeralds = 0xFFFF;
 
 SaveGame::SaveFile  SaveGame::Savefiles[8];
 
-int StartingLives = 5;
+int StartingLives = 3;
 bool InitializedSaveGame = false;
 
 PUBLIC STATIC void SaveGame::Init() {
@@ -61,6 +61,7 @@ PUBLIC STATIC void SaveGame::Init() {
         for (int s = 0; s < 8; s++) {
             Savefiles[s].State = reader.ReadByte();
             Savefiles[s].CharacterFlag = reader.ReadUInt16();
+            Savefiles[s].PartnerFlag = reader.ReadUInt16();
             Savefiles[s].LastZoneID = reader.ReadByte();
             Savefiles[s].Emeralds = reader.ReadUInt16();
             Savefiles[s].Lives = reader.ReadByte();
@@ -95,6 +96,7 @@ PUBLIC STATIC void SaveGame::Flush() {
         for (int s = 0; s < 8; s++) {
 			writer.WriteByte(Savefiles[s].State);
             writer.WriteUInt16(Savefiles[s].CharacterFlag);
+            writer.WriteUInt16(Savefiles[s].PartnerFlag);
             writer.WriteByte(Savefiles[s].LastZoneID);
             writer.WriteUInt16(Savefiles[s].Emeralds);
             writer.WriteByte(Savefiles[s].Lives);

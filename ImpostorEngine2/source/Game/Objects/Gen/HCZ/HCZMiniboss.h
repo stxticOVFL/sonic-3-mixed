@@ -21,9 +21,13 @@ public:
     int InvulnTimer;
     bool Started;
     int ExplosionTimer;
+    Uint32 MainPalette[16];
+    Uint32 MainPaletteWater[16];
+    Uint32 HurtPalette[16];
     
     void Create();
     int OnHit();
+    void HandleDamage();
     void Update();
     void DrawRocket(int Rock, int Ang, int Flip, int Side, int CamX, int CamY);
     void Render(int CamX, int CamY);

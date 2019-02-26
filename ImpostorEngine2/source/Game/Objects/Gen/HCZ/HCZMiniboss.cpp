@@ -22,7 +22,57 @@ void HCZMiniboss::Create() {
     Timer = 0;
     HitCount = 6;
     Boss = true;
-    CurrentAnimation = 1;
+    int i = 0;
+    MainPalette[i++] = 0x400000;
+    MainPalette[i++] = 0x900000;
+    MainPalette[i++] = 0xe00000;
+    MainPalette[i++] = 0x800000;
+    MainPalette[i++] = 0xb03000;
+    MainPalette[i++] = 0xe07000;
+    MainPalette[i++] = 0xe0a000;
+    MainPalette[i++] = 0xe0c000;
+    MainPalette[i++] = 0x200008;
+    MainPalette[i++] = 0x700010;
+    MainPalette[i++] = 0xe00020;
+    MainPalette[i++] = 0xe84848;
+    MainPalette[i++] = 0xe87878;
+    MainPalette[i++] = 0xe89898;
+    MainPalette[i++] = 0xc00010;
+    MainPalette[i++] = 0x700000;
+    i = 0;
+    MainPaletteWater[i++] = 0x400000;
+    MainPaletteWater[i++] = 0x900000;
+    MainPaletteWater[i++] = 0xe00000;
+    MainPaletteWater[i++] = 0x800000;
+    MainPaletteWater[i++] = 0xb03000;
+    MainPaletteWater[i++] = 0xe07000;
+    MainPaletteWater[i++] = 0xe0a000;
+    MainPaletteWater[i++] = 0xe0c000;
+    MainPaletteWater[i++] = 0x200008;
+    MainPaletteWater[i++] = 0x700010;
+    MainPaletteWater[i++] = 0xe00020;
+    MainPaletteWater[i++] = 0xe84848;
+    MainPaletteWater[i++] = 0xe87878;
+    MainPaletteWater[i++] = 0xe89898;
+    MainPaletteWater[i++] = 0xc00010;
+    MainPaletteWater[i++] = 0x700000;
+    i = 0;
+    HurtPalette[i++] = 0xF0F0F0;
+    HurtPalette[i++] = 0xF0F0F0;
+    HurtPalette[i++] = 0xF0F0F0;
+    HurtPalette[i++] = 0x800000;
+    HurtPalette[i++] = 0xb03000;
+    HurtPalette[i++] = 0xe07000;
+    HurtPalette[i++] = 0xe0a000;
+    HurtPalette[i++] = 0xe0c000;
+    HurtPalette[i++] = 0x200008;
+    HurtPalette[i++] = 0x700010;
+    HurtPalette[i++] = 0xe00020;
+    HurtPalette[i++] = 0xe84848;
+    HurtPalette[i++] = 0xe87878;
+    HurtPalette[i++] = 0xe89898;
+    HurtPalette[i++] = 0xF0F0F0;
+    HurtPalette[i++] = 0xF0F0F0;
 }
 
 int HCZMiniboss::OnHit() {
@@ -36,6 +86,55 @@ int HCZMiniboss::OnHit() {
     }
 
     return 0;
+}
+
+void HCZMiniboss::HandleDamage() {
+    if (HitCount > 0) {
+        if (InvulnTimer > 0) {
+            InvulnTimer -= 1;
+            Invincible = true;
+            Harmful = false;
+        }
+        else {
+            Invincible = false;
+            Harmful = true;
+        }
+    }
+
+    if (InvulnTimer > 0) {
+        if (InvulnTimer & 1) {
+            if (this->Y > Scene->WaterLevel) {
+                Sprite->SetPalette(0x10, 16, MainPaletteWater);
+            }
+            else {
+                Sprite->SetPalette(0x10, 16, MainPalette);
+            }
+            Sprite->UpdatePalette();
+        }
+        else {
+            Sprite->SetPalette(0x10, 16, HurtPalette);
+            Sprite->UpdatePalette();
+        }
+    }
+
+    if (HitCount < 0) {
+        VisualLayer = 1;
+        if (ExplosionTimer > 0) {
+            if (ExplosionTimer % 3 == 0) {
+                Scene->AddExplosion(5, false, X + Math::randRange(-W / 2, W / 2), Y + Math::randRange(-H / 2, H / 2), VisualLayer);
+                Sound::Play(Sound::SFX_BOSSEXPLOSION);
+            }
+
+            ExplosionTimer--;
+        }
+        else {
+            Active = false;
+            App->Audio->FadeMusic(3.0);
+        }
+        XSpeed = 0;
+        YSpeed = 0;
+    }
+
 }
 
 void HCZMiniboss::Update() {
@@ -62,7 +161,9 @@ void HCZMiniboss::Update() {
         return;
     }
 
+    HandleDamage();
     if (!Started) {
+        App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
         App->Audio->PushMusic(Sound::SoundBank[0xF1], true, 276105);
         Started = true;
     }
@@ -79,15 +180,6 @@ void HCZMiniboss::Update() {
         RocketTurn = 0x0;
     }
 
-    if (InvulnTimer > 0) {
-        InvulnTimer -= 1;
-        Invincible = true;
-        Harmful = false;
-    }
-    else {
-        Invincible = false;
-        Harmful = true;
-    }
     Object::Update();
 }
 
@@ -114,8 +206,6 @@ void HCZMiniboss::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 2, TimerSpin >> 9, 0x3720 - CamX, 0x06E0 - CamY, 0, IE_NOFLIP);
     G->DrawSprite(Sprite, 0, 2, 0x3720 - CamX, 0x06B8 - CamY, 0, IE_NOFLIP);
     G->DrawSprite(Sprite, 0, 3, 0x3720 - CamX, 0x06E0 - CamY, 0, IE_NOFLIP);
-    if ((InvulnTimer >> 1) & 1) return;
-
     DrawRocket(RocketTurn + 0x00, 0xE0, IE_NOFLIP, 1, CamX, CamY);
     DrawRocket(RocketTurn + 0x20, 0xE0, IE_NOFLIP, 1, CamX, CamY);
     DrawRocket(RocketTurn + 0x10, 0xA0, IE_FLIPX, 1, CamX, CamY);

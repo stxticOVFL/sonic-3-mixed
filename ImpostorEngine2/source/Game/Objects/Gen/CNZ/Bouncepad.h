@@ -18,6 +18,7 @@ public:
     
     void Create();
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
+    void Render(int CamX, int CamY);
 };
 
 #endif /* BOUNCEPAD_H */

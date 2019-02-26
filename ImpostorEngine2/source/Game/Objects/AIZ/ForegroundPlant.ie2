@@ -5,6 +5,7 @@ var CamMult:int;
 event Create() {
     Active = true;
     Priority = true;
+    DoDeform = true;
 
     W = 1;
     H = 1;

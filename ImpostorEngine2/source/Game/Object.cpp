@@ -1,4 +1,5 @@
 #include <Utils/Standard.h>
+#include <Engine/IGenesis.hh>
 #include <Engine/IScene.h>
 #include <Engine/IResources.h>
 #include <Engine/IStreamer.h>
@@ -17,7 +18,6 @@ void Object::Create() {
 }
 
 void Object::DebugCreate() {
-    App->Print(0, "Peforming Debug Create!");
     Create();
 }
 
@@ -35,7 +35,7 @@ uint8_t Object::GetSubTypeIncrement() {
 }
 
 uint8_t Object::GetSubTypeMax() {
-	return 0;
+	return 1;
 }
 
 void Object::Animate() {
@@ -193,7 +193,11 @@ void Object::Render(int CamX, int CamY) {
     if (Frame < 0) return;
     if (!Visible) return;
 
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, Rotation, FlipX | FlipY << 1);
+	if (DrawCollisions) {
+		G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+		G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, Rotation, FlipX | FlipY << 1);
+	}
 }
 
 void Object::MoveSprite() {
@@ -213,52 +217,46 @@ void Object::MoveWithParent() {
 }
 
 int Object::Swing_UpAndDown() {
-    int d0;
-    int d1;
-    int d2;
-    int d3;
-
-    d0 = Acceleration; // Acceleration
-    d1 = YSpeed; // Velocity
-    d2 = MaxAccel; // Maximum acceleration before "swinging"
-    d3 = 0; // If there was a change
+    // MaxAccel is the maximum acceleration before "swinging"
+    int NewYSpeed = YSpeed; // New Velocity
+    bool HasChanged = 0; // If there was a change
 
     // Add upward acceleration
     if (SwingDirection == 0) {
-        d1 -= Acceleration;
-        if (d1 > -MaxAccel) {
-            YSpeed = d1;
-            return d3;
+        NewYSpeed -= Acceleration;
+        if (NewYSpeed > -MaxAccel) {
+            YSpeed = NewYSpeed;
+            return HasChanged;
         }
         SwingDirection = 1;
-        d3 = 1;
+        HasChanged = 1;
     }
     // Add downward acceleration
-    d1 += Acceleration;
-    if (d1 < MaxAccel) {
-        YSpeed = d1;
-        if (d3) {
+    NewYSpeed += Acceleration;
+    if (NewYSpeed < MaxAccel) {
+        YSpeed = NewYSpeed;
+        if (HasChanged) {
             SwingCounter--;
             if (SwingCounter == -1) {
                 SwingCounter = -2;
                 OnSwingFinish();
             }
         }
-        return d3;
+        return HasChanged;
     }
-    d1 -= Acceleration;
+    NewYSpeed -= Acceleration;
     SwingDirection = 0;
-    d3 = 1;
+    HasChanged = 1;
 
-    YSpeed = d1;
-    if (d3) {
+    YSpeed = NewYSpeed;
+    if (HasChanged) {
         SwingCounter--;
         if (SwingCounter == -1) {
             SwingCounter = -2;
             OnSwingFinish();
         }
     }
-    return d3;
+    return HasChanged;
 }
 
 void Enemy::Create() {
@@ -376,6 +374,10 @@ void Enemy::MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t
 }
 
 int Enemy::OnHit() {
+	if (Parent != NULL && IsBodyExtension) {
+		Enemy *parent = (Enemy *)Parent;
+		return parent->OnHit();
+	}
     HitCount--;
     if (HitCount <= 0)
         return OnDeath();

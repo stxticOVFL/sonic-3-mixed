@@ -14,6 +14,7 @@ void Bloominator::Create() {
     Frame = 0;
     HitCount = 1;
     CurrentAnimation = 32;
+    CleanupInactiveObject = true;
     for (int i = 0; i < 2; i++)
 {
         Children[i] = Scene->AddNewObject(Obj_BloominatorSpore, 0, 0, 0, false, false);
@@ -24,29 +25,32 @@ void Bloominator::Create() {
 }
 
 void Bloominator::Update() {
-    if (Frame == 31) {
-        Children[0]->Timer = X << 8;
-        Children[0]->Rotation = (Y - 16) << 8;
-        Children[0]->X = X;
-        Children[0]->Y = Y - 16;
-        Children[0]->XSpeed = -0x100;
-        Children[0]->YSpeed = -0x500;
-        Sound::Play(Sound::SFX_SHOT);
-    }
-    else if (Frame == 62) {
-        Children[1]->Timer = X << 8;
-        Children[1]->Rotation = (Y - 16) << 8;
-        Children[1]->X = X;
-        Children[1]->Y = Y - 16;
-        Children[1]->XSpeed = 0x100;
-        Children[1]->YSpeed = -0x500;
-        Sound::Play(Sound::SFX_SHOT);
-    }
-    else if (Frame == 182) {
-        Frame = 0;
+    if (!isHeldDebugObject) {
+        if (Frame == 31) {
+            Children[0]->Timer = X << 8;
+            Children[0]->Rotation = (Y - 16) << 8;
+            Children[0]->X = X;
+            Children[0]->Y = Y - 16;
+            Children[0]->XSpeed = -0x100;
+            Children[0]->YSpeed = -0x500;
+            Sound::Play(Sound::SFX_SHOT);
+        }
+        else if (Frame == 62) {
+            Children[1]->Timer = X << 8;
+            Children[1]->Rotation = (Y - 16) << 8;
+            Children[1]->X = X;
+            Children[1]->Y = Y - 16;
+            Children[1]->XSpeed = 0x100;
+            Children[1]->YSpeed = -0x500;
+            Sound::Play(Sound::SFX_SHOT);
+        }
+        else if (Frame == 182) {
+            Frame = 0;
+        }
+
+        Frame++;
     }
 
-    Frame++;
     Object::Update();
 }
 
@@ -81,6 +85,11 @@ void Bloominator::Render(int CamX, int CamY) {
 
     }
 
-    G->DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    }
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
     }
 

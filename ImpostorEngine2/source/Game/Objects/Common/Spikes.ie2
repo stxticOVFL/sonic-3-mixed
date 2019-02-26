@@ -8,6 +8,7 @@ var In:bool;
 event Create() {
     Active = true;
     Priority = false;
+    DoDeform = true;
 
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
@@ -22,6 +23,7 @@ event Create() {
     Y = InitialY;
 
     Timer = 0;
+    CleanupInactiveObject = true;
 
     if (Vertical && FlipX) {
         W = 32;

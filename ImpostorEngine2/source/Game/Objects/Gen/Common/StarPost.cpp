@@ -9,6 +9,7 @@ void StarPost::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    DoDeform = false;
     W = 16;
     H = 64;
     Rotation = 0;
@@ -16,6 +17,7 @@ void StarPost::Create() {
     Spin = 0;
     Blinking = false;
     this->Frame = 0;
+    CleanupInactiveObject = true;
 }
 
 void StarPost::Update() {

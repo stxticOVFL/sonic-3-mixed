@@ -6,6 +6,7 @@ var PlayerStorage:int[8];
 event Create() {
     Active = true;
     Priority = false;
+    DoDeform = true;
 
     W = 0xD0;
     H = 0x168;

@@ -103,9 +103,11 @@ event Update() {
 event Render(CamX:int, CamY:int) {
     var nX:int = LastX;
     var nY:int = Y;
-
-    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8,
-        nX - CamX, nY - CamY, 0, IE_NOFLIP);
+	if (DrawCollisions) {
+		G.DrawRectangle(nX - CamX, nY - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, nX - CamX, nY - CamY, 0, IE_NOFLIP);
+    }
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

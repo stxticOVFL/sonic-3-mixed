@@ -17,6 +17,7 @@ var Knux:bool;
 event Create() {
     Active = true;
     Priority = false;
+    DoDeform = true;
 
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
@@ -30,6 +31,8 @@ event Create() {
     RockType = SubType & 0x7;
 
     Knux = (SubType & 0x80) != 0;
+    
+    CleanupInactiveObject = true;
 
 
     // dc.w \$([A-F0-9][A-F0-9])([A-F0-9][A-F0-9])
@@ -204,7 +207,7 @@ event Render(CamX:int, CamY:int) {
     if (!Solid) return;
 
     DrawAIZ(CamX, CamY);
-    // DrawMGZ(CamX, CamY);
+    //DrawMGZ(CamX, CamY);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
@@ -240,6 +243,7 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     OnBreakHorizontal(PlayerID, HitFrom);
     return 1;
 }
+
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
     if (Math.abs(Scene.Players[PlayerID].GroundSpeed) < 0x480 && HitFrom != CollideSide.TOP && Scene.Players[PlayerID].Action == ActionType.Rolling) return 1;
 
