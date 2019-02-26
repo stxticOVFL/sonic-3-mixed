@@ -15,6 +15,7 @@ public:
     struct SaveFile {
     uint8_t  State;
     uint16_t CharacterFlag;
+    uint16_t PartnerFlag;
     uint8_t  LastZoneID;
     uint16_t Emeralds;
     uint8_t  Lives;
@@ -27,6 +28,7 @@ public:
     static int32_t  CurrentSaveFile;
     static int32_t  CurrentZoneID;
     static uint8_t  CurrentCharacterFlag;
+    static uint8_t  CurrentPartnerFlag;
     static uint16_t CurrentUsedZoneRings;
     static uint16_t CurrentEmeralds;
 

@@ -16,7 +16,12 @@ void SpecialRing::Create() {
     HyperColor = 0xFFFF00;
     HyperRing = true;
     percent = 0;
-    HyperRing = Scene->ZoneID >= 7;
+    if (Scene->ZoneID >= 7 && (SaveGame::GetEmeralds() & 0x7F) == 0x7F) {
+        HyperRing = 1;
+    }
+    else {
+        HyperRing = 0;
+    }
     GoTimer = -1;
     StoredX = 0;
     StoredY = 0;

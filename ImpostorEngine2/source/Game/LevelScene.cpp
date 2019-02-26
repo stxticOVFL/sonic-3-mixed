@@ -1355,13 +1355,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 			PlayerCount = 1;
 
-			if (SaveGame::CurrentCharacterFlag >> 4) {
+			if (SaveGame::CurrentPartnerFlag != 0xFF) {
 				Players[1] = new IPlayer();
 				Players[1]->G = G;
 				Players[1]->App = App;
 				Players[1]->Scene = this;
 				Players[1]->Sidekick = true;
-				Players[1]->Character = (CharacterType)(SaveGame::CurrentCharacterFlag >> 4);
+				Players[1]->Character = (CharacterType)SaveGame::CurrentPartnerFlag;
 				Players[1]->PlayerID = 1;
 				Players[1]->Thremixed = Thremixed;
 				Players[1]->Create();

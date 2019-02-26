@@ -29,6 +29,7 @@ public:
 #include <Game/Scenes/LevelSelect.h>
 
 int character = 0;
+int partner = 0xFF;
 
 PUBLIC Scene_LevelSelect::Scene_LevelSelect(IApp* app, IGraphics* g) {
     App = app;
@@ -63,7 +64,7 @@ PUBLIC void Scene_LevelSelect::Init() {
 	SaveGame::CurrentEmeralds = 0xFFFF;
 }
 
-bool HaveStage[12] = {
+bool HaveStage[24] = {
     true, // AIZ
     true,
     true, // HCZ
@@ -76,6 +77,18 @@ bool HaveStage[12] = {
     true,
     true, // LBZ
     true,
+	false, // MHZ
+	false,
+	false, // FBZ
+	false,
+	false, // SOZ
+	false,
+	false, // LRZ
+	false, // HPZ
+	false, // SSZ
+	false, // DEZ
+	false,
+	false, // TDZ
 };
 
 PUBLIC void Scene_LevelSelect::Update() {
@@ -132,6 +145,7 @@ PUBLIC void Scene_LevelSelect::Update() {
                     }
 
                     SaveGame::CurrentCharacterFlag = character;
+                    SaveGame::CurrentPartnerFlag = partner; //0xFF for no partner
                 }
             }
         }
@@ -165,9 +179,28 @@ PUBLIC void Scene_LevelSelect::Update() {
 
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
+
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
+			partner--;
+			if (partner == 0xFF)
+				partner == 4;
+			if (partner < 0)
+				partner = 0xFF;
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2]) {
+			partner++;
+
+			if (partner == 0xFF)
+				partner = 0;
+			if (partner > 4)
+				partner = 0xFF;
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
     }
 
     character = character % 5;
+	if (partner != 0xFF) partner %= 5;
 
     if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
         bool acc = false;
@@ -222,6 +255,7 @@ PUBLIC void Scene_LevelSelect::Render() {
         G->DrawTextShadow(4, 4 + i * 18, wordGRoup[i], selected / 2 == i ? 0xFFFF00 : col);
     }
     char poop[20];
+    char poopbuddy[20];
     for (int i = 0; i < 26; i++) {
         Uint32 col = 0x999999;
         if (i < 12) {
@@ -233,15 +267,30 @@ PUBLIC void Scene_LevelSelect::Render() {
         G->DrawTextShadow(4 + 16 * 8, 4 + i * 9, poop, selected == i ? 0xFFFF00 : col);
     }
 
-    if (character == 0)
-        sprintf(poop, "%s", "Sonic");
-    else if (character == 1)
-        sprintf(poop, "%s", "Tails");
-    else if (character == 2)
-        sprintf(poop, "%s", "Knuckles");
-    else if (character == 3)
-        sprintf(poop, "%s", "Mighty");
-    else if (character == 4)
-        sprintf(poop, "%s", "Ray");
-    G->DrawTextShadow(App->WIDTH - 4 - strlen(poop) * 8, App->HEIGHT - 4 - 8, poop, 0xFFFFFF);
+	if (character == 0)
+		sprintf(poop, "%s", "Sonic");
+	else if (character == 1)
+		sprintf(poop, "%s", "Tails");
+	else if (character == 2)
+		sprintf(poop, "%s", "Knuckles");
+	else if (character == 3)
+		sprintf(poop, "%s", "Mighty");
+	else if (character == 4)
+		sprintf(poop, "%s", "Ray");
+
+	if (partner == 0)
+		sprintf(poopbuddy, "%s", "Sonic");
+	else if (partner == 1)
+		sprintf(poopbuddy, "%s", "Tails");
+	else if (partner == 2)
+		sprintf(poopbuddy, "%s", "Knuckles");
+	else if (partner == 3)
+		sprintf(poopbuddy, "%s", "Mighty");
+	else if (partner == 4)
+		sprintf(poopbuddy, "%s", "Ray");
+	else
+		sprintf(poopbuddy, "%s", "Alone");
+
+    G->DrawTextShadow(App->WIDTH - 4 - strlen(poop) * 8, App->HEIGHT - 4 - 16, poop, 0xFFFFFF);
+    G->DrawTextShadow(App->WIDTH - 4 - strlen(poopbuddy) * 8, App->HEIGHT - 4 - 8, poopbuddy, 0xFFFFFF);
 }
