@@ -4,16 +4,24 @@ event Create() {
     Active = true;
     Priority = false;
     Solid = true;
+    DoDeform = true;
     Scene.AddSelfToRegistry(this, "Solid");
-    W = 64;
+    W = 62;
     H = 80;
-    CurrentAnimation = 10;
-    X += 0x10;
+    CurrentAnimation = 9;
 }  
+
 event Render(CamX:int, CamY:int) {
-	if (DrawCollisions) {
-		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
-	} else {
-        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+    /* var flag:int = IE_NOFLIP;
+    if (Rotation == 0xC0)
+        flag = IE_FLIPX;*/
+
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (HitFrom == CollideSide.BOTTOM && Scene.Players[PlayerID].YSpeed <= 0) {
+        Scene.Players[PlayerID].Hurt(X, true);
     }
+    return 1;
 }
