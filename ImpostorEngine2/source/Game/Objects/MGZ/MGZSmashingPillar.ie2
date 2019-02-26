@@ -1,5 +1,8 @@
 object 0x52;
 
+var OGY:int;
+var Direction:bool;
+
 event Create() {
     Active = true;
     Priority = false;
@@ -9,7 +12,18 @@ event Create() {
     W = 62;
     H = 80;
     CurrentAnimation = 9;
+    OGY = Y - 5 + 5; //keeping var?  
+    YSpeed = 2;
+    Direction = true;
 }  
+
+event Update() {
+    if (Direction) {
+        if (Y == OGY + 50) {
+            Sound.Play(Sound.SFX_BUMPER);
+        }
+    }
+}
 
 event Render(CamX:int, CamY:int) {
     /* var flag:int = IE_NOFLIP;

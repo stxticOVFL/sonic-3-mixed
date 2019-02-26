@@ -15,6 +15,20 @@ void MGZSmashingPillar::Create() {
     W = 62;
     H = 80;
     CurrentAnimation = 9;
+    OGY = Y - 5 + 5;
+    YSpeed = 2;
+    Direction = true;
+}
+
+void MGZSmashingPillar::Update() {
+    if (Direction) {
+        if (Y == OGY + 50) {
+            Sound::Play(Sound::SFX_BUMPER);
+        }
+
+    }
+
+    Object::Update();
 }
 
 void MGZSmashingPillar::Render(int CamX, int CamY) {
