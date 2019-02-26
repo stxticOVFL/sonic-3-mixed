@@ -15,8 +15,11 @@ class MGZSmashingPillar;
 class MGZSmashingPillar: public Object {
 public:    
     
+    int OGY;
+    bool Direction;
     
     void Create();
+    void Update();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };

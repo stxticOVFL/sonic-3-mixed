@@ -42,7 +42,7 @@ void HoverFan::Update() {
                 InUse = true;
                 Scene->Players[i]->SubY += (Y - BlowHeight - 0x30 + Neck - (Scene->Players[i]->SubY >> 16)) << 10;
                 Scene->Players[i]->Ground = false;
-                Scene->Players[i]->YSpeed = -1;
+                Scene->Players[i]->YSpeed = -0.7;
                 Scene->Players[i]->Action = ActionType::Fan;
             }
             else {
