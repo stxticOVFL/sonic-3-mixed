@@ -18,6 +18,7 @@ public:
     
     void Create();
     void Render(int CamX, int CamY);
+    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
 #endif /* MGZSMASHINGPILLAR_H */

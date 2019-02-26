@@ -10,19 +10,22 @@ void MGZSmashingPillar::Create() {
     Active = true;
     Priority = false;
     Solid = true;
+    DoDeform = true;
     Scene->AddSelfToRegistry(this, "Solid");
-    W = 64;
+    W = 62;
     H = 80;
-    CurrentAnimation = 10;
-    X += 0x10;
+    CurrentAnimation = 9;
 }
 
 void MGZSmashingPillar::Render(int CamX, int CamY) {
-    if (DrawCollisions) {
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
-    else {
-        G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+
+int MGZSmashingPillar::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
+    if (HitFrom == CollideSide::BOTTOM && Scene->Players[PlayerID]->YSpeed <= 0) {
+        Scene->Players[PlayerID]->Hurt(X, true);
     }
-    }
+
+    return 1;
+}
 

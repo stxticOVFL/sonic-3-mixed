@@ -33,7 +33,7 @@ event Update() {
 	{
 		Y = StartYpos;
 	}
-	    MoveSprite();
+	MoveSprite();
 }
 
 event Render(CamX:int, CamY:int) {
@@ -51,7 +51,8 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     }
 
         if (HitFrom == CollideSide.TOP) {
-        Player.YSpeed = -0x40;
+        //Player.YSpeed = -0x200;
+        Player.EZY = -0x04;
 		Player.Action = ActionType.Jumping;
         Sound.Play(Sound.SFX_SPRING);
         return 1;

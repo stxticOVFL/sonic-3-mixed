@@ -2356,14 +2356,17 @@ void IPlayer::Update() {
 				if (ShieldUsable && Character == CharacterType::Sonic) {
 					if (InputUp) {
 						YSpeed = -0x800;
-					} else if (InputDown) {
-						// Do nothing in terms of anything new.
-						if (DropDashEnabled) {
-							if (DropDashRev == 0) {
-								DropDashRev = 1;
-                            }
+					}
+					if (DropDashEnabled) {
+						if (DropDashRev == 0) {
+							DropDashRev = 1;
 						}
-					} else {
+					}
+					//else if (InputDown) 
+					//{
+						// Do nothing in terms of anything new.
+					//} 
+					else {
 						XSpeed = 0x800 * DisplayFlip;
 						YSpeed = 0;
 						CameraLockTimer = 16;
@@ -2373,12 +2376,13 @@ void IPlayer::Update() {
 			} else if (Character == CharacterType::Sonic) {
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
+						if (DropDashEnabled) {
+							if (DropDashRev == 0) {
+								DropDashRev = 1;
+							}
+						}
 						if (InputDown) {
-                            if (DropDashEnabled) {
-                                if (DropDashRev == 0) {
-                                    DropDashRev = 1;
-                                }
-                            }
+							//nop
 						} else if (!InputUp) {
 							ShieldAnimation = 8;
 							Shield = ShieldType::Instashield;
@@ -2396,11 +2400,12 @@ void IPlayer::Update() {
 						ShieldUsable = false;
 					} else if (Shield == ShieldType::Fire) {
                         if (InputDown) {
-                            if (DropDashEnabled) {
+							//no
+                            /*if (DropDashEnabled) {
                                 if (DropDashRev == 0) {
                                     DropDashRev = 1;
                                 }
-                            }
+                            }*/
                         } else {
                             XSpeed = 0x800 * DisplayFlip;
                             YSpeed = 0;
@@ -2421,20 +2426,22 @@ void IPlayer::Update() {
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, -0x200, 0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, 0x200, 0x200, 0x18, 22, 0);
                         if (InputDown) {
-                            if (DropDashEnabled) {
+							//no drop dash
+                            /*if (DropDashEnabled) {
                                 if (DropDashRev == 0) {
                                     DropDashRev = 1;
                                 }
-                            }
+                            }*/
                         }
 					} else if (Shield == ShieldType::Basic) {
 						// Do nothing special.
                         if (InputDown) {
-                            if (DropDashEnabled) {
+							//cease
+                            /*if (DropDashEnabled) {
                                 if (DropDashRev == 0) {
                                     DropDashRev = 1;
                                 }
-                            }
+                            }*/
                         }
 					}
 
