@@ -30,6 +30,8 @@ public:
     
     void Create();
     int OnHit();
+    void DoExplosionDebris();
+    void HandleDamage();
     void Update();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
