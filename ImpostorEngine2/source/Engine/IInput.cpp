@@ -244,8 +244,9 @@ PUBLIC void IInput::Poll() {
 
 					int bx = 48;
 					int by = h - 48;
+					int dis = (tx - bx) * (tx - bx) + (ty - by) * (ty - by);
 
-					if ((tx - bx) * (tx - bx) + (ty - by) * (ty - by) < 150 * 150) {
+					if (dis >= 10 * 10 && dis < 150 * 150) {
 						int ang = IMath::atanHex(tx - bx, ty - by);
 						if ((ang >= 0x00 && ang < 0x10) || (ang >= 0xF0 && ang <= 0xFF))
 							RIGHT = true;

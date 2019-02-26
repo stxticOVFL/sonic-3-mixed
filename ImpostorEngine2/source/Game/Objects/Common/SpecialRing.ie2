@@ -133,6 +133,8 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
             StoredY = Scene.Player.EZY;
             App.Audio.FadeMusic(1.0);
 
+            Scene.SaveState();
+
             SaveGame.SetUsedZoneRings(RingID);
             SaveGame.Flush();
 
@@ -152,6 +154,8 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         StoredX = Scene.Player.EZX;
         StoredY = Scene.Player.EZY;
         App.Audio.FadeMusic(1.0);
+
+        Scene.SaveState();
 
         SaveGame.SetUsedZoneRings(RingID);
         SaveGame.Flush();

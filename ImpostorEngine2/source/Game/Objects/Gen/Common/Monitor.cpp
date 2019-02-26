@@ -24,42 +24,47 @@ void Monitor::Create() {
     CanFall = false;
     GhostY = 0.0;
     if (Attributes) {
-        switch (Attributes[0]) {
-            case 0:
-            SubType = ItemTypes::TYPE_RINGS;
-            break;
-            case 1:
-            SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
-            break;
-            case 2:
-            SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
-            break;
-            case 3:
-            SubType = ItemTypes::TYPE_SHIELD_FIRE;
-            break;
-            case 4:
-            SubType = ItemTypes::TYPE_SHIELD_LIGHTNING;
-            break;
-            case 5:
-            SubType = ItemTypes::TYPE_INVINCIBILITY;
-            break;
-            case 6:
-            SubType = ItemTypes::TYPE_SPEED_SHOES;
-            break;
-            case 7:
-            SubType = ItemTypes::TYPE_1UP;
-            break;
-            case 10:
-            SubType = ItemTypes::TYPE_ROBOTNIK;
-            break;
-            case 11:
-            SubType = ItemTypes::TYPE_HYPER_RING;
-            break;
-            case 14:
-            SubType = ItemTypes::TYPE_SUPER;
-            break;
-        }
+        if (Scene->ManiaLevel) {
+            switch (Attributes[0]) {
+                case 0:
+                SubType = ItemTypes::TYPE_RINGS;
+                break;
+                case 1:
+                SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
+                break;
+                case 2:
+                SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
+                break;
+                case 3:
+                SubType = ItemTypes::TYPE_SHIELD_FIRE;
+                break;
+                case 4:
+                SubType = ItemTypes::TYPE_SHIELD_LIGHTNING;
+                break;
+                case 5:
+                SubType = ItemTypes::TYPE_INVINCIBILITY;
+                break;
+                case 6:
+                SubType = ItemTypes::TYPE_SPEED_SHOES;
+                break;
+                case 7:
+                SubType = ItemTypes::TYPE_1UP;
+                break;
+                case 10:
+                SubType = ItemTypes::TYPE_ROBOTNIK;
+                break;
+                case 11:
+                SubType = ItemTypes::TYPE_HYPER_RING;
+                break;
+                case 14:
+                SubType = ItemTypes::TYPE_SUPER;
+                break;
+            }
 
+        }
+        else {
+            SubType = Attributes[0];
+        }
     }
 
     SubTypeFrame = 0;

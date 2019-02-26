@@ -143,6 +143,8 @@ public:
 
         SFX_WATERRUN = 0xDB,
 
+		SFX_EMERALD = 0xE1,
+
 
         SFX_DROPDASHREADY = 0x01,
         SFX_DROPDASH = 0x02,
@@ -256,6 +258,8 @@ PUBLIC STATIC void Sound::Init() {
 	LOADSOUND(SFX_BLUEBALL, "Sounds/BlueSphere.wav");
 	LOADSOUND(SFX_SPECIALSTAGE_EXIT, "Sounds/SSExit.wav");
 	LOADSOUND(SFX_SPECIALSTAGE_FLYAWAY, "Sounds/SSJettison.wav");
+
+	LOADSOUND(SFX_EMERALD, "Sounds/Emerald.wav");
 
     Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
     Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);

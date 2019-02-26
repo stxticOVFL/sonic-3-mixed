@@ -22,6 +22,7 @@ class ISprite;
 class ISprite;
 class ISprite;
 class ISprite;
+class ISprite;
 class IModel;
 class ISound;
 
@@ -69,6 +70,7 @@ public:
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;
+    ISprite*    SuperButtonsSprite = NULL;
     ISprite*    ItemsSprite = NULL;
     ISprite*    AnimalsSprite = NULL;
     ISprite*    ObjectsSprite = NULL;
@@ -189,6 +191,8 @@ public:
     LevelScene(IApp* app, IGraphics* g);
     virtual void AssignSpriteMapIDs();
     virtual void LoadZoneSpecificSprites();
+    void SaveState();
+    void LoadState();
     virtual void LoadData();
     virtual void Init();
     static  int  LoadStatic(void* data);

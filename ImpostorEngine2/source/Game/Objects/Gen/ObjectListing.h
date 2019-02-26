@@ -1,93 +1,93 @@
 #ifndef OBJECTLISTING_H
 #define OBJECTLISTING_H
 
-#include "Common/Monitor.h"
-#include "AIZ/HollowTree.h"
-#include "Common/CollapsingPlatform.h"
-#include "CommonSpecial/Rock.h"
-#include "AIZ/RideVine.h"
-#include "Common/Spring.h"
-#include "Common/Spikes.h"
-#include "AIZ/TreeBark.h"
-#include "AIZ/RopePeg.h"
-#include "AIZ/SwingVine.h"
-#include "Common/BreakableWall.h"
-#include "Common/Ridge.h"
-#include "Common/CollapsingBridge.h"
-#include "Common/AutomaticTunnel.h"
-#include "Common/RollEnforcer.h"
-#include "Common/InvisibleBlock.h"
-#include "AIZ/DisappearingFloor.h"
-#include "CommonSpecial/CorkFloor.h"
-#include "AIZ/FlippingBridge.h"
-#include "AIZ/CollapsingLogBridge.h"
-#include "AIZ/FallingLog.h"
-#include "AIZ/SpikedLog.h"
-#include "Common/NonAnim.h"
-#include "Common/AnimSprite.h"
-#include "AIZ/Drawbridge.h"
-#include "Common/Button.h"
-#include "Common/StarPost.h"
-#include "AIZ/ForegroundPlant.h"
-#include "HCZ/BreakBar.h"
-#include "HCZ/HCZVWaterStream.h"
-#include "HCZ/Fan.h"
-#include "HCZ/LargeFan.h"
-#include "HCZ/HandLauncher.h"
-#include "HCZ/HCZWaterWall.h"
-#include "CommonSpecial/Door.h"
-#include "HCZ/HCZConveyorBelt.h"
-#include "HCZ/HCZConveyorSpike.h"
-#include "HCZ/Block.h"
-#include "CNZ/Balloon.h"
-#include "CNZ/VacuumTube.h"
-#include "CNZ/Bouncepad.h"
-#include "MGZ/MGZQuickMud.h"
-#include "Common/FloatingPlatform.h"
-#include "MGZ/MGZSwingingPlatform.h"
-#include "Common/Bubbler.h"
-#include "MGZ/MGZHeadTrigger.h"
-#include "MGZ/MGZTriggerPlatform.h"
-#include "MGZ/MGZDashTrigger.h"
-#include "HCZ/HCZSnakeBlocks.h"
-#include "HCZ/SpinningColumn.h"
-#include "HCZ/HCZSlide.h"
-#include "Common/InvisibleSpikes.h"
-#include "Common/InvisibleDeath.h"
-#include "CommonSpecial/TensionBridge.h"
-#include "HCZ/HCZWaterSplash.h"
-#include "Common/HiddenMonitor.h"
-#include "CommonSpecial/EggCapsule.h"
-#include "CommonSpecial/CutsceneKnuckles.h"
-#include "Common/SpecialRing.h"
-#include "AIZ/Bloominator.h"
-#include "AIZ/RhinoBot.h"
-#include "AIZ/MonkeyDude.h"
-#include "AIZ/CaterkillerJr.h"
-#include "AIZ/AIZMinibossCutscene.h"
-#include "AIZ/AIZMiniboss.h"
-#include "AIZ/AIZBoss.h"
-#include "HCZ/Jawz.h"
-#include "HCZ/Blastoid.h"
-#include "HCZ/Buggernaut.h"
-#include "HCZ/TurboSpiker.h"
-#include "HCZ/MegaChomper.h"
-#include "HCZ/Pointdexter.h"
-#include "HCZ/HCZMiniboss.h"
-#include "CNZ/Batbright.h"
-#include "AIZ/AirshipBomb.h"
-#include "AIZ/AIZMinibossBomb.h"
-#include "AIZ/AIZMinibossFlame.h"
-#include "AIZ/BloominatorSpore.h"
-#include "AIZ/MonkeyDudeCoconut.h"
-#include "CNZ/BatbrightParts.h"
-#include "Common/BubbleAir.h"
-#include "CommonSpecial/EggCapsuleButton.h"
-#include "CommonSpecial/Signpost.h"
-#include "CommonSpecial/TensionBridgeChild.h"
-#include "HCZ/BlastoidShot.h"
-#include "MGZ/MGZHeadTrigger_Eye.h"
-#include "Test/Platform.h"
+#include "Common/Monitor.h"			// BDE7E33A
+#include "AIZ/HollowTree.h"			// 1E5BFA5F
+#include "Common/CollapsingPlatform.h"			// 95087B30
+#include "CommonSpecial/Rock.h"			// FE0305DD
+#include "AIZ/RideVine.h"			// 7F20AD1D
+#include "Common/Spring.h"			// 2802B89E
+#include "Common/Spikes.h"			// 44BC7B0E
+#include "AIZ/TreeBark.h"			// 590E62AF
+#include "AIZ/RopePeg.h"			// 7FB64D3A
+#include "AIZ/SwingVine.h"			// D691E4F3
+#include "Common/BreakableWall.h"			// 60436E3A
+#include "Common/Ridge.h"			// EC54C850
+#include "Common/CollapsingBridge.h"			// 18C4AE0D
+#include "Common/AutomaticTunnel.h"			// C286FB4D
+#include "Common/RollEnforcer.h"			// 624D9DA4
+#include "Common/InvisibleBlock.h"			// B4878D6A
+#include "AIZ/DisappearingFloor.h"			// 16A80CA8
+#include "CommonSpecial/CorkFloor.h"			// 4A50924F
+#include "AIZ/FlippingBridge.h"			// B48623A
+#include "AIZ/CollapsingLogBridge.h"			// C558537E
+#include "AIZ/FallingLog.h"			// BFF26300
+#include "AIZ/SpikedLog.h"			// 22DC09C3
+#include "Common/NonAnim.h"			// 10F942A2
+#include "Common/AnimSprite.h"			// 9B4046EC
+#include "AIZ/Drawbridge.h"			// 5465065D
+#include "Common/Button.h"			// F72B92E4
+#include "Common/StarPost.h"			// C8B337E6
+#include "AIZ/ForegroundPlant.h"			// 9D88FCCE
+#include "HCZ/BreakBar.h"			// EFFDFB55
+#include "HCZ/HCZVWaterStream.h"			// D396DEF2
+#include "HCZ/Fan.h"			// 7849B3C1
+#include "HCZ/LargeFan.h"			// 35EA70E0
+#include "HCZ/HandLauncher.h"			// E6E16DBC
+#include "HCZ/HCZWaterWall.h"			// EC4012B6
+#include "CommonSpecial/Door.h"			// 81EC1830
+#include "HCZ/HCZConveyorBelt.h"			// 98E1D2FF
+#include "HCZ/HCZConveyorSpike.h"			// D719B2D
+#include "HCZ/Block.h"			// 58F95E1C
+#include "CNZ/Balloon.h"			// 65BE2A3A
+#include "CNZ/VacuumTube.h"			// 177568D6
+#include "CNZ/Bouncepad.h"			// 3B4DCB47
+#include "MGZ/MGZQuickMud.h"			// 43F8965E
+#include "Common/FloatingPlatform.h"			// C3C9288B
+#include "MGZ/MGZSwingingPlatform.h"			// 3B006393
+#include "Common/Bubbler.h"			// 8E41B4A6
+#include "MGZ/MGZHeadTrigger.h"			// BD81C06D
+#include "MGZ/MGZTriggerPlatform.h"			// 5809E61C
+#include "MGZ/MGZDashTrigger.h"			// FF451B7
+#include "HCZ/HCZSnakeBlocks.h"			// 1DBC27C1
+#include "HCZ/SpinningColumn.h"			// 7DC95D09
+#include "HCZ/HCZSlide.h"			// BECC7360
+#include "Common/InvisibleSpikes.h"			// E40C8E50
+#include "Common/InvisibleDeath.h"			// A0BE8640
+#include "CommonSpecial/TensionBridge.h"			// 5F02A27F
+#include "HCZ/HCZWaterSplash.h"			// AFDD0C56
+#include "Common/HiddenMonitor.h"			// 8616E0BD
+#include "CommonSpecial/EggCapsule.h"			// 973691D6
+#include "CommonSpecial/CutsceneKnuckles.h"			// 2822B56D
+#include "Common/SpecialRing.h"			// ABC2C658
+#include "AIZ/Bloominator.h"			// 9B85E709
+#include "AIZ/RhinoBot.h"			// 4374E9C7
+#include "AIZ/MonkeyDude.h"			// B7C95057
+#include "AIZ/CaterkillerJr.h"			// 3F487ED4
+#include "AIZ/AIZMinibossCutscene.h"			// BE856454
+#include "AIZ/AIZMiniboss.h"			// 8030D25C
+#include "AIZ/AIZBoss.h"			// CC92A8FA
+#include "HCZ/Jawz.h"			// 2160C123
+#include "HCZ/Blastoid.h"			// CD00547A
+#include "HCZ/Buggernaut.h"			// 78C3EB13
+#include "HCZ/TurboSpiker.h"			// 8E6F27CF
+#include "HCZ/MegaChomper.h"			// C50988CE
+#include "HCZ/Pointdexter.h"			// F365CCC4
+#include "HCZ/HCZMiniboss.h"			// 31F4D537
+#include "CNZ/Batbright.h"			// 9D8C15CA
+#include "AIZ/AirshipBomb.h"			// 8E8C37A1
+#include "AIZ/AIZMinibossBomb.h"			// 89077B11
+#include "AIZ/AIZMinibossFlame.h"			// 3195387E
+#include "AIZ/BloominatorSpore.h"			// BF8DF98A
+#include "AIZ/MonkeyDudeCoconut.h"			// 5C688649
+#include "CNZ/BatbrightParts.h"			// D5ADBFDB
+#include "Common/BubbleAir.h"			// 11DAFFC3
+#include "CommonSpecial/EggCapsuleButton.h"			// A0128E04
+#include "CommonSpecial/Signpost.h"			// 6A8C340C
+#include "CommonSpecial/TensionBridgeChild.h"			// 8ED6F84C
+#include "HCZ/BlastoidShot.h"			// 3692A9F5
+#include "MGZ/MGZHeadTrigger_Eye.h"			// 6BD3E111
+#include "Test/Platform.h"			// C4B304CC
 
 
 enum {

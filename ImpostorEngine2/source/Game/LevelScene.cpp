@@ -51,6 +51,7 @@ public:
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;
+	ISprite*    SuperButtonsSprite = NULL;
     ISprite*    ItemsSprite = NULL;
     ISprite*    AnimalsSprite = NULL;
     ISprite*    ObjectsSprite = NULL;
@@ -282,34 +283,6 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
-    /*
-    GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
-    GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
-    GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
-    GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
-
-    MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
-    ISprite::Animation an;
-    an.Name = NULL;
-    an.FrameCount = 8;
-    an.Frames = (ISprite::AnimFrame*)calloc(8, sizeof(ISprite::AnimFrame));
-    for (int i = 0; i < 8; i++) {
-        ISprite::AnimFrame ts_af;
-        ts_af.X = i * 64;
-        ts_af.Y = 0;
-        ts_af.W = ts_af.H = 64;
-        ts_af.OffX = ts_af.OffY = -32;
-        an.Frames[i] = ts_af;
-        G->MakeFrameBufferID(MobileButtonsSprite, an.Frames + i);
-    }
-    MobileButtonsSprite->Animations.push_back(an);
-    MobileButtonsSprite->SetTransparentColorIndex(0x05);
-    MobileButtonsSprite->UpdatePalette();
-
-    PauseSprite = new ISprite("UI/PauseEN.gif", App);
-    PauseSprite->LoadAnimation("UI/TextEN.bin");
-    //*/
-
     IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
     startTime = SDL_GetTicks();
 
@@ -338,6 +311,34 @@ PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
 
 ISprite* GlobalDisplaySpriteS3K = NULL;
 Object* LastObjectUpdated = NULL;
+
+int StateSaved = false;
+int StatePlayerSpawnX = -1;
+int StatePlayerSpawnY = -1;
+int StateTimer = 0;
+int StateLives = 0;
+int StateRings = 0;
+PUBLIC void LevelScene::SaveState() {
+	if (StateSaved) return;
+
+	StateSaved = true;
+	StateTimer = Timer;
+	StateRings = Player->Rings;
+	StateLives = Player->Lives;
+	StatePlayerSpawnX = Player->X;
+	StatePlayerSpawnY = Player->Y;
+}
+PUBLIC void LevelScene::LoadState() {
+	if (!StateSaved) return;
+
+	StateSaved = false;
+	ResetTimer = false;
+	Timer = StateTimer;
+	Player->Rings = StateRings;
+	Player->Lives = StateLives;
+	SpecialSpawnPositionX = StatePlayerSpawnX;
+	SpecialSpawnPositionY = StatePlayerSpawnY;
+}
 
 PUBLIC VIRTUAL void LevelScene::LoadData() {
     /// Init
@@ -373,6 +374,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		if (!GlobalDisplaySpriteS3K) {
 			GlobalDisplaySpriteS3K = new ISprite("Sprites/GlobalS3K/Display.gif", App);
 			GlobalDisplaySpriteS3K->LoadAnimation("Sprites/GlobalS3K/HUD.bin");
+		}
+		if (!SuperButtonsSprite) {
+			SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
+			SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
+			SuperButtonsSprite->SetPalette(1, 0x282028);
+			SuperButtonsSprite->UpdatePalette();
 		}
         if (!MobileButtonsSprite) {
             MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
@@ -1443,10 +1450,40 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
     if (SceneBin) {
         IStreamer reader(SceneBin);
         uint32_t mag = reader.ReadUInt32BE(); // magic
-        free(reader.ReadBytes(16));
-    	free(reader.ReadRSDKString());
+        if (mag == 0x4953434E) {
+			char* LevelTitle = reader.ReadRSDKString();
+			strcpy(LevelNameDiscord, LevelTitle);
+			strcpy(LevelName, LevelTitle);
+			free(LevelTitle);
 
-    	Data->cameraLayer = reader.ReadByte();
+			IApp::Print(2, "Loading '%s'...", LevelName);
+
+			LevelTitle = LevelName;
+			while (*LevelTitle) {
+				if (*LevelTitle >= 'a' && *LevelTitle >= 'z')
+					*LevelTitle += 'A' - 'a';
+				else if (*LevelTitle == ' ')
+					*LevelTitle = ' ';
+				else
+					*LevelTitle = ' ';
+					//IApp::Print(2, "Invalid character '%c' in Level Title.", *LevelTitle);
+				LevelTitle++;
+			}
+
+			ZoneID = reader.ReadByte();
+			Act = reader.ReadByte();
+			HUDVisible = reader.ReadByte();
+			HUDAnim = (HUDVisible ^ 1) * 0x100;
+			free(reader.ReadRSDKString()); // Song File
+			reader.ReadUInt32(); // Loop Point
+			reader.ReadUInt32(); // Background Color
+        }
+        else {
+            free(reader.ReadBytes(16));
+        	free(reader.ReadRSDKString());
+			Data->cameraLayer = reader.ReadByte(); // UnknownByte2
+        }
+
         Data->cameraLayer = -1;
         Data->layerCount = reader.ReadByte();
         for (int i = 0; i < Data->layerCount; i++) {
@@ -1593,14 +1630,15 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		//*/
 
 		enum {
-			OBJ_PLAYER = 0x2E77DE70U,
-			OBJ_RING = 0x0EAA8554U,
-			OBJ_MONITOR = 0x161B7F56U, // 0xB3C47F67U
-			OBJ_SPRING = 0xDD50B0FCU,
-			OBJ_STARPOST = 0x58C873E2U,
-			OBJ_SPIKES = 0xA0E2B9BAU,
-			OBJ_PLANESWITCHER = 0x3D15927BU,
-			OBJ_SPECIALRING = 0xD06B97DFU,
+			OBJ_SPRING = 0x2802B89EU, //
+			OBJ_STARPOST = 0xC8B337E6U, //
+			OBJ_SPIKES = 0x44BC7B0EU, // 
+			OBJ_SPECIALRING = 0xABC2C658U, //
+
+			OBJ_PLANESWITCHER = 0x91586422U, // 0x91586422U
+			OBJ_PLAYER = 0xD68AF920U,
+			OBJ_RING = 0x2EA61FD6U,
+			OBJ_MONITOR = 0xD028F874U, // 0xB3C47F67U 
 		};
 
 		enum {
@@ -1626,6 +1664,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
         // Mania-type Object Loading
         if ((mag >> 24) == 'S') {
 			BlankTile = 0x3FF;
+			ManiaLevel = true;
 
             unordered_map<string, const char*> ObjectHashes;
             for (int i = 0; i < 554; i++) {
@@ -1645,7 +1684,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                 }
 
 				const char* name = ObjectHashes[hashString];
-				uint32_t objHash = crc32((char*)name, strlen(name));
+				// uint32_t objHash = crc32((char*)name, strlen(name));
+				uint32_t objHash = crc32((char*)str, 16);
 
                 int ArgumentCount = reader.ReadByte();
                 int* ArgumentTypes = (int*)calloc(ArgumentCount, sizeof(int));
@@ -1664,7 +1704,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                 int EntityCount = reader.ReadUInt16();
 
-				App->Print(2, "Object Hash: %08X (%s) Count: %d", objHash, ObjectHashes[hashString], EntityCount);
+				App->Print(2, "Object Hash: %08X %s (%s) Count: %d", objHash, hashString, ObjectHashes[hashString], EntityCount);
 
 				if (objHash == OBJ_SPRING || objHash == 0xFD8527A9U) {
 					const char* ArgTypes[12] = { "Uint8", "Uint16", "Uint32", "Int8", "Int16", "Int32", "enum", "bool", "string", "position", "unknown", "color" };
@@ -1831,12 +1871,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						}
 
 						case OBJ_MONITOR:
-							objHash = 0xB3C47F67U;
+							objHash = 0xBDE7E33AU;
 						default:
 							Object* obj = GetNewObjectFromCRC32(objHash);
 							if (obj) {
-								if (objHash != 0xA5066DF4U &&
-									objHash != 0xB3C47F67U) {
+								if (objHash != 0xC4B304CCU &&
+									objHash != 0xBDE7E33AU) {
 									IApp::Print(1, "Unimplemented object: %s", name);
 									break;
 								}
@@ -1855,7 +1895,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 									//ID--;
 								//obj->Sprite = SpriteMapIDs[ID];
 
-								if (objHash == 0xB3C47F67U) {
+								if (objHash == 0xBDE7E33AU) {
 									obj->Sprite = ItemsSprite;
 								}
 
@@ -1873,7 +1913,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				free(ArgumentTypes);
 			}
         }
-        // ImpostorEngine2-type Loading
+        // ImpostorEngine2-temp-type Loading
         else if ((mag >> 24) == 'U') {
 			BlankTile = 0;
 
@@ -2033,6 +2073,206 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                 AnimTileSprite->Animations.push_back(an);
             }
         }
+		// ImpostorEngine2-type Object Loading
+		else if ((mag >> 24) == 'I') {
+			BlankTile = 0;
+
+			Data->objectDefinitionCount = reader.ReadUInt16();
+			for (int i = 0; i < Data->objectDefinitionCount; i++) {
+				uint32_t objHash = reader.ReadUInt32();
+				const char* name = reader.ReadRSDKString();
+
+				int AttributeCount = reader.ReadByte();
+				int* AttributeTypes = (int*)calloc(AttributeCount, sizeof(int));
+				for (int n = 0; n < AttributeCount; n++) {
+					AttributeTypes[n] = reader.ReadByte();
+				}
+
+				int ObjCount = reader.ReadUInt16();
+				App->Print(2, "Object Hash: %08X (%s) Count: %d AttributeCount: %d", objHash, name, ObjCount, AttributeCount);
+
+				if (objHash == OBJ_SPRING || objHash == 0xFD8527A9U || objHash == 0xB3C47F67U) {
+					const char* ArgTypes[12] = { "Uint8", "Uint16", "Uint32", "Int8", "Int16", "Int32", "enum", "bool", "string", "position", "unknown", "color" };
+					for (int n = 0; n < AttributeCount; n++) {
+						App->Print(0, "Argument %d type: %s", n, ArgTypes[AttributeTypes[n]]);
+					}
+				}
+				if (objHash == OBJ_PLANESWITCHER)
+					PlaneSwitchCount = 0;
+
+				for (int n = 0; n < ObjCount; n++) {
+					unsigned int X = reader.ReadUInt16();
+					unsigned int Y = reader.ReadUInt16();
+					bool FlipX = reader.ReadByte();
+					bool FlipY = reader.ReadByte();
+					bool Priority = reader.ReadByte();
+					bool Unused = reader.ReadByte();
+
+					int* args = (int*)calloc(sizeof(int), AttributeCount);
+					for (int a = 0; a < AttributeCount; a++) {
+						args[a] = reader.ReadUInt32();
+						if (objHash == 0xB3C47F67U) {
+							App->Print(0, "Argument %d value: %d", a, args[a]);
+						}
+					}
+
+					PlayerStartX = 64;
+					PlayerStartY = 64;
+
+					switch (objHash) {
+						/*
+						case OBJ_PLANESWITCHER:
+							PlaneSwitchers[PlaneSwitchCount].X = X;
+							PlaneSwitchers[PlaneSwitchCount].Y = Y;
+
+							PlaneSwitchers[PlaneSwitchCount].Flags = args[0];
+							PlaneSwitchers[PlaneSwitchCount].Size = args[1];
+							PlaneSwitchers[PlaneSwitchCount].Angle = args[2];
+							PlaneSwitchers[PlaneSwitchCount].OnPath = args[3] == 1;
+							PlaneSwitchCount++;
+							break;
+						case OBJ_PLAYER:
+						{
+							if (args[0] == CharacterFlag) {
+								PlayerStartX = X2 + (X1 >> 16);
+								PlayerStartY = Y2 + (Y1 >> 16) - 4;
+							}
+							break;
+						}
+						case OBJ_SPRING:
+						{
+							int ID = 0x07;
+							int X = X2;
+							int Y = Y2;
+							int SubType = 0x00;
+							if ((args[0] & 0x1) == 0)
+								SubType |= 0x02;
+
+							int ttty = args[0] >> 1 & 0x3;
+							bool FLIPX = (args[1] >> 0) & 1;
+							bool FLIPY = (args[1] >> 1) & 1;
+							bool PRIORITY = false;
+
+							if (ttty == 0) {
+								if (FLIPY)
+									SubType |= 0x20;
+								else
+									SubType |= 0x0;
+							}
+							else if (ttty == 1) {
+								SubType |= 0x10;
+							}
+							else if (ttty == 2) {
+								if (!FLIPY)
+									SubType |= 0x30;
+								else
+									SubType |= 0x40;
+							}
+
+							ADD_OBJECT();
+							break;
+						}
+						case OBJ_SPECIALRING:
+						{
+							int ID = 0x85;
+							int X = X2;
+							int Y = Y2;
+							int SubType = args[0];
+							bool FLIPX = false;
+							bool FLIPY = false;
+							bool PRIORITY = false;
+
+							ADD_OBJECT();
+							break;
+						}
+						case OBJ_SPIKES:
+						{
+							int ID = 0x08;
+							int X = X2;
+							int Y = Y2;
+							int SubType = 0x00;
+							bool FLIPX = false;
+							bool FLIPY = false;
+							bool PRIORITY = false;
+
+							if (args[1] == 1)
+								SubType |= 0x02;
+							if (args[0] == 2) {
+								SubType |= 0x40;
+								FLIPX = true;
+							}
+
+							ADD_OBJECT();
+							break;
+						}
+						case OBJ_STARPOST:
+						{
+							int ID = Obj_StarPost;
+							int X = X2;
+							int Y = Y2;
+							int SubType = args[0];
+
+							bool FLIPX = false;
+							bool FLIPY = false;
+							bool PRIORITY = false;
+
+							ADD_OBJECT();
+							break;
+						}
+						case OBJ_RING:
+						{
+							ObjectProp op;
+							op.X = X2;
+							op.Y = Y2;
+							op.ID = 0xFF;
+							op.LoadFlag = true;
+
+							RingProps[RingPropCount++] = op;
+							break;
+						}
+						//*/
+
+						case OBJ_MONITOR:
+							objHash = 0xB3C47F67U;
+						default:
+							Object * obj = GetNewObjectFromCRC32(objHash);
+							if (obj) {
+								if (objHash != 0xA5066DF4U &&
+									objHash != 0xB3C47F67U) {
+									IApp::Print(1, "Unimplemented object: %s", name);
+									break;
+								}
+
+								obj->X = X;
+								obj->Y = Y;
+								obj->G = G;
+								obj->App = App;
+								obj->Scene = this;
+								obj->InitialX = X;
+								obj->InitialY = Y;
+								obj->FlipX = false;
+								obj->FlipY = false;
+								obj->ID = 0;
+
+								if (objHash == 0xB3C47F67U) {
+									obj->Sprite = ItemsSprite;
+								}
+
+								obj->Attributes = (int*)calloc(AttributeCount, sizeof(int));
+								memcpy(obj->Attributes, args, AttributeCount * sizeof(int));
+
+								Objects[ObjectCount++] = obj;
+							}
+							break;
+					}
+
+					free(args);
+				}
+
+				free(AttributeTypes);
+			}
+		}
+
 
 		for (int i = 0; i < Data->layerCount; i++) {
 			// Build buffers for GL renderer
@@ -2144,7 +2384,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			TileSprite->PaletteSize = 0x100;
             int pp = 0;
             for (int i = 0; i < 8; i++) {
-				IApp::Print(0, "yup: %X", pp);
+				// IApp::Print(0, "yup: %X", pp);
 				int ii = 0;
                 int bitmap = stageReader.ReadUInt16();
 
@@ -2154,7 +2394,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						size += 0x10;
 					}
 				}
-				IApp::Print(0, "size: %X", size);
+				// IApp::Print(0, "size: %X", size);
                 for (int col = 0; col < 16; col++) {
                     if ((bitmap & (1 << col)) != 0) {
                         for (int d = 0; d < 16; d++) {
@@ -2334,6 +2574,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 		App->Audio->ClearMusic();
 		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
 	}
+
+	LoadState();
 
 	SaveGame::SetLives(Player->Lives);
 	SaveGame::SetZone(ZoneID - 1);
@@ -3286,14 +3528,15 @@ PUBLIC void LevelScene::Update() {
 
         if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
             if (Player) {
-                Player->InputUp = App->Input->GetControllerInput(0)[IInput::I_UP];
-                Player->InputDown = App->Input->GetControllerInput(0)[IInput::I_DOWN];
-                Player->InputLeftPress = App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED];
-                Player->InputLeft = App->Input->GetControllerInput(0)[IInput::I_LEFT];
-                Player->InputRightPress = App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED];
-                Player->InputRight = App->Input->GetControllerInput(0)[IInput::I_RIGHT];
-                Player->InputJump = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
-                Player->InputJumpHold = App->Input->GetControllerInput(0)[IInput::I_CONFIRM];
+				Player->InputController = 0;
+                Player->InputUp = App->Input->GetControllerInput(Player->InputController)[IInput::I_UP];
+                Player->InputDown = App->Input->GetControllerInput(Player->InputController)[IInput::I_DOWN];
+                Player->InputLeftPress = App->Input->GetControllerInput(Player->InputController)[IInput::I_LEFT_PRESSED];
+                Player->InputLeft = App->Input->GetControllerInput(Player->InputController)[IInput::I_LEFT];
+                Player->InputRightPress = App->Input->GetControllerInput(Player->InputController)[IInput::I_RIGHT_PRESSED];
+                Player->InputRight = App->Input->GetControllerInput(Player->InputController)[IInput::I_RIGHT];
+                Player->InputJump = App->Input->GetControllerInput(Player->InputController)[IInput::I_CONFIRM_PRESSED];
+                Player->InputJumpHold = App->Input->GetControllerInput(Player->InputController)[IInput::I_CONFIRM];
 
                 if (Player->Action == ActionType::Dead && Player->EZY > CameraY + App->HEIGHT + 32) {
                     if (Player->Lives > 0 && FadeAction == 0) {
@@ -3767,6 +4010,7 @@ PUBLIC void LevelScene::Update() {
             //FadeTimerMax = 1;
             //Cleanup();
 
+			StateSaved = false;
 			App->NextScene = new Scene_DataSelect(App, G);
         }
         else if (FadeAction == FadeActionType::FADEIN) {
@@ -3779,7 +4023,7 @@ PUBLIC void LevelScene::Update() {
 
 			Level_SpecialStage* NextScene = new Level_SpecialStage(App, G);
 			NextScene->ZoneID = 0x100 | VisualAct;
-			
+
 			int toLevel = 0;
 			while (toLevel < 16) {
 				if (!SaveGame::GetEmerald(toLevel)) break;

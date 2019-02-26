@@ -2325,6 +2325,20 @@ void IPlayer::Update() {
 		//HoldingPlayer->AnimationSpeedMult = 0;
 	}
 
+	if (Action == ActionType::Jumping && JumpVariable == 1 && App->Input->GetControllerInput(InputController, IInput::I_EXTRA2_PRESSED)) {
+		if (!SuperForm && !HyperForm) {
+			if (Rings >= 50 && !Scene->StopTimer) {
+				if (SaveGame::GetEmeralds() == 0x3FFF) {
+					// if (Character == CharacterType::Sonic) HyperEnabled = true;
+					DoSuperTransform();
+				}
+				else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
+					DoSuperTransform();
+				}
+			}
+		}
+	}
+
 	// Mid-air actions, etc...
 	if (InputJump) {
 		if (Action == ActionType::Normal ||
@@ -2385,21 +2399,10 @@ void IPlayer::Update() {
 							if (DropDashRev == 0)
 								DropDashRev = 1;
 						}
-						else if (!InputUp) {
+						else {
 							ShieldAnimation = 8;
 							Shield = ShieldType::Instashield;
 							Sound::Play(Sound::SFX_INSTASHIELD);
-						}
-						else if (!SuperForm && !HyperForm) {
-							if (Rings >= 50 && !Scene->StopTimer) {
-								if (SaveGame::GetEmeralds() == 0x3FFF) {
-									// if (Character == CharacterType::Sonic) HyperEnabled = true;
-									DoSuperTransform();
-								}
-								else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
-									DoSuperTransform();
-								}
-							}
 						}
 						ShieldUsable = false;
 					}
