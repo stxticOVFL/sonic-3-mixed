@@ -2378,15 +2378,20 @@ void IPlayer::Update() {
 			} else if (Character == CharacterType::Sonic) {
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
-						if (InputJumpHold && DropDashEnabled) {
+						if (InputJumpHold && DropDashEnabled && InputUp) {
                             if (DropDashRev == 0) {
                                 DropDashRev = 1;
                             }
 						} else if (!InputUp) {
+                            if (InputJumpHold && DropDashEnabled) {
+                                if (DropDashRev == 0) {
+                                    DropDashRev = 1;
+                                }
+                            }
 							ShieldAnimation = 8;
 							Shield = ShieldType::Instashield;
 							Sound::Play(Sound::SFX_INSTASHIELD);
-						} else if (!SuperForm && !HyperForm) {
+                        } else if (!SuperForm && !HyperForm) {
 							if (Rings >= 50 && !Scene->StopTimer) {
 								if (SaveGame::GetEmeralds() == 0x3FFF) {
 									// if (Character == CharacterType::Sonic) HyperEnabled = true;
