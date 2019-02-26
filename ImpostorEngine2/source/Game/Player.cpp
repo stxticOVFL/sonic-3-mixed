@@ -681,15 +681,18 @@ PlayerSetPalettes:
 void IPlayer::ChangeAnimation(int animationID) {
 	ChangeAnimation(animationID, 0);
 }
+
 void IPlayer::ChangeAnimation(int animationID, int startFrame) {
 	if (CurrentAnimation != animationID)
 		CurrentFrame = startFrame * 0x100;
 	CurrentAnimation = animationID;
 	AnimationDone = 0;
 }
+
 void IPlayer::ChangeAnimation2(int animationID) {
 	ChangeAnimation2(animationID, 0);
 }
+
 void IPlayer::ChangeAnimation2(int animationID, int startFrame) {
 	CurrentFrame = startFrame << 8;
 	CurrentAnimation = animationID;
