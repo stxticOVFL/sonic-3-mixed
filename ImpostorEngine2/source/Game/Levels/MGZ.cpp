@@ -43,7 +43,7 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 		Str_AnimatedSprites = "Stages/MGZ2/Animated Tiles.gif";
 	}
 
-	sprintf(LevelName, "MARBLE GARDEN");
+	sprintf(LevelName, "MARBLE GARDE");
 	sprintf(LevelNameDiscord, "Marble Garden");
 }
 

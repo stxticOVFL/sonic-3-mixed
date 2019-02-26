@@ -16,18 +16,38 @@ void MGZSmashingPillar::Create() {
     H = 80;
     CurrentAnimation = 9;
     OGY = Y - 5 + 5;
-    YSpeed = 2;
+    YSpeed = -0x50;
     Direction = true;
+    VisualLayer = 1;
 }
 
 void MGZSmashingPillar::Update() {
     if (Direction) {
-        if (Y == OGY + 50) {
-            Sound::Play(Sound::SFX_BUMPER);
+        if (Y == OGY - 20) {
+            YSpeed = 0;
+            while (Timer < 200) {
+                Timer++;
+            }
+
+            Timer = 0;
+            YSpeed = 0x250;
+            Direction = false;
         }
 
     }
+    else {
+        if (Y == OGY + 80) {
+            YSpeed = 0;
+            while (Timer < 2000) {
+                Timer++;
+            }
 
+            Timer = 0;
+            YSpeed = -0x50;
+            Direction = true;
+        }
+
+    }
     Object::Update();
 }
 

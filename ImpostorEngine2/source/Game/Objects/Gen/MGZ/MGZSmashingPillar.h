@@ -17,6 +17,7 @@ public:
     
     int OGY;
     bool Direction;
+    int Timer;
     
     void Create();
     void Update();
