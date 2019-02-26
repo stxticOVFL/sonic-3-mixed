@@ -563,6 +563,7 @@ public:
     virtual void MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t speed);
     virtual int  OnDeath();
     virtual int  OnHit();
+    virtual Enemy* GetEnemyParent();
 };
 
 class Solid : public Object {

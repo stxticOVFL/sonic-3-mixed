@@ -410,6 +410,15 @@ int Enemy::OnDeath() {
     return 1;
 }
 
+Enemy* Enemy::GetEnemyParent() {
+    Enemy *host = (Enemy *)Parent;
+    if (host == NULL) {
+        return NULL;
+    }
+    
+    return host;
+}
+
 void Solid::Create() {
     Object::Create();
     Scene->AddSelfToRegistry(this, "Solid");
