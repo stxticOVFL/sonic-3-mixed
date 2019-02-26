@@ -487,7 +487,7 @@
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSmashingPillar.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -277,7 +277,7 @@ PUBLIC void Scene_MainMenu::Render() {
     G->DrawSprite(MenuSprite, 16, 2, pX - 117, pY + 117, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 16, 2, pX - 234, pY + 234, 0, IE_NOFLIP);
 
-    /// Decorations
+    // Decorations
     int yup;
     // Red/Black Ovals
     yup = IMath::sinHex(FrameCircle);
@@ -316,7 +316,7 @@ PUBLIC void Scene_MainMenu::Render() {
     // Menu Title
     G->DrawSprite(MenuSprite, 9, 0, App->WIDTH, 12, 0, IE_NOFLIP);
     G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
-    /// Triangles
+    // Triangles
     for (int i = 0; i <= 12; i++)
         G->DrawSprite(MenuSprite, 1, 3, 96, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
 
