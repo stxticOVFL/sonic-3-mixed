@@ -210,7 +210,7 @@ Uint32 SonicPaletteS3HyperBlend[16] = {
 	0x00FFE693,
 	0x00FFF7F2,
 	0x00FFDFCB,
-    0x007B7078, // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
+	0x007B7078, // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
 	0x008DF4FF,
 };
 
@@ -244,7 +244,7 @@ Uint32 SonicPaletteS3HyperExtended[31] = {
 	0x00FFCEFF,
 	0x00FFDFCB,
 	0x00CEACCE,
-    0x007B7078,    // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
+	0x007B7078,    // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
 	0x008DF4FF,
 };
 
@@ -389,7 +389,7 @@ void IPlayer::Create() {
 	FlyTimerMax = 480;
 
 	SuperForm = false;
-    HyperForm = false;
+	HyperForm = false;
 	SuperFormAnim = SuperFormAnimType::None;
 	Layer = 0;
 	VisualLayer = 0;
@@ -448,7 +448,7 @@ void IPlayer::Create() {
 	if (Character == CharacterType::Sonic) {
 		H = 40;
 		OrigH = H;
-        DropDashEnabled = true; // Default to true for now.
+		DropDashEnabled = true; // Default to true for now.
 		if (!Thremixed) {
 			int i = 0;
 			Sprites[0] = new ISprite("Player/S3/Sonic.gif", App);
@@ -462,55 +462,57 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		} else {
-            bool Tria = false;
-            if (Tria) {
-                Sprites[0] = new ISprite("Player/Sonic1.gif", App);
-                Sprites[1] = new ISprite("Player/Sonic2.gif", App);
-                Sprites[2] = new ISprite("Player/Sonic3.gif", App);
-                Sprites[3] = new ISprite("Player/Sonic4.gif", App);
-                Sprites[4] = new ISprite("Player/SonicCutsceneCPZ.gif", App);
+		}
+		else {
+			bool Tria = false;
+			if (Tria) {
+				Sprites[0] = new ISprite("Player/Sonic1.gif", App);
+				Sprites[1] = new ISprite("Player/Sonic2.gif", App);
+				Sprites[2] = new ISprite("Player/Sonic3.gif", App);
+				Sprites[3] = new ISprite("Player/Sonic4.gif", App);
+				Sprites[4] = new ISprite("Player/SonicCutsceneCPZ.gif", App);
 
-                Sprites[0]->LoadAnimation("Player/Sonicold.bin");
+				Sprites[0]->LoadAnimation("Player/Sonicold.bin");
 
-                int i = 0;
-                for (; i < Sprites[0]->AnimCount; i++) {
-                    AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
-                }
+				int i = 0;
+				for (; i < Sprites[0]->AnimCount; i++) {
+					AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+				}
 
-                Sprites[0]->LoadAnimation("Player/SuperSonic.bin");
-                for (; i < Sprites[0]->AnimCount; i++) {
-                    AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
-                }
+				Sprites[0]->LoadAnimation("Player/SuperSonic.bin");
+				for (; i < Sprites[0]->AnimCount; i++) {
+					AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
+				}
 
-                Sprites[1]->LinkAnimation(Sprites[0]->Animations);
-                Sprites[2]->LinkAnimation(Sprites[0]->Animations);
-                Sprites[3]->LinkAnimation(Sprites[0]->Animations);
-                Sprites[4]->LinkAnimation(Sprites[0]->Animations);
+				Sprites[1]->LinkAnimation(Sprites[0]->Animations);
+				Sprites[2]->LinkAnimation(Sprites[0]->Animations);
+				Sprites[3]->LinkAnimation(Sprites[0]->Animations);
+				Sprites[4]->LinkAnimation(Sprites[0]->Animations);
 
-                Sprites[0]->Animations[54 + (int)AnimationEnum::Walk].AnimationSpeed = 0x100;
-                Sprites[0]->Animations[54 + (int)AnimationEnum::AirWalk].AnimationSpeed = 0x100;
-                Sprites[0]->Animations[54 + (int)AnimationEnum::Jog].AnimationSpeed = 0x100;
-                Sprites[0]->Animations[54 + (int)AnimationEnum::Run].AnimationSpeed = 0x100;
-                Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
-                Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
-            } else {
-                int i = 0;
-                Sprites[0] = new ISprite("Player/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
-                Sprites[1] = new ISprite("Player/S3/Sonic.gif", App);
+				Sprites[0]->Animations[54 + (int)AnimationEnum::Walk].AnimationSpeed = 0x100;
+				Sprites[0]->Animations[54 + (int)AnimationEnum::AirWalk].AnimationSpeed = 0x100;
+				Sprites[0]->Animations[54 + (int)AnimationEnum::Jog].AnimationSpeed = 0x100;
+				Sprites[0]->Animations[54 + (int)AnimationEnum::Run].AnimationSpeed = 0x100;
+				Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
+				Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
+			}
+			else {
+				int i = 0;
+				Sprites[0] = new ISprite("Player/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
+				Sprites[1] = new ISprite("Player/S3/Sonic.gif", App);
 
-                Sprites[0]->LoadAnimation("Player/S3/Sonic3MClassic.bin");
-                for (; i < Sprites[0]->AnimCount; i++) {
-                    AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
-                }
+				Sprites[0]->LoadAnimation("Player/S3/Sonic3MClassic.bin");
+				for (; i < Sprites[0]->AnimCount; i++) {
+					AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+				}
 
-                Sprites[0]->LoadAnimation("Player/S3/Super Sonic.bin");
-                for (; i < Sprites[0]->AnimCount; i++) {
-                    AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
-                }
+				Sprites[0]->LoadAnimation("Player/S3/Super Sonic.bin");
+				for (; i < Sprites[0]->AnimCount; i++) {
+					AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
+				}
 
-                Sprites[1]->LinkAnimation(Sprites[0]->Animations);
-            }
+				Sprites[1]->LinkAnimation(Sprites[0]->Animations);
+			}
 		}
 	}
 	else if (Character == CharacterType::Tails) {
@@ -525,22 +527,23 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
-		} else {
-            Sprites[0] = new ISprite("Player/Tails1.gif", App);
-            Sprites[1] = new ISprite("Player/Tails2.gif", App);
-            Sprites[2] = new ISprite("Player/Tails3.gif", App);
-            Sprites[3] = new ISprite("Player/TailsCutsceneCPZ.gif", App);
+		}
+		else {
+			Sprites[0] = new ISprite("Player/Tails1.gif", App);
+			Sprites[1] = new ISprite("Player/Tails2.gif", App);
+			Sprites[2] = new ISprite("Player/Tails3.gif", App);
+			Sprites[3] = new ISprite("Player/TailsCutsceneCPZ.gif", App);
 
-            Sprites[0]->LoadAnimation("Player/Tails.bin");
-            Sprites[0]->LoadAnimation("Player/TailSprite.bin");
-            Sprites[1]->LinkAnimation(Sprites[0]->Animations);
-            Sprites[2]->LinkAnimation(Sprites[0]->Animations);
-            Sprites[3]->LinkAnimation(Sprites[0]->Animations);
+			Sprites[0]->LoadAnimation("Player/Tails.bin");
+			Sprites[0]->LoadAnimation("Player/TailSprite.bin");
+			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
+			Sprites[2]->LinkAnimation(Sprites[0]->Animations);
+			Sprites[3]->LinkAnimation(Sprites[0]->Animations);
 
-            for (int i = 0; i < Sprites[0]->AnimCount; i++) {
-                AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
-            }
-        }
+			for (int i = 0; i < Sprites[0]->AnimCount; i++) {
+				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
+			}
+		}
 	}
 	else if (Character == CharacterType::Knuckles) {
 		H = 40;
@@ -550,7 +553,8 @@ void IPlayer::Create() {
 			for (int i = 0; i < 5; i++) {
 				Sprites[i] = Scene->KnuxSprite[i];
 			}
-		} else {
+		}
+		else {
 			Sprites[0] = new ISprite("Player/Knux1.gif", App);
 			Sprites[1] = new ISprite("Player/Knux2.gif", App);
 			Sprites[2] = new ISprite("Player/Knux3.gif", App);
@@ -892,12 +896,12 @@ void IPlayer::Update() {
 				YSpeed >>= 2;
 
 			switch (Shield) {
-				case ShieldType::Fire:
-				case ShieldType::Electric:
-					Shield = ShieldType::None;
-					break;
-				default:
-					break;
+			case ShieldType::Fire:
+			case ShieldType::Electric:
+				Shield = ShieldType::None;
+				break;
+			default:
+				break;
 			}
 
 			if (YSpeed != 0 && Action != ActionType::InStream && Action != ActionType::InStreamGrab) {
@@ -991,227 +995,217 @@ void IPlayer::Update() {
 	H = OrigH;
 
 	switch (Action) {
-		case ActionType::Fan:
-			Ground = false;
-			grv = 0;
-			JumpVariable = 1;
-			break;
-		case ActionType::Glide:
-		{
-			int Flip = IMath::sign(DisplayFlip);
-			grv = 0x0;
-			H = 32;
+	case ActionType::Fan:
+		Ground = false;
+		grv = 0;
+		JumpVariable = 1;
+		break;
+	case ActionType::Glide:
+	{
+		int Flip = IMath::sign(DisplayFlip);
+		grv = 0x0;
+		H = 32;
 
-			if (YSpeed < 0x80) YSpeed += 0x20;
-			if (YSpeed > 0x80) YSpeed -= 0x20;
+		if (YSpeed < 0x80) YSpeed += 0x20;
+		if (YSpeed > 0x80) YSpeed -= 0x20;
 
-			if (SuperForm || HyperForm) {
-				if (XSpeed < 0)
-					XSpeed -= 0xC;
-				else
-					XSpeed += 0xC;
-			}
-			else {
-				if (XSpeed < 0)
-					XSpeed -= 0x4;
-				else
-					XSpeed += 0x4;
-			}
+		if (SuperForm || HyperForm) {
+			if (XSpeed < 0)
+				XSpeed -= 0xC;
+			else
+				XSpeed += 0xC;
+		}
+		else {
+			if (XSpeed < 0)
+				XSpeed -= 0x4;
+			else
+				XSpeed += 0x4;
+		}
 
-			if (Flip > 0) {
-				if (XSpeed < 0)
-					XSpeed = 0;
-			}
-			else {
-				if (XSpeed > 0)
-					XSpeed = 0;
-			}
-
-			if (Scene->CollisionAtClimbable(EZX + 12 * Flip, EZY - 10, NULL, XSpeed < 0 ? 3 : 1, this)) {
-				if (SuperForm && IMath::abs(XSpeed) >= 0x480) {
-					// Sound::Play(0x49);
-					// Scene->ShakeTimer = 14;
-				}
-				else {
-					Sound::Play(Sound::SFX_GRAB);
-				}
-
-				DisplayFlip = Flip;
+		if (Flip > 0) {
+			if (XSpeed < 0)
 				XSpeed = 0;
-				Action = ActionType::Climb;
-
-				// To make sure Knuckles is properly on the wall
-				while (Scene->CollisionAtClimbable(EZX + 10 * DisplayFlip, EZY - 10, NULL, DisplayFlip < 0 ? 3 : 1, this))
-					EZX -= DisplayFlip;
-				while (!Scene->CollisionAtClimbable(EZX + 10 * DisplayFlip, EZY - 10, NULL, DisplayFlip < 0 ? 3 : 1, this))
-					EZX += DisplayFlip;
-			}
-
-			if (!InputJumpHold) {
-				Action = ActionType::GlideFall;
-				XSpeed /= 4;
-				grv = 0x38;
-			}
-			break;
 		}
-		case ActionType::GlideSlide:
-		{
-			frc = 0x20;
-			H = 32;
-
-			InputAlarm = 3;
-
-			if (!InputJumpHold) {
-				GroundSpeed = 0;
-			}
-			if (GroundSpeed == 0) {
-				H = OrigH;
-
-				while (Scene->CollisionAt(EZX, EZY + H / 2 - 1, NULL, 0, this))
-					EZY--;
-			}
-
-			if (!Ground) {
-				Action = ActionType::GlideFall;
-				grv = 0x38;
-			}
-			break;
+		else {
+			if (XSpeed > 0)
+				XSpeed = 0;
 		}
-		case ActionType::Climb:
-		{
-			int Flip = IMath::sign(DisplayFlip);
+
+		if (Scene->CollisionAtClimbable(EZX + 12 * Flip, EZY - 10, NULL, XSpeed < 0 ? 3 : 1, this)) {
+			if (SuperForm && IMath::abs(XSpeed) >= 0x480) {
+				// Sound::Play(0x49);
+				// Scene->ShakeTimer = 14;
+			}
+			else {
+				Sound::Play(Sound::SFX_GRAB);
+			}
+
+			DisplayFlip = Flip;
+			XSpeed = 0;
+			Action = ActionType::Climb;
+
+			// To make sure Knuckles is properly on the wall
+			while (Scene->CollisionAtClimbable(EZX + 10 * DisplayFlip, EZY - 10, NULL, DisplayFlip < 0 ? 3 : 1, this))
+				EZX -= DisplayFlip;
+			while (!Scene->CollisionAtClimbable(EZX + 10 * DisplayFlip, EZY - 10, NULL, DisplayFlip < 0 ? 3 : 1, this))
+				EZX += DisplayFlip;
+		}
+
+		if (!InputJumpHold) {
+			Action = ActionType::GlideFall;
+			XSpeed /= 4;
+			grv = 0x38;
+		}
+		break;
+	}
+	case ActionType::GlideSlide:
+	{
+		frc = 0x20;
+		H = 32;
+
+		InputAlarm = 3;
+
+		if (!InputJumpHold) {
+			GroundSpeed = 0;
+		}
+		if (GroundSpeed == 0) {
+			H = OrigH;
+
+			while (Scene->CollisionAt(EZX, EZY + H / 2 - 1, NULL, 0, this))
+				EZY--;
+		}
+
+		if (!Ground) {
+			Action = ActionType::GlideFall;
+			grv = 0x38;
+		}
+		break;
+	}
+	case ActionType::Climb:
+	{
+		int Flip = IMath::sign(DisplayFlip);
+		grv = 0;
+		air = 0;
+		YSpeed = 0;
+		XSpeed = 0;
+		if (!SuperForm && !HyperForm) {
+			if (InputUp) {
+				YSpeed = -0x100;
+			}
+			else if (InputDown) {
+				YSpeed = 0x100;
+			}
+		}
+		else {
+			if (InputUp) {
+				YSpeed = -0x200;
+			}
+			else if (InputDown) {
+				YSpeed = 0x200;
+			}
+		}
+
+		if (!Scene->CollisionAtClimbable(EZX + 12 * Flip, EZY - 10, NULL, Flip < 0 ? 3 : 1, this)) {
+			if (YSpeed >= 0) {
+				Action = ActionType::GlideFall;
+				ChangeAnimation((int)AnimationEnum::GlideDrop, 2);
+			}
+			else {
+				Action = ActionType::ClimbRise;
+				StoredX = EZX;
+				StoredY = EZY;
+			}
+		}
+
+		if (InputJump) {
+			Jump();
+			XSpeed = Flip * -0x400;
+			YSpeed = -0x400;
+			InputJump = false;
+		}
+		break;
+	}
+	case ActionType::ClimbRise:
+		grv = 0;
+		air = 0;
+		XSpeed = 0;
+		YSpeed = 0;
+		break;
+	case ActionType::RayGlide:
+	{
+		// sub_4CD660
+		if (Angle == 1) { // Is Facing Up
+			if (GlideTurnCos < 0x70)
+				GlideTurnCos += 8;
+		}
+		else {
+			if (GlideTurnCos > 0x10)
+				GlideTurnCos -= 8;
+		}
+
+		if (GlideSpeedStore != 0) {
+			YSpeed += GlideSpeedStore >> (2 - Underwater);
+			if (YSpeed < GlideSpeedStore) {
+				YSpeed = GlideSpeedStore;
+				GlideSpeedStore = 0;
+			}
+		}
+		else {
+			YSpeed += 0x38 * GlideTurnCos >> 9;
+		}
+
+		if (YSpeed < -0x600)
+			YSpeed = -0x600;
+
+		if (Angle == 1) {
 			grv = 0;
 			air = 0;
-			YSpeed = 0;
-			XSpeed = 0;
-			if (!SuperForm && !HyperForm) {
-				if (InputUp) {
-					YSpeed = -0x100;
-				}
-				else if (InputDown) {
-					YSpeed = 0x100;
-				}
-			}
-			else {
-				if (InputUp) {
-					YSpeed = -0x200;
-				}
-				else if (InputDown) {
-					YSpeed = 0x200;
-				}
-			}
-
-			if (!Scene->CollisionAtClimbable(EZX + 12 * Flip, EZY - 10, NULL, Flip < 0 ? 3 : 1, this)) {
-				if (YSpeed >= 0) {
-					Action = ActionType::GlideFall;
-					ChangeAnimation((int)AnimationEnum::GlideDrop, 2);
-				}
-				else {
-					Action = ActionType::ClimbRise;
-					StoredX = EZX;
-					StoredY = EZY;
-				}
-			}
-
-			if (InputJump) {
-				Jump();
-				XSpeed = Flip * -0x400;
-				YSpeed = -0x400;
-				InputJump = false;
-			}
-			break;
+			int tempYSpeed = YSpeed;
+			if (tempYSpeed > 0x100)
+				YSpeed = tempYSpeed - (tempYSpeed >> 2);
 		}
-		case ActionType::ClimbRise:
-			grv = 0;
-			air = 0;
-			XSpeed = 0;
-			YSpeed = 0;
-			break;
-		case ActionType::RayGlide:
-		{
-			// sub_4CD660
-			if (Angle == 1) { // Is Facing Up
-				if (GlideTurnCos < 0x70)
-					GlideTurnCos += 8;
+
+		int storedYSpeed = YSpeed;
+		if (storedYSpeed <= 0) {
+			MaxGlideSpeed -= (22 * (0x50 - GlideTurnCos)) >> 6;
+			if (MaxGlideSpeed < 0x400)
+				MaxGlideSpeed = 0x400;
+		}
+		else if (storedYSpeed > MaxGlideSpeed) {
+			MaxGlideSpeed = storedYSpeed - (storedYSpeed >> 6);
+		}
+
+		if (XSpeed) {
+			int v23 = 0x50 - GlideTurnCos;
+			if (DisplayFlip < 0) {
+				XSpeed -= (0x16 * v23 >> (int)Underwater) >> 6;
+				if (XSpeed > -0x100)
+					XSpeed = -0x100;
+
+				int signedMaxGlideSpeed = -MaxGlideSpeed;
+				if (XSpeed < signedMaxGlideSpeed)
+					XSpeed = signedMaxGlideSpeed;
 			}
 			else {
-				if (GlideTurnCos > 0x10)
-					GlideTurnCos -= 8;
-			}
+				XSpeed += (0x16 * v23 >> (int)Underwater) >> 6;
+				if (XSpeed < 0x100)
+					XSpeed = 0x100;
 
-			if (GlideSpeedStore != 0) {
-				YSpeed += GlideSpeedStore >> (2 - Underwater);
-				if (YSpeed < GlideSpeedStore) {
-					YSpeed = GlideSpeedStore;
-					GlideSpeedStore = 0;
-				}
+				int signedMaxGlideSpeed = MaxGlideSpeed;
+				if (XSpeed > signedMaxGlideSpeed)
+					XSpeed = signedMaxGlideSpeed;
 			}
-			else {
-				YSpeed += 0x38 * GlideTurnCos >> 9;
-			}
+		}
 
-			if (YSpeed < -0x600)
-				YSpeed = -0x600;
-
-			if (Angle == 1) {
-				grv = 0;
-				air = 0;
-				int tempYSpeed = YSpeed;
-				if (tempYSpeed > 0x100)
-					YSpeed = tempYSpeed - (tempYSpeed >> 2);
-			}
-
-			int storedYSpeed = YSpeed;
-			if (storedYSpeed <= 0) {
-				MaxGlideSpeed -= (22 * (0x50 - GlideTurnCos)) >> 6;
-				if (MaxGlideSpeed < 0x400)
-					MaxGlideSpeed = 0x400;
-			}
-			else if (storedYSpeed > MaxGlideSpeed) {
-				MaxGlideSpeed = storedYSpeed - (storedYSpeed >> 6);
-			}
-
-			if (XSpeed) {
-				int v23 = 0x50 - GlideTurnCos;
-				if (DisplayFlip < 0) {
-					XSpeed -= (0x16 * v23 >> (int)Underwater) >> 6;
-					if (XSpeed > -0x100)
-						XSpeed = -0x100;
-
-					int signedMaxGlideSpeed = -MaxGlideSpeed;
-					if (XSpeed < signedMaxGlideSpeed)
-						XSpeed = signedMaxGlideSpeed;
-				}
-				else {
-					XSpeed += (0x16 * v23 >> (int)Underwater) >> 6;
-					if (XSpeed < 0x100)
-						XSpeed = 0x100;
-
-					int signedMaxGlideSpeed = MaxGlideSpeed;
-					if (XSpeed > signedMaxGlideSpeed)
-						XSpeed = signedMaxGlideSpeed;
-				}
-			}
-
-			int v7 = 0; // 1A8
-			if (v7) {
-				// 1A8
-			}
-			else {
-				bool did = true;
-				if (DisplayFlip < 0) {
-					if (!InputRight || GlideTurnCos != 0x10) {
-						if (InputLeft && GlideTurnCos == 0x70 && Angle == 1) {
-							GlideSpeedStore = 0;
-							Angle = 0;
-							ChangeAnimation((int)AnimationEnum::RayFlyDown, 0);
-							Sound::Play(Sound::SFX_RAY_DIVE);
-						}
-						did = false;
-					}
-				}
-				else if (!InputLeft || GlideTurnCos != 0x10) {
-					if (InputRight && GlideTurnCos == 0x70 && Angle == 1) {
+		int v7 = 0; // 1A8
+		if (v7) {
+			// 1A8
+		}
+		else {
+			bool did = true;
+			if (DisplayFlip < 0) {
+				if (!InputRight || GlideTurnCos != 0x10) {
+					if (InputLeft && GlideTurnCos == 0x70 && Angle == 1) {
 						GlideSpeedStore = 0;
 						Angle = 0;
 						ChangeAnimation((int)AnimationEnum::RayFlyDown, 0);
@@ -1219,90 +1213,100 @@ void IPlayer::Update() {
 					}
 					did = false;
 				}
+			}
+			else if (!InputLeft || GlideTurnCos != 0x10) {
+				if (InputRight && GlideTurnCos == 0x70 && Angle == 1) {
+					GlideSpeedStore = 0;
+					Angle = 0;
+					ChangeAnimation((int)AnimationEnum::RayFlyDown, 0);
+					Sound::Play(Sound::SFX_RAY_DIVE);
+				}
+				did = false;
+			}
 
-				if (did && !Angle) {
-					bool ySpeedGreaterThan = YSpeed > 0x280 && false;
-					bool ySpeedEquals = YSpeed == 0x280;
-					bool ySpeedLessThan = YSpeed < 0x280;
+			if (did && !Angle) {
+				bool ySpeedGreaterThan = YSpeed > 0x280 && false;
+				bool ySpeedEquals = YSpeed == 0x280;
+				bool ySpeedLessThan = YSpeed < 0x280;
 
-					Angle = 1;
+				Angle = 1;
 
-					if (!((ySpeedLessThan != ySpeedGreaterThan) || ySpeedEquals)
-						|| RayBoostCount == 0x100
-						|| (Underwater && YSpeed > 0x180)) {
-						int YCalcSpeed = YSpeed;
-						if (YCalcSpeed < 0) {
-							YCalcSpeed = -YCalcSpeed;
-						}
-
-                        /*
-                        int XCalcSpeed = XSpeed;
-						if (XCalcSpeed < 0) {
-							XCalcSpeed = -XSpeed;
-						}
-
-						int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (XCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
-                        */
-
-                        int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (YCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
-						GlideSpeedStore = speedStore;
-						if (Underwater)
-							GlideSpeedStore = (speedStore >> 1) + (speedStore >> 3);
-						if (RayBoostCount > 0x10)
-							RayBoostCount = RayBoostCount - 0x20;
-						if (GlideSpeedStore < -0x600)
-							GlideSpeedStore = -0x600;
+				if (!((ySpeedLessThan != ySpeedGreaterThan) || ySpeedEquals)
+					|| RayBoostCount == 0x100
+					|| (Underwater && YSpeed > 0x180)) {
+					int YCalcSpeed = YSpeed;
+					if (YCalcSpeed < 0) {
+						YCalcSpeed = -YCalcSpeed;
 					}
-					ChangeAnimation((int)AnimationEnum::RayFlyUp, 0);
-					Sound::Play(Sound::SFX_RAY_SWOOP);
-				}
-			}
 
-			if (!InputJumpHold || XSpeed == 0 || EZY < Scene->CameraY) {
-				Action = ActionType::Jumping;
-				JumpVariable = 0;
-				Sound::Stop(Sound::SFX_RAY_DIVE);
-				Sound::Stop(Sound::SFX_RAY_SWOOP);
+					/*
+					int XCalcSpeed = XSpeed;
+					if (XCalcSpeed < 0) {
+						XCalcSpeed = -XSpeed;
+					}
+
+					int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (XCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
+					*/
+
+					int speedStore = -(RayBoostCount * ((YCalcSpeed >> 1) + (YCalcSpeed >> 2) + (YCalcSpeed >> 4)) >> 8);
+					GlideSpeedStore = speedStore;
+					if (Underwater)
+						GlideSpeedStore = (speedStore >> 1) + (speedStore >> 3);
+					if (RayBoostCount > 0x10)
+						RayBoostCount = RayBoostCount - 0x20;
+					if (GlideSpeedStore < -0x600)
+						GlideSpeedStore = -0x600;
+				}
+				ChangeAnimation((int)AnimationEnum::RayFlyUp, 0);
+				Sound::Play(Sound::SFX_RAY_SWOOP);
 			}
-			break;
 		}
-		case ActionType::Fly:
-		{
-			if (Underwater && HoldingPlayer) {
-				FlyFlag = 0;
+
+		if (!InputJumpHold || XSpeed == 0 || EZY < Scene->CameraY) {
+			Action = ActionType::Jumping;
+			JumpVariable = 0;
+			Sound::Stop(Sound::SFX_RAY_DIVE);
+			Sound::Stop(Sound::SFX_RAY_SWOOP);
+		}
+		break;
+	}
+	case ActionType::Fly:
+	{
+		if (Underwater && HoldingPlayer) {
+			FlyFlag = 0;
+		}
+		else {
+			if (YSpeed < -0x100)
+				FlyFlag = 0x8;
+
+			if (InputJump && FlyTimer > 0) {
+				FlyFlag = -0x20;
 			}
-			else {
-				if (YSpeed < -0x100)
-					FlyFlag = 0x8;
+		}
 
-				if (InputJump && FlyTimer > 0) {
-					FlyFlag = -0x20;
-				}
-			}
-
-			if (!Underwater && !(Scene->Frame & 0xF)) {
-				if (FlyTimer > 0)
-					Sound::Play(Sound::SFX_TAILS_FLY);
-				else
-					Sound::Play(Sound::SFX_TAILS_TIRED);
-			}
-
-			grv = FlyFlag;
-
+		if (!Underwater && !(Scene->Frame & 0xF)) {
 			if (FlyTimer > 0)
-				FlyTimer--;
-			break;
+				Sound::Play(Sound::SFX_TAILS_FLY);
+			else
+				Sound::Play(Sound::SFX_TAILS_TIRED);
 		}
-		case ActionType::Spring:
-		case ActionType::Jumping:
-			H = 32;
-			break;
-		case ActionType::Slide:
-			if (!(Scene->Frame & 0x1F))
-				Sound::Play(Sound::SFX_SLIDE);
-			break;
-		default:
-			break;
+
+		grv = FlyFlag;
+
+		if (FlyTimer > 0)
+			FlyTimer--;
+		break;
+	}
+	case ActionType::Spring:
+	case ActionType::Jumping:
+		H = 32;
+		break;
+	case ActionType::Slide:
+		if (!(Scene->Frame & 0x1F))
+			Sound::Play(Sound::SFX_SLIDE);
+		break;
+	default:
+		break;
 	}
 
 	bool IUp = InputUp;
@@ -1502,31 +1506,31 @@ void IPlayer::Update() {
 	}
 
 	switch (Action) {
-		case ActionType::Normal:
-		{
-			if (GroundSpeed == 0 && InputUp && Ground) {
-				CameraLookTimer = 0;
-				Action = ActionType::LookUp;
-			}
-			break;
+	case ActionType::Normal:
+	{
+		if (GroundSpeed == 0 && InputUp && Ground) {
+			CameraLookTimer = 0;
+			Action = ActionType::LookUp;
 		}
-		case ActionType::CrouchDown:
-			if (!InputDown) {
-				Action = ActionType::CancelableAnim;
-			}
-			break;
-		case ActionType::LookUp:
-			if (!InputUp)
-				Action = ActionType::CancelableAnim;
-			break;
-		case ActionType::Rolling:
-			if (!ManiaPhysics && IMath::abs(GroundSpeed) < 0x80)
-				Action = ActionType::Normal;
-			else if (ManiaPhysics && GroundSpeed == 0x00)
-				Action = ActionType::Normal;
-			break;
-		default:
-			break;
+		break;
+	}
+	case ActionType::CrouchDown:
+		if (!InputDown) {
+			Action = ActionType::CancelableAnim;
+		}
+		break;
+	case ActionType::LookUp:
+		if (!InputUp)
+			Action = ActionType::CancelableAnim;
+		break;
+	case ActionType::Rolling:
+		if (!ManiaPhysics && IMath::abs(GroundSpeed) < 0x80)
+			Action = ActionType::Normal;
+		else if (ManiaPhysics && GroundSpeed == 0x00)
+			Action = ActionType::Normal;
+		break;
+	default:
+		break;
 	}
 
 	if (InputAlarm > 0)
@@ -1792,10 +1796,10 @@ void IPlayer::Update() {
 			else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
 			if (ForceRoll) d0++;
 			switch (d0 & 0xC0) {
-				case 0x00: AngleMode = 0; break;
-				case 0x40: AngleMode = 3; break;
-				case 0x80: AngleMode = 2; break;
-				case 0xC0: AngleMode = 1; break;
+			case 0x00: AngleMode = 0; break;
+			case 0x40: AngleMode = 3; break;
+			case 0x80: AngleMode = 2; break;
+			case 0xC0: AngleMode = 1; break;
 			}
 		}
 		// Check Sensor A
@@ -1921,10 +1925,10 @@ void IPlayer::Update() {
 						else { d0 = Angle; if (d0 >= 0x80) d0++; d0 += 0x1F; }
 						if (ForceRoll) d0++;
 						switch (d0 & 0xC0) {
-							case 0x00: AngleMode = 0; break;
-							case 0x40: AngleMode = 3; break;
-							case 0x80: AngleMode = 2; break;
-							case 0xC0: AngleMode = 1; break;
+						case 0x00: AngleMode = 0; break;
+						case 0x40: AngleMode = 3; break;
+						case 0x80: AngleMode = 2; break;
+						case 0xC0: AngleMode = 1; break;
 						}
 						if (AngleMode != 0 && !ForceRoll)
 							CanModeChange = false;
@@ -1991,7 +1995,7 @@ void IPlayer::Update() {
 			if (DropDashRev > 0 && !InputJumpHold) {
 				DropDashRev = 0;
 			}
-			if (DropDashRev == 21) {
+			if (DropDashRev == 71) {
 				Sound::Play(Sound::SFX_DROPDASHREADY);
 			}
 
@@ -2071,7 +2075,7 @@ void IPlayer::Update() {
 					else if (Action == ActionType::Spindash) {
 					}
 					else {
-						if (DropDashRev >= 21 && Action == ActionType::Jumping) {
+						if (DropDashRev >= 71 && Action == ActionType::Jumping) {
 							Sound::Play(Sound::SFX_DROPDASH);
 
 							Explosion* dropdashdust;
@@ -2336,19 +2340,22 @@ void IPlayer::Update() {
 
 				Jump();
 			}
-		} else if (Action == ActionType::CrouchDown) {
+		}
+		else if (Action == ActionType::CrouchDown) {
 			Action = ActionType::Spindash;
 			SpindashRev = 0x200;
 			Vibrate(VibrationType::SpindashRev);
 			Sound::Play(Sound::SFX_SPINDASHREV);
-		} else if (Action == ActionType::Spindash) {
+		}
+		else if (Action == ActionType::Spindash) {
 			Vibrate(VibrationType::SpindashRev);
 			SpindashRev += 0x200;
 			if (SpindashRev > 0x800)
 				SpindashRev = 0x800;
 			ChangeAnimation2((int)AnimationEnum::Spindash + superflag);
 			Sound::Play(Sound::SFX_SPINDASHREV);
-		} else if (Action == ActionType::Jumping && JumpVariable == 1) {
+		}
+		else if (Action == ActionType::Jumping && JumpVariable == 1) {
 			if (HyperForm) {
 				if (ShieldUsable && Character == CharacterType::Sonic) {
 					if (InputUp) {
@@ -2359,10 +2366,10 @@ void IPlayer::Update() {
 							DropDashRev = 1;
 						}
 					}
-					//else if (InputDown) 
+					//else if (InputDown)
 					//{
 						// Do nothing in terms of anything new.
-					//} 
+					//}
 					else {
 						XSpeed = 0x800 * DisplayFlip;
 						YSpeed = 0;
@@ -2370,7 +2377,8 @@ void IPlayer::Update() {
 					}
 					ShieldUsable = false;
 				}
-			} else if (Character == CharacterType::Sonic) {
+			}
+			else if (Character == CharacterType::Sonic) {
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
 						if (DropDashEnabled) {
@@ -2380,83 +2388,95 @@ void IPlayer::Update() {
 						}
 						if (InputDown) {
 							//nop
-						} else if (!InputUp) {
+						}
+						else if (!InputUp) {
 							ShieldAnimation = 8;
 							Shield = ShieldType::Instashield;
 							Sound::Play(Sound::SFX_INSTASHIELD);
-						} else if (!SuperForm && !HyperForm) {
+						}
+						else if (!SuperForm && !HyperForm) {
 							if (Rings >= 50 && !Scene->StopTimer) {
 								if (SaveGame::GetEmeralds() == 0x3FFF) {
 									// if (Character == CharacterType::Sonic) HyperEnabled = true;
 									DoSuperTransform();
-								} else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
+								}
+								else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
 									DoSuperTransform();
 								}
 							}
 						}
 						ShieldUsable = false;
-					} else if (Shield == ShieldType::Fire) {
-                        if (InputDown) {
+					}
+					else if (Shield == ShieldType::Fire) {
+						if (InputDown) {
 							//no
-                            /*if (DropDashEnabled) {
-                                if (DropDashRev == 0) {
-                                    DropDashRev = 1;
-                                }
-                            }*/
-                        } else {
-                            XSpeed = 0x800 * DisplayFlip;
-                            YSpeed = 0;
-                            CameraLockTimer = 16;
-                            ShieldAnimation = 12;
-                            Sound::Play(Sound::SFX_SHIELD_FIRE_DASH);
-                        }
-					} else if (Shield == ShieldType::Bubble) {
+							/*if (DropDashEnabled) {
+								if (DropDashRev == 0) {
+									DropDashRev = 1;
+								}
+							}*/
+						}
+						else {
+							XSpeed = 0x800 * DisplayFlip;
+							YSpeed = 0;
+							CameraLockTimer = 16;
+							ShieldAnimation = 12;
+							Sound::Play(Sound::SFX_SHIELD_FIRE_DASH);
+						}
+					}
+					else if (Shield == ShieldType::Bubble) {
 						XSpeed = 0;
 						YSpeed = 0x800;
 						ShieldAction = true;
 						Sound::Play(Sound::SFX_SHIELD_BUBBLE_BOUNCE);
-					} else if (Shield == ShieldType::Electric) {
+					}
+					else if (Shield == ShieldType::Electric) {
 						YSpeed = -0x580;
 						Sound::Play(Sound::SFX_SHIELD_ELECTRIC_JUMP);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, -0x200, -0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, 0x200, -0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, -0x200, 0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, 0x200, 0x200, 0x18, 22, 0);
-                        if (InputDown) {
+						if (InputDown) {
 							//no drop dash
-                            /*if (DropDashEnabled) {
-                                if (DropDashRev == 0) {
-                                    DropDashRev = 1;
-                                }
-                            }*/
-                        }
-					} else if (Shield == ShieldType::Basic) {
+							/*if (DropDashEnabled) {
+								if (DropDashRev == 0) {
+									DropDashRev = 1;
+								}
+							}*/
+						}
+					}
+					else if (Shield == ShieldType::Basic) {
 						// Do nothing special.
-                        if (InputDown) {
+						if (InputDown) {
 							//cease
-                            /*if (DropDashEnabled) {
-                                if (DropDashRev == 0) {
-                                    DropDashRev = 1;
-                                }
-                            }*/
-                        }
+							/*if (DropDashEnabled) {
+								if (DropDashRev == 0) {
+									DropDashRev = 1;
+								}
+							}*/
+						}
 					}
 
 					ShieldUsable = false;
 				}
-			} else if (Character == CharacterType::Tails) {
+			}
+			else if (Character == CharacterType::Tails) {
 				Action = ActionType::Fly;
 				FlyFlag = 0x8;
 				FlyTimer = FlyTimerMax;
-			} else if (Character == CharacterType::Knuckles) {
+			}
+			else if (Character == CharacterType::Knuckles) {
 				Action = ActionType::Glide;
 				XSpeed = DisplayFlip * 0x400;
 				if (YSpeed < 0)
 					YSpeed = 0;
-			} else if (Character == CharacterType::Mighty) {
+			}
+			else if (Character == CharacterType::Mighty) {
 				XSpeed = 0;
 				YSpeed = 0x800;
-			} else if (Character == CharacterType::Ray) {
+			}
+			else if (Character == CharacterType::Ray) {
 				// sub_4C8DF0
 				if (JumpVariable == 1) {
 					Action = ActionType::RayGlide;
@@ -2471,7 +2491,8 @@ void IPlayer::Update() {
 					if (DisplayFlip < 0) {
 						if (XSpeed > -maxx)
 							XSpeed = -maxx;
-					} else if (XSpeed < maxx) {
+					}
+					else if (XSpeed < maxx) {
 						XSpeed = maxx;
 					}
 
@@ -2489,14 +2510,15 @@ void IPlayer::Update() {
 							leftSpeed = -leftSpeed;
 
 						if (XSpeed < 0) {
-                            XSpeed = -XSpeed;
+							XSpeed = -XSpeed;
 						}
 						int speedStore = -((leftSpeed >> 1) + (XSpeed >> 2) + (XSpeed >> 4)) >> (int)Underwater;
 						if (speedStore > 0x400)
 							speedStore = 0x400;
 
 						GlideSpeedStore = speedStore;
-					} else {
+					}
+					else {
 						ChangeAnimation((int)AnimationEnum::RayFlyDown, 3);
 						Sound::Play(Sound::SFX_RAY_DIVE);
 						Angle = 0; // Facing Down
@@ -2537,9 +2559,10 @@ void IPlayer::Update() {
 	if (Action == ActionType::Skid || Action == ActionType::GlideSlide) {
 		if (!Ground && Action == ActionType::Skid) {
 			Action = ActionType::Normal;
-		} else if (Scene->Frame % 5 == 0 && GroundSpeed != 0 && Ground) {
-            Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
-        }
+		}
+		else if (Scene->Frame % 5 == 0 && GroundSpeed != 0 && Ground) {
+			Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+		}
 	}
 	// Handle Fan action
 	if (Action == ActionType::Fan)
@@ -2818,7 +2841,7 @@ void IPlayer::LateUpdate() {
 				AnimationSpeedMult = 0x200;
 				ChangeAnimation((int)AnimationEnum::SpringCS + superflag);
 			}
-			else if (Action == ActionType::Jumping && DropDashRev > 20)
+			else if (Action == ActionType::Jumping && DropDashRev > 70)
 				ChangeAnimation((int)AnimationEnum::Dropdash + superflag);
 			else if (Action == ActionType::Jumping) {
 				if (IMath::abs(GroundSpeed) < 0x500)
@@ -2842,106 +2865,139 @@ void IPlayer::LateUpdate() {
 		if (Action == ActionType::Peril) {
 			if ((int)AnimationEnum::Flume) {
 				ChangeAnimation((int)AnimationEnum::Flume + superflag);
-			} else {
+			}
+			else {
 				ChangeAnimation((int)AnimationEnum::Hurt + superflag, 0x300);
 			}
-		} else if (Action == ActionType::Slide) {
+		}
+		else if (Action == ActionType::Slide) {
 			if ((int)AnimationEnum::Flume) {
 				ChangeAnimation((int)AnimationEnum::Flume + superflag);
-			} else {
+			}
+			else {
 				ChangeAnimation((int)AnimationEnum::Hurt + superflag, 0x300);
 			}
-		} else if (Action == ActionType::Hurt) {
+		}
+		else if (Action == ActionType::Hurt) {
 			ChangeAnimation((int)AnimationEnum::Hurt + superflag);
-		} else if (Action == ActionType::InStream) {
+		}
+		else if (Action == ActionType::InStream) {
 			ChangeAnimation((int)AnimationEnum::Fan + superflag);
 			DisplayFlip = 1;
-		} else if (Action == ActionType::InStreamGrab) {
+		}
+		else if (Action == ActionType::InStreamGrab) {
 			ChangeAnimation((int)AnimationEnum::Cling + superflag);
 			DisplayFlip = 1;
-		} else if (Action == ActionType::Glide) {
+		}
+		else if (Action == ActionType::Glide) {
 			ChangeAnimation((int)AnimationEnum::Glide, 0x500);
 			//if (CurrentFrame >= 0x400)
 			//CurrentFrame = 0x400;
-		} else if (Action == ActionType::GlideFall) {
+		}
+		else if (Action == ActionType::GlideFall) {
 			ChangeAnimation((int)AnimationEnum::GlideDrop);
-		} else if (Action == ActionType::Climb) {
+		}
+		else if (Action == ActionType::Climb) {
 			if (YSpeed == 0) {
 				ChangeAnimation((int)AnimationEnum::ClimbIdle);
-			} else if (YSpeed < 0) {
+			}
+			else if (YSpeed < 0) {
 				ChangeAnimation((int)AnimationEnum::ClimbUp);
-			} else {
+			}
+			else {
 				ChangeAnimation((int)AnimationEnum::ClimbDown);
 			}
-		} else if (Action == ActionType::ClimbRise) {
+		}
+		else if (Action == ActionType::ClimbRise) {
 			ChangeAnimation((int)AnimationEnum::LedgePullup);
-		} else if (Action == ActionType::Dead) {
+		}
+		else if (Action == ActionType::Dead) {
 			if (Underwater) {
 				ChangeAnimation((int)AnimationEnum::Drown + superflag);
-			} else {
+			}
+			else {
 				ChangeAnimation((int)AnimationEnum::Die + superflag);
 			}
-		} else if (Action == ActionType::Grab) {
+		}
+		else if (Action == ActionType::Grab) {
 			ChangeAnimation((int)AnimationEnum::Hang + superflag);
 			if (GrabSwingValue != -1) {
 				CurrentFrame = (Sprites[0]->Animations[CurrentAnimation].FrameCount - 1 - 1) * GrabSwingValue;
 			}
-		} else if (Action == ActionType::GrabFall) {
+		}
+		else if (Action == ActionType::GrabFall) {
 			ChangeAnimation((int)AnimationEnum::Hang + superflag);
 			CurrentFrame = 0;
-		} else if (Action == ActionType::Corkscrew) {
+		}
+		else if (Action == ActionType::Corkscrew) {
 			ChangeAnimation((int)AnimationEnum::Bubble + superflag);
 			if (GrabSwingValue != -1) {
 				CurrentFrame = (Sprites[0]->Animations[CurrentAnimation].FrameCount - 1 - 1) * GrabSwingValue;
 			}
-		} else if (Action == ActionType::Conveyor) {
+		}
+		else if (Action == ActionType::Conveyor) {
 			if (IMath::abs(XSpeed) == 0x200) {
 				ChangeAnimation((int)AnimationEnum::ShimmyIdle + superflag);
-			} else if (IMath::abs(XSpeed) > 0x200) {
+			}
+			else if (IMath::abs(XSpeed) > 0x200) {
 				ChangeAnimation((int)AnimationEnum::ShimmyMove + superflag);
 				DisplayFlip = 1 * IMath::sign(XSpeed);
-			} else {
+			}
+			else {
 				ChangeAnimation((int)AnimationEnum::ShimmyMove + superflag);
 				DisplayFlip = -1 * IMath::sign(XSpeed);
 			}
-		} else if (Action == ActionType::Spinning) {
+		}
+		else if (Action == ActionType::Spinning) {
 			ChangeAnimation2((int)AnimationEnum::Twister + superflag, (Scene->Frame >> 2) % 24);
-		} else if (Action == ActionType::Fly) {
+		}
+		else if (Action == ActionType::Fly) {
 			if (Underwater) {
 				if (HoldingPlayer) {
 					ChangeAnimation((int)AnimationEnum::SwimLift);
-				} else {
+				}
+				else {
 					if (FlyTimer > 0) {
 						ChangeAnimation((int)AnimationEnum::Swim);
-					} else {
+					}
+					else {
 						ChangeAnimation((int)AnimationEnum::SwimTired);
 					}
 				}
-			} else {
+			}
+			else {
 				if (HoldingPlayer) {
 					if (FlyTimer > 0 && YSpeed > 0) {
 						ChangeAnimation((int)AnimationEnum::Fly);
-					} else if (FlyTimer > 0) {
+					}
+					else if (FlyTimer > 0) {
 						ChangeAnimation((int)AnimationEnum::FlyLift);
-					} else {
+					}
+					else {
 						ChangeAnimation((int)AnimationEnum::FlyLiftTired);
 					}
-				} else {
+				}
+				else {
 					if (FlyTimer > 0) {
 						ChangeAnimation((int)AnimationEnum::Fly);
-					} else {
+					}
+					else {
 						ChangeAnimation((int)AnimationEnum::FlyTired);
 					}
 				}
 			}
-		} else if (Action == ActionType::Respawn) {
+		}
+		else if (Action == ActionType::Respawn) {
 			if (Character == CharacterType::Tails) {
 				ChangeAnimation((int)AnimationEnum::Fly);
-			} else if (Character == CharacterType::Knuckles) {
+			}
+			else if (Character == CharacterType::Knuckles) {
 				ChangeAnimation((int)AnimationEnum::Fly);
-			} else if (Character == CharacterType::Ray) {
+			}
+			else if (Character == CharacterType::Ray) {
 				ChangeAnimation((int)AnimationEnum::RayFlyUp);
-			} else {
+			}
+			else {
 				ChangeAnimation((int)AnimationEnum::Fly);
 			}
 		}
@@ -2969,7 +3025,8 @@ void IPlayer::LateUpdate() {
 		yiss = animation.FrameCount - 1;
 	if (animation.AnimationSpeed > 0 && animation.Frames[yiss].Duration != 0) {
 		CurrentFrame += ((0x100 * animation.AnimationSpeed * AnimationSpeedMult) >> 8) / animation.Frames[yiss].Duration;
-	} else if (Action == ActionType::Transform) {
+	}
+	else if (Action == ActionType::Transform) {
 		CurrentFrame += 0x100;
 	}
 
@@ -2991,7 +3048,8 @@ void IPlayer::LateUpdate() {
 		if (GroundSpeed != 0) {
 			if ((CurrentFrame >> 8) >= 3)
 				CurrentFrame = 0x200;
-		} else {
+		}
+		else {
 			if ((CurrentFrame >> 8) >= animation.FrameCount - 1) {
 				CurrentFrame = (animation.FrameCount - 1) << 8;
 				Action = ActionType::Normal;
@@ -3025,11 +3083,12 @@ void IPlayer::LateUpdate() {
 		}
 
 		if (Action == ActionType::Transform) {
-            if (HyperEnabled) {
-                HyperForm = true;
-            } else {
-                SuperForm = true;
-            }
+			if (HyperEnabled) {
+				HyperForm = true;
+			}
+			else {
+				SuperForm = true;
+			}
 			Action = ActionType::Normal;
 			SuperFormAnim = SuperFormAnimType::Super;
 			XSpeed = 0;
@@ -3099,7 +3158,8 @@ void IPlayer::LateUpdate() {
 		palSuperHCZ = SonicPaletteSuperHCZ;
 		if (ExtendedHyperPallete) {
 			palHyper = SonicPaletteS3HyperExtended;
-		} else {
+		}
+		else {
 			palHyper = SonicPaletteS3Hyper;
 		}
 		palNormalHCZ = SonicPaletteNormalHCZ;
@@ -3113,7 +3173,8 @@ void IPlayer::LateUpdate() {
 			palSuper = SonicPaletteS3Super;
 			if (ExtendedHyperPallete) {
 				palHyper = SonicPaletteS3HyperExtended;
-			} else {
+			}
+			else {
 				palHyper = SonicPaletteS3Hyper;
 			}
 			palNormal = SonicPaletteS3Normal;
@@ -3163,7 +3224,8 @@ void IPlayer::LateUpdate() {
 		palSuperHCZ = SonicPaletteSuperHCZ;
 		if (ExtendedHyperPallete) {
 			palHyper = SonicPaletteS3HyperExtended;
-		} else {
+		}
+		else {
 			palHyper = SonicPaletteS3Hyper;
 		}
 		palNormalHCZ = SonicPaletteNormalHCZ;
@@ -3175,11 +3237,12 @@ void IPlayer::LateUpdate() {
 			palWhere = 0x2;
 			palCount = 3;
 			palSuper = SonicPaletteS3Super;
-            if (ExtendedHyperPallete) {
-                palHyper = SonicPaletteS3HyperExtended;
-            } else {
-                palHyper = SonicPaletteS3Hyper;
-            }
+			if (ExtendedHyperPallete) {
+				palHyper = SonicPaletteS3HyperExtended;
+			}
+			else {
+				palHyper = SonicPaletteS3Hyper;
+			}
 			palNormal = SonicPaletteS3Normal;
 			palSuperHCZ = SonicPaletteS3SuperHCZ;
 			palNormalHCZ = SonicPaletteS3NormalHCZ;
@@ -3198,16 +3261,17 @@ void IPlayer::LateUpdate() {
 									 0xAAE, 0xECE, 0xCAC, 0xEEE };
 
 		for (int p = 0; p < 17; p++) {
-            uint16_t color = G->GetRetroColor(EncodedColors[p]);
+			uint16_t color = G->GetRetroColor(EncodedColors[p]);
 		}
 	}
 	looped = true;*/
-    int hyperFullPalCount;
-    if (ExtendedHyperPallete) {
-        hyperFullPalCount = 31;
-    } else {
-        hyperFullPalCount = 17;
-    }
+	int hyperFullPalCount;
+	if (ExtendedHyperPallete) {
+		hyperFullPalCount = 31;
+	}
+	else {
+		hyperFullPalCount = 17;
+	}
 	const unsigned int HyperLoopMaxIndex = 320;
 
 	if (SuperFormAnim == SuperFormAnimType::Super) {
@@ -3227,7 +3291,8 @@ void IPlayer::LateUpdate() {
 					if (OCMode) {
 						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palSuperPulse[p], superblend));
 						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[LastHyperIndex], palSuperPulseHCZ[p], superblend));
-					} else {
+					}
+					else {
 						HyperLoopIndex++;
 						if (HyperLoopIndex >= HyperLoopMaxIndex) {
 							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
@@ -3238,7 +3303,8 @@ void IPlayer::LateUpdate() {
 						Sprites[i]->SetPalette(palWhere + p, blendColor);
 						Sprites[i]->SetPaletteAlt(palWhere + p, blendColorHCZ);
 					}
-				} else {
+				}
+				else {
 					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palSuperPulse[p], superblend));
 					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palSuperPulseHCZ[p], superblend));
 				}
@@ -3281,7 +3347,8 @@ void IPlayer::LateUpdate() {
 						if (OCMode) {
 							Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulse[p], superblend));
 							Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palSuperPulseHCZ[p], superblend));
-						} else {
+						}
+						else {
 							HyperLoopIndex++;
 							if (HyperLoopIndex >= HyperLoopMaxIndex) {
 								LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
@@ -3292,7 +3359,8 @@ void IPlayer::LateUpdate() {
 							Sprites[i]->SetPalette(palWhere + p, blendColor);
 							Sprites[i]->SetPaletteAlt(palWhere + p, blendColorHCZ);
 						}
-					} else {
+					}
+					else {
 						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palNormal[p], palSuper[p], superblend));
 						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palNormalHCZ[p], palSuperHCZ[p], superblend));
 					}
@@ -3300,7 +3368,8 @@ void IPlayer::LateUpdate() {
 				Sprites[i]->UpdatePalette();
 			}
 		}
-	} else if (SuperFormAnim == SuperFormAnimType::Deforming) {
+	}
+	else if (SuperFormAnim == SuperFormAnimType::Deforming) {
 		if (SuperFormTimer < 20)
 			SuperFormTimer++;
 
@@ -3320,7 +3389,8 @@ void IPlayer::LateUpdate() {
 					if (OCMode) {
 						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
 						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palNormalHCZ[p], superblend));
-					} else {
+					}
+					else {
 						HyperLoopIndex++;
 						if (HyperLoopIndex >= HyperLoopMaxIndex) {
 							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
@@ -3331,14 +3401,16 @@ void IPlayer::LateUpdate() {
 						Sprites[i]->SetPalette(palWhere + p, blendColor);
 						Sprites[i]->SetPaletteAlt(palWhere + p, blendColorHCZ);
 					}
-				} else {
+				}
+				else {
 					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
 					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
 				}
 			}
 			Sprites[i]->UpdatePalette();
 		}
-	} else {
+	}
+	else {
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) break;
 
@@ -3853,21 +3925,23 @@ void IPlayer::CreateRingLoss() {
 	int angle = 72;
 	bool n = false;
 	int spd = 0x400;
-    int LossRings = Rings;
+	int LossRings = Rings;
 
-    if (LoseAllRings) {
-        if (Rings > 32) {
-            LossRings = 32;
-        }
+	if (LoseAllRings) {
+		if (Rings > 32) {
+			LossRings = 32;
+		}
 		Rings = 0;
-    } else if (!LoseAllRings) {
-        if (Rings > 32) {
-            Rings = Rings - 32;
-            LossRings = 32;
-        } else {
-            Rings = 0;
-        }
-    }
+	}
+	else if (!LoseAllRings) {
+		if (Rings > 32) {
+			Rings = Rings - 32;
+			LossRings = 32;
+		}
+		else {
+			Rings = 0;
+		}
+	}
 
 	RingAlarm = 64;
 
@@ -3918,7 +3992,7 @@ void IPlayer::Deform() {
 	if (!SuperForm && !HyperForm) return;
 
 	SuperForm = false;
-    HyperForm = false;
+	HyperForm = false;
 	SuperFormTimer = 0;
 	SuperFormAnim = SuperFormAnimType::Deforming;
 	InvincibilityTimer = 0;
@@ -3991,9 +4065,9 @@ void IPlayer::HandlePathSwitchers() {
 			continue; // just don't even deal with angles like these tbh
 
 		if (EZX + 10 + sz_l >= Scene->PlaneSwitchers[i].X - W &&
-			EZX - 10 + sz_r <  Scene->PlaneSwitchers[i].X + W &&
+			EZX - 10 + sz_r < Scene->PlaneSwitchers[i].X + W &&
 			EZY + 10 + 00 >= Scene->PlaneSwitchers[i].Y - H &&
-			EZY - 10 - 00 <  Scene->PlaneSwitchers[i].Y + H) {
+			EZY - 10 - 00 < Scene->PlaneSwitchers[i].Y + H) {
 			if (Scene->PlaneSwitchers[i].OnPath) {
 				if (Ground) {
 					int dot = 0;
@@ -4041,8 +4115,8 @@ void IPlayer::HandleMonitors() {
 		bool Collided = (
 			(int)obj.X + 8 >= EZX - W / 2 + (XSpeed >> 8) &&
 			(int)obj.Y + 8 >= EZY - H / 2 + (YSpeed >> 8) + myOffY &&
-			(int)obj.X - 8 <   EZX + W / 2 + (XSpeed >> 8) &&
-			(int)obj.Y - 8 <   EZY + H / 2 + (YSpeed >> 8) + myOffY
+			(int)obj.X - 8 < EZX + W / 2 + (XSpeed >> 8) &&
+			(int)obj.Y - 8 < EZY + H / 2 + (YSpeed >> 8) + myOffY
 			);
 
 		if (Shield == ShieldType::Electric) {
@@ -4076,7 +4150,8 @@ void IPlayer::HandleMonitors() {
 					ringsparkle->Y = obj.Y + ry[i];
 					Scene->Explosions.push_back(ringsparkle);
 				}
-			} else {
+			}
+			else {
 				Explosion* ringsparkle;
 				ringsparkle = new Explosion();
 				ringsparkle->G = G;
@@ -4136,8 +4211,8 @@ void IPlayer::HandleMonitors() {
 						Collided =
 							(int)obj->X + EnemyHitbox.Right >= X - W / 2 &&
 							(int)obj->Y + EnemyHitbox.Bottom >= Y - H / 2 &&
-							(int)obj->X + EnemyHitbox.Left   <  X + W / 2 &&
-							(int)obj->Y + EnemyHitbox.Top    <  Y + H / 2;
+							(int)obj->X + EnemyHitbox.Left < X + W / 2 &&
+							(int)obj->Y + EnemyHitbox.Top < Y + H / 2;
 					}
 				}
 
@@ -4279,7 +4354,7 @@ void IPlayer::HandleMonitors() {
 			if ((int)obj->X + obj->W / 2 >= EZX - (int)W / 2 + (XSpeed >> 8) - 2 &&
 				(int)obj->Y + obj->H / 2 + 2 >= EZY - (int)H / 2 + (YSpeed >> 8) * (Action == ActionType::Spring) &&
 				(int)obj->X - obj->W / 2 < EZX + (int)W / 2 + (XSpeed >> 8) + 2 &&
-				(int)obj->Y - obj->H / 2 - 2 <   EZY + (int)H / 2 + (YSpeed >> 8)) {
+				(int)obj->Y - obj->H / 2 - 2 < EZY + (int)H / 2 + (YSpeed >> 8)) {
 				int hitFrom = (int)CollideSide::RIGHT;
 				int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
 				int hx = (H + obj->H) * (int(EZX) - int(obj->X));
@@ -4437,8 +4512,8 @@ bool IPlayer::HandleSprings() {
 				int co = IMath::abs((IMath::cosHex(obj->Rotation * 64 / 90) * 3) >> 16);
 				if (obj->X + obj->W / 2 + si - co * 2 >= EZX + (XSpeed >> 8) - W / 2 - 8 &&
 					obj->Y + obj->H / 2 + co >= EZY - H / 2 &&
-					obj->X - obj->W / 2 - si + co * 2 <  EZX + (XSpeed >> 8) + W / 2 + 8 &&
-					obj->Y - obj->H / 2 - co          <  EZY + H / 2) {
+					obj->X - obj->W / 2 - si + co * 2 < EZX + (XSpeed >> 8) + W / 2 + 8 &&
+					obj->Y - obj->H / 2 - co < EZY + H / 2) {
 					int wy = (W + obj->W) * (int(EZY) - int(obj->Y));
 					int hx = (H + obj->H) * (int(EZX) - int(obj->X));
 
