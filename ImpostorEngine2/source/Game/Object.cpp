@@ -188,6 +188,24 @@ void Object::OnAnimationFinish() {
 
 }
 
+Object* Object::GetObjectParent() {
+    Object *host = (Object *)Parent;
+    if (host == NULL) {
+        return NULL;
+    }
+    
+    return host;
+}
+
+bool Object::IsParentFloatingPlatform() {
+    Object *host = (Object *)Parent;
+    if (host == NULL) {
+        return false;
+    }
+    
+    return host->IsFloatingPlatform;
+}
+
 void Object::Render(int CamX, int CamY) {
     if (CurrentAnimation == -1) return;
     if (Frame < 0) return;
@@ -214,24 +232,6 @@ void Object::MoveWithParent() {
     
     X = host->X;
     Y = host->Y;
-}
-
-bool Object::IsParentFloatingPlatform() {
-    Object *host = (Object *)Parent;
-    if (host == NULL) {
-        return false;
-    }
-    
-    return host->IsFloatingPlatform;
-}
-
-Object* Object::GetObjectParent() {
-    Object *host = (Object *)Parent;
-    if (host == NULL) {
-        return NULL;
-    }
-    
-    return host;
 }
 
 int Object::Swing_UpAndDown() {

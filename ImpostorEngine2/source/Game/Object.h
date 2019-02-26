@@ -514,6 +514,9 @@ public:
     virtual int  OnLeaveScreen();
     virtual void OnSwingFinish() { };
     virtual void OnAnimationFinish();
+    
+    virtual Object* GetObjectParent();
+    virtual bool IsParentFloatingPlatform();
 
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)
@@ -533,8 +536,6 @@ public:
 	int16_t DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
     void MoveSprite();
     void MoveWithParent();
-    inline bool IsParentFloatingPlatform();
-    inline Object* GetObjectParent();
     int Swing_UpAndDown();
 };
 
