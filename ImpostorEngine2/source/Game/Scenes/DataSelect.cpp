@@ -18,6 +18,7 @@ public:
 	int FrameZigzagRed = 0;
 	int FrameZigzagBlue = 0;
 	int CharacterFlag = 0;
+    int PartnerFlag = 0xFF;
 };
 #endif
 

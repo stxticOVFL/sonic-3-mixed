@@ -155,7 +155,7 @@ public:
     SFX_AIRSHIP2 = 0x07,
     SFX_RAY_DIVE = 0x08,
     SFX_RAY_SWOOP = 0x09,
-    };
+    }; 
     static IAudio* Audio;
     static bool    AudioLoaded;
     static ISound* SoundBank[256];

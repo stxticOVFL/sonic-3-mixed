@@ -2408,16 +2408,6 @@ void IPlayer::Update() {
 			else if (Character == CharacterType::Sonic) {
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
-						if (!SuperForm && !HyperForm && InputUp) {
-							if (Rings >= 50 && !Scene->StopTimer) {
-								if (SaveGame::GetEmeralds() == 0x3FFF) {
-									// if (Character == CharacterType::Sonic) HyperEnabled = true;
-									DoSuperTransform();
-								}
-								else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
-									DoSuperTransform();
-								}
-							}
 						if (DropDashEnabled && !InputUp) {
 							if (DropDashRev == 0) {
 								DropDashRev = 1;
@@ -2709,6 +2699,7 @@ void IPlayer::Update() {
 		Angle = 0xC0;
 	}
 }
+
 void IPlayer::LateUpdate() {
 	AnimationSpeedMult = 0x100;
 

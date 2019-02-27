@@ -23,6 +23,7 @@ class ISprite;
 class ISprite;
 class ISprite;
 class ISprite;
+class ISprite;
 class IModel;
 class ISound;
 
@@ -101,7 +102,7 @@ public:
     TO_SPECIAL_STAGE = 7,
     NEXT_ZONE = 8,
     CUSTOM_FADE_ACTION = 9,
-    };
+    }; 
     int         maxLayer = 1;
     bool        Thremixed = false;
     bool        DeformObjects = false;
@@ -138,7 +139,7 @@ public:
     bool LoadFlag = false;
     bool FlipX = false;
     bool FlipY = false;
-    };
+    }; 
     ObjectProp* ObjectProps = NULL;
     int         ObjectPropCount = 0;
     ObjectProp* RingProps = NULL;

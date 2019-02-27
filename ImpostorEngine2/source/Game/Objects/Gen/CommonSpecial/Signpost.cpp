@@ -79,6 +79,7 @@ void Signpost::Update() {
         Timer = -1;
         StartResults = false;
     }
+
     Object::Update();
 }
 
