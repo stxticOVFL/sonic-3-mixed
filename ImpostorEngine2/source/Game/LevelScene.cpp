@@ -2376,14 +2376,18 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	SaveGame::SetZone(ZoneID - 1);
 	SaveGame::Flush();
 
-	for (int i = 0; i < ObjectSolidCount; i++)
+	for (int i = 0; i < ObjectSolidCount; i++) {
 		ObjectsSolid[i] = NULL;
-	for (int i = 0; i < ObjectSpringCount; i++)
+	}
+	for (int i = 0; i < ObjectSpringCount; i++) {
 		ObjectsSpring[i] = NULL;
-	for (int i = 0; i < ObjectEnemiesCount; i++)
+	}
+	for (int i = 0; i < ObjectEnemiesCount; i++) {
 		ObjectsEnemies[i] = NULL;
-	for (int i = 0; i < ObjectBreakableCount; i++)
+	}
+	for (int i = 0; i < ObjectBreakableCount; i++) {
 		ObjectsBreakable[i] = NULL;
+	}
 
 	DoneSpinning = false;
 
@@ -2458,10 +2462,11 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 
 	// Set Camera on player
 	CameraX = (Player->EZX + Player->CameraX) - App->WIDTH / 2;
-	if (ManiaLevel)
+	if (ManiaLevel) {
 		CameraY = (Player->EZY + Player->CameraY - 4) - App->HEIGHT / 2;
-	else
+	} else {
 		CameraY = (Player->EZY + Player->CameraY + 8) - App->HEIGHT / 2;
+	}
 
 	CameraMinX = 0;
 	CameraMinY = 0;
@@ -2482,11 +2487,13 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 
 	ObjectNewCount = 0;
 
-	for (int i = 0; i < ObjectCount; i++)
+	for (int i = 0; i < ObjectCount; i++) {
 		Objects[i]->Create();
+	}
 
-	for (int o = 0; o < RingPropCount; o++)
+	for (int o = 0; o < RingPropCount; o++) {
 		RingProps[o].ID = 0xFF;
+	}
 
 	Explosions.clear();
 
@@ -3123,11 +3130,15 @@ PUBLIC VIRTUAL void LevelScene::DoResults() {
 	App->Audio->ClearMusic();
 	App->Audio->PushMusic(Sound::SoundBank[0xFC], false, 0);
 }
+
 PUBLIC VIRTUAL void LevelScene::FinishResults() {
 	GoToNextAct();
 }
+
 PUBLIC VIRTUAL void LevelScene::GoToNextAct() {
+
 }
+
 PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 	NextAct->GiantRingModel = GiantRingModel;
 
