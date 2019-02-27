@@ -16,32 +16,41 @@ void MGZSmashingPillar::Create() {
     H = 80;
     CurrentAnimation = 9;
     OGY = Y - 5 + 5;
-    Y += 10;
-    YSpeed = -0xA0;
+    YSpeed = -0x50;
     Direction = true;
+    VisualLayer = 1;
+    Visible = false;
 }
 
 void MGZSmashingPillar::Update() {
     if (Direction) {
-        if (Y <= OGY) {
+        if (Y == OGY) {
+        }
+
+        if (Y == OGY - 20) {
             YSpeed = 0;
-            YSpeed = 0x300;
+            while (Timer < 200) {
+                Timer++;
+            }
+
+            Timer = 0;
+            YSpeed = 0x250;
             Direction = false;
+            Visible = true;
+            Solid = true;
         }
 
     }
     else {
-        YSpeed += 0x30;
-        if (Y >= OGY + 80) {
-            if (OnScreen) {
-                Sound::Play(Sound::SFX_IMPACT4);
+        if (Y == OGY + 80) {
+            YSpeed = 0;
+            while (Timer < 2000) {
+                Timer++;
             }
 
-            YSpeed = 0;
             Timer = 0;
-            YSpeed = -0x110;
+            YSpeed = -0x50;
             Direction = true;
-            Y = OGY + 80;
         }
 
     }
@@ -57,12 +66,8 @@ void MGZSmashingPillar::Render(int CamX, int CamY) {
 int MGZSmashingPillar::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (!Solid) return 0;
 
-    if (HitFrom == CollideSide::BOTTOM && Visible && !Scene->Players[PlayerID]->Ground) {
+    if (HitFrom == CollideSide::BOTTOM && Scene->Players[PlayerID]->YSpeed <= 0 && Visible) {
         Scene->Players[PlayerID]->Hurt(X, true);
-    }
-
-    if (Scene->Players[PlayerID]->Ground && !Direction) {
-        Scene->Players[PlayerID]->Die(false);
     }
 
     return 1;
