@@ -4224,12 +4224,18 @@ PUBLIC void LevelScene::CleanupObjects() {
 	ObjectsBreakable = RefreshObjectsBreakable;
 	ObjectBreakableCount = NewObjectBreakableCount;
 
+	// For some reason, Deleteing the objects is only fine on Debug builds.
+	// This could be because Release might memory manage it automatically.
+	// Not sure as of right now.
+
 	for (int i = 0; i < OldObjectCount; i++) {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
 		}
 		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->CleanupInactiveObject) {
+#ifdef _DEBUG
 			delete UnrefreshedObjects[i];
+#endif
 			UnrefreshedObjects[i] = nullptr;
 		}
 	}
@@ -4239,7 +4245,9 @@ PUBLIC void LevelScene::CleanupObjects() {
 			continue;
 		}
 		if (!UnrefreshedObjectsSolid[i]->Active && UnrefreshedObjectsSolid[i]->CleanupInactiveObject) {
+#ifdef _DEBUG
 			delete UnrefreshedObjectsSolid[i];
+#endif
 			UnrefreshedObjectsSolid[i] = nullptr;
 		}
 	}
@@ -4249,7 +4257,9 @@ PUBLIC void LevelScene::CleanupObjects() {
 			continue;
 		}
 		if (!UnrefreshedObjectsSpring[i]->Active && UnrefreshedObjectsSpring[i]->CleanupInactiveObject) {
+#ifdef _DEBUG
 			delete UnrefreshedObjectsSpring[i];
+#endif
 			UnrefreshedObjectsSpring[i] = nullptr;
 		}
 	}
@@ -4259,7 +4269,9 @@ PUBLIC void LevelScene::CleanupObjects() {
 			continue;
 		}
 		if (!UnrefreshedObjectsEnemies[i]->Active && UnrefreshedObjectsEnemies[i]->CleanupInactiveObject) {
+#ifdef _DEBUG
 			delete UnrefreshedObjectsEnemies[i];
+#endif
 			UnrefreshedObjectsEnemies[i] = nullptr;
 		}
 	}
@@ -4269,7 +4281,9 @@ PUBLIC void LevelScene::CleanupObjects() {
 			continue;
 		}
 		if (!UnrefreshedObjectsBreakable[i]->Active && UnrefreshedObjectsBreakable[i]->CleanupInactiveObject) {
+#ifdef _DEBUG
 			delete UnrefreshedObjectsBreakable[i];
+#endif
 			UnrefreshedObjectsBreakable[i] = nullptr;
 		}
 	}
