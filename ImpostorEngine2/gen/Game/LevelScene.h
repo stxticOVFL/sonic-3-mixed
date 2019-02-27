@@ -117,7 +117,7 @@ public:
     int         ObjectSpringCount = 0;
     std::vector<Enemy*> ObjectsEnemies;
     int         ObjectEnemiesCount = 0;
-    Object**    ObjectsBreakable;
+    std::vector<Object*> ObjectsBreakable;
     int         ObjectBreakableCount = 0;
     Object**    ObjectsPathSwitcher;
     int         ObjectPathSwitcherCount = 0;
