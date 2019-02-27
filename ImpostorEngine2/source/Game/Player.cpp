@@ -364,72 +364,73 @@ IPlayer::IPlayer() {
 	memset(Sprites, 0, sizeof(Sprites));
 }
 
-void IPlayer::Create() {
-	InputLockLeftRight = false;
-	Ground = false;
-	WaitTimer = -1;
-	Action = ActionType::Normal;
+void IPlayer::Create() {  
+    InputLockLeftRight = false;
+    Ground = false;
+    WaitTimer = -1;
+    Action = ActionType::Normal;
+    InputUp = false;
+    InputDown = false;
+    InputLeft = false;
+    InputRight = false;
+    InputJump = false;
+    InputJumpHold = false;
+    InputLeftPress = false;
+    InputRightPress = false;
 
-	InputUp = false;
-	InputDown = false;
-	InputLeft = false;
-	InputRight = false;
-	InputJump = false;
-	InputJumpHold = false;
-	InputLeftPress = false;
-	InputRightPress = false;
+    Hidden = false;
+        
+    if (ReloadPlayer) {
+        ShieldAnimation = 0;
+        ShieldUsable = true;
+        ShieldAction = false;
+        Shield = ShieldType::None;
 
-	Hidden = false;
+        FlyFlag = 0;
+        FlyTimer = 480;
+        FlyTimerMax = 480;
 
-	ShieldAnimation = 0;
-	ShieldUsable = true;
-	ShieldAction = false;
-	Shield = ShieldType::None;
+        SuperForm = false;
+        HyperForm = false;
+        SuperFormAnim = SuperFormAnimType::None;
+        Layer = 0;
+        VisualLayer = 0;
+        Angle = 0;
+        AngleMode = 0;
+        DisplayAngle = 0;
+        Cutscene = false;
+        RingLifeValue = 100;
+        HyperRings = false;
+        GroundSpeed = 0;
+        XSpeed = 0;
+        YSpeed = 0;
+        Flip = 1;
+        DisplayFlip = 1;
+        CameraX = 0;
+        CameraY = 0;
+        InputAlarm = 0;
+        Layer = 0;
+        VisualLayer = 0;
+        EnemyCombo = 0;
 
-	FlyFlag = 0;
-	FlyTimer = 480;
-	FlyTimerMax = 480;
+        HoldingPlayer = NULL;
 
-	SuperForm = false;
-	HyperForm = false;
-	SuperFormAnim = SuperFormAnimType::None;
-	Layer = 0;
-	VisualLayer = 0;
-	Angle = 0;
-	AngleMode = 0;
-	DisplayAngle = 0;
-	Cutscene = false;
-	RingLifeValue = 100;
-	HyperRings = false;
-	GroundSpeed = 0;
-	XSpeed = 0;
-	YSpeed = 0;
-	Flip = 1;
-	DisplayFlip = 1;
-	CameraX = 0;
-	CameraY = 0;
-	InputAlarm = 0;
-	Layer = 0;
-	VisualLayer = 0;
-	EnemyCombo = 0;
+        ForceRoll = false;
+        CameraLookTimer = 0;
+        CameraLockTimer = 0;
+        GenericTimer = -1;
+        ObjectControlled = 0;
+        RingAlarm = 0;
 
-	HoldingPlayer = NULL;
+        Underwater = false;
+        UnderwaterTimer = 1800;
 
-	ForceRoll = false;
-	CameraLookTimer = 0;
-	CameraLockTimer = 0;
-	GenericTimer = -1;
-	ObjectControlled = 0;
-	RingAlarm = 0;
+        InvincibilityTimer = 0;
+        Invincibility = InvincibilityType::None;
 
-	Underwater = false;
-	UnderwaterTimer = 1800;
-
-	InvincibilityTimer = 0;
-	Invincibility = InvincibilityType::None;
-
-	SpeedSneakersTimer = 0;
-	SpeedSneakersActive = false;
+        SpeedSneakersTimer = 0;
+        SpeedSneakersActive = false;
+    };
 
 	if (Sprites[0]) { // prevent re-loading sprites on restart
 		goto PlayerSetPalettes;
@@ -2407,11 +2408,11 @@ void IPlayer::Update() {
 			else if (Character == CharacterType::Sonic) {
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
-						if (DropDashEnabled) {
-							if (DropDashRev == 0)
+						if (DropDashEnabled && !InputUp) {
+							if (DropDashRev == 0) {
 								DropDashRev = 1;
-						}
-						else {
+                            }
+						} else if (!InputUp) {
 							ShieldAnimation = 8;
 							Shield = ShieldType::Instashield;
 							Sound::Play(Sound::SFX_INSTASHIELD);
@@ -2698,6 +2699,7 @@ void IPlayer::Update() {
 		Angle = 0xC0;
 	}
 }
+
 void IPlayer::LateUpdate() {
 	AnimationSpeedMult = 0x100;
 

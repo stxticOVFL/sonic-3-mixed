@@ -3365,6 +3365,7 @@ PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 	for (int i = 0; i < 5; i++) {
 		NextAct->KnuxSprite[i] = KnuxSprite[i];
 	}
+
 	NextAct->Player = Player;
 	for (int p = 0; p < PlayerCount; p++) {
 		NextAct->Players[p] = Players[p];
@@ -4448,16 +4449,15 @@ PUBLIC void LevelScene::CleanupObjects() {
 
 	// For some reason, Deleteing the objects is only fine on Debug builds.
 	// This could be because Release might memory manage it automatically.
-	// Not sure as of right now.
+	// Not sure as of right now. So we'll only delete the UnrefreshedObjects and
+	// none of the others for non-debug for now.
 
 	for (int i = 0; i < OldObjectCount; i++) {
 		if (UnrefreshedObjects[i] == nullptr) {
 			continue;
 		}
 		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->CleanupInactiveObject) {
-#ifdef _DEBUG
 			delete UnrefreshedObjects[i];
-#endif
 			UnrefreshedObjects[i] = nullptr;
 		}
 	}
@@ -4543,10 +4543,11 @@ PUBLIC void LevelScene::RenderRings() {
 		}
 
 		if (OnScreen) {
-			if (Thremixed)
+			if (Thremixed) {
 				G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 8, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
-			else
+			} else {
 				G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 10, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
+			}
 		}
 	}
 }
@@ -4953,9 +4954,13 @@ PUBLIC void LevelScene::RenderResults() {
 		value /= 10;
 	}
 }
+
 PUBLIC VIRTUAL void LevelScene::RenderAboveBackground() {
+
 }
+
 PUBLIC VIRTUAL void LevelScene::RenderAboveForeground() {
+
 }
 
 PUBLIC void LevelScene::DrawThing(int l) {

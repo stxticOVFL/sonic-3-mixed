@@ -152,6 +152,8 @@ public:
 	ISprite* SpriteShields2 = NULL;
 
 	bool ManiaPhysics = false;
+    
+    bool ReloadPlayer = true;
 
 	/*
 	Uint32 SonicPaletteNormal[6];

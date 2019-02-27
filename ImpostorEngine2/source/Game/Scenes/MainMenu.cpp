@@ -300,6 +300,7 @@ PUBLIC void Scene_MainMenu::Render() {
 
 	// Decorations
 	int yup;
+
 	// Red/Black Ovals
 	yup = IMath::sinHex(FrameCircle);
 	G->DrawSprite(MenuSprite, 11, 0, cenX - (260 - 116) + (yup >> 14), 25, 0, IE_NOFLIP);
@@ -311,6 +312,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	// Dotted circles
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, 24, FrameCircle, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, App->HEIGHT - 24, FrameCircle, IE_NOFLIP);
+
 	// Dotted lines
 	yup = IMath::sinHex(FrameCircle * 2 + 0x29);
 	G->DrawSprite(MenuSprite, 14, 0, cenX - (260 - 323) - (yup >> 14), 94 + (yup >> 13), 0, IE_NOFLIP);
@@ -347,12 +349,15 @@ PUBLIC void Scene_MainMenu::Render() {
 	// Blue Button
 	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 0, cenX - 50 - 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+
 	// Red Button
 	G->DrawSprite(MenuSprite, 4, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 1, cenX + 50 + 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+
 	// Yellow Button
 	G->DrawSprite(MenuSprite, 5, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 2, cenX - 50 - 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
+
 	// Green Button
 	G->DrawSprite(MenuSprite, 6, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 3, cenX + 50 + 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
@@ -362,7 +367,7 @@ PUBLIC void Scene_MainMenu::Render() {
 		MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
 	MenuSprite->UpdatePalette();
 
-	// Circle  
+	// Circle
 	G->DrawSprite(SphereSprite, 0, selected, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 17, 0, cenX, cenY, 0, IE_NOFLIP);
 

@@ -1228,6 +1228,13 @@ PUBLIC void Level_AIZ::GoToNextAct() {
         Level_AIZ* NextAct = new Level_AIZ(App, G, 2);
 
         TransferCommonLevelData(NextAct);
+        
+        // We disable "reloading" the player to keep things like shields.
+        NextAct->Player->ReloadPlayer = false;
+        for (int p = 0; p < PlayerCount; p++) {
+            NextAct->Players[p]->ReloadPlayer = false;
+        }
+    
         NextAct->AIZObjectsSprite = AIZObjectsSprite;
         NextAct->AIZBossSprite = AIZBossSprite;
         // Disable Title Card
@@ -1255,8 +1262,7 @@ PUBLIC void Level_AIZ::GoToNextAct() {
         NextAct->CameraMaxY = 0x258;
 
         App->NextScene = NextAct;
-    }
-    else if (Act == 2 && VisualAct == 1) {
+    } else if (Act == 2 && VisualAct == 1) {
         VisualAct = 2;
         ResultsTimer = 0;
         ShowResults = false;
@@ -1268,6 +1274,13 @@ PUBLIC void Level_AIZ::GoToNextAct() {
         Player->ControlLocked = false;
         Player->ObjectControlled = 0;
         Player->Action = ActionType::Normal;
+        
+        
+        // We re-enable player reloading here if it's not already.
+        Player->ReloadPlayer = true;
+        for (int p = 0; p < PlayerCount; p++) {
+            Players[p]->ReloadPlayer = true;
+        }
 
         CameraMaxX = 0xFFFF;
 
@@ -1284,6 +1297,10 @@ PUBLIC void Level_AIZ::GoToNextAct() {
     else if (Act == 2 && VisualAct == 2) {
         Level_HCZ* NextAct = new Level_HCZ(App, G, 1);
         TransferCommonLevelData(NextAct);
+        Player->ReloadPlayer = true;
+        for (int p = 0; p < PlayerCount; p++) {
+            Players[p]->ReloadPlayer = true;
+        }
         App->NextScene = NextAct;
     }
 }
