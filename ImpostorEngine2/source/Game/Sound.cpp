@@ -143,6 +143,11 @@ public:
 
 		SFX_WATERRUN = 0xDB,
 
+		SFX_MIGHTY_DRILL = 0xC2,
+		SFX_MIGHTY_LAND = 0xC3,
+		SFX_MIGHTY_DEFLECT = 0xC4,
+		SFX_MIGHTY_UNSPIN = 0xC5,
+
 		SFX_DROPDASHREADY = 0x01,
 		SFX_DROPDASH = 0x02,
 		SFX_MENUACCEPT = 0x03,
@@ -250,6 +255,11 @@ PUBLIC STATIC void Sound::Init() {
 
 	LOADSOUND(SFX_RAY_DIVE, "Sounds/RayDive.wav");
 	LOADSOUND(SFX_RAY_SWOOP, "Sounds/RaySwoop.wav");
+
+	LOADSOUND(SFX_MIGHTY_DRILL, "Sounds/MightyDrill.wav");
+	LOADSOUND(SFX_MIGHTY_LAND, "Sounds/MightyLand.wav");
+	LOADSOUND(SFX_MIGHTY_DEFLECT, "Sounds/MightyDeflect.wav");
+	LOADSOUND(SFX_MIGHTY_UNSPIN, "Sounds/MightyUnspin.wav");
 
 	LOADSOUND(SFX_BLUEBALL, "Sounds/BlueSphere.wav");
 	LOADSOUND(SFX_SPECIALSTAGE_EXIT, "Sounds/SSExit.wav");
