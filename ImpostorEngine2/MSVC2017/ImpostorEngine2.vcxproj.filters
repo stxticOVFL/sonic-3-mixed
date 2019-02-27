@@ -183,112 +183,43 @@
     <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossCutscene.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZMiniboss.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlock.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\TreeBark.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\SpecialRing.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\Monitor.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Test\Platform.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZTreeBark.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Spiker.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\VacuumTube.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\ReliefEye.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Batbright.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Relief.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\BatbrightParts.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\FloatingPlatform.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\CollapsingBridge.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\CollapsingPlatform.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Rock.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\DisappearingFloor.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\BreakableWall.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\BubbleAir.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Balloon.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\SwingVine.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RideVine.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Signpost.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\EggCapsule.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\AutomaticTunnel.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\CaterkillerJr.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridge.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridgeChild.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZTriggerPlatform.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSwingingPlatform.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSmashingPillar.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZQuickMud.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZMiniBoss.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDriller.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDashTrigger.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZBoss.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Mantis.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\DrillerEggman.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\BubblesBadnik.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\TurboSpiker.cpp">
@@ -303,103 +234,109 @@
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\MegaChomper.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\LargeFan.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Jawz.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HandLauncher.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZ_Miniboss.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZWaterWall.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZWaterSplash.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZVWaterStream.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZSnakeBlocks.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZSlide.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZConveyorSpike.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZMiniboss.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZConveyorBelt.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZBoss.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HandLauncher.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Fan.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Buggernaut.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BreakBar.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Block.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BlastoidShot.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Blastoid.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\EggCapsuleButton.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\ViewCollisionToggler.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Door.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Signpost.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CutsceneKnuckles.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Rock.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\StarPost.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\SpecialRing.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\RollEnforcer.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\Ridge.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\PlatformOutliner.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Monitor.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSpikes.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSolid.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleDeath.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleDeath.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlock.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\HiddenMonitor.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\Button.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\FloatingPlatform.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\CollapsingPlatform.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\CollapsingBridge.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Bubbler.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\AnimSprite.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\BubbleAir.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\SpikedLog.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\BreakableWall.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RopePeg.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\AutomaticTunnel.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\HoverFan.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\BatbrightParts.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Batbright.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Balloon.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RideVine.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RhinoBot.cpp">
@@ -420,13 +357,16 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FlippingBridge.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FallingLog.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Drawbridge.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\DisappearingFloor.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\CollapsingLogBridge.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\CaterkillerJr.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\BloominatorSpore.cpp">
@@ -438,6 +378,93 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AirshipBomb.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZTriggerPlatform.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSwingingPlatform.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\LargeFan.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZWaterSplash.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZVWaterStream.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZSnakeBlocks.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZConveyorSpike.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZConveyorBelt.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Buggernaut.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BreakBar.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Block.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BlastoidShot.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridgeChild.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\TensionBridge.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\EggCapsuleButton.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\EggCapsule.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\Door.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CutsceneKnuckles.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Ridge.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Button.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\AnimSprite.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\VacuumTube.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\TreeBark.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\SwingVine.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\SpikedLog.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\RopePeg.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FallingLog.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossFlame.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
@@ -447,46 +474,19 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZBoss.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\ViewCollisionToggler.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossCutscene.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\PlatformOutliner.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\HoverFan.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZTreeBark.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZBoss.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZ_Miniboss.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\BubblesBadnik.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\DrillerEggman.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Mantis.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZBoss.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDriller.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZMiniBoss.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Spiker.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Relief.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\ReliefEye.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZSmashingPillar.cpp">
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSolid.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
   </ItemGroup>

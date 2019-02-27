@@ -1869,6 +1869,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							else
 								SubType |= 0x40;
 						}
+					}
 
 					case OBJ_MONITOR:
 						objHash = 0xBDE7E33AU;

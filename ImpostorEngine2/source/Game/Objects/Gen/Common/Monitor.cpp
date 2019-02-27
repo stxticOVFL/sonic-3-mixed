@@ -274,13 +274,7 @@ void Monitor::Update() {
 
     }
 
-    if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
-    else if (Sprite->Animations[CurrentAnimation].Frames[Frame / 0x100].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame / 0x100].Duration;
-
-    if (Frame / 0x100 >= Sprite->Animations[CurrentAnimation].FrameCount - 1) {
-        Frame = Sprite->Animations[CurrentAnimation].FrameToLoop * 0x100;
-    }
-
+    AutoAnimate = true;
     Object::Update();
 }
 
@@ -293,7 +287,7 @@ void Monitor::Render(int CamX, int CamY) {
             G->DrawModeOverlay = false;
         }
         else {
-            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+            G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
         if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) return;
 
@@ -304,7 +298,7 @@ void Monitor::Render(int CamX, int CamY) {
             G->DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
         else {
-            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+            G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
         if (CurrentAnimation == 4 && (Scene->Frame % 6 >= 4)) return;
 

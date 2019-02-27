@@ -92,14 +92,30 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 PUBLIC void Scene_MainMenu::Init() {
 	if (!MenuSprite) {
 		MenuSprite = new ISprite("UI/MainMenu.gif", App);
-		SphereSprite = new ISprite("UI/MenuSpheres.gif", App);
 		MenuSprite->LoadAnimation("UI/MainMenu.bin");
-		SphereSprite->LinkAnimation(MenuSprite->Animations);
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
 		MenuSprite->SetTransparentColorIndex(0x2C);
 		MenuSprite->UpdatePalette();
-        
+	}
+	if (!SphereSprite) {
+		SphereSprite = new ISprite("UI/MenuSpheres.gif", App);
+
+		ISprite::Animation an;
+		an.Name = (char*)"Sign in GitLab.com";
+		an.FrameCount = 5;
+		an.Frames = (ISprite::AnimFrame*)malloc(an.FrameCount * sizeof(ISprite::AnimFrame));
+		for (int i = 0; i < an.FrameCount; i++) {
+			int fi = i;
+			ISprite::AnimFrame ts_af;
+			ts_af.X = (fi % 6) * 92 + 2;
+			ts_af.Y = (fi / 6) * 92 + 2;
+			ts_af.W = ts_af.H = 88; ts_af.OffX = ts_af.OffY = -44;
+			an.Frames[i] = ts_af;
+			G->MakeFrameBufferID(SphereSprite, an.Frames + i);
+		}
+		SphereSprite->Animations.push_back(an);
+
 		SphereSprite->SetTransparentColorIndex(26);
 	}
 	if (!SuperButtonsSprite) {
@@ -255,28 +271,28 @@ PUBLIC void Scene_MainMenu::Render() {
 
 	G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0xF0F0F0);
 
-	int cenX = App->WIDTH - 164;
+	int cenX = App->WIDTH / 2;
 	int cenY = App->HEIGHT / 2;
 
 	// BG
 	G->DrawSprite(MenuSprite, 0, 0, 0, 0, 0, IE_NOFLIP);
 
 	// Zigzags
-	int pX = 186 - 5;
+	int pX = cenX - (260 - 186) - 5;
 	int pY = 223 - 5;
-	G->SetClip(App->WIDTH - 293, App->HEIGHT - 60, 293, 60);
+	G->SetClip(0, App->HEIGHT - 60, 293, 60);
 	G->DrawSprite(MenuSprite, 16, 0, pX - (FrameZigzag / 4), pY - (FrameZigzag / 4), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 0, pX - (FrameZigzag / 4) + 40, pY - (FrameZigzag / 4) + 40, 0, IE_NOFLIP);
 	G->ClearClip();
 
-	G->SetClip(131, 0, 100, 84);
-	pX = 180 + FrameZigzagBlue / 4;
+	G->SetClip(cenX - (260 - 131), 0, 100, 84);
+	pX = cenX - (260 - 180) + FrameZigzagBlue / 4;
 	pY = 32 + FrameZigzagBlue / 4;
 	G->DrawSprite(MenuSprite, 16, 1, pX, pY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 1, pX - 110, pY - 110, 0, IE_NOFLIP);
 	G->ClearClip();
 
-	pX = 322 + FrameZigzagRed / 4;
+	pX = cenX - (260 - 322) + FrameZigzagRed / 4;
 	pY = 80 - FrameZigzagRed / 4;
 	G->DrawSprite(MenuSprite, 16, 2, pX, pY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 2, pX - 117, pY + 117, 0, IE_NOFLIP);
@@ -287,49 +303,48 @@ PUBLIC void Scene_MainMenu::Render() {
 
 	// Red/Black Ovals
 	yup = IMath::sinHex(FrameCircle);
-	G->DrawSprite(MenuSprite, 11, 0, 116 + (yup >> 14), 25, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 11, 1, 116 - (yup >> 14), 25, 0, IE_NOFLIP);
-
+	G->DrawSprite(MenuSprite, 11, 0, cenX - (260 - 116) + (yup >> 14), 25, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 11, 1, cenX - (260 - 116) - (yup >> 14), 25, 0, IE_NOFLIP);
 	// Green/Black Ovals
 	yup = IMath::sinHex(FrameCircle * 2 + 0x35);
-	G->DrawSprite(MenuSprite, 11, 2, 246 + (yup >> 14), 185, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 11, 3, 246 - (yup >> 14), 185, 0, IE_NOFLIP);
-
+	G->DrawSprite(MenuSprite, 11, 2, cenX - (260 - 246) + (yup >> 14), 185, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 11, 3, cenX - (260 - 246) - (yup >> 14), 185, 0, IE_NOFLIP);
 	// Dotted circles
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, 24, FrameCircle, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, App->HEIGHT - 24, FrameCircle, IE_NOFLIP);
 
 	// Dotted lines
 	yup = IMath::sinHex(FrameCircle * 2 + 0x29);
-	G->DrawSprite(MenuSprite, 14, 0, 323 - (yup >> 14), 94 + (yup >> 13), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 14, 1, 317 + (yup >> 14), 88 - (yup >> 13), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 14, 0, cenX - (260 - 323) - (yup >> 14), 94 + (yup >> 13), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 14, 1, cenX - (260 - 317) + (yup >> 14), 88 - (yup >> 13), 0, IE_NOFLIP);
 
 	// Diamonds
 	yup = IMath::sinHex(FrameCircle * 2 + 0x37);
-	G->DrawSprite(MenuSprite, 12, 2, 134, 131 + (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 12, 1, 124, 131 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 12, 0, 114, 131 + (yup >> 15), 0, IE_NOFLIP);
-
+	G->DrawSprite(MenuSprite, 12, 2, cenX - (260 - 134), 131 + (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 12, 1, cenX - (260 - 124), 131 - (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 12, 0, cenX - (260 - 114), 131 + (yup >> 15), 0, IE_NOFLIP);
 	// Tilted Squares
-	G->DrawSprite(MenuSprite, 13, 0, 253, 51 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 13, 2, 265, 47 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 13, 1, 259, 49 + (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 0, cenX - (260 - 253), 51 - (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 2, cenX - (260 - 265), 47 - (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 1, cenX - (260 - 259), 49 + (yup >> 15), 0, IE_NOFLIP);
+
+	int blackGirth = 32;
 
 	// Black
 	G->DrawSprite(MenuSprite, 1, 0, App->WIDTH - 424, 0, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 1, 1, App->WIDTH - 424, App->HEIGHT, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
-	G->DrawRectangle(0, 0, 96, App->HEIGHT, 0x000000);
+	//G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
+	G->DrawRectangle(0, 0, blackGirth, App->HEIGHT, 0x000000);
+	G->DrawRectangle(App->WIDTH - blackGirth, 0, blackGirth, App->HEIGHT, 0x000000);
 
 	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
-
+	// Triangles
+	for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, blackGirth, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
+	for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, App->WIDTH - blackGirth, i * 20 - (frame >> 1), 0, IE_FLIPX);
 	// Menu Title
 	G->DrawSprite(MenuSprite, 9, 0, App->WIDTH, 12, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
-	// Triangles
-	for (int i = 0; i <= 12; i++)
-		G->DrawSprite(MenuSprite, 1, 3, 96, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
 
 	// Blue Button
 	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
@@ -353,7 +368,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	MenuSprite->UpdatePalette();
 
 	// Circle
-	G->DrawSprite(SphereSprite, 7, selected, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(SphereSprite, 0, selected, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 17, 0, cenX, cenY, 0, IE_NOFLIP);
 
 	G->DrawSprite(MenuSprite, 3 + selected, 3, cenX, cenY, 0, IE_NOFLIP);
@@ -375,6 +390,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 
+	/*
 	if (selected == 0) {
 		G->DrawTextSprite(TextSprite, 6, 'A', 4, 32, "PICK\nBETWEEN\nDIFFERENT\nGAMEPLAY\nMODES AND\nEXPERIENCE\nSONIC i AND\nKNUCKLES\nIN ANY WAY\nYOU CHOOSEr");
 	}
@@ -387,6 +403,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	else if (selected == 3) {
 		G->DrawTextSprite(TextSprite, 6, 'A', 4, 32, "VARIOUS\nADDITIONAL\nFEATURES\nAND\nUNLOCKABLESr");
 	}
+	//*/
 
 	// Buttons
 	bool Back = false;
