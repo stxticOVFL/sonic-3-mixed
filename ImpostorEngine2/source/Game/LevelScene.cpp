@@ -2589,18 +2589,10 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	SaveGame::SetZone(ZoneID - 1);
 	SaveGame::Flush();
 
-	for (int i = 0; i < ObjectSolidCount; i++) {
-		ObjectsSolid.at(i) = NULL;
-	}
-	for (int i = 0; i < ObjectSpringCount; i++) {
-		ObjectsSpring.at(i) = NULL;
-	}
-	for (int i = 0; i < ObjectEnemiesCount; i++) {
-		ObjectsEnemies.at(i) = NULL;
-	}
-	for (int i = 0; i < ObjectBreakableCount; i++) {
-		ObjectsBreakable.at(i) = NULL;
-	}
+    ObjectsSolid.clear();
+    ObjectsSpring.clear();
+    ObjectsEnemies.clear();
+    ObjectsBreakable.clear();
 
 	DoneSpinning = false;
 
@@ -2698,6 +2690,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 		delete Objects.at(i);
 		Objects.at(i) = NULL;
 	}
+	Objects.erase(Objects.begin() + ObjectCount, Objects.begin() + (ObjectCount + ObjectNewCount));
 	Objects.shrink_to_fit();
 
 	ObjectNewCount = 0;
