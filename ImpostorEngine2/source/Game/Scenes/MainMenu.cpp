@@ -284,17 +284,21 @@ PUBLIC void Scene_MainMenu::Render() {
 
 	// Decorations
 	int yup;
+
 	// Red/Black Ovals
 	yup = IMath::sinHex(FrameCircle);
 	G->DrawSprite(MenuSprite, 11, 0, 116 + (yup >> 14), 25, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 11, 1, 116 - (yup >> 14), 25, 0, IE_NOFLIP);
+
 	// Green/Black Ovals
 	yup = IMath::sinHex(FrameCircle * 2 + 0x35);
 	G->DrawSprite(MenuSprite, 11, 2, 246 + (yup >> 14), 185, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 11, 3, 246 - (yup >> 14), 185, 0, IE_NOFLIP);
+
 	// Dotted circles
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, 24, FrameCircle, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, App->HEIGHT - 24, FrameCircle, IE_NOFLIP);
+
 	// Dotted lines
 	yup = IMath::sinHex(FrameCircle * 2 + 0x29);
 	G->DrawSprite(MenuSprite, 14, 0, 323 - (yup >> 14), 94 + (yup >> 13), 0, IE_NOFLIP);
@@ -305,6 +309,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	G->DrawSprite(MenuSprite, 12, 2, 134, 131 + (yup >> 15), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 12, 1, 124, 131 - (yup >> 15), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 12, 0, 114, 131 + (yup >> 15), 0, IE_NOFLIP);
+
 	// Tilted Squares
 	G->DrawSprite(MenuSprite, 13, 0, 253, 51 - (yup >> 15), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 13, 2, 265, 47 - (yup >> 15), 0, IE_NOFLIP);
@@ -318,6 +323,7 @@ PUBLIC void Scene_MainMenu::Render() {
 
 	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
+
 	// Menu Title
 	G->DrawSprite(MenuSprite, 9, 0, App->WIDTH, 12, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
@@ -328,12 +334,15 @@ PUBLIC void Scene_MainMenu::Render() {
 	// Blue Button
 	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 0, cenX - 50 - 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+
 	// Red Button
 	G->DrawSprite(MenuSprite, 4, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 1, cenX + 50 + 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+
 	// Yellow Button
 	G->DrawSprite(MenuSprite, 5, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 2, cenX - 50 - 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
+
 	// Green Button
 	G->DrawSprite(MenuSprite, 6, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 3, cenX + 50 + 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
