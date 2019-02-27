@@ -273,10 +273,10 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	Objects = (Object**)calloc(2000, sizeof(Object*));
 	ObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
-	ObjectsSpring = (Object**)calloc(100, sizeof(Object*));
+	ObjectsSpring = (Object**)calloc(300, sizeof(Object*));
 	ObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
-	ObjectsBreakable = (Object**)calloc(100, sizeof(Object*));
-	ObjectsPathSwitcher = (Object**)calloc(100, sizeof(Object*));
+	ObjectsBreakable = (Object**)calloc(300, sizeof(Object*));
+	ObjectsPathSwitcher = (Object**)calloc(300, sizeof(Object*));
 
 	DebugObjectIDList = (int16_t*)calloc(0xFF, sizeof(int16_t));
 	for (int i = 0; i < 0xFF; i++) {
@@ -3610,8 +3610,7 @@ PUBLIC void LevelScene::Update() {
 			if (Player->DebugObject != nullptr && Player->DebugObject->OnScreen) {
 				Player->DebugObject->X = Player->DisplayX;
 				Player->DebugObject->Y = Player->DisplayY;
-			}
-			else if (Player->Hidden) {
+			} else if (Player->Hidden) {
 				Player->Hidden = false;
 				if (Player->DebugObjectIndex > -1) {
 					Player->DebugObjectIndex -= 1;
@@ -3619,140 +3618,154 @@ PUBLIC void LevelScene::Update() {
 			}
 
 			if (Player->InputJump) {
-				Player->Hidden = true;
-				Player->DebugObjectIndex++;
-				Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDCount;
+                if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
+                    ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
+                    
+                    Player->Hidden = true;
+                    Player->DebugObjectIndex++;
+                    Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDCount;
 
-				if (Player->DebugObject && Player->DebugObject->isHeldDebugObject) {
-					Player->DebugObject->Active = false;
-					Player->DebugObject = NULL;
-				}
-				int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
+                    if (Player->DebugObject && Player->DebugObject->isHeldDebugObject) {
+                        Player->DebugObject->Active = false;
+                        Player->DebugObject = NULL;
+                    }
+                    int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
 
-				Object* obj = NULL;
-				Ring *ring = NULL;
+                    Object* obj = NULL;
+                    Ring *ring = NULL;
 
-				if (objId != Player->LastDebugObjId) {
-					Player->LastDebugObjId = objId;
-					Player->DebugObjectSubIndex = 0;
-				}
+                    if (objId != Player->LastDebugObjId) {
+                        Player->LastDebugObjId = objId;
+                        Player->DebugObjectSubIndex = 0;
+                    }
 
-				switch (objId) {
-				case 0x00: // Ring
-					ring = new Ring();
-					ring->X = Player->DisplayX;
-					ring->Y = Player->DisplayY;
-					ring->MyX = Player->DisplayX << 8;
-					ring->MyY = Player->DisplayY << 8;
-					ring->Scene = this;
-					ring->Priority = true;
-					ring->Timer = -1;
-					ring->ShouldRingFall = false;
-					obj = (Object *)ring;
-					ring = NULL;
-					break;
-				case Obj_InvisibleSpikes: // Invisible Spikes
-				case Obj_InvisibleDeath: // Invisible Death
-				case Obj_InvisibleBlock: // Invisible Block
-					obj = GetNewObjectFromID(objId);
-					Player->DebugObjectSubIndex = 17;
-				default:
-					obj = GetNewObjectFromID(objId);
-					break;
-				}
-				if (obj != NULL) {
-					obj->G = G;
-					obj->App = App;
-					obj->Scene = this;
-					obj->InitialX = Player->EZX;
-					obj->InitialY = Player->EZY;
-					obj->FlipX = 0;
-					obj->FlipY = 0;
-					obj->ID = objId;
-					obj->Sprite = SpriteMapIDs[objId];
+                    switch (objId) {
+                    case 0x00: // Ring
+                        ring = new Ring();
+                        ring->X = Player->DisplayX;
+                        ring->Y = Player->DisplayY;
+                        ring->MyX = Player->DisplayX << 8;
+                        ring->MyY = Player->DisplayY << 8;
+                        ring->Scene = this;
+                        ring->Priority = true;
+                        ring->Timer = -1;
+                        ring->ShouldRingFall = false;
+                        obj = (Object *)ring;
+                        ring = NULL;
+                        break;
+                    case Obj_InvisibleSpikes: // Invisible Spikes
+                    case Obj_InvisibleDeath: // Invisible Death
+                    case Obj_InvisibleBlock: // Invisible Block
+                        obj = GetNewObjectFromID(objId);
+                        Player->DebugObjectSubIndex = 17;
+                    default:
+                        obj = GetNewObjectFromID(objId);
+                        break;
+                    }
+                    if (obj != NULL) {
+                        obj->G = G;
+                        obj->App = App;
+                        obj->Scene = this;
+                        obj->InitialX = Player->EZX;
+                        obj->InitialY = Player->EZY;
+                        obj->FlipX = 0;
+                        obj->FlipY = 0;
+                        obj->ID = objId;
+                        obj->Sprite = SpriteMapIDs[objId];
 
-					obj->SubType = Player->DebugObjectSubIndex;
+                        obj->SubType = Player->DebugObjectSubIndex;
 
-					obj->isDebugModeObject = true;
-					obj->isHeldDebugObject = true;
-					obj->DebugCreate();
+                        obj->isDebugModeObject = true;
+                        obj->isHeldDebugObject = true;
+                        obj->DebugCreate();
 
-					if (!obj->Active) {
-						obj->Active = true;
-					}
+                        if (!obj->Active) {
+                            obj->Active = true;
+                        }
 
-					Objects[ObjectCount++] = obj;
-					Player->DebugObject = obj;
+                        Objects[ObjectCount++] = obj;
+                        Player->DebugObject = obj;
 
-					//App->Print(0, "Created Object %d via Debug Mode!", objId);
-				}
-				else {
-					Player->Hidden = false;
-					Player->DebugObjectIndex = -1;
-					Player->DebugObject = NULL;
-				}
+                        //App->Print(0, "Created Object %d via Debug Mode!", objId);
+                    } else {
+                        Player->Hidden = false;
+                        Player->DebugObjectIndex = -1;
+                        Player->DebugObject = NULL;
+                    }
+                } else {
+                    Player->Hidden = false;
+                    Player->DebugObjectIndex = -1;
+                    Player->DebugObject = NULL;
+                }
 			}
 
 			if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
-				if (Player->DebugObject && Player->DebugObject->OnScreen) {
-					uint8_t oldSubType = Player->DebugObject->SubType;
+                if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
+                    ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
+                        
+                    if (Player->DebugObject && Player->DebugObject->OnScreen) {
+                        uint8_t oldSubType = Player->DebugObject->SubType;
 
-					Player->DebugObject->isHeldDebugObject = false;
-					Player->DebugObject = NULL;
+                        Player->DebugObject->isHeldDebugObject = false;
+                        Player->DebugObject = NULL;
 
-					// We want to create a copy for easy use, So we do.
-					int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
+                        // We want to create a copy for easy use, So we do.
+                        int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
 
-					Object* obj = NULL;
-					Ring *ring = NULL;
+                        Object* obj = NULL;
+                        Ring *ring = NULL;
 
-					switch (objId) {
-					case 0x00:
-						ring = new Ring();
-						ring->X = Player->DisplayX;
-						ring->Y = Player->DisplayY;
-						ring->MyX = Player->DisplayX << 8;
-						ring->MyY = Player->DisplayY << 8;
-						ring->Scene = this;
-						ring->Priority = true;
-						ring->Timer = -1;
-						ring->ShouldRingFall = false;
-						obj = (Object *)ring;
-						ring = NULL;
-						break;
-					default:
-						obj = GetNewObjectFromID(objId);
-						break;
-					}
-					if (obj != NULL) {
-						obj->G = G;
-						obj->App = App;
-						obj->Scene = this;
-						obj->InitialX = Player->EZX;
-						obj->InitialY = Player->EZY;
-						obj->FlipX = 0;
-						obj->FlipY = 0;
-						obj->ID = objId;
-						obj->Sprite = SpriteMapIDs[objId];
+                        switch (objId) {
+                        case 0x00:
+                            ring = new Ring();
+                            ring->X = Player->DisplayX;
+                            ring->Y = Player->DisplayY;
+                            ring->MyX = Player->DisplayX << 8;
+                            ring->MyY = Player->DisplayY << 8;
+                            ring->Scene = this;
+                            ring->Priority = true;
+                            ring->Timer = -1;
+                            ring->ShouldRingFall = false;
+                            obj = (Object *)ring;
+                            ring = NULL;
+                            break;
+                        default:
+                            obj = GetNewObjectFromID(objId);
+                            break;
+                        }
+                        if (obj != NULL) {
+                            obj->G = G;
+                            obj->App = App;
+                            obj->Scene = this;
+                            obj->InitialX = Player->EZX;
+                            obj->InitialY = Player->EZY;
+                            obj->FlipX = 0;
+                            obj->FlipY = 0;
+                            obj->ID = objId;
+                            obj->Sprite = SpriteMapIDs[objId];
 
-						obj->SubType = oldSubType;
+                            obj->SubType = oldSubType;
 
-						obj->isDebugModeObject = true;
-						obj->isHeldDebugObject = true;
-						obj->DebugCreate();
+                            obj->isDebugModeObject = true;
+                            obj->isHeldDebugObject = true;
+                            obj->DebugCreate();
 
-						if (!obj->Active) {
-							obj->Active = true;
-						}
+                            if (!obj->Active) {
+                                obj->Active = true;
+                            }
 
-						Objects[ObjectCount++] = obj;
-						Player->DebugObject = obj;
-					}
-					else {
-						Player->Hidden = false;
-						Player->DebugObjectIndex = -1;
-						Player->DebugObject = NULL;
-					}
+                            Objects[ObjectCount++] = obj;
+                            Player->DebugObject = obj;
+                        } else {
+                            Player->Hidden = false;
+                            Player->DebugObjectIndex = -1;
+                            Player->DebugObject = NULL;
+                        }
+                    } else {
+                        Player->Hidden = false;
+                        Player->DebugObjectIndex = -1;
+                        Player->DebugObject = NULL;
+                    }
 				}
 			}
 
@@ -4345,13 +4358,13 @@ PUBLIC void LevelScene::CleanupObjects() {
 	Object** RefreshObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
 	int NewObjectSolidCount = 0;
 
-	Object** RefreshObjectsSpring = (Object**)calloc(100, sizeof(Object*));
+	Object** RefreshObjectsSpring = (Object**)calloc(300, sizeof(Object*));
 	int NewObjectSpringCount = 0;
 
 	Enemy** RefreshObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
 	int NewObjectEnemiesCount = 0;
 
-	Object** RefreshObjectsBreakable = (Object**)calloc(100, sizeof(Object*));
+	Object** RefreshObjectsBreakable = (Object**)calloc(300, sizeof(Object*));
 	int NewObjectBreakableCount = 0;
 
 	Object** UnrefreshedObjects = Objects;
