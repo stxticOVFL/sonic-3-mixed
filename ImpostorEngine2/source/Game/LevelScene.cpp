@@ -269,7 +269,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Sound::Init()", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
 
-	memset(Signal, 0, sizeof(Signal));
+	std::memset(Signal, 0, sizeof(Signal));
 
 	Objects = (Object**)calloc(2000, sizeof(Object*));
 	ObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
@@ -341,12 +341,12 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
 
-	memset(PauseAnim, 0, sizeof(PauseAnim));
+	std::memset(PauseAnim, 0, sizeof(PauseAnim));
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating PauseSprite...", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
 
-	memset(KnuxSprite, 0, sizeof(KnuxSprite));
+	std::memset(KnuxSprite, 0, sizeof(KnuxSprite));
 
 	VisualAct = Act;
 }
@@ -400,7 +400,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	uint64_t startTime = SDL_GetTicks();
 	if (!Data) {
 		AlreadyLoaded = false;
-		memset(SpriteMapIDs, 0, 0x100);
+		std::memset(SpriteMapIDs, 0, 0x100);
 
 		FadeAction = FadeActionType::FADEIN;
 		FadeTimerMax = 90;
@@ -1552,7 +1552,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
             reader.ReadByte(); // Ignored Byte
             char* Name = reader.ReadRSDKString();
 
-			memset(Data->layers[i].Name, 0, 50);
+			std::memset(Data->layers[i].Name, 0, 50);
 			strcpy(Data->layers[i].Name, Name);
 			free(Name);
 
@@ -1721,7 +1721,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		PlaneSwitchers = (PlaneSwitch*)malloc(113 * sizeof(PlaneSwitch));
 
 		Data->isAnims = (short*)malloc(0x400 * sizeof(short));
-		memset(Data->isAnims, 0xFF, 0x400 * sizeof(short));
+		std::memset(Data->isAnims, 0xFF, 0x400 * sizeof(short));
 
 		// Mania-type Object Loading
 		if ((mag >> 24) == 'S') {
@@ -1933,7 +1933,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
             int objectCount = reader.ReadUInt16();
             unsigned char ObjectListUnimpl[0x100];
-            memset(ObjectListUnimpl, 0, 0x100);
+            std::memset(ObjectListUnimpl, 0, 0x100);
             for (int o = 0; o < objectCount; o++) {
                 int X = reader.ReadUInt16BE();
                 int Y = reader.ReadUInt16BE();
@@ -2664,8 +2664,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 		LevelTriggerFlag = 0x00;
 	}
 
-	memset(Signal, 0, sizeof(Signal));
-	memset(&PauseAnim[0], 0, 8 * sizeof(int));
+	std::memset(Signal, 0, sizeof(Signal));
+	std::memset(&PauseAnim[0], 0, 8 * sizeof(int));
 	LevelCardTimer = 0.0;
 
 	// Set Camera on player
@@ -3411,7 +3411,7 @@ PUBLIC VIRTUAL void LevelScene::DoCustomFadeAction() {
 
 #include <time.h>
 
-bool acitvated = false;
+bool activated = false;
 uint64_t playerUpdateCount[8];
 float    playerUpdateTimers[8];
 uint64_t playerLateUpdateCount[8];
@@ -3425,7 +3425,7 @@ PUBLIC void LevelScene::OnEvent(Uint32 event) {
 
 		PauseFinished = true;
 		Paused = true;
-		memset(&PauseAnim[0], 0, 8 * sizeof(int));
+		std::memset(&PauseAnim[0], 0, 8 * sizeof(int));
 
 		PauseSelectedMenuItem = 0;
 
@@ -3442,7 +3442,7 @@ PUBLIC void LevelScene::Update() {
 			if (!Paused && !PauseFinished) {
 				PauseFinished = true;
 				Paused = true;
-				memset(&PauseAnim[0], 0, 8 * sizeof(int));
+				std::memset(&PauseAnim[0], 0, 8 * sizeof(int));
 
 				PauseSelectedMenuItem = 0;
 
@@ -3483,12 +3483,12 @@ PUBLIC void LevelScene::Update() {
 		}
 	}
 
-	if (!acitvated) {
-		memset(playerUpdateCount, 0, sizeof(playerUpdateCount));
-		memset(playerUpdateTimers, 0, sizeof(playerUpdateTimers));
-		memset(playerLateUpdateCount, 0, sizeof(playerLateUpdateCount));
-		memset(playerLateUpdateTimers, 0, sizeof(playerLateUpdateTimers));
-		acitvated = true;
+	if (!activated) {
+		std::memset(playerUpdateCount, 0, sizeof(playerUpdateCount));
+		std::memset(playerUpdateTimers, 0, sizeof(playerUpdateTimers));
+		std::memset(playerLateUpdateCount, 0, sizeof(playerLateUpdateCount));
+		std::memset(playerLateUpdateTimers, 0, sizeof(playerLateUpdateTimers));
+		activated = true;
 	}
 
     // Unpaused
@@ -3933,7 +3933,7 @@ PUBLIC void LevelScene::Update() {
 
 			if (PauseAnim[0] <= 0) {
 				PauseFinished = false;
-				memset(&PauseAnim[0], 0, 8 * sizeof(int));
+				std::memset(&PauseAnim[0], 0, 8 * sizeof(int));
 			}
 		}
 		PauseAnim[3] = (PauseAnim[3] + 11) % (360);
