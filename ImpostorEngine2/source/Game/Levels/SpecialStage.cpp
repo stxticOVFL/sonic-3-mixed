@@ -37,6 +37,8 @@ public:
 //#include <Game/Levels/DEZ.h>
 //#include <Game/Levels/TDZ.h>
 
+#include <Game/Scenes/MainMenu.h>
+
 #include <Game/SaveGame.h>
 
 int PlayerAngle = 0x0000;
@@ -87,6 +89,7 @@ enum {
 	SPHERE_BUMPER = 3,
 	SPHERE_RING = 4,
 	SPHERE_YELLOW = 5,
+	SPHERE_EMERALD,
 };
 
 Uint32 ColorBG = 0x0044EE;
@@ -98,7 +101,7 @@ Sint32 MapThing[0x10][0x100];
 
 PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelScene(app, g) {
     ZoneID = 20;
-    Act = 1;
+    Act = 0;
 
     Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg", true);
     Sound::Audio->LoopPoint[0] = 5309957;
@@ -261,6 +264,22 @@ PUBLIC void Level_SpecialStage::Init() {
 		IResources::Close(LayoutBin);
 	}
 
+	if (ZoneID == 20) {
+		memset(Layout, 0, 0x400);
+		for (int x = 0; x < 32; x++) {
+			Layout[0x00 << 5 | x] = SPHERE_BUMPER;
+			Layout[0x1F << 5 | x] = SPHERE_BUMPER;
+			Layout[x << 5 | 0x00] = SPHERE_BUMPER;
+			Layout[x << 5 | 0x1F] = SPHERE_BUMPER;
+		}
+		Layout[0x10 << 5 | 0x10] = SPHERE_BLUE;
+		memcpy(LayoutCopy, Layout, 0x400);
+
+		StartX = 0x1200;
+		StartY = 0x1200;
+		PerfectAmount = 4;
+	}
+
 	LayoutBin = IResources::Load("Stages/Special/Colors.bin");
 	if (LayoutBin) {
 		IStreamer reader(LayoutBin);
@@ -268,7 +287,7 @@ PUBLIC void Level_SpecialStage::Init() {
 
 		Color1 = G->GetRetroColor(reader.ReadUInt16BE());
 		Color2 = G->GetRetroColor(reader.ReadUInt16BE());
-		
+
 		ColorBG = G->GetRetroColor(reader.ReadUInt16BE());
 		reader.ReadUInt16BE();
 		reader.ReadUInt16BE();
@@ -764,8 +783,13 @@ PUBLIC void Level_SpecialStage::DoCustomFadeAction() {
 			case 5:
 				App->NextScene = new Level_LBZ(App, G, Acto);
 				break;
+			default:
+				App->NextScene = new Scene_MainMenu(App, G);
 		}
+		return;
 	}
+
+	App->NextScene = new Scene_MainMenu(App, G);
 }
 PUBLIC void Level_SpecialStage::EarlyUpdate() {
 	if (LevelCardTimer >= 1.5) LevelCardTimer = 6.0;
@@ -777,6 +801,85 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 			ColorFlip = !ColorFlip;
 		DirectionStep &= 0xF;
 		Direction = 1;
+		return;
+	}
+	if (GameState == 2 || GameState == 3) { // Completed
+		if (SpeedupTimerMax > 0x80) {
+			SpeedupTimerMax = 0; // Reset and reuse SpeedupTimerMax because lazy
+		}
+
+		PlayerSteps += PlayerSpeed;
+		if (PlayerSteps >= 0x100) {
+			PlayerSteps -= 0x100;
+			if (Direction != 0)
+				PlayerSteps = 0;
+			PlayerX = (PlayerX + (IMath::sign(-IMath::sinHex(PlayerAngle >> 8) * PlayerSpeed)) + 0x20) & 0x1F;
+			PlayerY = (PlayerY + (IMath::sign(-IMath::cosHex(PlayerAngle >> 8) * PlayerSpeed)) + 0x20) & 0x1F;
+			ColorFlip = !ColorFlip;
+		}
+		if (PlayerSteps <  0x0) {
+			PlayerSteps += 0x100;
+			PlayerX = (PlayerX + (IMath::sign(-IMath::sinHex(PlayerAngle >> 8) * PlayerSpeed)) + 0x20) & 0x1F;
+			PlayerY = (PlayerY + (IMath::sign(-IMath::cosHex(PlayerAngle >> 8) * PlayerSpeed)) + 0x20) & 0x1F;
+			ColorFlip = !ColorFlip;
+		}
+		PlayerZSpeed += PlayerMaxSpeed << 12;
+		PlayerZ += PlayerZSpeed;
+		if (PlayerZ > 0)
+			PlayerZ = PlayerZSpeed = 0;
+
+		if (GameState == 2) {
+			if (++SpeedupTimerMax >= 0x80) {
+				SpeedupTimerMax = 0;
+				PlayerSpeed = 8;
+				PlayerMaxSpeed = 8;
+				PlayerIsMovingBackwards = false;
+				GameState = 3;
+				memset(Layout, 0, 0x400);
+
+				int ThingX = (PlayerX + IMath::sign(-IMath::sinHex(PlayerAngle >> 8)) * 8) & 0x1F;
+				int ThingY = (PlayerY + IMath::sign(-IMath::cosHex(PlayerAngle >> 8)) * 8) & 0x1F;
+
+				*LayoutAt(ThingX, ThingY) = SPHERE_EMERALD;
+			}
+		}
+		else if (GameState == 3) {
+			if (++SpeedupTimerMax == 0x78) {
+				// SpeedupTimerMax = 0;
+				// PlayerSpeed = 8;
+				// PlayerMaxSpeed = 8;
+				Sound::Play(Sound::SFX_EMERALD);
+			}
+
+			int XIndex = PlayerX;
+			int YIndex = PlayerY;
+			if (!PlayerIsMovingBackwards) {
+				XIndex = (PlayerX + (IMath::sign(-IMath::sinHex(PlayerAngle >> 8))) + 0x20) & 0x1F;
+				YIndex = (PlayerY + (IMath::sign(-IMath::cosHex(PlayerAngle >> 8))) + 0x20) & 0x1F;
+			}
+
+			if (*LayoutAt(XIndex, YIndex) == SPHERE_EMERALD) {
+				if ((PlayerIsMovingBackwards && PlayerSteps < 0x10) ||
+					(!PlayerIsMovingBackwards && PlayerSteps > 0xF0)) {
+					PlayerSteps = 0x00;
+					if (!PlayerIsMovingBackwards) {
+						ColorFlip = !ColorFlip;
+						PlayerX = (PlayerX + (IMath::sign(-IMath::sinHex(PlayerAngle >> 8))) + 0x20) & 0x1F;
+						PlayerY = (PlayerY + (IMath::sign(-IMath::cosHex(PlayerAngle >> 8))) + 0x20) & 0x1F;
+					}
+
+					FadeAction = FadeActionType::CUSTOM_FADE_ACTION;
+					FadeTimer = -1;
+					FadeTimerMax = 64 + 48;
+					FadeMax = 0x100 + 0xC0;
+					G->FadeToWhite = false;
+					Sound::Play(Sound::SFX_SPECIALSTAGE_EXIT);
+					GameState = 1;
+				}
+			}
+
+		}
+
 		return;
 	}
 
@@ -873,20 +976,11 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 				}
 				if (BallCount <= 0) {
 					BallCount = 0;
-					GameState = 1; // 2
+					GameState = 2; // 2
 					SaveGame::SetEmerald(Act);
 					SaveGame::Flush();
 					Sound::Play(Sound::SFX_SPECIALSTAGE_FLYAWAY);
 					App->Audio->FadeMusic(1.0);
-
-
-					DirectionStep = 0;
-					GameState = 1;
-					FadeAction = FadeActionType::CUSTOM_FADE_ACTION;
-					FadeTimer = -1;
-					FadeTimerMax = 64 + 48;
-					FadeMax = 0x100 + 0xC0;
-					G->FadeToWhite = false;
 				}
 				else {
 					Sound::Play(Sound::SFX_BLUEBALL);
@@ -935,7 +1029,7 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 		else if (*LayoutAt(XIndex, YIndex) == SPHERE_YELLOW) {
 			if ((PlayerIsMovingBackwards && PlayerSteps < 0x80) ||
 				(!PlayerIsMovingBackwards && PlayerSteps > 0x80)) {
-				
+
 				PlayerZSpeed = -0x180000;
 				PlayerSpeed *= 2;
 				Direction = 0;
@@ -1007,7 +1101,7 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
     }
 }
 PUBLIC void Level_SpecialStage::Subupdate() {
-    
+
 }
 PUBLIC void Level_SpecialStage::HandleCamera() {
 
@@ -1046,7 +1140,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
             App->WIDTH / 2, 0, 0, fl ? IE_FLIPX : IE_NOFLIP);
     }
 
-	//*
+	/*
 	G->SetDrawFunc(1);
 	// Sky
 	G->SetDrawAlpha(ColorSky);
@@ -1103,7 +1197,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 			bool transparent = false;
 			int collectableType = *LayoutAt((dwordA4 + RoundedX + 0x20) & 0x1F, (dwordA8 + RoundedY + 0x20) & 0x1F);
 			if (collectableType == (0x80 | SPHERE_RED)) {
-				transparent = true;
+				// transparent = true;
 				collectableType  &= 0x7F;
 			}
 
@@ -1117,6 +1211,8 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 				collectableType = 7;
 			else if (collectableType == SPHERE_RING)
 				needsResize = collectableType = 12;
+			else if (collectableType == SPHERE_EMERALD)
+				collectableType = 11;
 
 			if (transparent)
 				G->SetDrawAlpha(0x80);
@@ -1138,6 +1234,9 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 
 				frameAtPosition = IMath::max(MapThing[5][finalPosY + 1] - (IMath::abs(finalPosX) >> 5), 0);
 
+				if (collectableType == 10 || collectableType == 11)
+					frameAtPosition >>= 1;
+
 				finalPosX = MapThing[4][finalPosY + 1] * finalPosX;
 
 				v20 = 0;
@@ -1147,10 +1246,10 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 				else
 					v20 = finalPosX - downPos;
 				finalPosX = v20 >> 4;
-				
+
 				// v3 = (finalPosX * finalPosX) % MapThing[3][i + 1];
 				finalPosY = MapThing[2][finalPosY + 1] + (finalPosX * finalPosX) / MapThing[3][finalPosY + 1];
-				
+
 				finalPosX += App->WIDTH / 2;
 
 				// 0xE4  = 2 (Count: 70)    On-screen Y

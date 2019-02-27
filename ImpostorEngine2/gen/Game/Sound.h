@@ -141,6 +141,7 @@ public:
     SFX_FAN_BIG = 0xC0,
     SFX_FAN_SMALL = 0xC1,
     SFX_WATERRUN = 0xDB,
+    SFX_EMERALD = 0xE1,
     SFX_MIGHTY_DRILL = 0xC2,
     SFX_MIGHTY_LAND = 0xC3,
     SFX_MIGHTY_DEFLECT = 0xC4,
@@ -154,7 +155,7 @@ public:
     SFX_AIRSHIP2 = 0x07,
     SFX_RAY_DIVE = 0x08,
     SFX_RAY_SWOOP = 0x09,
-    }; 
+    };
     static IAudio* Audio;
     static bool    AudioLoaded;
     static ISound* SoundBank[256];

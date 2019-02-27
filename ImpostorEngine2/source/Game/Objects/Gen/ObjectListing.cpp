@@ -308,301 +308,265 @@ Object* GetNewObjectFromID(int ID) {
 
 Object* GetNewObjectFromCRC32(uint32_t Hash) {
     switch (Hash) {
-        case 0xB3C47F67U:
+        case 0xBDE7E33AU:
             return new Monitor();
             break;
-        case 0x41FD35EAU:
+        case 0x1E5BFA5FU:
             return new HollowTree();
             break;
-        case 0xFD8527A9U:
+        case 0x95087B30U:
             return new CollapsingPlatform();
             break;
-        case 0xB63FCB80U:
+        case 0xFE0305DDU:
             return new Rock();
             break;
-        case 0xA45C3BD3U:
+        case 0x7F20AD1DU:
             return new RideVine();
             break;
-        case 0xDD50B0FCU:
+        case 0x2802B89EU:
             return new Spring();
             break;
-        case 0xA0E2B9BAU:
+        case 0x44BC7B0EU:
             return new Spikes();
             break;
-        case 0x1C11C8EFU:
+        case 0x590E62AFU:
             return new TreeBark();
             break;
-        case 0x1F22E746U:
+        case 0x7FB64D3AU:
             return new RopePeg();
             break;
-        case 0x854E5A54U:
+        case 0xD691E4F3U:
             return new SwingVine();
             break;
-        case 0x683F24E7U:
+        case 0x60436E3AU:
             return new BreakableWall();
             break;
-        case 0x5C472F69U:
+        case 0xEC54C850U:
             return new Ridge();
             break;
-        case 0xD76CA9CFU:
+        case 0x18C4AE0DU:
             return new CollapsingBridge();
             break;
-        case 0x2384A243U:
+        case 0xC286FB4DU:
             return new AutomaticTunnel();
             break;
-        case 0x30FD5555U:
+        case 0x624D9DA4U:
             return new RollEnforcer();
             break;
-        case 0x14B30B17U:
+        case 0xB4878D6AU:
             return new InvisibleBlock();
             break;
-        case 0x2BB0E102U:
+        case 0x16A80CA8U:
             return new DisappearingFloor();
             break;
-        case 0x4EB6BD79U:
+        case 0x4A50924FU:
             return new CorkFloor();
             break;
-        case 0x34040207U:
+        case 0xB48623AU:
             return new FlippingBridge();
             break;
-        case 0xB5E83566U:
+        case 0xC558537EU:
             return new CollapsingLogBridge();
             break;
-        case 0xF4D5DE56U:
+        case 0xBFF26300U:
             return new FallingLog();
             break;
-        case 0x363775D2U:
+        case 0x22DC09C3U:
             return new SpikedLog();
             break;
-        case 0x2D496EFEU:
+        case 0x10F942A2U:
             return new NonAnim();
             break;
-        case 0x436F8B16U:
+        case 0x9B4046ECU:
             return new AnimSprite();
             break;
-        case 0xA430AC35U:
+        case 0x5465065DU:
             return new Drawbridge();
             break;
-        case 0x8C6808A8U:
+        case 0xF72B92E4U:
             return new Button();
             break;
-        case 0x58C873E2U:
+        case 0xC8B337E6U:
             return new StarPost();
             break;
-        case 0x5024EE87U:
+        case 0x9D88FCCEU:
             return new ForegroundPlant();
             break;
-        case 0xB1F0A7DCU:
+        case 0xEFFDFB55U:
             return new BreakBar();
             break;
-        case 0xBFAD8B0FU:
+        case 0xD396DEF2U:
             return new HCZVWaterStream();
             break;
-        case 0xA2FBE7CBU:
+        case 0x7849B3C1U:
             return new Fan();
             break;
-        case 0x9008779EU:
+        case 0x35EA70E0U:
             return new LargeFan();
             break;
-        case 0x8E5CE4B7U:
+        case 0xE6E16DBCU:
             return new HandLauncher();
             break;
-        case 0x8C0E6251U:
+        case 0xEC4012B6U:
             return new HCZWaterWall();
             break;
-        case 0xB93240FU:
+        case 0x81EC1830U:
             return new Door();
             break;
-        case 0xB9538011U:
+        case 0x98E1D2FFU:
             return new HCZConveyorBelt();
             break;
-        case 0xA607334FU:
+        case 0xD719B2DU:
             return new HCZConveyorSpike();
             break;
-        case 0x84F84F3BU:
+        case 0x58F95E1CU:
             return new Block();
             break;
-        case 0x36EADD72U:
+        case 0x65BE2A3AU:
             return new Balloon();
             break;
-        case 0x68E27C69U:
-            return new HoverFan();
-            break;
-        case 0x592DBA0EU:
+        case 0x177568D6U:
             return new VacuumTube();
             break;
-        case 0xC5A3956BU:
+        case 0x3B4DCB47U:
             return new Bouncepad();
             break;
-        case 0xDC819A61U:
+        case 0x43F8965EU:
             return new MGZQuickMud();
             break;
-        case 0x2DF7EC71U:
+        case 0xC3C9288BU:
             return new FloatingPlatform();
             break;
-        case 0x60978FE5U:
-            return new MGZSmashingPillar();
-            break;
-        case 0xD690B204U:
+        case 0x3B006393U:
             return new MGZSwingingPlatform();
             break;
-        case 0x1DEA5E31U:
+        case 0x8E41B4A6U:
             return new Bubbler();
             break;
-        case 0x9A39B25AU:
-            return new Relief();
+        case 0xBD81C06DU:
+            return new MGZHeadTrigger();
             break;
-        case 0xE722BDDCU:
+        case 0x5809E61CU:
             return new MGZTriggerPlatform();
             break;
-        case 0x3ADF0AB6U:
+        case 0xFF451B7U:
             return new MGZDashTrigger();
             break;
-        case 0xED0D528CU:
+        case 0x1DBC27C1U:
             return new HCZSnakeBlocks();
             break;
-        case 0x29649950U:
+        case 0x7DC95D09U:
             return new SpinningColumn();
             break;
-        case 0x5782AB56U:
+        case 0xBECC7360U:
             return new HCZSlide();
             break;
-        case 0x92AA9E1DU:
+        case 0xE40C8E50U:
             return new InvisibleSpikes();
             break;
-        case 0x70EF491BU:
+        case 0xA0BE8640U:
             return new InvisibleDeath();
             break;
-        case 0x9B8ADC00U:
+        case 0x5F02A27FU:
             return new TensionBridge();
             break;
-        case 0x89AE4C47U:
+        case 0xAFDD0C56U:
             return new HCZWaterSplash();
             break;
-        case 0xA255CEAU:
+        case 0x8616E0BDU:
             return new HiddenMonitor();
             break;
-        case 0xA06CE4AU:
+        case 0x973691D6U:
             return new EggCapsule();
             break;
-        case 0x376AFB5FU:
+        case 0x2822B56DU:
             return new CutsceneKnuckles();
             break;
-        case 0xD06B97DFU:
+        case 0xABC2C658U:
             return new SpecialRing();
             break;
-        case 0xA07A35BBU:
+        case 0x9B85E709U:
             return new Bloominator();
             break;
-        case 0x3F51D31U:
+        case 0x4374E9C7U:
             return new RhinoBot();
             break;
-        case 0x72B02A01U:
+        case 0xB7C95057U:
             return new MonkeyDude();
             break;
-        case 0x4B9B3432U:
+        case 0x3F487ED4U:
             return new CaterkillerJr();
             break;
-        case 0x38B8F76DU:
+        case 0xBE856454U:
             return new AIZMinibossCutscene();
             break;
-        case 0x87C53D97U:
+        case 0x8030D25CU:
             return new AIZMiniboss();
             break;
-        case 0x700E41BU:
+        case 0xCC92A8FAU:
             return new AIZBoss();
             break;
-        case 0x6D126E5DU:
+        case 0x2160C123U:
             return new Jawz();
             break;
-        case 0x3426B98U:
+        case 0xCD00547AU:
             return new Blastoid();
             break;
-        case 0xF8A3BE39U:
+        case 0x78C3EB13U:
             return new Buggernaut();
             break;
-        case 0x3E8719CFU:
+        case 0x8E6F27CFU:
             return new TurboSpiker();
             break;
-        case 0xBF4B1DA7U:
+        case 0xC50988CEU:
             return new MegaChomper();
             break;
-        case 0xEC9181EBU:
+        case 0xF365CCC4U:
             return new Pointdexter();
             break;
-        case 0xEBAA93DBU:
+        case 0x31F4D537U:
             return new HCZMiniboss();
             break;
-        case 0x330382AEU:
-            return new HCZBoss();
-            break;
-        case 0x3DDE24B3U:
-            return new BubblesBadnik();
-            break;
-        case 0xD7E5892CU:
-            return new Spiker();
-            break;
-        case 0xE2A6F79BU:
-            return new Mantis();
-            break;
-        case 0xE1611041U:
-            return new MGZDriller();
-            break;
-        case 0x332430DDU:
-            return new MGZMiniBoss();
-            break;
-        case 0x4839048AU:
-            return new DrillerEggman();
-            break;
-        case 0xFAAAEF1FU:
-            return new MGZBoss();
-            break;
-        case 0xC3D653C4U:
+        case 0x9D8C15CAU:
             return new Batbright();
             break;
-        case 0xA9B7215FU:
+        case 0x8E8C37A1U:
             return new AirshipBomb();
             break;
-        case 0xC80C9363U:
+        case 0x89077B11U:
             return new AIZMinibossBomb();
             break;
-        case 0x801C4523U:
+        case 0x3195387EU:
             return new AIZMinibossFlame();
             break;
-        case 0x205577C0U:
+        case 0xBF8DF98AU:
             return new BloominatorSpore();
             break;
-        case 0xA74EABF8U:
+        case 0x5C688649U:
             return new MonkeyDudeCoconut();
             break;
-        case 0xC25D5CBFU:
+        case 0xD5ADBFDBU:
             return new BatbrightParts();
             break;
-        case 0x6697FD9CU:
+        case 0x11DAFFC3U:
             return new BubbleAir();
             break;
-        case 0xDFA4EF69U:
-            return new PlatformOutliner();
-            break;
-        case 0x5C72AD12U:
+        case 0xA0128E04U:
             return new EggCapsuleButton();
             break;
-        case 0x8DBAB84CU:
+        case 0x6A8C340CU:
             return new Signpost();
             break;
-        case 0x37C54796U:
+        case 0x8ED6F84CU:
             return new TensionBridgeChild();
             break;
-        case 0x7D412B08U:
-            return new ViewCollisionToggler();
-            break;
-        case 0x4D41692EU:
+        case 0x3692A9F5U:
             return new BlastoidShot();
             break;
-        case 0x5DA9F78DU:
-            return new ReliefEye();
+        case 0x6BD3E111U:
+            return new MGZHeadTrigger_Eye();
             break;
-        case 0xA5066DF4U:
+        case 0xC4B304CCU:
             return new Platform();
             break;
 

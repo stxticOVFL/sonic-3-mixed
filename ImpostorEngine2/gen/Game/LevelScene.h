@@ -70,6 +70,7 @@ public:
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;
+    ISprite*    SuperButtonsSprite = NULL;
     ISprite*    EditorSprite = NULL;
     ISprite*    ItemsSprite = NULL;
     ISprite*    AnimalsSprite = NULL;
@@ -100,7 +101,7 @@ public:
     TO_SPECIAL_STAGE = 7,
     NEXT_ZONE = 8,
     CUSTOM_FADE_ACTION = 9,
-    }; 
+    };
     int         maxLayer = 1;
     bool        Thremixed = false;
     bool        DeformObjects = false;
@@ -137,7 +138,7 @@ public:
     bool LoadFlag = false;
     bool FlipX = false;
     bool FlipY = false;
-    }; 
+    };
     ObjectProp* ObjectProps = NULL;
     int         ObjectPropCount = 0;
     ObjectProp* RingProps = NULL;
@@ -201,6 +202,8 @@ public:
     LevelScene(IApp* app, IGraphics* g);
     virtual void AssignSpriteMapIDs();
     virtual void LoadZoneSpecificSprites();
+    void SaveState();
+    void LoadState();
     virtual void LoadData();
     virtual void Init();
     static  int  LoadStatic(void* data);

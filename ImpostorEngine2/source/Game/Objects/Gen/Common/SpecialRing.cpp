@@ -127,6 +127,7 @@ int SpecialRing::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
             StoredX = Scene->Player->EZX;
             StoredY = Scene->Player->EZY;
             App->Audio->FadeMusic(1.0);
+            Scene->SaveState();
             SaveGame::SetUsedZoneRings(RingID);
             SaveGame::Flush();
             Frame = 0;
@@ -143,6 +144,7 @@ int SpecialRing::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         StoredX = Scene->Player->EZX;
         StoredY = Scene->Player->EZY;
         App->Audio->FadeMusic(1.0);
+        Scene->SaveState();
         SaveGame::SetUsedZoneRings(RingID);
         SaveGame::Flush();
         Frame = 0;

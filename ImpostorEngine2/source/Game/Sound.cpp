@@ -143,6 +143,8 @@ public:
 
 		SFX_WATERRUN = 0xDB,
 
+		SFX_EMERALD = 0xE1,
+
 		SFX_MIGHTY_DRILL = 0xC2,
 		SFX_MIGHTY_LAND = 0xC3,
 		SFX_MIGHTY_DEFLECT = 0xC4,
@@ -265,11 +267,13 @@ PUBLIC STATIC void Sound::Init() {
 	LOADSOUND(SFX_SPECIALSTAGE_EXIT, "Sounds/SSExit.wav");
 	LOADSOUND(SFX_SPECIALSTAGE_FLYAWAY, "Sounds/SSJettison.wav");
 
-	Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
-	Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);
-	Sound::SoundBank[0xFD] = new ISound("Music/Drowning.ogg", true);
-	Sound::SoundBank[0xFC] = new ISound("Music/ActComplete.ogg", true);
-	Sound::SoundBank[0xFB] = new ISound("Music/S3 1up.ogg", false);
+	LOADSOUND(SFX_EMERALD, "Sounds/Emerald.wav");
+
+    Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
+    Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);
+    Sound::SoundBank[0xFD] = new ISound("Music/Drowning.ogg", true);
+    Sound::SoundBank[0xFC] = new ISound("Music/ActComplete.ogg", true);
+    Sound::SoundBank[0xFB] = new ISound("Music/S3 1up.ogg", false);
 
 	Sound::SoundBank[0xF2] = new ISound("Music/S3 Knux Theme.ogg", true);
 	Sound::SoundBank[0xF1] = new ISound("Music/S3 Miniboss.ogg", true);
