@@ -2040,6 +2040,12 @@ void IPlayer::Update() {
 				}
 				else if (Action == ActionType::InStream || Action == ActionType::InStreamGrab) {
 				}
+				else if (MightyStomping) {
+					MightyStomping = false;
+					GroundSpeed = 0;
+					XSpeed = 0;
+					Sound::Play(Sound::SFX_MIGHTY_LAND);
+				}
 				else {
 					if (Angle >= 0xF0 && Angle <= 0xFF)
 						GroundSpeed = XSpeed;
@@ -2469,12 +2475,11 @@ void IPlayer::Update() {
 				if (YSpeed < 0)
 					YSpeed = 0;
 			}
-			else if (Character == CharacterType::Mighty) {
+			else if (Character == CharacterType::Mighty && !MightyStomping) {
+				ChangeAnimation((int)AnimationEnum::MightyDrillDrive);
 				XSpeed = 0;
 				YSpeed = 0x800;
-				//Action = ActionType::MightyStomp;
-				ChangeAnimation((int)AnimationEnum::MightyDrillDrive);
-				//MightyStomping = true;
+				MightyStomping = true;
 				Sound::Play(Sound::SFX_MIGHTY_DRILL);
 			}
 			else if (Character == CharacterType::Ray) {
