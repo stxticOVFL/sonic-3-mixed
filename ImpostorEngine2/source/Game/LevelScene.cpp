@@ -93,20 +93,21 @@ public:
 	bool        DeformObjects = false;
 	bool        DeformPlayer = false;
 
-	Object**    Objects;
+	//Object**    Objects;
+    std::vector<Object*> Objects;
 	int         ObjectCount = 0;
 	int         ObjectNewCount = 0;
 
-	Object**    ObjectsSolid;
+	std::vector<Object*> ObjectsSolid;
 	int         ObjectSolidCount = 0;
 
-	Object**    ObjectsSpring;
+	std::vector<Object*> ObjectsSpring;
 	int         ObjectSpringCount = 0;
 
-	Enemy**     ObjectsEnemies;
+	std::vector<Enemy*> ObjectsEnemies;
 	int         ObjectEnemiesCount = 0;
 
-	Object**    ObjectsBreakable;
+	std::vector<Object*> ObjectsBreakable;
 	int         ObjectBreakableCount = 0;
 
 	Object**    ObjectsPathSwitcher;
@@ -271,11 +272,11 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	std::memset(Signal, 0, sizeof(Signal));
 
-	Objects = (Object**)calloc(2000, sizeof(Object*));
-	ObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
-	ObjectsSpring = (Object**)calloc(300, sizeof(Object*));
-	ObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
-	ObjectsBreakable = (Object**)calloc(300, sizeof(Object*));
+    Objects.reserve(2000);
+    ObjectsSolid.reserve(1000);
+	ObjectsSpring.reserve(300);
+	ObjectsEnemies.reserve(300);
+	ObjectsBreakable.reserve(300);
 	ObjectsPathSwitcher = (Object**)calloc(300, sizeof(Object*));
 
 	DebugObjectIDList = (int16_t*)calloc(0xFF, sizeof(int16_t));
@@ -1902,8 +1903,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 							obj->Attributes = (int*)calloc(ArgumentCount, sizeof(int));
 							memcpy(obj->Attributes, args, ArgumentCount * sizeof(int));
-
-							Objects[ObjectCount++] = obj;
+   
+                            ObjectCount++;
+                            Objects.push_back(obj);
 						}
 						break;
 					}
@@ -1995,7 +1997,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                         obj->Sprite = SpriteMapIDs[ID];
                         obj->SubType = SubType;
-                        Objects[ObjectCount++] = obj;
+                        ObjectCount++;
+                        Objects.push_back(obj);
                     }
                     else {
                         ObjectListUnimpl[ID] = 0xFF;
@@ -2262,7 +2265,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								obj->Attributes = (int*)calloc(AttributeCount, sizeof(int));
 								memcpy(obj->Attributes, args, AttributeCount * sizeof(int));
 
-								Objects[ObjectCount++] = obj;
+                                ObjectCount++;
+                                Objects.push_back(obj);
 							}
 							break;
 					}
@@ -2585,18 +2589,10 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	SaveGame::SetZone(ZoneID - 1);
 	SaveGame::Flush();
 
-	for (int i = 0; i < ObjectSolidCount; i++) {
-		ObjectsSolid[i] = NULL;
-	}
-	for (int i = 0; i < ObjectSpringCount; i++) {
-		ObjectsSpring[i] = NULL;
-	}
-	for (int i = 0; i < ObjectEnemiesCount; i++) {
-		ObjectsEnemies[i] = NULL;
-	}
-	for (int i = 0; i < ObjectBreakableCount; i++) {
-		ObjectsBreakable[i] = NULL;
-	}
+    ObjectsSolid.clear();
+    ObjectsSpring.clear();
+    ObjectsEnemies.clear();
+    ObjectsBreakable.clear();
 
 	DoneSpinning = false;
 
@@ -2687,17 +2683,23 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	CameraAutoScrollY = 0;
 
 	HandleCamera();
-
-	ObjectCount -= ObjectNewCount;
+    
+	ObjectCount = Objects.size() - ObjectNewCount;
 
 	for (int i = ObjectCount; i < ObjectCount + ObjectNewCount; i++) {
-		delete Objects[i];
+		delete Objects.at(i);
+		Objects.at(i) = NULL;
 	}
+	Objects.erase(Objects.begin() + ObjectCount, Objects.begin() + (ObjectCount + ObjectNewCount));
+	Objects.shrink_to_fit();
 
 	ObjectNewCount = 0;
 
 	for (int i = 0; i < ObjectCount; i++) {
-		Objects[i]->Create();
+        Object *object = Objects.at(i);
+        if (object != NULL) {
+            object->Create();
+        }
 	}
 
 	for (int o = 0; o < RingPropCount; o++) {
@@ -3018,7 +3020,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 		}
 	}
 	for (unsigned int o = 0; o < (unsigned int)ObjectSolidCount; o++) {
-		Object* obj = ObjectsSolid[o];
+		Object* obj = ObjectsSolid.at(o);
 		if (!obj) continue;
 		if (!obj->Active) continue;
 		if (!obj->OnScreen) continue;
@@ -3077,7 +3079,8 @@ PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
 	ring->Active = true;
 	ring->Priority = true;
 	ring->MagnetizedTo = mag;
-	Objects[ObjectCount++] = ring;
+    Objects.push_back(ring);
+    ObjectCount++;
 	ObjectNewCount++;
 }
 
@@ -3289,7 +3292,8 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 
 		obj->SubType = SubType;
 		obj->Create();
-		Objects[ObjectCount++] = obj;
+        ObjectCount++;
+        Objects.push_back(obj);
 	}
 	return obj;
 }
@@ -3684,7 +3688,9 @@ PUBLIC void LevelScene::Update() {
                             obj->Active = true;
                         }
 
-                        Objects[ObjectCount++] = obj;
+						ObjectCount++;
+                        Objects.push_back(obj);
+                        //Objects[ObjectCount++] = obj;
                         Player->DebugObject = obj;
 
                         //App->Print(0, "Created Object %d via Debug Mode!", objId);
@@ -3752,8 +3758,10 @@ PUBLIC void LevelScene::Update() {
                             if (!obj->Active) {
                                 obj->Active = true;
                             }
-
-                            Objects[ObjectCount++] = obj;
+                            
+							ObjectCount++;
+                            Objects.push_back(obj);
+                            //Objects[ObjectCount++] = obj;
                             Player->DebugObject = obj;
                         } else {
                             Player->Hidden = false;
@@ -4339,129 +4347,130 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 }
 
 PUBLIC void LevelScene::AddSelfToRegistry(Object* obj, const char* where) {
-	if (!strcmp(where, "Solid"))
-		ObjectsSolid[ObjectSolidCount++] = obj;
-	else if (!strcmp(where, "Spring"))
-		ObjectsSpring[ObjectSpringCount++] = obj;
-	else if (!strcmp(where, "Enemies"))
-		ObjectsEnemies[ObjectEnemiesCount++] = (Enemy*)obj;
-	else if (!strcmp(where, "Breakable"))
-		ObjectsBreakable[ObjectBreakableCount++] = obj;
-	else if (!strcmp(where, "PathSwitcher"))
+	if (!strcmp(where, "Solid")) {
+		ObjectSolidCount++;
+		ObjectsSolid.push_back(obj);
+	} else if (!strcmp(where, "Spring")) {
+        ObjectSpringCount++;
+		ObjectsSpring.push_back(obj);
+	} else if (!strcmp(where, "Enemies")) {
+		ObjectEnemiesCount++;
+		ObjectsEnemies.push_back((Enemy*)obj);
+	} else if (!strcmp(where, "Breakable")) {
+        ObjectBreakableCount++;
+		ObjectsBreakable.push_back(obj);
+	} else if (!strcmp(where, "PathSwitcher")) {
 		ObjectsPathSwitcher[ObjectPathSwitcherCount++] = obj;
+	}
 }
 
 PUBLIC void LevelScene::CleanupObjects() {
 	// Clean up any un-needed Objects.
 
-	Object** RefreshObjects = (Object**)calloc(2000, sizeof(Object*));
-	int NewObjectCount = 0;
+	std::vector<Object*> RefreshObjects;
+	RefreshObjects.reserve(2000);
 	int NewerObjectNewCount = ObjectNewCount;
 
-	Object** RefreshObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
-	int NewObjectSolidCount = 0;
+	std::vector<Object*> RefreshObjectsSolid;
+    RefreshObjectsSolid.reserve(1000);
 
-	Object** RefreshObjectsSpring = (Object**)calloc(300, sizeof(Object*));
-	int NewObjectSpringCount = 0;
+	std::vector<Object*> RefreshObjectsSpring;
+    RefreshObjectsSpring.reserve(300);
 
-	Enemy** RefreshObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
-	int NewObjectEnemiesCount = 0;
+	std::vector<Enemy*> RefreshObjectsEnemies;
+    RefreshObjectsEnemies.reserve(300);
 
-	Object** RefreshObjectsBreakable = (Object**)calloc(300, sizeof(Object*));
+	std::vector<Object*> RefreshObjectsBreakable;
+    RefreshObjectsBreakable.reserve(300);
 	int NewObjectBreakableCount = 0;
 
-	Object** UnrefreshedObjects = Objects;
+	std::vector<Object*> UnrefreshedObjects = Objects;
 	int OldObjectCount = ObjectCount;
 	int OldObjectNewCount = ObjectNewCount;
 
-	Object** UnrefreshedObjectsSolid = ObjectsSolid;
+	std::vector<Object*> UnrefreshedObjectsSolid = ObjectsSolid;
 	int OldObjectSolidCount = ObjectSolidCount;
 
-	Object** UnrefreshedObjectsSpring = ObjectsSpring;
+	std::vector<Object*> UnrefreshedObjectsSpring = ObjectsSpring;
 	int OldObjectSpringCount = ObjectSpringCount;
 
-	Enemy** UnrefreshedObjectsEnemies = ObjectsEnemies;
+	std::vector<Enemy*> UnrefreshedObjectsEnemies = ObjectsEnemies;
 	int OldObjectEnemiesCount = ObjectEnemiesCount;
 
-	Object** UnrefreshedObjectsBreakable = ObjectsBreakable;
+	std::vector<Object*> UnrefreshedObjectsBreakable = ObjectsBreakable;
 	int OldObjectBreakableCount = ObjectBreakableCount;
 
 	for (int i = 0; i < ObjectCount; i++) {
-		if (Objects[i] == nullptr) {
+		if (Objects.at(i) == nullptr) {
+			if (i >= ObjectCount + ObjectNewCount) {
+				NewerObjectNewCount--;
+			}
+			continue;
+		} else if (!Objects.at(i)->Active && Objects.at(i)->CleanupInactiveObject) {
 			if (i >= ObjectCount + ObjectNewCount) {
 				NewerObjectNewCount--;
 			}
 			continue;
 		}
-		else if (!Objects[i]->Active && Objects[i]->CleanupInactiveObject) {
-			if (i >= ObjectCount + ObjectNewCount) {
-				NewerObjectNewCount--;
-			}
-			continue;
-		}
-		RefreshObjects[NewObjectCount] = Objects[i];
-		NewObjectCount++;
+		RefreshObjects.push_back(Objects.at(i));
 	}
 
 	for (int i = 0; i < ObjectSolidCount; i++) {
-		if (ObjectsSolid[i] == nullptr) {
+		if (ObjectsSolid.at(i) == nullptr) {
+			continue;
+		} else if (!ObjectsSolid.at(i)->Active && ObjectsSolid.at(i)->CleanupInactiveObject) {
 			continue;
 		}
-		else if (!ObjectsSolid[i]->Active && ObjectsSolid[i]->CleanupInactiveObject) {
-			continue;
-		}
-		RefreshObjectsSolid[NewObjectSolidCount] = ObjectsSolid[i];
-		NewObjectSolidCount++;
+		RefreshObjectsSolid.push_back(ObjectsSolid.at(i));
 	}
 
 	for (int i = 0; i < ObjectSpringCount; i++) {
-		if (ObjectsSpring[i] == nullptr) {
+		if (ObjectsSpring.at(i) == nullptr) {
+			continue;
+		} else if (!ObjectsSpring.at(i)->Active && ObjectsSpring.at(i)->CleanupInactiveObject) {
 			continue;
 		}
-		else if (!ObjectsSpring[i]->Active && ObjectsSpring[i]->CleanupInactiveObject) {
-			continue;
-		}
-		RefreshObjectsSpring[NewObjectSpringCount] = ObjectsSpring[i];
-		NewObjectSpringCount++;
+		RefreshObjectsSpring.push_back(ObjectsSpring.at(i));
 	}
 
 	for (int i = 0; i < ObjectEnemiesCount; i++) {
-		if (ObjectsEnemies[i] == nullptr) {
+		if (ObjectsEnemies.at(i) == nullptr) {
+			continue;
+		} else if (!ObjectsEnemies.at(i)->Active && ObjectsEnemies.at(i)->CleanupInactiveObject) {
 			continue;
 		}
-		else if (!ObjectsEnemies[i]->Active && ObjectsEnemies[i]->CleanupInactiveObject) {
-			continue;
-		}
-		RefreshObjectsEnemies[NewObjectEnemiesCount] = ObjectsEnemies[i];
-		NewObjectEnemiesCount++;
+		RefreshObjectsEnemies.push_back(ObjectsEnemies.at(i));
 	}
 
 	for (int i = 0; i < ObjectBreakableCount; i++) {
-		if (ObjectsBreakable[i] == nullptr) {
+		if (ObjectsBreakable.at(i) == nullptr) {
+			continue;
+		} else if (!ObjectsBreakable.at(i)->Active && ObjectsBreakable.at(i)->CleanupInactiveObject) {
 			continue;
 		}
-		else if (!ObjectsBreakable[i]->Active && ObjectsBreakable[i]->CleanupInactiveObject) {
-			continue;
-		}
-		RefreshObjectsBreakable[NewObjectBreakableCount] = ObjectsBreakable[i];
-		NewObjectBreakableCount++;
+		RefreshObjectsBreakable.push_back(ObjectsBreakable.at(i));
 	}
 
+    RefreshObjects.shrink_to_fit();
 	Objects = RefreshObjects;
-	ObjectCount = NewObjectCount;
+	ObjectCount = RefreshObjects.size();
 	ObjectNewCount = NewerObjectNewCount;
 
+    RefreshObjectsSolid.shrink_to_fit();
 	ObjectsSolid = RefreshObjectsSolid;
-	ObjectSolidCount = NewObjectSolidCount;
+	ObjectSolidCount = RefreshObjectsSolid.size();
 
+    RefreshObjectsSpring.shrink_to_fit();
 	ObjectsSpring = RefreshObjectsSpring;
-	ObjectSpringCount = NewObjectSpringCount;
+	ObjectSpringCount = RefreshObjectsSpring.size();
 
+    RefreshObjectsEnemies.shrink_to_fit();
 	ObjectsEnemies = RefreshObjectsEnemies;
-	ObjectEnemiesCount = NewObjectEnemiesCount;
+	ObjectEnemiesCount = RefreshObjectsEnemies.size();
 
+    RefreshObjectsBreakable.shrink_to_fit();
 	ObjectsBreakable = RefreshObjectsBreakable;
-	ObjectBreakableCount = NewObjectBreakableCount;
+	ObjectBreakableCount = RefreshObjectsBreakable.size();
 
 	// For some reason, Deleteing the objects is only fine on Debug builds.
 	// This could be because Release might memory manage it automatically.
@@ -4469,68 +4478,68 @@ PUBLIC void LevelScene::CleanupObjects() {
 	// none of the others for non-debug for now.
 
 	for (int i = 0; i < OldObjectCount; i++) {
-		if (UnrefreshedObjects[i] == nullptr) {
+		if (UnrefreshedObjects.at(i) == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjects[i]->Active && UnrefreshedObjects[i]->CleanupInactiveObject) {
-			delete UnrefreshedObjects[i];
-			UnrefreshedObjects[i] = nullptr;
+		if (!UnrefreshedObjects.at(i)->Active && UnrefreshedObjects.at(i)->CleanupInactiveObject) {
+			delete UnrefreshedObjects.at(i);
+			UnrefreshedObjects.at(i) = nullptr;
 		}
 	}
 
 	for (int i = 0; i < OldObjectSolidCount; i++) {
-		if (UnrefreshedObjectsSolid[i] == nullptr) {
+		if (UnrefreshedObjectsSolid.at(i) == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsSolid[i]->Active && UnrefreshedObjectsSolid[i]->CleanupInactiveObject) {
+		if (!UnrefreshedObjectsSolid.at(i)->Active && UnrefreshedObjectsSolid.at(i)->CleanupInactiveObject) {
 #ifdef _DEBUG
-			delete UnrefreshedObjectsSolid[i];
+			delete UnrefreshedObjectsSolid.at(i);
 #endif
-			UnrefreshedObjectsSolid[i] = nullptr;
+			UnrefreshedObjectsSolid.at(i) = nullptr;
 		}
 	}
 
 	for (int i = 0; i < OldObjectSpringCount; i++) {
-		if (UnrefreshedObjectsSpring[i] == nullptr) {
+		if (UnrefreshedObjectsSpring.at(i) == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsSpring[i]->Active && UnrefreshedObjectsSpring[i]->CleanupInactiveObject) {
+		if (!UnrefreshedObjectsSpring.at(i)->Active && UnrefreshedObjectsSpring.at(i)->CleanupInactiveObject) {
 #ifdef _DEBUG
-			delete UnrefreshedObjectsSpring[i];
+			delete UnrefreshedObjectsSpring.at(i);
 #endif
-			UnrefreshedObjectsSpring[i] = nullptr;
+			UnrefreshedObjectsSpring.at(i) = nullptr;
 		}
 	}
 
 	for (int i = 0; i < OldObjectEnemiesCount; i++) {
-		if (UnrefreshedObjectsEnemies[i] == nullptr) {
+		if (UnrefreshedObjectsEnemies.at(i) == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsEnemies[i]->Active && UnrefreshedObjectsEnemies[i]->CleanupInactiveObject) {
+		if (!UnrefreshedObjectsEnemies.at(i)->Active && UnrefreshedObjectsEnemies.at(i)->CleanupInactiveObject) {
 #ifdef _DEBUG
-			delete UnrefreshedObjectsEnemies[i];
+			delete UnrefreshedObjectsEnemies.at(i);
 #endif
-			UnrefreshedObjectsEnemies[i] = nullptr;
+			UnrefreshedObjectsEnemies.at(i) = nullptr;
 		}
 	}
 
 	for (int i = 0; i < OldObjectBreakableCount; i++) {
-		if (UnrefreshedObjectsBreakable[i] == nullptr) {
+		if (UnrefreshedObjectsBreakable.at(i) == nullptr) {
 			continue;
 		}
-		if (!UnrefreshedObjectsBreakable[i]->Active && UnrefreshedObjectsBreakable[i]->CleanupInactiveObject) {
+		if (!UnrefreshedObjectsBreakable.at(i)->Active && UnrefreshedObjectsBreakable.at(i)->CleanupInactiveObject) {
 #ifdef _DEBUG
-			delete UnrefreshedObjectsBreakable[i];
+			delete UnrefreshedObjectsBreakable.at(i);
 #endif
-			UnrefreshedObjectsBreakable[i] = nullptr;
+			UnrefreshedObjectsBreakable.at(i) = nullptr;
 		}
 	}
 
-	free(UnrefreshedObjects);
-	free(UnrefreshedObjectsSolid);
-	free(UnrefreshedObjectsSpring);
-	free(UnrefreshedObjectsEnemies);
-	free(UnrefreshedObjectsBreakable);
+    UnrefreshedObjects.clear();
+	UnrefreshedObjectsSolid.clear();
+	UnrefreshedObjectsSpring.clear();
+	UnrefreshedObjectsEnemies.clear();
+	UnrefreshedObjectsBreakable.clear();
 }
 
 PUBLIC void LevelScene::RenderAnimatedSprites(int layer) {
@@ -5757,11 +5766,11 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	}
 	DebugObjectIDCount = 0;
 
-	free(Objects);
-	free(ObjectsSolid);
-	free(ObjectsSpring);
-	free(ObjectsEnemies);
-	free(ObjectsBreakable);
+	Objects.clear();
+	ObjectsSolid.clear();
+	ObjectsSpring.clear();
+	ObjectsEnemies.clear();
+	ObjectsBreakable.clear();
 	free(ObjectsPathSwitcher);
 	free(DebugObjectIDList);
 	free(ObjectProps);
