@@ -6,7 +6,7 @@ class Scene_MainMenu : public IScene {
 public:
 	int selected = 0;
 	ISprite* MenuSprite = NULL;
-    ISprite* SphereSprite = NULL;
+	ISprite* SphereSprite = NULL;
 	ISprite* SuperButtonsSprite = NULL;
 	ISprite* TextSprite = NULL;
 };
@@ -33,6 +33,7 @@ public:
 #include <Game/Scenes/LevelSelect.h>
 
 #include <Game/Scenes/MainMenu.h>
+#include <ctime>
 
 int FrameCircle = 0;
 int FrameZigzag = 0;
@@ -207,30 +208,40 @@ PUBLIC void Scene_MainMenu::Update() {
 			}
 		}
 
+		bool Changed = false;
 		if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
 			if (selected >= 2)
 				selected -= 2;
-
+			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
 			if (selected <= 1)
 				selected += 2;
-
+			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 
 		if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED]) {
 			if ((selected & 1) == 1)
 				selected--;
-
+			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
 			if ((selected & 1) == 0)
 				selected++;
-
+			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+		if (Changed) {
+			ran = selected;
+			if (ran == 1) {
+				std::srand(std::time(nullptr));
+				if (std::rand() % 1024 == 0) {
+					ran = 4;
+				}
+			}
 		}
 	}
 
@@ -368,7 +379,8 @@ PUBLIC void Scene_MainMenu::Render() {
 	MenuSprite->UpdatePalette();
 
 	// Circle
-	G->DrawSprite(SphereSprite, 0, selected, cenX, cenY, 0, IE_NOFLIP);
+
+	G->DrawSprite(SphereSprite, 0, ran, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 17, 0, cenX, cenY, 0, IE_NOFLIP);
 
 	G->DrawSprite(MenuSprite, 3 + selected, 3, cenX, cenY, 0, IE_NOFLIP);
