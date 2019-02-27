@@ -183,7 +183,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
 			partner--;
 			if (partner == 0xFF)
-				partner == 4;
+				partner = 4;
 			if (partner < 0)
 				partner = 0xFF;
 			Sound::Play(Sound::SFX_MENUBLEEP);

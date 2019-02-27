@@ -111,11 +111,11 @@ public:
     std::vector<Object*> Objects;
     int         ObjectCount = 0;
     int         ObjectNewCount = 0;
-    Object**    ObjectsSolid;
+    std::vector<Object*> ObjectsSolid;
     int         ObjectSolidCount = 0;
-    Object**    ObjectsSpring;
+    std::vector<Object*> ObjectsSpring;
     int         ObjectSpringCount = 0;
-    Enemy**     ObjectsEnemies;
+    std::vector<Enemy*> ObjectsEnemies;
     int         ObjectEnemiesCount = 0;
     Object**    ObjectsBreakable;
     int         ObjectBreakableCount = 0;
