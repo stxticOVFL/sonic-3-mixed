@@ -6,6 +6,7 @@ class Scene_MainMenu : public IScene {
 public:
 	int selected = 0;
 	ISprite* MenuSprite = NULL;
+    ISprite* SphereSprite = NULL;
 	ISprite* SuperButtonsSprite = NULL;
 	ISprite* TextSprite = NULL;
 };
@@ -92,12 +93,14 @@ PUBLIC void Scene_MainMenu::Init() {
 	if (!MenuSprite) {
 		MenuSprite = new ISprite("UI/MainMenu.gif", App);
 		SphereSprite = new ISprite("UI/MenuSpheres.gif", App);
-		SphereSprite->LoadAnimation("UI/MainMenu.bin");
-		MenuSprite->LinkAnimation(SphereSprite->Animations);
+		MenuSprite->LoadAnimation("UI/MainMenu.bin");
+		SphereSprite->LinkAnimation(MenuSprite->Animations);
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
 		MenuSprite->SetTransparentColorIndex(0x2C);
 		MenuSprite->UpdatePalette();
+        
+		SphereSprite->SetTransparentColorIndex(26);
 	}
 	if (!SuperButtonsSprite) {
 		SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
@@ -341,7 +344,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	MenuSprite->UpdatePalette();
 
 	// Circle
-	G->DrawSprite(MenuSprite, 7, selected, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(SphereSprite, 7, selected, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 17, 0, cenX, cenY, 0, IE_NOFLIP);
 
 	G->DrawSprite(MenuSprite, 3 + selected, 3, cenX, cenY, 0, IE_NOFLIP);
