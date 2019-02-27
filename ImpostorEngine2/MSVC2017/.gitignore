@@ -1,4 +1,5 @@
-Debug/
-NoGen (Debug)/
-Release/
+/Debug/
+/NoGen (Debug)/
+/NoGen (Release)/
+/Release/
 .vs/

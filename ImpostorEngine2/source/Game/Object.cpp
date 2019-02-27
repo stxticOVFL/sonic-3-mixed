@@ -188,6 +188,24 @@ void Object::OnAnimationFinish() {
 
 }
 
+Object* Object::GetObjectParent() {
+    Object *host = (Object *)Parent;
+    if (host == NULL) {
+        return NULL;
+    }
+    
+    return host;
+}
+
+bool Object::IsParentFloatingPlatform() {
+    Object *host = (Object *)Parent;
+    if (host == NULL) {
+        return false;
+    }
+    
+    return host->IsFloatingPlatform;
+}
+
 void Object::Render(int CamX, int CamY) {
     if (CurrentAnimation == -1) return;
     if (Frame < 0) return;
@@ -390,6 +408,15 @@ int Enemy::OnDeath() {
     Sound::Play(Sound::SFX_DESTROY);
     Active = false;
     return 1;
+}
+
+Enemy* Enemy::GetEnemyParent() {
+    Enemy *host = (Enemy *)Parent;
+    if (host == NULL) {
+        return NULL;
+    }
+    
+    return host;
 }
 
 void Solid::Create() {

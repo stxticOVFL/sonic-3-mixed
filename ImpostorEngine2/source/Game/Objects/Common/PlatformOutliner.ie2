@@ -9,7 +9,16 @@ event Create() {
 }
 
 event Update() {
+    if (Parent == NULL) {
+        return;
+    }
+    
     MoveWithParent();
+    if (IsParentFloatingPlatform()) {
+        if (Scene.ZoneID == 1 || Scene.ZoneID == 3) {
+            Y -= 2;
+        }
+    }
 }
 
 event OnAnimationFinish() {
@@ -22,7 +31,7 @@ event Render(CamX:int, CamY:int) {
     }
     if (Parent == NULL) {
         return;
-    }  
+    }
     
     var widthPixels:int32_t = W;
     var heightPixels:int32_t = H;

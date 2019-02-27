@@ -339,6 +339,8 @@ enum class AnimationEnum {
 	Hang2 = 16,
 	RayFlyUp = 48,
 	RayFlyDown,
+
+	MightyDrillDrive = 16
 };
 
 IPlayer::IPlayer() {
@@ -2038,6 +2040,12 @@ void IPlayer::Update() {
 				}
 				else if (Action == ActionType::InStream || Action == ActionType::InStreamGrab) {
 				}
+				else if (MightyStomping) {
+					MightyStomping = false;
+					GroundSpeed = 0;
+					XSpeed = 0;
+					Sound::Play(Sound::SFX_MIGHTY_LAND);
+				}
 				else {
 					if (Angle >= 0xF0 && Angle <= 0xFF)
 						GroundSpeed = XSpeed;
@@ -2383,18 +2391,20 @@ void IPlayer::Update() {
 					if (InputUp) {
 						YSpeed = -0x800;
 					}
-                    if (InputJumpHold && DropDashEnabled) {
-                        if (DropDashRev == 0) {
-                            DropDashRev = 1;
-                        }
-					} else {
+					if (InputJumpHold && DropDashEnabled) {
+						if (DropDashRev == 0) {
+							DropDashRev = 1;
+						}
+					}
+					else {
 						XSpeed = 0x800 * DisplayFlip;
 						YSpeed = 0;
 						CameraLockTimer = 16;
 					}
 					ShieldUsable = false;
 				}
-			} else if (Character == CharacterType::Sonic) {
+			}
+			else if (Character == CharacterType::Sonic) {
 				if (ShieldUsable) {
 					if ((SuperForm || HyperForm || Shield == ShieldType::None)) {
 						if (DropDashEnabled) {
@@ -2407,58 +2417,69 @@ void IPlayer::Update() {
 							Sound::Play(Sound::SFX_INSTASHIELD);
 						}
 						ShieldUsable = false;
-					} else if (Shield == ShieldType::Fire) {
-                        XSpeed = 0x800 * DisplayFlip;
-                        YSpeed = 0;
-                        CameraLockTimer = 16;
-                        ShieldAnimation = 12;
-                        Sound::Play(Sound::SFX_SHIELD_FIRE_DASH);
-                        if (InputJumpHold && DropDashEnabled) {
-                            if (DropDashRev == 0) {
-                                DropDashRev = 1;
-                            }
-                        }
-					} else if (Shield == ShieldType::Bubble) {
+					}
+					else if (Shield == ShieldType::Fire) {
+						XSpeed = 0x800 * DisplayFlip;
+						YSpeed = 0;
+						CameraLockTimer = 16;
+						ShieldAnimation = 12;
+						Sound::Play(Sound::SFX_SHIELD_FIRE_DASH);
+						if (InputJumpHold && DropDashEnabled) {
+							if (DropDashRev == 0) {
+								DropDashRev = 1;
+							}
+						}
+					}
+					else if (Shield == ShieldType::Bubble) {
 						XSpeed = 0;
 						YSpeed = 0x800;
 						ShieldAction = true;
 						Sound::Play(Sound::SFX_SHIELD_BUBBLE_BOUNCE);
-					} else if (Shield == ShieldType::Electric) {
+					}
+					else if (Shield == ShieldType::Electric) {
 						YSpeed = -0x580;
 						Sound::Play(Sound::SFX_SHIELD_ELECTRIC_JUMP);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, -0x200, -0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, 0x200, -0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, -0x200, 0x200, 0x18, 22, 0);
 						Scene->AddMovingSprite(SpriteShields, EZX, EZY, 7, 0, false, false, 0x200, 0x200, 0x18, 22, 0);
-                        if (InputJumpHold && DropDashEnabled) {
-                            if (DropDashRev == 0) {
-                                DropDashRev = 1;
-                            }
-                        }
-					} else if (Shield == ShieldType::Basic) {
+						if (InputJumpHold && DropDashEnabled) {
+							if (DropDashRev == 0) {
+								DropDashRev = 1;
+							}
+						}
+					}
+					else if (Shield == ShieldType::Basic) {
 						// Do nothing special.
-                        if (InputJumpHold && DropDashEnabled) {
-                            if (DropDashRev == 0) {
-                                DropDashRev = 1;
-                            }
-                        }
+						if (InputJumpHold && DropDashEnabled) {
+							if (DropDashRev == 0) {
+								DropDashRev = 1;
+							}
+						}
 					}
 
 					ShieldUsable = false;
 				}
-			} else if (Character == CharacterType::Tails) {
+			}
+			else if (Character == CharacterType::Tails) {
 				Action = ActionType::Fly;
 				FlyFlag = 0x8;
 				FlyTimer = FlyTimerMax;
-			} else if (Character == CharacterType::Knuckles) {
+			}
+			else if (Character == CharacterType::Knuckles) {
 				Action = ActionType::Glide;
 				XSpeed = DisplayFlip * 0x400;
 				if (YSpeed < 0)
 					YSpeed = 0;
-			} else if (Character == CharacterType::Mighty) {
+			}
+			else if (Character == CharacterType::Mighty && !MightyStomping) {
+				ChangeAnimation((int)AnimationEnum::MightyDrillDrive);
 				XSpeed = 0;
 				YSpeed = 0x800;
-			} else if (Character == CharacterType::Ray) {
+				MightyStomping = true;
+				Sound::Play(Sound::SFX_MIGHTY_DRILL);
+			}
+			else if (Character == CharacterType::Ray) {
 				// sub_4C8DF0
 				if (JumpVariable == 1) {
 					Action = ActionType::RayGlide;

@@ -455,6 +455,7 @@ public:
     bool     OnScreen = false;
 	bool     DrawCollisions = false;
     bool     CleanupInactiveObject = false;
+    bool     IsFloatingPlatform = false;
 	bool     Visible = true;
     int      VisualLayer = 0;
     uint32_t DrawCollisionsColor = 0x49ED80; // Green
@@ -513,6 +514,9 @@ public:
     virtual int  OnLeaveScreen();
     virtual void OnSwingFinish() { };
     virtual void OnAnimationFinish();
+    
+    virtual Object* GetObjectParent();
+    virtual bool IsParentFloatingPlatform();
 
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)
@@ -559,6 +563,7 @@ public:
     virtual void MoveTowardsTargetPosition(IPlayer *Player, int16_t maxSpeed, int16_t speed);
     virtual int  OnDeath();
     virtual int  OnHit();
+    virtual Enemy* GetEnemyParent();
 };
 
 class Solid : public Object {
