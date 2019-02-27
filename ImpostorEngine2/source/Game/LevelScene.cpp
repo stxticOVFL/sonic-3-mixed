@@ -3123,11 +3123,15 @@ PUBLIC VIRTUAL void LevelScene::DoResults() {
 	App->Audio->ClearMusic();
 	App->Audio->PushMusic(Sound::SoundBank[0xFC], false, 0);
 }
+
 PUBLIC VIRTUAL void LevelScene::FinishResults() {
 	GoToNextAct();
 }
+
 PUBLIC VIRTUAL void LevelScene::GoToNextAct() {
+
 }
+
 PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 	NextAct->GiantRingModel = GiantRingModel;
 
