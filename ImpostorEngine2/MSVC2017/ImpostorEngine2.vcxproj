@@ -323,8 +323,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\source;$(SolutionDir)..\gen;External\Debug\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>External\Debug\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\source;$(SolutionDir)..\gen;$(SolutionDir)External\Debug\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)External\Debug\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
@@ -332,24 +332,24 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)..\source;$(SolutionDir)..\gen;External\Release\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>External\Release\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <LibraryPath>$(SolutionDir)External\Release\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
     <CustomBuildBeforeTargets />
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
-    <ExecutablePath>External\Release\bin;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(SolutionDir)External\Release\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='NoGen (Release)|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\source;$(SolutionDir)..\gen;External\Release\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>External\Release\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <IncludePath>$(SolutionDir)..\source;$(SolutionDir)..\gen;$(SolutionDir)External\Release\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)External\Release\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
     <CustomBuildBeforeTargets />
     <PreBuildEventUseInBuild>
     </PreBuildEventUseInBuild>
-    <ExecutablePath>External\Release\bin;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(SolutionDir)External\Release\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='NoGen (Debug)|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\source;..\gen;External\Debug\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>External\Debug\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>..\source;..\gen;$(SolutionDir)External\Debug\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)External\Debug\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
     <PreBuildEventUseInBuild>
