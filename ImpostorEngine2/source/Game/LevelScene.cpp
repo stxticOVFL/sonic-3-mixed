@@ -3701,15 +3701,13 @@ PUBLIC void LevelScene::Update() {
 
 			if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
                 if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
-                    ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
-                        
+                    ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) { 
+                    
                     if (Player->DebugObject && Player->DebugObject->OnScreen) {
+                        // We want to create a copy for easy use, So we do.
                         uint8_t oldSubType = Player->DebugObject->SubType;
-
                         Player->DebugObject->isHeldDebugObject = false;
                         Player->DebugObject = NULL;
-
-                        // We want to create a copy for easy use, So we do.
                         int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
 
                         Object* obj = NULL;
@@ -3761,12 +3759,16 @@ PUBLIC void LevelScene::Update() {
                             Player->DebugObjectIndex = -1;
                             Player->DebugObject = NULL;
                         }
-                    } else {
-                        Player->Hidden = false;
-                        Player->DebugObjectIndex = -1;
+                    }
+                } else {
+                    if (Player->DebugObject && Player->DebugObject->OnScreen) {
+                        Player->DebugObject->isHeldDebugObject = false;
                         Player->DebugObject = NULL;
                     }
-				}
+                    Player->Hidden = false;
+                    Player->DebugObjectIndex = -1;
+                    Player->DebugObject = NULL;
+                }
 			}
 
 			if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
