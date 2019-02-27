@@ -3640,27 +3640,28 @@ PUBLIC void LevelScene::Update() {
                     }
 
                     switch (objId) {
-                    case 0x00: // Ring
-                        ring = new Ring();
-                        ring->X = Player->DisplayX;
-                        ring->Y = Player->DisplayY;
-                        ring->MyX = Player->DisplayX << 8;
-                        ring->MyY = Player->DisplayY << 8;
-                        ring->Scene = this;
-                        ring->Priority = true;
-                        ring->Timer = -1;
-                        ring->ShouldRingFall = false;
-                        obj = (Object *)ring;
-                        ring = NULL;
-                        break;
-                    case Obj_InvisibleSpikes: // Invisible Spikes
-                    case Obj_InvisibleDeath: // Invisible Death
-                    case Obj_InvisibleBlock: // Invisible Block
-                        obj = GetNewObjectFromID(objId);
-                        Player->DebugObjectSubIndex = 17;
-                    default:
-                        obj = GetNewObjectFromID(objId);
-                        break;
+                        case 0x00: // Ring
+                            ring = new Ring();
+                            ring->X = Player->DisplayX;
+                            ring->Y = Player->DisplayY;
+                            ring->MyX = Player->DisplayX << 8;
+                            ring->MyY = Player->DisplayY << 8;
+                            ring->Scene = this;
+                            ring->Priority = true;
+                            ring->Timer = -1;
+                            ring->ShouldRingFall = false;
+                            obj = (Object *)ring;
+                            ring = NULL;
+                            break;
+                        case Obj_InvisibleSpikes: // Invisible Spikes
+                        case Obj_InvisibleDeath: // Invisible Death
+                        case Obj_InvisibleBlock: // Invisible Block
+                            obj = GetNewObjectFromID(objId);
+                            Player->DebugObjectSubIndex = 17;
+                            break;
+                        default:
+                            obj = GetNewObjectFromID(objId);
+                            break;
                     }
                     if (obj != NULL) {
                         obj->G = G;
@@ -3714,22 +3715,22 @@ PUBLIC void LevelScene::Update() {
                         Ring *ring = NULL;
 
                         switch (objId) {
-                        case 0x00:
-                            ring = new Ring();
-                            ring->X = Player->DisplayX;
-                            ring->Y = Player->DisplayY;
-                            ring->MyX = Player->DisplayX << 8;
-                            ring->MyY = Player->DisplayY << 8;
-                            ring->Scene = this;
-                            ring->Priority = true;
-                            ring->Timer = -1;
-                            ring->ShouldRingFall = false;
-                            obj = (Object *)ring;
-                            ring = NULL;
-                            break;
-                        default:
-                            obj = GetNewObjectFromID(objId);
-                            break;
+                            case 0x00:
+                                ring = new Ring();
+                                ring->X = Player->DisplayX;
+                                ring->Y = Player->DisplayY;
+                                ring->MyX = Player->DisplayX << 8;
+                                ring->MyY = Player->DisplayY << 8;
+                                ring->Scene = this;
+                                ring->Priority = true;
+                                ring->Timer = -1;
+                                ring->ShouldRingFall = false;
+                                obj = (Object *)ring;
+                                ring = NULL;
+                                break;
+                            default:
+                                obj = GetNewObjectFromID(objId);
+                                break;
                         }
                         if (obj != NULL) {
                             obj->G = G;
