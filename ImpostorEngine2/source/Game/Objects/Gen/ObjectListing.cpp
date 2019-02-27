@@ -425,6 +425,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x65BE2A3AU:
             return new Balloon();
             break;
+        case 0x7C977754U:
+            return new HoverFan();
+            break;
         case 0x177568D6U:
             return new VacuumTube();
             break;
@@ -437,14 +440,17 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0xC3C9288BU:
             return new FloatingPlatform();
             break;
+        case 0x6B9FADA2U:
+            return new MGZSmashingPillar();
+            break;
         case 0x3B006393U:
             return new MGZSwingingPlatform();
             break;
         case 0x8E41B4A6U:
             return new Bubbler();
             break;
-        case 0xBD81C06DU:
-            return new MGZHeadTrigger();
+        case 0xFC346615U:
+            return new Relief();
             break;
         case 0x5809E61CU:
             return new MGZTriggerPlatform();
@@ -527,6 +533,30 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x31F4D537U:
             return new HCZMiniboss();
             break;
+        case 0x6DE7611DU:
+            return new HCZBoss();
+            break;
+        case 0xA8CF1ABBU:
+            return new BubblesBadnik();
+            break;
+        case 0xDF9FA830U:
+            return new Spiker();
+            break;
+        case 0x2C7E197CU:
+            return new Mantis();
+            break;
+        case 0xCCA7D752U:
+            return new MGZDriller();
+            break;
+        case 0x8886B305U:
+            return new MGZMiniBoss();
+            break;
+        case 0x88549378U:
+            return new DrillerEggman();
+            break;
+        case 0xDD1ABC3AU:
+            return new MGZBoss();
+            break;
         case 0x9D8C15CAU:
             return new Batbright();
             break;
@@ -551,6 +581,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x11DAFFC3U:
             return new BubbleAir();
             break;
+        case 0x5DFC3336U:
+            return new PlatformOutliner();
+            break;
         case 0xA0128E04U:
             return new EggCapsuleButton();
             break;
@@ -560,11 +593,14 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x8ED6F84CU:
             return new TensionBridgeChild();
             break;
+        case 0x27340CB0U:
+            return new ViewCollisionToggler();
+            break;
         case 0x3692A9F5U:
             return new BlastoidShot();
             break;
-        case 0x6BD3E111U:
-            return new MGZHeadTrigger_Eye();
+        case 0xBBCA6AC5U:
+            return new ReliefEye();
             break;
         case 0xC4B304CCU:
             return new Platform();

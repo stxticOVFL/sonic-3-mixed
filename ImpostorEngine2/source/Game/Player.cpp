@@ -466,7 +466,7 @@ void IPlayer::Create() {
 			}
 		}
 		else {
-			bool Tria = false;
+			bool Tria = true;
 			if (Tria) {
 				Sprites[0] = new ISprite("Player/Sonic1.gif", App);
 				Sprites[1] = new ISprite("Player/Sonic2.gif", App);
@@ -2451,7 +2451,7 @@ void IPlayer::Update() {
 					}
 					else if (Shield == ShieldType::Basic) {
 						// Do nothing special.
-						if (InputJumpHold && DropDashEnabled) {
+						if (DropDashEnabled) {
 							if (DropDashRev == 0) {
 								DropDashRev = 1;
 							}
