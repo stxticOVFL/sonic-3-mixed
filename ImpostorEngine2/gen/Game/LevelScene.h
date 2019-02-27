@@ -107,7 +107,8 @@ public:
     bool        Thremixed = false;
     bool        DeformObjects = false;
     bool        DeformPlayer = false;
-    Object**    Objects;
+    //Object**    Objects;
+    std::vector<Object*> Objects;
     int         ObjectCount = 0;
     int         ObjectNewCount = 0;
     Object**    ObjectsSolid;

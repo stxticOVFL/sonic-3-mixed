@@ -93,7 +93,8 @@ public:
 	bool        DeformObjects = false;
 	bool        DeformPlayer = false;
 
-	Object**    Objects;
+	//Object**    Objects;
+    std::vector<Object*> Objects;
 	int         ObjectCount = 0;
 	int         ObjectNewCount = 0;
 
@@ -271,7 +272,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	std::memset(Signal, 0, sizeof(Signal));
 
-	Objects = (Object**)calloc(2000, sizeof(Object*));
+	//Objects = (Object**)calloc(2000, sizeof(Object*));
+    Objects.reserve(2000);
 	ObjectsSolid = (Object**)calloc(1000, sizeof(Object*));
 	ObjectsSpring = (Object**)calloc(300, sizeof(Object*));
 	ObjectsEnemies = (Enemy**)calloc(300, sizeof(Enemy*));
@@ -1902,8 +1904,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 							obj->Attributes = (int*)calloc(ArgumentCount, sizeof(int));
 							memcpy(obj->Attributes, args, ArgumentCount * sizeof(int));
-
-							Objects[ObjectCount++] = obj;
+   
+                            ObjectCount++;
+                            Objects.push_back(obj);
+							//Objects[ObjectCount++] = obj;
 						}
 						break;
 					}
@@ -1995,7 +1999,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                         obj->Sprite = SpriteMapIDs[ID];
                         obj->SubType = SubType;
-                        Objects[ObjectCount++] = obj;
+                        ObjectCount++;
+                        Objects.push_back(obj);
+                        //Objects[ObjectCount++] = obj;
                     }
                     else {
                         ObjectListUnimpl[ID] = 0xFF;
@@ -2262,7 +2268,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								obj->Attributes = (int*)calloc(AttributeCount, sizeof(int));
 								memcpy(obj->Attributes, args, AttributeCount * sizeof(int));
 
-								Objects[ObjectCount++] = obj;
+                                ObjectCount++;
+                                Objects.push_back(obj);
+								//Objects[ObjectCount++] = obj;
 							}
 							break;
 					}
@@ -3077,7 +3085,9 @@ PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
 	ring->Active = true;
 	ring->Priority = true;
 	ring->MagnetizedTo = mag;
-	Objects[ObjectCount++] = ring;
+    Objects.push_back(ring);
+    ObjectCount++;
+	//Objects[ObjectCount++] = ring;
 	ObjectNewCount++;
 }
 
@@ -3289,7 +3299,9 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 
 		obj->SubType = SubType;
 		obj->Create();
-		Objects[ObjectCount++] = obj;
+        ObjectCount++;
+        Objects.push_back(obj);
+		//Objects[ObjectCount++] = obj;
 	}
 	return obj;
 }
@@ -3684,7 +3696,9 @@ PUBLIC void LevelScene::Update() {
                             obj->Active = true;
                         }
 
-                        Objects[ObjectCount++] = obj;
+						ObjectCount++;
+                        Objects.push_back(obj);
+                        //Objects[ObjectCount++] = obj;
                         Player->DebugObject = obj;
 
                         //App->Print(0, "Created Object %d via Debug Mode!", objId);
@@ -3752,8 +3766,10 @@ PUBLIC void LevelScene::Update() {
                             if (!obj->Active) {
                                 obj->Active = true;
                             }
-
-                            Objects[ObjectCount++] = obj;
+                            
+							ObjectCount++;
+                            Objects.push_back(obj);
+                            //Objects[ObjectCount++] = obj;
                             Player->DebugObject = obj;
                         } else {
                             Player->Hidden = false;
@@ -4354,7 +4370,9 @@ PUBLIC void LevelScene::AddSelfToRegistry(Object* obj, const char* where) {
 PUBLIC void LevelScene::CleanupObjects() {
 	// Clean up any un-needed Objects.
 
-	Object** RefreshObjects = (Object**)calloc(2000, sizeof(Object*));
+	//Object** RefreshObjects = (Object**)calloc(2000, sizeof(Object*));
+	std::vector<Object *> RefreshObjects;
+	RefreshObjects.reserve(2000);
 	int NewObjectCount = 0;
 	int NewerObjectNewCount = ObjectNewCount;
 
@@ -4370,7 +4388,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 	Object** RefreshObjectsBreakable = (Object**)calloc(300, sizeof(Object*));
 	int NewObjectBreakableCount = 0;
 
-	Object** UnrefreshedObjects = Objects;
+	std::vector<Object *> UnrefreshedObjects = Objects;
 	int OldObjectCount = ObjectCount;
 	int OldObjectNewCount = ObjectNewCount;
 
@@ -4399,7 +4417,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			}
 			continue;
 		}
-		RefreshObjects[NewObjectCount] = Objects[i];
+		RefreshObjects.push_back(Objects[i]);
 		NewObjectCount++;
 	}
 
@@ -4526,7 +4544,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		}
 	}
 
-	free(UnrefreshedObjects);
+	//free(UnrefreshedObjects);
 	free(UnrefreshedObjectsSolid);
 	free(UnrefreshedObjectsSpring);
 	free(UnrefreshedObjectsEnemies);
@@ -5757,7 +5775,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	}
 	DebugObjectIDCount = 0;
 
-	free(Objects);
+	//free(Objects);
 	free(ObjectsSolid);
 	free(ObjectsSpring);
 	free(ObjectsEnemies);
