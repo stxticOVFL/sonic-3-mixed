@@ -18,7 +18,7 @@ void MGZSmashingPillar::Create() {
     OGY = Y - 5 + 5;
     YSpeed = -0x50;
     Direction = true;
-    VisualLayer = 1;
+    VisualLayer = 0;
     Visible = false;
 }
 
