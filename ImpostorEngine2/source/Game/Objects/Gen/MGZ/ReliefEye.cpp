@@ -25,8 +25,12 @@ void ReliefEye::Update() {
 
 int ReliefEye::OnHit() {
     InvulnTimer = 0x20;
+    Invincible = true;
+    Harmful = false;
     HitCount--;
     if (HitCount == 0) {
+        Scene->LevelTriggerFlag |= 1 << SubType;
+        App->Print(0, "SubType %d", SubType);
         return OnDeath();
     }
 
@@ -49,6 +53,8 @@ void ReliefEye::HandleDamage() {
 }
 
 void ReliefEye::Render(int CamX, int CamY) {
+    if (InvulnTimer > 0 && (InvulnTimer & 1)) return;
+
     G->DrawSprite(Sprite, 3, 1, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 

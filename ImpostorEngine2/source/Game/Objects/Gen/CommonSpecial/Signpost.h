@@ -15,8 +15,6 @@ class Signpost;
 class Signpost: public Object {
 public:    
     
-    int SubX;
-    int SubY;
     int SpinSpeed;
     int Rot;
     bool Falling;

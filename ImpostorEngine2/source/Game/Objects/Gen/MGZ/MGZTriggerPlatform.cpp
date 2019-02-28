@@ -10,6 +10,7 @@ void MGZTriggerPlatform::Create() {
     Active = true;
     Priority = true;
     PlatformType = SubType >> 4;
+    TriggerID = SubType & 0xF;
     W = 64;
     H = 128;
     if (PlatformType == 0) {
@@ -23,7 +24,7 @@ void MGZTriggerPlatform::Create() {
 
 void MGZTriggerPlatform::Update() {
     if (PlatformType > 0) {
-        if (Scene->LevelTriggerFlag - 1 == (SubType & 0xF)) {
+        if ((Scene->LevelTriggerFlag >> TriggerID) & 1) {
             Scene->ShakeTimer = 0;
             if (FlipX) {
                 if (Y + (SubType & 0xF0) * 4 > InitialY) {
@@ -35,7 +36,7 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (Y == InitialY - (SubType & 0xF0) * 4) {
-                    Scene->LevelTriggerFlag &= 0xFFF0;
+                    Scene->LevelTriggerFlag &= (1 << TriggerID);
                 }
 
             }
@@ -49,19 +50,19 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (Y == InitialY + (SubType & 0xF0) * 4) {
-                    Scene->LevelTriggerFlag &= 0xFFF0;
+                    Scene->LevelTriggerFlag &= (1 << TriggerID);
                 }
 
             }
         }
 
-        if (Scene->LevelTriggerFlag - 1 != (SubType & 0xF) && Math::abs(X - Scene->Player->EZX) >= 0x1D0) {
+        if (((Scene->LevelTriggerFlag >> TriggerID) & 1) && Math::abs(X - Scene->Player->EZX) >= 0x1D0) {
             Y = InitialY;
         }
 
     }
     else {
-        if (Scene->LevelTriggerFlag - 1 == (SubType & 0xF)) {
+        if (((Scene->LevelTriggerFlag >> TriggerID) & 1)) {
             Scene->ShakeTimer = 0;
             if (FlipX) {
                 if (X > InitialX - 0x80) {
@@ -73,7 +74,7 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (X == InitialX - 0x80) {
-                    Scene->LevelTriggerFlag &= 0xFF0F;
+                    Scene->LevelTriggerFlag &= (1 << TriggerID);
                     Active = false;
                 }
 
@@ -88,7 +89,7 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (X == InitialX + 0x80) {
-                    Scene->LevelTriggerFlag &= 0xFFF0;
+                    Scene->LevelTriggerFlag &= (1 << TriggerID);
                     Active = false;
                 }
 

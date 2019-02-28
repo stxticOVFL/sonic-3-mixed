@@ -267,7 +267,7 @@ int Object::Swing_UpAndDown() {
     HasChanged = 1;
 
     YSpeed = NewYSpeed;
-    if (HasChanged) {
+    if (HasChanged) { 
         SwingCounter--;
         if (SwingCounter == -1) {
             SwingCounter = -2;

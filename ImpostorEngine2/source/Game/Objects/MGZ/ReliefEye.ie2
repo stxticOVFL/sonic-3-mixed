@@ -25,9 +25,14 @@ event Update() {
 }
 event OnHit() : int {
 	InvulnTimer = 0x20;
+	Invincible = true;
+	Harmful = false;
 
     HitCount--;
+
     if (HitCount == 0) {
+		Scene.LevelTriggerFlag |= 1 << SubType;
+		App.Print(0, "SubType %d", SubType);
 		return OnDeath();
     }
     return 0;
@@ -48,5 +53,7 @@ event HandleDamage() {
 }
 
 event Render(CamX:int, CamY:int) {
+	if (InvulnTimer > 0 && (InvulnTimer & 1)) return;
+
     G.DrawSprite(Sprite, 3, 1, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 }

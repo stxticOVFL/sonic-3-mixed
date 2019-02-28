@@ -584,7 +584,7 @@ PUBLIC void Scene_DataSelect::Render() {
 
 	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
-	/*  
+	/*   
 	G->DrawRectangle(0, 0, blackGirth, App->HEIGHT, 0x000000);
 	G->DrawRectangle(App->WIDTH - blackGirth, 0, blackGirth, App->HEIGHT, 0x000000);
 	// Triangles

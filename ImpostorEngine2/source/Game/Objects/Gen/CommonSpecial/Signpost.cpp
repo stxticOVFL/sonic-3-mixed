@@ -13,12 +13,10 @@ void Signpost::Create() {
     Priority = true;
     CurrentAnimation = int(Scene->Players[0]->Character);
     CleanupInactiveObject = true;
-    SubX = X << 16;
-    SubY = Y << 16;
     XSpeed = 0;
     YSpeed = 0;
     Frame = 0x00;
-    SpinSpeed = 0x600;
+    SpinSpeed = 0x400;
     Rot = 0;
     Falling = true;
     StartResults = false;
@@ -26,12 +24,8 @@ void Signpost::Create() {
 }
 
 void Signpost::Update() {
-    if (Falling) YSpeed += 0xC;
+    if (Falling) Gravity = 0xC;
     else Scene->Player->UnderwaterTimer = 1800;
-    SubX += XSpeed << 8;
-    SubY += YSpeed << 8;
-    X = SubX >> 16;
-    Y = SubY >> 16;
     if (X + 24 >= Scene->CameraX + App->WIDTH || X - 24 <= Scene->CameraX) {
         if (Falling) {
             XSpeed = -XSpeed;
@@ -39,41 +33,34 @@ void Signpost::Update() {
 
     }
 
-    for (int i = 0; i <= 8; i++)
+    for (int i = -16; i <= 8; i++)
 {
-        if (Scene->CollisionAt(SubX >> 16, Y + 24) || Y + 24 >= Scene->CameraY + App->HEIGHT) {
+        if (Scene->CollisionAt(X, Y + 24 + i) || Y + 24 + i >= Scene->CameraY + App->HEIGHT) {
             if (Falling) {
-                YSpeed = -YSpeed;
-                XSpeed = -XSpeed;
+                XSpeed = 0;
+                YSpeed = 0;
                 Falling = false;
                 Timer = 0x48;
+                Gravity = 0;
+                Y += i;
+                break;
             }
-            else {
-                YSpeed = 0;
-                XSpeed = 0;
-                Timer = 0;
-            }
-            SubY -= 0x10000;
-            SubY &= 0xFFFF0000;
-            Y = SubY >> 16;
+
         }
 
     }
     Rot += SpinSpeed;
-    if (Timer > 0 && !StartResults) {
-        Timer--;
-    }
+    if (Timer > 0) Timer--;
 
-    if (!Falling && Timer >= 0) {
-        Rot = 0x0;
-        SpinSpeed = 0;
+    if (((Rot >> 8) & 0xFF) == 0x80 && Timer == 0) {
         StartResults = true;
+        Timer = -1;
     }
 
     if (StartResults) {
         SpinSpeed = 0;
-        YSpeed = 0;
         XSpeed = 0;
+        YSpeed = 0;
         App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
         Scene->DoResults();
         Timer = -1;
@@ -122,7 +109,7 @@ int Signpost::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         XSpeed = Scene->Players[PlayerID]->XSpeed;
     }
 
-    SpinSpeed = 0xC00;
+    SpinSpeed = 0x800;
     return 1;
 }
 

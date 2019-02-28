@@ -17,6 +17,7 @@ void Relief::Create() {
     Object* Child;
     Child = Scene->AddNewObject(Obj_ReliefEye, SubType, X, Y, FlipX, false);
     Child->Sprite = Sprite;
+    Child->SubType = SubType;
 }
 
 void Relief::Render(int CamX, int CamY) {

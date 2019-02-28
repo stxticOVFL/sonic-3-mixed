@@ -4231,7 +4231,7 @@ void IPlayer::HandleMonitors() {
 
 				if (!obj->HitboxEnemy.Empty()) {
 					EnemyHitbox = obj->HitboxEnemy;
-					// 	// EnemyHitbox = EnemyHitbox.FlipX(obj->FlipX).FlipY(obj->FlipY);
+					// EnemyHitbox = EnemyHitbox.FlipX(obj->FlipX).FlipY(obj->FlipY);
 				}
 				else {
 					EnemyHitbox = { -obj->W / 2, obj->W / 2, -obj->H / 2, obj->H / 2 };

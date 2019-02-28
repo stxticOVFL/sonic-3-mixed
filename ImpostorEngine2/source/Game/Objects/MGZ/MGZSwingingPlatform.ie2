@@ -15,6 +15,9 @@ event Create() {
 
     W = 48;
     H = 24;
+
+	VisW = 48;
+	VisH = 64;
 }
 event Update() {
     LastX = X;

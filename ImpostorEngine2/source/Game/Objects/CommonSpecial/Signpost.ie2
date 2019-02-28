@@ -1,8 +1,6 @@
 //Fuck this object - Ducky
 //btw the signpost doesn't show the right side and idk how to work that :)
 
-var SubX:int;
-var SubY:int;
 var SpinSpeed:int;
 var Rot:int;
 var Falling:bool;
@@ -20,14 +18,11 @@ event Create() {
     
     CleanupInactiveObject = true;
 
-    SubX = X << 16;
-    SubY = Y << 16;
-
     XSpeed = 0;
     YSpeed = 0;
     Frame = 0x00;
 
-    SpinSpeed = 0x600;
+    SpinSpeed = 0x400;
     Rot = 0;
 
     Falling = true;
@@ -38,66 +33,46 @@ event Create() {
 
 event Update() {
     if (Falling)
-        YSpeed += 0xC;
+        Gravity = 0xC;
     else
         Scene.Player.UnderwaterTimer = 1800;
 
-    SubX += XSpeed << 8;
-    SubY += YSpeed << 8;
-
-    X = SubX >> 16;
-    Y = SubY >> 16;
-
-	if (X + 24 >= Scene.CameraX + App.WIDTH || X - 24 <= Scene.CameraX)
-	{
-		if (Falling)
-		{		
+	if (X + 24 >= Scene.CameraX + App.WIDTH || X - 24 <= Scene.CameraX) {
+		if (Falling) {		
 			XSpeed = -XSpeed;
 		}
 	}
 
-    for (var i:int = 0; i <= 8; i++) {
-        if (Scene.CollisionAt(SubX >> 16, Y + 24) || Y + 24 >= Scene.CameraY + App.HEIGHT) {
+    for (var i:int = -16; i <= 8; i++) {
+        if (Scene.CollisionAt(X, Y + 24 + i) || Y + 24 + i >= Scene.CameraY + App.HEIGHT) {
             if (Falling) {
-				YSpeed = -YSpeed;
-                XSpeed = -XSpeed;
+				XSpeed = 0;
+				YSpeed = 0;
                 Falling = false;
                 Timer = 0x48;
+				Gravity = 0;
+
+				Y += i;
+				break;
             }
-			else
-			{
-				//i don't know what I'm doing please just work
-			    YSpeed = 0;
-				XSpeed = 0;
-				Timer = 0;
-			}
-            SubY -= 0x10000;
-            SubY &= 0xFFFF0000;
-            Y = SubY >> 16;
         }
     }
 
     Rot += SpinSpeed;
 
-    if (Timer > 0 && !StartResults) {
+    if (Timer > 0)
         Timer--;
-    }
 
-	if (!Falling && Timer >= 0)
-	{
-		//PLEASE JUST WORK
-		//Rot = 0x80;
-		Rot = 0x0;
-		SpinSpeed = 0;
+	if (((Rot >> 8) & 0xFF) == 0x80 && Timer == 0) {
 		StartResults = true;
+		Timer = -1;
 	}
 
     // After 72 frames, or really just when the sign stops spinning
     if (StartResults) {
         SpinSpeed = 0;
-		//stop this fuck from moving
-		YSpeed = 0;
 		XSpeed = 0;
+		YSpeed = 0;
 				
         // Fade out level music
         App.Audio.RemoveMusic(Sound.SoundBank[0xFD]);
@@ -157,21 +132,17 @@ event Render(CamX:int, CamY:int) {
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-
     if (Scene.Players[PlayerID].Action != ActionType.Jumping)
         return 0;
-
     if (Scene.Players[PlayerID].YSpeed > 0)
         return 0;
-
     if (YSpeed < 0)
         return 0;
 
-    if (Falling)
-        {
-			YSpeed = -0x200;
-			XSpeed = Scene.Players[PlayerID].XSpeed;
-		}
-    SpinSpeed = 0xC00;
+    if (Falling) {
+		YSpeed = -0x200;
+		XSpeed = Scene.Players[PlayerID].XSpeed;
+	}
+	SpinSpeed = 0x800;
     return 1;
 }

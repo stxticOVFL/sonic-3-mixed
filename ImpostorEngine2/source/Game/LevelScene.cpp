@@ -2552,7 +2552,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 			obj->Create();
 		}
 		break;
-	case 3:
+	case 3: 
 		if (Act == 1) {
 			int X = 0x2F00;
 			int Y = 0xE60;
@@ -2561,9 +2561,9 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 			int PRIORITY = true;
 			int FLIPX = 0;
 			int FLIPY = 0;
-			ADD_OBJECT();
-			obj->Create();
-		}
+			// ADD_OBJECT();
+			// obj->Create();
+		} 
 		else {
 			int X = 0x3D00;
 			int Y = 0x720;

@@ -15,6 +15,8 @@ void MGZSwingingPlatform::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     W = 48;
     H = 24;
+    VisW = 48;
+    VisH = 64;
 }
 
 void MGZSwingingPlatform::Update() {
