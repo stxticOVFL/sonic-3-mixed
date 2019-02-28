@@ -42,6 +42,7 @@
 #include "CNZ/Balloon.h"			// 65BE2A3A
 #include "CNZ/HoverFan.h"			// 7C977754
 #include "CNZ/VacuumTube.h"			// 177568D6
+#include "CNZ/Bumper.h"			// 9DD277AF
 #include "CNZ/Bouncepad.h"			// 3B4DCB47
 #include "MGZ/MGZQuickMud.h"			// 43F8965E
 #include "Common/FloatingPlatform.h"			// C3C9288B
@@ -51,6 +52,7 @@
 #include "MGZ/Relief.h"			// FC346615
 #include "MGZ/MGZTriggerPlatform.h"			// 5809E61C
 #include "MGZ/MGZDashTrigger.h"			// FF451B7
+#include "MGZ/TopPlatform.h"			// C2A459B3
 #include "HCZ/HCZSnakeBlocks.h"			// 1DBC27C1
 #include "HCZ/SpinningColumn.h"			// 7DC95D09
 #include "HCZ/HCZSlide.h"			// BECC7360
@@ -144,6 +146,7 @@ enum {
     Obj_Balloon = 0x041,
     Obj_HoverFan = 0x046,
     Obj_VacuumTube = 0x048,
+    Obj_Bumper = 0x04A,
     Obj_Bouncepad = 0x04B,
     Obj_MGZQuickMud = 0x04F,
     Obj_FloatingPlatform = 0x051,
@@ -153,6 +156,7 @@ enum {
     Obj_Relief = 0x055,
     Obj_MGZTriggerPlatform = 0x057,
     Obj_MGZDashTrigger = 0x059,
+    Obj_TopPlatform = 0x05B,
     Obj_HCZSnakeBlocks = 0x067,
     Obj_SpinningColumn = 0x068,
     Obj_HCZSlide = 0x069,

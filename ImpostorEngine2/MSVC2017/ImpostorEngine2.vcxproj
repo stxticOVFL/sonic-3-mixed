@@ -79,6 +79,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Batbright.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\BatbrightParts.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bumper.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\HoverFan.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\VacuumTube.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Relief.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\ReliefEye.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Spiker.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\TopPlatform.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Test\Platform.cpp" />
     <ClCompile Include="..\source\Game\Player.cpp" />

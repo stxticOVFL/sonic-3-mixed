@@ -4,3 +4,5 @@ save.bin
 ImpostorEngine2.log
 .DS_Store
 .vscode/
+makeheaders.bin
+ie2_objtable.bin

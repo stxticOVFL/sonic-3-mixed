@@ -1,0 +1,44 @@
+object 0x4A;
+
+event Create() {
+    this.Active = true;
+    this.Priority = false;
+
+    this.W = 32;
+    this.H = 32;
+
+    this.CurrentAnimation = Sprite.FindAnimation("Bumper");
+}
+
+event Update() {
+}
+
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+    }
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    var Player:IPlayer = Scene.Players[PlayerID];
+    if (Player == 0) {
+        return false;
+    }
+
+    Player.XSpeed = Player.XSpeed < 0 ? 0x800 : -0x800;
+    Player.YSpeed = Player.YSpeed < 0 ? 0x800 : -0x800;
+		
+		    if (Player.Underwater)
+			{
+				Player.XSpeed >>= 1; // Divide by 2
+				Player.YSpeed >>= 1; // Divide by 2
+			}
+		Player.Ground = false;
+		Player.JumpVariable = 0;
+		
+        Sound.Play(Sound.SFX_BUMPER);
+
+    return true;
+}
