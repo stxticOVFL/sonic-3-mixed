@@ -125,7 +125,8 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     else if (HitFrom == CollideSide::BOTTOM && Rotation == 180) {
         Scene->Players[PlayerID]->YSpeed = SpringPower;
         Scene->Players[PlayerID]->Ground = false;
-        Scene->Players[PlayerID]->InputAlarm = 16;
+        if (SpringType) Scene->Players[PlayerID]->InputAlarm = 16;
+
         Scene->Players[PlayerID]->Action = ActionType::Jumping;
         Scene->Players[PlayerID]->SpringFlip = Twirl;
         Scene->Players[PlayerID]->AngleMode = 0;
