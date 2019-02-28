@@ -152,6 +152,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x59U:
             return new MGZDashTrigger();
             break;
+        case 0x5BU:
+            return new TopPlatform();
+            break;
         case 0x67U:
             return new HCZSnakeBlocks();
             break;
@@ -457,6 +460,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0xFF451B7U:
             return new MGZDashTrigger();
+            break;
+        case 0xC2A459B3U:
+            return new TopPlatform();
             break;
         case 0x1DBC27C1U:
             return new HCZSnakeBlocks();

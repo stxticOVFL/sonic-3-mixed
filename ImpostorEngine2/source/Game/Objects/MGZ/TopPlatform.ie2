@@ -1,0 +1,49 @@
+object 0x5B;
+
+var InUse:bool;
+var PlayerUsed:int;
+var XFriction:int;
+
+event Create() {
+    Active = true;
+    Priority = false;
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+    CurrentAnimation = 11;
+    W = 48;
+    H = 24;
+    InUse = false;
+    Gravity = 0x50;
+    PlayerUsed = -1;
+}
+
+event Update() {
+    if (PlayerUsed == -1) return;
+    Scene.Players[PlayerUsed].X = X;
+    Scene.Players[PlayerUsed].Y = Y - 24;
+    Scene.Players[PlayerUsed].Ground = true;
+    YSpeed = (Math.abs(Scene.Players[PlayerUsed].XSpeed) / 5) * -1;
+    XSpeed = Scene.Players[PlayerUsed].XSpeed / 7 + (XFriction / 2);
+    XFriction = XSpeed;
+    if (Math.abs(XSpeed) < 0x200) {
+        if (XSpeed > 0) {
+            XSpeed = 0x200;
+        }
+        else {
+            XSpeed = -0x200;
+        }
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (HitFrom == CollideSide.TOP && !InUse) {
+        InUse = true;
+        PlayerUsed = PlayerID;
+        Y -= 24;
+    }
+    return 1;
+}

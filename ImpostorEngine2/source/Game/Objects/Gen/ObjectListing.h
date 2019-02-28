@@ -51,6 +51,7 @@
 #include "MGZ/Relief.h"			// FC346615
 #include "MGZ/MGZTriggerPlatform.h"			// 5809E61C
 #include "MGZ/MGZDashTrigger.h"			// FF451B7
+#include "MGZ/TopPlatform.h"			// C2A459B3
 #include "HCZ/HCZSnakeBlocks.h"			// 1DBC27C1
 #include "HCZ/SpinningColumn.h"			// 7DC95D09
 #include "HCZ/HCZSlide.h"			// BECC7360
@@ -153,6 +154,7 @@ enum {
     Obj_Relief = 0x055,
     Obj_MGZTriggerPlatform = 0x057,
     Obj_MGZDashTrigger = 0x059,
+    Obj_TopPlatform = 0x05B,
     Obj_HCZSnakeBlocks = 0x067,
     Obj_SpinningColumn = 0x068,
     Obj_HCZSlide = 0x069,

@@ -113,6 +113,7 @@ PUBLIC void Level_MGZ::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x2F] = MGZObjectsSprite;
 	SpriteMapIDs[0x51] = MGZObjectsSprite;
 	SpriteMapIDs[0x52] = MGZObjectsSprite;
+	SpriteMapIDs[0x5B] = MGZObjectsSprite;
 	SpriteMapIDs[0x9B] = MGZObjectsSprite;
 	SpriteMapIDs[0x9C] = MGZObjectsSprite;
 	SpriteMapIDs[0x9D] = MGZObjectsSprite;
