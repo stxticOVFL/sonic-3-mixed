@@ -2041,14 +2041,36 @@ void IPlayer::Update() {
 				}
 				else if (Action == ActionType::InStream || Action == ActionType::InStreamGrab) {
 				}
-				else if (MightyStomping) {
-					MightyStomping = false;
+				else if (Action == ActionType::MightyStomp) {
+					Action = ActionType::Jumping;
 					//GroundSpeed = 0;
 					//XSpeed = 0;
 					Sound::Play(Sound::SFX_MIGHTY_LAND);
 					Ground = false;
-					YSpeed = -0x350;
-					JumpVariable = 1;
+
+					int value = 0x100;
+					if (!Underwater)
+						value = 0x200;
+
+					XSpeed = (-(value + 0x38) * IMath::sinHex(ang)) >> 16;
+					YSpeed = (-(value + 0x38) * IMath::cosHex(ang)) >> 16;
+					JumpVariable = 0;
+					Scene->ShakeTimer = 14;
+
+					Explosion* landdust = Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+					landdust->XSpeed = 0x100;
+					landdust = Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+					landdust->XSpeed = -0x100;
+
+					landdust = Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+					landdust->XSpeed = 0x180;
+					landdust = Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+					landdust->XSpeed = -0x180;
+
+					landdust = Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+					landdust->XSpeed = 0x200;
+					landdust = Scene->AddExplosion(Scene->ExplosionSprite, 0, false, X, Y + H / 2 - 4, VisualLayer);
+					landdust->XSpeed = -0x200;
 				}
 				else {
 					if (Angle >= 0xF0 && Angle <= 0xFF)
@@ -2477,11 +2499,13 @@ void IPlayer::Update() {
 				if (YSpeed < 0)
 					YSpeed = 0;
 			}
-			else if (Character == CharacterType::Mighty && !MightyStomping) {
+			else if (Character == CharacterType::Mighty && JumpVariable == 1) {
 				ChangeAnimation((int)AnimationEnum::MightyDrillDrive);
-				XSpeed = 0;
-				YSpeed = 0x800;
-				MightyStomping = true;
+				XSpeed >>= 1;
+				YSpeed = 0xC00;
+				if (Underwater)
+					YSpeed = 0x800;
+				Action = ActionType::MightyStomp;
 				Sound::Play(Sound::SFX_MIGHTY_DRILL);
 			}
 			else if (Character == CharacterType::Ray) {
@@ -2871,9 +2895,6 @@ void IPlayer::LateUpdate() {
 		}
 
 		// Overriding animations
-		if (Character == CharacterType::Mighty && MightyStomping) {
-			ChangeAnimation((int)AnimationEnum::MightyDrillDrive);
-		}
 		if (Action == ActionType::Peril) {
 			if ((int)AnimationEnum::Flume) {
 				ChangeAnimation((int)AnimationEnum::Flume + superflag);
@@ -3012,6 +3033,12 @@ void IPlayer::LateUpdate() {
 			else {
 				ChangeAnimation((int)AnimationEnum::Fly);
 			}
+		}
+		else if (Action == ActionType::MightyStomp) {
+			ChangeAnimation((int)AnimationEnum::MightyDrillDrive);
+		}
+		else if (Action == ActionType::MightyUncurl) {
+			ChangeAnimation(48); //(int)AnimationEnum::Mighty);
 		}
 
 		if (!Ground && (CurrentAnimation == 5 + superflag || CurrentAnimation == 6 + superflag || CurrentAnimation == 7 + superflag)) {
@@ -3726,7 +3753,7 @@ void IPlayer::Render(int CamX, int CamY) {
 		ISprite::Animation animation = Sprites[0]->Animations[CurrentAnimation];
 		ISprite::AnimFrame currentFrame = animation.Frames[CurrentFrame / 0x100];
 
-		if ((SuperForm && Thremixed) || HyperForm || (SpeedSneakersActive && Thremixed)) {
+		if ((SuperForm && Thremixed) || HyperForm || (SpeedSneakersActive && Thremixed) || Action == ActionType::MightyStomp) {
 			for (int i = -5 - 8; i <= -5; i += 4) {
 				G->SetDrawAlpha(0xFF + i * 0xC);
 				PlayerStatus status = PlayerStatusTable[(PlayerStatusTableIndex + 0x20 + i) & 0x1F];
@@ -3856,6 +3883,16 @@ void IPlayer::Hurt(int x, bool spike) {
 		SuperForm || HyperForm ||
 		Action == ActionType::Transform)
 		return;
+
+	if (Character == CharacterType::Mighty && Action == ActionType::Jumping) {
+		Action = ActionType::MightyUncurl;
+		YSpeed = -YSpeed;
+		XSpeed = 0x360 * DisplayFlip;
+
+		// Vibrate(VibrationType::DamageSmall);
+		Sound::Play(Sound::SFX_MIGHTY_UNSPIN);
+		return;
+	}
 
 	ObjectControlled = 0;
 	DisplayAngle = 0;
@@ -4236,6 +4273,9 @@ void IPlayer::HandleMonitors() {
 					if (obj->Y < EZY)
 						Bounceable |= Action == ActionType::Fly && !Underwater;
 
+					Bounceable |= Action == ActionType::Jumping && Character == CharacterType::Mighty && true;
+					Bounceable |= Action == ActionType::MightyStomp;
+
 					if (obj->BounceOffShield && Bounceable) {
 						int angle = IMath::atanHex(EZX - int(obj->X), EZY - int(obj->Y));
 						obj->XSpeed = (-0x800 * IMath::cosHex(angle)) >> 16;
@@ -4260,6 +4300,7 @@ void IPlayer::HandleMonitors() {
 					IsAttacking |= HyperForm;
 					IsAttacking |= Shield == ShieldType::Instashield;
 					IsAttacking |= Invincibility == InvincibilityType::Full;
+					IsAttacking |= Action == ActionType::MightyStomp;
 					IsAttackingAbsolute = IsAttacking;
 
 					if ((obj->X < EZX && DisplayFlip < 0) ||
@@ -4305,6 +4346,10 @@ void IPlayer::HandleMonitors() {
 					if (obj->Boss) {
 						if (IsAttacking) {
 							Sound::Play(Sound::SFX_BOSSHIT);
+
+							if (Action == ActionType::MightyStomp)
+								goto FinishBadnikBounce;
+
 							Vibrate(VibrationType::ImpactLarge);
 							if (Ground) {
 								GroundSpeed = -GroundSpeed;
@@ -4338,6 +4383,10 @@ void IPlayer::HandleMonitors() {
 						if (EnemyCombo < 15)
 							EnemyCombo++;
 						Vibrate(VibrationType::ImpactLarge);
+
+						if (Action == ActionType::MightyStomp)
+							goto FinishBadnikBounce;
+
 						if (EZY < obj->Y && YSpeed > 0) {
 							YSpeed = -YSpeed;
 						}
@@ -4479,15 +4528,17 @@ void IPlayer::HandleMonitors() {
 					Connect |= (!!(Side & (int)CollideSide::BOTTOM) && (hitFrom == CollideSide::BOTTOM && YSpeed < 0));
 				}
 
-				if (Connect && Action == ActionType::Jumping) {
+				if (Connect && (Action == ActionType::Jumping || Action == ActionType::MightyStomp)) {
 					if (EZY < obj->Y + 8) { // add "|| Settings_SonicKnucklesMonitorBehavior"
 						if (obj->OnBreakVertical(PlayerID, hitFrom) == 1) {
-							if (YSpeed > 0x600)
-								Vibrate(VibrationType::ImpactLarge);
-							else
-								Vibrate(VibrationType::ImpactSmall);
+							if (Action != ActionType::MightyStomp) {
+								if (YSpeed > 0x600)
+									Vibrate(VibrationType::ImpactLarge);
+								else
+									Vibrate(VibrationType::ImpactSmall);
 
-							YSpeed = -YSpeed;
+								YSpeed = -YSpeed;
+							}
 						}
 					}
 					else if (hitFrom == CollideSide::BOTTOM) {

@@ -81,6 +81,7 @@ enum class ActionType {
 	RayGlide,
 
 	MightyStomp,
+	MightyUncurl,
 
 	Climb,
 	ClimbRise,

@@ -19,6 +19,8 @@ public:
 
 PUBLIC Explosion::Explosion() {
     AutoAnimate = true;
+	XSpeed = 0;
+	YSpeed = 0;
 }
 
 PUBLIC void Explosion::OnAnimationFinish() {
@@ -27,6 +29,7 @@ PUBLIC void Explosion::OnAnimationFinish() {
 
 PUBLIC void Explosion::Update() {
     Animate();
+	MoveSprite();
 }
 
 PUBLIC void Explosion::Render(int CamX, int CamY) {
