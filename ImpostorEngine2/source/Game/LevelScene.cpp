@@ -1869,6 +1869,67 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							else
 								SubType |= 0x40;
 						}
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_SPECIALRING:
+					{
+						int ID = 0x85;
+						int X = X2;
+						int Y = Y2;
+						int SubType = args[0];
+						bool FLIPX = false;
+						bool FLIPY = false;
+						bool PRIORITY = false;
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_SPIKES:
+					{
+						int ID = 0x08;
+						int X = X2;
+						int Y = Y2;
+						int SubType = 0x00;
+						bool FLIPX = false;
+						bool FLIPY = false;
+						bool PRIORITY = false;
+
+						if (args[1] == 1)
+							SubType |= 0x02;
+						if (args[0] == 2) {
+							SubType |= 0x40;
+							FLIPX = true;
+						}
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_STARPOST:
+					{
+						int ID = Obj_StarPost;
+						int X = X2;
+						int Y = Y2;
+						int SubType = args[0];
+
+						bool FLIPX = false;
+						bool FLIPY = false;
+						bool PRIORITY = false;
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_RING:
+					{
+						ObjectProp op;
+						op.X = X2;
+						op.Y = Y2;
+						op.ID = 0xFF;
+						op.LoadFlag = true;
+
+						RingProps[RingPropCount++] = op;
+						break;
 					}
 
 					case OBJ_MONITOR:
@@ -1896,7 +1957,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								//ID--;
 							//obj->Sprite = SpriteMapIDs[ID];
 
-							if (objHash == 0xB3C47F67U) {
+							if (objHash == 0xBDE7E33AU) {
 								obj->Sprite = ItemsSprite;
 							}
 

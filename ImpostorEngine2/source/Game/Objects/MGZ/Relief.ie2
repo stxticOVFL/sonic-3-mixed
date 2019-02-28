@@ -17,7 +17,6 @@ event Create() {
     var Child:Object;
     Child = Scene.AddNewObject(Obj_ReliefEye, SubType, X, Y, FlipX, false);
     Child.Sprite = Sprite;
-    Scene.AddSelfToRegistry(Child, "Enemies");
 }
 
 event Render(CamX:int, CamY:int) {

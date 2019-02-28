@@ -334,7 +334,23 @@ PUBLIC void Scene_DataSelect::Update() {
 				switch (SaveGame::Savefiles[i].LastZoneID) {
 					LevelScene* ls;
 					case 0:
-					case 7:
+						App->NextScene = new Level_AIZ(App, G, 1); 
+						break; 
+					case 1:
+						App->NextScene = new Level_HCZ(App, G, 1);
+						break;
+					case 2:
+						App->NextScene = new Level_MGZ(App, G, 1);
+						break;
+					case 3:
+						App->NextScene = new Level_CNZ(App, G, 1);
+						break;
+					case 4:
+						App->NextScene = new Level_ICZ(App, G, 1);
+						break;
+					case 5:
+						App->NextScene = new Level_LBZ(App, G, 1);
+						break;
 					default:
 						SaveGame::CurrentEmeralds = 0x0000;
 						ls = new LevelScene(App, G);
@@ -352,24 +368,6 @@ PUBLIC void Scene_DataSelect::Update() {
 						sprintf(ls->LevelName, "BENT LETTUCE");
 						sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
 						App->NextScene = ls;
-						break;
-					case 10: 
-						App->NextScene = new Level_AIZ(App, G, 1); 
-						break; 
-					case 1:
-						App->NextScene = new Level_HCZ(App, G, 1);
-						break;
-					case 2:
-						App->NextScene = new Level_MGZ(App, G, 1);
-						break;
-					case 3:
-						App->NextScene = new Level_CNZ(App, G, 1);
-						break;
-					case 4:
-						App->NextScene = new Level_ICZ(App, G, 1);
-						break;
-					case 5:
-						App->NextScene = new Level_LBZ(App, G, 1);
 						break;
 				}
 
@@ -520,69 +518,83 @@ PUBLIC void Scene_DataSelect::Update() {
 PUBLIC void Scene_DataSelect::Render() {
 	G->SetFilter(IE_FILTER_FADEABLE);
 
+	int cenX = App->WIDTH / 2;
+	int cenY = App->HEIGHT / 2;
+
 	// BG
 	G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0xF0F0F0);
 
 	// Zigzags
-	int pX = 186 - 5;
+	int pX = cenX - (260 - 186) - 5;
 	int pY = 223 - 5;
-	G->SetClip(App->WIDTH - 293, App->HEIGHT - 60, 293, 60);
+	G->SetClip(0, App->HEIGHT - 60, 293, 60);
 	G->DrawSprite(MenuSprite, 16, 0, pX - (FrameZigzag / 4), pY - (FrameZigzag / 4), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 0, pX - (FrameZigzag / 4) + 40, pY - (FrameZigzag / 4) + 40, 0, IE_NOFLIP);
 	G->ClearClip();
 
-	G->SetClip(131, 0, 100, 84);
-	pX = 180 + FrameZigzagBlue / 4;
+	G->SetClip(cenX - (260 - 131), 0, 100, 84);
+	pX = cenX - (260 - 180) + FrameZigzagBlue / 4;
 	pY = 32 + FrameZigzagBlue / 4;
 	G->DrawSprite(MenuSprite, 16, 1, pX, pY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 1, pX - 110, pY - 110, 0, IE_NOFLIP);
 	G->ClearClip();
 
-	pX = 322 + FrameZigzagRed / 4;
+	pX = cenX - (260 - 322) + FrameZigzagRed / 4;
 	pY = 80 - FrameZigzagRed / 4;
 	G->DrawSprite(MenuSprite, 16, 2, pX, pY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 2, pX - 117, pY + 117, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 2, pX - 234, pY + 234, 0, IE_NOFLIP);
 
-	/// Decorations
+	// Decorations
 	int yup;
+
 	// Red/Black Ovals
 	yup = IMath::sinHex(FrameCircle);
-	G->DrawSprite(MenuSprite, 11, 0, 116 + (yup >> 14), 25, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 11, 1, 116 - (yup >> 14), 25, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 11, 0, cenX - (260 - 116) + (yup >> 14), 25, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 11, 1, cenX - (260 - 116) - (yup >> 14), 25, 0, IE_NOFLIP);
 	// Green/Black Ovals
 	yup = IMath::sinHex(FrameCircle * 2 + 0x35);
-	G->DrawSprite(MenuSprite, 11, 2, 246 + (yup >> 14), 185, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 11, 3, 246 - (yup >> 14), 185, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 11, 2, cenX - (260 - 246) + (yup >> 14), 185, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 11, 3, cenX - (260 - 246) - (yup >> 14), 185, 0, IE_NOFLIP);
 	// Dotted circles
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, 24, FrameCircle, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 15, 0, App->WIDTH, App->HEIGHT - 24, FrameCircle, IE_NOFLIP);
+
 	// Dotted lines
 	yup = IMath::sinHex(FrameCircle * 2 + 0x29);
-	G->DrawSprite(MenuSprite, 14, 0, 323 - (yup >> 14), 94 + (yup >> 13), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 14, 1, 317 + (yup >> 14), 88 - (yup >> 13), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 14, 0, cenX - (260 - 323) - (yup >> 14), 94 + (yup >> 13), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 14, 1, cenX - (260 - 317) + (yup >> 14), 88 - (yup >> 13), 0, IE_NOFLIP);
 
 	// Diamonds
 	yup = IMath::sinHex(FrameCircle * 2 + 0x37);
-	G->DrawSprite(MenuSprite, 12, 2, 134, 131 + (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 12, 1, 124, 131 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 12, 0, 114, 131 + (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 12, 2, cenX - (260 - 134), 131 + (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 12, 1, cenX - (260 - 124), 131 - (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 12, 0, cenX - (260 - 114), 131 + (yup >> 15), 0, IE_NOFLIP);
 	// Tilted Squares
-	G->DrawSprite(MenuSprite, 13, 0, 253, 51 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 13, 2, 265, 47 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 13, 1, 259, 49 + (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 0, cenX - (260 - 253), 51 - (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 2, cenX - (260 - 265), 47 - (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 1, cenX - (260 - 259), 49 + (yup >> 15), 0, IE_NOFLIP);
+
+	int blackGirth = 32;
 
 	// Black
 	G->DrawSprite(MenuSprite, 1, 0, App->WIDTH - 424, 0, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 1, 1, App->WIDTH - 424, App->HEIGHT, 0, IE_NOFLIP);
-	// G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
+	//G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
+
 	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
+	/*  
+	G->DrawRectangle(0, 0, blackGirth, App->HEIGHT, 0x000000);
+	G->DrawRectangle(App->WIDTH - blackGirth, 0, blackGirth, App->HEIGHT, 0x000000);
+	// Triangles
+	for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, blackGirth, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
+	for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, App->WIDTH - blackGirth, i * 20 - (frame >> 1), 0, IE_FLIPX);
+	//*/
+
 	// Menu Title
 	G->DrawSprite(MenuSprite, 9, 1, App->WIDTH, 12, 0, IE_NOFLIP);
 	//G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
-	/// Triangles
-	// for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, 96, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
 
 
 	// For shape masking, make a separate framebuffer and when applying pixel, compare to that buffer

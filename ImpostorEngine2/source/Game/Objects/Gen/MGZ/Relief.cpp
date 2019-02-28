@@ -17,7 +17,6 @@ void Relief::Create() {
     Object* Child;
     Child = Scene->AddNewObject(Obj_ReliefEye, SubType, X, Y, FlipX, false);
     Child->Sprite = Sprite;
-    Scene->AddSelfToRegistry(Child, "Enemies");
 }
 
 void Relief::Render(int CamX, int CamY) {

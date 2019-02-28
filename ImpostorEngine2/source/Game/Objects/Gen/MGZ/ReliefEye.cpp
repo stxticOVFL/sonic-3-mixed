@@ -15,6 +15,7 @@ void ReliefEye::Create() {
     Timer = 0;
     Radius = 8;
     VisualLayer = 1;
+    Boss = true;
 }
 
 void ReliefEye::Update() {
@@ -23,7 +24,7 @@ void ReliefEye::Update() {
 }
 
 int ReliefEye::OnHit() {
-    Timer = 0x20;
+    InvulnTimer = 0x20;
     HitCount--;
     if (HitCount == 0) {
         HitCount = -1;
