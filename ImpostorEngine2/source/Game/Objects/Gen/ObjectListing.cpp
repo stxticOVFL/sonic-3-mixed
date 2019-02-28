@@ -125,6 +125,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x48U:
             return new VacuumTube();
             break;
+        case 0x4AU:
+            return new Bumper();
+            break;
         case 0x4BU:
             return new Bouncepad();
             break;
@@ -433,6 +436,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x177568D6U:
             return new VacuumTube();
+            break;
+        case 0x9DD277AFU:
+            return new Bumper();
             break;
         case 0x3B4DCB47U:
             return new Bouncepad();

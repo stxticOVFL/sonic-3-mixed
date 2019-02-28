@@ -424,9 +424,9 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
         SpriteMapIDs[0x0D] = CNZObjectsSprite;
         SpriteMapIDs[0x0F] = CNZObjectsSprite;
     	SpriteMapIDs[0x2F] = CNZObjectsSprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
     	SpriteMapIDs[0x34] = ObjectsSprite;
         SpriteMapIDs[0x35] = CNZObjectsSprite;
+        SpriteMapIDs[0x4A] = CNZObjectsSprite;
 
     	SpriteMapIDs[0x51] = CNZObjectsSprite;
         SpriteMapIDs[0xA5] = CNZObjectsSprite;
@@ -444,9 +444,9 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
         SpriteMapIDs[0x0D] = CNZObjectsSprite;
         SpriteMapIDs[0x0F] = CNZObjectsSprite;
     	SpriteMapIDs[0x2F] = CNZObjectsSprite;
-    	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
     	SpriteMapIDs[0x34] = ObjectsSprite;
         SpriteMapIDs[0x35] = CNZObjectsSprite;
+		SpriteMapIDs[0x35] = CNZObjectsSprite;
 
     	SpriteMapIDs[0x51] = CNZObjectsSprite;
         SpriteMapIDs[0x8C] = CNZObjectsSprite;
@@ -471,7 +471,7 @@ PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
         CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Rising Platform.bin");
         CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Trap Door.bin");
         CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Ball.bin");
+		CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Ball.bin");
         CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Base.bin");
         CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Bumper.bin");
         CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Clamer.bin");

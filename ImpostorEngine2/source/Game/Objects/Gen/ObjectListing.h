@@ -42,6 +42,7 @@
 #include "CNZ/Balloon.h"			// 65BE2A3A
 #include "CNZ/HoverFan.h"			// 7C977754
 #include "CNZ/VacuumTube.h"			// 177568D6
+#include "CNZ/Bumper.h"			// 9DD277AF
 #include "CNZ/Bouncepad.h"			// 3B4DCB47
 #include "MGZ/MGZQuickMud.h"			// 43F8965E
 #include "Common/FloatingPlatform.h"			// C3C9288B
@@ -145,6 +146,7 @@ enum {
     Obj_Balloon = 0x041,
     Obj_HoverFan = 0x046,
     Obj_VacuumTube = 0x048,
+    Obj_Bumper = 0x04A,
     Obj_Bouncepad = 0x04B,
     Obj_MGZQuickMud = 0x04F,
     Obj_FloatingPlatform = 0x051,
