@@ -57,6 +57,7 @@ public:
 #include <Engine/IStreamer.h>
 #include <Engine/IResources.h>
 #include "Utils/gifdec.h"
+#include <algorithm>
 
 PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     IResource* res = IResources::Load(filename, true);
@@ -315,13 +316,25 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
     IResources::Close(SpriteFile);
     // printf("\n");
 }
-PUBLIC int  ISprite::FindAnimation(const char* animname) {
+PUBLIC int ISprite::FindAnimation(const char* animname) {
     for (int a = 0; a < AnimCount; a++)
         if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name, animname))
             return a;
 
     return -1;
 }
+PUBLIC int ISprite::FindAnimation(const char* animname, const bool dir) {
+    if (dir) return FindAnimation(animname);
+    vector<Animation> Reversed = Animations;
+    std::reverse(Reversed.begin(), Reversed.end());
+
+    for (int a = 0; a < AnimCount; a++)
+        if (Reversed[a].Name[0] == animname[0] && !strcmp(Reversed[a].Name, animname))
+            return a;
+
+    return -1;
+}
+
 PUBLIC void ISprite::LinkAnimation(vector<Animation> ani) {
     Animations = ani;
 }
