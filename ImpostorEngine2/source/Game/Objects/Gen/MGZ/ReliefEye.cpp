@@ -27,8 +27,7 @@ int ReliefEye::OnHit() {
     InvulnTimer = 0x20;
     HitCount--;
     if (HitCount == 0) {
-        HitCount = -1;
-        return 0;
+        return OnDeath();
     }
 
     return 0;
@@ -47,12 +46,6 @@ void ReliefEye::HandleDamage() {
         }
     }
 
-    if (HitCount < 0) {
-        OnDeath();
-    }
-
-    XSpeed = 0;
-    YSpeed = 0;
 }
 
 void ReliefEye::Render(int CamX, int CamY) {
