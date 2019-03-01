@@ -11,6 +11,9 @@ void Bumper::Create() {
     this->Priority = false;
     this->W = 32;
     this->H = 32;
+    ForceX = 0;
+    ForceY = 0;
+    ForcePower = 0;
     this->CurrentAnimation = Sprite->FindAnimation("Bumper");
 }
 
@@ -33,8 +36,15 @@ int Bumper::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         return false;
     }
 
-    Player->XSpeed = Player->XSpeed < 0 ? 0x800 : -0x800;
-    Player->YSpeed = Player->YSpeed < 0 ? 0x800 : -0x800;
+    ForceX = Player->X;
+    ForceY = Player->Y;
+    ForceX -= X;
+    ForceY -= Y;
+    ForcePower = Math::atanHex(ForceX, ForceY);
+    ForceX = Math::cosHex(ForcePower);
+    ForceY = Math::sinHex(ForcePower);
+    Player->XSpeed = ForceX >> 5;
+    Player->YSpeed = ForceY >> 5;
     if (Player->Underwater) {
         Player->XSpeed >>= 1;
         Player->YSpeed >>= 1;

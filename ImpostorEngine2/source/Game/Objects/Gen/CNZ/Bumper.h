@@ -15,6 +15,9 @@ class Bumper;
 class Bumper: public Object {
 public:    
     
+    int ForceX;
+    int ForceY;
+    int ForcePower;
     
     void Create();
     void Update();

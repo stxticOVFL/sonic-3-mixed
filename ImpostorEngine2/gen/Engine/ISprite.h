@@ -69,7 +69,8 @@ public:
     void UpdatePalette();
     void LinkPalette(ISprite* other);
     void LoadAnimation(const char* filename);
-    int  FindAnimation(const char* animname);
+    int FindAnimation(const char* animname);
+    int FindAnimation(const char* animname, const bool dir);
     void LinkAnimation(vector<Animation> ani);
     void Cleanup();
 };
