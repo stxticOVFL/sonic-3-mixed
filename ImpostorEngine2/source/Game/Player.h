@@ -303,7 +303,7 @@ public:
 
 	int                 SpeedSneakersTimer = 0;
 	bool                SpeedSneakersActive = false;
-
+	
 	int                 ShieldAnimation = 0;
 	bool                ShieldUsable = true;
 	bool                ShieldAction = false;

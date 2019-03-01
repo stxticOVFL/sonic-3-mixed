@@ -18,9 +18,11 @@ public:
     bool InUse;
     int PlayerUsed;
     float XFriction;
+    IPlayer* Player;
     
     void Create();
     void Update();
+    void MoveSprite();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
