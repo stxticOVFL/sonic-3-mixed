@@ -22,21 +22,34 @@ void TopPlatform::Create() {
 void TopPlatform::Update() {
     if (PlayerUsed == -1) return;
 
-    Scene->Players[PlayerUsed]->X = X;
-    Scene->Players[PlayerUsed]->Y = Y - 24;
-    Scene->Players[PlayerUsed]->Ground = true;
-    YSpeed = (Math::abs(Scene->Players[PlayerUsed]->XSpeed) / 5) * -1;
-    XSpeed = Scene->Players[PlayerUsed]->XSpeed / 7 + (XFriction / 2);
-    XFriction = XSpeed;
-    if (Math::abs(XSpeed) < 0x200) {
-        if (XSpeed > 0) {
-            XSpeed = 0x200;
-        }
-        else {
-            XSpeed = -0x200;
-        }
+    IPlayer* Player = Scene->Players[PlayerUsed];
+    if (Player->Action == ActionType::Hurt || Player->InputJump) {
+        Gravity = 0xFF;
+        PlayerUsed = -1;
+        InUse = false;
     }
 
+    Player->SubX = SubX;
+    Player->SubY = (Y - 32) << 16;
+    Player->Ground = true;
+    YSpeed = (Math::abs(Player->XSpeed) / 3) * -1;
+    if (Math::abs(XSpeed / 7 + (XFriction / 1.1)) > 0x250) {
+        XSpeed = XSpeed > 0 ? 0x250 : -0x250;
+        XFriction /= 1.1;
+    }
+    else {
+        XSpeed = Player->XSpeed / 7 + (XFriction / 1.1);
+        XFriction = XSpeed;
+    }
+    if (Player->Action == ActionType::CrouchDown) {
+        Gravity = 0xE0;
+    }
+    else if (Player->Action == ActionType::LookUp) {
+        Gravity = -0x40;
+    }
+    else {
+        Gravity = 0x50;
+    }
     Object::Update();
 }
 
@@ -48,7 +61,7 @@ int TopPlatform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (HitFrom == CollideSide::TOP && !InUse) {
         InUse = true;
         PlayerUsed = PlayerID;
-        Y -= 24;
+        Y -= 2;
     }
 
     return 1;

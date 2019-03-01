@@ -17,7 +17,7 @@ public:
     
     bool InUse;
     int PlayerUsed;
-    int XFriction;
+    float XFriction;
     
     void Create();
     void Update();
