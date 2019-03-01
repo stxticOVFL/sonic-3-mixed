@@ -474,6 +474,9 @@ public:
     Rect     HitboxSolid;
 	
     bool     Pushable = false;
+	int      PushMaxLeft = 0;
+	int      PushMaxRight = 0;
+	CollideSide PushableSide = CollideSide::SIDES;
 	// bool     Climbable = false;
 
     bool     BounceOffShield = false;
@@ -506,7 +509,7 @@ public:
 
     virtual int  OnTouchHitbox(int) { return 0; };
 
-    virtual int  OnPush(int, int) { return 0; };
+	virtual void OnPush(int PlayerID, int HitFrom);
     virtual int  OnGrabbed(int) { return 0; };
     virtual int  OnBreakHorizontal(int, int) { return 0; };
     virtual int  OnBreakVertical(int, int) { return 0; };

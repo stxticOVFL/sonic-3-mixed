@@ -196,6 +196,7 @@ public:
 
 	bool Thremixed = true;
 	bool OCMode = false;
+	int  PushSpeed = 0x1000;
 
 	int SensorA = 20;
 	int SensorB = 20;

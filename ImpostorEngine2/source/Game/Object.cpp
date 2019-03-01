@@ -30,6 +30,28 @@ void Object::UpdateSubType() {
 
 }
 
+void Object::OnPush(int PlayerID, int HitFrom) {
+	if (((Scene->Players[PlayerID]->WallLeft && Scene->Players[PlayerID]->InputLeft) ||
+		(Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip < 0)) && HitFrom == CollideSide::RIGHT && (HitFrom & (int)PushableSide)) {
+		// if (X <= InitialX - PushMaxLeft) return;
+
+		X = SubX >> 16;
+		SubX -= Scene->Players[PlayerID]->PushSpeed;
+
+		Scene->Players[PlayerID]->X = X + W / 2 + Scene->Players[PlayerID]->W / 2 - 2;
+	}
+
+	if (((Scene->Players[PlayerID]->WallRight && Scene->Players[PlayerID]->InputRight) ||
+		(Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip > 0)) && HitFrom == CollideSide::LEFT && (HitFrom & (int)PushableSide)) {
+		// if (X >= InitialX + PushMaxRight) return;
+
+		X = SubX >> 16;
+		SubX += Scene->Players[PlayerID]->PushSpeed;
+
+		Scene->Players[PlayerID]->X = X - W / 2 - Scene->Players[PlayerID]->W / 2 + 2;
+	}
+}
+
 uint8_t Object::GetSubTypeIncrement() {
 	return 1;
 }

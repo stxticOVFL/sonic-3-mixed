@@ -24,6 +24,12 @@ void Platform::Create() {
     Angle = Attributes[8];
     if (Collision == 0) SolidTop = true;
     else Solid = true;
+    if (Type == PlatformType::PUSHABLE) {
+        Pushable = true;
+        PushMaxLeft = Speed * 16;
+        PushMaxRight = Speed * 16;
+    }
+
     switch (FrameID) {
         case 0:
         W = 32;
@@ -69,28 +75,4 @@ void Platform::Render(int CamX, int CamY) {
         G->DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
     }
     }
-
-int Platform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
-    if (PlayerID != 0) return 0;
-
-    if (Type != PlatformType::PUSHABLE) return 0;
-
-    if (((Scene->Players[PlayerID]->WallLeft && Scene->Players[PlayerID]->InputLeft) || (Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip < 0)) && HitFrom == CollideSide::RIGHT) {
-        if (X <= InitialX - Speed * 16) return 0;
-
-        X = SubX >> 16;
-        SubX -= 0x1000;
-        Scene->Players[PlayerID]->X = X + W / 2 + Scene->Players[PlayerID]->W / 2 - 2;
-    }
-
-    if (((Scene->Players[PlayerID]->WallRight && Scene->Players[PlayerID]->InputRight) || (Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip > 0)) && HitFrom == CollideSide::LEFT) {
-        if (X >= InitialX + Speed * 16) return 0;
-
-        X = SubX >> 16;
-        SubX += 0x1000;
-        Scene->Players[PlayerID]->X = X - W / 2 - Scene->Players[PlayerID]->W / 2 + 2;
-    }
-
-    return 1;
-}
 

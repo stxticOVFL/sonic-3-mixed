@@ -16,7 +16,6 @@ class Rock: public Object {
 public:    
     
     int i;
-    Uint32 SubX;
     int LastX;
     int RockSize;
     int RockType;
@@ -33,7 +32,6 @@ public:
     void DrawAIZ(int CamX, int CamY);
     void BreakAIZ(int HitSide);
     void Render(int CamX, int CamY);
-    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
     int OnBreakVertical(int PlayerID, int HitFrom);
     int OnBreakHorizontal(int PlayerID, int HitFrom);
 };

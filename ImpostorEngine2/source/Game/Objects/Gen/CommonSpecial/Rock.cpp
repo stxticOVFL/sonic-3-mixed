@@ -13,7 +13,6 @@ void Rock::Create() {
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
     i = 0;
-    SubX = X << 16;
     LastX = X;
     RockSize = SubType >> 4 & 0x7;
     RockType = SubType & 0x7;
@@ -112,6 +111,9 @@ void Rock::Create() {
 
             if ((RockType & 2) == 2) {
                 Pushable = true;
+                PushMaxLeft = 64;
+                PushMaxRight = 0;
+                PushableSide = CollideSide::RIGHT;
             }
 
             if ((RockType & 4) == 4) {
@@ -184,42 +186,6 @@ void Rock::Render(int CamX, int CamY) {
     DrawAIZ(CamX, CamY);
     }
 
-int Rock::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
-    if (PlayerID != 0) return 0;
-
-    if (!Pushable) return 0;
-
-    if (((Scene->Players[PlayerID]->WallLeft && Scene->Players[PlayerID]->InputLeft) || (Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip < 0)) && HitFrom == CollideSide::RIGHT && !FlipX) {
-        if (X <= InitialX - 64) return 0;
-
-        if (Scene->Players[PlayerID]->Character == CharacterType::Knuckles || Scene->Players[PlayerID]->Character == CharacterType::Mighty) {
-            X = SubX >> 16;
-            SubX -= 0x4000;
-        }
-        else {
-            X = SubX >> 16;
-            SubX -= 0x1000;
-        }
-        Scene->Players[PlayerID]->X = X + W / 2 + Scene->Players[PlayerID]->W / 2 - 2;
-    }
-
-    if (((Scene->Players[PlayerID]->WallRight && Scene->Players[PlayerID]->InputRight) || (Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip > 0)) && HitFrom == CollideSide::LEFT && FlipX) {
-        if (X >= InitialX + 64) return 0;
-
-        if (Scene->Players[PlayerID]->Character == CharacterType::Knuckles || Scene->Players[PlayerID]->Character == CharacterType::Mighty) {
-            X = SubX >> 16;
-            SubX += 0x4000;
-        }
-        else {
-            X = SubX >> 16;
-            SubX += 0x1000;
-        }
-        Scene->Players[PlayerID]->X = X - W / 2 - Scene->Players[PlayerID]->W / 2 + 2;
-    }
-
-    return 1;
-}
-
 int Rock::OnBreakVertical(int PlayerID, int HitFrom) {
     if (HitFrom != CollideSide::TOP) return 0;
 
@@ -238,7 +204,6 @@ int Rock::OnBreakHorizontal(int PlayerID, int HitFrom) {
     BreakableBySuper = CollideSide::NONE;
     BreakableByGlide = CollideSide::NONE;
     BreakableByKnuckles = CollideSide::NONE;
-    BreakableByMighty = CollideSide::NONE;
     Solid = false;
     int HitSide = -1;
     if (HitFrom == CollideSide::RIGHT) HitSide = 1;

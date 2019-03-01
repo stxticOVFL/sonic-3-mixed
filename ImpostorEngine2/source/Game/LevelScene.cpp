@@ -3956,6 +3956,10 @@ PUBLIC void LevelScene::Update() {
 										hitFrom = (int)CollideSide::TOP;
 
 								obj->CollidingWithPlayer |= obj->OnCollisionWithPlayer(Players[p]->PlayerID, hitFrom, 0);
+
+								if (obj->Pushable) {
+									obj->OnPush(Players[p]->PlayerID, hitFrom);
+								}
 							}
 
 							if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 &&

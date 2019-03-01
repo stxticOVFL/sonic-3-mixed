@@ -180,7 +180,7 @@ PUBLIC void Scene_LevelSelect::Update() {
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
 
-		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA_PRESSED]) {
 			partner--;
 			if (partner == 0xFF)
 				partner = 4;
@@ -188,7 +188,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 				partner = 0xFF;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
-		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2]) {
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
 			partner++;
 
 			if (partner == 0xFF)

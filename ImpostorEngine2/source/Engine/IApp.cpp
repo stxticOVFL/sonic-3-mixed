@@ -222,7 +222,7 @@ PUBLIC void IApp::Run() {
 		ls->Thremixed = true;
 		ls->ZoneID = 1;
 		ls->VisualAct = 1;
-		SaveGame::CurrentCharacterFlag = (int)CharacterType::Ray;
+		SaveGame::CurrentCharacterFlag = (int)CharacterType::Mighty;
 		sprintf(ls->LevelName, "MIRAGE SALOON");
 		sprintf(ls->LevelNameDiscord, "Mirage Saloon");
 		Scene = ls;
