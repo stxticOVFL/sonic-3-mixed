@@ -15,18 +15,27 @@ void TopPlatform::Create() {
     W = 48;
     H = 24;
     InUse = false;
+    AlreadyUsed = false;
     Gravity = 0x50;
     PlayerUsed = -1;
 }
 
 void TopPlatform::Update() {
+    if (AlreadyUsed) {
+        XSpeed = XSpeed / 7 + (XFriction / 1.1);
+        XFriction = XSpeed;
+        YSpeed += 0xA0;
+    }
+
     if (PlayerUsed == -1) return;
 
     IPlayer* Player = Scene->Players[PlayerUsed];
     if (Player->Action == ActionType::Hurt || Player->InputJump) {
-        Gravity = 0xFF;
+        Gravity = 0;
         PlayerUsed = -1;
         InUse = false;
+        AlreadyUsed = true;
+        return;
     }
 
     Player->SubX = SubX;

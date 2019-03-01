@@ -3,6 +3,7 @@ object 0x5B;
 var InUse:bool;
 var PlayerUsed:int;
 var XFriction:float;
+var AlreadyUsed:bool;
 
 event Create() {
     Active = true;
@@ -13,17 +14,25 @@ event Create() {
     W = 48;
     H = 24;
     InUse = false;
+    AlreadyUsed = false;
     Gravity = 0x50;
     PlayerUsed = -1;
 }
 
 event Update() {
+    if (AlreadyUsed) {
+        XSpeed = XSpeed / 7 + (XFriction / 1.1); //big nut silky s m oot h
+        XFriction = XSpeed;
+        YSpeed += 0xA0;
+    }
     if (PlayerUsed == -1) return;
     var Player:IPlayer = Scene.Players[PlayerUsed];
     if (Player.Action == ActionType.Hurt || Player.InputJump) {
-        Gravity = 0xFF;
+        Gravity = 0;
         PlayerUsed = -1;
         InUse = false;
+        AlreadyUsed = true;
+        return;
     }
     Player.SubX = SubX;
     Player.SubY = (Y - 32) << 16;
