@@ -2790,14 +2790,20 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 	Discord_UpdatePresence("Classic Mode:", levelname, imgkey);
 }
 
-PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY) {
-	return CollisionAt(probeX, probeY, NULL, 0, NULL);
+PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY) {
+	return CollisionAt(probeX, probeY, NULL, 0, NULL, NULL);
 }
-PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle) {
-	return CollisionAt(probeX, probeY, angle, 0, NULL);
+
+PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, Object* IgnoreObject) {
+	return CollisionAt(probeX, probeY, NULL, 0, NULL, IgnoreObject);
 }
-PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode) {
-	return CollisionAt(probeX, probeY, angle, anglemode, NULL);
+
+PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle) {
+	return CollisionAt(probeX, probeY, angle, 0, NULL, NULL);
+}
+
+PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode) {
+	return CollisionAt(probeX, probeY, angle, anglemode, NULL, NULL);
 }
 
 PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
@@ -2808,6 +2814,10 @@ PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle,
 }
 
 PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
+    return CollisionAt(probeX, probeY, angle, anglemode, player, NULL);
+}
+
+PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player, Object* IgnoreObject) {
 	if (!Data) return false;
 
 	int tileX = probeX / 16;
@@ -3102,7 +3112,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 			if (player)
 				playerCheck = player->YSpeed >= 0 && player->EZY < obj->Y - obj->H / 2;
 
-			if (obj->Solid || (obj->SolidTop && anglemode == 0 && playerCheck)) {
+			if (obj != IgnoreObject && (obj->Solid || (obj->SolidTop && anglemode == 0 && playerCheck))) {
 				int obj_X = obj->X;
 				int obj_Y = obj->Y;
 				int obj_W = obj->W / 2;
