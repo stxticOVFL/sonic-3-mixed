@@ -148,7 +148,8 @@ int CorkFloor::OnBreakVertical(int PlayerID, int HitFrom) {
     BreakableBySpring = CollideSide::NONE;
     BreakableByKnuckles = CollideSide::NONE;
     Solid = false;
-    BreakAIZ(HitFrom);
+    if (Scene->ZoneID == 1) BreakAIZ(HitFrom);
+
     return 1;
 }
 

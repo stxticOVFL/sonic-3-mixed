@@ -489,6 +489,7 @@ public:
 	CollideSide BreakableBySuper = CollideSide::NONE;
     CollideSide BreakableBySpring = CollideSide::NONE;
     CollideSide BreakableByKnuckles = CollideSide::NONE;
+    CollideSide BreakableByMighty = CollideSide::NONE;
 
     virtual ~Object() {
 

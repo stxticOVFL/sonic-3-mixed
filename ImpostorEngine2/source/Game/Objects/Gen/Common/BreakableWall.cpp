@@ -232,6 +232,7 @@ int BreakableWall::OnBreakHorizontal(int PlayerID, int HitFrom) {
     BreakableByGlide = CollideSide::NONE;
     BreakableBySuper = CollideSide::NONE;
     BreakableByKnuckles = CollideSide::NONE;
+	BreakableByMighty = CollideSide::NONE;
     Solid = false;
     int HitSide = -1;
     if (HitFrom == CollideSide::RIGHT) HitSide = 1;

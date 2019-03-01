@@ -4537,7 +4537,7 @@ void IPlayer::HandleMonitors() {
 								else
 									Vibrate(VibrationType::ImpactSmall);
 
-								YSpeed = -YSpeed;
+								if(Action != ActionType::MightyStomp)  YSpeed = -YSpeed;
 							}
 						}
 					}

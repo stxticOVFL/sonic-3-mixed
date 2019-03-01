@@ -153,13 +153,7 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     BreakableByKnuckles = CollideSide.NONE;
     Solid = false;
 
-    BreakAIZ(HitFrom);
-
-    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, this\.X \- CamX, this\.Y (\-|\+) 16 \- CamY, Rotation, IE_NOFLIP, (\-*[0-9]*), (\-*[0-9]*)\);
-    // Scene.AddFallingTile(0x$1, X, Y $2 16, $3, $4, false, false, 0x100, 0x100);
-
-    // G\.DrawSprite\(Scene\.TileSprite, 0, 0x([0-9A-F]*)0, 16, 16, X \- CamX( \+ 8)*, Y (\-|\+) 16 \- CamY, Rotation,\W*(IE_NOFLIP|IE_FLIPX),\W*(\-*[0-9]*),\W*(\-*[0-9]*)\);
-    // Scene.AddFallingTile(0x$1, X$2, Y $3 16, -$5, -$6, $4, false, 0x100, 0x100);
+    if (Scene.ZoneID == 1) BreakAIZ(HitFrom);
 
     return 1;
 }

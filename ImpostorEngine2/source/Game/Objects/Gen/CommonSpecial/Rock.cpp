@@ -192,16 +192,28 @@ int Rock::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (((Scene->Players[PlayerID]->WallLeft && Scene->Players[PlayerID]->InputLeft) || (Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip < 0)) && HitFrom == CollideSide::RIGHT && !FlipX) {
         if (X <= InitialX - 64) return 0;
 
-        X = SubX >> 16;
-        SubX -= 0x1000;
+        if (Scene->Players[PlayerID]->Character == CharacterType::Knuckles || Scene->Players[PlayerID]->Character == CharacterType::Mighty) {
+            X = SubX >> 16;
+            SubX -= 0x4000;
+        }
+        else {
+            X = SubX >> 16;
+            SubX -= 0x1000;
+        }
         Scene->Players[PlayerID]->X = X + W / 2 + Scene->Players[PlayerID]->W / 2 - 2;
     }
 
     if (((Scene->Players[PlayerID]->WallRight && Scene->Players[PlayerID]->InputRight) || (Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip > 0)) && HitFrom == CollideSide::LEFT && FlipX) {
         if (X >= InitialX + 64) return 0;
 
-        X = SubX >> 16;
-        SubX += 0x1000;
+        if (Scene->Players[PlayerID]->Character == CharacterType::Knuckles || Scene->Players[PlayerID]->Character == CharacterType::Mighty) {
+            X = SubX >> 16;
+            SubX += 0x4000;
+        }
+        else {
+            X = SubX >> 16;
+            SubX += 0x1000;
+        }
         Scene->Players[PlayerID]->X = X - W / 2 - Scene->Players[PlayerID]->W / 2 + 2;
     }
 
@@ -226,6 +238,7 @@ int Rock::OnBreakHorizontal(int PlayerID, int HitFrom) {
     BreakableBySuper = CollideSide::NONE;
     BreakableByGlide = CollideSide::NONE;
     BreakableByKnuckles = CollideSide::NONE;
+    BreakableByMighty = CollideSide::NONE;
     Solid = false;
     int HitSide = -1;
     if (HitFrom == CollideSide::RIGHT) HitSide = 1;

@@ -495,6 +495,9 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bumper.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\LightBulb.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

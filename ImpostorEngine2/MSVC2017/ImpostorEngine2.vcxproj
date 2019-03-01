@@ -81,6 +81,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bumper.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\HoverFan.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\LightBulb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\VacuumTube.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CutsceneKnuckles.cpp" />
