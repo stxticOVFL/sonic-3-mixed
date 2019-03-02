@@ -14,11 +14,20 @@ class CrushingColumn;
 
 class CrushingColumn: public Object {
 public:    
+    enum PillarType {
+        UNKNOWN = 0,
+        CEILING_CRUSH = 1,
+        CEILING_CRUSH_PERIODIC = 2,
+        FLOOR_CRUSH = 3,
+        FLOOR_CRUSH_PERIODIC = 4,
+        STATIONARY_KNUX_ONLY = 5,
+    };
     enum PillarState {
-        WAIT = 0,
-        MOVE_UP = 1,
-        BLOCK = 2,
-        CRUSH_DOWN = 3,
+        MOVE_TOWARDS_CRUSH = 2,
+        INIT = 0,
+        WAIT = 1,
+        BLOCK = 3,
+        BACK_AWAY = 4,
     };
     enum PillarAction {
         WAITACTION = 0,
@@ -27,12 +36,10 @@ public:
         CRUSH_DOWNACTION = 3,
     };
     
-    int OGY;
-    bool Direction;
-    int SmashStyle;
-    int SmashTimer;
+    int Type;
     int State;
     int TimerAction;
+    int FloorY;
     
     void Create();
     void Update();

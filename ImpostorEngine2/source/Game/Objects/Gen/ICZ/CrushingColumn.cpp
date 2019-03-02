@@ -8,114 +8,131 @@ typedef IMath Math;
 void CrushingColumn::Create() {
     Object::Create();
     Active = true;
-    Priority = false;
+    Priority = true;
     Solid = true;
-    DoDeform = true;
     Scene->AddSelfToRegistry(this, "Solid");
     W = 64;
     H = 224;
     CurrentAnimation = Sprite->FindAnimation("Wall and Column");
-    OGY = Y - 5 + 5;
-    Y += 10;
-    YSpeed = -0xA0;
-    Direction = false;
-    SmashStyle = 0;
-    if (SubType == 2) SmashStyle = 2;
+    YSpeed = 0;
+    Type = SubType;
+    State = PillarState::INIT;
+    VisualLayer = 1;
+    if (X < 0x3880) FloorY = 0x680;
+    else if (X < 0x3AE0) FloorY = 0x700;
+    else if (X < 0x47D0) FloorY = 0x6E0;
+    else if (X < 0x4880) FloorY = 0x670;
+    else if (X < 0x4D70) FloorY = 0xF8;
+    else if (X < 0x4EF0) FloorY = 0x178;
+    else if (X < 0x4FF0) FloorY = 0x180;
+    else if (X < 0x5100) FloorY = 0x1B8;
+    else if (X < 0x5240) FloorY = 0x400;
+    else if (X < 0x52A0) FloorY = 0x400;
+    else if (X < 0x5F70) FloorY = 0xF8;
+    else if (X < 0x6070) FloorY = 0x178;
+    else if (X < 0x6980) FloorY = 0x300;
 
-    if (SubType == 4) SmashStyle = 1;
+    if (Type == PillarType::STATIONARY_KNUX_ONLY && Scene->Player->Character != CharacterType::Knuckles) Active = false;
 
-    if (SubType == 3) SmashStyle = 3;
-
-    State = PillarState::WAIT;
-    SmashTimer = 0;
 }
 
 void CrushingColumn::Update() {
     switch (State) {
-        case PillarState::WAIT:
-        Gravity = 0;
-        YSpeed = 0;
-        break;
-        case PillarState::CRUSH_DOWN:
-        YSpeed = 0x300;
-        Direction = false;
-        if (Y >= OGY + 80) {
-            if (OnScreen) {
-                Sound::Play(Sound::SFX_IMPACT4);
-            }
-
-            YSpeed = 0;
-            Gravity = 0;
-            Direction = true;
-            TimerAction = PillarAction::WAITACTION;
+        case PillarState::INIT:
+        if (Type == PillarType::FLOOR_CRUSH) {
             State = PillarState::WAIT;
         }
+        else if (Type == PillarType::FLOOR_CRUSH_PERIODIC) {
+            State = PillarState::WAIT;
+            Timer = 0x5F;
+            TimerAction = PillarAction::CRUSH_DOWNACTION;
+        }
 
         break;
-        case PillarState::MOVE_UP:
-        if (SmashStyle = 1) {
-            YSpeed = -0x110;
-            if (Y <= OGY) {
-                Direction = false;
-                TimerAction = PillarAction::WAITACTION;
-                State = PillarState::WAIT;
+        case PillarState::WAIT:
+        YSpeed = 0;
+        if (Type == PillarType::FLOOR_CRUSH) {
+            if (Scene->Player->X < X) {
+                if (Y > InitialY) YSpeed = -0x100;
+
+            }
+
+            if (Scene->Player->X > X + W / 2 + 16 && Y + H / 2 < FloorY) {
+                State = PillarState::MOVE_TOWARDS_CRUSH;
+                YSpeed = 0x800;
             }
 
         }
-        else {
-            Gravity = -0x200;
+
+        break;
+        case PillarState::MOVE_TOWARDS_CRUSH:
+        if (Y + H / 2 >= FloorY) {
+            YSpeed = 0x00;
+            State = PillarState::WAIT;
+            if (OnScreen) {
+                Sound::Play(Sound::SFX_IMPACT4);
+                Scene->ShakeTimer = 6;
+            }
+
+            if (Type == PillarType::FLOOR_CRUSH_PERIODIC) {
+                Timer = 0x1F;
+                TimerAction = PillarAction::MOVE_UPACTION;
+            }
+
         }
+
+        break;
+        case PillarState::BACK_AWAY:
+        if (Type == PillarType::FLOOR_CRUSH_PERIODIC) {
+            if (Y > InitialY) {
+                YSpeed = -0x100;
+            }
+            else {
+                YSpeed = 0;
+                State = PillarState::INIT;
+            }
+        }
+
         break;
         case PillarState::BLOCK:
-        YSpeed = 0x400;
-        Direction = false;
         break;
     }
 
-    if (Timer > 0) Timer--;
-    else if (Timer == 0) {
-        Timer = -1;
-        switch (TimerAction) {
-            case PillarAction::WAITACTION:
-            if (SmashStyle = 1) {
-                Timer = 0x5F;
-                if (Direction) {
-                    State = PillarState::MOVE_UP;
-                    TimerAction = PillarAction::MOVE_UPACTION;
-                }
-
-                TimerAction = PillarAction::CRUSH_DOWNACTION;
+    if (Timer > 0) {
+        Timer--;
+        if (Timer == 0) {
+            Timer = -1;
+            switch (TimerAction) {
+                case PillarAction::MOVE_UPACTION:
+                State = PillarState::BACK_AWAY;
+                break;
+                case PillarAction::CRUSH_DOWNACTION:
+                State = PillarState::MOVE_TOWARDS_CRUSH;
+                YSpeed = 0x800;
+                break;
             }
 
-            break;
-            case PillarAction::CRUSH_DOWNACTION:
-            State = PillarState::CRUSH_DOWN;
-            break;
-            case PillarAction::MOVE_UPACTION:
-            State = PillarState::MOVE_UP;
-            break;
         }
 
     }
 
-    SmashTimer++;
     Object::Update();
 }
 
 void CrushingColumn::Render(int CamX, int CamY) {
     if (!Visible) return;
 
-    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 
 int CrushingColumn::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
-    if (!Solid) return 0;
+    if (State != PillarState::MOVE_TOWARDS_CRUSH) return 0;
 
     if (HitFrom == CollideSide::TOP && Visible) {
     }
     else {
     }
-    if (Scene->Players[PlayerID]->Ground && !Direction) {
+    if (Scene->Players[PlayerID]->Ground && HitFrom == CollideSide::BOTTOM) {
         Scene->Players[PlayerID]->Die(false);
     }
 

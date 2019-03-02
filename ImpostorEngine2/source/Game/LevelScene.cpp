@@ -2801,19 +2801,19 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 }
 
 
-PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY) {
+PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY) {
 	return CollisionAt(probeX, probeY, NULL, 0, NULL, NULL);
 }
 
-PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, Object* IgnoreObject) {
+PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, Object* IgnoreObject) {
 	return CollisionAt(probeX, probeY, NULL, 0, NULL, IgnoreObject);
 }
 
-PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle) {
+PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle) {
 	return CollisionAt(probeX, probeY, angle, 0, NULL, NULL);
 }
 
-PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode) {
+PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode) {
 	return CollisionAt(probeX, probeY, angle, anglemode, NULL, NULL);
 }
 
@@ -2824,7 +2824,7 @@ PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle,
 	return gh;
 }
 
-PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
+PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
 	return CollisionAt(probeX, probeY, angle, anglemode, player, NULL);
 }
 
@@ -5343,20 +5343,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		for (int i = 0; i < ObjectCount; i++) {
 			Object* obj = Objects[i];
 			//if (obj->Active && (obj->OnScreen || obj->Priority)) {
-			if (obj == NULL) {
-				continue;
-			}
-			else if (DeformObjects && obj->DoDeform) {
-				// Render deforming object
-				G->DoDeform = true;
-				if (obj->Active && obj->OnScreen) {
-					if (l == Data->cameraLayer + obj->VisualLayer) {
-						obj->Render(CameraX, CameraY);
-					}
-				}
-				G->DoDeform = false;
-				continue;
-			}
+			if (obj == NULL) continue;
+
 			if (obj->Active && obj->OnScreen) {
 				if (l == Data->cameraLayer + obj->VisualLayer) {
 					obj->Render(CameraX, CameraY);

@@ -104,6 +104,7 @@ public:
     CUSTOM_FADE_ACTION = 9,
     }; 
     int         maxLayer = 1;
+    bool        Thremixed = false;
     bool        DeformObjects = false;
     bool        DeformPlayer = false;
     //Object**    Objects;
@@ -212,12 +213,12 @@ public:
     virtual void RestartStage(bool doActTransition, bool drawBackground);
     virtual void PatchLayer(int layer);
     virtual void UpdateDiscord();
-    virtual bool CollisionAt(int probeX, int probeY);
-    virtual bool CollisionAt(int probeX, int probeY, Object* IgnoreObject);
-    virtual bool CollisionAt(int probeX, int probeY, int* angle);
-    virtual bool CollisionAt(int probeX, int probeY, int* angle, int anglemode);
+    bool CollisionAt(int probeX, int probeY);
+    bool CollisionAt(int probeX, int probeY, Object* IgnoreObject);
+    bool CollisionAt(int probeX, int probeY, int* angle);
+    bool CollisionAt(int probeX, int probeY, int* angle, int anglemode);
     bool CollisionAtClimbable(int probeX, int probeY, int* angle, int anglemode, IPlayer* player);
-    virtual bool CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player);
+    bool CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player);
     virtual bool CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player, Object* IgnoreObject);
     void AddActiveRing(int x, int y, int xs, int ys, int mag);
     Explosion* AddExplosion(int animation, bool flip, int x, int y);

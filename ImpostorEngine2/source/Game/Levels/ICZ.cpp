@@ -166,8 +166,8 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     sprintf(LevelNameDiscord, "IceCap");
 
     if (Act == 1) {
-        PlayerStartX = 0x3E20;
-        PlayerStartY = 0x6C8;
+        PlayerStartX = 0x3880;
+        PlayerStartY = 0x698;
     }
     else if (Act == 2) {
         VisualWaterLevel = WaterLevel = 0xAD8;
