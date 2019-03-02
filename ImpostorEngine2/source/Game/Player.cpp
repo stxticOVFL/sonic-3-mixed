@@ -998,6 +998,19 @@ void IPlayer::Update() {
 		}
 	}
 
+	switch (Character) {
+		case CharacterType::Knuckles:
+		case CharacterType::Mighty:
+			PushSpeed = 0x4000;
+			break;
+		case CharacterType::Sonic:
+		case CharacterType::Tails:
+		case CharacterType::Ray:
+		default:
+			PushSpeed = 0x1000;
+			break;
+	}
+
 	H = OrigH;
 
 	switch (Action) {

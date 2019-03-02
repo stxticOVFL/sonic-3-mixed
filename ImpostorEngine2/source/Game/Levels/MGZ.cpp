@@ -42,6 +42,8 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 		Str_TileSprite = "Stages/MGZ2/16x16Tiles.gif";
 		Str_AnimatedSprites = "Stages/MGZ2/Animated Tiles.gif";
 	}
+    
+    AddNewDebugObjectID(0x5B); // Top Platform
 
 	sprintf(LevelName, "MARBLE GARDEN");
 	sprintf(LevelNameDiscord, "Marble Garden");

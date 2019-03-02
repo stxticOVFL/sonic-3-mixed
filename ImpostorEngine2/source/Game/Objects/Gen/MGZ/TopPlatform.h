@@ -13,15 +13,17 @@ class TopPlatform;
 #include <Game/Objects/Gen/ObjectListing.h>
 
 class TopPlatform: public Object {
-public:    
-    
+public:
+
     bool InUse;
     int PlayerUsed;
     float XFriction;
     bool AlreadyUsed;
-    
+    IPlayer* Player;
+
     void Create();
     void Update();
+    void MoveSprite();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };

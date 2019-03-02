@@ -14,6 +14,8 @@ void TopPlatform::Create() {
     CurrentAnimation = 11;
     W = 48;
     H = 24;
+    VisW = 48;
+    VisH = 24;
     InUse = false;
     AlreadyUsed = false;
     Gravity = 0x50;
@@ -28,8 +30,12 @@ void TopPlatform::Update() {
     }
 
     if (PlayerUsed == -1) return;
+    if (PlayerUsed == -1) {
+        Player = NULL;
+        return;
+    }
 
-    IPlayer* Player = Scene->Players[PlayerUsed];
+    Player = Scene->Players[PlayerUsed];
     if (Player->Action == ActionType::Hurt || Player->InputJump) {
         Gravity = 0;
         PlayerUsed = -1;
@@ -62,8 +68,61 @@ void TopPlatform::Update() {
     Object::Update();
 }
 
+void TopPlatform::MoveSprite() {
+    YSpeed += Gravity;
+    SubX += XSpeed << 8;
+    SubY += YSpeed << 8;
+    if (InUse) {
+        Player->SubX = SubX;
+        Player->SubY = (Y - 32) << 16;
+        if (YSpeed > 0) {
+            if (Scene->CollisionAt(X - (W / 2), Y + (H / 2), this)) {
+                SubY -= YSpeed << 8;
+            }
+        }
+
+        if (YSpeed < 0) {
+            if (Scene->CollisionAt(Player->X - (Player->W / 2), Player->Y - (Player->H / 2))) {
+                SubY -= YSpeed << 8;
+            }
+            else if (Scene->CollisionAt(X - (W / 2), Y - (H / 2), this)) {
+                SubY -= YSpeed << 8;
+            }
+        }
+
+        if (XSpeed > 0) {
+            if (Scene->CollisionAt(X + (W / 2), Y - (H / 2), this)) {
+                SubX -= XSpeed << 8;
+            }
+            else if (Scene->CollisionAt(Player->X + (Player->W / 2), Player->Y - (Player->H / 2))) {
+                SubX -= XSpeed << 8;
+            }
+        }
+
+        if (XSpeed < 0) {
+            if (Scene->CollisionAt(X - (W / 2), Y - (H / 2), this)) {
+                SubX -= XSpeed << 8;
+            }
+            else if (Scene->CollisionAt(Player->X - (Player->W / 2) - 2, Y - (Player->H / 2))) {
+                SubX -= XSpeed << 8;
+            }
+        }
+    }
+}
+
 void TopPlatform::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (true) {
+        G->DrawRectangle((X - (W / 2)) - CamX, (Y + (H / 2)) - CamY, W, 2, DrawCollisionsColor);
+        G->DrawRectangle((X - (W / 2)) - CamX, (Y - (H / 2)) - CamY, W, 2, DrawCollisionsColor);
+        G->DrawRectangle((X + (W / 2)) - CamX, (Y - (H / 2)) - CamY, 2, H, DrawCollisionsColor);
+        G->DrawRectangle((X - (W / 2)) - CamX, (Y - (H / 2)) - CamY, 2, H, DrawCollisionsColor);
+        if (InUse) {
+            G->DrawRectangle((Player->X - (Player->W / 2)) - CamX, (Player->Y - (Player->H / 2)) - CamY, Player->W, 2, DrawCollisionsColor);
+            G->DrawRectangle((Player->X + (Player->W / 2)) - CamX, (Player->Y - (Player->H / 2)) - CamY, 2, Player->H, DrawCollisionsColor);
+            G->DrawRectangle(((Player->X - (Player->W / 2)) - 2) - CamX, (Player->Y - (Player->H / 2)) - CamY, 2, Player->H, DrawCollisionsColor);
+        }
+    }
     }
 
 int TopPlatform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
@@ -75,4 +134,3 @@ int TopPlatform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     return 1;
 }
-

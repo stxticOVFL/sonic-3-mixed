@@ -177,11 +177,13 @@ PUBLIC void Scene_MainMenu::Update() {
 	if (FadeTimer == -1) {
 		CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
 
-		int cenX = App->WIDTH - 164;
+		int cenX = App->WIDTH / 2;
 		int cenY = App->HEIGHT / 2;
 
 		int mx = App->Input->MouseX;
 		int my = App->Input->MouseY;
+		bool Changed = false;
+
 		if (App->Input->MousePressed) {
 			int sel = selected;
 			int tosel = -1;
@@ -204,12 +206,12 @@ PUBLIC void Scene_MainMenu::Update() {
 					CONFIRM_PRESSED = true;
 				}
 				else {
+					Changed = true;
 					Sound::Play(Sound::SFX_MENUBLEEP);
 				}
 			}
 		}
 
-		bool Changed = false;
 		if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
 			if (selected >= 2)
 				selected -= 2;

@@ -196,6 +196,7 @@ public:
 
 	bool Thremixed = true;
 	bool OCMode = false;
+	int  PushSpeed = 0x1000;
 
 	int SensorA = 20;
 	int SensorB = 20;
@@ -303,7 +304,7 @@ public:
 
 	int                 SpeedSneakersTimer = 0;
 	bool                SpeedSneakersActive = false;
-
+	
 	int                 ShieldAnimation = 0;
 	bool                ShieldUsable = true;
 	bool                ShieldAction = false;
