@@ -18,7 +18,7 @@ void CrushingColumn::Create() {
     OGY = Y - 5 + 5;
     Y += 10;
     YSpeed = -0xA0;
-    Direction = true;
+    Direction = false;
     SmashStyle = 0;
     if (SubType == 2) SmashStyle = 2;
 
@@ -26,87 +26,78 @@ void CrushingColumn::Create() {
 
     if (SubType == 3) SmashStyle = 3;
 
-    State = 0;
+    State = PillarState::WAIT;
     SmashTimer = 0;
 }
 
 void CrushingColumn::Update() {
-    if (Direction) {
-        if (Y <= OGY && SmashStyle == 1) {
+    switch (State) {
+        case PillarState::WAIT:
+        Gravity = 0;
+        YSpeed = 0;
+        break;
+        case PillarState::CRUSH_DOWN:
+        YSpeed = 0x300;
+        Direction = false;
+        if (Y >= OGY + 80) {
+            if (OnScreen) {
+                Sound::Play(Sound::SFX_IMPACT4);
+            }
+
             YSpeed = 0;
-            YSpeed = 0x300;
-            Direction = false;
-        }
-        else if (Y >= OGY && SmashStyle == 2) {
-            YSpeed = 0;
-            YSpeed = -0x300;
-            Direction = false;
+            Gravity = 0;
+            Direction = true;
+            TimerAction = PillarAction::WAITACTION;
+            State = PillarState::WAIT;
         }
 
-        State = 0;
+        break;
+        case PillarState::MOVE_UP:
+        if (SmashStyle = 1) {
+            YSpeed = -0x110;
+            if (Y <= OGY) {
+                Direction = false;
+                TimerAction = PillarAction::WAITACTION;
+                State = PillarState::WAIT;
+            }
+
+        }
+        else {
+            Gravity = -0x200;
+        }
+        break;
+        case PillarState::BLOCK:
+        YSpeed = 0x400;
+        Direction = false;
+        break;
     }
-    else {
-        if (SmashStyle == 1) {
-            if (SmashTimer > 0) {
-                YSpeed += 0x30;
-                if (Y >= OGY + 80) {
-                    if (OnScreen) {
-                        Sound::Play(Sound::SFX_IMPACT4);
-                    }
 
-                    YSpeed = 0;
-                    SmashTimer = 0;
-                    YSpeed = -0x110;
-                    Direction = true;
-                    Y = OGY + 80;
-                    State++;
+    if (Timer > 0) Timer--;
+    else if (Timer == 0) {
+        Timer = -1;
+        switch (TimerAction) {
+            case PillarAction::WAITACTION:
+            if (SmashStyle = 1) {
+                Timer = 0x5F;
+                if (Direction) {
+                    State = PillarState::MOVE_UP;
+                    TimerAction = PillarAction::MOVE_UPACTION;
                 }
 
+                TimerAction = PillarAction::CRUSH_DOWNACTION;
             }
 
-        }
-        else if (SmashStyle == 2) {
-            if (SmashTimer > 0) {
-                if (SubType == 1 && !State == 1) {
-                    SmashTimer = 1;
-                }
-
-                YSpeed -= 0x30;
-                if (Y <= OGY - 80) {
-                    if (OnScreen) {
-                        Sound::Play(Sound::SFX_IMPACT4);
-                    }
-
-                    YSpeed = 0;
-                    SmashTimer = 0;
-                    YSpeed = 0x110;
-                    Direction = true;
-                    Y = OGY - 80;
-                    State++;
-                }
-
-            }
-
-        }
-        else if (SmashStyle == 3) {
-            if (X < Scene->Players[0]->X + 20) {
-                YSpeed -= 0x30;
-                if (Y <= OGY - 80) {
-                    if (OnScreen) {
-                        Sound::Play(Sound::SFX_IMPACT4);
-                    }
-
-                    YSpeed = 0;
-                    SmashTimer = 0;
-                    YSpeed = 0x110;
-                    Y = OGY - 80;
-                }
-
-            }
-
+            break;
+            case PillarAction::CRUSH_DOWNACTION:
+            State = PillarState::CRUSH_DOWN;
+            break;
+            case PillarAction::MOVE_UPACTION:
+            State = PillarState::MOVE_UP;
+            break;
         }
 
     }
+
     SmashTimer++;
     Object::Update();
 }

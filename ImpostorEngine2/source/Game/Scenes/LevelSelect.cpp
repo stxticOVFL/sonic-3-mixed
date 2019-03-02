@@ -30,6 +30,7 @@ public:
 
 int character = 0;
 int partner = 0xFF;
+int mode = 0;
 
 PUBLIC Scene_LevelSelect::Scene_LevelSelect(IApp* app, IGraphics* g) {
     App = app;
@@ -64,7 +65,7 @@ PUBLIC void Scene_LevelSelect::Init() {
 	SaveGame::CurrentEmeralds = 0xFFFF;
 }
 
-bool HaveStage[24] = {
+bool HaveStage[36] = {
     true, // AIZ
     true,
     true, // HCZ
@@ -89,6 +90,19 @@ bool HaveStage[24] = {
 	false, // DEZ
 	false,
 	false, // TDZ
+	//LOCKED ON
+	false, //ALZ
+	false,
+	false, //DPZ
+	false,
+	false, //BPZ
+	false,
+	false, //ASZ
+	false,
+	false, //EMZ
+	false,
+	false, //CGZ
+	false,
 };
 
 PUBLIC void Scene_LevelSelect::Update() {
@@ -114,38 +128,40 @@ PUBLIC void Scene_LevelSelect::Update() {
                     if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
                     delete Sound::SoundBank[0];
                     Sound::SoundBank[0] = NULL;
-
-                    switch (selected) {
-                        case 0:
-                        case 1:
-                            App->NextScene = new Level_AIZ(App, G, (selected % 2) + 1);
-                            break;
-                        case 2:
-                        case 3:
-                            App->NextScene = new Level_HCZ(App, G, (selected % 2) + 1);
-                            break;
-                        case 4:
-                        case 5:
-                            App->NextScene = new Level_MGZ(App, G, (selected % 2) + 1);
-                            break;
-                        case 6:
-                        case 7:
-                            App->NextScene = new Level_CNZ(App, G, (selected % 2) + 1);
-                            break;
-                        case 8:
-                        case 9:
-                            App->NextScene = new Level_ICZ(App, G, (selected % 2) + 1);
-                            break;
-                        case 10:
-                        case 11:
-                            App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
-                            break;
-                        default:
-                            break;
-                    }
+					if (mode != 2) {
+						switch (selected) {
+						case 0:
+						case 1:
+							App->NextScene = new Level_AIZ(App, G, (selected % 2) + 1);
+							break;
+						case 2:
+						case 3:
+							App->NextScene = new Level_HCZ(App, G, (selected % 2) + 1);
+							break;
+						case 4:
+						case 5:
+							App->NextScene = new Level_MGZ(App, G, (selected % 2) + 1);
+							break;
+						case 6:
+						case 7:
+							App->NextScene = new Level_CNZ(App, G, (selected % 2) + 1);
+							break;
+						case 8:
+						case 9:
+							App->NextScene = new Level_ICZ(App, G, (selected % 2) + 1);
+							break;
+						case 10:
+						case 11:
+							App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
+							break;
+						default:
+							break;
+						}
+					}
 
                     SaveGame::CurrentCharacterFlag = character;
                     SaveGame::CurrentPartnerFlag = partner; //0xFF for no partner
+					SaveGame::CurrentMode = mode;
                 }
             }
         }
@@ -154,27 +170,39 @@ PUBLIC void Scene_LevelSelect::Update() {
     if (FadeTimer == -1) {
         if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
             selected--;
-            if (selected < 0)
-                selected = 25;
+			if (mode != 2) {
+				if (selected < 0)
+					selected = 25;
+			}
+			else {
+				if (selected < 0)
+					selected = 11;
+			}
 
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
-        if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
-            selected++;
-            if (selected > 25)
-                selected = 0;
+		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+			selected++;
+			if (mode != 2) {
+				if (selected > 25)
+					selected = 0;
+			}
+			else {
+				if (selected > 11)
+					selected = 0;
+			}
 
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
 
-        if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED]) {
+        if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED] && !App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
             character--;
             if (character < 0)
                 character = 4;
 
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
-        if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
+        if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED] && !App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
             character++;
 
             Sound::Play(Sound::SFX_MENUBLEEP);
@@ -197,6 +225,24 @@ PUBLIC void Scene_LevelSelect::Update() {
 				partner = 0xFF;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
+
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA] && App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED]) {
+			mode--;
+			if (mode < 0)
+				mode = 2;
+			if (mode == 2)
+				selected = 0;
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA] && App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
+			mode++;
+			if (mode > 2)
+				mode = 0;
+			if (mode == 2)
+				selected = 0;
+			Sound::Play(Sound::SFX_MENUBLEEP);
+		}
+
     }
 
     character = character % 5;
@@ -205,12 +251,12 @@ PUBLIC void Scene_LevelSelect::Update() {
     if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
         bool acc = false;
         if (selected < 12) {
-            if (HaveStage[selected]) {
+            if (HaveStage[mode != 2 ? selected : selected + 26]) {
                 acc = true;
             }
         }
         if (acc) {
-            Sound::Play(Sound::SFX_MENUACCEPT);
+            Sound::Play(Sound::SFX_MENUACCEPT);	
             FadeIn = false;
             FadeTimerMax = 30;
             App->Audio->FadeMusic(0.5);
@@ -241,6 +287,15 @@ PUBLIC void Scene_LevelSelect::Render() {
         "SOUND TEST",
     };
 
+	const char* lockedOn[6] = {
+		"AZURE LAKE",
+		"DESERT PALACE",
+		"BALLOON PARK",
+		"ANGEL SHORE",
+		"ENDLESS MINE",
+		"CHROME GADGET"
+	};
+
     G->SetFilter(IE_FILTER_FADEABLE);
 
     G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0x0022EE);
@@ -252,10 +307,22 @@ PUBLIC void Scene_LevelSelect::Render() {
                 col = 0xFFFFFF;
             }
         }
-        G->DrawTextShadow(4, 4 + i * 18, wordGRoup[i], selected / 2 == i ? 0xFFFF00 : col);
+        G->DrawTextShadow(4, 4 + i * 18, wordGRoup[i], (selected / 2 == i && mode != 2) ? 0xFFFF00 : col);
     }
+
+	for (int i = 0; i < 6; i++) {
+		Uint32 col = 0x999999;
+		if ((i * 2) + 13 < 18) {
+			if (HaveStage[(i * 2) + 26] || HaveStage[(i * 2 + 1) + 26]) {
+				col = 0xFFFFFF;
+			}
+		}
+		G->DrawTextShadow(180, 4 + i * 18, lockedOn[i], (selected / 2 == i && mode == 2) ? 0xFFFF00 : col);
+	}
+
     char poop[20];
     char poopbuddy[20];
+	char poopmode[20];
     for (int i = 0; i < 26; i++) {
         Uint32 col = 0x999999;
         if (i < 12) {
@@ -264,8 +331,19 @@ PUBLIC void Scene_LevelSelect::Render() {
             }
         }
         sprintf(poop, "%d", (i % 2) + 1);
-        G->DrawTextShadow(4 + 16 * 8, 4 + i * 9, poop, selected == i ? 0xFFFF00 : col);
+        G->DrawTextShadow(4 + 16 * 8, 4 + i * 9, poop, (selected == i && mode != 2) ? 0xFFFF00 : col);
     }
+
+	for (int i = 0; i < 12; i++) {
+		Uint32 col = 0x999999;
+		if (i + 26 < 18) {
+			if (HaveStage[i + 26]) {
+				col = 0xFFFFFF;
+			}
+		}	
+		sprintf(poop, "%d", ((i + 26) % 2) + 1);
+		G->DrawTextShadow(180 + 16 * 8, 4 + i * 9, poop, (selected == i && mode == 2) ? 0xFFFF00 : col);
+	}
 
 	if (character == 0)
 		sprintf(poop, "%s", "Sonic");
@@ -291,6 +369,14 @@ PUBLIC void Scene_LevelSelect::Render() {
 	else
 		sprintf(poopbuddy, "%s", "Alone");
 
+	if (mode == 0)
+		sprintf(poopmode, "%s", "Classic");
+	else if (mode == 1)
+		sprintf(poopmode, "%s", "Mixed");
+	else
+		sprintf(poopmode, "%s", "Locked On");
+
     G->DrawTextShadow(App->WIDTH - 4 - strlen(poop) * 8, App->HEIGHT - 4 - 16, poop, 0xFFFFFF);
     G->DrawTextShadow(App->WIDTH - 4 - strlen(poopbuddy) * 8, App->HEIGHT - 4 - 8, poopbuddy, 0xFFFFFF);
+	G->DrawTextShadow(App->WIDTH - 4 - strlen(poopmode) * 8, App->HEIGHT - 4 - 24, poopmode, 0xFFFFFF);
 }
