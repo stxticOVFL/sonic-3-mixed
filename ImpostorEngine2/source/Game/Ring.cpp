@@ -114,7 +114,7 @@ PUBLIC void Ring::Update() {
             }
         }
 
-        if (Scene->Thremixed) {
+        if (SaveGame::CurrentMode == 1) {
             CurrentFrame = Scene->RingAnimationFrame;
         } else {
             CurrentFrame = Scene->RingAnimationFrame >> 2;
@@ -147,7 +147,7 @@ PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     int rx[3] = { -4, 1, 4 };
     int ry[3] = { 1, -2, 3 };
-    if (Scene->Thremixed) {
+    if (SaveGame::CurrentMode == 1) {
         for (int i = 0; i < 3; i++) {
             Explosion* ringsparkle;
             ringsparkle = new Explosion();

@@ -199,6 +199,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		ModeName = "Mixed Mode";
 	else if (Mode == 2)
 		ModeName = "Locked On";
+
 	Discord_UpdatePresence("Main Menu", ModeName, "icon", false);
 }
 
@@ -388,7 +389,8 @@ PUBLIC void Scene_DataSelect::Update() {
 					ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
 					ls->PlayerStartX = 160;
 					ls->PlayerStartY = 1328;
-					ls->Thremixed = true;
+					//ls->Thremixed = true;
+					SaveGame::CurrentMode = 1; //Set it to mixed mode
 					ls->ZoneID = 1;
 					ls->VisualAct = 2;
 					sprintf(ls->LevelName, "BENT LETTUCE");

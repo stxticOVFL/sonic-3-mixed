@@ -104,7 +104,6 @@ public:
     CUSTOM_FADE_ACTION = 9,
     }; 
     int         maxLayer = 1;
-    bool        Thremixed = false;
     bool        DeformObjects = false;
     bool        DeformPlayer = false;
     //Object**    Objects;

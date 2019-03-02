@@ -25,7 +25,7 @@ void RideVine::Create() {
     Spinning = false;
     PlayersControlled = 0;
     Amp = 4;
-    ClassicStyle = !Scene->Thremixed;
+    ClassicStyle = SaveGame::CurrentMode == 0;
     ClassicStyle = false;
     VisualLayer = 0;
     Timer = 0;

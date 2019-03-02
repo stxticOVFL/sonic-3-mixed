@@ -202,8 +202,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	}
 
 	if (!ItemsSprite) {
-		Thremixed = true;
-		if (Thremixed) {
+		if (SaveGame::CurrentMode == 1) {
 			ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
 			ItemsSprite->Print = true;
 			ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
@@ -1285,7 +1284,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 
 				if (needsResize) {
 					int frm = RingAnimationFrame >> 10;
-					if (Thremixed)
+					if (SaveGame::CurrentMode == 1)
 						frm = RingAnimationFrame >> 8;
 
 					ISprite::AnimFrame animframe = ItemsSprite->Animations[collectableType].Frames[frm];

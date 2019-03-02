@@ -463,7 +463,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			EditorSprite->LoadAnimation("Sprites/Editor/EditorIcons.bin");
 		}
 		if (!ItemsSprite) {
-			if (Thremixed) {
+			if (SaveGame::CurrentMode == 1) {
 				ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
 				ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
 				ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
@@ -480,7 +480,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			AnimalsSprite->LoadAnimation("Sprites/Global/Animals.bin");
 		}
 		if (!ObjectsSprite) {
-			if (Thremixed) {
+			if (SaveGame::CurrentMode == 1) {
 				ObjectsSprite = new ISprite("Sprites/Global/Objects.gif", App);
 				ObjectsSprite->LoadAnimation("Sprites/Global/Springs.bin");
 				ObjectsSprite->LoadAnimation("Sprites/Global/Spikes.bin");
@@ -518,7 +518,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			// printf("\n");
 		}
 		if (!ExplosionSprite) {
-			if (Thremixed) {
+			if (SaveGame::CurrentMode == 1) {
 				ExplosionSprite = new ISprite("Sprites/Global/Explosions.gif", App);
 				ExplosionSprite->LoadAnimation("Sprites/Global/Dust.bin");
 				ExplosionSprite->LoadAnimation("Sprites/Global/Explosions.bin");
@@ -1382,7 +1382,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Player->Scene = this;
 			Player->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
 			Player->PlayerID = 0;
-			Player->Thremixed = Thremixed;
+			Player->Thremixed = SaveGame::CurrentMode == 1;
 			Player->Create();
 			Player->Lives = SaveGame::GetLives();
 
@@ -1398,7 +1398,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Players[1]->Sidekick = true;
 				Players[1]->Character = (CharacterType)SaveGame::CurrentPartnerFlag;
 				Players[1]->PlayerID = 1;
-				Players[1]->Thremixed = Thremixed;
+				Players[1]->Thremixed = SaveGame::CurrentMode == 1;
 				Players[1]->Create();
 
 				PlayerCount = 2;
@@ -1424,7 +1424,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		AnimTileSprite->LinkPalette(TileSprite);
 	}
 
-	if (!Thremixed) {
+	if (!SaveGame::CurrentMode == 1) {
 		ItemsSprite->LinkPalette(TileSprite);
 		ExplosionSprite->LinkPalette(TileSprite);
 		ObjectsSprite->LinkPalette(TileSprite);
@@ -3873,7 +3873,7 @@ PUBLIC void LevelScene::Update() {
 			Player->YSpeed = 0;
 		}
 
-		if (!(Frame & 3) && ItemsSprite && Thremixed) {
+		if (!(Frame & 3) && ItemsSprite && SaveGame::CurrentMode == 1) {
 			ISprite* spr = ItemsSprite;
 			Uint32 temp = spr->GetPalette(0x3C + 4 - 1);
 			for (int i = 4 - 1; i >= 1; i--) {
@@ -4641,7 +4641,7 @@ PUBLIC void LevelScene::RenderRings() {
 		}
 
 		if (OnScreen) {
-			if (Thremixed) {
+			if (SaveGame::CurrentMode == 1) {
 				G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 8, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
 			}
 			else {
@@ -4660,7 +4660,7 @@ PUBLIC void LevelScene::RenderHUD() {
 	int STR_X = 16 - (HUDAnim >> 1);
 
 	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
-	if (!Thremixed) {
+	if (!SaveGame::CurrentMode == 1) {
 		GlobalDisplaySprite = GlobalDisplaySpriteS3K;
 	}
 	// Score
@@ -4730,12 +4730,12 @@ PUBLIC void LevelScene::RenderHUD() {
 	G->DrawSprite(GlobalDisplaySprite, 2, (int)Player->Character, iconX, iconY, 0, IE_NOFLIP);
 
 	// x symbol
-	if (Thremixed)
+	if (SaveGame::CurrentMode == 1)
 		G->DrawSprite(GlobalDisplaySprite, 0, 14, iconX, iconY, 0, IE_NOFLIP);
 
 	// Lives value
 	int LifeNumberAnim = 1;
-	if (!Thremixed)
+	if (!SaveGame::CurrentMode == 1)
 		LifeNumberAnim = 10;
 
 	valen = 1;

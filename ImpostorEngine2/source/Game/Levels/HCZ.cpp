@@ -360,7 +360,7 @@ PUBLIC void Level_HCZ::RenderAboveBackground() {
     }
 }
 PUBLIC void Level_HCZ::RenderAboveForeground() {
-    if (Thremixed) {
+    if (SaveGame::CurrentMode == 1) {
         if (Act == 2) {
             for (int i = 0; i < sizeof(copymake) / sizeof(int); i += 4) {
                 for (int x = copymake[i]; x < copymake[i] + 8; x++) {
@@ -412,7 +412,7 @@ PUBLIC bool Level_HCZ::CollisionAt(int probeX, int probeY, int* angle, int angle
 PUBLIC void Level_HCZ::EarlyUpdate() {
     if (Act == 1) {
         // Do palette stuffs
-        if (Thremixed) {
+        if (SaveGame::CurrentMode == 1) {
             if (Frame % 4 == 0) {
                 TileSprite->RotatePaletteRight(TileSprite->Palette + 0xB0, 7);
                 TileSprite->UpdatePalette();
@@ -455,7 +455,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
     }
     else if (Act == 2) {
         // Do palette stuffs
-        if (Thremixed) {
+        if (SaveGame::CurrentMode == 1) {
             /*// rotate left
             Uint32 temp = TileSprite->GetPalette(0xB0);
             for (int i = 0; i < 7 - 1; i++) {

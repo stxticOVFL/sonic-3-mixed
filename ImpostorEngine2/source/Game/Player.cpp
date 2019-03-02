@@ -4198,7 +4198,7 @@ void IPlayer::HandleMonitors() {
 
 			int rx[3] = { -4, 1, 4 };
 			int ry[3] = { 1, -2, 3 };
-			if (Scene->Thremixed) {
+			if (SaveGame::CurrentMode == 1) {
 				for (int i = 0; i < 3; i++) {
 					Explosion* ringsparkle;
 					ringsparkle = new Explosion();
