@@ -45,6 +45,7 @@ void TopPlatform::Update() {
 
     Player->SubX = SubX;
     Player->SubY = (Y - 32) << 16;
+    Frame = (((Math::abs(XSpeed) + Math::abs(YSpeed)) / 12) + 1) % 2 == 0 ? 0 : 1;
     Player->Ground = true;
     YSpeed = (Math::abs(Player->XSpeed) / 3) * -1;
     if (Math::abs(XSpeed / 7 + (XFriction / 1.1)) > 0x250) {
@@ -82,31 +83,24 @@ void TopPlatform::MoveSprite() {
         }
 
         if (YSpeed < 0) {
-            if (Scene->CollisionAt(Player->X - (Player->W / 2), Player->Y - (Player->H / 2))) {
-                SubY -= YSpeed << 8;
-            }
-            else if (Scene->CollisionAt(X - (W / 2), Y - (H / 2), this)) {
+            if (Scene->CollisionAt(Player->X - (Player->W / 2), Player->Y - (Player->H / 2)) || Scene->CollisionAt(X - (W / 2), Y - (H / 2), this)) {
                 SubY -= YSpeed << 8;
             }
 
         }
 
         if (XSpeed > 0) {
-            if (Scene->CollisionAt(X + (W / 2), Y - (H / 2), this)) {
+            if (Scene->CollisionAt(X + (W / 2), Y - (H / 2), this) || Scene->CollisionAt(Player->X + (Player->W / 2), Player->Y - (Player->H / 2))) {
                 SubX -= XSpeed << 8;
-            }
-            else if (Scene->CollisionAt(Player->X + (Player->W / 2), Player->Y - (Player->H / 2))) {
-                SubX -= XSpeed << 8;
+                XFriction = 0;
             }
 
         }
 
         if (XSpeed < 0) {
-            if (Scene->CollisionAt(X - (W / 2), Y - (H / 2), this)) {
+            if (Scene->CollisionAt(X - (W / 2), Y - (H / 2), this) || Scene->CollisionAt(Player->X - (Player->W / 2) - 2, Y - (Player->H / 2))) {
                 SubX -= XSpeed << 8;
-            }
-            else if (Scene->CollisionAt(Player->X - (Player->W / 2) - 2, Y - (Player->H / 2))) {
-                SubX -= XSpeed << 8;
+                XFriction = 0;
             }
 
         }

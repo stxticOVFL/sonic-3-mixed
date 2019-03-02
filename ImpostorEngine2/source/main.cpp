@@ -13,6 +13,7 @@
 
 #include <Game/LevelScene.h>
 #include <Game/Player.h>
+#include <ctime>
 
 #if MSVC | MACOSX
     #include "discord_rpc.h"
@@ -43,7 +44,7 @@
 
         Inited = true;
     }
-    void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey) {
+    void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey, const bool time) {
         if (!Inited) return;
 
         DiscordRichPresence discordPresence;
@@ -59,12 +60,15 @@
     		discordPresence.partyMax = 4;
     	}
     	discordPresence.instance = 1;
+		if (time) {
+			discordPresence.startTimestamp = std::time(nullptr);
+		}
     	Discord_UpdatePresence(&discordPresence);
     }
 #else
-    void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey) {
-
-    }
+    /*void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey) {
+		Discord_UpdatePresence(header, state, imgkey, false); //shut the fuck up vs
+    }*/
 #endif
 
 int HandleAppEvents(void* data, SDL_Event* event) {

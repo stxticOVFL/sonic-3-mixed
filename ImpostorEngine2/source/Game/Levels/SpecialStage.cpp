@@ -302,11 +302,11 @@ PUBLIC void Level_SpecialStage::Init() {
 	char levelname[50];
 	if (true) {
 		sprintf(levelname, "%s%s%d", "Special Stage", " ", Act + 1);
-		Discord_UpdatePresence("Classic Mode:", levelname, "11");
+		Discord_UpdatePresence("Classic Mode", levelname, "11", true);
 	}
 	else {
 		sprintf(levelname, "%s%s%d", "Blue Spheres", " Level ", Act + 1);
-		Discord_UpdatePresence("Extras:", levelname, "11");
+		Discord_UpdatePresence("Extras", levelname, "11", true);
 	}
 }
 

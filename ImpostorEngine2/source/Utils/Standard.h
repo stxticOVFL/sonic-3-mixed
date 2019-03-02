@@ -55,7 +55,7 @@ enum class Platforms {
 	Vita,
 };
 
-void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey);
+void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey, const bool time);
 
 using namespace std;
 

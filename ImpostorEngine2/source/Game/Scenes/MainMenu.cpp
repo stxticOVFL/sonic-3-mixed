@@ -141,6 +141,7 @@ PUBLIC void Scene_MainMenu::Init() {
 
 	FadeTimerMax = 30;
 	FadeIn = true;
+	Discord_UpdatePresence("Main Menu", "", "icon", false);
 }
 
 PUBLIC void Scene_MainMenu::Update() {

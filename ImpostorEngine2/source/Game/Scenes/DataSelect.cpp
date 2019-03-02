@@ -18,7 +18,7 @@ public:
 	int FrameZigzagRed = 0;
 	int FrameZigzagBlue = 0;
 	int CharacterFlag = 0;
-    int PartnerFlag = 0xFF;
+	int PartnerFlag = 0xFF;
 };
 #endif
 
@@ -190,7 +190,7 @@ PUBLIC void Scene_DataSelect::Init() {
 	FadeTimerMax = 30;
 	FadeIn = true;
 
-	Discord_UpdatePresence("Main Menu:", "Classic Mode", "icon");
+	Discord_UpdatePresence("Main Menu", "Classic Mode", "icon", false);
 }
 
 bool MobileScrolling = false;
@@ -272,7 +272,6 @@ PUBLIC void Scene_DataSelect::Update() {
 		}
 	}
 
-
 	if (FadeTimer == -1 && FadeTimerMax > 1)
 		FadeTimer = FadeTimerMax;
 	if (FadeTimer > 0) {
@@ -333,42 +332,42 @@ PUBLIC void Scene_DataSelect::Update() {
 				SaveGame::Flush();
 				switch (SaveGame::Savefiles[i].LastZoneID) {
 					LevelScene* ls;
-					case 0:
-						App->NextScene = new Level_AIZ(App, G, 1); 
-						break; 
-					case 1:
-						App->NextScene = new Level_HCZ(App, G, 1);
-						break;
-					case 2:
-						App->NextScene = new Level_MGZ(App, G, 1);
-						break;
-					case 3:
-						App->NextScene = new Level_CNZ(App, G, 1);
-						break;
-					case 4:
-						App->NextScene = new Level_ICZ(App, G, 1);
-						break;
-					case 5:
-						App->NextScene = new Level_LBZ(App, G, 1);
-						break;
-					default:
-						SaveGame::CurrentEmeralds = 0x0000;
-						ls = new LevelScene(App, G);
-						Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
-						Sound::Audio->LoopPoint[0] = 179390 / 4;
-						ls->Str_StageBin = "Stages/MSZ/StageConfig.bin";
-						ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
-						ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
-						ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
-						ls->PlayerStartX = 160;
-						ls->PlayerStartY = 1328;
-						ls->Thremixed = true;
-						ls->ZoneID = 1;
-						ls->VisualAct = 2;
-						sprintf(ls->LevelName, "BENT LETTUCE");
-						sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
-						App->NextScene = ls;
-						break;
+				case 0:
+					App->NextScene = new Level_AIZ(App, G, 1);
+					break;
+				case 1:
+					App->NextScene = new Level_HCZ(App, G, 1);
+					break;
+				case 2:
+					App->NextScene = new Level_MGZ(App, G, 1);
+					break;
+				case 3:
+					App->NextScene = new Level_CNZ(App, G, 1);
+					break;
+				case 4:
+					App->NextScene = new Level_ICZ(App, G, 1);
+					break;
+				case 5:
+					App->NextScene = new Level_LBZ(App, G, 1);
+					break;
+				default:
+					SaveGame::CurrentEmeralds = 0x0000;
+					ls = new LevelScene(App, G);
+					Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
+					Sound::Audio->LoopPoint[0] = 179390 / 4;
+					ls->Str_StageBin = "Stages/MSZ/StageConfig.bin";
+					ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
+					ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
+					ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
+					ls->PlayerStartX = 160;
+					ls->PlayerStartY = 1328;
+					ls->Thremixed = true;
+					ls->ZoneID = 1;
+					ls->VisualAct = 2;
+					sprintf(ls->LevelName, "BENT LETTUCE");
+					sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
+					App->NextScene = ls;
+					break;
 				}
 
 				/*
@@ -510,7 +509,6 @@ PUBLIC void Scene_DataSelect::Update() {
 	if (frame > (32 << 1))
 		frame = 0;
 
-
 	if (App->Input->MousePressed)
 		MobileScrolling = true;
 }
@@ -584,7 +582,7 @@ PUBLIC void Scene_DataSelect::Render() {
 
 	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
-	/*   
+	/*
 	G->DrawRectangle(0, 0, blackGirth, App->HEIGHT, 0x000000);
 	G->DrawRectangle(App->WIDTH - blackGirth, 0, blackGirth, App->HEIGHT, 0x000000);
 	// Triangles
@@ -595,7 +593,6 @@ PUBLIC void Scene_DataSelect::Render() {
 	// Menu Title
 	G->DrawSprite(MenuSprite, 9, 1, App->WIDTH, 12, 0, IE_NOFLIP);
 	//G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
-
 
 	// For shape masking, make a separate framebuffer and when applying pixel, compare to that buffer
 	for (int i = 0; i < 8; i++) {
@@ -619,25 +616,25 @@ PUBLIC void Scene_DataSelect::Render() {
 		switch (SaveGame::Savefiles[i].State) {
 			int txtW;
 			const char* lvlN;
-			case 0:
-				G->DrawSprite(SaveIconsSprite, 1, 0, myX + 80 / 2, myY + 56 / 2, 0, 0);
-				break;
-			case 1:
-				//G->DrawRectangle(myX, myY, 80, 56, 0x4141F2);
-				if (i == selected)
-					G->DrawSprite(SaveIconsSprite, 2, SaveGame::Savefiles[i].LastZoneID, myX + 80 / 2, myY + 56 / 2, 0, IE_NOFLIP);
-				else
-					G->DrawSprite(SaveIconsSprite, 0, (frame >> 2) % 3, myX + 80 / 2, myY + 56 / 2, 0, ((frame >> 2)) % 3);
-				///*
-				lvlN = LevelLabels[SaveGame::Savefiles[i].LastZoneID];
-				txtW = G->MeasureTextSprite(TextSprite, 6, 'A', lvlN);
-				G->DrawRectangle(myX + 80 - txtW - 6, myY + 56 - 17, txtW + 6, 17, 0x000000);
-				G->DrawTextSprite(TextSprite, 6, 'A', myX + 80 - txtW - 2, myY + 56 - 8, lvlN);
-				//*/
-				break;
-			case 2:
-				G->DrawSprite(SaveIconsSprite, 4, 6, myX + 80 / 2, myY + 56 / 2, 0, 0);
-				break;
+		case 0:
+			G->DrawSprite(SaveIconsSprite, 1, 0, myX + 80 / 2, myY + 56 / 2, 0, 0);
+			break;
+		case 1:
+			//G->DrawRectangle(myX, myY, 80, 56, 0x4141F2);
+			if (i == selected)
+				G->DrawSprite(SaveIconsSprite, 2, SaveGame::Savefiles[i].LastZoneID, myX + 80 / 2, myY + 56 / 2, 0, IE_NOFLIP);
+			else
+				G->DrawSprite(SaveIconsSprite, 0, (frame >> 2) % 3, myX + 80 / 2, myY + 56 / 2, 0, ((frame >> 2)) % 3);
+			///*
+			lvlN = LevelLabels[SaveGame::Savefiles[i].LastZoneID];
+			txtW = G->MeasureTextSprite(TextSprite, 6, 'A', lvlN);
+			G->DrawRectangle(myX + 80 - txtW - 6, myY + 56 - 17, txtW + 6, 17, 0x000000);
+			G->DrawTextSprite(TextSprite, 6, 'A', myX + 80 - txtW - 2, myY + 56 - 8, lvlN);
+			//*/
+			break;
+		case 2:
+			G->DrawSprite(SaveIconsSprite, 4, 6, myX + 80 / 2, myY + 56 / 2, 0, 0);
+			break;
 		}
 
 		int cf = CharacterFlag;
@@ -683,7 +680,6 @@ PUBLIC void Scene_DataSelect::Render() {
 		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, ElementH + 8, 0xE00000);
 		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, ElementH + 6, 0xE00000);
 	}
-
 
 	// TODO: When making controllers mappable, use those
 	// 1 - Keyboard

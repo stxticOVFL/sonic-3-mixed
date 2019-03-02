@@ -50,9 +50,9 @@ public:
 
 	ISprite*    PauseSprite = NULL;
 	ISprite*    GlobalDisplaySprite = NULL;
-    ISprite*    MobileButtonsSprite = NULL;
-    ISprite*    SuperButtonsSprite = NULL;
-    ISprite*    EditorSprite = NULL;
+	ISprite*    MobileButtonsSprite = NULL;
+	ISprite*    SuperButtonsSprite = NULL;
+	ISprite*    EditorSprite = NULL;
 	ISprite*    ItemsSprite = NULL;
 	ISprite*    AnimalsSprite = NULL;
 	ISprite*    ObjectsSprite = NULL;
@@ -94,7 +94,7 @@ public:
 	bool        DeformPlayer = false;
 
 	//Object**    Objects;
-    std::vector<Object*> Objects;
+	std::vector<Object*> Objects;
 	int         ObjectCount = 0;
 	int         ObjectNewCount = 0;
 
@@ -271,8 +271,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	std::memset(Signal, 0, sizeof(Signal));
 
-    Objects.reserve(2000);
-    ObjectsSolid.reserve(1000);
+	Objects.reserve(2000);
+	ObjectsSolid.reserve(1000);
 	ObjectsSpring.reserve(300);
 	ObjectsEnemies.reserve(300);
 	ObjectsBreakable.reserve(300);
@@ -432,13 +432,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			GlobalDisplaySpriteS3K = new ISprite("Sprites/GlobalS3K/Display.gif", App);
 			GlobalDisplaySpriteS3K->LoadAnimation("Sprites/GlobalS3K/HUD.bin");
 		}
-        if (!SuperButtonsSprite) {
+		if (!SuperButtonsSprite) {
 			SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
 			SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
 			SuperButtonsSprite->SetPalette(1, 0x282028);
 			SuperButtonsSprite->UpdatePalette();
 		}
-        if (!MobileButtonsSprite) {
+		if (!MobileButtonsSprite) {
 			MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
 			ISprite::Animation an;
 			an.Name = NULL;
@@ -1508,11 +1508,11 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	startTime = SDL_GetTicks();
 
 	// Loading SceneBin
-    IResource* SceneBin = IResources::Load(Str_SceneBin); // Stages/MSZ/Scene2.bin
-    if (SceneBin) {
-        IStreamer reader(SceneBin);
-        uint32_t mag = reader.ReadUInt32BE(); // magic
-        if (mag == 0x4953434E) {
+	IResource* SceneBin = IResources::Load(Str_SceneBin); // Stages/MSZ/Scene2.bin
+	if (SceneBin) {
+		IStreamer reader(SceneBin);
+		uint32_t mag = reader.ReadUInt32BE(); // magic
+		if (mag == 0x4953434E) {
 			char* LevelTitle = reader.ReadRSDKString();
 			strcpy(LevelNameDiscord, LevelTitle);
 			strcpy(LevelName, LevelTitle);
@@ -1528,7 +1528,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					*LevelTitle = ' ';
 				else
 					*LevelTitle = ' ';
-					//IApp::Print(2, "Invalid character '%c' in Level Title.", *LevelTitle);
+				//IApp::Print(2, "Invalid character '%c' in Level Title.", *LevelTitle);
 				LevelTitle++;
 			}
 
@@ -1539,18 +1539,18 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			free(reader.ReadRSDKString()); // Song File
 			reader.ReadUInt32(); // Loop Point
 			reader.ReadUInt32(); // Background Color
-        }
-        else {
-            free(reader.ReadBytes(16));
-        	free(reader.ReadRSDKString());
+		}
+		else {
+			free(reader.ReadBytes(16));
+			free(reader.ReadRSDKString());
 			Data->cameraLayer = reader.ReadByte(); // UnknownByte2
-        }
+		}
 
-        Data->cameraLayer = -1;
-        Data->layerCount = reader.ReadByte();
-        for (int i = 0; i < Data->layerCount; i++) {
-            reader.ReadByte(); // Ignored Byte
-            char* Name = reader.ReadRSDKString();
+		Data->cameraLayer = -1;
+		Data->layerCount = reader.ReadByte();
+		for (int i = 0; i < Data->layerCount; i++) {
+			reader.ReadByte(); // Ignored Byte
+			char* Name = reader.ReadRSDKString();
 
 			std::memset(Data->layers[i].Name, 0, 50);
 			strcpy(Data->layers[i].Name, Name);
@@ -1963,9 +1963,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 							obj->Attributes = (int*)calloc(ArgumentCount, sizeof(int));
 							memcpy(obj->Attributes, args, ArgumentCount * sizeof(int));
-   
-                            ObjectCount++;
-                            Objects.push_back(obj);
+
+							ObjectCount++;
+							Objects.push_back(obj);
 						}
 						break;
 					}
@@ -1975,168 +1975,168 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				free(ArgumentTypes);
 			}
-        }
-        // ImpostorEngine2-temp-type Loading
-        else if ((mag >> 24) == 'U') {
+		}
+		// ImpostorEngine2-temp-type Loading
+		else if ((mag >> 24) == 'U') {
 			BlankTile = 0;
 
-            reader.ReadByte(); // to get rid of the leftover "ObjectCount"
-            int pX = reader.ReadUInt16();
-            int pY = reader.ReadUInt16();
-            if (PlayerStartX == -1) { // && Not Playing as Knuckles
-                PlayerStartX = pX;
-                PlayerStartY = pY;
-            }
-            pX = reader.ReadUInt16();
-            pY = reader.ReadUInt16();
-            if (PlayerStartX == -1 && false) { // && Playing as Knuckles
-                PlayerStartX = pX;
-                PlayerStartY = pY;
-            }
+			reader.ReadByte(); // to get rid of the leftover "ObjectCount"
+			int pX = reader.ReadUInt16();
+			int pY = reader.ReadUInt16();
+			if (PlayerStartX == -1) { // && Not Playing as Knuckles
+				PlayerStartX = pX;
+				PlayerStartY = pY;
+			}
+			pX = reader.ReadUInt16();
+			pY = reader.ReadUInt16();
+			if (PlayerStartX == -1 && false) { // && Playing as Knuckles
+				PlayerStartX = pX;
+				PlayerStartY = pY;
+			}
 
-            int objectCount = reader.ReadUInt16();
-            unsigned char ObjectListUnimpl[0x100];
-            std::memset(ObjectListUnimpl, 0, 0x100);
-            for (int o = 0; o < objectCount; o++) {
-                int X = reader.ReadUInt16BE();
-                int Y = reader.ReadUInt16BE();
+			int objectCount = reader.ReadUInt16();
+			unsigned char ObjectListUnimpl[0x100];
+			std::memset(ObjectListUnimpl, 0, 0x100);
+			for (int o = 0; o < objectCount; o++) {
+				int X = reader.ReadUInt16BE();
+				int Y = reader.ReadUInt16BE();
 
-                int data = (Y & 0xF000) / 0x1000;
-                int PRIORITY = (data >> 3) & 0x01;
-                int FLIPX = (data >> 1) & 0x01;
-                int FLIPY = (data >> 2) & 0x01;
-                int ID = reader.ReadByte();
-                int SubType = reader.ReadByte();
-                Y &= 0x0FFF;
+				int data = (Y & 0xF000) / 0x1000;
+				int PRIORITY = (data >> 3) & 0x01;
+				int FLIPX = (data >> 1) & 0x01;
+				int FLIPY = (data >> 2) & 0x01;
+				int ID = reader.ReadByte();
+				int SubType = reader.ReadByte();
+				Y &= 0x0FFF;
 
-                if (ID == 0x02) {
-                    int H = (4 << (SubType & 0x03)) - 1;
+				if (ID == 0x02) {
+					int H = (4 << (SubType & 0x03)) - 1;
 
-                    int groundOnly = (SubType >> 7) & 0x01;
-                    int orientation = (SubType >> 2) & 0x01;
+					int groundOnly = (SubType >> 7) & 0x01;
+					int orientation = (SubType >> 2) & 0x01;
 
-                    int leftUpPath = ((SubType >> 4) & 0x01);
-                    int rightDownPath = ((SubType >> 3) & 0x01);
-                    int leftUpPriority = ((SubType >> 6) & 0x01); //1 is high, 0 is low
-                    int rightDownPriority = ((SubType >> 5) & 0x01);
+					int leftUpPath = ((SubType >> 4) & 0x01);
+					int rightDownPath = ((SubType >> 3) & 0x01);
+					int leftUpPriority = ((SubType >> 6) & 0x01); //1 is high, 0 is low
+					int rightDownPriority = ((SubType >> 5) & 0x01);
 
-                    PlaneSwitchers[PlaneSwitchCount].X = X;
-                    PlaneSwitchers[PlaneSwitchCount].Y = Y;
+					PlaneSwitchers[PlaneSwitchCount].X = X;
+					PlaneSwitchers[PlaneSwitchCount].Y = Y;
 
-                    PlaneSwitchers[PlaneSwitchCount].Flags = rightDownPath << 3 | rightDownPriority << 2 | leftUpPath << 1 | leftUpPriority;
-                    PlaneSwitchers[PlaneSwitchCount].Size = H;
-                    PlaneSwitchers[PlaneSwitchCount].Angle = orientation * 0xC0;
-                    PlaneSwitchers[PlaneSwitchCount].OnPath = groundOnly == 1;
-                    PlaneSwitchCount++;
-                }
-                else {
-                    ObjectProp op;
-                    op.X = X;
-                    op.Y = Y;
-                    op.ID = ID;
-                    op.SubType = SubType;
-                    op.LoadFlag = PRIORITY;
-                    op.FlipX = FLIPX;
-                    op.FlipY = FLIPY;
+					PlaneSwitchers[PlaneSwitchCount].Flags = rightDownPath << 3 | rightDownPriority << 2 | leftUpPath << 1 | leftUpPriority;
+					PlaneSwitchers[PlaneSwitchCount].Size = H;
+					PlaneSwitchers[PlaneSwitchCount].Angle = orientation * 0xC0;
+					PlaneSwitchers[PlaneSwitchCount].OnPath = groundOnly == 1;
+					PlaneSwitchCount++;
+				}
+				else {
+					ObjectProp op;
+					op.X = X;
+					op.Y = Y;
+					op.ID = ID;
+					op.SubType = SubType;
+					op.LoadFlag = PRIORITY;
+					op.FlipX = FLIPX;
+					op.FlipY = FLIPY;
 
-                    ObjectProps[ObjectPropCount++] = op;
+					ObjectProps[ObjectPropCount++] = op;
 
-                    Object* obj = GetNewObjectFromID(ID);
-                    if (obj) {
-                        obj->G = G;
-                        obj->App = App;
-                        obj->Scene = this;
-                        obj->InitialX = X;
-                        obj->InitialY = Y;
-                        obj->FlipX = FLIPX == 1;
-                        obj->FlipY = FLIPY == 1;
-                        obj->ID = ID;
+					Object* obj = GetNewObjectFromID(ID);
+					if (obj) {
+						obj->G = G;
+						obj->App = App;
+						obj->Scene = this;
+						obj->InitialX = X;
+						obj->InitialY = Y;
+						obj->FlipX = FLIPX == 1;
+						obj->FlipY = FLIPY == 1;
+						obj->ID = ID;
 
-                        while (!SpriteMapIDs[ID])
-                            ID--;
+						while (!SpriteMapIDs[ID])
+							ID--;
 
-                        obj->Sprite = SpriteMapIDs[ID];
-                        obj->SubType = SubType;
-                        ObjectCount++;
-                        Objects.push_back(obj);
-                    }
-                    else {
-                        ObjectListUnimpl[ID] = 0xFF;
-                    }
-                }
-            }
-            for (int i = 0; i < 0x100; i++) {
-                if (ObjectListUnimpl[i] != 0)
-                    App->Print(1, "Object %02X (%s) has not been implemented!", i, ObjectName[i] ? ObjectName[i] : "(null)");
-            }
+						obj->Sprite = SpriteMapIDs[ID];
+						obj->SubType = SubType;
+						ObjectCount++;
+						Objects.push_back(obj);
+					}
+					else {
+						ObjectListUnimpl[ID] = 0xFF;
+					}
+				}
+			}
+			for (int i = 0; i < 0x100; i++) {
+				if (ObjectListUnimpl[i] != 0)
+					App->Print(1, "Object %02X (%s) has not been implemented!", i, ObjectName[i] ? ObjectName[i] : "(null)");
+			}
 
-            int ringCount = reader.ReadUInt16();
-            for (int o = 0; o < ringCount; o++) {
-                int X = reader.ReadUInt16BE();
-                int Y = reader.ReadUInt16BE();
+			int ringCount = reader.ReadUInt16();
+			for (int o = 0; o < ringCount; o++) {
+				int X = reader.ReadUInt16BE();
+				int Y = reader.ReadUInt16BE();
 
-                ObjectProp op;
-                op.X = X;
-                op.Y = Y;
-                op.ID = 0xFF;
-                op.LoadFlag = true;
+				ObjectProp op;
+				op.X = X;
+				op.Y = Y;
+				op.ID = 0xFF;
+				op.LoadFlag = true;
 
-                RingProps[RingPropCount++] = op;
-            }
+				RingProps[RingPropCount++] = op;
+			}
 
-            int animTilesCount = reader.ReadUInt16();
-            vector<int> tils;
-            for (int o = 0; o < animTilesCount; o++) {
-                int til = reader.ReadUInt16();
-                int row = reader.ReadByte();
-                int whichanim = reader.ReadByte();
-                Data->isAnims[til] = row << 8 | whichanim;
+			int animTilesCount = reader.ReadUInt16();
+			vector<int> tils;
+			for (int o = 0; o < animTilesCount; o++) {
+				int til = reader.ReadUInt16();
+				int row = reader.ReadByte();
+				int whichanim = reader.ReadByte();
+				Data->isAnims[til] = row << 8 | whichanim;
 
-                tils.push_back(Data->isAnims[til]);
-            }
+				tils.push_back(Data->isAnims[til]);
+			}
 
-            Data->animatedTilesCount = reader.ReadUInt16();
+			Data->animatedTilesCount = reader.ReadUInt16();
 
-            Data->animatedTileFrames = (int*)calloc(Data->animatedTilesCount, sizeof(int));
+			Data->animatedTileFrames = (int*)calloc(Data->animatedTilesCount, sizeof(int));
 
-            Data->animatedTileDurations = (int**)calloc(Data->animatedTilesCount, sizeof(int*));
-            for (int o = 0; o < Data->animatedTilesCount; o++) {
-                int framecount = reader.ReadUInt16();
-                Data->animatedTileDurations[o] = (int*)calloc(framecount + 2, sizeof(int));
-                Data->animatedTileDurations[o][0] = framecount;
+			Data->animatedTileDurations = (int**)calloc(Data->animatedTilesCount, sizeof(int*));
+			for (int o = 0; o < Data->animatedTilesCount; o++) {
+				int framecount = reader.ReadUInt16();
+				Data->animatedTileDurations[o] = (int*)calloc(framecount + 2, sizeof(int));
+				Data->animatedTileDurations[o][0] = framecount;
 
-                int sum = 0;
-                for (int g = 1; g < framecount + 1; g++) {
-                    Data->animatedTileDurations[o][g] = reader.ReadByte();
-                    sum += Data->animatedTileDurations[o][g];
-                }
-                Data->animatedTileDurations[o][framecount + 1] = sum;
-            }
+				int sum = 0;
+				for (int g = 1; g < framecount + 1; g++) {
+					Data->animatedTileDurations[o][g] = reader.ReadByte();
+					sum += Data->animatedTileDurations[o][g];
+				}
+				Data->animatedTileDurations[o][framecount + 1] = sum;
+			}
 
-            for (int o = 0; o < animTilesCount; o++) {
-                int framecount = Data->animatedTileDurations[tils[o] & 0xFF][0];
+			for (int o = 0; o < animTilesCount; o++) {
+				int framecount = Data->animatedTileDurations[tils[o] & 0xFF][0];
 
-                if (!framecount) {
-                    App->Print(2, "Encountered a frame count of 0 on anim tile %d out of %d!", o, animTilesCount);
-                    exit(1);
-                }
+				if (!framecount) {
+					App->Print(2, "Encountered a frame count of 0 on anim tile %d out of %d!", o, animTilesCount);
+					exit(1);
+				}
 
-                ISprite::Animation an;
-                an.Name = NULL;
-                an.FrameCount = framecount;
-                an.Frames = (ISprite::AnimFrame*)malloc(framecount * sizeof(ISprite::AnimFrame));
-                for (int i = 0; i < framecount; i++) {
-                    ISprite::AnimFrame ts_af;
-                    ts_af.X = i << 4;
-                    ts_af.Y = o << 4;
-                    ts_af.W = ts_af.H = 16;
-                    ts_af.OffX = ts_af.OffY = -8;
-                    an.Frames[i] = ts_af;
-                    G->MakeFrameBufferID(AnimTileSprite, an.Frames + i);
-                }
-                AnimTileSprite->Animations.push_back(an);
-            }
-        }
+				ISprite::Animation an;
+				an.Name = NULL;
+				an.FrameCount = framecount;
+				an.Frames = (ISprite::AnimFrame*)malloc(framecount * sizeof(ISprite::AnimFrame));
+				for (int i = 0; i < framecount; i++) {
+					ISprite::AnimFrame ts_af;
+					ts_af.X = i << 4;
+					ts_af.Y = o << 4;
+					ts_af.W = ts_af.H = 16;
+					ts_af.OffX = ts_af.OffY = -8;
+					an.Frames[i] = ts_af;
+					G->MakeFrameBufferID(AnimTileSprite, an.Frames + i);
+				}
+				AnimTileSprite->Animations.push_back(an);
+			}
+		}
 		// ImpostorEngine2-type Object Loading
 		else if ((mag >> 24) == 'I') {
 			BlankTile = 0;
@@ -2296,39 +2296,39 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						}
 						//*/
 
-						case OBJ_MONITOR:
-							objHash = 0xB3C47F67U;
-						default:
-							Object * obj = GetNewObjectFromCRC32(objHash);
-							if (obj) {
-								if (objHash != 0xA5066DF4U &&
-									objHash != 0xB3C47F67U) {
-									IApp::Print(1, "Unimplemented object: %s", name);
-									break;
-								}
-
-								obj->X = X;
-								obj->Y = Y;
-								obj->G = G;
-								obj->App = App;
-								obj->Scene = this;
-								obj->InitialX = X;
-								obj->InitialY = Y;
-								obj->FlipX = false;
-								obj->FlipY = false;
-								obj->ID = 0;
-
-								if (objHash == 0xB3C47F67U) {
-									obj->Sprite = ItemsSprite;
-								}
-
-								obj->Attributes = (int*)calloc(AttributeCount, sizeof(int));
-								memcpy(obj->Attributes, args, AttributeCount * sizeof(int));
-
-                                ObjectCount++;
-                                Objects.push_back(obj);
+					case OBJ_MONITOR:
+						objHash = 0xB3C47F67U;
+					default:
+						Object * obj = GetNewObjectFromCRC32(objHash);
+						if (obj) {
+							if (objHash != 0xA5066DF4U &&
+								objHash != 0xB3C47F67U) {
+								IApp::Print(1, "Unimplemented object: %s", name);
+								break;
 							}
-							break;
+
+							obj->X = X;
+							obj->Y = Y;
+							obj->G = G;
+							obj->App = App;
+							obj->Scene = this;
+							obj->InitialX = X;
+							obj->InitialY = Y;
+							obj->FlipX = false;
+							obj->FlipY = false;
+							obj->ID = 0;
+
+							if (objHash == 0xB3C47F67U) {
+								obj->Sprite = ItemsSprite;
+							}
+
+							obj->Attributes = (int*)calloc(AttributeCount, sizeof(int));
+							memcpy(obj->Attributes, args, AttributeCount * sizeof(int));
+
+							ObjectCount++;
+							Objects.push_back(obj);
+						}
+						break;
 					}
 
 					free(args);
@@ -2337,7 +2337,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				free(AttributeTypes);
 			}
 		}
-
 
 		for (int i = 0; i < Data->layerCount; i++) {
 			// Build buffers for GL renderer
@@ -2447,8 +2446,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 			// Read palette
 			TileSprite->PaletteSize = 0x100;
-            int pp = 0;
-            for (int i = 0; i < 8; i++) {
+			int pp = 0;
+			for (int i = 0; i < 8; i++) {
 				// IApp::Print(0, "yup: %X", pp);
 				int ii = 0;
 				int bitmap = stageReader.ReadUInt16();
@@ -2460,12 +2459,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					}
 				}
 				// IApp::Print(0, "size: %X", size);
-                for (int col = 0; col < 16; col++) {
-                    if ((bitmap & (1 << col)) != 0) {
-                        for (int d = 0; d < 16; d++) {
-                            uint8_t R = stageReader.ReadByte();
-                            uint8_t G = stageReader.ReadByte();
-                            uint8_t B = stageReader.ReadByte();
+				for (int col = 0; col < 16; col++) {
+					if ((bitmap & (1 << col)) != 0) {
+						for (int d = 0; d < 16; d++) {
+							uint8_t R = stageReader.ReadByte();
+							uint8_t G = stageReader.ReadByte();
+							uint8_t B = stageReader.ReadByte();
 
 							if (i == 3) {
 								TileSprite->SetPalette(ii + 0x80, R << 16 | G << 8 | B);
@@ -2552,7 +2551,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 			obj->Create();
 		}
 		break;
-	case 3: 
+	case 3:
 		if (Act == 1) {
 			int X = 0x2F00;
 			int Y = 0xE60;
@@ -2563,7 +2562,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 			int FLIPY = 0;
 			// ADD_OBJECT();
 			// obj->Create();
-		} 
+		}
 		else {
 			int X = 0x3D00;
 			int Y = 0x720;
@@ -2649,10 +2648,10 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	SaveGame::SetZone(ZoneID - 1);
 	SaveGame::Flush();
 
-    ObjectsSolid.clear();
-    ObjectsSpring.clear();
-    ObjectsEnemies.clear();
-    ObjectsBreakable.clear();
+	ObjectsSolid.clear();
+	ObjectsSpring.clear();
+	ObjectsEnemies.clear();
+	ObjectsBreakable.clear();
 
 	DoneSpinning = false;
 
@@ -2729,7 +2728,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	CameraX = (Player->EZX + Player->CameraX) - App->WIDTH / 2;
 	if (ManiaLevel) {
 		CameraY = (Player->EZY + Player->CameraY - 4) - App->HEIGHT / 2;
-	} else {
+	}
+	else {
 		CameraY = (Player->EZY + Player->CameraY + 8) - App->HEIGHT / 2;
 	}
 
@@ -2743,7 +2743,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	CameraAutoScrollY = 0;
 
 	HandleCamera();
-    
+
 	ObjectCount = Objects.size() - ObjectNewCount;
 
 	for (int i = ObjectCount; i < ObjectCount + ObjectNewCount; i++) {
@@ -2756,10 +2756,10 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	ObjectNewCount = 0;
 
 	for (int i = 0; i < ObjectCount; i++) {
-        Object *object = Objects.at(i);
-        if (object != NULL) {
-            object->Create();
-        }
+		Object *object = Objects.at(i);
+		if (object != NULL) {
+			object->Create();
+		}
 	}
 
 	for (int o = 0; o < RingPropCount; o++) {
@@ -2787,7 +2787,7 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 	char levelname[50];
 	sprintf(imgkey, "%d", ZoneID);
 	sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", VisualAct);
-	Discord_UpdatePresence("Classic Mode:", levelname, imgkey);
+	Discord_UpdatePresence("Classic Mode", levelname, imgkey, true);
 }
 
 PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY) {
@@ -2814,7 +2814,7 @@ PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle,
 }
 
 PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
-    return CollisionAt(probeX, probeY, angle, anglemode, player, NULL);
+	return CollisionAt(probeX, probeY, angle, anglemode, player, NULL);
 }
 
 PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player, Object* IgnoreObject) {
@@ -3149,8 +3149,8 @@ PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
 	ring->Active = true;
 	ring->Priority = true;
 	ring->MagnetizedTo = mag;
-    Objects.push_back(ring);
-    ObjectCount++;
+	Objects.push_back(ring);
+	ObjectCount++;
 	ObjectNewCount++;
 }
 
@@ -3362,8 +3362,8 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 
 		obj->SubType = SubType;
 		obj->Create();
-        ObjectCount++;
-        Objects.push_back(obj);
+		ObjectCount++;
+		Objects.push_back(obj);
 	}
 	return obj;
 }
@@ -3419,7 +3419,6 @@ PUBLIC VIRTUAL void LevelScene::FinishResults() {
 }
 
 PUBLIC VIRTUAL void LevelScene::GoToNextAct() {
-
 }
 
 PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
@@ -3566,92 +3565,92 @@ PUBLIC void LevelScene::Update() {
 		activated = true;
 	}
 
-    // Unpaused
-    if (!PauseFinished) {
-        Frame++;
+	// Unpaused
+	if (!PauseFinished) {
+		Frame++;
 
-        // Animate animated tiles
-        if (Data) {
-            for (int o = 0; o < Data->animatedTilesCount; o++) {
-                int framecount = Data->animatedTileDurations[o][0];
-                int max = Data->animatedTileDurations[o][framecount + 1];
+		// Animate animated tiles
+		if (Data) {
+			for (int o = 0; o < Data->animatedTilesCount; o++) {
+				int framecount = Data->animatedTileDurations[o][0];
+				int max = Data->animatedTileDurations[o][framecount + 1];
 
-                int f = Frame % max;
-                int sum = 0;
-                for (int g = 1; g < framecount + 1; g++) {
-                    sum += Data->animatedTileDurations[o][g];
+				int f = Frame % max;
+				int sum = 0;
+				for (int g = 1; g < framecount + 1; g++) {
+					sum += Data->animatedTileDurations[o][g];
 
-                    if (f < sum) {
-                        Data->animatedTileFrames[o] = g - 1;
-                        break;
-                    }
-                }
-            }
-        }
+					if (f < sum) {
+						Data->animatedTileFrames[o] = g - 1;
+						break;
+					}
+				}
+			}
+		}
 
-        if (LevelCardTimer >= 0.25)
-            ControlsVisible = true;
+		if (LevelCardTimer >= 0.25)
+			ControlsVisible = true;
 
-        if (HUDVisible) {
-            if (HUDAnim > 0x000)
-                HUDAnim -= 0x10;
-        }
-        else {
-            if (HUDAnim < 0x100)
-                HUDAnim += 0x10;
-        }
+		if (HUDVisible) {
+			if (HUDAnim > 0x000)
+				HUDAnim -= 0x10;
+		}
+		else {
+			if (HUDAnim < 0x100)
+				HUDAnim += 0x10;
+		}
 
-        if (ControlsVisible) {
-            if (ControlsAnim > 0x000)
-                ControlsAnim -= 0x10;
-        }
-        else {
-            if (ControlsAnim < 0x100)
-                ControlsAnim += 0x10;
-        }
+		if (ControlsVisible) {
+			if (ControlsAnim > 0x000)
+				ControlsAnim -= 0x10;
+		}
+		else {
+			if (ControlsAnim < 0x100)
+				ControlsAnim += 0x10;
+		}
 
-        if (Player) {
-            if (LevelCardTimer >= 1.5 && Player->Action != ActionType::Dead && FadeAction < FadeActionType::TO_BONUS_STAGE1 && !StopTimer)
-                Timer++;
-        }
+		if (Player) {
+			if (LevelCardTimer >= 1.5 && Player->Action != ActionType::Dead && FadeAction < FadeActionType::TO_BONUS_STAGE1 && !StopTimer)
+				Timer++;
+		}
 
-        if (LevelCardTimer < 5.0)
-            LevelCardTimer += 1.0 / 60.0;
+		if (LevelCardTimer < 5.0)
+			LevelCardTimer += 1.0 / 60.0;
 
-        // Max timer
-        if (Timer > 10 * 60 * 60 - 1) Timer = 10 * 60 * 60 - 1;
+		// Max timer
+		if (Timer > 10 * 60 * 60 - 1) Timer = 10 * 60 * 60 - 1;
 
-        if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
-            if (Player) {
+		if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
+			if (Player) {
 				Player->InputController = 0;
-                Player->InputUp = App->Input->GetControllerInput(Player->InputController)[IInput::I_UP];
-                Player->InputDown = App->Input->GetControllerInput(Player->InputController)[IInput::I_DOWN];
-                Player->InputLeftPress = App->Input->GetControllerInput(Player->InputController)[IInput::I_LEFT_PRESSED];
-                Player->InputLeft = App->Input->GetControllerInput(Player->InputController)[IInput::I_LEFT];
-                Player->InputRightPress = App->Input->GetControllerInput(Player->InputController)[IInput::I_RIGHT_PRESSED];
-                Player->InputRight = App->Input->GetControllerInput(Player->InputController)[IInput::I_RIGHT];
-                Player->InputJump = App->Input->GetControllerInput(Player->InputController)[IInput::I_CONFIRM_PRESSED];
-                Player->InputJumpHold = App->Input->GetControllerInput(Player->InputController)[IInput::I_CONFIRM];
+				Player->InputUp = App->Input->GetControllerInput(Player->InputController)[IInput::I_UP];
+				Player->InputDown = App->Input->GetControllerInput(Player->InputController)[IInput::I_DOWN];
+				Player->InputLeftPress = App->Input->GetControllerInput(Player->InputController)[IInput::I_LEFT_PRESSED];
+				Player->InputLeft = App->Input->GetControllerInput(Player->InputController)[IInput::I_LEFT];
+				Player->InputRightPress = App->Input->GetControllerInput(Player->InputController)[IInput::I_RIGHT_PRESSED];
+				Player->InputRight = App->Input->GetControllerInput(Player->InputController)[IInput::I_RIGHT];
+				Player->InputJump = App->Input->GetControllerInput(Player->InputController)[IInput::I_CONFIRM_PRESSED];
+				Player->InputJumpHold = App->Input->GetControllerInput(Player->InputController)[IInput::I_CONFIRM];
 
-                if (Player->Action == ActionType::Dead && Player->EZY > CameraY + App->HEIGHT + 32) {
-                    if (Player->Lives > 0 && FadeAction == 0) {
-                        Player->Lives--;
-                        FadeAction = FadeActionType::DIED;
-                        FadeTimerMax = 64;
-                        FadeMax = 0x100;
-                        G->FadeToWhite = false;
-                        App->Audio->FadeMusic(0.75);
-                    }
-                    else {
-                        FadeAction = FadeActionType::EXIT;
-                        FadeTimerMax = 60 * 5;
-                        FadeMax = 0x100;
-                        G->FadeToWhite = false;
-                        App->Audio->FadeMusic(5.0);
-                    }
-                }
-            }
-        }
+				if (Player->Action == ActionType::Dead && Player->EZY > CameraY + App->HEIGHT + 32) {
+					if (Player->Lives > 0 && FadeAction == 0) {
+						Player->Lives--;
+						FadeAction = FadeActionType::DIED;
+						FadeTimerMax = 64;
+						FadeMax = 0x100;
+						G->FadeToWhite = false;
+						App->Audio->FadeMusic(0.75);
+					}
+					else {
+						FadeAction = FadeActionType::EXIT;
+						FadeTimerMax = 60 * 5;
+						FadeMax = 0x100;
+						G->FadeToWhite = false;
+						App->Audio->FadeMusic(5.0);
+					}
+				}
+			}
+		}
 
 		if (!maxLayer) {
 			// We're in debug mode! Time to have fun!
@@ -3684,7 +3683,8 @@ PUBLIC void LevelScene::Update() {
 			if (Player->DebugObject != nullptr && Player->DebugObject->OnScreen) {
 				Player->DebugObject->X = Player->DisplayX;
 				Player->DebugObject->Y = Player->DisplayY;
-			} else if (Player->Hidden) {
+			}
+			else if (Player->Hidden) {
 				Player->Hidden = false;
 				if (Player->DebugObjectIndex > -1) {
 					Player->DebugObjectIndex -= 1;
@@ -3692,162 +3692,164 @@ PUBLIC void LevelScene::Update() {
 			}
 
 			if (Player->InputJump) {
-                if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
-                    ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
-                    
-                    Player->Hidden = true;
-                    Player->DebugObjectIndex++;
-                    Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDCount;
+				if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
+					ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
+					Player->Hidden = true;
+					Player->DebugObjectIndex++;
+					Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDCount;
 
-                    if (Player->DebugObject && Player->DebugObject->isHeldDebugObject) {
-                        Player->DebugObject->Active = false;
-                        Player->DebugObject = NULL;
-                    }
-                    int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
+					if (Player->DebugObject && Player->DebugObject->isHeldDebugObject) {
+						Player->DebugObject->Active = false;
+						Player->DebugObject = NULL;
+					}
+					int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
 
-                    Object* obj = NULL;
-                    Ring *ring = NULL;
+					Object* obj = NULL;
+					Ring *ring = NULL;
 
-                    if (objId != Player->LastDebugObjId) {
-                        Player->LastDebugObjId = objId;
-                        Player->DebugObjectSubIndex = 0;
-                    }
+					if (objId != Player->LastDebugObjId) {
+						Player->LastDebugObjId = objId;
+						Player->DebugObjectSubIndex = 0;
+					}
 
-                    switch (objId) {
-                        case 0x00: // Ring
-                            ring = new Ring();
-                            ring->X = Player->DisplayX;
-                            ring->Y = Player->DisplayY;
-                            ring->MyX = Player->DisplayX << 8;
-                            ring->MyY = Player->DisplayY << 8;
-                            ring->Scene = this;
-                            ring->Priority = true;
-                            ring->Timer = -1;
-                            ring->ShouldRingFall = false;
-                            obj = (Object *)ring;
-                            ring = NULL;
-                            break;
-                        case Obj_InvisibleSpikes: // Invisible Spikes
-                        case Obj_InvisibleDeath: // Invisible Death
-                        case Obj_InvisibleBlock: // Invisible Block
-                            obj = GetNewObjectFromID(objId);
-                            Player->DebugObjectSubIndex = 17;
-                            break;
-                        default:
-                            obj = GetNewObjectFromID(objId);
-                            break;
-                    }
-                    if (obj != NULL) {
-                        obj->G = G;
-                        obj->App = App;
-                        obj->Scene = this;
-                        obj->InitialX = Player->EZX;
-                        obj->InitialY = Player->EZY;
-                        obj->FlipX = 0;
-                        obj->FlipY = 0;
-                        obj->ID = objId;
-                        obj->Sprite = SpriteMapIDs[objId];
+					switch (objId) {
+					case 0x00: // Ring
+						ring = new Ring();
+						ring->X = Player->DisplayX;
+						ring->Y = Player->DisplayY;
+						ring->MyX = Player->DisplayX << 8;
+						ring->MyY = Player->DisplayY << 8;
+						ring->Scene = this;
+						ring->Priority = true;
+						ring->Timer = -1;
+						ring->ShouldRingFall = false;
+						obj = (Object *)ring;
+						ring = NULL;
+						break;
+					case Obj_InvisibleSpikes: // Invisible Spikes
+					case Obj_InvisibleDeath: // Invisible Death
+					case Obj_InvisibleBlock: // Invisible Block
+						obj = GetNewObjectFromID(objId);
+						Player->DebugObjectSubIndex = 17;
+						break;
+					default:
+						obj = GetNewObjectFromID(objId);
+						break;
+					}
+					if (obj != NULL) {
+						obj->G = G;
+						obj->App = App;
+						obj->Scene = this;
+						obj->InitialX = Player->EZX;
+						obj->InitialY = Player->EZY;
+						obj->FlipX = 0;
+						obj->FlipY = 0;
+						obj->ID = objId;
+						obj->Sprite = SpriteMapIDs[objId];
 
-                        obj->SubType = Player->DebugObjectSubIndex;
+						obj->SubType = Player->DebugObjectSubIndex;
 
-                        obj->isDebugModeObject = true;
-                        obj->isHeldDebugObject = true;
-                        obj->DebugCreate();
+						obj->isDebugModeObject = true;
+						obj->isHeldDebugObject = true;
+						obj->DebugCreate();
 
-                        if (!obj->Active) {
-                            obj->Active = true;
-                        }
+						if (!obj->Active) {
+							obj->Active = true;
+						}
 
 						ObjectCount++;
-                        Objects.push_back(obj);
-                        //Objects[ObjectCount++] = obj;
-                        Player->DebugObject = obj;
+						Objects.push_back(obj);
+						//Objects[ObjectCount++] = obj;
+						Player->DebugObject = obj;
 
-                        //App->Print(0, "Created Object %d via Debug Mode!", objId);
-                    } else {
-                        Player->Hidden = false;
-                        Player->DebugObjectIndex = -1;
-                        Player->DebugObject = NULL;
-                    }
-                } else {
-                    Player->Hidden = false;
-                    Player->DebugObjectIndex = -1;
-                    Player->DebugObject = NULL;
-                }
+						//App->Print(0, "Created Object %d via Debug Mode!", objId);
+					}
+					else {
+						Player->Hidden = false;
+						Player->DebugObjectIndex = -1;
+						Player->DebugObject = NULL;
+					}
+				}
+				else {
+					Player->Hidden = false;
+					Player->DebugObjectIndex = -1;
+					Player->DebugObject = NULL;
+				}
 			}
 
 			if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
-                if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
-                    ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) { 
-                    
-                    if (Player->DebugObject && Player->DebugObject->OnScreen) {
-                        // We want to create a copy for easy use, So we do.
-                        uint8_t oldSubType = Player->DebugObject->SubType;
-                        Player->DebugObject->isHeldDebugObject = false;
-                        Player->DebugObject = NULL;
-                        int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
+				if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
+					ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
+					if (Player->DebugObject && Player->DebugObject->OnScreen) {
+						// We want to create a copy for easy use, So we do.
+						uint8_t oldSubType = Player->DebugObject->SubType;
+						Player->DebugObject->isHeldDebugObject = false;
+						Player->DebugObject = NULL;
+						int16_t objId = DebugObjectIDList[Player->DebugObjectIndex];
 
-                        Object* obj = NULL;
-                        Ring *ring = NULL;
+						Object* obj = NULL;
+						Ring *ring = NULL;
 
-                        switch (objId) {
-                            case 0x00:
-                                ring = new Ring();
-                                ring->X = Player->DisplayX;
-                                ring->Y = Player->DisplayY;
-                                ring->MyX = Player->DisplayX << 8;
-                                ring->MyY = Player->DisplayY << 8;
-                                ring->Scene = this;
-                                ring->Priority = true;
-                                ring->Timer = -1;
-                                ring->ShouldRingFall = false;
-                                obj = (Object *)ring;
-                                ring = NULL;
-                                break;
-                            default:
-                                obj = GetNewObjectFromID(objId);
-                                break;
-                        }
-                        if (obj != NULL) {
-                            obj->G = G;
-                            obj->App = App;
-                            obj->Scene = this;
-                            obj->InitialX = Player->EZX;
-                            obj->InitialY = Player->EZY;
-                            obj->FlipX = 0;
-                            obj->FlipY = 0;
-                            obj->ID = objId;
-                            obj->Sprite = SpriteMapIDs[objId];
+						switch (objId) {
+						case 0x00:
+							ring = new Ring();
+							ring->X = Player->DisplayX;
+							ring->Y = Player->DisplayY;
+							ring->MyX = Player->DisplayX << 8;
+							ring->MyY = Player->DisplayY << 8;
+							ring->Scene = this;
+							ring->Priority = true;
+							ring->Timer = -1;
+							ring->ShouldRingFall = false;
+							obj = (Object *)ring;
+							ring = NULL;
+							break;
+						default:
+							obj = GetNewObjectFromID(objId);
+							break;
+						}
+						if (obj != NULL) {
+							obj->G = G;
+							obj->App = App;
+							obj->Scene = this;
+							obj->InitialX = Player->EZX;
+							obj->InitialY = Player->EZY;
+							obj->FlipX = 0;
+							obj->FlipY = 0;
+							obj->ID = objId;
+							obj->Sprite = SpriteMapIDs[objId];
 
-                            obj->SubType = oldSubType;
+							obj->SubType = oldSubType;
 
-                            obj->isDebugModeObject = true;
-                            obj->isHeldDebugObject = true;
-                            obj->DebugCreate();
+							obj->isDebugModeObject = true;
+							obj->isHeldDebugObject = true;
+							obj->DebugCreate();
 
-                            if (!obj->Active) {
-                                obj->Active = true;
-                            }
-                            
+							if (!obj->Active) {
+								obj->Active = true;
+							}
+
 							ObjectCount++;
-                            Objects.push_back(obj);
-                            //Objects[ObjectCount++] = obj;
-                            Player->DebugObject = obj;
-                        } else {
-                            Player->Hidden = false;
-                            Player->DebugObjectIndex = -1;
-                            Player->DebugObject = NULL;
-                        }
-                    }
-                } else {
-                    if (Player->DebugObject && Player->DebugObject->OnScreen) {
-                        Player->DebugObject->isHeldDebugObject = false;
-                        Player->DebugObject = NULL;
-                    }
-                    Player->Hidden = false;
-                    Player->DebugObjectIndex = -1;
-                    Player->DebugObject = NULL;
-                }
+							Objects.push_back(obj);
+							//Objects[ObjectCount++] = obj;
+							Player->DebugObject = obj;
+						}
+						else {
+							Player->Hidden = false;
+							Player->DebugObjectIndex = -1;
+							Player->DebugObject = NULL;
+						}
+					}
+				}
+				else {
+					if (Player->DebugObject && Player->DebugObject->OnScreen) {
+						Player->DebugObject->isHeldDebugObject = false;
+						Player->DebugObject = NULL;
+					}
+					Player->Hidden = false;
+					Player->DebugObjectIndex = -1;
+					Player->DebugObject = NULL;
+				}
 			}
 
 			if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
@@ -4402,16 +4404,20 @@ PUBLIC void LevelScene::AddSelfToRegistry(Object* obj, const char* where) {
 	if (!strcmp(where, "Solid")) {
 		ObjectSolidCount++;
 		ObjectsSolid.push_back(obj);
-	} else if (!strcmp(where, "Spring")) {
-        ObjectSpringCount++;
+	}
+	else if (!strcmp(where, "Spring")) {
+		ObjectSpringCount++;
 		ObjectsSpring.push_back(obj);
-	} else if (!strcmp(where, "Enemies")) {
+	}
+	else if (!strcmp(where, "Enemies")) {
 		ObjectEnemiesCount++;
 		ObjectsEnemies.push_back((Enemy*)obj);
-	} else if (!strcmp(where, "Breakable")) {
-        ObjectBreakableCount++;
+	}
+	else if (!strcmp(where, "Breakable")) {
+		ObjectBreakableCount++;
 		ObjectsBreakable.push_back(obj);
-	} else if (!strcmp(where, "PathSwitcher")) {
+	}
+	else if (!strcmp(where, "PathSwitcher")) {
 		ObjectsPathSwitcher[ObjectPathSwitcherCount++] = obj;
 	}
 }
@@ -4424,16 +4430,16 @@ PUBLIC void LevelScene::CleanupObjects() {
 	int NewerObjectNewCount = ObjectNewCount;
 
 	std::vector<Object*> RefreshObjectsSolid;
-    RefreshObjectsSolid.reserve(1000);
+	RefreshObjectsSolid.reserve(1000);
 
 	std::vector<Object*> RefreshObjectsSpring;
-    RefreshObjectsSpring.reserve(300);
+	RefreshObjectsSpring.reserve(300);
 
 	std::vector<Enemy*> RefreshObjectsEnemies;
-    RefreshObjectsEnemies.reserve(300);
+	RefreshObjectsEnemies.reserve(300);
 
 	std::vector<Object*> RefreshObjectsBreakable;
-    RefreshObjectsBreakable.reserve(300);
+	RefreshObjectsBreakable.reserve(300);
 	int NewObjectBreakableCount = 0;
 
 	std::vector<Object*> UnrefreshedObjects = Objects;
@@ -4458,7 +4464,8 @@ PUBLIC void LevelScene::CleanupObjects() {
 				NewerObjectNewCount--;
 			}
 			continue;
-		} else if (!Objects.at(i)->Active && Objects.at(i)->CleanupInactiveObject) {
+		}
+		else if (!Objects.at(i)->Active && Objects.at(i)->CleanupInactiveObject) {
 			if (i >= ObjectCount + ObjectNewCount) {
 				NewerObjectNewCount--;
 			}
@@ -4470,7 +4477,8 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectSolidCount; i++) {
 		if (ObjectsSolid.at(i) == nullptr) {
 			continue;
-		} else if (!ObjectsSolid.at(i)->Active && ObjectsSolid.at(i)->CleanupInactiveObject) {
+		}
+		else if (!ObjectsSolid.at(i)->Active && ObjectsSolid.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsSolid.push_back(ObjectsSolid.at(i));
@@ -4479,7 +4487,8 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectSpringCount; i++) {
 		if (ObjectsSpring.at(i) == nullptr) {
 			continue;
-		} else if (!ObjectsSpring.at(i)->Active && ObjectsSpring.at(i)->CleanupInactiveObject) {
+		}
+		else if (!ObjectsSpring.at(i)->Active && ObjectsSpring.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsSpring.push_back(ObjectsSpring.at(i));
@@ -4488,7 +4497,8 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectEnemiesCount; i++) {
 		if (ObjectsEnemies.at(i) == nullptr) {
 			continue;
-		} else if (!ObjectsEnemies.at(i)->Active && ObjectsEnemies.at(i)->CleanupInactiveObject) {
+		}
+		else if (!ObjectsEnemies.at(i)->Active && ObjectsEnemies.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsEnemies.push_back(ObjectsEnemies.at(i));
@@ -4497,30 +4507,31 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectBreakableCount; i++) {
 		if (ObjectsBreakable.at(i) == nullptr) {
 			continue;
-		} else if (!ObjectsBreakable.at(i)->Active && ObjectsBreakable.at(i)->CleanupInactiveObject) {
+		}
+		else if (!ObjectsBreakable.at(i)->Active && ObjectsBreakable.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsBreakable.push_back(ObjectsBreakable.at(i));
 	}
 
-    RefreshObjects.shrink_to_fit();
+	RefreshObjects.shrink_to_fit();
 	Objects = RefreshObjects;
 	ObjectCount = RefreshObjects.size();
 	ObjectNewCount = NewerObjectNewCount;
 
-    RefreshObjectsSolid.shrink_to_fit();
+	RefreshObjectsSolid.shrink_to_fit();
 	ObjectsSolid = RefreshObjectsSolid;
 	ObjectSolidCount = RefreshObjectsSolid.size();
 
-    RefreshObjectsSpring.shrink_to_fit();
+	RefreshObjectsSpring.shrink_to_fit();
 	ObjectsSpring = RefreshObjectsSpring;
 	ObjectSpringCount = RefreshObjectsSpring.size();
 
-    RefreshObjectsEnemies.shrink_to_fit();
+	RefreshObjectsEnemies.shrink_to_fit();
 	ObjectsEnemies = RefreshObjectsEnemies;
 	ObjectEnemiesCount = RefreshObjectsEnemies.size();
 
-    RefreshObjectsBreakable.shrink_to_fit();
+	RefreshObjectsBreakable.shrink_to_fit();
 	ObjectsBreakable = RefreshObjectsBreakable;
 	ObjectBreakableCount = RefreshObjectsBreakable.size();
 
@@ -4587,7 +4598,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		}
 	}
 
-    UnrefreshedObjects.clear();
+	UnrefreshedObjects.clear();
 	UnrefreshedObjectsSolid.clear();
 	UnrefreshedObjectsSpring.clear();
 	UnrefreshedObjectsEnemies.clear();
@@ -4622,7 +4633,8 @@ PUBLIC void LevelScene::RenderRings() {
 		if (OnScreen) {
 			if (Thremixed) {
 				G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 8, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
-			} else {
+			}
+			else {
 				G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 10, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
 			}
 		}
@@ -5033,11 +5045,9 @@ PUBLIC void LevelScene::RenderResults() {
 }
 
 PUBLIC VIRTUAL void LevelScene::RenderAboveBackground() {
-
 }
 
 PUBLIC VIRTUAL void LevelScene::RenderAboveForeground() {
-
 }
 
 PUBLIC void LevelScene::DrawThing(int l) {

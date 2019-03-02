@@ -20,6 +20,7 @@ public:
     float XFriction;
     IPlayer* Player;
     bool AlreadyUsed;
+    int FrameSpeed;
     
     void Create();
     void Update();
