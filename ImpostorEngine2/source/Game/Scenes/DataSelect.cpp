@@ -20,6 +20,7 @@ public:
 	int CharacterFlag = 0;
 	int PartnerFlag = 0xFF;
     int Mode = 0;
+	char* ModeName = "Classic Mode";
 };
 #endif
 

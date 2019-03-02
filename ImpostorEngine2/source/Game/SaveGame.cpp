@@ -5,6 +5,7 @@ class SaveGame {
 public:
     struct SaveFile {
         uint8_t  State;
+		uint8_t  Mode;
         uint16_t CharacterFlag;
         uint16_t PartnerFlag;
         uint8_t  LastZoneID;
@@ -18,6 +19,7 @@ public:
 
     static SaveFile Savefiles[36];
     static int32_t  CurrentSaveFile;
+	static int8_t   CurrentMode;
 	static int32_t  CurrentZoneID;
 	static uint8_t  CurrentCharacterFlag;
     static uint8_t  CurrentPartnerFlag;

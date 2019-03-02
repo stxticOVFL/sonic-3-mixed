@@ -32,8 +32,8 @@ public:
     int FrameZigzagBlue = 0;
     int CharacterFlag = 0;
     int PartnerFlag = 0xFF;
-	int mode = 0;
-	char* modeName = "Classic Mode";
+    int Mode = 0;
+    char* ModeName = "Classic Mode";
 
     Scene_DataSelect(IApp* app, IGraphics* g, int m);
     void Init();

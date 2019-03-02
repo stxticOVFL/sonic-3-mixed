@@ -27,7 +27,7 @@ public:
     }; 
     static SaveFile Savefiles[36];
     static int32_t  CurrentSaveFile;
-    static int8_t  CurrentMode;
+    static int8_t   CurrentMode;
     static int32_t  CurrentZoneID;
     static uint8_t  CurrentCharacterFlag;
     static uint8_t  CurrentPartnerFlag;
