@@ -1,0 +1,63 @@
+AIZ:
+Object 83 (Obj_CutsceneButton) has not been implemented!
+
+HCZ:
+Object 6E (Obj_WaterDrop) has not been implemented!
+
+MGZ:
+Object 00 (Obj_Ring) has not been implemented! (what?)
+Object 50 (Obj_RunAroundPole) has not been implemented!
+Object 56 (Obj_MovingSpikePlatform) has not been implemented!
+Object 58 (Obj_MGZSwingingSpikeBall) has not been implemented!
+Object 5A (Obj_Pulley) has not been implemented!
+Object 5C (Obj_TopLauncher) has not been implemented!
+Object A2 (Obj_MGZKnucklesBoss) has not been implemented!
+
+CNZ:
+Object 42 (Obj_Cannon) has not been implemented!
+Object 43 (Obj_RisingPlatform) has not been implemented!
+Object 47 (Obj_RotatingBarrel) has not been implemented!
+Object 49 (Obj_RotatingWheel) has not been implemented!
+Object 4D (Obj_BarberPoleSprite) has not been implemented!
+Object 4E (Obj_CNZRotatingMesh) has not been implemented!
+Object 83 (Obj_CutsceneButton) has not been implemented!
+Object 88 (Obj_BreakableWaterRisingFloor) has not been implemented!
+Object 89 (Obj_LightSwitch) has not been implemented!
+Object A3 (Obj_Clamer) has not been implemented!
+Object A4 (Obj_Sparkle) has not been implemented!
+Object A7 (Obj_CNZBoss) has not been implemented!
+
+ICZ:
+Object AD (Obj_Penguinator) has not been implemented!
+Object AE (Obj_StarPointer) has not been implemented! //Almost
+Object AF (Obj_CrushingColumn) has not been implemented! //In progress
+Object B0 (Obj_PathFollowPlatform) has not been implemented!
+Object B1 (Obj_ICZBreakableWall) has not been implemented!
+Object B2 (Obj_Freezer) has not been implemented!
+Object B3 (Obj_SegmentColumn) has not been implemented!
+Object B4 (Obj_ICZSwingingPlatform) has not been implemented!
+Object B5 (Obj_Stalagtite) has not been implemented!
+Object B6 (Obj_IceCube) has not been implemented!
+Object B7 (Obj_IceSpikes) has not been implemented!
+Object B8 (Obj_HarmfulIce) has not been implemented!
+
+LBZ:
+Object 10 (Obj_TubeElevator) has not been implemented!
+Object 11 (Obj_MovingPlatform) has not been implemented!
+Object 13 (Obj_LBZExplodingTrigger) has not been implemented!
+Object 14 (Obj_TriggerBridge) has not been implemented!
+Object 15 (Obj_LBZPlayerLauncher) has not been implemented!
+Object 16 (Obj_LBZFlameThrower) has not been implemented!
+Object 17 (Obj_RideGrapple) has not been implemented!
+Object 18 (Obj_CupElevator) has not been implemented!
+Object 19 (Obj_CupElevatorPole) has not been implemented!
+Object 20 (Obj_SmashingPillar) has not been implemented!
+Object 22 (Obj_Siren) has not been implemented!
+Object 31 (Obj_RotatingCylinder) has not been implemented!
+Object BE (Obj_SnaleBlaster) has not been implemented!
+Object BF (Obj_Ribot) has not been implemented!
+Object C0 (Obj_Orbinaut) has not been implemented! //Almost
+Object C1 (Obj_Corkey) has not been implemented!
+Object C3 (Obj_LBZEggmanFlee) has not been implemented!
+Object C4 (Obj_LBZMinibossBox) has not been implemented!
+Object C5 (Obj_LBZMinibossBoxKnuckles) has not been implemented!

@@ -139,6 +139,9 @@
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Pointdexter.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\SpinningColumn.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\TurboSpiker.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\CrushingColumn.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\StarPointer.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\LBZ\Orbinaut.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\BubblesBadnik.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\DrillerEggman.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Mantis.cpp" />

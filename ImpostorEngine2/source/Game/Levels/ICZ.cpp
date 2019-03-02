@@ -201,6 +201,8 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
     SpriteMapIDs[0x35] = ICZObjectsSprite;
 
 	SpriteMapIDs[0x51] = ICZObjectsSprite;
+
+	SpriteMapIDs[0xAE] = ICZObjectsSprite;
 }
 
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
@@ -214,7 +216,8 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Cork Floor 2.bin");
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms.bin");
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Tension Bridge.bin");
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
+		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
+        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Star Pointer.bin");
     }
 
 	if (!KnuxSprite[0]) {

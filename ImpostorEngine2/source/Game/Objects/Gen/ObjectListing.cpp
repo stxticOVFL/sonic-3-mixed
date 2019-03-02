@@ -263,6 +263,15 @@ Object* GetNewObjectFromID(int ID) {
         case 0xA5U:
             return new Batbright();
             break;
+        case 0xAEU:
+            return new StarPointer();
+            break;
+        case 0xAFU:
+            return new CrushingColumn();
+            break;
+        case 0xC0U:
+            return new Orbinaut();
+            break;
         case 0x400U:
             return new AirshipBomb();
             break;
@@ -577,6 +586,15 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x9D8C15CAU:
             return new Batbright();
+            break;
+        case 0x804AD12DU:
+            return new StarPointer();
+            break;
+        case 0xA5F30B34U:
+            return new CrushingColumn();
+            break;
+        case 0x75BEA9FBU:
+            return new Orbinaut();
             break;
         case 0x8E8C37A1U:
             return new AirshipBomb();

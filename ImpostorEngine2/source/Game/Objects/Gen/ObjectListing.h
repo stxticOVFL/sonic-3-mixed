@@ -88,6 +88,9 @@
 #include "MGZ/DrillerEggman.h"			// 88549378
 #include "MGZ/MGZBoss.h"			// DD1ABC3A
 #include "CNZ/Batbright.h"			// 9D8C15CA
+#include "ICZ/StarPointer.h"			// 804AD12D
+#include "ICZ/CrushingColumn.h"			// A5F30B34
+#include "LBZ/Orbinaut.h"			// 75BEA9FB
 #include "AIZ/AirshipBomb.h"			// 8E8C37A1
 #include "AIZ/AIZMinibossBomb.h"			// 89077B11
 #include "AIZ/AIZMinibossFlame.h"			// 3195387E
@@ -193,6 +196,9 @@ enum {
     Obj_DrillerEggman = 0x0A0,
     Obj_MGZBoss = 0x0A1,
     Obj_Batbright = 0x0A5,
+    Obj_StarPointer = 0x0AE,
+    Obj_CrushingColumn = 0x0AF,
+    Obj_Orbinaut = 0x0C0,
     Obj_AirshipBomb = 0x400,
     Obj_AIZMinibossBomb = 0x401,
     Obj_AIZMinibossFlame = 0x402,
