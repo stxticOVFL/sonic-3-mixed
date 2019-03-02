@@ -417,8 +417,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		startTime = SDL_GetTicks();
 
 		if (!PauseSprite) {
-			PauseSprite = new ISprite("UI/PauseEN.gif", App);
-			PauseSprite->LoadAnimation("UI/TextEN.bin");
+			PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+			PauseSprite->LoadAnimation("UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
 			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
@@ -4054,17 +4054,63 @@ PUBLIC void LevelScene::Update() {
 			else
 				PauseAnim[4 + i] = IMath::max(0, PauseAnim[4 + i] - 1);
 
+		//Messy ikik
+		//Resume
+		bool inBox = false;
+		if (App->Input->MouseX > 81 && App->Input->MouseX < (81 + 35))
+		{
+			if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35))
+			{
+				PauseSelectedMenuItem = 0;
+				inBox = true;
+			}
+			else
+			{
+				inBox = false;
+			}
+		}
+		//Restart
+		else if (App->Input->MouseX > 124 && App->Input->MouseX < (124 + 35))
+		{
+			if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35))
+			{
+				PauseSelectedMenuItem = 1;
+				inBox = true;
+			}
+			else
+			{
+				inBox = false;
+			}
+		}
+		//Exit
+		else if (App->Input->MouseX > 210 && App->Input->MouseX < (210 + 35))
+		{
+			if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35))
+			{
+				PauseSelectedMenuItem = 2;
+				inBox = true;
+			}
+			else
+			{
+				inBox = false;
+			}
+		}
+		else
+		{
+			inBox = false;
+		}
+
 		if (FadeAction == 0) {
-			if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
+			if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED] || App->Input->MouseReleased && inBox) {
 				PauseSelectedMenuItem--;
 				Sound::Play(Sound::SFX_MENUBLEEP);
 			}
-			if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+			if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED] || App->Input->MouseReleased && inBox) {
 				PauseSelectedMenuItem++;
 				Sound::Play(Sound::SFX_MENUBLEEP);
 			}
 
-			if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) { // confirm
+			if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED] || App->Input->MouseReleased && inBox) { // confirm
 				if (PauseSelectedMenuItem == 0) {
 					Paused = false;
 					App->Audio->AudioUnpauseAll();
@@ -4869,119 +4915,45 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 
 	int anim_off;
 
-	// Top-left green shape
-	anim_off = -260 + PauseAnim[0] / 0x100;
-	G->DrawRectangle(0 + anim_off, 0, 188, 58, 0x00CC00);
-	G->DrawTriangle(188 + anim_off, 0, 188 + anim_off, 58, 188 + anim_off + 58, 0, 0x00CC00);
+	//Base Black BG
+	G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
+	//Top BG thingy
+	G->DrawSprite(PauseSprite, 0, 3, 0, 17, 0, IE_FLIPY);
+	//G->DrawSprite(PauseSprite, 0, 2, 0, 0, 0, IE_NOFLIP);
 
-	// Top-right red triangle
-	anim_off = -210 + PauseAnim[2] / 0x100;
-	G->DrawTriangle(App->WIDTH - 100, 0 + anim_off, App->WIDTH, 100 + anim_off, App->WIDTH, 0 + anim_off, 0xE00000);
+	//Buttons
+	//G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
+	//G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 1, 0, 81, 197, 0, IE_NOFLIP); //Resume
+	G->DrawSprite(PauseSprite, 1, 1, 124, 197, 0, IE_NOFLIP); //Restart
+	G->DrawSprite(PauseSprite, 1, 2, 167, 197, 0, IE_NOFLIP); //Settings
+	G->DrawSprite(PauseSprite, 1, 3, 210, 197, 0, IE_NOFLIP); //Exit
+	G->DrawSprite(PauseSprite, 1, 4, 253, 197, 0, IE_NOFLIP); //Radio
 
-	// Large yellow triangle
-	anim_off = 210 - PauseAnim[2] / 0x100;
-	G->DrawTriangle(App->WIDTH - 1 + anim_off, 10,
-		App->WIDTH - 1 + anim_off, App->HEIGHT,
-		App->WIDTH - 1 - (App->HEIGHT - 10) + anim_off, App->HEIGHT, 0xF7DB08);
+	//Chaos Emeralds
+	G->DrawSprite(PauseSprite, 2, 1 * (SaveGame::CurrentEmeralds & (1 << 0)), 297 + 8, 218 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 2 * (SaveGame::CurrentEmeralds & (1 << 1)), 314 + 8, 218 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 3 * (SaveGame::CurrentEmeralds & (1 << 2)), 331 + 8, 218 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 4 * (SaveGame::CurrentEmeralds & (1 << 3)), 348 + 8, 218 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 5 * (SaveGame::CurrentEmeralds & (1 << 4)), 365 + 8, 218 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 6 * (SaveGame::CurrentEmeralds & (1 << 5)), 382 + 8, 218 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 7 * (SaveGame::CurrentEmeralds & (1 << 6)), 399 + 8, 218 + 8, 0, IE_NOFLIP);
 
-	// small Mania logo sprite
-	//G->DrawSprite(GlobalDisplaySprite, CurrentAnimation, CurrentFrame, App->WIDTH - 1 - 62 + anim_off - 12, App->HEIGHT - 1 - 24, 0, IE_NOFLIP);
+	//Super Emeralds
+	G->DrawSprite(PauseSprite, 3, 1 * (SaveGame::CurrentEmeralds & (1 << 8)), 297 + 8, 199 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 2 * (SaveGame::CurrentEmeralds & (1 << 9)), 314 + 8, 199 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 3 * (SaveGame::CurrentEmeralds & (1 << 10)), 331 + 8, 199 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 4 * (SaveGame::CurrentEmeralds & (1 << 11)), 348 + 8, 199 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 5 * (SaveGame::CurrentEmeralds & (1 << 12)), 365 + 8, 199 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 6 * (SaveGame::CurrentEmeralds & (1 << 13)), 382 + 8, 199 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 7 * (SaveGame::CurrentEmeralds & (1 << 14)), 399 + 8, 199 + 8, 0, IE_NOFLIP);
 
-	// Paused text sprite
-	// anim_off = -100 + PauseAnim[1] / 0x100;
-	// G->DrawRectangle(0, 21 + anim_off, 120, 24, 0x000000);
-	// G->DrawTriangle(120, 21 + anim_off,
-	//     120 + 23, 21 + anim_off + 23,
-	//     120, 21 + anim_off + 23,
-	//     0x000000);
-	// G->DrawSprite(PauseSprite, 1, 1, 96, 32, 11, 13 + anim_off, 0, IE_NOFLIP, 0, 0);
-	//
-	// anim_off = 210 - PauseAnim[2] / 0x100;
-	// int baseX = 280 + anim_off;
-	// int baseY = 70 + 20;
-	//
-	// for (int i = 0; i < 3; i++) {
-	//     int o = PauseAnim[4 + i];
-	//
-	//     if (o != 0) {
-	//         uint8_t B = 0xC0;
-	//         uint8_t RG = IMath::max(0, IMath::min(  (Cos[PauseAnim[3]] * 0x60 + 0x6000) / 0x100, 0xFF));
-	//
-	//         G->DrawRectangle(baseX - 8 - o - i * 36, baseY + o + i * 36 + 4, 240, 22, RG << 16 | RG << 8 | B);
-	//         G->DrawTriangle(
-	//             baseX - 8 - o - i * 36, baseY + o + i * 36 + 4,
-	//             baseX - 29 - o - i * 36, baseY + o + i * 36 + 4,
-	//             baseX - 8 - o - i * 36, baseY + o + i * 36 + 25,
-	//             RG << 16 | RG << 8 | B);
-	//     }
-	//
-	//     G->DrawRectangle(baseX - 8 + o - i * 36, baseY - o + i * 36 + 4, 240, 22, 0x000000);
-	//     G->DrawTriangle(
-	//         baseX - 8 + o - i * 36, baseY - o + i * 36 + 4,
-	//         baseX - 29 + o - i * 36, baseY - o + i * 36 + 4,
-	//         baseX - 8 + o - i * 36, baseY - o + i * 36 + 25,
-	//         0x000000);
-	// }
-	//
-	// int oo = PauseAnim[4];
-	// G->DrawSprite(PauseSprite, 1, 34, 112, 22,
-	//               baseX - 02 + oo,  baseY - 2 - oo, 0, IE_NOFLIP, 0, 0);
-	//
-	// oo = PauseAnim[5];
-	// G->DrawSprite(PauseSprite, 1, 57, 99, 22,
-	//               baseX - 36 + oo, baseY + 36 - oo, 0, IE_NOFLIP, 0, 0);
-	//
-	// oo = PauseAnim[6];
-	// G->DrawSprite(PauseSprite, 114, 34, 50, 22,
-	//               baseX - 72 + oo, baseY + 72 - oo, 0, IE_NOFLIP, 0, 0);
-
-	anim_off = -100 + PauseAnim[1] / 0x100;
-	G->DrawRectangle(0, 21 + anim_off, 120, 24, 0x000000);
-	G->DrawTriangle(120, 21 + anim_off,
-		120 + 24, 21 + anim_off + 24,
-		120, 21 + anim_off + 24,
-		0x000000);
-	G->DrawSprite(PauseSprite, 10, 3, 11 + 48, 13 + anim_off + 20, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 0, 4, 148, 8, 0, IE_NOFLIP); //"You are currently Paused"
 
 	anim_off = 210 - PauseAnim[2] / 0x100;
 	int baseX = 280 + anim_off;
 	int baseY = 70 + 20;
-
-	for (int i = 0; i < 3; i++) {
-		int o = PauseAnim[4 + i];
-
-		if (o != 0) {
-			uint8_t B = 0xC0;
-			uint8_t RG = IMath::clamp(((IMath::cosHex(PauseAnim[3]) * 0x60 >> 16) + 0x6000) / 0x100, 0x00, 0xFF);
-
-			G->DrawRectangle(baseX - 8 - o - i * 36, baseY + o + i * 36 + 4, 320, 22, RG << 16 | RG << 8 | B);
-			G->DrawTriangle(
-				baseX - 30 - o - i * 36, baseY + o + i * 36 + 4,
-				baseX - 8 - o - i * 36, baseY + o + i * 36 + 4,
-				baseX - 8 - o - i * 36, baseY + o + i * 36 + 26,
-				RG << 16 | RG << 8 | B);
-		}
-
-		G->DrawRectangle(baseX - 8 + o - i * 36, baseY - o + i * 36 + 4, 320, 22, 0x000000);
-		G->DrawTriangle(
-			baseX - 30 + o - i * 36, baseY - o + i * 36 + 4,
-			baseX - 8 + o - i * 36, baseY - o + i * 36 + 4,
-			baseX - 8 + o - i * 36, baseY - o + i * 36 + 26,
-			0x000000);
 	}
-
-	int oo = PauseAnim[4];
-	G->DrawSprite(PauseSprite, 10, 0,
-		baseX + 13 - 02 + oo, baseY + 16 - 2 - oo, 0, IE_NOFLIP);
-
-	oo = PauseAnim[5];
-	G->DrawSprite(PauseSprite, 10, 1,
-		baseX + 13 - 36 + oo, baseY + 16 + 36 - oo, 0, IE_NOFLIP);
-
-	oo = PauseAnim[6];
-	G->DrawSprite(PauseSprite, 10, 2,
-		baseX + 13 - 72 + oo, baseY + 16 + 72 - oo, 0, IE_NOFLIP);
-}
 
 PUBLIC void LevelScene::RenderResults() {
 	if (!ShowResults) return;
