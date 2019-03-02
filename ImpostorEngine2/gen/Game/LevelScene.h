@@ -68,6 +68,8 @@ public:
     int         PauseSelectedMenuItem = 0;
     bool        Paused = false;
     bool        PauseFinished = false;
+	int			palframe = 0;
+	int			paltimer = 0;
     ISprite*    PauseSprite = NULL;
     ISprite*    GlobalDisplaySprite = NULL;
     ISprite*    MobileButtonsSprite = NULL;

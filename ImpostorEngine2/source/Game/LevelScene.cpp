@@ -247,6 +247,7 @@ const char* ObjectName[347];
 
 int BlankTile = 0;
 
+
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
@@ -4056,39 +4057,36 @@ PUBLIC void LevelScene::Update() {
 				PauseAnim[4 + i] = IMath::max(0, PauseAnim[4 + i] - 1);
 
 		//Messy ikik
-		//Resume
 		bool inBox = false;
-		if (App->Input->MouseX > 81 && App->Input->MouseX < (81 + 35))
-		{
-			if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35))
+		if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35)) {
+			//Resume
+			if (App->Input->MouseX > 81 && App->Input->MouseX < (81 + 35))
 			{
 				PauseSelectedMenuItem = 0;
 				inBox = true;
 			}
-			else
-			{
-				inBox = false;
-			}
-		}
-		//Restart
-		else if (App->Input->MouseX > 124 && App->Input->MouseX < (124 + 35))
-		{
-			if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35))
+			//Restart
+			else if (App->Input->MouseX > 124 && App->Input->MouseX < (124 + 35))
 			{
 				PauseSelectedMenuItem = 1;
 				inBox = true;
 			}
-			else
-			{
-				inBox = false;
-			}
-		}
-		//Exit
-		else if (App->Input->MouseX > 210 && App->Input->MouseX < (210 + 35))
-		{
-			if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35))
+			//Settings
+			else if (App->Input->MouseX > 167 && App->Input->MouseX < (167 + 35))
 			{
 				PauseSelectedMenuItem = 2;
+				inBox = true;
+			}
+			//Exit
+			else if (App->Input->MouseX > 210 && App->Input->MouseX < (210 + 35))
+			{
+				PauseSelectedMenuItem = 3;
+				inBox = true;
+			}
+			//Radio
+			else if (App->Input->MouseX > 253 && App->Input->MouseX < (253 + 35))
+			{
+				PauseSelectedMenuItem = 4;
 				inBox = true;
 			}
 			else
@@ -4096,17 +4094,13 @@ PUBLIC void LevelScene::Update() {
 				inBox = false;
 			}
 		}
-		else
-		{
-			inBox = false;
-		}
 
 		if (FadeAction == 0) {
-			if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED] || App->Input->MouseReleased && inBox) {
+			if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED] || App->Input->MouseReleased && inBox) {
 				PauseSelectedMenuItem--;
 				Sound::Play(Sound::SFX_MENUBLEEP);
 			}
-			if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED] || App->Input->MouseReleased && inBox) {
+			if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED] || App->Input->MouseReleased && inBox) {
 				PauseSelectedMenuItem++;
 				Sound::Play(Sound::SFX_MENUBLEEP);
 			}
@@ -4129,13 +4123,17 @@ PUBLIC void LevelScene::Update() {
 
 					Sound::Play(Sound::SFX_MENUACCEPT);
 				}
-				else if (PauseSelectedMenuItem == 2) {
+				else if (PauseSelectedMenuItem == 3) {
 					FadeAction = FadeActionType::EXIT;
 					FadeTimerMax = 48;
 					FadeMax = 0x120;
 					G->FadeToWhite = false;
 
 					Sound::Play(Sound::SFX_MENUACCEPT);
+				}
+				else {
+					Sound::Play(Sound::SFX_MENUFAIL);
+					App->Print(0, "Other pause items not implemented yet!");
 				}
 			}
 			else if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) { // deny
@@ -4144,8 +4142,8 @@ PUBLIC void LevelScene::Update() {
 		}
 
 		if (PauseSelectedMenuItem < 0)
-			PauseSelectedMenuItem = 2;
-		if (PauseSelectedMenuItem > 2)
+			PauseSelectedMenuItem = 4;
+		if (PauseSelectedMenuItem > 4)
 			PauseSelectedMenuItem = 0;
 	}
 
@@ -4914,22 +4912,53 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	// HACK: For when the Scene cleans up before we render PauseSprite for the last time
 	if (!PauseSprite) return;
 
+	paltimer++;
+	if (paltimer > 1) {
+		palframe += 1 + 18;
+		palframe %= 18;
+		paltimer = 0;
+	}
+
+	int paletteToCycle[18] = {
+	0xEAD100,
+	0xE4C700,
+	0xE0BF00,
+	0xDAB600,
+	0xD6AE00,
+	0xD1A500,
+	0xCD9D00,
+	0xC89400,
+	0xC48C00,
+	0xBE8200,
+	0xB97A00,
+	0xB47100,
+	0xB06A00,
+	0xAA6100,
+	0xA65900,
+	0xA15000,
+	0x9D4800,
+	0x993A00,
+	};
+
 	int anim_off;
 
+	for (int i = 0; i < 9; i++)
+		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 18) % 18]);
+
 	//Base Black BG
-	G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 0, 2, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
 	//Top BG thingy
-	G->DrawSprite(PauseSprite, 0, 3, 0, 17, 0, IE_FLIPY);
+	G->DrawSprite(PauseSprite, 0, 2, 0, 17, 0, IE_FLIPY);
 	//G->DrawSprite(PauseSprite, 0, 2, 0, 0, 0, IE_NOFLIP);
 
 	//Buttons
 	//G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
 	//G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 1, 0, 81, 197, 0, IE_NOFLIP); //Resume
-	G->DrawSprite(PauseSprite, 1, 1, 124, 197, 0, IE_NOFLIP); //Restart
-	G->DrawSprite(PauseSprite, 1, 2, 167, 197, 0, IE_NOFLIP); //Settings
-	G->DrawSprite(PauseSprite, 1, 3, 210, 197, 0, IE_NOFLIP); //Exit
-	G->DrawSprite(PauseSprite, 1, 4, 253, 197, 0, IE_NOFLIP); //Radio
+	G->DrawSprite(PauseSprite, 1, 0 + (PauseSelectedMenuItem == 0 ? 5 : 0), 81, 197, 0, IE_NOFLIP); //Resume
+	G->DrawSprite(PauseSprite, 1, 1 + (PauseSelectedMenuItem == 1 ? 5 : 0), 124, 197, 0, IE_NOFLIP); //Restart
+	G->DrawSprite(PauseSprite, 1, 2 + (PauseSelectedMenuItem == 2 ? 5 : 0), 167, 197, 0, IE_NOFLIP); //Settings
+	G->DrawSprite(PauseSprite, 1, 3 + (PauseSelectedMenuItem == 3 ? 5 : 0), 210, 197, 0, IE_NOFLIP); //Exit
+	G->DrawSprite(PauseSprite, 1, 4 + (PauseSelectedMenuItem == 4 ? 5 : 0), 253, 197, 0, IE_NOFLIP); //Radio
 
 	//Chaos Emeralds
 	G->DrawSprite(PauseSprite, 2, 1 * (SaveGame::CurrentEmeralds & (1 << 0)), 297 + 8, 218 + 8, 0, IE_NOFLIP);
@@ -4949,7 +4978,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	G->DrawSprite(PauseSprite, 3, 6 * (SaveGame::CurrentEmeralds & (1 << 13)), 382 + 8, 199 + 8, 0, IE_NOFLIP);
 	G->DrawSprite(PauseSprite, 3, 7 * (SaveGame::CurrentEmeralds & (1 << 14)), 399 + 8, 199 + 8, 0, IE_NOFLIP);
 
-	G->DrawSprite(PauseSprite, 0, 4, 148, 6, 0, IE_NOFLIP); //"You are currently Paused"
+	G->DrawSprite(PauseSprite, 0, 3, 148, 6, 0, IE_NOFLIP); //"You are currently Paused"
 
 	anim_off = 210 - PauseAnim[2] / 0x100;
 	int baseX = 280 + anim_off;
