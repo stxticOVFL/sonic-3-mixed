@@ -197,8 +197,8 @@ PUBLIC void Level_SpecialStage::Init() {
 		MobileButtonsSprite->UpdatePalette();
 	}
 	if (!PauseSprite) {
-		PauseSprite = new ISprite("UI/PauseEN.gif", App);
-		PauseSprite->LoadAnimation("UI/TextEN.bin");
+		PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+		PauseSprite->LoadAnimation("UI/PauseMenu.bin");
 	}
 
 	if (!ItemsSprite) {
