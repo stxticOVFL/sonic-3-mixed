@@ -29,7 +29,6 @@ void TopPlatform::Update() {
         YSpeed += 0xA0;
     }
 
-    if (PlayerUsed == -1) return;
     if (PlayerUsed == -1) {
         Player = NULL;
         return;
@@ -79,6 +78,7 @@ void TopPlatform::MoveSprite() {
             if (Scene->CollisionAt(X - (W / 2), Y + (H / 2), this)) {
                 SubY -= YSpeed << 8;
             }
+
         }
 
         if (YSpeed < 0) {
@@ -88,6 +88,7 @@ void TopPlatform::MoveSprite() {
             else if (Scene->CollisionAt(X - (W / 2), Y - (H / 2), this)) {
                 SubY -= YSpeed << 8;
             }
+
         }
 
         if (XSpeed > 0) {
@@ -97,6 +98,7 @@ void TopPlatform::MoveSprite() {
             else if (Scene->CollisionAt(Player->X + (Player->W / 2), Player->Y - (Player->H / 2))) {
                 SubX -= XSpeed << 8;
             }
+
         }
 
         if (XSpeed < 0) {
@@ -106,8 +108,11 @@ void TopPlatform::MoveSprite() {
             else if (Scene->CollisionAt(Player->X - (Player->W / 2) - 2, Y - (Player->H / 2))) {
                 SubX -= XSpeed << 8;
             }
+
         }
+
     }
+
 }
 
 void TopPlatform::Render(int CamX, int CamY) {
@@ -122,7 +127,9 @@ void TopPlatform::Render(int CamX, int CamY) {
             G->DrawRectangle((Player->X + (Player->W / 2)) - CamX, (Player->Y - (Player->H / 2)) - CamY, 2, Player->H, DrawCollisionsColor);
             G->DrawRectangle(((Player->X - (Player->W / 2)) - 2) - CamX, (Player->Y - (Player->H / 2)) - CamY, 2, Player->H, DrawCollisionsColor);
         }
+
     }
+
     }
 
 int TopPlatform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
@@ -134,3 +141,4 @@ int TopPlatform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     return 1;
 }
+

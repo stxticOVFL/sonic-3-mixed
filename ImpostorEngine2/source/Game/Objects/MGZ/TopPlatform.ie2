@@ -28,8 +28,6 @@ event Update() {
         XFriction = XSpeed;
         YSpeed += 0xA0;
     }
-    if (PlayerUsed == -1) return;
-    var Player:IPlayer = Scene.Players[PlayerUsed];
     if (PlayerUsed == -1){
         Player = NULL;
         return;
