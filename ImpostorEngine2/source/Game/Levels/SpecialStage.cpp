@@ -198,6 +198,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	}
 	if (!PauseSprite) {
 		PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+		PauseSprite->SetTransparentColorIndex(0);
 		PauseSprite->LoadAnimation("UI/PauseMenu.bin");
 	}
 

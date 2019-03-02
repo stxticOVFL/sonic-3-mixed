@@ -418,6 +418,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 		if (!PauseSprite) {
 			PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+			PauseSprite->SetTransparentColorIndex(0);
 			PauseSprite->LoadAnimation("UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
