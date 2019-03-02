@@ -4948,7 +4948,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	G->DrawSprite(PauseSprite, 3, 6 * (SaveGame::CurrentEmeralds & (1 << 13)), 382 + 8, 199 + 8, 0, IE_NOFLIP);
 	G->DrawSprite(PauseSprite, 3, 7 * (SaveGame::CurrentEmeralds & (1 << 14)), 399 + 8, 199 + 8, 0, IE_NOFLIP);
 
-	G->DrawSprite(PauseSprite, 0, 4, 148, 8, 0, IE_NOFLIP); //"You are currently Paused"
+	G->DrawSprite(PauseSprite, 0, 4, 148, 6, 0, IE_NOFLIP); //"You are currently Paused"
 
 	anim_off = 210 - PauseAnim[2] / 0x100;
 	int baseX = 280 + anim_off;
