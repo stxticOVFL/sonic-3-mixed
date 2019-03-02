@@ -2787,8 +2787,18 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 	char levelname[50];
 	sprintf(imgkey, "%d", ZoneID);
 	sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", VisualAct);
-	Discord_UpdatePresence("Classic Mode", levelname, imgkey, true);
+
+
+	char* ModeName;
+	if (SaveGame::CurrentMode == 0)
+		ModeName = "Classic Mode";
+	else if (SaveGame::CurrentMode == 1)
+		ModeName = "Mixed Mode";
+	else if (SaveGame::CurrentMode == 2)
+		ModeName = "Locked On";
+	Discord_UpdatePresence(ModeName, levelname, imgkey, true);
 }
+
 
 PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY) {
 	return CollisionAt(probeX, probeY, NULL, 0, NULL, NULL);

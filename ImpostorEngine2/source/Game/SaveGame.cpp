@@ -41,6 +41,7 @@ States:
 Starting a State 0 file initalizes all the scores and target scores etc..
 */
 int32_t             SaveGame::CurrentSaveFile = -1;
+int8_t				SaveGame::CurrentMode = 0;
 int32_t             SaveGame::CurrentZoneID = -1;
 uint8_t             SaveGame::CurrentCharacterFlag = 0;
 uint8_t             SaveGame::CurrentPartnerFlag = 0xFF;
@@ -60,8 +61,9 @@ PUBLIC STATIC void SaveGame::Init() {
     IResource* SaveBin = IResources::Load("../Save.bin");
     if (SaveBin) {
         IStreamer reader(SaveBin);
-        for (int s = 0; s < 32; s++) {
+        for (int s = 0; s < 36; s++) {
             Savefiles[s].State = reader.ReadByte();
+            Savefiles[s].Mode = reader.ReadByte();
             Savefiles[s].CharacterFlag = reader.ReadUInt16();
             Savefiles[s].PartnerFlag = reader.ReadUInt16();
             Savefiles[s].LastZoneID = reader.ReadByte();
@@ -97,6 +99,7 @@ PUBLIC STATIC void SaveGame::Flush() {
         IStreamer writer(SaveBin);
         for (int s = 0; s < 32; s++) {
 			writer.WriteByte(Savefiles[s].State);
+			writer.WriteByte(Savefiles[s].Mode);
             writer.WriteUInt16(Savefiles[s].CharacterFlag);
             writer.WriteUInt16(Savefiles[s].PartnerFlag);
             writer.WriteByte(Savefiles[s].LastZoneID);

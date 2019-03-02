@@ -70,7 +70,7 @@ bool GoBack = false;
 PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 	App = app;
 	G = g;
-	Mode = m;
+	mode = m;
 	Sound::Audio = App->Audio;
 	Sound::Init();
 	SaveGame::Init();
@@ -191,14 +191,13 @@ PUBLIC void Scene_DataSelect::Init() {
 	FadeTimerMax = 30;
 	FadeIn = true;
 
-	char* ModeName;
-	if (Mode == 0)
-		ModeName = "Classic Mode";
-	else if (Mode == 1)
-		ModeName = "Mixed Mode";
-	else if (Mode == 2)
-		ModeName = "Locked On";
-	Discord_UpdatePresence("Main Menu", ModeName, "icon", false);
+	if (mode == 0)
+		modeName = "Classic Mode";
+	else if (mode == 1)
+		modeName = "Mixed Mode";
+	else if (mode == 2)
+		modeName = "Locked On";
+	Discord_UpdatePresence("Main Menu", modeName, "icon", false);
 }
 
 bool MobileScrolling = false;
@@ -304,7 +303,7 @@ PUBLIC void Scene_DataSelect::Update() {
 				App->NextScene = NextScene;
 			}
 			else {
-				SaveGame::CurrentSaveFile = selected + (12 * (Mode + 1));
+				SaveGame::CurrentSaveFile = selected + (12 * (mode));
 
 				int i = SaveGame::CurrentSaveFile;
 				if (SaveGame::Savefiles[i].State == 0) {
@@ -336,6 +335,24 @@ PUBLIC void Scene_DataSelect::Update() {
 
 				SaveGame::CurrentUsedZoneRings = SaveGame::Savefiles[i].UsedZoneRings[SaveGame::Savefiles[i].LastZoneID];
 				SaveGame::CurrentEmeralds = SaveGame::Savefiles[i].Emeralds;
+
+				if (SaveGame::CurrentSaveFile < 12)
+				{
+					//Classic
+					SaveGame::Savefiles[i].Mode = 0;
+				}
+				else if (SaveGame::CurrentSaveFile >= 12 && SaveGame::CurrentSaveFile < 24)
+				{
+					//Mixed
+					SaveGame::Savefiles[i].Mode = 1;
+				}
+				else
+				{
+					//Locked on
+					SaveGame::Savefiles[i].Mode = 2;
+				}
+
+				SaveGame::CurrentMode = SaveGame::Savefiles[i].Mode;
 
 				SaveGame::Flush();
 				switch (SaveGame::Savefiles[i].LastZoneID) {
@@ -599,12 +616,12 @@ PUBLIC void Scene_DataSelect::Render() {
 	//*/
 
 	// Menu Title
-	G->DrawSprite(MenuSprite, 9, (1 + Mode), App->WIDTH, 12, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 9, (1 + mode), App->WIDTH, 12, 0, IE_NOFLIP);
 	//G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
 
 	// For shape masking, make a separate framebuffer and when applying pixel, compare to that buffer
 	int j = 0;
-	for (int i = (12 * Mode); i < (12 * Mode) + 12; i++) {
+	for (int i = (12 * mode); i < (12 * mode) + 12; i++) {
 		int myX = App->WIDTH / 2 - 40 + j * 100 - (viewOffX + 50) / 100;
 		int myY = ElementY;
 

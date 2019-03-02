@@ -139,9 +139,28 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     //Objects->LoadAnimation("Stages/Special/PaletteIcon.bin");
 
     Players = new ISprite("Stages/Special/Players.gif", App);
-    Players->LoadAnimation("Stages/Special/Sonic.bin");
-    Players->LoadAnimation("Stages/Special/Tails.bin");
-    Players->LoadAnimation("Stages/Special/Knuckles.bin");
+
+	switch (SaveGame::CurrentCharacterFlag)
+	{
+	case 0:
+		Players->LoadAnimation("Stages/Special/Sonic.bin");
+		break;
+	case 1:
+		Players->LoadAnimation("Stages/Special/Tails.bin");
+		break;
+	case 2:
+		Players->LoadAnimation("Stages/Special/Knuckles.bin");
+		break;
+	case 3:
+		Players->LoadAnimation("Stages/Special/Mighty.bin");
+		break;
+	case 4:
+		Players->LoadAnimation("Stages/Special/Ray.bin");
+		break;
+	default:
+		Players->LoadAnimation("Stages/Special/Sonic.bin");
+		break;
+	}
 
     Str_TileConfigBin = ":";
     Str_SceneBin = ":";
@@ -302,7 +321,14 @@ PUBLIC void Level_SpecialStage::Init() {
 	char levelname[50];
 	if (true) {
 		sprintf(levelname, "%s%s%d", "Special Stage", " ", Act + 1);
-		Discord_UpdatePresence("Classic Mode", levelname, "11", true);
+		char* ModeName;
+		if (SaveGame::CurrentMode == 0)
+			ModeName = "Classic Mode";
+		else if (SaveGame::CurrentMode == 1)
+			ModeName = "Mixed Mode";
+		else if (SaveGame::CurrentMode == 2)
+			ModeName = "Locked On";
+		Discord_UpdatePresence(ModeName, levelname, "11", true);
 	}
 	else {
 		sprintf(levelname, "%s%s%d", "Blue Spheres", " Level ", Act + 1);
