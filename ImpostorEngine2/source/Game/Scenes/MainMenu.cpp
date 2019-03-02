@@ -162,7 +162,7 @@ PUBLIC void Scene_MainMenu::Update() {
 
 		if (!FadeIn) {
 			if (selected == 0) {
-				Scene_DataSelect* NextScene = new Scene_DataSelect(App, G);
+				Scene_DataSelect* NextScene = new Scene_DataSelect(App, G, subselected);
 				NextScene->MenuSprite = MenuSprite;
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
 				NextScene->TextSprite = TextSprite;
@@ -214,14 +214,29 @@ PUBLIC void Scene_MainMenu::Update() {
 		}
 
 		if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
-			if (selected >= 2)
+			if (subselected > 0)
+				subselected -= 1;
+			else if (selected >= 2) {
 				selected -= 2;
+				if (selected / 2 == 0)
+					subselected = 0;
+			}
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
-			if (selected <= 1)
+			if (subselected > -1) {
+				if ((subselected == 2 && selected == 0) || (subselected == 1 && selected == 1)) {
+					selected += 2;
+					subselected = -1;
+				}
+				subselected += 1;
+			}
+			else if (selected <= 1) {
 				selected += 2;
+				if (selected / 2 == 0)
+					subselected = 0;
+			}
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
@@ -229,12 +244,16 @@ PUBLIC void Scene_MainMenu::Update() {
 		if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED]) {
 			if ((selected & 1) == 1)
 				selected--;
+			if (selected / 2 == 0)
+				subselected = 0;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
 			if ((selected & 1) == 0)
 				selected++;
+			if (selected / 2 == 0)
+				subselected = 0;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
@@ -247,6 +266,8 @@ PUBLIC void Scene_MainMenu::Update() {
 				}
 			}
 		}
+		if (selected / 2 != 0)
+			subselected = -1;
 	}
 
 	if (CONFIRM_PRESSED) {
@@ -364,10 +385,37 @@ PUBLIC void Scene_MainMenu::Render() {
 	// Blue Button
 	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 0, cenX - 50 - 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+	// Submenus for Blue
+	//Boxes
+	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY + 11, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY + 22, 0, IE_NOFLIP);
+	//Triangles
+	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY + 11, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY + 22, 0, IE_NOFLIP);
+	//Names
+	G->DrawSprite(MenuSprite, 20, 0, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 20, 1, cenX, cenY, 0, IE_NOFLIP);
+	//if (LockedOnNotUnlocked)
+	G->DrawSprite(MenuSprite, 20, 2, cenX, cenY, 0, IE_NOFLIP);
+	//else
+	//G->DrawSprite(MenuSprite, 20, 3, cenX, cenY, 0, IE_NOFLIP);
 
 	// Red Button
 	G->DrawSprite(MenuSprite, 4, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 1, cenX + 50 + 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+	// Submenus for Red
+	//Boxes
+	G->DrawSprite(MenuSprite, 18, 1, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 18, 1, cenX, cenY + 11, 0, IE_NOFLIP);
+	//Triangles
+	G->DrawSprite(MenuSprite, 19, 2, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 19, 2, cenX, cenY + 11, 0, IE_NOFLIP);
+	//Names
+	G->DrawSprite(MenuSprite, 20, 4, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 20, 5, cenX, cenY, 0, IE_NOFLIP);
+
 
 	// Yellow Button
 	G->DrawSprite(MenuSprite, 5, 0, cenX, cenY, 0, IE_NOFLIP);
@@ -405,6 +453,16 @@ PUBLIC void Scene_MainMenu::Render() {
 		G->DrawSprite(MenuSprite, 2, triframe, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
+	
+	//Submenu Select Triangle
+	if (subselected != -1) {
+		if (selected == 0)
+			G->DrawSprite(MenuSprite, 19, 1, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
+		else
+			G->DrawSprite(MenuSprite, 19, 3, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
+	}
+	else
+		G->DrawSprite(MenuSprite, 19, 1, cenX, App->WIDTH + 10, 0, IE_NOFLIP); //atleast hide it
 
 	/*
 	if (selected == 0) {

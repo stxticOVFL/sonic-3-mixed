@@ -32,8 +32,9 @@ public:
     int FrameZigzagBlue = 0;
     int CharacterFlag = 0;
     int PartnerFlag = 0xFF;
+	int Mode = 0;
 
-    Scene_DataSelect(IApp* app, IGraphics* g);
+    Scene_DataSelect(IApp* app, IGraphics* g, int m);
     void Init();
     void Update();
     void Render();

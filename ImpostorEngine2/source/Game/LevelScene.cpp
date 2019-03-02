@@ -4192,7 +4192,7 @@ PUBLIC void LevelScene::Update() {
 			//Cleanup();
 
 			StateSaved = false;
-			App->NextScene = new Scene_DataSelect(App, G);
+			App->NextScene = new Scene_DataSelect(App, G, 0); //TODO: change to correct mode
 		}
 		else if (FadeAction == FadeActionType::FADEIN) {
 			FadeAction = 0;

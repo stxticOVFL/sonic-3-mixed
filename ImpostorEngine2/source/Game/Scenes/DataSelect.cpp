@@ -67,9 +67,10 @@ const char* LevelLabels[15] = {
 
 bool GoBack = false;
 
-PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g) {
+PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 	App = app;
 	G = g;
+	Mode = m;
 	Sound::Audio = App->Audio;
 	Sound::Init();
 	SaveGame::Init();
@@ -190,7 +191,14 @@ PUBLIC void Scene_DataSelect::Init() {
 	FadeTimerMax = 30;
 	FadeIn = true;
 
-	Discord_UpdatePresence("Main Menu", "Classic Mode", "icon", false);
+	char* ModeName;
+	if (Mode == 0)
+		ModeName = "Classic Mode";
+	else if (Mode == 1)
+		ModeName = "Mixed Mode";
+	else if (Mode == 2)
+		ModeName = "Locked On";
+	Discord_UpdatePresence("Main Menu", ModeName, "icon", false);
 }
 
 bool MobileScrolling = false;
@@ -266,8 +274,8 @@ PUBLIC void Scene_DataSelect::Update() {
 				selected = (*MobileScrollVariable + 5000) / 10000;
 				if (selected < 0)
 					selected = 0;
-				if (selected > 7)
-					selected = 7;
+				if (selected > 11)
+					selected = 11;
 			}
 		}
 	}
@@ -296,7 +304,7 @@ PUBLIC void Scene_DataSelect::Update() {
 				App->NextScene = NextScene;
 			}
 			else {
-				SaveGame::CurrentSaveFile = selected;
+				SaveGame::CurrentSaveFile = selected + (12 * (Mode + 1));
 
 				int i = SaveGame::CurrentSaveFile;
 				if (SaveGame::Savefiles[i].State == 0) {
@@ -403,7 +411,7 @@ PUBLIC void Scene_DataSelect::Update() {
 			MobileScrolling = true;
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
-			if (selected < 7) {
+			if (selected < 11) {
 				selected++;
 				CharacterFlag = 0;
 			}
@@ -591,12 +599,13 @@ PUBLIC void Scene_DataSelect::Render() {
 	//*/
 
 	// Menu Title
-	G->DrawSprite(MenuSprite, 9, 1, App->WIDTH, 12, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 9, (1 + Mode), App->WIDTH, 12, 0, IE_NOFLIP);
 	//G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
 
 	// For shape masking, make a separate framebuffer and when applying pixel, compare to that buffer
-	for (int i = 0; i < 8; i++) {
-		int myX = App->WIDTH / 2 - 40 + i * 100 - (viewOffX + 50) / 100;
+	int j = 0;
+	for (int i = (12 * Mode); i < (12 * Mode) + 12; i++) {
+		int myX = App->WIDTH / 2 - 40 + j * 100 - (viewOffX + 50) / 100;
 		int myY = ElementY;
 
 		// Shadow
@@ -670,6 +679,7 @@ PUBLIC void Scene_DataSelect::Render() {
 		G->DrawRectangleStroke(myX - 5, myY - 5, 80 + 10, ElementH + 10, 0x000000);
 		G->DrawRectangleStroke(myX - 4, myY - 4, 80 + 8, ElementH + 8, 0x000000);
 		G->DrawRectangleStroke(myX - 3, myY - 3, 80 + 6, ElementH + 6, 0x000000);
+		j++;
 	}
 
 	// Border

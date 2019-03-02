@@ -16,7 +16,7 @@ public:
         uint16_t UsedZoneRings[16];
     };
 
-    static SaveFile Savefiles[8];
+    static SaveFile Savefiles[36];
     static int32_t  CurrentSaveFile;
 	static int32_t  CurrentZoneID;
 	static uint8_t  CurrentCharacterFlag;
@@ -35,7 +35,7 @@ public:
 /*
 States:
 0: New
-1: Continue from Zone
+1: Continue from Zone	
 2: Clear
 
 Starting a State 0 file initalizes all the scores and target scores etc..
@@ -47,7 +47,7 @@ uint8_t             SaveGame::CurrentPartnerFlag = 0xFF;
 uint16_t            SaveGame::CurrentUsedZoneRings = 0x0000; // resets on every zone
 uint16_t            SaveGame::CurrentEmeralds = 0xFFFF;
 
-SaveGame::SaveFile  SaveGame::Savefiles[8];
+SaveGame::SaveFile  SaveGame::Savefiles[36];
 
 int StartingLives = 3;
 bool InitializedSaveGame = false;
@@ -60,7 +60,7 @@ PUBLIC STATIC void SaveGame::Init() {
     IResource* SaveBin = IResources::Load("../Save.bin");
     if (SaveBin) {
         IStreamer reader(SaveBin);
-        for (int s = 0; s < 8; s++) {
+        for (int s = 0; s < 32; s++) {
             Savefiles[s].State = reader.ReadByte();
             Savefiles[s].CharacterFlag = reader.ReadUInt16();
             Savefiles[s].PartnerFlag = reader.ReadUInt16();
@@ -95,7 +95,7 @@ PUBLIC STATIC void SaveGame::Flush() {
     IResource* SaveBin = IResources::Open("../Save.bin");
     if (SaveBin) {
         IStreamer writer(SaveBin);
-        for (int s = 0; s < 8; s++) {
+        for (int s = 0; s < 32; s++) {
 			writer.WriteByte(Savefiles[s].State);
             writer.WriteUInt16(Savefiles[s].CharacterFlag);
             writer.WriteUInt16(Savefiles[s].PartnerFlag);
