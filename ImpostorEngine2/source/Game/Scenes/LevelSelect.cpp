@@ -122,8 +122,8 @@ PUBLIC void Scene_LevelSelect::Update() {
         FadeTimerMax = 0;
 
         if (!FadeIn) {
-            if (selected < 12) {
-                if (HaveStage[selected]) {
+            if (selected < 12 || selected > 25) {
+                if (HaveStage[selected] || selected > 25) {
                     App->Audio->ClearMusic();
                     if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
                     delete Sound::SoundBank[0];
@@ -157,6 +157,16 @@ PUBLIC void Scene_LevelSelect::Update() {
 						default:
 							break;
 						}
+						//handle SPECIALS
+						if (selected > 25) {
+							Level_SpecialStage* NextScene = new Level_SpecialStage(App, G);
+							NextScene->ZoneID = 0x100 | 1;	
+
+							int toLevel = selected - 26;
+							NextScene->Act = toLevel;
+							App->NextScene = NextScene;
+							
+						}
 					}
 
                     SaveGame::CurrentCharacterFlag = character;
@@ -172,7 +182,7 @@ PUBLIC void Scene_LevelSelect::Update() {
             selected--;
 			if (mode != 2) {
 				if (selected < 0)
-					selected = 25;
+					selected = 41;
 			}
 			else {
 				if (selected < 0)
@@ -184,7 +194,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
 			selected++;
 			if (mode != 2) {
-				if (selected > 25)
+				if (selected > 41)
 					selected = 0;
 			}
 			else {
@@ -255,6 +265,8 @@ PUBLIC void Scene_LevelSelect::Update() {
                 acc = true;
             }
         }
+		if (selected > 25)
+			acc = true;
         if (acc) {
             Sound::Play(Sound::SFX_MENUACCEPT);	
             FadeIn = false;
@@ -296,6 +308,10 @@ PUBLIC void Scene_LevelSelect::Render() {
 		"CHROME GADGET"
 	};
 
+	const char* specialStages[1]{
+		"SPECIAL STAGES"
+	};
+
     G->SetFilter(IE_FILTER_FADEABLE);
 
     G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0x0022EE);
@@ -319,6 +335,7 @@ PUBLIC void Scene_LevelSelect::Render() {
 		}
 		G->DrawTextShadow(180, 4 + i * 18, lockedOn[i], (selected / 2 == i && mode == 2) ? 0xFFFF00 : col);
 	}
+	G->DrawTextShadow(180, 112, specialStages[0], selected > 25 ? 0xFFFF00 : 0xFFFFFF);
 
     char poop[20];
     char poopbuddy[20];
@@ -343,6 +360,11 @@ PUBLIC void Scene_LevelSelect::Render() {
 		}	
 		sprintf(poop, "%d", ((i + 26) % 2) + 1);
 		G->DrawTextShadow(180 + 16 * 8, 4 + i * 9, poop, (selected == i && mode == 2) ? 0xFFFF00 : col);
+	}
+
+	for (int i = 0; i < 16; i++) {
+		sprintf(poop, "%d", i + 1);
+		G->DrawTextShadow(180 + ((i / 8)) * 30, 4 + 122 + (i / 8 == 0 ? i : i - 8) * 9, poop, selected == i + 26 ? 0xFFFF00 : 0xFFFFFF);
 	}
 
 	if (character == 0)
