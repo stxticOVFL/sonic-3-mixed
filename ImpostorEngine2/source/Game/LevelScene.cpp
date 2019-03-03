@@ -47,6 +47,8 @@ public:
 	int         PauseSelectedMenuItem = 0;
 	bool        Paused = false;
 	bool        PauseFinished = false;
+	int			paltimer = 0;
+	int			palframe = 0;
 
 	ISprite*    PauseSprite = NULL;
 	ISprite*    GlobalDisplaySprite = NULL;
@@ -469,7 +471,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
 				ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
 				ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
-				ItemsSprite->LoadAnimation("Stages/Special/Ring.bin");
+				ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
 			}
 			else {
 				ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
