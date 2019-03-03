@@ -11,8 +11,9 @@ CONSTRUCTER Motobug::Motobug() {
 
 void Motobug::Create() {
     Object::Create();
-    W = 16;
-    H = 16;
+    Active = true;
+    W = 39;
+    H = 28;
 }
 
 void Motobug::Update() {
@@ -20,11 +21,17 @@ void Motobug::Update() {
 }
 
 void Motobug::Render(int CamX, int CamY) {
-    if (CurrentAnimation == -1) return;
+    if (CurrentAnimation == -1) {
+        return;
+    }
 
-    if (Frame < 0) return;
+    if (Frame < 0) {
+        return;
+    }
 
-    if (!Visible) return;
+    if (!Visible) {
+        return;
+    }
 
     if (DrawCollisions) {
         G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);

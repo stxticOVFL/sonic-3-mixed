@@ -42,7 +42,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Justin\Dropbox\makeheaders\MSVC2013\makeheaders;C:\Users\Justin\Dropbox\makeheaders\source;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\..\MSVC2013\makeheaders;$(SolutionDir)..\..\source;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -60,7 +60,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(TargetPath)" "C:\Users\Justin\sonic-3-mixed\ImpostorEngine2\tools\makeheaders.exe"</Command>
+      <Command>copy "$(TargetPath)" "$(SolutionDir)..\..\..\ImpostorEngine2\tools\makeheaders.exe"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
