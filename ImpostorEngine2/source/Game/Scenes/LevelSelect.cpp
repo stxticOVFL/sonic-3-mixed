@@ -105,6 +105,25 @@ bool HaveStage[36] = {
 	false,
 };
 
+bool HaveSpecial[16]{
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false
+};
+
 PUBLIC void Scene_LevelSelect::Update() {
     if (FadeTimer == -1 && FadeTimerMax > 1)
         FadeTimer = FadeTimerMax;
@@ -123,7 +142,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 
         if (!FadeIn) {
             if (selected < 12 || selected > 25) {
-                if (HaveStage[selected] || selected > 25) {
+                if (HaveStage[selected] || (selected > 25 && HaveSpecial[selected - 26])) {
                     App->Audio->ClearMusic();
                     if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
                     delete Sound::SoundBank[0];
@@ -265,7 +284,7 @@ PUBLIC void Scene_LevelSelect::Update() {
                 acc = true;
             }
         }
-		if (selected > 25)
+		if (selected > 25 && HaveSpecial[selected - 26])
 			acc = true;
         if (acc) {
             Sound::Play(Sound::SFX_MENUACCEPT);	
@@ -363,8 +382,11 @@ PUBLIC void Scene_LevelSelect::Render() {
 	}
 
 	for (int i = 0; i < 16; i++) {
+		Uint32 col = 0x999999;
+		if (HaveSpecial[i])
+			col = 0xFFFFFF;
 		sprintf(poop, "%d", i + 1);
-		G->DrawTextShadow(180 + ((i / 8)) * 30, 4 + 122 + (i / 8 == 0 ? i : i - 8) * 9, poop, selected == i + 26 ? 0xFFFF00 : 0xFFFFFF);
+		G->DrawTextShadow(180 + ((i / 8)) * 30, 4 + 122 + (i / 8 == 0 ? i : i - 8) * 9, poop, selected == i + 26 ? 0xFFFF00 : col);
 	}
 
 	if (character == 0)
