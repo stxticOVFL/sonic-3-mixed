@@ -46,6 +46,7 @@ typedef struct gd_GIF {
 } gd_GIF;
 
 gd_GIF *gd_open_gif(IResource* fd);//const char *fname);
+gd_GIF *gd_copy_gif(gd_GIF *other);
 int gd_get_frame(gd_GIF *gif);
 void gd_render_frame(gd_GIF *gif, uint8_t *buffer);
 void gd_rewind(gd_GIF *gif);

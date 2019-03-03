@@ -2,6 +2,7 @@
 #define S3_OBJECT_H
 
 #define Scene_AddSelfToRegistry(boots) Scene->Objects##boots[Scene->Object##boots##Count++] = this
+#define CONSTRUCTER
 
 class LevelScene;
 class IPlayer;
@@ -460,6 +461,8 @@ public:
     int      VisualLayer = 0;
     uint32_t DrawCollisionsColor = 0x49ED80; // Green
     uint32_t DrawNoCollisionsColor = 0xCC53D1; // Violet?
+    
+    size_t   BinIndex = 0xFFFFFFFF;
 
     bool     AutoAnimate = false;
     int      CurrentAnimation = -1;

@@ -279,7 +279,7 @@ void Monitor::Update() {
 }
 
 void Monitor::Render(int CamX, int CamY) {
-    if (SaveGame::CurrentMode == 1) {
+    if (Scene->Thremixed) {
         if (CurrentAnimation == 4) {
             G->DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
             G->DrawModeOverlay = true;

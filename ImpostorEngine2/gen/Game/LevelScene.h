@@ -129,6 +129,7 @@ public:
     int32_t     DebugObjectIDCount = 0;
     unordered_map<string, ISprite*> SpriteMap;
     ISprite**   SpriteMapIDs;
+    static std::vector<ISprite *> SpriteBinMapIDs;
     int         ZoneID = 0;
     int         Act = 1;
     int         VisualAct = 1;
@@ -210,6 +211,7 @@ public:
     virtual void LoadZoneSpecificSprites();
     void SaveState();
     void LoadState();
+    static size_t LoadSpriteBin(const char* Filename);
     virtual void LoadData();
     virtual void Init();
     static  int  LoadStatic(void* data);

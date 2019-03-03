@@ -19,12 +19,12 @@ void StarPointer::Create() {
     OrbXPos[2] = 0;
     OrbYPos[2] = 0;
     OrbXPos[3] = 0;
-	OrbYPos[3] = 0;
-	OrbOffsets[0] = 0;
-	OrbOffsets[1] = 90;
+    OrbYPos[3] = 0;
+    OrbOffsets[0] = 0;
+    OrbOffsets[1] = 90;
     OrbOffsets[2] = 180;
     OrbOffsets[3] = 270;
-	RotAngle = 0;
+    RotAngle = 0;
     TurnSpeed = 0.1;
 }
 

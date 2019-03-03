@@ -13,8 +13,12 @@ class ISprite;
 
 #include <Utils/Standard.h>
 #include <Engine/IGraphics.h>
+#include "Utils/gifdec.h"
 
 class ISprite {
+private:
+    bool strEndsWith(const char* str, const char* suffix);
+
 public:
     uint8_t* Data = NULL;
     uint16_t Width;
@@ -68,11 +72,16 @@ public:
     void RotatePaletteRight(uint32_t* color, int size);
     void UpdatePalette();
     void LinkPalette(ISprite* other);
+    void LoadBin(const char* filename);
     void LoadAnimation(const char* filename);
+    void LoadSprite(const char* filename);
     int FindAnimation(const char* animname);
     int FindAnimation(const char* animname, const bool dir);
     void LinkAnimation(vector<Animation> ani);
     void Cleanup();
+
+protected:
+    inline bool FindGIF(const char* filename);
 };
 
 #endif /* ISPRITE_H */

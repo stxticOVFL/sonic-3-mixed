@@ -17,7 +17,7 @@ void SwingVine::Create() {
     VisW = RopeLength << 4;
     VisH = RopeLength << 4;
     PlayersControlled = 0;
-    ClassicStyle = SaveGame::CurrentMode == 0;
+    ClassicStyle = !Scene->Thremixed;
     ClassicStyle = false;
     Timer = 0;
     CurrentAnimation = 26;

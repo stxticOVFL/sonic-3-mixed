@@ -30,7 +30,8 @@ public:
     bool UnlockedFramerate = false;
 
     static Platforms Platform; //
-	static bool      Mobile;
+	static bool Mobile;
+    static IApp* GlobalApp;
 };
 #endif
 
@@ -87,6 +88,8 @@ public:
 #else
     Platforms IApp::Platform = Platforms::Default;
 #endif
+
+IApp* IApp::GlobalApp = NULL;
 
 PUBLIC IApp::IApp() {
     IMath::Init();
@@ -194,6 +197,8 @@ PUBLIC void IApp::Run() {
     unsigned long frameTimeMillis;
     unsigned long beginFrameBatch;
     int benchmarkFrameCount = 0;
+    
+    IApp::GlobalApp = this;
 
 	SaveGame::Init();
 

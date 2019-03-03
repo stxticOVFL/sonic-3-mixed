@@ -106,9 +106,9 @@
 #include "CommonSpecial/Signpost.h"			// 6A8C340C
 #include "CommonSpecial/TensionBridgeChild.h"			// 8ED6F84C
 #include "CommonSpecial/ViewCollisionToggler.h"			// 27340CB0
+#include "GHZ/Motobug.h"			// 219C1E61
 #include "HCZ/BlastoidShot.h"			// 3692A9F5
 #include "MGZ/ReliefEye.h"			// BBCA6AC5
-#include "Test/Platform.h"			// C4B304CC
 
 
 enum {
@@ -217,9 +217,9 @@ enum {
     Obj_Signpost = 0x409,
     Obj_TensionBridgeChild = 0x40A,
     Obj_ViewCollisionToggler = 0x40B,
-    Obj_BlastoidShot = 0x40C,
-    Obj_ReliefEye = 0x40D,
-    Obj_Platform = 0x40E,
+    Obj_Motobug = 0x40C,
+    Obj_BlastoidShot = 0x40D,
+    Obj_ReliefEye = 0x40E,
 };
 
 Object* GetNewObjectFromID(int ID);

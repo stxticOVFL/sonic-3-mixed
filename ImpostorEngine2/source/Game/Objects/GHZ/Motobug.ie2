@@ -1,0 +1,31 @@
+event Motobug() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Sprites/GHZ/Motobug.bin");
+}
+
+event Create() {
+    Active = true;
+    W = 39;
+    H = 28;
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+    if (CurrentAnimation == -1) { 
+        return;
+    }
+    if (Frame < 0) {
+        return;
+    }
+    if (!Visible) {
+        return;
+    }
+
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+		G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, Rotation, FlipX | FlipY << 1);
+	}
+}
