@@ -410,10 +410,13 @@ PUBLIC void LevelScene::LoadState() {
 }
 
 PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
-    ISprite* BinSprite = new ISprite(Filename, GlobalApp);
+    if (IApp::GlobalApp == NULL) {
+        return 0;
+    }
+    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
     SpriteBinMapIDs.push_back(BinSprite);
     SpriteBinMapIDs.shrink_to_fit();
-    return SpriteBinMapIDs.size();
+    return SpriteBinMapIDs.size() - 1;
 };
 
 PUBLIC VIRTUAL void LevelScene::LoadData() {
@@ -2097,7 +2100,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
                             obj->Sprite = SpriteMapIDs[ID];
                         } else {
-                            obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+                            obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
                         
 						obj->SubType = SubType;
@@ -3417,7 +3420,7 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 
             obj->Sprite = SpriteMapIDs[ID];
         } else {
-            obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+            obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
         }
 
 		obj->SubType = SubType;
@@ -3816,7 +3819,7 @@ PUBLIC void LevelScene::Update() {
 
                             obj->Sprite = SpriteMapIDs[obj->ID];
                         } else {
-                            obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+                            obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
 
 						obj->SubType = Player->DebugObjectSubIndex;
@@ -3896,7 +3899,7 @@ PUBLIC void LevelScene::Update() {
 
                                 obj->Sprite = SpriteMapIDs[obj->ID];
                             } else {
-                                obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+                                obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                             }
 
 							obj->SubType = oldSubType;

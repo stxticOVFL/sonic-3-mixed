@@ -31,8 +31,6 @@
     #include <android/log.h>
 #endif
 
-class IApp;
-
 enum {
     IE_NOFLIP = 0,
     IE_FLIPX = 1,
@@ -61,7 +59,5 @@ void Discord_UpdatePresence(const char* header, const char* state, const char* i
 void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey);
 
 using namespace std;
-
-static IApp* GlobalApp = nullptr;
 
 #endif // STANDARDLIBS_H

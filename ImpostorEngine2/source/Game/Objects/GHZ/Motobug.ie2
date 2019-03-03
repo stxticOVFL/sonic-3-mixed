@@ -3,8 +3,8 @@ event Motobug() : CONSTRUCTER {
 }
 
 event Create() {
-    W = 16;
-    H = 16;
+    W = 39;
+    H = 28;
 }
 
 event Update() {
@@ -12,9 +12,15 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    if (CurrentAnimation == -1) return;
-    if (Frame < 0) return;
-    if (!Visible) return;
+    if (CurrentAnimation == -1) { 
+        return;
+    }
+    if (Frame < 0) { 
+        return;
+    }
+    if (!Visible) {
+        return;
+    }
 
 	if (DrawCollisions) {
 		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
