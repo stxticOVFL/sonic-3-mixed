@@ -180,6 +180,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 						case 10:
 						case 11:
 							App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
+							break;
 						case 12:
 						case 13:
 							App->NextScene = new Level_MHZ(App, G, (selected % 2) + 1);
