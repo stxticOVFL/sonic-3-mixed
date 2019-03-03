@@ -112,7 +112,7 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
 	if (!LayoutExtra)
 		LayoutExtra = (Uint8*)calloc(0x400, 1);
 
-    Globe = new ISprite("Stages/Special/Globe.gif", App);
+    Globe = new ISprite("Sprites/Special/Globe.gif", App);
 	ISprite::Animation an;
 	an.Name = NULL;
 	an.FrameCount = 1;
@@ -127,38 +127,38 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
 	G->MakeFrameBufferID(Globe, an.Frames + 0);
 	Globe->Animations.push_back(an);
 
-    GlobeSpin = new ISprite("Stages/Special/GlobeSpin.gif", App);
-    GlobeSpin->LoadAnimation("Stages/Special/GlobeSpin.bin");
+    GlobeSpin = new ISprite("Sprites/Special/GlobeSpin.gif", App);
+    GlobeSpin->LoadAnimation("Sprites/Special/GlobeSpin.bin");
 
-    Horizon = new ISprite("Stages/Special/Horizon.gif", App);
-    Horizon->LoadAnimation("Stages/Special/Horizon.bin");
+    Horizon = new ISprite("Sprites/Special/Horizon.gif", App);
+    Horizon->LoadAnimation("Sprites/Special/Horizon.bin");
 
-    Objects = new ISprite("Stages/Special/Objects.gif", App);
-    Objects->LoadAnimation("Stages/Special/HUD.bin");
-    Objects->LoadAnimation("Stages/Special/StageObjects.bin");
-    //Objects->LoadAnimation("Stages/Special/PaletteIcon.bin");
+    Objects = new ISprite("Sprites/Special/Objects.gif", App);
+    Objects->LoadAnimation("Sprites/Special/HUD.bin");
+    Objects->LoadAnimation("Sprites/Special/StageObjects.bin");
+    //Objects->LoadAnimation("Sprites/Special/PaletteIcon.bin");
 
-    Players = new ISprite("Stages/Special/Players.gif", App);
+    Players = new ISprite("Sprites/Special/Players.gif", App);
 
 	switch (SaveGame::CurrentCharacterFlag)
 	{
 	case 0:
-		Players->LoadAnimation("Stages/Special/Sonic.bin");
+		Players->LoadAnimation("Sprites/Special/Sonic.bin");
 		break;
 	case 1:
-		Players->LoadAnimation("Stages/Special/Tails.bin");
+		Players->LoadAnimation("Sprites/Special/Tails.bin");
 		break;
 	case 2:
-		Players->LoadAnimation("Stages/Special/Knuckles.bin");
+		Players->LoadAnimation("Sprites/Special/Knuckles.bin");
 		break;
 	case 3:
-		Players->LoadAnimation("Stages/Special/Mighty.bin");
+		Players->LoadAnimation("Sprites/Special/Mighty.bin");
 		break;
 	case 4:
-		Players->LoadAnimation("Stages/Special/Ray.bin");
+		Players->LoadAnimation("Sprites/Special/Ray.bin");
 		break;
 	default:
-		Players->LoadAnimation("Stages/Special/Sonic.bin");
+		Players->LoadAnimation("Sprites/Special/Sonic.bin");
 		break;
 	}
 
@@ -208,7 +208,7 @@ PUBLIC void Level_SpecialStage::Init() {
 			ItemsSprite->Print = true;
 			ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
 			ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
-			ItemsSprite->LoadAnimation("Stages/Special/Ring.bin");
+			ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
 		}
 		else {
 			ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
@@ -271,6 +271,14 @@ PUBLIC void Level_SpecialStage::Init() {
 		case 5: LayoutBin = IResources::Load("Stages/Special/S3 6.bin"); break;
 		case 6: LayoutBin = IResources::Load("Stages/Special/S3 7.bin"); break;
 		case 7: LayoutBin = IResources::Load("Stages/Special/S3 8.bin"); break;
+		case 8: LayoutBin = IResources::Load("Stages/Special/SK 1.bin"); break;
+		case 9: LayoutBin = IResources::Load("Stages/Special/SK 2.bin"); break;
+		case 10: LayoutBin = IResources::Load("Stages/Special/SK 3.bin"); break;
+		case 11: LayoutBin = IResources::Load("Stages/Special/SK 4.bin"); break;
+		case 12: LayoutBin = IResources::Load("Stages/Special/SK 5.bin"); break;
+		case 13: LayoutBin = IResources::Load("Stages/Special/SK 6.bin"); break;
+		case 14: LayoutBin = IResources::Load("Stages/Special/SK 7.bin"); break;
+		case 15: LayoutBin = IResources::Load("Stages/Special/SK 8.bin"); break;
 	}
 	if (LayoutBin) {
 		IStreamer reader(LayoutBin);
