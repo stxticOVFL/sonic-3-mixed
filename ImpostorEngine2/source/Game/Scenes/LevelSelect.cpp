@@ -62,7 +62,7 @@ PUBLIC void Scene_LevelSelect::Init() {
 
 	SaveGame::CurrentSaveFile = -1;
 	SaveGame::CurrentUsedZoneRings = 0x0000;
-	SaveGame::CurrentEmeralds = 0xFFFF;
+	SaveGame::CurrentEmeralds = 0x3FFF;
 }
 
 bool HaveStage[36] = {

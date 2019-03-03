@@ -47,6 +47,8 @@ public:
 	int         PauseSelectedMenuItem = 0;
 	bool        Paused = false;
 	bool        PauseFinished = false;
+	int			paltimer = 0;
+	int			palframe = 0;
 
 	ISprite*    PauseSprite = NULL;
 	ISprite*    GlobalDisplaySprite = NULL;
@@ -1405,6 +1407,22 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				PlayerCount = 2;
 			}
+
+			/*for (int i = 0; i < 5; i++) {
+				Players[i + 2] = new IPlayer();
+				IPlayer* poopler = Players[i + 2];
+				poopler->G = G;
+				poopler->App = App;
+				poopler->Scene = this;
+				poopler->Sidekick = true;
+				poopler->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
+				poopler->PlayerID = i + 2;
+				poopler->Thremixed = SaveGame::CurrentMode == 1;
+				poopler->Create();
+				poopler->Lives = SaveGame::GetLives();
+			}
+			PlayerCount = 7;
+			//uncomment if ever bored*/
 
 			IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
 			startTime = SDL_GetTicks();
