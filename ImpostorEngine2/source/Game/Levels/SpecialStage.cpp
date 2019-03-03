@@ -203,18 +203,19 @@ PUBLIC void Level_SpecialStage::Init() {
 	}
 
 	if (!ItemsSprite) {
-		if (SaveGame::CurrentMode == 1) {
+		//if (SaveGame::CurrentMode == 1) {
 			ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
 			ItemsSprite->Print = true;
 			ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
 			ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
 			ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
-		}
+		/*}
 		else {
 			ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
 			ItemsSprite->LoadAnimation("Sprites/GlobalS3K/ItemBox.bin");
 			ItemsSprite->LoadAnimation("Sprites/GlobalS3K/Ring.bin");
-		}
+			//ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
+		}*/
 	}
 
 	IResource* BSS_Setup_Bin = IResources::Load("Stages/Special/OBJ_BSS_Setup.bin");
