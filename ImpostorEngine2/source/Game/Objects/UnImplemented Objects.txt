@@ -5,7 +5,7 @@ HCZ:
 Object 6E (Obj_WaterDrop) has not been implemented!
 
 MGZ:
-Object 00 (Obj_Ring) has not been implemented! (what?)
+Object 00 (Obj_Ring) has not been implemented! (This happens because the current ring object isn't a .ie2)
 Object 50 (Obj_RunAroundPole) has not been implemented!
 Object 56 (Obj_MovingSpikePlatform) has not been implemented!
 Object 58 (Obj_MGZSwingingSpikeBall) has not been implemented!

@@ -5,6 +5,7 @@
 class Scene_MainMenu : public IScene {
 public:
 	int selected = 0;
+    int sub_selected = 0;
 	int ran = 0;
 	ISprite* MenuSprite = NULL;
 	ISprite* SphereSprite = NULL;
@@ -162,7 +163,7 @@ PUBLIC void Scene_MainMenu::Update() {
 
 		if (!FadeIn) {
 			if (selected == 0) {
-				Scene_DataSelect* NextScene = new Scene_DataSelect(App, G, subselected);
+				Scene_DataSelect* NextScene = new Scene_DataSelect(App, G, sub_selected);
 				NextScene->MenuSprite = MenuSprite;
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
 				NextScene->TextSprite = TextSprite;
@@ -214,28 +215,28 @@ PUBLIC void Scene_MainMenu::Update() {
 		}
 
 		if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
-			if (subselected > 0)
-				subselected -= 1;
+			if (sub_selected > 0)
+				sub_selected -= 1;
 			else if (selected >= 2) {
 				selected -= 2;
 				if (selected / 2 == 0)
-					subselected = 0;
+					sub_selected = 0;
 			}
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
-			if (subselected > -1) {
-				if ((subselected == 2 && selected == 0) || (subselected == 1 && selected == 1)) {
+			if (sub_selected > -1) {
+				if ((sub_selected == 2 && selected == 0) || (sub_selected == 1 && selected == 1)) {
 					selected += 2;
-					subselected = -1;
+					sub_selected = -1;
 				}
-				subselected += 1;
+				sub_selected += 1;
 			}
 			else if (selected <= 1) {
 				selected += 2;
 				if (selected / 2 == 0)
-					subselected = 0;
+					sub_selected = 0;
 			}
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
@@ -245,7 +246,7 @@ PUBLIC void Scene_MainMenu::Update() {
 			if ((selected & 1) == 1)
 				selected--;
 			if (selected / 2 == 0)
-				subselected = 0;
+				sub_selected = 0;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
@@ -253,7 +254,7 @@ PUBLIC void Scene_MainMenu::Update() {
 			if ((selected & 1) == 0)
 				selected++;
 			if (selected / 2 == 0)
-				subselected = 0;
+				sub_selected = 0;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
@@ -267,7 +268,7 @@ PUBLIC void Scene_MainMenu::Update() {
 			}
 		}
 		if (selected / 2 != 0)
-			subselected = -1;
+			sub_selected = -1;
 	}
 
 	if (CONFIRM_PRESSED) {
@@ -455,11 +456,11 @@ PUBLIC void Scene_MainMenu::Render() {
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 	
 	//Submenu Select Triangle
-	if (subselected != -1) {
+	if (sub_selected != -1) {
 		if (selected == 0)
-			G->DrawSprite(MenuSprite, 19, 1, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
+			G->DrawSprite(MenuSprite, 19, 1, cenX, cenY + (sub_selected * 11), 0, IE_NOFLIP);
 		else
-			G->DrawSprite(MenuSprite, 19, 3, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
+			G->DrawSprite(MenuSprite, 19, 3, cenX, cenY + (sub_selected * 11), 0, IE_NOFLIP);
 	}
 	else
 		G->DrawSprite(MenuSprite, 19, 1, cenX, App->WIDTH + 10, 0, IE_NOFLIP); //atleast hide it

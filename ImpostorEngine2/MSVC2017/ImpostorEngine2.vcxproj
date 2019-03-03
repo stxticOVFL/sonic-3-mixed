@@ -128,6 +128,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\StarPost.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\GHZ\Motobug.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Blastoid.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BlastoidShot.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Block.cpp" />
@@ -261,6 +262,7 @@
     <None Include="..\source\Game\Objects\Common\Spikes.ie2" />
     <None Include="..\source\Game\Objects\Common\Spring.ie2" />
     <None Include="..\source\Game\Objects\Common\StarPost.ie2" />
+    <None Include="..\source\Game\Objects\GHZ\Motobug.ie2" />
     <None Include="..\source\Game\Objects\HCZ\Blastoid.ie2" />
     <None Include="..\source\Game\Objects\HCZ\BlastoidShot.ie2" />
     <None Include="..\source\Game\Objects\HCZ\Block.ie2" />
@@ -296,7 +298,6 @@
     <None Include="..\source\Game\Objects\MGZ\MGZSwingingPlatform.ie2" />
     <None Include="..\source\Game\Objects\MGZ\MGZTriggerPlatform.ie2" />
     <None Include="..\source\Game\Objects\MGZ\Spiker.ie2" />
-    <None Include="..\source\Game\Objects\Test\Platform.ie2" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{43B7CD4C-B24A-450B-A277-12F246CF664C}</ProjectGuid>

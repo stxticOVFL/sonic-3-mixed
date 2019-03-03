@@ -1,0 +1,16 @@
+event Motobug() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Sprites/GHZ/Motobug.bin");
+}
+
+event Create() {
+    W = 16;
+    H = 16;
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+
+}

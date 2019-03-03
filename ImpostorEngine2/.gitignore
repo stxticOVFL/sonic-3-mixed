@@ -6,3 +6,4 @@ ImpostorEngine2.log
 .vscode/
 makeheaders.bin
 ie2_objtable.bin
+*.idb

@@ -111,7 +111,7 @@ event MoveSprite() {
 event Render(CamX:int, CamY:int) {
     G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
     
-    if (true) {
+    if (DrawCollisions) {
         // Bottom
         G.DrawRectangle((X - (W / 2)) - CamX, (Y + (H / 2)) - CamY, W, 2, DrawCollisionsColor);
         

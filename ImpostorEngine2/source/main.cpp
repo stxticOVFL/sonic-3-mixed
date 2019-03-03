@@ -118,6 +118,7 @@ int main(int argc, char* args[]) {
 #endif
 
     IApp* app = new IApp();
+    GlobalApp = app;
     SDL_SetEventFilter(HandleAppEvents, app);
     app->Run();
     app->Cleanup();

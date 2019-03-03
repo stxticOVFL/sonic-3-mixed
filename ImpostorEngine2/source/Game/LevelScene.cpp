@@ -124,6 +124,8 @@ public:
 	unordered_map<string, ISprite*> SpriteMap;
 	ISprite**   SpriteMapIDs;
 
+    static std::vector<ISprite *> SpriteBinMapIDs;
+
 	int         ZoneID = 0;
 	int         Act = 1;
 	int         VisualAct = 1;
@@ -312,6 +314,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	SoundBank = (ISound**)calloc(0x100, sizeof(ISound*));
 
 	SpriteMapIDs = (ISprite**)calloc(0x400, sizeof(ISprite*));
+    
+    SpriteBinMapIDs.reserve(0x400);
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
@@ -367,6 +371,7 @@ PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
+    
 }
 
 ISprite* GlobalDisplaySpriteS3K = NULL;
@@ -388,6 +393,7 @@ PUBLIC void LevelScene::SaveState() {
 	StatePlayerSpawnX = Player->X;
 	StatePlayerSpawnY = Player->Y;
 }
+
 PUBLIC void LevelScene::LoadState() {
 	if (!StateSaved) return;
 
@@ -399,6 +405,13 @@ PUBLIC void LevelScene::LoadState() {
 	SpecialSpawnPositionX = StatePlayerSpawnX;
 	SpecialSpawnPositionY = StatePlayerSpawnY;
 }
+
+STATIC PUBLIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
+    ISprite* BinSprite = new ISprite(Filename, GlobalApp);
+    SpriteBinMapIDs.push_back(BinSprite);
+    SpriteBinMapIDs.shrink_to_fit();
+    return SpriteBinMapIDs.size();
+};
 
 PUBLIC VIRTUAL void LevelScene::LoadData() {
 	/// Init
@@ -423,9 +436,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		startTime = SDL_GetTicks();
 
 		if (!PauseSprite) {
-			PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+			PauseSprite = new ISprite("UI/PauseMenu.bin", App);
 			PauseSprite->SetTransparentColorIndex(0);
-			PauseSprite->LoadAnimation("UI/PauseMenu.bin");
+			//PauseSprite->LoadAnimation("UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
 			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
@@ -2051,8 +2064,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					PlaneSwitchers[PlaneSwitchCount].Angle = orientation * 0xC0;
 					PlaneSwitchers[PlaneSwitchCount].OnPath = groundOnly == 1;
 					PlaneSwitchCount++;
-				}
-				else {
+				} else {
 					ObjectProp op;
 					op.X = X;
 					op.Y = Y;
@@ -2075,15 +2087,20 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->FlipY = FLIPY == 1;
 						obj->ID = ID;
 
-						while (!SpriteMapIDs[ID])
-							ID--;
+                        if (obj->BinIndex == 0xFFFFFFFF) {
+                            while (!SpriteMapIDs[ID]) {
+                                ID--;
+                            }
 
-						obj->Sprite = SpriteMapIDs[ID];
+                            obj->Sprite = SpriteMapIDs[ID];
+                        } else {
+                            obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+                        }
+                        
 						obj->SubType = SubType;
 						ObjectCount++;
 						Objects.push_back(obj);
-					}
-					else {
+					} else {
 						ObjectListUnimpl[ID] = 0xFF;
 					}
 				}
@@ -3390,8 +3407,15 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 		obj->FlipX = FLIPX == 1;
 		obj->FlipY = FLIPY == 1;
 		obj->ID = ID;
-		while (!SpriteMapIDs[ID]) ID--;
-		obj->Sprite = SpriteMapIDs[ID];
+        if (obj->BinIndex == 0xFFFFFFFF) {
+            while (!SpriteMapIDs[ID]) {
+                ID--;
+            }
+
+            obj->Sprite = SpriteMapIDs[ID];
+        } else {
+            obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+        }
 
 		obj->SubType = SubType;
 		obj->Create();
@@ -3782,7 +3806,15 @@ PUBLIC void LevelScene::Update() {
 						obj->FlipX = 0;
 						obj->FlipY = 0;
 						obj->ID = objId;
-						obj->Sprite = SpriteMapIDs[objId];
+                        if (obj->BinIndex == 0xFFFFFFFF) {
+                            while (!SpriteMapIDs[obj->ID]) {
+                                obj->ID--;
+                            }
+
+                            obj->Sprite = SpriteMapIDs[obj->ID];
+                        } else {
+                            obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+                        }
 
 						obj->SubType = Player->DebugObjectSubIndex;
 
@@ -3854,7 +3886,15 @@ PUBLIC void LevelScene::Update() {
 							obj->FlipX = 0;
 							obj->FlipY = 0;
 							obj->ID = objId;
-							obj->Sprite = SpriteMapIDs[objId];
+                            if (obj->BinIndex == 0xFFFFFFFF) {
+                                while (!SpriteMapIDs[obj->ID]) {
+                                    obj->ID--;
+                                }
+
+                                obj->Sprite = SpriteMapIDs[obj->ID];
+                            } else {
+                                obj->Sprite = SpriteBinMapIDs[obj->BinIndex];
+                            }
 
 							obj->SubType = oldSubType;
 
@@ -5870,9 +5910,13 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	}
 
 	for (int i = 0; i < ObjectCount; i++) {
-		delete Objects[i];
+		delete Objects.at(i);
 	}
 	ObjectCount = 0;
+    
+	for (size_t i = 0; i < SpriteBinMapIDs.size(); i++) {
+		delete SpriteBinMapIDs.at(i);
+	}
 
 	for (int i = 0; i < DebugObjectIDCount; i++) {
 		DebugObjectIDList[i] = 0;
@@ -5892,6 +5936,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	free(AnimatedSprite1Props);
 	free(SoundBank);
 	free(SpriteMapIDs);
+    SpriteBinMapIDs.clear();
 
 	CLEANUP(TileSprite);
 	CLEANUP(GiantRingModel);

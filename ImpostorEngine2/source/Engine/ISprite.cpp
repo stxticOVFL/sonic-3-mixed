@@ -1,6 +1,7 @@
 #if INTERFACE
 #include <Utils/Standard.h>
 #include <Engine/IGraphics.h>
+#include "Utils/gifdec.h"
 
 class ISprite {
 public:
@@ -59,86 +60,16 @@ public:
 #include "Utils/gifdec.h"
 #include <algorithm>
 
+static std::unordered_map<const char*, gd_GIF*> GifMap;
+
 PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
-    IResource* res = IResources::Load(filename, true);
-	if (!res) {
-		IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
-		return;
-	}
-
-    TextureID = 0;
-    PaletteID = 0;
-    PaletteAltID = 0;
-
-    Filename = filename;
-
-    IStreamer stream(res);
-    stream.Skip(6);
-
-    Width = stream.ReadUInt16();
-    Height = stream.ReadUInt16();
-
-
-    int fdsz = stream.ReadByte();
-    if ((fdsz & 0x80) == 0) {
-        IApp::Print(2, "Could not make sprite using '%s' without a palette!", filename);
-        return;
-    }
-
-    Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
-    PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
-
-    assert(Palette != NULL);
-    assert(PaletteAlt != NULL);
-
-    PaletteSize = 1 << ((fdsz & 0x07) + 1);
-    TransparentColorIndex = stream.ReadByte();
-    // printf("for %s PaletteSize = %d width = %d height = %d\n", filename, PaletteSize, Width, Height);
-
-    // \->Palette(Alt)?\[(.*)\] = (.*);
-    // ->SetPalette$1($2, $3);
-
-    stream.Skip(1);
-
-    for (int i = 0; i < PaletteSize; i++) {
-        uint8_t* color = stream.ReadBytes(3);
-        Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
-        free(color);
-
-        Palette[i] |= 0xFF000000;
-        #if ANDROID
-        Palette[i] = ReverseColor(Palette[i]);
-        #endif
-
-        if (Palette[i] == 0xFF00FF)
-    		TransparentColorIndex = i;
-    }
-    IResources::Close(res);
-
-	if (TransparentColorIndex == 0xFF)
-		TransparentColorIndex = 0;
-
-    SetTransparentColorIndex(TransparentColorIndex);
-
-    Data = (uint8_t*)malloc(Width * Height);
-
-    res = IResources::Load(filename, true);
-
-    gd_GIF* gif = gd_open_gif(res);
-    gd_get_frame(gif);
-
-	gd_render_frame(gif, Data);
-    gd_close_gif(gif);
-
-    IResources::Close(res);
-
-    Paletted = 1;
-
     App = app;
     G = app->G;
-    G->MakeTexture(this);
-    UpdatePalette();
+    if (strEndsWith(filename, ".bin")) {
+        LoadBin(filename);
+    } else {
+        LoadSprite(filename);
+    }
 }
 
 PUBLIC void ISprite::SetTransparentColorIndex(int i) {
@@ -154,6 +85,7 @@ PUBLIC void ISprite::SetTransparentColorIndex(int i) {
         PaletteAlt[i] = 0xFF000000 | PaletteAlt[i];
     }
 }
+
 PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
     if (LinkedSprite != NULL) { LinkedSprite->SetPalette(i, col); return; }
 
@@ -163,6 +95,7 @@ PUBLIC void ISprite::SetPalette(int i, uint32_t col) {
     Palette[i] = 0xFF000000 | col;
     #endif
 }
+
 PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
     if (LinkedSprite != NULL) { LinkedSprite->SetPaletteAlt(i, col); return; }
 
@@ -172,12 +105,14 @@ PUBLIC void ISprite::SetPaletteAlt(int i, uint32_t col) {
     PaletteAlt[i] = 0xFF000000 | col;
     #endif
 }
+
 PUBLIC void ISprite::SetPalette(int i, int cnt, uint32_t* col) {
 	if (LinkedSprite != NULL) { LinkedSprite->SetPalette(i, cnt, col); return; }
 
     for (int j = i; j < i + cnt; j++)
         SetPalette(j, col[j - i]);
 }
+
 PUBLIC void ISprite::SetPaletteAlt(int i, int cnt, uint32_t* col) {
     for (int j = i; j < i + cnt; j++)
         SetPaletteAlt(j, col[j - i]);
@@ -192,6 +127,7 @@ PUBLIC uint32_t ISprite::GetPalette(int i) {
     return Palette[i] & 0xFFFFFF;
     #endif
 }
+
 PUBLIC uint32_t ISprite::GetPaletteAlt(int i) {
     if (LinkedSprite != NULL) { return LinkedSprite->GetPaletteAlt(i); }
 
@@ -201,6 +137,7 @@ PUBLIC uint32_t ISprite::GetPaletteAlt(int i) {
     return PaletteAlt[i] & 0xFFFFFF;
     #endif
 }
+
 PUBLIC uint32_t ISprite::ReverseColor(uint32_t col) {
     return 0xFF000000 | ((col & 0xFF) << 16) | (col & 0xFF00) | ((col & 0xFF0000) >> 16);
 }
@@ -250,27 +187,30 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
     LinkedSprite = other;
 }
 
-PUBLIC void ISprite::LoadAnimation(const char* filename) {
-    IResource* SpriteFile = IResources::Load(filename);
-    if (!SpriteFile) {
+PUBLIC void ISprite::LoadBin(const char* filename) {
+    IResource* BinFile = IResources::Load(filename);
+    if (!BinFile) {
         IApp::Print(2, "Couldn't open file '%s'!", filename);
 		fflush(stdin);
         exit(0);
     }
 
-    IStreamer reader(SpriteFile);
+    IStreamer reader(BinFile);
 
     IApp::Print(-1 + Print, "\"%s\"", filename);
 
-    reader.ReadUInt32BE(); // magic
+    reader.ReadUInt32BE(); // Magic
 
     reader.ReadUInt32(); //int TotalFrameCount = reader.ReadUInt32();
 
     bool solid = false;
 
     int sheets = reader.ReadByte();
-    for (int i = 0; i < sheets; i++)
-        free(reader.ReadRSDKString());
+    for (int i = 0; i < sheets; i++) {
+        char *sheet = reader.ReadRSDKString();
+        LoadSprite(sheet);
+        free(sheet);
+    }
 
     int collisionboxes = reader.ReadByte();
     for (int i = 0; i < collisionboxes; i++) {
@@ -302,7 +242,72 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
             an.Frames[i].OffX = reader.ReadInt16(); // Center X
             an.Frames[i].OffY = reader.ReadInt16(); // Center Y
             for (int h = 0; h < collisionboxes; h++) {
-                //skipBytes(SpriteFile, 16);
+                reader.ReadUInt16(); // Left
+                reader.ReadUInt16(); // Top
+                reader.ReadUInt16(); // Right
+                reader.ReadUInt16(); // Bottom
+            }
+            G->MakeFrameBufferID(this, an.Frames + i);
+        }
+        Animations.push_back(an);
+    }
+    AnimCount += count;
+    IResources::Close(BinFile);
+}
+
+PUBLIC void ISprite::LoadAnimation(const char* filename) {
+    IResource* SpriteFile = IResources::Load(filename);
+    if (!SpriteFile) {
+        IApp::Print(2, "Couldn't open file '%s'!", filename);
+		fflush(stdin);
+        exit(0);
+    }
+
+    IStreamer reader(SpriteFile);
+
+    IApp::Print(-1 + Print, "\"%s\"", filename);
+
+    reader.ReadUInt32BE(); // magic
+
+    reader.ReadUInt32(); //int TotalFrameCount = reader.ReadUInt32();
+
+    bool solid = false;
+
+    int sheets = reader.ReadByte();
+    for (int i = 0; i < sheets; i++) {
+        free(reader.ReadRSDKString());
+    }
+
+    int collisionboxes = reader.ReadByte();
+    for (int i = 0; i < collisionboxes; i++) {
+        char* attr = reader.ReadRSDKString();
+        if (!strcmp(attr, "Solid"))
+            solid = true;
+        free(attr);
+    }
+
+    int count = reader.ReadUInt16();
+
+    for (int a = AnimCount; a < AnimCount + count; a++) {
+        Animation an;
+        an.Name = reader.ReadRSDKString();
+        an.FrameCount = reader.ReadUInt16();
+        an.AnimationSpeed = reader.ReadUInt16();
+        an.FrameToLoop = reader.ReadByte();
+        an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation, 3: Static rotation using extra frames, 4: Unknown (used alot in Mania)
+        an.Frames = (AnimFrame*)malloc(sizeof(AnimFrame) * an.FrameCount);
+		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
+        for (int i = 0; i < an.FrameCount; i++) {
+            an.Frames[i].SheetNumber = reader.ReadByte();
+            an.Frames[i].Duration = reader.ReadInt16();
+            reader.ReadUInt16(); //int ID = reader.ReadUInt16();
+            an.Frames[i].X = reader.ReadUInt16();
+            an.Frames[i].Y = reader.ReadUInt16();
+            an.Frames[i].W = reader.ReadUInt16();
+            an.Frames[i].H = reader.ReadUInt16();
+            an.Frames[i].OffX = reader.ReadInt16(); // Center X
+            an.Frames[i].OffY = reader.ReadInt16(); // Center Y
+            for (int h = 0; h < collisionboxes; h++) {
                 reader.ReadUInt16(); // Left
                 reader.ReadUInt16(); // Top
                 reader.ReadUInt16(); // Right
@@ -314,8 +319,108 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
     }
     AnimCount += count;
     IResources::Close(SpriteFile);
-    // printf("\n");
 }
+
+PUBLIC void ISprite::LoadSprite(const char* filename) {
+    IResource* res = IResources::Load(filename, true);
+	if (!res) {
+		IApp::Print(2, "Couldn't open file '%s'!", filename);
+		fflush(stdin);
+		return;
+	}
+
+    TextureID = 0;
+    PaletteID = 0;
+    PaletteAltID = 0;
+
+    Filename = filename;
+
+    IStreamer stream(res);
+    stream.Skip(6);
+
+    Width = stream.ReadUInt16();
+    Height = stream.ReadUInt16();
+
+    int fdsz = stream.ReadByte();
+    if ((fdsz & 0x80) == 0) {
+        IApp::Print(2, "Could not make sprite using '%s' without a palette!", filename);
+        return;
+    }
+
+    Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
+    PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
+
+    assert(Palette != NULL);
+    assert(PaletteAlt != NULL);
+
+    PaletteSize = 1 << ((fdsz & 0x07) + 1);
+    TransparentColorIndex = stream.ReadByte();
+
+    stream.Skip(1);
+
+    for (int i = 0; i < PaletteSize; i++) {
+        uint8_t* color = stream.ReadBytes(3);
+        Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
+        free(color);
+
+        Palette[i] |= 0xFF000000;
+        #if ANDROID
+        Palette[i] = ReverseColor(Palette[i]);
+        #endif
+
+        if (Palette[i] == 0xFF00FF) {
+    		TransparentColorIndex = i;
+        }
+    }
+    IResources::Close(res);
+
+	if (TransparentColorIndex == 0xFF) {
+        TransparentColorIndex = 0;
+    }
+
+    SetTransparentColorIndex(TransparentColorIndex);
+
+    Data = (uint8_t*)malloc(Width * Height);
+
+    res = IResources::Load(filename, true);
+
+    gd_GIF* gif = NULL;
+    if (!FindGIF(filename)) {
+        gif = gd_open_gif(res);
+        
+		std::pair<const char *, gd_GIF *> pair(filename, gd_copy_gif(gif));
+        GifMap.insert(pair);
+        
+        gd_get_frame(gif);
+
+        gd_render_frame(gif, Data);
+    } else {
+        gif = gd_copy_gif(GifMap.find(filename)->second);
+        gif->fd = res;
+        gd_get_frame(gif);
+
+        gd_render_frame(gif, Data);
+    }
+    
+    gd_close_gif(gif);
+
+    IResources::Close(res);
+
+    Paletted = 1;
+    
+    G->MakeTexture(this);
+    UpdatePalette();
+}
+
+PROTECTED inline bool ISprite::FindGIF(const char* filename) {
+    auto it = GifMap.find(filename);
+    if (it == GifMap.end()) {
+        return false;
+    } else {
+        return true;
+    } 
+}
+
 PUBLIC int ISprite::FindAnimation(const char* animname) {
     for (int a = 0; a < AnimCount; a++)
         if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name, animname))
@@ -323,6 +428,7 @@ PUBLIC int ISprite::FindAnimation(const char* animname) {
 
     return -1;
 }
+
 PUBLIC int ISprite::FindAnimation(const char* animname, const bool dir) {
     if (dir) return FindAnimation(animname);
     vector<Animation> Reversed = Animations;
@@ -352,18 +458,36 @@ PUBLIC void ISprite::Cleanup() {
             Animations[a].Frames = NULL;
         }
     }
+    
     if (Data) {
         free(Data);
         Data = NULL;
     }
 
     if (!LinkedSprite) {
-        if (Palette)
+        if (Palette) {
             free(Palette);
-        if (PaletteAlt)
+        }
+        if (PaletteAlt) {
             free(PaletteAlt);
+        }
     }
 
     Palette = NULL;
     PaletteAlt = NULL;
+}
+
+PRIVATE bool ISprite::strEndsWith(const char* str, const char* suffix) {
+    if (str == NULL || suffix == NULL) {
+        return false;
+    }
+
+    size_t str_len = strlen(str);
+    size_t suffix_len = strlen(suffix);
+
+    if (suffix_len > str_len) {
+        return false;
+    }
+
+    return 0 == strncmp( str + str_len - suffix_len, suffix, suffix_len );
 }

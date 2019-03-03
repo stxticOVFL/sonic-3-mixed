@@ -109,6 +109,29 @@ ok:
 	return gif;
 }
 
+gd_GIF* gd_copy_gif(gd_GIF *other) {
+    gd_GIF* gif = (gd_GIF*)calloc(1, sizeof(*gif) + 5 * other->width * other->height);
+	gif->fd = other->fd;
+	gif->width = other->width;
+	gif->height = other->height;
+	gif->depth = other->depth;
+    gif->loop_count = other->loop_count;
+    gif->gce = other->gce;
+    gif->palette = &gif->gct;
+    gif->lct.size = other->lct.size;
+	memcpy(gif->lct.colors, other->lct.colors, 768);
+    gif->gct.size = other->gct.size;
+	memcpy(gif->gct.colors, other->gct.colors, 768);
+    gif->bgindex = other->bgindex;
+	gif->canvas = (uint8_t *)&gif[1];
+	gif->frame = &gif->canvas[3 * other->width * other->height];
+	if (gif->bgindex) {
+		memset(gif->frame, gif->bgindex, gif->width * gif->height);
+    }
+    gif->anim_start = other->anim_start;
+    return gif;
+}
+
 static void discard_sub_blocks(gd_GIF *gif) {
 	uint8_t size;
 
@@ -452,5 +475,8 @@ void gd_rewind(gd_GIF *gif) {
 }
 
 void gd_close_gif(gd_GIF *gif) {
+    if (gif == NULL) {
+        return;
+    }
 	free(gif);
 }

@@ -49,14 +49,14 @@
     <Filter Include="Source Files\Game\Objects\MGZ">
       <UniqueIdentifier>{5517d566-c106-4049-aa3d-4cea0dcf35aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Objects\Test">
-      <UniqueIdentifier>{ff76728e-c21a-4ff6-9b2f-e6f691cf839a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Game\Objects\CPP">
       <UniqueIdentifier>{6294f750-23bd-4913-9af5-b0b1fd45f0b2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game\Objects\ICZ">
       <UniqueIdentifier>{47d8cbf3-d2a5-4d6e-a8ff-088e607ff002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Objects\GHZ">
+      <UniqueIdentifier>{0ecfe341-1a7c-4a27-82bd-0ac469da1188}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -549,6 +549,9 @@
     <ClCompile Include="..\source\Game\Levels\ASZ.cpp">
       <Filter>Source Files\Game\Levels</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\GHZ\Motobug.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">
@@ -841,9 +844,6 @@
     <None Include="..\source\Game\Objects\MGZ\MGZDashTrigger.ie2">
       <Filter>Source Files\Game\Objects\MGZ</Filter>
     </None>
-    <None Include="..\source\Game\Objects\Test\Platform.ie2">
-      <Filter>Source Files\Game\Objects\Test</Filter>
-    </None>
     <None Include="..\source\Game\Objects\CommonSpecial\ViewCollisionToggler.ie2">
       <Filter>Source Files\Game\Objects\CommonSpecial</Filter>
     </None>
@@ -879,6 +879,9 @@
     </None>
     <None Include="..\source\Game\Objects\MGZ\MGZSmashingPillar.ie2">
       <Filter>Source Files\Game\Objects\MGZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\GHZ\Motobug.ie2">
+      <Filter>Source Files\Game\Objects\GHZ</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -18,7 +18,7 @@ class ISprite;
 class Scene_MainMenu : public IScene {
 public:
     int selected = 0;
-	int subselected = 0;
+    int sub_selected = 0;
     int ran = 0;
     ISprite* MenuSprite = NULL;
     ISprite* SphereSprite = NULL;

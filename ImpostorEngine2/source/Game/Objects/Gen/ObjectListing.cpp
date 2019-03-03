@@ -312,13 +312,13 @@ Object* GetNewObjectFromID(int ID) {
             return new ViewCollisionToggler();
             break;
         case 0x40CU:
-            return new BlastoidShot();
+            return new Motobug();
             break;
         case 0x40DU:
-            return new ReliefEye();
+            return new BlastoidShot();
             break;
         case 0x40EU:
-            return new Platform();
+            return new ReliefEye();
             break;
 
         default:
@@ -638,14 +638,14 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x27340CB0U:
             return new ViewCollisionToggler();
             break;
+        case 0x219C1E61U:
+            return new Motobug();
+            break;
         case 0x3692A9F5U:
             return new BlastoidShot();
             break;
         case 0xBBCA6AC5U:
             return new ReliefEye();
-            break;
-        case 0xC4B304CCU:
-            return new Platform();
             break;
 
         default:
