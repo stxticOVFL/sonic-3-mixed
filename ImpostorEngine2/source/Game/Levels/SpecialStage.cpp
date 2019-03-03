@@ -321,7 +321,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	char levelname[50];
 	if (true) {
 		sprintf(levelname, "%s%s%d", "Special Stage", " ", Act + 1);
-		char* ModeName;
+		const char* ModeName;
 		if (SaveGame::CurrentMode == 0)
 			ModeName = "Classic Mode";
 		else if (SaveGame::CurrentMode == 1)

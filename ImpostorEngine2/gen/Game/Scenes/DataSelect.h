@@ -33,7 +33,7 @@ public:
     int CharacterFlag = 0;
     int PartnerFlag = 0xFF;
     int Mode = 0;
-    char* ModeName = "Classic Mode";
+    const char* ModeName = "Classic Mode";
 
     Scene_DataSelect(IApp* app, IGraphics* g, int m);
     void Init();
