@@ -16,13 +16,21 @@ public:
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
 #include <Game/Levels/FBZ.h>
-//#include <Game/Levels/SOZ.h>
-//#include <Game/Levels/LRZ.h>
-//#include <Game/Levels/HPZ.h>
-//#include <Game/Levels/SSZ.h>
-//#include <Game/Levels/DEZ.h>
-//#include <Game/Levels/TDZ.h>
+#include <Game/Levels/SOZ.h>
+#include <Game/Levels/LRZ.h>
+#include <Game/Levels/HPZ.h>
+#include <Game/Levels/SSZ.h>
+#include <Game/Levels/DEZ.h>
+#include <Game/Levels/TDZ.h>
+
 #include <Game/Levels/SpecialStage.h>
+
+#include <Game/Levels/ALZ.h>
+#include <Game/Levels/BPZ.h>
+#include <Game/Levels/CGZ.h>
+#include <Game/Levels/DPZ.h>
+#include <Game/Levels/EMZ.h>
+#include <Game/Levels/ASZ.h>
 
 #include <Game/SaveGame.h>
 
@@ -62,7 +70,7 @@ PUBLIC void Scene_LevelSelect::Init() {
 
 	SaveGame::CurrentSaveFile = -1;
 	SaveGame::CurrentUsedZoneRings = 0x0000;
-	SaveGame::CurrentEmeralds = 0xFFFF;
+	SaveGame::CurrentEmeralds = 0x00;
 }
 
 bool HaveStage[36] = {
@@ -78,8 +86,8 @@ bool HaveStage[36] = {
     true,
     true, // LBZ
     true,
-	false, // MHZ
-	false,
+	true, // MHZ
+	true,
 	false, // FBZ
 	false,
 	false, // SOZ
@@ -105,6 +113,25 @@ bool HaveStage[36] = {
 	false,
 };
 
+bool HaveSpecial[16]{
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false,
+	false
+};
+
 PUBLIC void Scene_LevelSelect::Update() {
     if (FadeTimer == -1 && FadeTimerMax > 1)
         FadeTimer = FadeTimerMax;
@@ -122,8 +149,8 @@ PUBLIC void Scene_LevelSelect::Update() {
         FadeTimerMax = 0;
 
         if (!FadeIn) {
-            if (selected < 12) {
-                if (HaveStage[selected]) {
+            //if (selected < 12 || selected > 25) {
+                if (HaveStage[selected] || (selected > 25 && HaveSpecial[selected - 26])) {
                     App->Audio->ClearMusic();
                     if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
                     delete Sound::SoundBank[0];
@@ -153,9 +180,47 @@ PUBLIC void Scene_LevelSelect::Update() {
 						case 10:
 						case 11:
 							App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
+						case 12:
+						case 13:
+							App->NextScene = new Level_MHZ(App, G, (selected % 2) + 1);
+							break;
+						case 14:
+						case 15:
+							App->NextScene = new Level_FBZ(App, G, (selected % 2) + 1);
+							break;
+						case 16:
+						case 17:
+							App->NextScene = new Level_SOZ(App, G, (selected % 2) + 1);
+							break;
+						case 18:
+						case 19:
+							App->NextScene = new Level_LRZ(App, G, (selected % 2) + 1);
+							break;
+						case 20:
+							App->NextScene = new Level_HPZ(App, G, (selected % 2) + 1);
+							break;
+						case 21:
+							App->NextScene = new Level_SSZ(App, G, (selected % 2) + 1);
+							break;
+						case 22:
+						case 23:
+							App->NextScene = new Level_DEZ(App, G, (selected % 2) + 1);
+							break;
+						case 24:
+							App->NextScene = new Level_TDZ(App, G, (selected % 2) + 1);
 							break;
 						default:
 							break;
+						}
+						//handle SPECIALS
+						if (selected > 25) {
+							Level_SpecialStage* NextScene = new Level_SpecialStage(App, G);
+							NextScene->ZoneID = 0x100 | 1;	
+
+							int toLevel = selected - 26;
+							NextScene->Act = toLevel;
+							App->NextScene = NextScene;
+							
 						}
 					}
 
@@ -163,7 +228,7 @@ PUBLIC void Scene_LevelSelect::Update() {
                     SaveGame::CurrentPartnerFlag = partner; //0xFF for no partner
 					SaveGame::CurrentMode = mode;
                 }
-            }
+            //}
         }
     }
 
@@ -172,7 +237,7 @@ PUBLIC void Scene_LevelSelect::Update() {
             selected--;
 			if (mode != 2) {
 				if (selected < 0)
-					selected = 25;
+					selected = 41;
 			}
 			else {
 				if (selected < 0)
@@ -184,7 +249,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
 			selected++;
 			if (mode != 2) {
-				if (selected > 25)
+				if (selected > 41)
 					selected = 0;
 			}
 			else {
@@ -255,6 +320,8 @@ PUBLIC void Scene_LevelSelect::Update() {
                 acc = true;
             }
         }
+		if (selected > 25 && HaveSpecial[selected - 26])
+			acc = true;
         if (acc) {
             Sound::Play(Sound::SFX_MENUACCEPT);	
             FadeIn = false;
@@ -282,7 +349,7 @@ PUBLIC void Scene_LevelSelect::Render() {
         "SKY SANCTUARY",
         "DEATH EGG",
         "THE DOOMSDAY",
-        "BONUS",
+        "BONUS STAGES",
         "SPECIAL STAGE",
         "SOUND TEST",
     };
@@ -294,6 +361,10 @@ PUBLIC void Scene_LevelSelect::Render() {
 		"ANGEL SHORE",
 		"ENDLESS MINE",
 		"CHROME GADGET"
+	};
+
+	const char* specialStages[1]{
+		"SPECIAL STAGES"
 	};
 
     G->SetFilter(IE_FILTER_FADEABLE);
@@ -319,6 +390,7 @@ PUBLIC void Scene_LevelSelect::Render() {
 		}
 		G->DrawTextShadow(180, 4 + i * 18, lockedOn[i], (selected / 2 == i && mode == 2) ? 0xFFFF00 : col);
 	}
+	G->DrawTextShadow(180, 112, specialStages[0], selected > 25 ? 0xFFFF00 : 0xFFFFFF);
 
     char poop[20];
     char poopbuddy[20];
@@ -343,6 +415,14 @@ PUBLIC void Scene_LevelSelect::Render() {
 		}	
 		sprintf(poop, "%d", ((i + 26) % 2) + 1);
 		G->DrawTextShadow(180 + 16 * 8, 4 + i * 9, poop, (selected == i && mode == 2) ? 0xFFFF00 : col);
+	}
+
+	for (int i = 0; i < 16; i++) {
+		Uint32 col = 0x999999;
+		if (HaveSpecial[i])
+			col = 0xFFFFFF;
+		sprintf(poop, "%d", i + 1);
+		G->DrawTextShadow(180 + ((i / 8)) * 30, 4 + 122 + (i / 8 == 0 ? i : i - 8) * 9, poop, selected == i + 26 ? 0xFFFF00 : col);
 	}
 
 	if (character == 0)

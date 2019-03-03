@@ -1,0 +1,30 @@
+object 0xB6;
+
+event Create() {
+    Active = true;
+    Priority = false;
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+    Scene.AddSelfToRegistry(this, "Breakable");
+
+    BreakableByJump = CollideSide.TOP;
+    CurrentAnimation = Sprite.FindAnimation("Ice Cube");
+
+}
+
+event Render(CamX:int, CamY:int) {
+    if (!Visible) return;
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (!Solid) return 0;
+    if (HitFrom == CollideSide.TOP) {
+        Solid = false;
+        Visible = false;
+        Scene.Players[PlayerID].YSpeed -= 0x80;
+        Scene.Players[PlayerID].Action = ActionType.Jumping;
+        Sound.Play(Sound.SFX_COLLAPSE);
+    }
+    return 1;
+}

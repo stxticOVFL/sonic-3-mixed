@@ -47,6 +47,8 @@ public:
 	int         PauseSelectedMenuItem = 0;
 	bool        Paused = false;
 	bool        PauseFinished = false;
+	int			paltimer = 0;
+	int			palframe = 0;
 
 	ISprite*    PauseSprite = NULL;
 	ISprite*    GlobalDisplaySprite = NULL;
@@ -87,6 +89,9 @@ public:
 		NEXT_ZONE = 8,
 		CUSTOM_FADE_ACTION = 9,
 	};
+
+	//For RPC
+	char* ModeName;
 
 	int         maxLayer = 1;
 	bool        Thremixed = false;
@@ -469,7 +474,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
 				ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
 				ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
-				ItemsSprite->LoadAnimation("Stages/Special/Ring.bin");
+				ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
 			}
 			else {
 				ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
@@ -1405,6 +1410,22 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				PlayerCount = 2;
 			}
+
+			/*for (int i = 0; i < 5; i++) {
+				Players[i + 2] = new IPlayer();
+				IPlayer* poopler = Players[i + 2];
+				poopler->G = G;
+				poopler->App = App;
+				poopler->Scene = this;
+				poopler->Sidekick = true;
+				poopler->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
+				poopler->PlayerID = i + 2;
+				poopler->Thremixed = SaveGame::CurrentMode == 1;
+				poopler->Create();
+				poopler->Lives = SaveGame::GetLives();
+			}
+			PlayerCount = 7;
+			//uncomment if ever bored*/
 
 			IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
 			startTime = SDL_GetTicks();
@@ -3433,6 +3454,8 @@ PUBLIC VIRTUAL void LevelScene::FinishResults() {
 PUBLIC VIRTUAL void LevelScene::GoToNextAct() {
 }
 
+int pauseAnimTimer = 60;
+
 PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 	NextAct->GiantRingModel = GiantRingModel;
 
@@ -3511,6 +3534,7 @@ PUBLIC void LevelScene::OnEvent(Uint32 event) {
 
 		PauseFinished = true;
 		Paused = true;
+		pauseAnimTimer = 60;
 		std::memset(&PauseAnim[0], 0, 8 * sizeof(int));
 
 		PauseSelectedMenuItem = 0;
@@ -3528,6 +3552,7 @@ PUBLIC void LevelScene::Update() {
 			if (!Paused && !PauseFinished) {
 				PauseFinished = true;
 				Paused = true;
+				pauseAnimTimer = 60;
 				std::memset(&PauseAnim[0], 0, 8 * sizeof(int));
 
 				PauseSelectedMenuItem = 0;
@@ -4058,6 +4083,7 @@ PUBLIC void LevelScene::Update() {
 
 		//Messy ikik
 		bool inBox = false;
+		int before = PauseSelectedMenuItem;
 		if (App->Input->MouseY > 197 && App->Input->MouseY < (197 + 35)) {
 			//Resume
 			if (App->Input->MouseX > 81 && App->Input->MouseX < (81 + 35))
@@ -4092,6 +4118,9 @@ PUBLIC void LevelScene::Update() {
 			else
 			{
 				inBox = false;
+			}
+			if (inBox && before != PauseSelectedMenuItem) {
+				Sound::Play(Sound::SFX_MENUBLEEP);
 			}
 		}
 
@@ -4138,6 +4167,7 @@ PUBLIC void LevelScene::Update() {
 			}
 			else if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) { // deny
 				Paused = false;
+				App->Audio->AudioUnpauseAll();
 			}
 		}
 
@@ -4247,7 +4277,7 @@ PUBLIC void LevelScene::Update() {
 			//Cleanup();
 
 			StateSaved = false;
-			App->NextScene = new Scene_DataSelect(App, G, 0); //TODO: change to correct mode
+			App->NextScene = new Scene_DataSelect(App, G, SaveGame::CurrentMode);
 		}
 		else if (FadeAction == FadeActionType::FADEIN) {
 			FadeAction = 0;
@@ -4891,6 +4921,13 @@ PUBLIC void LevelScene::RenderTitleCard() {
 
 	G->ClearClip();
 
+	//ACT NUMBER STUFF
+
+	//Decoration
+	G->DrawSprite(GlobalDisplaySprite, 14, (ZoneID-1), textX + 125, textY + 80, 0, IE_NOFLIP);
+	//Act Number Sprite
+	G->DrawSprite(GlobalDisplaySprite, 17, (VisualAct-1), textX + 125, textY + 80, 0, IE_NOFLIP);
+
 	textY += 36;
 
 	textX = App->WIDTH - 34 + 8 + text2Off;
@@ -4920,69 +4957,77 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	}
 
 	int paletteToCycle[18] = {
-	0xEAD100,
-	0xE4C700,
-	0xE0BF00,
-	0xDAB600,
-	0xD6AE00,
-	0xD1A500,
-	0xCD9D00,
-	0xC89400,
-	0xC48C00,
-	0xBE8200,
-	0xB97A00,
-	0xB47100,
-	0xB06A00,
-	0xAA6100,
-	0xA65900,
-	0xA15000,
-	0x9D4800,
-	0x993A00,
+		0xEAD100,
+		0xE4C700,
+		0xE0BF00,
+		0xDAB600,
+		0xD6AE00,
+		0xD1A500,
+		0xCD9D00,
+		0xC89400,
+		0xC48C00,
+		0xBE8200,
+		0xB97A00,
+		0xB47100,
+		0xB06A00,
+		0xAA6100,
+		0xA65900,
+		0xA15000,
+		0x9D4800,
+		0x993A00,
 	};
 
 	int anim_off;
 
 	for (int i = 0; i < 9; i++)
 		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 18) % 18]);
+	
+	//White Tint
+	G->SetDrawAlpha((int)((60 - pauseAnimTimer) * 2));
+	for (int i = 0; i < 45; i++) {
+		G->DrawSprite(PauseSprite, 0, 0, 0, (15 * i) - pauseAnimTimer, 0, IE_NOFLIP);
+	}
+	G->SetDrawAlpha(0xFF);
 
 	//Base Black BG
-	G->DrawSprite(PauseSprite, 0, 2, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 0, 2, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H + pauseAnimTimer, 0, IE_NOFLIP);
 	//Top BG thingy
-	G->DrawSprite(PauseSprite, 0, 2, 0, 17, 0, IE_FLIPY);
+	G->DrawSprite(PauseSprite, 0, 2, 0, 17 - pauseAnimTimer, 0, IE_FLIPY);
 	//G->DrawSprite(PauseSprite, 0, 2, 0, 0, 0, IE_NOFLIP);
 
 	//Buttons
 	//G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
 	//G->DrawSprite(PauseSprite, 0, 3, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 1, 0 + (PauseSelectedMenuItem == 0 ? 5 : 0), 81, 197, 0, IE_NOFLIP); //Resume
-	G->DrawSprite(PauseSprite, 1, 1 + (PauseSelectedMenuItem == 1 ? 5 : 0), 124, 197, 0, IE_NOFLIP); //Restart
-	G->DrawSprite(PauseSprite, 1, 2 + (PauseSelectedMenuItem == 2 ? 5 : 0), 167, 197, 0, IE_NOFLIP); //Settings
-	G->DrawSprite(PauseSprite, 1, 3 + (PauseSelectedMenuItem == 3 ? 5 : 0), 210, 197, 0, IE_NOFLIP); //Exit
-	G->DrawSprite(PauseSprite, 1, 4 + (PauseSelectedMenuItem == 4 ? 5 : 0), 253, 197, 0, IE_NOFLIP); //Radio
+	G->DrawSprite(PauseSprite, 1, 0 + (PauseSelectedMenuItem == 0 ? 5 : 0), 81, 197 + pauseAnimTimer, 0, IE_NOFLIP); //Resume
+	G->DrawSprite(PauseSprite, 1, 1 + (PauseSelectedMenuItem == 1 ? 5 : 0), 124, 197 + pauseAnimTimer, 0, IE_NOFLIP); //Restart
+	G->DrawSprite(PauseSprite, 1, 2 + (PauseSelectedMenuItem == 2 ? 5 : 0), 167, 197 + pauseAnimTimer, 0, IE_NOFLIP); //Settings
+	G->DrawSprite(PauseSprite, 1, 3 + (PauseSelectedMenuItem == 3 ? 5 : 0), 210, 197 + pauseAnimTimer, 0, IE_NOFLIP); //Exit
+	G->DrawSprite(PauseSprite, 1, 4 + (PauseSelectedMenuItem == 4 ? 5 : 0), 253, 197 + pauseAnimTimer, 0, IE_NOFLIP); //Radio
 
 	//Chaos Emeralds
-	G->DrawSprite(PauseSprite, 2, 1 * (SaveGame::CurrentEmeralds & (1 << 0)), 297 + 8, 218 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 2 * (SaveGame::CurrentEmeralds & (1 << 1)), 314 + 8, 218 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 3 * (SaveGame::CurrentEmeralds & (1 << 2)), 331 + 8, 218 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 4 * (SaveGame::CurrentEmeralds & (1 << 3)), 348 + 8, 218 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 5 * (SaveGame::CurrentEmeralds & (1 << 4)), 365 + 8, 218 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 6 * (SaveGame::CurrentEmeralds & (1 << 5)), 382 + 8, 218 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 7 * (SaveGame::CurrentEmeralds & (1 << 6)), 399 + 8, 218 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 1 * (SaveGame::CurrentEmeralds & (1 << 0)), 297 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 2 * (SaveGame::CurrentEmeralds & (1 << 1)), 314 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 3 * (SaveGame::CurrentEmeralds & (1 << 2)), 331 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 4 * (SaveGame::CurrentEmeralds & (1 << 3)), 348 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 5 * (SaveGame::CurrentEmeralds & (1 << 4)), 365 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 6 * (SaveGame::CurrentEmeralds & (1 << 5)), 382 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 7 * (SaveGame::CurrentEmeralds & (1 << 6)), 399 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
 
 	//Super Emeralds
-	G->DrawSprite(PauseSprite, 3, 1 * (SaveGame::CurrentEmeralds & (1 << 8)), 297 + 8, 199 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 2 * (SaveGame::CurrentEmeralds & (1 << 9)), 314 + 8, 199 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 3 * (SaveGame::CurrentEmeralds & (1 << 10)), 331 + 8, 199 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 4 * (SaveGame::CurrentEmeralds & (1 << 11)), 348 + 8, 199 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 5 * (SaveGame::CurrentEmeralds & (1 << 12)), 365 + 8, 199 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 6 * (SaveGame::CurrentEmeralds & (1 << 13)), 382 + 8, 199 + 8, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 7 * (SaveGame::CurrentEmeralds & (1 << 14)), 399 + 8, 199 + 8, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 1 * (SaveGame::CurrentEmeralds & (1 << 8)), 297 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 2 * (SaveGame::CurrentEmeralds & (1 << 9)), 314 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 3 * (SaveGame::CurrentEmeralds & (1 << 10)), 331 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 4 * (SaveGame::CurrentEmeralds & (1 << 11)), 348 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 5 * (SaveGame::CurrentEmeralds & (1 << 12)), 365 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 6 * (SaveGame::CurrentEmeralds & (1 << 13)), 382 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 7 * (SaveGame::CurrentEmeralds & (1 << 14)), 399 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
 
-	G->DrawSprite(PauseSprite, 0, 3, 148, 6, 0, IE_NOFLIP); //"You are currently Paused"
+	G->DrawSprite(PauseSprite, 0, 3, 148, 6 - pauseAnimTimer, 0, IE_NOFLIP); //"You are currently Paused"
 
 	anim_off = 210 - PauseAnim[2] / 0x100;
 	int baseX = 280 + anim_off;
 	int baseY = 70 + 20;
+	if (pauseAnimTimer != 0) pauseAnimTimer -= 10;
 	}
 
 PUBLIC void LevelScene::RenderResults() {
@@ -5009,9 +5054,12 @@ PUBLIC void LevelScene::RenderResults() {
 	anim_total = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.7, 1.0) / 0.3) * -App->WIDTH) + App->WIDTH;
 
 	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
-	if (GlobalDisplaySpriteS3K) {
-		GlobalDisplaySprite = GlobalDisplaySpriteS3K;
-	}
+	
+	//NOTE: the S3 sheet doesn't have a title card number thing
+
+	//if (GlobalDisplaySpriteS3K) {
+	//	GlobalDisplaySprite = GlobalDisplaySpriteS3K;
+	//}
 
 	// Player Name
 	G->DrawSprite(GlobalDisplaySprite, 3, (int)Player->Character, App->WIDTH / 2 + anim_player_got, 64, 0, IE_NOFLIP);
@@ -5021,6 +5069,9 @@ PUBLIC void LevelScene::RenderResults() {
 
 	// Through
 	G->DrawSprite(GlobalDisplaySprite, 4, 1, App->WIDTH / 2 + anim_through_act, 88, 0, IE_NOFLIP);
+
+	//Act (Number)
+	G->DrawSprite(GlobalDisplaySprite, 17, (VisualAct - 1), App->WIDTH / 2 + anim_through_act + 75, 88, 0, IE_NOFLIP);
 
 	// Time Bonus
 	G->DrawSprite(GlobalDisplaySprite, 0, 1, App->WIDTH / 2 - 128 + anim_time_bonus, 128, 0, IE_NOFLIP);
@@ -5762,13 +5813,13 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 	else
 		G->SetFilter(G->GetFilter() & ~IE_FILTER_FADEABLE);
 
-	if (!G->HaveClone) {
-		G->SetFilter(G->GetFilter() | PauseFinished);
+	if (!G->HaveClone) {	
+		//G->SetFilter(G->GetFilter() | PauseFinished);
 		RenderEverything();
-		G->SetFilter(G->GetFilter() & ~PauseFinished);
+		//G->SetFilter(G->GetFilter() & ~PauseFinished);
 	}
 	else {
-		G->DrawClone();
+		G->DrawClone();	
 	}
 
 	CameraY = tCamY;

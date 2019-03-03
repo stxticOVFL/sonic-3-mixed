@@ -203,6 +203,7 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x51] = ICZObjectsSprite;
 
 	SpriteMapIDs[0xAE] = ICZObjectsSprite;
+	SpriteMapIDs[0xB6] = ICZObjectsSprite;
 }
 
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
@@ -218,6 +219,7 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Tension Bridge.bin");
 		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Star Pointer.bin");
+		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Ice Cube.bin");
     }
 
 	if (!KnuxSprite[0]) {

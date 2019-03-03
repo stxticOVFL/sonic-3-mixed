@@ -1,7 +1,7 @@
-#ifndef STARPOST_H
-#define STARPOST_H
+#ifndef ICECUBE_H
+#define ICECUBE_H
 
-class StarPost;
+class IceCube;
 
 #include <Utils/Standard.h>
 
@@ -12,21 +12,13 @@ class StarPost;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class StarPost: public Object {
+class IceCube: public Object {
 public:    
     
-    bool Activated;
-    int Spin;
-    bool Blinking;
-    bool ShowStars;
-    int StarTimer;
     
     void Create();
-    void Update();
-    int OnLeaveScreen();
-    void DrawStar(int Rock, int Ang, int Side, int CamX, int CamY);
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
-#endif /* STARPOST_H */
+#endif /* ICECUBE_H */

@@ -1,7 +1,7 @@
 #if INTERFACE
 #include <Game/LevelScene.h>
 
-class Level_MHZ : public LevelScene {
+class Level_ALZ : public LevelScene {
 public:
     int  CutsceneRoutineNumber = 0x00;
 };
@@ -12,23 +12,23 @@ public:
 
 #include <Game/Objects/Gen/ObjectListing.h>
 
-#include <Game/Levels/MHZ.h>
+#include <Game/Levels/ALZ.h>
 
-PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
+PUBLIC Level_ALZ::Level_ALZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
 
     if (Act == 1) {
-        Str_TileConfigBin = "Stages/MHZ/TileConfig1.bin";
-        Str_SceneBin = "Stages/MHZ/Scene1.bin";
-        Str_TileSprite = "Stages/MHZ/16x16Tiles1.gif";
-        //Str_AnimatedSprites = "Sprites/MHZ/AnimatedTiles";
-        Str_ObjectsList = "Stages/MHZ/Objects1.bin";
-        Str_RingsList = "Stages/MHZ/Rings1.bin";
+        Str_TileConfigBin = "Stages/ALZ/TileConfig1.bin";
+        Str_SceneBin = "Stages/ALZ/Scene1.bin";
+        Str_TileSprite = "Stages/ALZ/16x16Tiles1.gif";
+        //Str_AnimatedSprites = "Sprites/ALZ/AnimatedTiles";
+        Str_ObjectsList = "Stages/ALZ/Objects1.bin";
+        Str_RingsList = "Stages/ALZ/Rings1.bin";
     }
 
-    sprintf(LevelName, "MUSHROOM HILL");
-    sprintf(LevelNameDiscord, "Mushroom Hill");
+    sprintf(LevelName, "AZURE LAKE");
+    sprintf(LevelNameDiscord, "Azure Lake");
 
     if (Act == 1) {
         // PlayerStartX = 0x00D8;
@@ -39,7 +39,7 @@ PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     }
 }
 
-PUBLIC void Level_MHZ::LoadZoneSpecificSprites() {
+PUBLIC void Level_ALZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
@@ -55,7 +55,7 @@ PUBLIC void Level_MHZ::LoadZoneSpecificSprites() {
     }
 }
 
-PUBLIC void Level_MHZ::RestartStage(bool doActTransition, bool drawBackground) {
+PUBLIC void Level_ALZ::RestartStage(bool doActTransition, bool drawBackground) {
     LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
@@ -63,7 +63,7 @@ PUBLIC void Level_MHZ::RestartStage(bool doActTransition, bool drawBackground) {
     }
 }
 
-PUBLIC void Level_MHZ::EarlyUpdate() {
+PUBLIC void Level_ALZ::EarlyUpdate() {
     if (Act == 1) {
 
     }
@@ -73,11 +73,11 @@ PUBLIC void Level_MHZ::EarlyUpdate() {
 
     LevelScene::EarlyUpdate();
 }
-PUBLIC void Level_MHZ::Subupdate() {
+PUBLIC void Level_ALZ::Subupdate() {
     LevelScene::Subupdate();
 }
 
-PUBLIC void Level_MHZ::HandleCamera() {
+PUBLIC void Level_ALZ::HandleCamera() {
     if (Act == 1) {
         //int off = App->WIDTH / 2 - 0xA0;
         //int ToS3X = CameraX + off;
