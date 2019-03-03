@@ -70,7 +70,7 @@ PUBLIC void Scene_LevelSelect::Init() {
 
 	SaveGame::CurrentSaveFile = -1;
 	SaveGame::CurrentUsedZoneRings = 0x0000;
-	SaveGame::CurrentEmeralds = 0x3FFF;
+	SaveGame::CurrentEmeralds = 0x00;
 }
 
 bool HaveStage[36] = {
@@ -180,6 +180,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 						case 10:
 						case 11:
 							App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
+							break;
 						case 12:
 						case 13:
 							App->NextScene = new Level_MHZ(App, G, (selected % 2) + 1);

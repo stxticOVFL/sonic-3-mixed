@@ -406,8 +406,8 @@ PUBLIC void LevelScene::LoadState() {
 	SpecialSpawnPositionY = StatePlayerSpawnY;
 }
 
-STATIC PUBLIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
-    ISprite* BinSprite = new ISprite(Filename, GlobalApp);
+STATIC PUBLIC size_t LevelScene::LoadSpriteBin(const char* Filename, IApp* App = GlobalApp) {
+    ISprite* BinSprite = new ISprite(Filename, App);
     SpriteBinMapIDs.push_back(BinSprite);
     SpriteBinMapIDs.shrink_to_fit();
     return SpriteBinMapIDs.size();
