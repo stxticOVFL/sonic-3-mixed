@@ -3,6 +3,7 @@ event Motobug() : CONSTRUCTER {
 }
 
 event Create() {
+    Active = true;
     W = 39;
     H = 28;
 }
@@ -15,7 +16,7 @@ event Render(CamX:int, CamY:int) {
     if (CurrentAnimation == -1) { 
         return;
     }
-    if (Frame < 0) { 
+    if (Frame < 0) {
         return;
     }
     if (!Visible) {

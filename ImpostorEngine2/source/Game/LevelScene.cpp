@@ -304,8 +304,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 		AddNewDebugObjectID(Obj_InvisibleSpikes); // Invisible Spikes
 		AddNewDebugObjectID(Obj_InvisibleDeath); // Invisible Death
 		AddNewDebugObjectID(Obj_ViewCollisionToggler); // View Collision Toggler
+        AddNewDebugObjectID(Obj_Motobug); // Motobug
 	}
-    AddNewDebugObjectID(Obj_Motobug); // Motobug
 
 	ObjectProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
 	RingProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
@@ -411,7 +411,7 @@ PUBLIC void LevelScene::LoadState() {
 
 PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     if (IApp::GlobalApp == NULL) {
-        return 0;
+        return 0xFFFFFFFF;
     }
     ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
     SpriteBinMapIDs.push_back(BinSprite);

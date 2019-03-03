@@ -1151,7 +1151,7 @@ void MakeObjectListing(char* fullpath) {
     }
     includes += "};\n";
 
-    char* ObjectListHeader = (char*)calloc(1, 8024);
+    char* ObjectListHeader = (char*)calloc(1, 12024);
     sprintf(ObjectListHeader, template1, includes.c_str());
     //printf("%s\n\n\n", ObjectListHeader);
     FILE* f = fopen(fullasspath, "wb");
@@ -1167,7 +1167,7 @@ void MakeObjectListing(char* fullpath) {
     sprintf(fullasspath, "%s/Gen/ObjectListing.cpp", fullpath);
     //printf("%s\n", fullasspath);
 
-    char ObjectListSource[1024 * 30];
+    char* ObjectListSource = (char*)calloc(1, 12024);
     sprintf(ObjectListSource, template2, sauce.c_str(), sauceHash.c_str());
     //printf("%s\n\n\n", ObjectListSource);
     f = fopen(fullasspath, "wb");
@@ -1181,6 +1181,7 @@ void MakeObjectListing(char* fullpath) {
     free(fullasspath);
     free(ObjectListSourcePart);
     free(ObjectListHeader);
+    free(ObjectListSource);
 }
 
 int main(int argc, char **argv) {
