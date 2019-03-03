@@ -2812,7 +2812,7 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 	sprintf(levelname, "%s%s%d", LevelNameDiscord, " Act ", VisualAct);
 
 
-	char* ModeName;
+	const char* ModeName;
 	if (SaveGame::CurrentMode == 0)
 		ModeName = "Classic Mode";
 	else if (SaveGame::CurrentMode == 1)

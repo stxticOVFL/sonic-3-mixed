@@ -220,7 +220,7 @@ PUBLIC void IApp::Run() {
 		ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
 		ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
 		ls->PlayerStartX = 160;
-		ls->PlayerStartY = 1328;
+		ls->PlayerStartY = 1328; 
 		ls->Thremixed = true;
 		ls->ZoneID = 1;
 		ls->VisualAct = 1;

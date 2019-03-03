@@ -44,7 +44,25 @@
 
         Inited = true;
     }
-    void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey, const bool time) {
+	void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey) {
+		if (!Inited) return;
+
+		DiscordRichPresence discordPresence;
+		memset(&discordPresence, 0, sizeof(discordPresence));
+		discordPresence.details = header;
+		discordPresence.state = state;
+		if (imgkey)
+			discordPresence.largeImageKey = imgkey;
+		bool multiplayer = false;
+		if (multiplayer) {
+			//discordPresence.partyId = 0;
+			discordPresence.partySize = 1;
+			discordPresence.partyMax = 4;
+		}
+		discordPresence.instance = 1;
+		Discord_UpdatePresence(&discordPresence);
+	}
+    void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey, bool time) {
         if (!Inited) return;
 
         DiscordRichPresence discordPresence;
@@ -66,9 +84,12 @@
     	Discord_UpdatePresence(&discordPresence);
     }
 #else
-    /*void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey) {
-		Discord_UpdatePresence(header, state, imgkey, false); //shut the fuck up vs
-    }*/
+void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey) {
+
+}
+void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey, bool time) {
+
+}
 #endif
 
 int HandleAppEvents(void* data, SDL_Event* event) {

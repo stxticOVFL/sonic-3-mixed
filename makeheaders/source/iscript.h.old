@@ -1,0 +1,2360 @@
+#include <stdio.h>
+#if !MSVC
+	#include <dirent.h>
+	#include <unistd.h>
+#else
+	#include <stdafx.h>
+	#include <dirent.h>
+	#include <io.h>
+    #include <windows.h>
+#endif
+#include <string.h>
+#include <time.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include <deque>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+#include "crc32.h"
+
+using namespace std;
+
+vector<char*> Garbage;
+
+enum class AType {
+    UNK = 0,
+    OTHER,
+    KEYWORD,
+
+    VAR,
+    LOCAL,
+    IDENTIFIER,
+
+    INT,
+    DOUBLE,
+    BOOL,
+    STRING,
+    ARRAY_SUBSCRIPT,
+
+    INLINECONDITIONAL,
+    CONDITIONAL,
+
+    MEMBERDATA,
+    SCOPEACCESS,
+
+    ASSIGNMENT,
+    EXPRESSION,
+    SUFFIX,
+
+    SWITCH,
+    CAST,
+    CALL,
+
+    GROUPING,
+    RETURN,
+    BREAK,
+
+    EVENT,
+};
+
+bool visualColor = false;
+char* currentFileName = NULL;
+
+enum class PrintColor {
+	Default = 0,
+	Red,
+	Yellow,
+	Green,
+	Purple,
+};
+void PrintHeader(FILE* f, const char* str, PrintColor col) {
+	int color = 0;
+	#if MSVC
+		switch (col) {
+			case PrintColor::Red: color = 4; break;
+			case PrintColor::Yellow: color = 14; break;
+			case PrintColor::Green: color = 2; break;
+			case PrintColor::Purple: color = 5; break;
+			default: color = 0xF; break;
+		}
+	    CONSOLE_SCREEN_BUFFER_INFO csbi;
+	    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	    if (GetConsoleScreenBufferInfo(hStdOut, &csbi)) {
+	        SetConsoleTextAttribute(hStdOut, (csbi.wAttributes & 0xF0) | color);
+	    }
+	    fprintf(f, str);
+    	SetConsoleTextAttribute(hStdOut, csbi.wAttributes);
+    #else
+		switch (col) {
+			case PrintColor::Red: color = 31; break;
+			case PrintColor::Yellow: color = 33; break;
+			case PrintColor::Green: color = 32; break;
+			case PrintColor::Purple: color = 35; break;
+			default: color = 37; break;
+		}
+    	fprintf(f, "\x1b[1;%dm%s\x1b[0m", color, str);
+    #endif
+}
+
+void ReportError(int line, const char* string, ...) {
+	va_list args;
+    va_start(args, string);
+    char message[1024];
+    vsprintf(message, string, args);
+	PrintHeader(stderr, "error: ", PrintColor::Red);
+	fprintf(stderr, "on line %d:\n    %s\n\n", line, message);
+    fflush(stderr);
+	exit(-1);
+}
+
+//bool CheckIfVariableInObject(char* v);
+
+unordered_map<string, int> variable_with_types;
+
+enum {
+	VAR_TYPE = 0,
+	VAR_POINTER,
+	VAR_ARRAY,
+};
+struct Environment {
+	Environment* 				Enclosing = NULL;
+	unordered_map<string, int>  Values;
+	Environment() { }
+	Environment(Environment* enc) { Enclosing = enc; }
+
+	void Define(string label, int typetype) {
+		Values[label] = typetype;
+	}
+	int Get(string label) {
+		if (Values.count(label))
+			return Values[label];
+
+		if (Enclosing) return Enclosing->Values[label];
+
+		return -1; // Throw error.
+	}
+};
+
+int scope = 0;
+struct AST {
+    int PointerType = 0;
+    AType TypeAST = AType::UNK;
+    vector<struct AST*> Statements;
+    virtual char* Print() { return NULL; };
+};
+struct OtherAST : AST {
+    char* Value = NULL;
+
+    int CheckIfPointer(char* v) {
+        return 0;
+    }
+
+    OtherAST() { TypeAST = AType::OTHER; }
+    OtherAST(char* v) { Value = v; TypeAST = AType::OTHER; PointerType = CheckIfPointer(Value); }
+	OtherAST(const char* v) { Value = (char*)v; TypeAST = AType::OTHER; PointerType = CheckIfPointer(Value); }
+
+    char* Print() {
+        char* str = (char*)malloc(strlen(Value) + 1);
+        sprintf(str, "%s", Value);
+        Garbage.push_back(str);
+        return str;
+    }
+};
+struct IdentifierAST : AST {
+    char* Value = NULL;
+
+    IdentifierAST() { TypeAST = AType::IDENTIFIER; }
+    IdentifierAST(char* v) { Value = v; TypeAST = AType::IDENTIFIER; }
+
+    char* Print() {
+        char* str = (char*)malloc(strlen(Value) + 1);
+        sprintf(str, "%s", Value);
+        Garbage.push_back(str);
+        return str;
+    }
+};
+struct IntAST : AST {
+    char* Value = NULL;
+
+    char* Print() {
+        char* str = (char*)malloc(strlen(Value) + 1);
+        sprintf(str, "%s", Value);
+        Garbage.push_back(str);
+        return str;
+    }
+};
+struct ArraySubscriptAST : AST {
+    AST*  LHS = NULL;
+    AST*  RHS = NULL;
+
+    ArraySubscriptAST() { TypeAST = AType::ARRAY_SUBSCRIPT; }
+    ArraySubscriptAST(AST* lhs, AST* rhs) { LHS = lhs; RHS = rhs; TypeAST = AType::ARRAY_SUBSCRIPT; }
+
+    char* Print() {
+        string str;
+        str += LHS->Print();
+
+        if (visualColor) str += "\x1b[91m";
+        str += "[";
+        if (visualColor) str += "\x1b[m";
+
+        str += RHS->Print();
+
+        if (visualColor) str += "\x1b[91m";
+        str += "]";
+        if (visualColor) str += "\x1b[m";
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct VariableAST : AST {
+    char* Label = NULL;
+    AST*  Type = NULL;
+    AST*  RHS = NULL;
+
+    char* Print() {
+        return PrintFin(0);
+    }
+    char* PrintH() {
+        return PrintFin(1);
+    }
+    char* PrintCPP() {
+        return PrintFin(0);
+    }
+
+    char* PrintFin(int type) {
+        string rhs;
+        if (RHS) {
+            rhs = RHS->Print();
+        }
+
+        string str;
+
+        string type_str;
+
+        if (Type->TypeAST != AType::ARRAY_SUBSCRIPT) {
+            type_str += Type->Print();
+            if (Type->PointerType)
+                type_str += "*";
+        }
+        else {
+            type_str += ((ArraySubscriptAST*)Type)->LHS->Print();
+            if (((ArraySubscriptAST*)Type)->LHS->PointerType)
+                type_str += "*";
+        }
+
+        if (type) {
+            str += type_str;
+            str += " ";
+        }
+        str += Label;
+        if (type) {
+            if (Type->TypeAST == AType::ARRAY_SUBSCRIPT) {
+                str += "[";
+                str += ((ArraySubscriptAST*)Type)->RHS->Print();
+                str += "]";
+            }
+        }
+        if (!rhs.empty()) {
+            str += " = ";
+            str += rhs;
+        }
+        else if (type == 0) {
+            str = "";
+        }
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct LocalAST : AST {
+    char* Label = NULL;
+    AST*  Type = NULL;
+    AST*  RHS = NULL;
+
+    LocalAST() { TypeAST = AType::LOCAL; }
+
+    char* Print() {
+        return PrintFin(0);
+    }
+    char* PrintH() {
+        return PrintFin(1);
+    }
+    char* PrintCPP() {
+        return PrintFin(1);
+    }
+
+    char* PrintFin(int type) {
+        string rhs;
+        if (RHS) {
+            rhs = RHS->Print();
+        }
+
+        string str;
+
+        string type_str;
+        if (Type->TypeAST != AType::ARRAY_SUBSCRIPT) {
+            type_str += Type->Print();
+            if (Type->PointerType)
+                type_str += "*";
+        }
+        else {
+            type_str += ((ArraySubscriptAST*)Type)->LHS->Print();
+            if (((ArraySubscriptAST*)Type)->LHS->PointerType)
+                type_str += "*";
+        }
+
+        if (rhs.empty() && type == 0) {
+
+        }
+        else {
+            if (type) {
+                str += type_str;
+
+                str += " ";
+            }
+            str += Label;
+            if (type) {
+                if (Type->TypeAST == AType::ARRAY_SUBSCRIPT) {
+                    str += "[";
+                    str += ((ArraySubscriptAST*)Type)->RHS->Print();
+                    str += "]";
+                }
+            }
+            if (!rhs.empty() && type < 2) {
+                str += " = ";
+                str += rhs;
+            }
+        }
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct ScopeAccessAST : AST {
+    AST*  LHS = NULL;
+    AST*  RHS = NULL;
+
+    ScopeAccessAST() { TypeAST = AType::SCOPEACCESS; }
+    ScopeAccessAST(AST* lhs, AST* rhs) { LHS = lhs; RHS = rhs; TypeAST = AType::SCOPEACCESS; }
+
+    char* Print() {
+        string str;
+        str += LHS->Print();
+        str += "::";
+        str += RHS->Print();
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct MemberDataAST : AST {
+    AST*  LHS = NULL;
+    AST*  RHS = NULL;
+    bool  Pointer = false;
+
+    MemberDataAST() { TypeAST = AType::MEMBERDATA; }
+    MemberDataAST(AST* lhs, AST* rhs) {
+        LHS = lhs;
+        RHS = rhs;
+        TypeAST = AType::MEMBERDATA;
+
+        char* lhs_str = LHS->Print();
+        if (LHS->TypeAST == AType::ARRAY_SUBSCRIPT) {
+            lhs_str = ((ArraySubscriptAST*)LHS)->LHS->Print();
+        }
+
+        if (!strcmp(lhs_str, "this")) {
+            AST* node = RHS;
+            AST* nodeAlter = node;
+            if (RHS->TypeAST == AType::MEMBERDATA) {
+                while (node->TypeAST == AType::MEMBERDATA || node->TypeAST == AType::ARRAY_SUBSCRIPT) {
+                    if (node->TypeAST == AType::MEMBERDATA) {
+                        node = ((MemberDataAST*)node)->LHS;
+                        nodeAlter = node;
+                    }
+                    else {
+                        nodeAlter = node;
+                        node = ((ArraySubscriptAST*)node)->LHS;
+                    }
+                }
+            }
+
+            LHS->PointerType = 1;
+
+            char* rhs_str = node->Print();
+            if (!strcmp(rhs_str, "Sprite")) {
+                nodeAlter->PointerType = 1;
+            }
+        }
+        else if (!strcmp(lhs_str, "Scene")) {
+            AST* node = RHS;
+            AST* nodeAlter = node;
+            if (RHS->TypeAST == AType::MEMBERDATA) {
+                while (node->TypeAST == AType::MEMBERDATA || node->TypeAST == AType::ARRAY_SUBSCRIPT) {
+                    if (node->TypeAST == AType::MEMBERDATA) {
+                        node = ((MemberDataAST*)node)->LHS;
+                        nodeAlter = node;
+                    }
+                    else {
+                        nodeAlter = node;
+                        node = ((ArraySubscriptAST*)node)->LHS;
+                    }
+                }
+            }
+
+            LHS->PointerType = 1;
+
+            char* rhs_str = node->Print();
+            if (!strcmp(rhs_str, "Players")) {
+                nodeAlter->PointerType = 1;
+            }
+            else if (!strcmp(rhs_str, "Player")) {
+                nodeAlter->PointerType = 1;
+            }
+        }
+        else if (!strcmp(lhs_str, "App")) {
+            AST* node = RHS;
+            AST* nodeAlter = node;
+            if (RHS->TypeAST == AType::MEMBERDATA) {
+                while (node->TypeAST == AType::MEMBERDATA || node->TypeAST == AType::ARRAY_SUBSCRIPT) {
+                    if (node->TypeAST == AType::MEMBERDATA) {
+                        node = ((MemberDataAST*)node)->LHS;
+                        nodeAlter = node;
+                    }
+                    else {
+                        nodeAlter = node;
+                        node = ((ArraySubscriptAST*)node)->LHS;
+                    }
+                }
+            }
+
+            LHS->PointerType = 1;
+
+            char* rhs_str = node->Print();
+            if (!strcmp(rhs_str, "Audio")) {
+                nodeAlter->PointerType = 1;
+            }
+            else if (!strcmp(rhs_str, "Scene")) {
+                nodeAlter->PointerType = 1;
+            }
+            else if (!strcmp(rhs_str, "Input")) {
+                nodeAlter->PointerType = 1;
+            }
+            else if (!strcmp(rhs_str, "G")) {
+                nodeAlter->PointerType = 1;
+            }
+        }
+        else if (!strcmp(lhs_str, "Sprite")) {
+            Pointer = true;
+        }
+        else if (variable_with_types[string(lhs_str)] == 1) {
+            PointerType = 1;
+            Pointer = true;
+        }
+    }
+
+    char* Print() {
+        string lhs = LHS->Print();
+
+        int Point = Pointer + 0;
+
+        if (lhs == "this")
+            Point = 1;
+        else if (lhs == "Scene")
+            Point = 1;
+        else if (lhs == "G")
+            Point = 1;
+        else if (lhs == "Sound")
+            Point = 2;
+        else if (lhs == "Math") {
+            Point = 2;
+            lhs = "IMath";
+        }
+        else if (LHS->PointerType > 0)
+            Point = LHS->PointerType;
+
+        string str;
+        if (visualColor) str += "\x1b[91m";
+        str += lhs;
+        if (visualColor) str += "\x1b[m";
+
+        if (Point == 0)
+            str += ".";
+        else if (Point == 1)
+            str += "->";
+        else if (Point == 2)
+            str += "::";
+
+        str += RHS->Print();
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct AssignmentAST : AST {
+    AST*  LHS = NULL;
+    char* Operator = NULL;
+    AST*  RHS = NULL;
+
+    AssignmentAST() { TypeAST = AType::ASSIGNMENT; }
+	AssignmentAST(AST* lhs, char* op, AST* rhs) { LHS = lhs; Operator = op; RHS = rhs; TypeAST = AType::ASSIGNMENT; }
+
+    char* Print() {
+        string str;
+        str += LHS->Print();
+        str += " ";
+        str += Operator;
+        str += " ";
+        str += RHS->Print();
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct ExpressionAST : AST {
+    AST*  LHS = NULL;
+    char* Operator = NULL;
+    AST*  RHS = NULL;
+
+    ExpressionAST() { TypeAST = AType::EXPRESSION; }
+    ExpressionAST(AST* lhs, char* op, AST* rhs) { LHS = lhs; Operator = op; RHS = rhs; TypeAST = AType::EXPRESSION; }
+
+    char* Print() {
+        string str;
+        if (LHS)
+            str += LHS->Print();
+
+        if (Operator) {
+            if (LHS)
+                str += " ";
+            str += Operator;
+            if (LHS)
+                str += " ";
+        }
+
+        if (RHS)
+            str += RHS->Print();
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct SuffixAST : AST {
+    AST*  LHS = NULL;
+    char* Operator = NULL;
+
+    SuffixAST() { TypeAST = AType::SUFFIX; }
+    SuffixAST(AST* lhs, char* op) { LHS = lhs; Operator = op; TypeAST = AType::SUFFIX; }
+
+    char* Print() {
+        string str;
+        str += LHS->Print();
+        str += Operator;
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct InlineConditionalAST : AST {
+    AST*  Conditional = NULL;
+    AST*  True = NULL;
+    AST*  False = NULL;
+
+    InlineConditionalAST() { TypeAST = AType::INLINECONDITIONAL; }
+    InlineConditionalAST(AST* con, AST* tr, AST* fa) { Conditional = con; True = tr; False = fa; }
+
+    char* Print() {
+        string str;
+
+        str += Conditional->Print();
+        str += " ? ";
+        str += True->Print();
+        str += " : ";
+        str += False->Print();
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+
+struct CaseAST : AST {
+    AST*  Value = NULL;
+
+    CaseAST() { TypeAST = AType::CAST; }
+
+    char* Print() {
+        string str;
+
+        str += "case ";
+        str += Value->Print();
+        str += ": {\n";
+
+        for (int i = 0; i < Statements.size(); i++) {
+            for (int d = 0; d <= scope; d++)
+                str += "    ";
+
+            // if (Statements[i]->TypeAST == AType::CONDITIONAL)
+            //     scope+/+;
+
+            str += Statements[i]->Print();
+            if (Statements[i]->TypeAST != AType::CONDITIONAL)
+                str += ";\n";
+            else
+                scope--;
+        }
+
+        for (int d = 0; d < scope; d++)
+            str += "    ";
+        str += "}\n";
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct SwitchAST : AST {
+    AST*  Expression = NULL;
+
+    SwitchAST() { TypeAST = AType::SWITCH; }
+
+    char* Print() {
+        string str;
+
+        str += "switch ";
+        str += "(";
+        str += Expression->Print();
+        str += ") ";
+        str += "{\n";
+
+        // scope+/+;
+
+        for (int i = 0; i < Statements.size(); i++) {
+            for (int d = 0; d <= scope; d++)
+                str += "    ";
+
+            // scope+/+;
+
+            str += Statements[i]->Print();
+            scope--;
+        }
+
+        for (int d = 0; d < scope; d++)
+            str += "    ";
+        str += "}\n";
+
+        scope--;
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct GroupingAST : AST {
+    AST*  Group = NULL;
+
+    GroupingAST() { TypeAST = AType::GROUPING; }
+    GroupingAST(AST* g) { Group = g; TypeAST = AType::GROUPING; }
+
+    char* Print() {
+        string str;
+
+        str += "(";
+        str += Group->Print();
+        str += ")";
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct ReturnAST : AST {
+    AST*  Value = NULL;
+
+    ReturnAST() { TypeAST = AType::RETURN; }
+    ReturnAST(AST* g) { Value = g; TypeAST = AType::RETURN; }
+
+    char* Print() {
+        string str;
+
+        str += "return";
+        if (Value) {
+            str += " ";
+            str += Value->Print();
+        }
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct BreakAST : AST {
+    BreakAST() { TypeAST = AType::BREAK; }
+
+    char* Print() {
+        string str;
+        str += "break";
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+struct CallAST : AST {
+    AST*  LHS = NULL;
+    vector<AST*> Parameters;
+
+    CallAST() { TypeAST = AType::CALL; }
+    CallAST(AST* g) { LHS = g; TypeAST = AType::CALL; }
+
+    char* Print() {
+        string str;
+
+        str += LHS->Print();
+        str += "(";
+        for (int i = 0; i < Parameters.size(); i++) {
+            if (i != 0)
+                str += ", ";
+            str += Parameters[i]->Print();
+        }
+        str += ")";
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+
+struct Stmt {
+	int StmtType = 0;
+	virtual char* Print() { return NULL; };
+};
+
+struct ExpressionStmt : Stmt {
+	AST* Expression = NULL;
+	bool  Portable = false;
+	ExpressionStmt(AST* expr) { Expression = expr; StmtType = 1; }
+
+	char* Print() {
+		string str = "";
+		if (Expression)
+			str += Expression->Print();
+		if (!Portable)
+			str += ";\n";
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	};
+};
+struct BlockStmt : Stmt {
+	vector<Stmt*> Declarations;
+	BlockStmt() { StmtType = 2; }
+
+	char* Print() {
+		string str;
+
+		str += "{\n";
+
+		scope++;
+
+		for (int i = 0; i < Declarations.size(); i++) {
+			for (int d = 0; d <= scope; d++)
+				str += "    ";
+
+			if (Declarations[i])
+				str += Declarations[i]->Print();
+		}
+
+		for (int d = 0; d < scope; d++)
+			str += "    ";
+		str += "}\n";
+
+		scope--;
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct IfStmt : Stmt {
+	AST*          Conditional = NULL;
+	Stmt*         ThenStmt = NULL;
+	Stmt*         ElseStmt = NULL;
+	IfStmt() { StmtType = 10; }
+
+	char* Print() {
+		string str;
+
+		str += "if (";
+		if (Conditional)
+			str += Conditional->Print();
+		str += ") ";
+
+		if (ThenStmt)
+			str += ThenStmt->Print();
+
+		if (ElseStmt) {
+			for (int d = 0; d <= scope; d++)
+				str += "    ";
+
+			str += "else ";
+			str += ElseStmt->Print();
+		}
+		else str += "\n";
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct WhileStmt : Stmt {
+	AST*          Conditional = NULL;
+	Stmt*         BodyStmt = NULL;
+	WhileStmt() { StmtType = 11; }
+
+	char* Print() {
+		string str;
+
+		str += "while (";
+		if (Conditional)
+			str += Conditional->Print();
+		str += ") ";
+
+		if (BodyStmt)
+			str += BodyStmt->Print();
+
+		str += "\n";
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct DoWhileStmt : Stmt {
+	AST*          Conditional = NULL;
+	Stmt*         BodyStmt = NULL;
+	DoWhileStmt() { StmtType = 12; }
+
+	char* Print() {
+		string str;
+
+		str += "do ";
+		if (BodyStmt)
+			str += BodyStmt->Print();
+		str += "\n";
+
+		str += "while (";
+		if (Conditional)
+			str += Conditional->Print();
+		str += ");\n";
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct ForStmt : Stmt {
+	Stmt*         InitializerStmt = NULL;
+	Stmt*         ConditionalStmt = NULL;
+	Stmt*         IncrementStmt = NULL;
+	Stmt*         BodyStmt = NULL;
+	ForStmt() { StmtType = 13; }
+
+	char* Print() {
+		string str;
+
+		str += "for (";
+
+		if (InitializerStmt) {
+			str += InitializerStmt->Print();
+		}
+		str += ";";
+
+		if (ConditionalStmt) {
+			str += " ";
+			str += ConditionalStmt->Print();
+		}
+		str += ";";
+
+		if (IncrementStmt) {
+			str += " ";
+			str += IncrementStmt->Print();
+		}
+
+		str += ")\n";
+		if (BodyStmt)
+			str += BodyStmt->Print();
+		if (BodyStmt && BodyStmt->StmtType != 2)
+			str += "\n";
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct SwitchStmt : Stmt {
+	AST*          Expression = NULL;
+	vector<Stmt*> Declarations;
+	SwitchStmt() { StmtType = 3; }
+
+	char* Print() {
+		string str;
+
+		str += "switch (";
+		if (Expression)
+			str += Expression->Print();
+		str += ") {\n";
+
+		scope++;
+
+		for (int i = 0; i < Declarations.size(); i++) {
+			for (int d = 0; d <= scope; d++)
+				str += "    ";
+
+			if (Declarations[i])
+				str += Declarations[i]->Print();
+
+			if (Declarations[i]->StmtType == 4)
+				scope++;
+			if (Declarations[i]->StmtType == 6)
+				scope--;
+		}
+
+		for (int d = 0; d < scope; d++)
+			str += "    ";
+		str += "}\n\n";
+
+		scope--;
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct CaseStmt : Stmt {
+	AST*          Expression = NULL;
+	CaseStmt(AST* ast) { Expression = ast; StmtType = 4; }
+
+	char* Print() {
+		string str;
+
+		str += "case ";
+		if (Expression)
+			str += Expression->Print();
+		str += ":\n";
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct DefaultStmt : Stmt {
+	DefaultStmt() { StmtType = 4; }
+
+	char* Print() {
+		const char* src = "default:\n";
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct ReturnStmt : Stmt {
+	AST*          Expression = NULL;
+	ReturnStmt(AST* ast) { Expression = ast; StmtType = 5; }
+
+	char* Print() {
+		string str;
+
+		str += "return";
+		if (Expression) {
+			str += " ";
+			str += Expression->Print();
+		}
+		str += ";\n";
+
+		const char* src = str.c_str();
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct BreakStmt : Stmt {
+	BreakStmt() { StmtType = 6; }
+
+	char* Print() {
+		const char* src = "break;\n";
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct ContinueStmt : Stmt {
+	ContinueStmt() { StmtType = 6; }
+
+	char* Print() {
+		const char* src = "continue;\n";
+		char* meme = (char*)malloc(strlen(src) + 1);
+		sprintf(meme, "%s", src);
+		Garbage.push_back(meme);
+		return meme;
+	}
+};
+struct VariableInit : Stmt {
+	char* Identifier = NULL; // [a-zA-Z_][a-zA-Z_0-9]*
+	AST*  Type = NULL;
+	VariableInit(char* iden, AST* type) { Identifier = iden; Type = type; StmtType = 7; }
+
+	char* Print() {
+		string str;
+        string type_str;
+        if (Type->TypeAST != AType::ARRAY_SUBSCRIPT) {
+            type_str += Type->Print();
+            if (Type->PointerType)
+                type_str += "*";
+        }
+        else {
+            type_str += ((ArraySubscriptAST*)Type)->LHS->Print();
+            if (((ArraySubscriptAST*)Type)->LHS->PointerType)
+                type_str += "*";
+        }
+
+        if (true) {
+            str += type_str;
+            str += " ";
+        }
+        str += Identifier;
+        if (true) {
+            if (Type->TypeAST == AType::ARRAY_SUBSCRIPT) {
+                str += "[";
+                str += ((ArraySubscriptAST*)Type)->RHS->Print();
+                str += "]";
+            }
+        }
+
+		const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+	}
+};
+struct VariableDecl : Stmt {
+	char* Identifier = NULL;
+	AST*  Type = NULL;
+	AST*  Value = NULL;
+	bool  Portable = false;
+	VariableDecl(char* iden, AST* type, AST* val) { Identifier = iden; Type = type; Value = val; StmtType = 8; }
+
+	char* Print() {
+		string str;
+        string type_str;
+        if (Type->TypeAST != AType::ARRAY_SUBSCRIPT) {
+            type_str += Type->Print();
+            if (Type->PointerType)
+                type_str += "*";
+        }
+        else {
+            type_str += ((ArraySubscriptAST*)Type)->LHS->Print();
+            if (((ArraySubscriptAST*)Type)->LHS->PointerType)
+                type_str += "*";
+        }
+
+        if (true) {
+            str += type_str;
+            str += " ";
+        }
+        str += Identifier;
+        if (true) {
+            if (Type->TypeAST == AType::ARRAY_SUBSCRIPT) {
+                str += "[";
+                str += ((ArraySubscriptAST*)Type)->RHS->Print();
+                str += "]";
+            }
+        }
+
+		if (Value) {
+			str += " = ";
+			str += Value->Print();
+		}
+		if (!Portable)
+			str += ";\n";
+
+		const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+	}
+};
+struct ObjectIDDecl : Stmt {
+	char* Identifier = NULL; // [a-zA-Z_][a-zA-Z_0-9]*
+	AST*  Type = NULL;
+	ObjectIDDecl(char* iden, AST* type) { Identifier = iden; Type = type; StmtType = 9; }
+};
+struct EventStmt : Stmt {
+	char* Label = NULL;
+    char* Type = NULL;
+
+    char* ObjName = NULL;
+
+    vector<VariableInit*> Parameters;
+	vector<Stmt*>         Statements;
+
+	char* Print() {
+		string str;
+        if (Type)
+            str += Type;
+        else
+            str += "void";
+
+		scope = 0;
+
+        str += " ";
+        str += ObjName;
+
+        str += "::";
+
+        str += Label;
+        str += "(";
+        for (int i = 0; i < Parameters.size(); i++) {
+            if (i != 0)
+                str += ", ";
+            str += Parameters[i]->Type->Print();
+            str += " ";
+            str += Parameters[i]->Identifier;
+        }
+        str += ") {\n";
+
+        if (!strcmp(Label, "Create")) {
+            for (int d = 0; d <= scope; d++)
+                str += "    ";
+            str += "Object::Create();\n";
+        }
+
+        for (int i = 0; i < Statements.size(); i++) {
+            for (int d = 0; d <= scope; d++)
+                str += "    ";
+
+			if (Statements[i])
+            	str += Statements[i]->Print();
+        }
+
+        if (!strcmp(Label, "Update")) {
+            for (int d = 0; d <= scope; d++)
+                str += "    ";
+            str += "Object::Update();\n";
+        }
+        else if (!strcmp(Label, "Render")) {
+            for (int d = 0; d <= scope; d++)
+                str += "    ";
+            str += "Object::Render(CamX, CamY);\n";
+        }
+
+        for (int d = 0; d < scope; d++)
+            str += "    ";
+        str += "}\n\n";
+
+        const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+	}
+};
+
+struct IObject {
+    char* Label = NULL;
+    char* SubClass = NULL;
+    int   ID = -1;
+
+    vector<VariableInit*> Variables;
+    vector<EventStmt*> Events; // make sure to add ObjName for each one added
+
+	void VisitStatement(Environment* curEnv, Stmt* stmt) {
+		switch (stmt->StmtType) {
+			case 1: {
+				ExpressionStmt* exprStmt = (ExpressionStmt*)stmt;
+				switch (exprStmt->Expression->TypeAST) {
+					default:
+						break;
+				}
+				break;
+			}
+			case 2: {
+				BlockStmt* blockStmt = (BlockStmt*)stmt;
+				Environment* subEnv = new Environment(curEnv);
+				for (int i = 0; i < blockStmt->Declarations.size(); i++) {
+					VisitStatement(subEnv, blockStmt->Declarations[i]);
+				}
+				delete subEnv;
+				break;
+			}
+			case 8: {
+				VariableDecl* varStmt = (VariableDecl*)stmt;
+				char* print = varStmt->Type->Print();
+				int typetype = VAR_TYPE;
+				if (varStmt->Type->TypeAST == AType::ARRAY_SUBSCRIPT)
+					typetype = VAR_ARRAY;
+				else if (!strcmp(print, "IPlayer")
+					|| !strcmp(print, "this")
+					|| !strcmp(print, "LevelScene")
+					|| !strcmp(print, "ISprite")
+					|| !strcmp(print, "IAudio")
+					|| !strcmp(print, "ISound"))
+					typetype = VAR_POINTER;
+				varStmt->Type->PointerType = typetype;
+	            curEnv->Define(varStmt->Identifier, typetype);
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	void VisitEvent(Environment* globEnv, EventStmt* stmt) {
+		Environment* curEnv = new Environment(globEnv);
+		for (int i = 0; i < stmt->Parameters.size(); i++) {
+			char* print = stmt->Parameters[i]->Type->Print();
+
+			int typetype = VAR_TYPE;
+			if (stmt->Parameters[i]->Type->TypeAST == AType::ARRAY_SUBSCRIPT)
+				typetype = VAR_ARRAY;
+			else if (!strcmp(print, "IPlayer")
+				|| !strcmp(print, "this")
+				|| !strcmp(print, "LevelScene")
+				|| !strcmp(print, "ISprite")
+				|| !strcmp(print, "IAudio")
+				|| !strcmp(print, "ISound"))
+				typetype = VAR_POINTER;
+
+            curEnv->Define(stmt->Parameters[i]->Identifier, typetype);
+        }
+
+		for (int i = 0; i < stmt->Statements.size(); i++) {
+			VisitStatement(curEnv, stmt->Statements[i]);
+		}
+
+		delete curEnv;
+	}
+
+	bool Visit(Environment* globEnv) {
+		Environment* curEnv = new Environment(globEnv);
+		for (int i = 0; i < Variables.size(); i++) {
+			char* print = Variables[i]->Type->Print();
+
+			int typetype = VAR_TYPE;
+			if (Variables[i]->Type->TypeAST == AType::ARRAY_SUBSCRIPT)
+				typetype = VAR_ARRAY;
+			else if (!strcmp(print, "IPlayer")
+				|| !strcmp(print, "this")
+				|| !strcmp(print, "LevelScene")
+				|| !strcmp(print, "ISprite")
+				|| !strcmp(print, "IAudio")
+				|| !strcmp(print, "ISound"))
+				typetype = VAR_POINTER;
+
+            curEnv->Define(Variables[i]->Identifier, typetype);
+        }
+
+		for (int i = 0; i < Events.size(); i++) {
+			VisitEvent(curEnv, Events[i]);
+		}
+
+		delete curEnv;
+		return true;
+	}
+
+    char* PrintCPP() {
+        string str;
+
+        char iddd[16];
+        sprintf(iddd, "0x%02X", ID);
+
+        str += "// Object ID: ";
+        str += iddd;
+        str += "\n";
+
+        str += "// Object Name: ";
+        str += Label;
+        str += ".cpp";
+        str += "\n";
+        str += "\n";
+
+        str += "#include \"";
+        str += Label;
+        str += ".h\"\n";
+        str += "\n";
+
+        for (int i = 0; i < Events.size(); i++) {
+			Events[i]->ObjName = Label;
+            str += Events[i]->Print();
+        }
+
+		const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+    char* PrintH() {
+        string str;
+        string upper(Label);
+        std::transform(upper.begin(), upper.end(), upper.begin(), [](unsigned char c) -> unsigned char { return ::toupper(c); });
+
+        str += "#ifndef ";
+        str += upper;
+        str += "_H";
+        str += "\n";
+        str += "#define ";
+        str += upper;
+        str += "_H";
+        str += "\n";
+        str += "\n";
+
+        str += "class ";
+        str += Label;
+        str += ";";
+        str += "\n";
+        str += "\n";
+        str += "#include <Utils/Standard.h>\n\n";
+        str += "#include <Engine/IApp.h>\n";
+        str += "#include <Engine/ISprite.h>\n\n";
+        str += "#include <Game/Object.h>\n";
+        str += "#include <Game/LevelScene.h>\n";
+        str += "#include <Game/Objects/Gen/ObjectListing.h>\n";
+        str += "\n";
+        str += "class ";
+        str += Label;
+        if (SubClass) {
+            str += ": public ";
+            str += SubClass;
+        }
+        else {
+            str += ": public Object";
+        }
+        str += " {\n";
+
+        str += "public:";
+        str += "    \n";
+
+        for (int i = 0; i < Variables.size(); i++) {
+            str += "    ";
+
+            str += Variables[i]->Print();
+            str += ";\n";
+        }
+
+        str += "    \n";
+
+        for (int i = 0; i < Events.size(); i++) {
+            str += "    ";
+            if (Events[i]->Type)
+                str += Events[i]->Type;
+            else
+                str += "void";
+
+            str += " ";
+            str += Events[i]->Label;
+            str += "(";
+            for (int d = 0; d < Events[i]->Parameters.size(); d++) {
+                if (d != 0)
+                    str += ", ";
+                str += Events[i]->Parameters[d]->Type->Print();
+                str += " ";
+                str += Events[i]->Parameters[d]->Identifier;
+            }
+            str += ");\n";
+        }
+
+        str += "};\n\n";
+
+
+        str += "#endif /* ";
+        str += upper;
+        str += "_H */";
+        str += "\n";
+
+		const char* src = str.c_str();
+        char* meme = (char*)malloc(strlen(src) + 1);
+        sprintf(meme, "%s", src);
+        Garbage.push_back(meme);
+        return meme;
+    }
+};
+
+void GarbageCollect() {
+    for (int i = 0; i < Garbage.size(); i++)
+        free(Garbage[i]);
+    Garbage.clear();
+}
+
+int fscanID = -1;
+int fscan(FILE* f, const char* format, char* token, int id) {
+    int c = fscanf(f, format, token);
+    if (c > 0)
+        fscanID = id;
+    return c;
+}
+
+enum {
+	TokenType_Identifier = 10,
+};
+
+struct Tokenizer {
+    FILE* f = NULL;
+	IObject* obj = NULL;
+    bool IgnoreWhiteSpace = true;
+    size_t LastPos = 0;
+    char* Last = NULL;
+	int Line() {
+        char c;
+        int line = 1;
+        size_t fg = ftell(f);
+        fseek(f, 0, SEEK_SET);
+        while ((c = fgetc(f)) != EOF && ftell(f) < fg) if (c == '\n') line++;
+        fseek(f, fg, SEEK_SET);
+        return line;
+    }
+    Tokenizer(FILE* fp, IObject* o) {
+        f = fp;
+		obj = o;
+    }
+    char* Next() {
+        char* token = (char*)calloc(1, 505);
+        LastPos = ftell(f);
+        fscanID = -1;
+        if (fscan(f, "%1[\"\']", token, 0) <= 0)
+        if (fscan(f, "%1[].[(]", token, 1) <= 0)
+        if (fscan(f, "%1[)]", token, 2) <= 0)
+        if (fscan(f, "%1[;{}]", token, 3) <= 0)
+        if (fscan(f, "%1[,]", token, 4) <= 0)
+        if (fscan(f, "%1[\\]", token, 4) <= 0)
+        if (fscan(f, "%1[:=+-*%/<>&^|!]", token, 5) <= 0)
+        if (fscan(f, "0x%[0-9A-Fa-f]", token, 7) <= 0) {
+            Rewind();
+        if (fscan(f, "%[0-9.]", token, 9) <= 0) {
+            Rewind();
+        if (fscan(f, "%[A-Za-z0-9_$]", token, 10) <= 0)
+        if (fscan(f, "%c", token, 5) <= 0)
+        if (fscan(f, "%s", token, 11) <= 0)
+        return NULL;
+        } }
+
+        // Check for comments
+        if (token[0] == '/') {
+            char ch;
+            if (fscanf(f, "%c", &ch) <= 0)
+                return NULL;
+
+            if (ch == '/') {
+                char* rest_of_line = (char*)malloc(2000);
+                fgets(rest_of_line, 2000, f);
+                free(rest_of_line);
+
+                fscanf(f, " ");
+                return Next();
+            }
+            else if (ch == '*') {
+                do {
+                    fscanf(f, " ");
+                    if (fscanf(f, "%c", &ch) <= 0)
+                        return NULL;
+
+                    if (ch == '*') {
+                        if (fscanf(f, "%c", &ch) <= 0)
+                            return NULL;
+
+                        fscanf(f, " ");
+
+                        if (ch == '/')
+                            break;
+                        else
+                            fseek(f, -1, SEEK_CUR);
+                    }
+                }
+                while (true);
+                fscanf(f, " ");
+
+                free(token);
+
+                return Next();
+            }
+            else {
+                fseek(f, -1, SEEK_CUR);
+            }
+        }
+
+        char* finalToken = (char*)calloc(1, 505);
+
+        switch (fscanID) {
+            case 0: {
+                char quotation = token[0];
+                char* ft = finalToken;
+                *ft++ = quotation;
+                do {
+                    char ch;
+                    char ch_peek;
+                    if (fscanf(f, "%c", &ch) <= 0)
+                        break;
+
+                    if (ch == '\\') {
+                        if (fscanf(f, "%c", &ch_peek) <= 0)
+                            break;
+
+                        *ft++ = ch;
+                        *ft++ = ch_peek;
+
+                        continue;
+                    }
+
+                    if (ch == quotation) {
+                        *ft++ = ch;
+                        *ft++ = 0;
+                        break;
+                    }
+
+                    *ft++ = ch;
+                }
+                while (true);
+
+                break;
+            }
+            case 5: {
+                char* ft = finalToken;
+                *ft++ = token[0];
+
+                char ch;
+                if (fscanf(f, "%c", &ch) <= 0)
+                    break;
+
+                if ((ch == '>' || ch == '<') && token[0] == ch) {
+                    *ft++ = ch;
+                    if (fscanf(f, "%c", &ch) <= 0)
+                        break;
+                }
+
+                if ((ch == '+' || ch == '-') && token[0] == ch) {
+                    *ft++ = ch;
+                    if (fscanf(f, "%c", &ch) <= 0)
+                        break;
+                }
+
+                if (ch == ':' && token[0] == ch) {
+                    *ft++ = ch;
+                    if (fscanf(f, "%c", &ch) <= 0)
+                        break;
+                }
+
+                if (ch == '&' && token[0] == ch) {
+                    *ft++ = ch;
+                    if (fscanf(f, "%c", &ch) <= 0)
+                        break;
+                }
+
+                if (ch == '|' && token[0] == ch) {
+                    *ft++ = ch;
+                    if (fscanf(f, "%c", &ch) <= 0)
+                        break;
+                }
+
+                if (ch == '=') {
+                    *ft++ = ch;
+                }
+                else {
+                    fseek(f, -1, SEEK_CUR);
+                }
+                break;
+            }
+            case 6:
+                sprintf(finalToken, "-0x%s", token);
+                break;
+            case 7:
+                sprintf(finalToken, "0x%s", token);
+                break;
+            case 8:
+                sprintf(finalToken, "-%s", token);
+                break;
+            case 11:
+
+                ReportError(Line(), "unexpected token");
+                exit(-1);
+                break;
+            default:
+                sprintf(finalToken, "%s", token);
+                break;
+        }
+
+        if (IgnoreWhiteSpace)
+            fscanf(f, " ");
+
+        Garbage.push_back(finalToken);
+
+        Last = finalToken;
+
+        free(token);
+
+        return finalToken;
+    }
+    char* Peek() {
+        size_t pos = ftell(f);
+        char* str = Next();
+        fseek(f, pos, SEEK_SET);
+        return str;
+    }
+    void Rewind() {
+        fseek(f, LastPos, SEEK_SET);
+    }
+};
+
+bool Consume(Tokenizer* s, const char* toMatch, const char* err) {
+    if (!!strcmp(s->Peek(), toMatch)) {
+		ReportError(s->Line(), err);
+        return true;
+    }
+    s->Next();
+    return false;
+}
+bool Match(Tokenizer* s, const char* toMatch) {
+	if (!strcmp(s->Peek(), toMatch)) {
+		s->Next();
+        return true;
+    }
+    return false;
+}
+bool IsEquals(char* nextTok) {
+    if (!strcmp(nextTok, "==") ||
+        !strcmp(nextTok, "!="))
+        return true;
+
+    return false;
+}
+bool IsPlusMinus(char* nextTok) {
+    if (*nextTok == '-' ||
+        *nextTok == '+')
+        return true;
+
+    return false;
+}
+bool IsMulti(char* nextTok) {
+    if (*nextTok == '/' ||
+        *nextTok == '*' ||
+        *nextTok == '%')
+        return true;
+
+    return false;
+}
+bool IsComparison(char* nextTok) {
+    if (!strcmp(nextTok, ">=") ||
+        !strcmp(nextTok, "<=") ||
+        *nextTok == '>' ||
+        *nextTok == '<')
+        return true;
+
+    return false;
+}
+bool IsOperator(char* nextTok) {
+    if (*nextTok == '+' ||
+        *nextTok == '-' ||
+        *nextTok == '/' ||
+        *nextTok == '*' ||
+        *nextTok == '%' ||
+        *nextTok == '^' ||
+        *nextTok == '&' ||
+        *nextTok == '~' ||
+        *nextTok == '>' ||
+        *nextTok == '<' ||
+        !strcmp(nextTok, ">>") ||
+        !strcmp(nextTok, "<<") ||
+        !strcmp(nextTok, "==") ||
+        !strcmp(nextTok, "!="))
+        return true;
+
+    return false;
+}
+bool IsRTLOperator(char* nextTok) {
+    if (!strcmp(nextTok, "++") ||
+        !strcmp(nextTok, "--") ||
+        *nextTok == '&' ||
+        *nextTok == '!' ||
+        *nextTok == '~')
+        return true;
+
+    return false;
+}
+bool IsAssignmentOperator(char* nextTok) {
+    if (*nextTok == '=' ||
+        !strcmp(nextTok, "+=") ||
+        !strcmp(nextTok, "-=") ||
+        !strcmp(nextTok, "/=") ||
+        !strcmp(nextTok, "*=") ||
+        !strcmp(nextTok, "%=") ||
+        !strcmp(nextTok, "^=") ||
+        !strcmp(nextTok, "&=") ||
+        !strcmp(nextTok, "|=") ||
+        !strcmp(nextTok, ">>=") ||
+        !strcmp(nextTok, "<<="))
+        return true;
+
+    return false;
+}
+
+AST* GetExpression(Tokenizer* s);
+
+AST* GetPrimary(Tokenizer* s) {
+    char* token = s->Next();
+
+    if (!strcmp(token, "false") ||
+        !strcmp(token, "true") ||
+        !strcmp(token, "NULL") ||
+        (fscanID >= 6 && fscanID <= 10) ||
+        fscanID == 0) {
+        return new OtherAST(token);
+    }
+
+	// CurrentEnvironment
+
+    if (!strcmp(token, "(")) {
+        AST* expr = GetExpression(s);
+        s->Next(); // consume )
+        return new GroupingAST(expr);
+    }
+
+    return new OtherAST(token);
+}
+AST* GetScopeResolution(Tokenizer* s) {
+    AST* expr = GetPrimary(s);
+    if (!strcmp(s->Peek(), "::")) {
+        s->Next(); // ::
+        expr = new ScopeAccessAST(expr, GetPrimary(s));
+    }
+    return expr;
+}
+AST* GetSuffix(Tokenizer* s) {
+    AST* expr = GetScopeResolution(s);
+    if (!strcmp(s->Peek(), "++") ||
+        !strcmp(s->Peek(), "--")) {
+        expr = new SuffixAST(expr, s->Next());
+    }
+    return expr;
+}
+AST* GetCall(Tokenizer* s) {
+    AST* expr = GetSuffix(s);
+
+    while (true) {
+        if (!strcmp(s->Peek(), "(")) {
+            s->Next();
+            CallAST* cAST = new CallAST(expr);
+
+            if (strcmp(s->Peek(), ")")) {
+                while (true) {
+                    cAST->Parameters.push_back(GetExpression(s));
+
+                    if (!strcmp(s->Peek(), ","))
+                        s->Next();
+                    else
+                        break;
+                }
+            }
+
+            Consume(s, ")", "expected \")\" at end of function call");
+
+            expr = cAST;
+            return expr;
+        }
+        else
+            break;
+    }
+
+    return expr;
+}
+AST* GetSubscript(Tokenizer* s) {
+    AST* expr = GetCall(s);
+    while (true) {
+        if (!strcmp(s->Peek(), "[")) {
+            s->Next(); // [
+
+            expr = new ArraySubscriptAST(expr, GetExpression(s));
+
+			Consume(s, "]", "expected ']' at end of array subscript identifier");
+        }
+        else
+            break;
+    }
+    return expr;
+}
+AST* GetMemberData(Tokenizer* s) {
+    AST* expr = GetSubscript(s);
+    while (true) {
+        if (!strcmp(s->Peek(), ".")) {
+            s->Next(); // .
+
+            expr = new MemberDataAST(expr, GetExpression(s));
+        }
+        else
+            break;
+    }
+    return expr;
+}
+AST* GetUnary(Tokenizer* s) {
+    if (!strcmp(s->Peek(), "!") ||
+        !strcmp(s->Peek(), "~") ||
+        !strcmp(s->Peek(), "+") ||
+        !strcmp(s->Peek(), "-") ||
+        !strcmp(s->Peek(), "++") ||
+        !strcmp(s->Peek(), "--")) {
+        char* oper = s->Next();
+        AST* right = GetUnary(s);
+        return new ExpressionAST(NULL, oper, right);
+    }
+
+    return GetMemberData(s);
+}
+AST* GetMultiplication(Tokenizer* s) {
+    AST* ast = GetUnary(s);
+
+    while (IsMulti(s->Peek())) {
+        char* oper = s->Next();
+        AST* right = GetUnary(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetAddition(Tokenizer* s) {
+    AST* ast = GetMultiplication(s);
+
+    while (IsPlusMinus(s->Peek())) {
+        char* oper = s->Next();
+        AST* right = GetMultiplication(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetBitwise(Tokenizer* s) {
+    AST* ast = GetAddition(s);
+
+    while (!strcmp(s->Peek(), ">>") ||
+        !strcmp(s->Peek(), "<<")) {
+        char* oper = s->Next();
+        AST* right = GetAddition(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetComparison(Tokenizer* s) {
+    AST* ast = GetBitwise(s);
+
+    while (IsComparison(s->Peek())) {
+        char* oper = s->Next();
+        AST* right = GetBitwise(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetEquality(Tokenizer* s) {
+    AST* ast = GetComparison(s);
+
+    while (IsEquals(s->Peek())) {
+        char* oper = s->Next();
+        AST* right = GetComparison(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetBitwiseAND(Tokenizer* s) {
+    AST* ast = GetEquality(s);
+
+    while (!strcmp(s->Peek(), "&")) {
+        char* oper = s->Next();
+        AST* right = GetEquality(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetBitwiseXOR(Tokenizer* s) {
+    AST* ast = GetBitwiseAND(s);
+
+    while (!strcmp(s->Peek(), "^")) {
+        char* oper = s->Next();
+        AST* right = GetBitwiseAND(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetBitwiseOR(Tokenizer* s) {
+    AST* ast = GetBitwiseXOR(s);
+
+    while (!strcmp(s->Peek(), "|")) {
+        char* oper = s->Next();
+        AST* right = GetBitwiseXOR(s);
+        ast = new ExpressionAST(ast, oper, right);
+    }
+
+    return ast;
+}
+AST* GetLogicalAND(Tokenizer* s) {
+    AST* ast = GetBitwiseOR(s);
+
+    while (!strcmp(s->Peek(), "&&") || !strcmp(s->Peek(), "and")) {
+        s->Next();
+        AST* right = GetBitwiseOR(s);
+        ast = new ExpressionAST(ast, (char*)"&&", right);
+    }
+
+    return ast;
+}
+AST* GetLogicalOR(Tokenizer* s) {
+    AST* ast = GetLogicalAND(s);
+
+    while (!strcmp(s->Peek(), "||") || !strcmp(s->Peek(), "or")) {
+        s->Next();
+        AST* right = GetLogicalAND(s);
+        ast = new ExpressionAST(ast, (char*)"||", right);
+    }
+
+    return ast;
+}
+AST* GetTernary(Tokenizer* s) {
+    AST* con = GetLogicalOR(s);
+    while (!strcmp(s->Peek(), "?")) {
+        s->Next(); // ?
+        AST* tru = GetLogicalOR(s);
+        s->Next(); // :
+        AST* fal = GetLogicalOR(s);
+        con = new InlineConditionalAST(con, tru, fal);
+    }
+
+    return con;
+}
+AST* GetAssignment(Tokenizer* s) {
+	AST* expr = GetTernary(s);
+	if (IsAssignmentOperator(s->Peek())) {
+		char* operato = s->Next(); // =
+		AST* rhs = GetTernary(s);
+		return new AssignmentAST(expr, operato, rhs);
+	}
+	return expr;
+}
+
+AST* GetExpression(Tokenizer* s) {
+    return GetAssignment(s);
+}
+
+Stmt* GetStatement(Tokenizer* s);
+
+Stmt* GetVariableInitialization(Tokenizer* s) {
+	char* label = s->Next();
+
+	AST* type = NULL;
+	if (Match(s, ":"))
+		type = GetMemberData(s);
+	else
+		type = new OtherAST("int");
+
+	return new VariableInit(label, type);
+}
+Stmt* GetVariableDeclaration(Tokenizer* s) {
+	char* label = s->Next();
+
+	AST* type = NULL;
+	if (Match(s, ":"))
+		type = GetMemberData(s);
+
+	AST* expr = NULL;
+	if (Match(s, "="))
+		expr = GetExpression(s);
+
+	Consume(s, ";", "expected ';' after variable declaration.");
+	return new VariableDecl(label, type, expr);
+}
+Stmt* GetObjectIDDeclaration(Tokenizer* s) {
+	AST* id = GetPrimary(s);
+
+	char* strID = id->Print();
+	if (strstr(strID, "x"))
+		s->obj->ID = strtoul(strID, NULL, 16);
+	else if (strstr(strID, "."))
+		strtod(strID, NULL);
+	else
+		s->obj->ID = strtoul(strID, NULL, 10);
+
+
+	Consume(s, ";", "expected ';' after object ID declaration.");
+	return NULL;
+}
+Stmt* GetSubclassDeclaration(Tokenizer* s) {
+	// AST* id = GetPrimary(s);
+	s->obj->SubClass = s->Next();
+	Consume(s, ";", "expected ';' after subclass declaration.");
+	return NULL;
+}
+Stmt* GetEventDeclaration(Tokenizer* s) {
+	EventStmt* stmt = new EventStmt();
+
+	stmt->Label = s->Next();
+	Consume(s, "(", "expected '(' after 'event'.");
+	if (!Match(s, ")")) {
+		while (true) {
+			Match(s, "var");
+			stmt->Parameters.push_back((VariableInit*)GetVariableInitialization(s));
+			if (!Match(s, ","))
+				break;
+		}
+		Consume(s, ")", "expected ')' after event parameters.");
+	}
+	// Return type
+	if (Match(s, ":"))
+		stmt->Type = GetMemberData(s)->Print();
+	else
+		stmt->Type = (char*)"void";
+
+	Consume(s, "{", "expected '{' at start of event block.");
+	while (!!strcmp(s->Peek(), "}")) {
+		stmt->Statements.push_back(GetStatement(s));
+	}
+	Consume(s, "}", "expected '}' at end of event block.");
+
+	return stmt;
+}
+Stmt* GetEnumDeclaration(Tokenizer* s) {
+	// AST* label = NULL;
+	if (!Match(s, "{")) {
+		GetPrimary(s);
+		Consume(s, "{", "expected '{' after enum label.");
+	}
+	int lastValue = 0;
+	while (!!strcmp(s->Peek(), "}")) {
+		// AST* enumLabel = GetPrimary(s);
+		GetPrimary(s);
+		if (Match(s, "=")) {
+			GetPrimary(s);
+		}
+		else {
+			lastValue++;
+		}
+		Match(s, ","); // , is optional
+	}
+	Consume(s, "}", "expected '}' after enum block.");
+	return NULL;
+}
+Stmt* GetSKOnlyDeclaration(Tokenizer* s) {
+	// AST* skonly = GetPrimary(s);
+	GetPrimary(s);
+	Consume(s, ";", "expected ';' after skonly declaration.");
+	return NULL;
+}
+
+Stmt* GetExpressionStatement(Tokenizer* s) {
+	AST* expr = GetExpression(s);
+	Consume(s, ";", "expected ';' after expression.");
+	return new ExpressionStmt(expr);
+}
+Stmt* GetIfStatement(Tokenizer* s) {
+	IfStmt* stmt = new IfStmt();
+	Consume(s, "(", "expected '(' after 'if'.");
+	stmt->Conditional = GetExpression(s);
+	Consume(s, ")", "expected ')' after condition.");
+	stmt->ThenStmt = GetStatement(s);
+	if (Match(s, "else"))
+		stmt->ElseStmt = GetStatement(s);
+	return stmt;
+}
+Stmt* GetDoWhileStatement(Tokenizer* s) {
+	DoWhileStmt* stmt = new DoWhileStmt();
+	stmt->BodyStmt = GetStatement(s);
+	Consume(s, "while", "expected 'while' after 'do' statement.");
+	Consume(s, "(", "expected '(' after 'while'.");
+	stmt->Conditional = GetExpression(s);
+	Consume(s, ")", "expected ')' after condition.");
+	Consume(s, ";", "expected ';' after expression.");
+	return stmt;
+}
+Stmt* GetSwitchStatement(Tokenizer* s) {
+	SwitchStmt* stmt = new SwitchStmt();
+	Consume(s, "(", "expected '(' after 'switch'.");
+	stmt->Expression = GetExpression(s);
+	Consume(s, ")", "expected ')' after comparison value.");
+
+	Consume(s, "{", "expected '{' at start of switch block.");
+	while (!!strcmp(s->Peek(), "}")) {
+		stmt->Declarations.push_back(GetStatement(s));
+	}
+	Consume(s, "}", "expected '}' at end of switch block.");
+
+	return stmt;
+}
+Stmt* GetWhileStatement(Tokenizer* s) {
+	WhileStmt* stmt = new WhileStmt();
+	Consume(s, "(", "expected '(' after 'while'.");
+	stmt->Conditional = GetExpression(s);
+	Consume(s, ")", "expected ')' after condition.");
+	stmt->BodyStmt = GetStatement(s);
+	return stmt;
+}
+Stmt* GetForStatement(Tokenizer* s) {
+	ForStmt* stmt = new ForStmt();
+	Consume(s, "(", "expected '(' after 'for'.");
+
+	stmt->InitializerStmt = NULL;
+	if (Match(s, "var")) {
+		stmt->InitializerStmt = GetVariableDeclaration(s);
+		((VariableDecl*)stmt->InitializerStmt)->Portable = true;
+	}
+	else if (!Match(s, ";")) {
+		stmt->InitializerStmt = new ExpressionStmt(GetExpression(s));
+		((ExpressionStmt*)stmt->InitializerStmt)->Portable = true;
+		Consume(s, ";", "expected ';' after initializer statement.");
+	}
+
+	stmt->ConditionalStmt = NULL;
+	if (!Match(s, ";")) {
+		stmt->ConditionalStmt = new ExpressionStmt(GetExpression(s));
+		((ExpressionStmt*)stmt->ConditionalStmt)->Portable = true;
+	}
+
+	Consume(s, ";", "expected ';' after conditional statement.");
+
+	stmt->IncrementStmt = NULL;
+	if (!Match(s, ")")) {
+		stmt->IncrementStmt = new ExpressionStmt(GetExpression(s));
+		((ExpressionStmt*)stmt->IncrementStmt)->Portable = true;
+	}
+
+	Consume(s, ")", "expected ')' after for clauses.");
+
+	stmt->BodyStmt = GetStatement(s);
+	return stmt;
+}
+Stmt* GetFromStatement(Tokenizer* s) {
+	Consume(s, "(", "expected '(' after 'from'.");
+	// Stmt* var = GetVariableDeclaration(s);
+	GetVariableDeclaration(s);
+	Consume(s, "->", "expected '->' after variable declaration.");
+	// AST* endExpr = GetExpression(s);
+	GetExpressionStatement(s);
+	Consume(s, ")", "expected ')' after condition.");
+	// Stmt* fromblock = GetStatement(s);
+	GetStatement(s);
+	return NULL;
+}
+Stmt* GetBlockStatement(Tokenizer* s) {
+	BlockStmt* stmt = new BlockStmt();
+	while (!!strcmp(s->Peek(), "}")) {
+		stmt->Declarations.push_back(GetStatement(s));
+	}
+	Consume(s, "}", "expected '}' after block statement.");
+	return stmt;
+}
+Stmt* GetReturnStatement(Tokenizer* s) {
+	AST* value = NULL;
+	if (!Match(s, ";")) {
+		value = GetExpression(s);
+		Consume(s, ";", "expected ';' after return value.");
+	}
+	return new ReturnStmt(value);
+}
+Stmt* GetBreakStatement(Tokenizer* s) {
+	Consume(s, ";", "expected ';' after break;");
+	return new BreakStmt();
+}
+Stmt* GetContinueStatement(Tokenizer* s) {
+	Consume(s, ";", "expected ';' after continue;");
+	return new ContinueStmt();
+}
+Stmt* GetCaseStatement(Tokenizer* s) {
+	AST* value = GetExpression(s);
+	Consume(s, ":", "expected ':' after case value.");
+	return new CaseStmt(value);
+}
+Stmt* GetDefaultStatement(Tokenizer* s) {
+	Consume(s, ":", "expected ':' after default statement.");
+	return new DefaultStmt();
+}
+Stmt* GetStatement(Tokenizer* s) {
+	if (Match(s, "if"))
+		return GetIfStatement(s);
+	else if (Match(s, "do"))
+		return GetDoWhileStatement(s);
+	else if (Match(s, "for"))
+		return GetForStatement(s);
+	else if (Match(s, "var"))
+		return GetVariableDeclaration(s);
+	else if (Match(s, "from"))
+		return GetFromStatement(s);
+	else if (Match(s, "while"))
+		return GetWhileStatement(s);
+	else if (Match(s, "return"))
+		return GetReturnStatement(s);
+	else if (Match(s, "switch"))
+		return GetSwitchStatement(s);
+	else if (Match(s, "case"))
+		return GetCaseStatement(s);
+	else if (Match(s, "default"))
+		return GetDefaultStatement(s);
+	else if (Match(s, "break"))
+		return GetBreakStatement(s);
+	else if (Match(s, "continue"))
+		return GetContinueStatement(s);
+	else if (Match(s, "{"))
+		return GetBlockStatement(s);
+
+	else if (Match(s, "else")) {
+		s->Rewind();
+		ReportError(s->Line(), "unexpected statement '%s'.", s->Next());
+		return NULL;
+	}
+
+	return GetExpressionStatement(s);
+}
+
+Stmt* GetDeclaration(Tokenizer* s) {
+	if (Match(s, "var")) { // globals
+		VariableInit* stmt = (VariableInit*)GetVariableInitialization(s);
+		Consume(s, ";", "expected ';' after variable initialization.");
+		s->obj->Variables.push_back(stmt);
+		return stmt;
+	}
+	else if (Match(s, "object"))
+		return GetObjectIDDeclaration(s);
+	else if (Match(s, "subclass"))
+		return GetSubclassDeclaration(s);
+	else if (Match(s, "skonly"))
+		return GetSKOnlyDeclaration(s);
+	else if (Match(s, "enum"))
+		return GetEnumDeclaration(s);
+	else if (Match(s, "event")) {
+		EventStmt* stmt = (EventStmt*)GetEventDeclaration(s);
+		s->obj->Events.push_back(stmt);
+		return stmt;
+	}
+
+	s->Rewind();
+	ReportError(s->Line(), "unexpected statement '%s'.", s->Next());
+	return NULL;
+}
+
+int ParseIScript(char* filename, char* outputname, char* objectname) {
+	Tokenizer* s;
+	IObject* obj = NULL;
+    FILE* f = fopen(filename, "rb");
+    if (f) {
+        currentFileName = filename;
+
+        obj = new IObject();
+        s = new Tokenizer(f, obj);
+
+        obj->Label = objectname;
+
+		while (s->Peek())
+			GetDeclaration(s);
+
+		obj->Visit(NULL);
+
+        char* out;
+        FILE* outf;
+        string str;
+
+        str = outputname;
+        str += "cpp";
+        outf = fopen(str.c_str(), "wb");
+		if (!outf) {
+			PrintHeader(stderr, "error: ", PrintColor::Red);
+			fprintf(stderr, "could not open file for write: %s (is parent folder missing?)\n", str.c_str());
+		    fflush(stderr);
+			exit(-1);
+		}
+        out = obj->PrintCPP();
+        fprintf(outf, "%s", out);
+        fclose(outf);
+
+        str = outputname;
+        str += "h";
+        outf = fopen(str.c_str(), "wb");
+		if (!outf) {
+			PrintHeader(stderr, "error: ", PrintColor::Red);
+			fprintf(stderr, "could not open file for write: %s (is parent folder missing?)\n", str.c_str());
+		    fflush(stderr);
+			exit(-1);
+		}
+        out = obj->PrintH();
+        fprintf(outf, "%s", out);
+        fclose(outf);
+
+        GarbageCollect();
+        fclose(f);
+
+        return obj->ID;
+    }
+    return -1;
+}
