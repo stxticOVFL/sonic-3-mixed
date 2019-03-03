@@ -33,13 +33,21 @@ public:
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
 #include <Game/Levels/FBZ.h>
-//#include <Game/Levels/SOZ.h>
-//#include <Game/Levels/LRZ.h>
-//#include <Game/Levels/HPZ.h>
-//#include <Game/Levels/SSZ.h>
-//#include <Game/Levels/DEZ.h>
-//#include <Game/Levels/TDZ.h>
+#include <Game/Levels/SOZ.h>
+#include <Game/Levels/LRZ.h>
+#include <Game/Levels/HPZ.h>
+#include <Game/Levels/SSZ.h>
+#include <Game/Levels/DEZ.h>
+#include <Game/Levels/TDZ.h>
+
 #include <Game/Levels/SpecialStage.h>
+
+#include <Game/Levels/ALZ.h>
+#include <Game/Levels/BPZ.h>
+#include <Game/Levels/CGZ.h>
+#include <Game/Levels/DPZ.h>
+#include <Game/Levels/EMZ.h>
+#include <Game/Levels/ASZ.h>
 
 #include <Game/Scenes/MainMenu.h>
 #include <Game/Scenes/LevelSelect.h>
@@ -48,7 +56,7 @@ public:
 
 #include <Game/SaveGame.h>
 
-const char* LevelLabels[15] = {
+const char* LevelLabels[20] = {
 	"AIZ",
 	"HCZ",
 	"MGZ",
@@ -64,6 +72,13 @@ const char* LevelLabels[15] = {
 	"SSZ",
 	"DEZ",
 	"TDZ",
+
+	"ALZ",
+	"BPZ",
+	"CGZ",
+	"DPZ",
+	"EMZ",
+
 	"SSZ",
 };
 
@@ -200,7 +215,7 @@ PUBLIC void Scene_DataSelect::Init() {
 	else if (Mode == 2)
 		ModeName = "Locked On";
 
-	Discord_UpdatePresence("Main Menu", ModeName, "icon", false);
+	Discord_UpdatePresence("Data Select", ModeName, "icon", false);
 }
 
 bool MobileScrolling = false;
@@ -273,6 +288,7 @@ PUBLIC void Scene_DataSelect::Update() {
 		if (MobileScrolling && App->Input->MouseDown) {
 			if (selected != (*MobileScrollVariable + 5000) / 10000) {
 				CharacterFlag = 0;
+				PartnerFlag = 0xFF;
 				selected = (*MobileScrollVariable + 5000) / 10000;
 				if (selected < 0)
 					selected = 0;
@@ -311,22 +327,10 @@ PUBLIC void Scene_DataSelect::Update() {
 				int i = SaveGame::CurrentSaveFile;
 				if (SaveGame::Savefiles[i].State == 0) {
 					SaveGame::InitializeSaveGame();
-					if (CharacterFlag == 0) //Buddy?
-					{
-						//we have a buddy! so do nothing!
-						//CharacterFlag = 0x10 | CharacterFlag;
-					}
-					else
-					{
-						PartnerFlag = 0xFF;
-					}
 					SaveGame::CurrentCharacterFlag = CharacterFlag;
 					SaveGame::CurrentPartnerFlag = PartnerFlag;
-					if (i >= 0)
-					{
-						SaveGame::Savefiles[i].CharacterFlag = CharacterFlag;
-						SaveGame::Savefiles[i].PartnerFlag = PartnerFlag;
-					}
+					SaveGame::Savefiles[i].CharacterFlag = CharacterFlag;
+					SaveGame::Savefiles[i].PartnerFlag = PartnerFlag;
 
 					SaveGame::Savefiles[i].State = 1;
 					SaveGame::Flush();
@@ -378,6 +382,45 @@ PUBLIC void Scene_DataSelect::Update() {
 				case 5:
 					App->NextScene = new Level_LBZ(App, G, 1);
 					break;
+				case 6:
+					App->NextScene = new Level_MHZ(App, G, 1);
+					break;
+				case 7:
+					App->NextScene = new Level_FBZ(App, G, 1);
+					break;
+				case 8:
+					App->NextScene = new Level_SOZ(App, G, 1);
+					break;
+				case 9:
+					App->NextScene = new Level_LRZ(App, G, 1);
+					break;
+				case 10:
+					App->NextScene = new Level_HPZ(App, G, 1);
+					break;
+				case 11:
+					App->NextScene = new Level_SSZ(App, G, 1);
+					break;
+				case 12:
+					App->NextScene = new Level_DEZ(App, G, 1);
+					break;
+				case 13:
+					App->NextScene = new Level_TDZ(App, G, 1);
+					break;
+				case 14:
+					App->NextScene = new Level_ALZ(App, G, 1);
+					break;
+				case 15:
+					App->NextScene = new Level_BPZ(App, G, 1);
+					break;
+				case 16:
+					App->NextScene = new Level_CGZ(App, G, 1);
+					break;
+				case 17:
+					App->NextScene = new Level_DPZ(App, G, 1);
+					break;
+				case 18:
+					App->NextScene = new Level_EMZ(App, G, 1);
+					break;
 				default:
 					SaveGame::CurrentEmeralds = 0x0000;
 					ls = new LevelScene(App, G);
@@ -425,6 +468,7 @@ PUBLIC void Scene_DataSelect::Update() {
 			if (selected > 0) {
 				selected--;
 				CharacterFlag = 0;
+				PartnerFlag = 0xFF;
 			}
 
 			Sound::Play(Sound::SFX_MENUBLEEP);
@@ -435,6 +479,7 @@ PUBLIC void Scene_DataSelect::Update() {
 			if (selected < 11) {
 				selected++;
 				CharacterFlag = 0;
+				PartnerFlag = 0xFF;
 			}
 
 			Sound::Play(Sound::SFX_MENUBLEEP);
@@ -463,7 +508,40 @@ PUBLIC void Scene_DataSelect::Update() {
 			MobileScrolling = true;
 		}
 
-		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
+		//Deleting a Save
+		//Big Anus bad but stfu it works
+		if (App->Input->GetControllerInput(0)[IInput::I_PAUSE_PRESSED]) {
+			SaveGame::Savefiles[selected + (12 * Mode)].CharacterFlag = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].Continues = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].Emeralds = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].LastZoneID = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].Lives = 3;
+			SaveGame::Savefiles[selected + (12 * Mode)].Mode = Mode;
+			SaveGame::Savefiles[selected + (12 * Mode)].PartnerFlag = 0xFF;
+			SaveGame::Savefiles[selected + (12 * Mode)].Score = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].State = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].TargetScore = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[0] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[1] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[2] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[3] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[4] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[5] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[6] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[7] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[8] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[9] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[10] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[11] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[12] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[13] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[14] = 0;
+			SaveGame::Savefiles[selected + (12 * Mode)].UsedZoneRings[15] = 0;
+			SaveGame::Flush();
+			Sound::Play(Sound::SFX_SPECIALSTAGE_EXIT);
+		}
+
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA_PRESSED]) {
 			if (PartnerFlag < 4 && PartnerFlag != 0xFF)
 			{
 				PartnerFlag++;
@@ -484,7 +562,7 @@ PUBLIC void Scene_DataSelect::Update() {
 
 			MobileScrolling = true;
 		}
-		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2]) {
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
 			if (PartnerFlag > 0 && PartnerFlag != 0xFF)
 			{
 				PartnerFlag--;
@@ -651,7 +729,7 @@ PUBLIC void Scene_DataSelect::Render() {
 			break;
 		case 1:
 			//G->DrawRectangle(myX, myY, 80, 56, 0x4141F2);
-			if (i == selected)
+			if (i == (selected + (12 * Mode)))
 				G->DrawSprite(SaveIconsSprite, 2, SaveGame::Savefiles[i].LastZoneID, myX + 80 / 2, myY + 56 / 2, 0, IE_NOFLIP);
 			else
 				G->DrawSprite(SaveIconsSprite, 0, (frame >> 2) % 3, myX + 80 / 2, myY + 56 / 2, 0, ((frame >> 2)) % 3);
@@ -669,25 +747,43 @@ PUBLIC void Scene_DataSelect::Render() {
 
 		int cf = CharacterFlag;
 		int pf = PartnerFlag;
-		if (i != selected || SaveGame::Savefiles[i].State > 0)
+		if (i != (selected + (12 * Mode)) || SaveGame::Savefiles[i].State > 0)
 		{
 			cf = SaveGame::Savefiles[i].CharacterFlag;
 			pf = SaveGame::Savefiles[i].PartnerFlag;
 		}
 
-		cf &= 0xF;
 
-		G->DrawSprite(SaveSelectSprite, 20, cf, myX + 80 / 2 + 4, myY + 85 + 4, 0, 0);
-		G->DrawSprite(SaveSelectSprite, 19, cf, myX + 80 / 2, myY + 85, 0, 0);
+		//if we have a buddy
+		if (pf != 0xFF)
+		{
+			//Partner Shadow
+			G->DrawSprite(SaveSelectSprite, 20, pf, myX + 100 / 2 + 4, myY + 90 + 4, 0, IE_FLIPX);
+			//Main Character Shadow
+			G->DrawSprite(SaveSelectSprite, 20, cf, myX + 70 / 2 + 4, myY + 80 + 4, 0, 0);
+
+			//Partner Character
+			G->DrawSprite(SaveSelectSprite, 19, pf, myX + 100 / 2, myY + 90, 0, IE_FLIPX);
+			//Main Character
+			G->DrawSprite(SaveSelectSprite, 19, cf, myX + 70 / 2, myY + 80, 0, 0);
+		}
+		else //no buddy
+		{
+			//Main Char Shadow
+			G->DrawSprite(SaveSelectSprite, 20, cf, myX + 80 / 2 + 4, myY + 85 + 4, 0, 0);
+			//Main Character
+			G->DrawSprite(SaveSelectSprite, 19, cf, myX + 80 / 2, myY + 85, 0, 0);
+		}
 		// 4 - emeralds
 		if (SaveGame::Savefiles[i].State > 0) {
-			G->DrawSprite(SaveSelectSprite, 3, SaveGame::Savefiles[i].CharacterFlag & 0xF, myX + 80 / 2 - 10, myY + ElementH - 10, 0, 0);
+			//Main Character
+			G->DrawSprite(SaveSelectSprite, 3, SaveGame::Savefiles[i].CharacterFlag, myX + 80 / 2 - 10, myY + ElementH - 10, 0, 0);
 			char lives[3];
 			snprintf(lives, 3, "%d", SaveGame::Savefiles[i].Lives);
 			G->DrawTextSprite(TextSprite, 6, '0' - 37, myX + 80 / 2 + 4, myY + ElementH - 10 + 1, lives);
 		}
 
-		// Emerealds
+		// Emeralds
 		G->DrawRectangle(myX - 2, myY + 110, 80 + 4, 20, 0x000000);
 		for (int v = 0; v < 7; v++) {
 			if (SaveGame::Savefiles[i].Emeralds >> v & 1)

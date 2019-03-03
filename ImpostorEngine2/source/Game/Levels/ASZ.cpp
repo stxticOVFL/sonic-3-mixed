@@ -1,7 +1,7 @@
 #if INTERFACE
 #include <Game/LevelScene.h>
 
-class Level_MHZ : public LevelScene {
+class Level_ASZ : public LevelScene {
 public:
     int  CutsceneRoutineNumber = 0x00;
 };
@@ -12,23 +12,23 @@ public:
 
 #include <Game/Objects/Gen/ObjectListing.h>
 
-#include <Game/Levels/MHZ.h>
+#include <Game/Levels/ASZ.h>
 
-PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
+PUBLIC Level_ASZ::Level_ASZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
 
     if (Act == 1) {
-        Str_TileConfigBin = "Stages/MHZ/TileConfig1.bin";
-        Str_SceneBin = "Stages/MHZ/Scene1.bin";
-        Str_TileSprite = "Stages/MHZ/16x16Tiles1.gif";
-        //Str_AnimatedSprites = "Sprites/MHZ/AnimatedTiles";
-        Str_ObjectsList = "Stages/MHZ/Objects1.bin";
-        Str_RingsList = "Stages/MHZ/Rings1.bin";
+        Str_TileConfigBin = "Stages/ASZ/TileConfig1.bin";
+        Str_SceneBin = "Stages/ASZ/Scene1.bin";
+        Str_TileSprite = "Stages/ASZ/16x16Tiles1.gif";
+        //Str_AnimatedSprites = "Sprites/ASZ/AnimatedTiles";
+        Str_ObjectsList = "Stages/ASZ/Objects1.bin";
+        Str_RingsList = "Stages/ASZ/Rings1.bin";
     }
 
-    sprintf(LevelName, "MUSHROOM HILL");
-    sprintf(LevelNameDiscord, "Mushroom Hill");
+    sprintf(LevelName, "ANGEL SHORE");
+    sprintf(LevelNameDiscord, "Angel Shore");
 
     if (Act == 1) {
         // PlayerStartX = 0x00D8;
@@ -39,13 +39,13 @@ PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     }
 }
 
-PUBLIC void Level_MHZ::LoadZoneSpecificSprites() {
+PUBLIC void Level_ASZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
         KnuxSprite[2] = new ISprite("Player/Knux3.gif", App);
         KnuxSprite[3] = new ISprite("Player/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Player/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[4] = new ISprite("Player/KnuxCutsceneASZ.gif", App);
 
         KnuxSprite[0]->LoadAnimation("Player/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
@@ -55,7 +55,7 @@ PUBLIC void Level_MHZ::LoadZoneSpecificSprites() {
     }
 }
 
-PUBLIC void Level_MHZ::RestartStage(bool doActTransition, bool drawBackground) {
+PUBLIC void Level_ASZ::RestartStage(bool doActTransition, bool drawBackground) {
     LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
@@ -63,7 +63,7 @@ PUBLIC void Level_MHZ::RestartStage(bool doActTransition, bool drawBackground) {
     }
 }
 
-PUBLIC void Level_MHZ::EarlyUpdate() {
+PUBLIC void Level_ASZ::EarlyUpdate() {
     if (Act == 1) {
 
     }
@@ -73,11 +73,11 @@ PUBLIC void Level_MHZ::EarlyUpdate() {
 
     LevelScene::EarlyUpdate();
 }
-PUBLIC void Level_MHZ::Subupdate() {
+PUBLIC void Level_ASZ::Subupdate() {
     LevelScene::Subupdate();
 }
 
-PUBLIC void Level_MHZ::HandleCamera() {
+PUBLIC void Level_ASZ::HandleCamera() {
     if (Act == 1) {
         //int off = App->WIDTH / 2 - 0xA0;
         //int ToS3X = CameraX + off;

@@ -16,13 +16,21 @@ public:
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
 #include <Game/Levels/FBZ.h>
-//#include <Game/Levels/SOZ.h>
-//#include <Game/Levels/LRZ.h>
-//#include <Game/Levels/HPZ.h>
-//#include <Game/Levels/SSZ.h>
-//#include <Game/Levels/DEZ.h>
-//#include <Game/Levels/TDZ.h>
+#include <Game/Levels/SOZ.h>
+#include <Game/Levels/LRZ.h>
+#include <Game/Levels/HPZ.h>
+#include <Game/Levels/SSZ.h>
+#include <Game/Levels/DEZ.h>
+#include <Game/Levels/TDZ.h>
+
 #include <Game/Levels/SpecialStage.h>
+
+#include <Game/Levels/ALZ.h>
+#include <Game/Levels/BPZ.h>
+#include <Game/Levels/CGZ.h>
+#include <Game/Levels/DPZ.h>
+#include <Game/Levels/EMZ.h>
+#include <Game/Levels/ASZ.h>
 
 #include <Game/SaveGame.h>
 
@@ -78,8 +86,8 @@ bool HaveStage[36] = {
     true,
     true, // LBZ
     true,
-	false, // MHZ
-	false,
+	true, // MHZ
+	true,
 	false, // FBZ
 	false,
 	false, // SOZ
@@ -141,7 +149,7 @@ PUBLIC void Scene_LevelSelect::Update() {
         FadeTimerMax = 0;
 
         if (!FadeIn) {
-            if (selected < 12 || selected > 25) {
+            //if (selected < 12 || selected > 25) {
                 if (HaveStage[selected] || (selected > 25 && HaveSpecial[selected - 26])) {
                     App->Audio->ClearMusic();
                     if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
@@ -172,6 +180,34 @@ PUBLIC void Scene_LevelSelect::Update() {
 						case 10:
 						case 11:
 							App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
+						case 12:
+						case 13:
+							App->NextScene = new Level_MHZ(App, G, (selected % 2) + 1);
+							break;
+						case 14:
+						case 15:
+							App->NextScene = new Level_FBZ(App, G, (selected % 2) + 1);
+							break;
+						case 16:
+						case 17:
+							App->NextScene = new Level_SOZ(App, G, (selected % 2) + 1);
+							break;
+						case 18:
+						case 19:
+							App->NextScene = new Level_LRZ(App, G, (selected % 2) + 1);
+							break;
+						case 20:
+							App->NextScene = new Level_HPZ(App, G, (selected % 2) + 1);
+							break;
+						case 21:
+							App->NextScene = new Level_SSZ(App, G, (selected % 2) + 1);
+							break;
+						case 22:
+						case 23:
+							App->NextScene = new Level_DEZ(App, G, (selected % 2) + 1);
+							break;
+						case 24:
+							App->NextScene = new Level_TDZ(App, G, (selected % 2) + 1);
 							break;
 						default:
 							break;
@@ -192,7 +228,7 @@ PUBLIC void Scene_LevelSelect::Update() {
                     SaveGame::CurrentPartnerFlag = partner; //0xFF for no partner
 					SaveGame::CurrentMode = mode;
                 }
-            }
+            //}
         }
     }
 
@@ -313,7 +349,7 @@ PUBLIC void Scene_LevelSelect::Render() {
         "SKY SANCTUARY",
         "DEATH EGG",
         "THE DOOMSDAY",
-        "BONUS",
+        "BONUS STAGES",
         "SPECIAL STAGE",
         "SOUND TEST",
     };

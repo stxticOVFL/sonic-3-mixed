@@ -107,6 +107,7 @@ int Signpost::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (Falling) {
         YSpeed = -0x200;
         XSpeed = Scene->Players[PlayerID]->XSpeed;
+        Scene->Score += 100;
     }
 
     SpinSpeed = 0x800;

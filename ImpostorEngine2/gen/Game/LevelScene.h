@@ -105,6 +105,8 @@ public:
     NEXT_ZONE = 8,
     CUSTOM_FADE_ACTION = 9,
     }; 
+    //For RPC
+    char* ModeName;
     int         maxLayer = 1;
     bool        Thremixed = false;
     bool        DeformObjects = false;

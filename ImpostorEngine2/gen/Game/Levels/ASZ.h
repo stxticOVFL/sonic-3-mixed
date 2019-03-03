@@ -1,5 +1,5 @@
-#ifndef LEVEL_MHZ_H
-#define LEVEL_MHZ_H
+#ifndef LEVEL_ASZ_H
+#define LEVEL_ASZ_H
 
 #define PUBLIC
 #define PRIVATE
@@ -10,11 +10,11 @@
 
 #include <Game/LevelScene.h>
 
-class Level_MHZ : public LevelScene {
+class Level_ASZ : public LevelScene {
 public:
     int  CutsceneRoutineNumber = 0x00;
 
-    Level_MHZ(IApp* app, IGraphics* g, int act);
+    Level_ASZ(IApp* app, IGraphics* g, int act);
     void LoadZoneSpecificSprites();
     void RestartStage(bool doActTransition, bool drawBackground);
     void EarlyUpdate();
@@ -22,4 +22,4 @@ public:
     void HandleCamera();
 };
 
-#endif /* LEVEL_MHZ_H */
+#endif /* LEVEL_ASZ_H */

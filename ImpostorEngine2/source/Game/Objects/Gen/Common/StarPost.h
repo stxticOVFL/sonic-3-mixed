@@ -18,6 +18,8 @@ public:
     bool Activated;
     int Spin;
     bool Blinking;
+    bool ShowStars;
+    int StarTimer;
     
     void Create();
     void Update();

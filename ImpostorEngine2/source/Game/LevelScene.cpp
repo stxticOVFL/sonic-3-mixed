@@ -90,6 +90,9 @@ public:
 		CUSTOM_FADE_ACTION = 9,
 	};
 
+	//For RPC
+	char* ModeName;
+
 	int         maxLayer = 1;
 	bool        Thremixed = false;
 	bool        DeformObjects = false;
@@ -4274,7 +4277,7 @@ PUBLIC void LevelScene::Update() {
 			//Cleanup();
 
 			StateSaved = false;
-			App->NextScene = new Scene_DataSelect(App, G, 0); //TODO: change to correct mode
+			App->NextScene = new Scene_DataSelect(App, G, SaveGame::CurrentMode);
 		}
 		else if (FadeAction == FadeActionType::FADEIN) {
 			FadeAction = 0;
@@ -4918,6 +4921,13 @@ PUBLIC void LevelScene::RenderTitleCard() {
 
 	G->ClearClip();
 
+	//ACT NUMBER STUFF
+
+	//Decoration
+	G->DrawSprite(GlobalDisplaySprite, 14, (ZoneID-1), textX + 125, textY + 80, 0, IE_NOFLIP);
+	//Act Number Sprite
+	G->DrawSprite(GlobalDisplaySprite, 17, (VisualAct-1), textX + 125, textY + 80, 0, IE_NOFLIP);
+
 	textY += 36;
 
 	textX = App->WIDTH - 34 + 8 + text2Off;
@@ -5044,9 +5054,12 @@ PUBLIC void LevelScene::RenderResults() {
 	anim_total = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.7, 1.0) / 0.3) * -App->WIDTH) + App->WIDTH;
 
 	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
-	if (GlobalDisplaySpriteS3K) {
-		GlobalDisplaySprite = GlobalDisplaySpriteS3K;
-	}
+	
+	//NOTE: the S3 sheet doesn't have a title card number thing
+
+	//if (GlobalDisplaySpriteS3K) {
+	//	GlobalDisplaySprite = GlobalDisplaySpriteS3K;
+	//}
 
 	// Player Name
 	G->DrawSprite(GlobalDisplaySprite, 3, (int)Player->Character, App->WIDTH / 2 + anim_player_got, 64, 0, IE_NOFLIP);
@@ -5056,6 +5069,9 @@ PUBLIC void LevelScene::RenderResults() {
 
 	// Through
 	G->DrawSprite(GlobalDisplaySprite, 4, 1, App->WIDTH / 2 + anim_through_act, 88, 0, IE_NOFLIP);
+
+	//Act (Number)
+	G->DrawSprite(GlobalDisplaySprite, 17, (VisualAct - 1), App->WIDTH / 2 + anim_through_act + 75, 88, 0, IE_NOFLIP);
 
 	// Time Bonus
 	G->DrawSprite(GlobalDisplaySprite, 0, 1, App->WIDTH / 2 - 128 + anim_time_bonus, 128, 0, IE_NOFLIP);

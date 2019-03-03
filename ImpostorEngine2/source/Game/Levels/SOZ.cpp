@@ -37,8 +37,8 @@ PUBLIC Level_SOZ::Level_SOZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/SOZ2/Animated Tiles.gif";
     }
 
-    sprintf(LevelName, "ICECAP");
-    sprintf(LevelNameDiscord, "IceCap");
+    sprintf(LevelName, "SANDOPOLIS");
+    sprintf(LevelNameDiscord, "Sandopolis");
 
     if (Act == 1) {
 
