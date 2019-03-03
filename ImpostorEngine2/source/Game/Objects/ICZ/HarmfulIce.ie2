@@ -1,0 +1,28 @@
+object 0xB8;
+
+event Create() {
+    Active = true;
+    Priority = false;
+    Solid = true;
+    Scene.AddSelfToRegistry(this, "Solid");
+    CurrentAnimation = Sprite.FindAnimation("Harmful Ice");
+    W = 32;
+    if (SubType == 0) {
+        H = 48;
+        Frame = 2;
+    }
+    else {
+        H = 32;
+        Frame = 0;
+    }
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    if (Scene.Players[PlayerID].Action != ActionType.Hurt) {
+        Scene.Players[PlayerID].Hurt(X, true);
+    }
+}

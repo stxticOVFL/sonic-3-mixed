@@ -1,7 +1,7 @@
-#ifndef ICECUBE_H
-#define ICECUBE_H
+#ifndef HARMFULICE_H
+#define HARMFULICE_H
 
-class IceCube;
+class HarmfulIce;
 
 #include <Utils/Standard.h>
 
@@ -12,15 +12,13 @@ class IceCube;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class IceCube: public Object {
+class HarmfulIce: public Object {
 public:    
     
     
     void Create();
     void Render(int CamX, int CamY);
-    void Break();
-    int OnBreakVertical(int PlayerID, int HitFrom);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
-#endif /* ICECUBE_H */
+#endif /* HARMFULICE_H */

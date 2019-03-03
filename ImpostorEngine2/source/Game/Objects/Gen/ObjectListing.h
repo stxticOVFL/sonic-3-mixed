@@ -90,7 +90,9 @@
 #include "CNZ/Batbright.h"			// 9D8C15CA
 #include "ICZ/StarPointer.h"			// 804AD12D
 #include "ICZ/CrushingColumn.h"			// A5F30B34
+#include "ICZ/SegmentedColumn.h"			// 5EE8DBE4
 #include "ICZ/IceCube.h"			// E855624C
+#include "ICZ/HarmfulIce.h"			// 8BC9A52C
 #include "LBZ/Orbinaut.h"			// 75BEA9FB
 #include "AIZ/AirshipBomb.h"			// 8E8C37A1
 #include "AIZ/AIZMinibossBomb.h"			// 89077B11
@@ -199,7 +201,9 @@ enum {
     Obj_Batbright = 0x0A5,
     Obj_StarPointer = 0x0AE,
     Obj_CrushingColumn = 0x0AF,
+    Obj_SegmentedColumn = 0x0B3,
     Obj_IceCube = 0x0B6,
+    Obj_HarmfulIce = 0x0B8,
     Obj_Orbinaut = 0x0C0,
     Obj_AirshipBomb = 0x400,
     Obj_AIZMinibossBomb = 0x401,
