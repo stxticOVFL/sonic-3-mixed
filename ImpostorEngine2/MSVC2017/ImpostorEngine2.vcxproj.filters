@@ -186,9 +186,6 @@
     <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp">
       <Filter>Source Files\Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Test\Platform.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Spiker.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
@@ -295,9 +292,6 @@
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleDeath.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlock.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\HiddenMonitor.cpp">
@@ -483,15 +477,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZTreeBark.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZ_Miniboss.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSolid.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\TopPlatform.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
@@ -550,6 +535,9 @@
       <Filter>Source Files\Game\Levels</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\Motobug.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlock.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
   </ItemGroup>

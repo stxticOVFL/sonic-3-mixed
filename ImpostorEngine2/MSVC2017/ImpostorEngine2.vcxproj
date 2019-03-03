@@ -68,7 +68,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossCutscene.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossFlame.cpp" />
-    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZTreeBark.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Bloominator.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\BloominatorSpore.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\CaterkillerJr.cpp" />
@@ -117,7 +116,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\HiddenMonitor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlock.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleDeath.cpp" />
-    <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSolid.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSpikes.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Monitor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp" />
@@ -145,7 +143,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZVWaterStream.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZWaterSplash.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZWaterWall.cpp" />
-    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZ_Miniboss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Jawz.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\LargeFan.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\MegaChomper.cpp" />
@@ -172,7 +169,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Spiker.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\TopPlatform.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp" />
-    <ClCompile Include="..\source\Game\Objects\Gen\Test\Platform.cpp" />
     <ClCompile Include="..\source\Game\Player.cpp" />
     <ClCompile Include="..\source\Game\Ring.cpp" />
     <ClCompile Include="..\source\Game\SaveGame.cpp" />

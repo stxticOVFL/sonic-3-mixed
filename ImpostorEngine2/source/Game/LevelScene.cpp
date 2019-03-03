@@ -254,6 +254,8 @@ const char* ObjectName[347];
 
 int BlankTile = 0;
 
+std::vector<ISprite *> LevelScene::SpriteBinMapIDs;
+
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
@@ -303,6 +305,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 		AddNewDebugObjectID(Obj_InvisibleDeath); // Invisible Death
 		AddNewDebugObjectID(Obj_ViewCollisionToggler); // View Collision Toggler
 	}
+    AddNewDebugObjectID(Obj_Motobug); // Motobug
 
 	ObjectProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
 	RingProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
@@ -406,8 +409,8 @@ PUBLIC void LevelScene::LoadState() {
 	SpecialSpawnPositionY = StatePlayerSpawnY;
 }
 
-STATIC PUBLIC size_t LevelScene::LoadSpriteBin(const char* Filename, IApp* App = GlobalApp) {
-    ISprite* BinSprite = new ISprite(Filename, App);
+PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
+    ISprite* BinSprite = new ISprite(Filename, GlobalApp);
     SpriteBinMapIDs.push_back(BinSprite);
     SpriteBinMapIDs.shrink_to_fit();
     return SpriteBinMapIDs.size();
