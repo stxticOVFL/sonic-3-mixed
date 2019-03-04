@@ -15,7 +15,7 @@ void HarmfulIce::Create() {
     W = 32;
     if (SubType == 0) {
         H = 48;
-        Frame = 2;
+        Frame = 1;
     }
     else {
         H = 32;
@@ -24,7 +24,7 @@ void HarmfulIce::Create() {
 }
 
 void HarmfulIce::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 
 int HarmfulIce::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
@@ -32,5 +32,6 @@ int HarmfulIce::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Players[PlayerID]->Hurt(X, true);
     }
 
+    return 1;
 }
 
