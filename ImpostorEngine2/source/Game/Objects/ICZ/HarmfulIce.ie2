@@ -9,7 +9,7 @@ event Create() {
     W = 32;
     if (SubType == 0) {
         H = 48;
-        Frame = 2;
+        Frame = 1;
     }
     else {
         H = 32;
@@ -18,13 +18,12 @@ event Create() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Scene.Players[PlayerID].Action != ActionType.Hurt) {
         Scene.Players[PlayerID].Hurt(X, true);
     }
-    
     return 1;
 }

@@ -29,13 +29,12 @@ public:
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
 #include <Game/Levels/FBZ.h>
-//#include <Game/Levels/FBZ.h>
-//#include <Game/Levels/SOZ.h>
-//#include <Game/Levels/LRZ.h>
-//#include <Game/Levels/HPZ.h>
-//#include <Game/Levels/SSZ.h>
-//#include <Game/Levels/DEZ.h>
-//#include <Game/Levels/TDZ.h>
+#include <Game/Levels/SOZ.h>
+#include <Game/Levels/LRZ.h>
+#include <Game/Levels/HPZ.h>
+#include <Game/Levels/SSZ.h>
+#include <Game/Levels/DEZ.h>
+#include <Game/Levels/TDZ.h>
 
 #include <Game/Scenes/MainMenu.h>
 
@@ -817,6 +816,30 @@ PUBLIC void Level_SpecialStage::DoCustomFadeAction() {
 				break;
 			case 5:
 				App->NextScene = new Level_LBZ(App, G, Acto);
+				break;
+			case 6:
+				App->NextScene = new Level_MHZ(App, G, Acto);
+				break;
+			case 7:
+				App->NextScene = new Level_FBZ(App, G, Acto);
+				break;
+			case 8:
+				App->NextScene = new Level_SOZ(App, G, Acto);
+				break;
+			case 9:
+				App->NextScene = new Level_LRZ(App, G, Acto);
+				break;
+			case 10:
+				App->NextScene = new Level_HPZ(App, G, Acto);
+				break;
+			case 11:
+				App->NextScene = new Level_SSZ(App, G, Acto);
+				break;
+			case 12:
+				App->NextScene = new Level_DEZ(App, G, Acto);
+				break;
+			case 13: //dont know why this would ever happen but lets put it here anyway
+				App->NextScene = new Level_TDZ(App, G, Acto);
 				break;
 			default:
 				App->NextScene = new Scene_MainMenu(App, G);
