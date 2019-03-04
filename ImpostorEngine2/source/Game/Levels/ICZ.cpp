@@ -217,6 +217,9 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Cork Floor.bin");
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Cork Floor 2.bin");
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms.bin");
+		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms 2.bin");
+		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms 3.bin");
+		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Particles.bin");
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Tension Bridge.bin");
 		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
         ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Star Pointer.bin");

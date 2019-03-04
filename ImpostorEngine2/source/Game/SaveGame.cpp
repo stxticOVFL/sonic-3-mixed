@@ -99,7 +99,7 @@ PUBLIC STATIC void SaveGame::Flush() {
     IResource* SaveBin = IResources::Open("../Save.bin");
     if (SaveBin) {
         IStreamer writer(SaveBin);
-        for (int s = 0; s < 32; s++) {
+        for (int s = 0; s < 36; s++) {
 			writer.WriteByte(Savefiles[s].State);
 			writer.WriteByte(Savefiles[s].Mode);
             writer.WriteUInt16(Savefiles[s].CharacterFlag);

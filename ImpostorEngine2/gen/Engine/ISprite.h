@@ -59,6 +59,7 @@ public:
     bool Print = false; //
 
     ISprite(const char* filename, IApp* app);
+    ISprite(const char* filename, IApp* app, int mode);
     void SetTransparentColorIndex(int i);
     void SetPalette(int i, uint32_t col);
     void SetPaletteAlt(int i, uint32_t col);

@@ -59,6 +59,7 @@ public:
 #include <Engine/IResources.h>
 #include "Utils/gifdec.h"
 #include <algorithm>
+#include <fstream>
 
 static std::unordered_map<const char*, gd_GIF*> GifMap;
 
@@ -72,6 +73,33 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     }
 }
 
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
+	std::string outfile;
+	switch (mode) {
+		case 0: {
+			outfile.append("Classic/");
+			outfile.append(filename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		case 1:
+		case 2: {
+			outfile.clear();
+			outfile.append("Classic/");
+			outfile.append(filename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		default: 
+			outfile.clear();
+			outfile.append(filename);
+	}
+	ISprite(outfile.c_str(), app);
+}
 PUBLIC void ISprite::SetTransparentColorIndex(int i) {
     TransparentColorIndex = i;
 

@@ -22,7 +22,7 @@ void TensionBridge::Create() {
         CurrentAnimation = 18;
         break;
         case 5:
-        CurrentAnimation = 5;
+        CurrentAnimation = Sprite->FindAnimation("Tension Bridge");
         break;
     }
 
