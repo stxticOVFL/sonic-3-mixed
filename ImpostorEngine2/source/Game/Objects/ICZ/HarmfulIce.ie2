@@ -25,4 +25,6 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Scene.Players[PlayerID].Action != ActionType.Hurt) {
         Scene.Players[PlayerID].Hurt(X, true);
     }
+    
+    return 1;
 }

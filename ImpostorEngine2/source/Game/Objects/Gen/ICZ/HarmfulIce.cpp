@@ -32,5 +32,6 @@ int HarmfulIce::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Players[PlayerID]->Hurt(X, true);
     }
 
+	return 1;
 }
 
