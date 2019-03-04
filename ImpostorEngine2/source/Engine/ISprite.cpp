@@ -49,7 +49,6 @@ public:
     ISprite* LinkedSprite = NULL;
 
     bool Print = false; //
-	int Mode = 0;
 };
 #endif
 
@@ -63,6 +62,8 @@ public:
 #include <fstream>
 
 static std::unordered_map<const char*, gd_GIF*> GifMap;
+
+int Mode = 0;
 
 PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 	ISprite(filename, app, Mode);

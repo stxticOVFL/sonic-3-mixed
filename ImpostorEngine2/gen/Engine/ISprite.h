@@ -57,7 +57,6 @@ public:
     const char* Filename;
     ISprite* LinkedSprite = NULL;
     bool Print = false; //
-    int Mode = 0;
 
     ISprite(const char* filename, IApp* app);
     ISprite(const char* filename, IApp* app, int mode);

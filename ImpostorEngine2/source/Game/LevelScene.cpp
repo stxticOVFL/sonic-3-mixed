@@ -249,6 +249,7 @@ public:
 
 #include <Game/SaveGame.h>
 
+
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
 const char* ObjectName[347];
 
@@ -498,7 +499,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			if (SaveGame::CurrentMode == 1) {
 				ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
 			}
-			else {
 		}
 		if (!AnimalsSprite) {
 			AnimalsSprite = new ISprite("Sprites/Global/Animals.gif", App, SaveGame::CurrentMode);

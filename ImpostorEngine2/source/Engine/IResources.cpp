@@ -1,26 +1,49 @@
-#if INTERFACE
+//Fuck that shit
+/*#if INTERFACE
 #include <Engine/IResource.h>
 
-class IResources {
-public:
+//class IResources {
+//public:
 	static const char* FormatPath(const char* path, int mode);
-	static IResource* Load(const char* bpath, int mode = 1);
-	static IResource* Load(const char* bpath, bool inMemory, int mode = 1);
-	static IResource* Open(const char* bpath, int mode = 1);
+	static IResource* Load(const char* bpath);
+	static IResource* Load(const char* bpath, int mode);
+	static IResource* Load(const char* bpath, bool inMemory);
+	static IResource* Open(const char* bpath);
+	static IResource* Load(const char* bpath, int mode);
+	static IResource* Load(const char* bpath, bool inMemory, int mode);
+	static IResource* Open(const char* bpath, int mode);
 	static bool Close(IResource* res);
 	static uint64_t Decompress(void* dst, int dstLen, const void* src, int srcLen);
 };
-#endif
+#endif*/
 
 #include <Engine/IApp.h>
 #include <Engine/IResources.h>
 #include <fstream>
+#include <sstream>
 
-PUBLIC STATIC IResource* IResources::Load(const char* bpath, int mode = 1) {
-    return IResources::Load(bpath, false);
+char buffmantime[0x100];
+
+PUBLIC STATIC IResource* IResources::Load(const char* bpath) {
+	return IResources::Load(bpath, 0);
 }
-PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int mode = 1) {
-	const char* path = FormatPath(bpath, mode);
+PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory) {
+	return Load(bpath, inMemory,0);
+}
+
+PUBLIC STATIC void IResources::FormatPath(const char* path) {
+	FormatPath(path, 0);
+}
+
+PUBLIC STATIC IResource* IResources::Open(const char* bpath) {
+	return Load(bpath,0);
+}
+PUBLIC STATIC IResource* IResources::Load(const char* bpath, int mode) {
+	return IResources::Load(bpath, false);
+}
+PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int mode) {
+	FormatPath(bpath, mode);
+	const char* path = buffmantime;
     char FullName[256];
     sprintf(FullName, "%s%s", IFILE(""), path);
 
@@ -109,36 +132,114 @@ PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int 
     return res;
 }
 
-PUBLIC STATIC const char* IResources::FormatPath(const char* path, int mode) {
-	std::string outfile;
+PUBLIC STATIC void IResources::FormatPath(const char* path, int mode) {
+	char helpme[0x40];
+	char temp[0x80];
+	sprintf(helpme, path);
+	for (int i = 0; i < 0x100; i++)
+	{
+		buffmantime[i] = 0;
+	}
 	switch (mode) {
 	case 2:
 	case 1: {
-		outfile.clear();
-		outfile.append("Mixed/");
-		outfile.append(path);
-		std::ifstream cfile(outfile);
-		if ((bool)cfile) {
+		StrCopy(temp, "Source/Resources/");
+		StrAdd(temp, "Mixed/");
+		StrAdd(temp, helpme);
+		StrAdd(buffmantime, "Mixed/");
+		StrAdd(buffmantime, helpme);
+		FILE* cfile = fopen(temp, "rb");
+		if (cfile) {
+			fclose(cfile);
 			break;
 		}
 	}
 	case 0: {
-		outfile.append("Classic/");
-		outfile.append(path);
-		std::ifstream cfile(outfile);
-		if ((bool)cfile) {
+		StrCopy(temp, "Source/Resources/");
+		StrAdd(temp, "Classic/");
+		StrAdd(temp, helpme);
+		StrAdd(buffmantime, "Classic/");
+		StrAdd(buffmantime, helpme);
+		FILE* cfile = fopen(temp, "rb");
+		if (cfile) {
+			fclose(cfile);
 			break;
 		}
 	}
 	default:
-		return path;
+		return;
 	}
-	const char* out = outfile.c_str();
-	return out;
 }
 
-PUBLIC STATIC IResource* IResources::Open(const char* bpath, int mode = 1) {
-	const char* path = FormatPath(bpath, mode);
+//Using RSDK code to fucking make this work AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa - Ducky
+PUBLIC STATIC int IResources::StrCopy(char* dest, char* src)
+{
+	int result;
+	int v3; // ecx
+	char v4; // dl
+
+	v3 = 0;
+	v4 = *src;
+	if (*src)
+	{
+		result = 0;
+		do
+		{
+			*(byte*)(dest + v3) = v4;
+			v4 = src[++result];
+			v3 = result;
+		} while (v4);
+	}
+	*(byte*)(dest + v3) = 0;
+	return result;
+}
+
+PUBLIC STATIC int IResources::StrAdd(char* dest, char* src)
+{
+	char* v2; // edx
+	int result; // eax
+	char* v4; // edi
+	char v5; // dl
+	char* v6; // esi
+
+	if (dest == "" || src == "")
+	{
+		return 0;
+	}
+
+	if (*dest)
+	{
+		v2 = dest + 1;
+		result = 0;
+		do
+		{
+			v4 = v2++;
+			++result;
+		} while (*(v2 - 1));
+	}
+	else
+	{
+		v4 = dest;
+		result = 0;
+	}
+	v5 = *src;
+	if (*src)
+	{
+		v6 = &src[-result];
+		do
+		{
+			dest[result++] = v5;
+			v5 = v6[result];
+		} while (v5);
+		v4 = &dest[result];
+	}
+	*v4 = 0;
+	return result;
+}
+
+PUBLIC STATIC IResource* IResources::Open(const char* bpath, int mode) {
+	FormatPath(bpath, mode);
+	const char* path = buffmantime;
 	char FullName[256];
 	sprintf(FullName, "%s%s", IFILE(""), path);
 

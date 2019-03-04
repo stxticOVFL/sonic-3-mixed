@@ -60,7 +60,7 @@ PUBLIC STATIC void SaveGame::Init() {
 	InitializedSaveGame = true;
 
 	memset(SaveGame::Savefiles, 0, sizeof(SaveGame::Savefiles));
-    IResource* SaveBin = IResources::Load("../Save.bin");
+    IResource* SaveBin = IResources::Load("../../Save.bin");
     if (SaveBin) {
         IStreamer reader(SaveBin);
         for (int s = 0; s < 36; s++) {
@@ -96,7 +96,7 @@ PUBLIC STATIC void SaveGame::InitializeSaveGame(int s) {
 }
 
 PUBLIC STATIC void SaveGame::Flush() {
-    IResource* SaveBin = IResources::Open("../Save.bin");
+    IResource* SaveBin = IResources::Open("../../Save.bin");
     if (SaveBin) {
         IStreamer writer(SaveBin);
         for (int s = 0; s < 36; s++) {

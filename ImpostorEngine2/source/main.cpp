@@ -78,9 +78,9 @@
     		discordPresence.partyMax = 4;
     	}
     	discordPresence.instance = 1;
-		if (time) {
-			discordPresence.startTimestamp = std::time(nullptr);
-		}
+		//if (time) {
+		//	discordPresence.startTimestamp = std::time(nullptr);
+		//}
     	Discord_UpdatePresence(&discordPresence);
     }
 #else
