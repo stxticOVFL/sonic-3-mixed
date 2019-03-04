@@ -3,17 +3,24 @@
 
 class IResources {
 public:
-
+	static const char* FormatPath(const char* path, int mode);
+	static IResource* Load(const char* bpath, int mode = 0);
+	static IResource* Load(const char* bpath, bool inMemory, int mode = 0);
+	static IResource* Open(const char* bpath, int mode = 0);
+	static bool Close(IResource* res);
+	static uint64_t Decompress(void* dst, int dstLen, const void* src, int srcLen);
 };
 #endif
 
 #include <Engine/IApp.h>
 #include <Engine/IResources.h>
+#include <fstream>
 
-PUBLIC STATIC IResource* IResources::Load(const char* path) {
-    return IResources::Load(path, false);
+PUBLIC STATIC IResource* IResources::Load(const char* bpath, int mode) {
+    return IResources::Load(bpath, false);
 }
-PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
+PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int mode) {
+	const char* path = FormatPath(bpath, mode);
     char FullName[256];
     sprintf(FullName, "%s%s", IFILE(""), path);
 
@@ -101,7 +108,37 @@ PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
 
     return res;
 }
-PUBLIC STATIC IResource* IResources::Open(const char* path) {
+
+PUBLIC STATIC const char* IResources::FormatPath(const char* path, int mode) {
+	std::string outfile;
+	switch (mode) {
+	case 2:
+	case 1: {
+		outfile.clear();
+		outfile.append("Mixed/");
+		outfile.append(path);
+		std::ifstream cfile(outfile);
+		if ((bool)cfile) {
+			break;
+		}
+	}
+	case 0: {
+		outfile.append("Classic/");
+		outfile.append(path);
+		std::ifstream cfile(outfile);
+		if ((bool)cfile) {
+			break;
+		}
+	}
+	default:
+		return path;
+	}
+	const char* out = outfile.c_str();
+	return out;
+}
+
+PUBLIC STATIC IResource* IResources::Open(const char* bpath, int mode) {
+	const char* path = FormatPath(bpath, mode);
 	char FullName[256];
 	sprintf(FullName, "%s%s", IFILE(""), path);
 
