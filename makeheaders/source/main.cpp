@@ -1167,7 +1167,7 @@ void MakeObjectListing(char* fullpath) {
     sprintf(fullasspath, "%s/Gen/ObjectListing.cpp", fullpath);
     //printf("%s\n", fullasspath);
 
-    char* ObjectListSource = (char*)calloc(1, 12024);
+    char* ObjectListSource = (char*)calloc(1, 30720);
     sprintf(ObjectListSource, template2, sauce.c_str(), sauceHash.c_str());
     //printf("%s\n\n\n", ObjectListSource);
     f = fopen(fullasspath, "wb");
