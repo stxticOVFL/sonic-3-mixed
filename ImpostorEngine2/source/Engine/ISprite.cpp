@@ -189,11 +189,16 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 
 PUBLIC void ISprite::LoadBin(const char* filename) {
     IResource* BinFile = IResources::Load(filename);
+    std::string extraPath = "Sprites/" + std::string(filename);
     if (!BinFile) {
-        IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
-        exit(0);
+        BinFile = IResources::Load(extraPath.c_str());
+        if (!BinFile) {
+            IApp::Print(2, "Couldn't open file '%s'!", filename);
+            fflush(stdin);
+            exit(0);
+        }
     }
+
 
     IStreamer reader(BinFile);
 
@@ -257,10 +262,14 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
 
 PUBLIC void ISprite::LoadAnimation(const char* filename) {
     IResource* SpriteFile = IResources::Load(filename);
+    std::string extraPath = "Sprites/" + std::string(filename);
     if (!SpriteFile) {
-        IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
-        exit(0);
+        SpriteFile = IResources::Load(extraPath.c_str());
+        if (!SpriteFile) {
+            IApp::Print(2, "Couldn't open file '%s'!", filename);
+            fflush(stdin);
+            exit(0);
+        }
     }
 
     IStreamer reader(SpriteFile);
@@ -322,18 +331,27 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 }
 
 PUBLIC void ISprite::LoadSprite(const char* filename) {
+    const char *filepath = NULL;
     IResource* res = IResources::Load(filename, true);
-	if (!res) {
-		IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
-		return;
-	}
+    std::string extraPath = "Sprites/" + std::string(filename);
+    if (res == NULL) {
+        filepath = extraPath.c_str();
+        IResource* newRes = IResources::Load(filepath, true);
+        res = newRes;
+        if (newRes == NULL) {
+            IApp::Print(2, "Couldn't open file '%s' or '%s'!", filename, filepath);
+            fflush(stdin);
+            exit(0);
+        }
+    } else {
+        filepath = filename;
+    }
+    
+    Filename = filepath;
 
     TextureID = 0;
     PaletteID = 0;
     PaletteAltID = 0;
-
-    Filename = filename;
 
     IStreamer stream(res);
     stream.Skip(6);
@@ -382,24 +400,35 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
 
     Data = (uint8_t*)malloc(Width * Height);
 
-    res = IResources::Load(filename, true);
+    res = IResources::Load(filepath, true);
 
     gd_GIF* gif = NULL;
-    if (!FindGIF(filename)) {
+    if (!FindGIF(filepath)) {
         gif = gd_open_gif(res);
         
-		std::pair<const char *, gd_GIF *> pair(filename, gd_copy_gif(gif));
+		std::pair<const char *, gd_GIF *> pair(filepath, gd_copy_gif(gif));
         GifMap.insert(pair);
         
         gd_get_frame(gif);
 
         gd_render_frame(gif, Data);
     } else {
-        gif = gd_copy_gif(GifMap.find(filename)->second);
-        gif->fd = res;
-        gd_get_frame(gif);
+        if (GifMap.find(filepath)->second != NULL) {    
+            gif = gd_copy_gif(GifMap.find(filepath)->second);
+            gif->fd = res;
+            gd_get_frame(gif);
 
-        gd_render_frame(gif, Data);
+            gd_render_frame(gif, Data);
+        } else {
+            gif = gd_open_gif(res);
+            
+            std::pair<const char *, gd_GIF *> pair(filepath, gd_copy_gif(gif));
+            GifMap.insert(pair);
+            
+            gd_get_frame(gif);
+
+            gd_render_frame(gif, Data);
+        }
     }
     
     gd_close_gif(gif);

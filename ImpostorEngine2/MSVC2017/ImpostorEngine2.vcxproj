@@ -127,6 +127,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\StarPost.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\Motobug.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\GHZ\MotobugSmoke.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Blastoid.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BlastoidShot.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Block.cpp" />

@@ -13,6 +13,7 @@ public:
 PUBLIC STATIC IResource* IResources::Load(const char* path) {
     return IResources::Load(path, false);
 }
+
 PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
     char FullName[256];
     sprintf(FullName, "%s%s", IFILE(""), path);
@@ -89,8 +90,7 @@ PUBLIC STATIC IResource* IResources::Load(const char* path, bool inMemory) {
             res->ZipLoading = false;
         }
         #endif
-    }
-    else {
+    } else {
         res->RW = SDL_RWFromFile(FullName, "rb");
         if (!res->RW) {
 			IApp::Print(2, "%s", SDL_GetError());

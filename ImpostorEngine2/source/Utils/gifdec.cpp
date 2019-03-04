@@ -110,6 +110,9 @@ ok:
 }
 
 gd_GIF* gd_copy_gif(gd_GIF *other) {
+	if (other == NULL) {
+		return NULL;
+	}
     gd_GIF* gif = (gd_GIF*)calloc(1, sizeof(*gif) + 5 * other->width * other->height);
 	gif->fd = other->fd;
 	gif->width = other->width;

@@ -41,9 +41,11 @@ PUBLIC size_t IResource::Read(void* dest, size_t size) {
     }
     return 0;
 }
+
 PUBLIC size_t IResource::Write(void* src, size_t size) {
 	return SDL_RWwrite(RW, src, 1, size);
 }
+
 PUBLIC size_t IResource::Seek(size_t where, int whence) {
     if (ZipLoading) {
         if (whence == RW_SEEK_SET) {
@@ -73,6 +75,7 @@ PUBLIC size_t IResource::Seek(size_t where, int whence) {
     }
     return 0;
 }
+
 PUBLIC size_t IResource::Position() {
     if (ZipLoading) {
         #if BOBERT
@@ -84,6 +87,7 @@ PUBLIC size_t IResource::Position() {
     }
     return 0;
 }
+
 PUBLIC size_t IResource::Size() {
     if (ZipLoading) {
         #if BOBERT

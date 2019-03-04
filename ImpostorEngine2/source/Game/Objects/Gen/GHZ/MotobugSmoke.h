@@ -1,7 +1,7 @@
-#ifndef MOTOBUG_H
-#define MOTOBUG_H
+#ifndef MOTOBUGSMOKE_H
+#define MOTOBUGSMOKE_H
 
-class Motobug;
+class MotobugSmoke;
 
 #include <Utils/Standard.h>
 
@@ -12,19 +12,15 @@ class Motobug;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class Motobug: public Enemy {
+class MotobugSmoke: public Object {
 public:    
     
-    int Acceleration;
-    int Time;
-    int SmokeDelay;
-    int State;
-    Object* Smoke;
+    int SmokeTime;
     
-    CONSTRUCTER Motobug();
+    CONSTRUCTER MotobugSmoke();
     void Create();
     void Update();
     void Render(int CamX, int CamY);
 };
 
-#endif /* MOTOBUG_H */
+#endif /* MOTOBUGSMOKE_H */
