@@ -2,6 +2,7 @@ object 0x6C;
 
 var Count:int;
 var MaxDepress:int;
+var CurSegment:int;
 var Children:Object[16];
 var BrakeIndexes:int[16];
 var Broken:bool;
@@ -15,12 +16,14 @@ event Create() {
     this.Priority = false;
 
     Frame = 0;
+    CurSegment = 0;
 
     Count = SubType & 0x7F;
 
     Angled = ((SubType & 0x80) / 0x80) * 3;
-    if (Scene.ZoneID != 5)
+    if (Scene.ZoneID != 5) {
         Angled = 0;
+    }
     Triggered = (SubType & 0x80) == 0x80;
 
     switch (Scene.ZoneID) {
@@ -64,6 +67,7 @@ event Create() {
         BrakeIndexes[7] = 1;
     }
 }
+
 event Update() {
     if (!CollidingWithPlayer) {
         for (var i:int = 0; i < Count; i++) {
@@ -89,11 +93,13 @@ event Update() {
     if (Timer >= 0)
         Timer--;
 }
+
 event Render(CamX:int, CamY:int) {
     for (var i:int = 0; i < Count; i++) {
         //Children[i].Render(CamX, CamY);
     }
 }
+
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (!Scene.Players[PlayerID].Ground)
         return 0;
@@ -101,8 +107,6 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     // if (PlayerID != 0)
         // return 1;
 
-
-    var CurSegment:int = 0;
     var MaxDep:int = 0;
 
     CurSegment = (Scene.Player.EZX - (X - 8 - Count * 8)) >> 4;
@@ -117,10 +121,19 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     for (var i:int = 0; i < Count; i++) {
         if (i <= CurSegment) {
             Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (i + 1) / (CurSegment + 1)) >> 16)) + i * Angled;
-        }
-        else {
+        } else {
             Children[i].Y = (Y + (MaxDep * -Math.sinHex(0x40 * (Count - i) / (Count - CurSegment)) >> 16)) + i * Angled;
         }
+    }
+    switch (Scene.ZoneID) {
+        case 5:
+            for (var i:int = 0; i < Count; i++) {
+                if (i == CurSegment) {
+                    Children[i].AutoAnimate = true;
+                    Children[i].Frame = 1;
+                }
+            }
+            break;
     }
 
     return 1;

@@ -17,6 +17,7 @@ public:
     
     int Count;
     int MaxDepress;
+    int CurSegment;
     Object* Children[16];
     int BrakeIndexes[16];
     bool Broken;

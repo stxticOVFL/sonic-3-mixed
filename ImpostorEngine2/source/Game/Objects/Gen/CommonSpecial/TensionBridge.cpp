@@ -12,9 +12,12 @@ void TensionBridge::Create() {
     this->Active = true;
     this->Priority = false;
     Frame = 0;
+    CurSegment = 0;
     Count = SubType & 0x7F;
     Angled = ((SubType & 0x80) / 0x80) * 3;
-    if (Scene->ZoneID != 5) Angled = 0;
+    if (Scene->ZoneID != 5) {
+        Angled = 0;
+    }
 
     Triggered = (SubType & 0x80) == 0x80;
     switch (Scene->ZoneID) {
@@ -97,7 +100,6 @@ void TensionBridge::Render(int CamX, int CamY) {
 int TensionBridge::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (!Scene->Players[PlayerID]->Ground) return 0;
 
-    int CurSegment = 0;
     int MaxDep = 0;
     CurSegment = (Scene->Player->EZX - (X - 8 - Count * 8)) >> 4;
     for (int i = 0; i < Count; i++)
@@ -118,6 +120,19 @@ int TensionBridge::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
             Children[i]->Y = (Y + (MaxDep * -Math::sinHex(0x40 * (Count - i) / (Count - CurSegment)) >> 16)) + i * Angled;
         }
     }
-    return 1;
+    switch (Scene->ZoneID) {
+        case 5:
+        for (int i = 0; i < Count; i++)
+{
+            if (i == CurSegment) {
+                Children[i]->AutoAnimate = true;
+                Children[i]->Frame = 1;
+            }
+
+        }
+    break;
+}
+
+return 1;
 }
 
