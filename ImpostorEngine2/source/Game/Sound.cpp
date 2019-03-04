@@ -269,14 +269,14 @@ PUBLIC STATIC void Sound::Init() {
 
 	LOADSOUND(SFX_EMERALD, "Sounds/Emerald.wav");
 
-    Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
-    Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);
+    Sound::SoundBank[0xFF] = new ISound("Music/Invincibility.ogg", true);
+    Sound::SoundBank[0xFE] = new ISound("Music/Sneakers.ogg", true);
     Sound::SoundBank[0xFD] = new ISound("Music/Drowning.ogg", true);
     Sound::SoundBank[0xFC] = new ISound("Music/ActComplete.ogg", true);
-    Sound::SoundBank[0xFB] = new ISound("Music/S3 1up.ogg", false);
+    Sound::SoundBank[0xFB] = new ISound("Music/1up.ogg", false);
 
-	Sound::SoundBank[0xF2] = new ISound("Music/S3 Knux Theme.ogg", true);
-	Sound::SoundBank[0xF1] = new ISound("Music/S3 Miniboss.ogg", true);
+	Sound::SoundBank[0xF2] = new ISound("Music/Knux Theme.ogg", true);
+	Sound::SoundBank[0xF1] = new ISound("Music/Miniboss.ogg", true);
 	Sound::SoundBank[0xF0] = new ISound("Music/Boss.ogg", true);
 
 	Sound::AudioLoaded = true;

@@ -102,7 +102,7 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     ZoneID = 20;
     Act = 0;
 
-    Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg", true);
+    Sound::SoundBank[0] = new ISound("Music/BlueSpheresSPD.ogg", true);
     Sound::Audio->LoopPoint[0] = 5309957;
 
 	if (!LayoutBackup)
@@ -196,9 +196,9 @@ PUBLIC void Level_SpecialStage::Init() {
 		MobileButtonsSprite->UpdatePalette();
 	}
 	if (!PauseSprite) {
-		PauseSprite = new ISprite("UI/PauseMenu.gif", App, 1);
+		PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App, 1);
 		PauseSprite->SetTransparentColorIndex(0);
-		PauseSprite->LoadAnimation("UI/PauseMenu.bin");
+		PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 	}
 
 	if (!ItemsSprite) {

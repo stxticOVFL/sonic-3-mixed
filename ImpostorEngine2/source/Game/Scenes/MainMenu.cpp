@@ -84,7 +84,7 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 	Sound::Audio = App->Audio;
 	Sound::Init();
 
-	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
+	// Sound::SoundBank[0] = new ISound("Music/Save Select.ogg", true);
 	// Sound::Audio->LoopPoint[0] = 131859;
 	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Data Select.ogg")) {
 		Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
@@ -94,15 +94,15 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 
 PUBLIC void Scene_MainMenu::Init() {
 	if (!MenuSprite) {
-		MenuSprite = new ISprite("UI/MainMenu.gif", App, 1);
-		MenuSprite->LoadAnimation("UI/MainMenu.bin");
+		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App, 1);
+		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
 		MenuSprite->SetTransparentColorIndex(0x2C);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SphereSprite) {
-		SphereSprite = new ISprite("UI/MenuSpheres.gif", App, 1);
+		SphereSprite = new ISprite("Sprites/UI/MenuSpheres.gif", App, 1);
 
 		ISprite::Animation an;
 		an.Name = (char*)"Sign in GitLab.com";
@@ -122,14 +122,14 @@ PUBLIC void Scene_MainMenu::Init() {
 		SphereSprite->SetTransparentColorIndex(26);
 	}
 	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App, 1);
-		SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
+		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
+		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-		TextSprite = new ISprite("UI/CreditsText.gif", App, 1);
-		TextSprite->LoadAnimation("UI/CreditsText.bin");
+		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App, 1);
+		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 

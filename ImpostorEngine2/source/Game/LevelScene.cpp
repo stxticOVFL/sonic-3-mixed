@@ -331,7 +331,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
 
-	MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+	MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App);
 	ISprite::Animation an;
 	an.Name = NULL;
 	an.FrameCount = 8;
@@ -349,8 +349,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	MobileButtonsSprite->SetTransparentColorIndex(0x05);
 	MobileButtonsSprite->UpdatePalette();
 
-	PauseSprite = new ISprite("UI/PauseEN.gif", App);
-	PauseSprite->LoadAnimation("UI/TextEN.bin");
+	PauseSprite = new ISprite("Sprites/UI/PauseEN.gif", App);
+	PauseSprite->LoadAnimation("Sprites/UI/TextEN.bin");
 	//*/
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
@@ -444,9 +444,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		startTime = SDL_GetTicks();
 
 		if (!PauseSprite) {
-			PauseSprite = new ISprite("UI/PauseMenu.bin", App, 1);
+			PauseSprite = new ISprite("Sprites/UI/PauseMenu.bin", App, 1);
 			PauseSprite->SetTransparentColorIndex(0);
-			//PauseSprite->LoadAnimation("UI/PauseMenu.bin");
+			//PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
 			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App, SaveGame::CurrentMode);
@@ -463,13 +463,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			GlobalDisplaySpriteS3K->LoadAnimation("Sprites/GlobalS3K/HUD.bin");
 		}*/
 		if (!SuperButtonsSprite) {
-			SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App, 1);
-			SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
+			SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
+			SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 			SuperButtonsSprite->SetPalette(1, 0x282028);
 			SuperButtonsSprite->UpdatePalette();
 		}
 		if (!MobileButtonsSprite) {
-			MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App, 1);
+			MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App, 1);
 			ISprite::Animation an;
 			an.Name = NULL;
 			an.FrameCount = 8;
