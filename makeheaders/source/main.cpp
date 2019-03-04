@@ -291,13 +291,13 @@ CLASSFILE load_class(char* filename) {
         printf("Could not load file (load_class): %s!\n", filename);
         exit(-69);
     }
-    //printf("Loading file: %s\n", filename);
+    printf("Loading file: %s\n", filename);
 
     bool in_interface = false;
     bool in_interfaced = false;
     int  in_variables = 0;
 
-    char ObjectName[256];
+    char ObjectName[512];
     int found = FindLastChar(filename, '/');
     memset(ObjectName, 0, 256);
     strcpy(ObjectName, filename + found + 1);
@@ -557,6 +557,7 @@ bool prelistdir(const char *name, int indent) {
     closedir(dir);
     return true;
 }
+
 void listdir(const char *name, int indent) {
     DIR *dir;
     struct dirent *entry;
@@ -599,6 +600,7 @@ struct ClassHash {
     uint32_t FilenameHash;
     uint32_t InterfaceChecksum;
 };
+
 vector<ClassHash> ClassHashes;
 int GetClassHash(uint32_t filenameHash) {
     for (int i = 0; i < ClassHashes.size(); i++) {
@@ -607,6 +609,7 @@ int GetClassHash(uint32_t filenameHash) {
     }
     return -1;
 }
+
 int PutClassHash(uint32_t filenameHash, uint32_t checkSum) {
     int idx = GetClassHash(filenameHash);
     if (idx >= 0) {
@@ -621,6 +624,7 @@ int PutClassHash(uint32_t filenameHash, uint32_t checkSum) {
     ClassHashes.push_back(ch);
     return 1;
 }
+
 void LoadClassHashTable() {
     #if MSVC
     FILE* f = fopen("../makeheaders.bin", "rb");
@@ -638,6 +642,7 @@ void LoadClassHashTable() {
         fclose(f);
     }
 }
+
 void SaveClassHashTable() {
     #if MSVC
 	FILE* f = fopen("../makeheaders.bin", "wb");
@@ -680,7 +685,7 @@ bool MakeHeader(char* filename) {
     strncpy(HeaderName, filename + found + 1, nextfind);
     memset(HeaderName + nextfind, 0, 256 - nextfind);
 
-    // printf("HeaderName: %s (%d)\n", HeaderName, strlen(HeaderName));
+    printf("HeaderName: %s (%d)\n", HeaderName, strlen(HeaderName));
 
     int ifScope = 0;
     while (true) {
@@ -873,6 +878,7 @@ bool MakeHeader(char* filename) {
     //*/
     return didChange;
 }
+
 bool ListClassDir(const char* name, const char* parent, int indent) {
     DIR* dir;
     struct dirent* entry;
@@ -919,6 +925,7 @@ struct ObjectHash {
     uint8_t  Unk3;
     uint8_t  SKOnly;
 };
+
 vector<ObjectHash> ObjectHashes;
 int GetObjectHash(uint32_t filenameHash) {
     for (int i = 0; i < ObjectHashes.size(); i++) {
@@ -927,6 +934,7 @@ int GetObjectHash(uint32_t filenameHash) {
     }
     return -1;
 }
+
 int PutObjectHash(uint32_t filenameHash, uint32_t checkSum, uint32_t objectID, bool skOnly) {
     int idx = GetObjectHash(filenameHash);
     if (idx >= 0) {
@@ -948,6 +956,7 @@ int PutObjectHash(uint32_t filenameHash, uint32_t checkSum, uint32_t objectID, b
     ObjectHashes.push_back(oh);
     return 1;
 }
+
 void LoadObjectHashTable() {
     #if MSVC
     FILE* f = fopen("../ie2_objtable.bin", "rb");
@@ -965,6 +974,7 @@ void LoadObjectHashTable() {
         fclose(f);
     }
 }
+
 void SaveObjectHashTable() {
     #if MSVC
 	FILE* f = fopen("../ie2_objtable.bin", "wb");
@@ -1060,6 +1070,7 @@ void ConvertIScriptToC(char* fullname, const char* parent, int startindex, char*
 
     ObjectNamesAndIDs.push_back(tuple<string, string, int>{ string(genfilenamebase + startindex + strlen("/Gen/")), string(objectNameCopy), ObjectID });
 }
+
 bool ListObjectDir(const char* name, const char* parent, int indent) {
     DIR* dir;
     struct dirent* entry;
@@ -1087,6 +1098,7 @@ bool ListObjectDir(const char* name, const char* parent, int indent) {
 
     return true;
 }
+
 void MakeObjectListing(char* fullpath) {
     PrintHeader(stdout, "Generating Object Listing...\n", PrintColor::Green);
 
@@ -1162,12 +1174,10 @@ void MakeObjectListing(char* fullpath) {
     fprintf(f, "%s", ObjectListHeader);
     fclose(f);
 
-
-
     sprintf(fullasspath, "%s/Gen/ObjectListing.cpp", fullpath);
-    //printf("%s\n", fullasspath);
+    printf("%s\n", fullasspath);
 
-    char* ObjectListSource = (char*)calloc(1, 12024);
+    char* ObjectListSource = (char*)calloc(1, 52024);
     sprintf(ObjectListSource, template2, sauce.c_str(), sauceHash.c_str());
     //printf("%s\n\n\n", ObjectListSource);
     f = fopen(fullasspath, "wb");

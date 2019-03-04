@@ -320,6 +320,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x40EU:
             return new ReliefEye();
             break;
+        case 0x40FU:
+            return new Platform();
+            break;
 
         default:
             break;
@@ -646,6 +649,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0xBBCA6AC5U:
             return new ReliefEye();
+            break;
+        case 0xC4B304CCU:
+            return new Platform();
             break;
 
         default:

@@ -1,0 +1,98 @@
+var Type:int;
+var AmplitudeX:int;
+var AmplitudeY:int;
+var Speed:int;
+var HasTension:bool;
+var FrameID:int;
+var Collision:int;
+var TileOriginX:int;
+var TileOriginY:int;
+var ChildCount:int;
+var Angle:int;
+
+enum PlatformType {
+    NORMAL,
+    UNK_1,
+    UNK_2,
+    UNK_3,
+    UNK_4,
+    UNK_5,
+    PUSHABLE,
+}
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+    Scene.AddSelfToRegistry(this, "Solid");
+
+    W = 64;
+    H = 64;
+
+    var i:int = 0;
+    Type = Attributes[0];
+    AmplitudeX = Attributes[1];
+    // AmplitudeY = Attributes[i++];
+    Speed = Attributes[2];
+    HasTension = Attributes[3];
+    FrameID = Attributes[4];
+    Collision = Attributes[5];
+    TileOriginX = Attributes[6];
+    // TileOriginY = Attributes[i++];
+    ChildCount = Attributes[7];
+    Angle = Attributes[8];
+
+    if (Collision == 0)
+        SolidTop = true;
+    else
+        Solid = true;
+
+	if (Type == PlatformType.PUSHABLE) {
+		Pushable = true;
+		PushMaxLeft = Speed * 16;
+		PushMaxRight = Speed * 16;
+	}
+
+    switch (FrameID) {
+        case 0:
+            W = 32;
+            H = 32;
+            break;
+        case 1:
+            W = 64;
+            H = 64;
+            break;
+        case 3:
+            W = 64;
+            H = 64;
+            break;
+        case 4:
+            W = 64;
+            H = 64;
+            break;
+        case 2:
+            W = 64;
+            H = 16;
+            break;
+        case 5:
+            W = 160;
+            H = 48;
+            break;
+        case 6:
+            W = 248;
+            H = 96;
+            break;
+    }
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+	} else {
+        G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
+    }
+}

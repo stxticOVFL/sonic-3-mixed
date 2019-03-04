@@ -107,6 +107,7 @@
 #include "GHZ/Motobug.h"			// 219C1E61
 #include "HCZ/BlastoidShot.h"			// 3692A9F5
 #include "MGZ/ReliefEye.h"			// BBCA6AC5
+#include "Test/Platform.h"			// C4B304CC
 
 
 enum {
@@ -216,6 +217,7 @@ enum {
     Obj_Motobug = 0x40C,
     Obj_BlastoidShot = 0x40D,
     Obj_ReliefEye = 0x40E,
+    Obj_Platform = 0x40F,
 };
 
 Object* GetNewObjectFromID(int ID);
