@@ -177,7 +177,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	G->FadeToWhite = true;
 
 	if (!MobileButtonsSprite) {
-		MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App, 1);
+		MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App, 1);
 		ISprite::Animation an;
 		an.Name = NULL;
 		an.FrameCount = 8;
