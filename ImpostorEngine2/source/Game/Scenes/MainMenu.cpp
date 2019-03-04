@@ -94,7 +94,7 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 
 PUBLIC void Scene_MainMenu::Init() {
 	if (!MenuSprite) {
-		MenuSprite = new ISprite("UI/MainMenu.gif", App);
+		MenuSprite = new ISprite("UI/MainMenu.gif", App, 1);
 		MenuSprite->LoadAnimation("UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
@@ -102,7 +102,7 @@ PUBLIC void Scene_MainMenu::Init() {
 		MenuSprite->UpdatePalette();
 	}
 	if (!SphereSprite) {
-		SphereSprite = new ISprite("UI/MenuSpheres.gif", App);
+		SphereSprite = new ISprite("UI/MenuSpheres.gif", App, 1);
 
 		ISprite::Animation an;
 		an.Name = (char*)"Sign in GitLab.com";
@@ -122,13 +122,13 @@ PUBLIC void Scene_MainMenu::Init() {
 		SphereSprite->SetTransparentColorIndex(26);
 	}
 	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
+		SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App, 1);
 		SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-		TextSprite = new ISprite("UI/CreditsText.gif", App);
+		TextSprite = new ISprite("UI/CreditsText.gif", App, 1);
 		TextSprite->LoadAnimation("UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}

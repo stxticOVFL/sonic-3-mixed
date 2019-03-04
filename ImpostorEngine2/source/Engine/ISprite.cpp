@@ -49,6 +49,7 @@ public:
     ISprite* LinkedSprite = NULL;
 
     bool Print = false; //
+	int Mode = 0;
 };
 #endif
 
@@ -64,8 +65,12 @@ public:
 static std::unordered_map<const char*, gd_GIF*> GifMap;
 
 PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
+	ISprite(filename, app, Mode);
+}
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
     App = app;
     G = app->G;
+	Mode = mode;
     if (strEndsWith(filename, ".bin")) {
         LoadBin(filename);
     } else {
@@ -189,7 +194,7 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 }
 
 PUBLIC void ISprite::LoadBin(const char* filename) {
-    IResource* BinFile = IResources::Load(filename);
+    IResource* BinFile = IResources::Load(filename, Mode);
     if (!BinFile) {
         IApp::Print(2, "Couldn't open file '%s'!", filename);
 		fflush(stdin);
@@ -257,7 +262,7 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
 }
 
 PUBLIC void ISprite::LoadAnimation(const char* filename) {
-    IResource* SpriteFile = IResources::Load(filename);
+    IResource* SpriteFile = IResources::Load(filename, Mode);
     if (!SpriteFile) {
         IApp::Print(2, "Couldn't open file '%s'!", filename);
 		fflush(stdin);
@@ -323,7 +328,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 }
 
 PUBLIC void ISprite::LoadSprite(const char* filename) {
-    IResource* res = IResources::Load(filename, true);
+    IResource* res = IResources::Load(filename, true, Mode);
 	if (!res) {
 		IApp::Print(2, "Couldn't open file '%s'!", filename);
 		fflush(stdin);

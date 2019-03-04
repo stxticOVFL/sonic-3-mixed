@@ -4,9 +4,9 @@
 class IResources {
 public:
 	static const char* FormatPath(const char* path, int mode);
-	static IResource* Load(const char* bpath, int mode = 0);
-	static IResource* Load(const char* bpath, bool inMemory, int mode = 0);
-	static IResource* Open(const char* bpath, int mode = 0);
+	static IResource* Load(const char* bpath, int mode = 1);
+	static IResource* Load(const char* bpath, bool inMemory, int mode = 1);
+	static IResource* Open(const char* bpath, int mode = 1);
 	static bool Close(IResource* res);
 	static uint64_t Decompress(void* dst, int dstLen, const void* src, int srcLen);
 };
@@ -16,10 +16,10 @@ public:
 #include <Engine/IResources.h>
 #include <fstream>
 
-PUBLIC STATIC IResource* IResources::Load(const char* bpath, int mode) {
+PUBLIC STATIC IResource* IResources::Load(const char* bpath, int mode = 1) {
     return IResources::Load(bpath, false);
 }
-PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int mode) {
+PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int mode = 1) {
 	const char* path = FormatPath(bpath, mode);
     char FullName[256];
     sprintf(FullName, "%s%s", IFILE(""), path);
@@ -137,7 +137,7 @@ PUBLIC STATIC const char* IResources::FormatPath(const char* path, int mode) {
 	return out;
 }
 
-PUBLIC STATIC IResource* IResources::Open(const char* bpath, int mode) {
+PUBLIC STATIC IResource* IResources::Open(const char* bpath, int mode = 1) {
 	const char* path = FormatPath(bpath, mode);
 	char FullName[256];
 	sprintf(FullName, "%s%s", IFILE(""), path);
