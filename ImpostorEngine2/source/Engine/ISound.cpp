@@ -21,6 +21,8 @@ public:
     IResource*        Resource = NULL;
     uint8_t*          ExtraBuffer = NULL;
 
+    int Mode = 0;
+
     struct Vorbis {
         OggVorbis_File vf;
         vorbis_info* info = NULL;
@@ -212,14 +214,14 @@ PUBLIC int ISound::SeekVorbis(Vorbis* vorb, int64_t pos) {
     return ov_pcm_seek(&vorb->vf, (ogg_int64_t)pos);
 }
 
-PUBLIC ISound::ISound(const char* filename) {
-    ISound::Load(filename, false);
+PUBLIC ISound::ISound(const char* filename, int mode) {
+    ISound::Load(filename, false, mode);
 }
-PUBLIC ISound::ISound(const char* filename, bool streamFromFile) {
-    ISound::Load(filename, streamFromFile);
+PUBLIC ISound::ISound(const char* filename, bool streamFromFile, int mode) {
+    ISound::Load(filename, streamFromFile, mode);
 }
 
-PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
+PUBLIC void ISound::Load(const char* filename, bool streamFromFile, int mode) {
     LoadFailed = true;
 
     StreamFromFile = streamFromFile;
