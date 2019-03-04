@@ -269,8 +269,14 @@ Object* GetNewObjectFromID(int ID) {
         case 0xAFU:
             return new CrushingColumn();
             break;
+        case 0xB3U:
+            return new SegmentedColumn();
+            break;
         case 0xB6U:
             return new IceCube();
+            break;
+        case 0xB8U:
+            return new HarmfulIce();
             break;
         case 0xC0U:
             return new Orbinaut();
@@ -599,8 +605,14 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0xA5F30B34U:
             return new CrushingColumn();
             break;
+        case 0x5EE8DBE4U:
+            return new SegmentedColumn();
+            break;
         case 0xE855624CU:
             return new IceCube();
+            break;
+        case 0x8BC9A52CU:
+            return new HarmfulIce();
             break;
         case 0x75BEA9FBU:
             return new Orbinaut();
