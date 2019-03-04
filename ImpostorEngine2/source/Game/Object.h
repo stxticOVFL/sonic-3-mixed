@@ -3,6 +3,10 @@
 
 #define Scene_AddSelfToRegistry(boots) Scene->Objects##boots[Scene->Object##boots##Count++] = this
 
+#ifndef CONSTRUCTER
+#define CONSTRUCTER
+#endif
+
 class LevelScene;
 class IPlayer;
 
