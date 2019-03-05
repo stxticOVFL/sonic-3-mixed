@@ -33,7 +33,6 @@ public:
     SDL_AudioStream*  Stream = NULL;
     IResource*        Resource = NULL;
     uint8_t*          ExtraBuffer = NULL;
-    int               Mode = 0;
     struct Vorbis {
     OggVorbis_File vf;
     vorbis_info* info = NULL;
@@ -45,9 +44,9 @@ public:
     Vorbis* LoadVorbis(IResource* src, SDL_AudioSpec *spec);
     int ReadVorbis(Vorbis* vorb, void* dst, int size);
     int SeekVorbis(Vorbis* vorb, int64_t pos);
-    ISound(const char* filename, int mode = 0);
-    ISound(const char* filename, bool streamFromFile, int mode = 0);
-    void Load(const char* filename, bool streamFromFile, int mode = 0);
+    ISound(const char* filename);
+    ISound(const char* filename, bool streamFromFile);
+    void Load(const char* filename, bool streamFromFile);
     int  RequestMoreData(int samples, int amount);
     void Seek(int amount);
     void Cleanup();

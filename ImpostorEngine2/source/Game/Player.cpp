@@ -457,7 +457,7 @@ void IPlayer::Create() {
 			int i = 0;
 			Sprites[0] = new ISprite("Sprites/Player/Sonic.gif", App, 0);
 
-			Sprites[0]->LoadAnimation("Sprites/Player/Sonic.bin", 0);
+			Sprites[0]->LoadAnimation("Sprites/Player/Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}

@@ -46,7 +46,8 @@ PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int 
 	const char* path = buffmantime;
     char FullName[256];
     sprintf(FullName, "%s%s", IFILE(""), path);
-
+	//printf(FullName);
+	IApp::Print(0, FullName);
     IResource* res = new IResource();
     res->ZipLoading = false;
     res->RW = NULL;
