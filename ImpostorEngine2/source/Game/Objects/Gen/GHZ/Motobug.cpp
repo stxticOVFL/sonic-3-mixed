@@ -6,7 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER Motobug::Motobug() {
-    BinIndex = LevelScene::LoadSpriteBin("Sprites/GHZ/Motobug.bin");
+    BinIndex = LevelScene::LoadSpriteBin("GHZ/Motobug.bin");
     Time = 30;
     SmokeDelay = 43;
     Gravity = 10;

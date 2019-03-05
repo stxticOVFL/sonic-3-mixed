@@ -127,37 +127,37 @@ PUBLIC void Level_MGZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
 	if (!MGZObjectsSprite) {
-		MGZObjectsSprite = new ISprite("Sprites/MGZ/Objects.gif", App);
+		MGZObjectsSprite = new ISprite("MGZ/Objects.gif", App);
 		MGZObjectsSprite->Print = true;
 
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Collapsing Bridge.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Dash Trigger.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Floating Platform.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Head Trigger.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Pulley.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Breakable Wall.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Trigger Platform.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Swinging Platform.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Moving Spike Platform.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Smashing Pillar.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Swinging Spike Ball.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Top Platform.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Miniboss.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/End Boss.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Non Animated Sprites.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Bubbles Badnik.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Spiker.bin");
-		MGZObjectsSprite->LoadAnimation("Sprites/MGZ/Mantis.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Collapsing Bridge.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Dash Trigger.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Floating Platform.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Head Trigger.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Pulley.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Breakable Wall.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Trigger Platform.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Swinging Platform.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Moving Spike Platform.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Smashing Pillar.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Swinging Spike Ball.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Top Platform.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Miniboss.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/End Boss.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Non Animated Sprites.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Bubbles Badnik.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Spiker.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Mantis.bin");
 	}
 
 	if (!KnuxSprite[0]) {
-		KnuxSprite[0] = new ISprite("Sprites/Players/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Sprites/Players/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Sprites/Players/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App);
+		KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+		KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+		KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+		KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+		KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-		KnuxSprite[0]->LoadAnimation("Sprites/Players/Knux.bin");
+		KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
 		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
 		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
 		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

@@ -209,32 +209,32 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
     if (!ICZObjectsSprite) {
-        ICZObjectsSprite = new ISprite("Sprites/ICZ/Objects.gif", App);
+        ICZObjectsSprite = new ISprite("ICZ/Objects.gif", App);
         ICZObjectsSprite->Print = true;
 
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 1.bin");
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Collapsing Bridge 2.bin");
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Cork Floor.bin");
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Cork Floor 2.bin");
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms.bin");
-		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms 2.bin");
-		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Platforms 3.bin");
-		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Particles.bin");
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Tension Bridge.bin");
-		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Wall and Column.bin");
-        ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Star Pointer.bin");
-		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Ice Cube.bin");
-		ICZObjectsSprite->LoadAnimation("Sprites/ICZ/Harmful Ice.bin");
+        ICZObjectsSprite->LoadAnimation("ICZ/Collapsing Bridge 1.bin");
+        ICZObjectsSprite->LoadAnimation("ICZ/Collapsing Bridge 2.bin");
+        ICZObjectsSprite->LoadAnimation("ICZ/Cork Floor.bin");
+        ICZObjectsSprite->LoadAnimation("ICZ/Cork Floor 2.bin");
+        ICZObjectsSprite->LoadAnimation("ICZ/Platforms.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Platforms 2.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Platforms 3.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Particles.bin");
+        ICZObjectsSprite->LoadAnimation("ICZ/Tension Bridge.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Wall and Column.bin");
+        ICZObjectsSprite->LoadAnimation("ICZ/Star Pointer.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Ice Cube.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Harmful Ice.bin");
     }
 
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Sprites/Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Sprites/Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Sprites/Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Sprites/Players/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

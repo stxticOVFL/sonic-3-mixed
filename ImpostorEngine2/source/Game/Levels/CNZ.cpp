@@ -456,37 +456,37 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
     if (!CNZObjectsSprite) {
-		CNZObjectsSprite = new ISprite("Sprites/CNZ/Objects.gif", App);
+		CNZObjectsSprite = new ISprite("CNZ/Objects.gif", App);
 		CNZObjectsSprite->Print = true;
 
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Breakable Wall.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Balloon.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Button.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cork Floor.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cylinder.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Door Horizontal.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/End Boss.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Light Bulb.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Miniboss.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Rising Platform.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Trap Door.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon.bin");
-		CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Ball.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Base.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Bumper.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Clamer.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Batbot.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Sparkle.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Breakable Wall.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Balloon.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Button.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cork Floor.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cylinder.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Door Horizontal.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/End Boss.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Light Bulb.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Miniboss.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Rising Platform.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Trap Door.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cannon.bin");
+		CNZObjectsSprite->LoadAnimation("CNZ/Cannon Ball.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cannon Base.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Bumper.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Clamer.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Batbot.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Sparkle.bin");
 	}
 
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Sprites/Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Sprites/Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Sprites/Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Sprites/Players/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
@@ -497,8 +497,7 @@ PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
 PUBLIC void Level_CNZ::FinishResults() {
 	if (VisualAct == 1) {
 		LevelScene::FinishResults();
-	}
-	else {
+	} else {
 		FadeAction = FadeActionType::NEXT_ZONE;
 		FadeTimerMax = 90;
 		FadeMax = 0x140;
@@ -525,8 +524,7 @@ PUBLIC void Level_CNZ::GoToNextAct() {
 		NextAct->RoutineNumber = 0x00;
 
 		App->NextScene = NextAct;
-	}
-	else {
+	} else {
 		Level_ICZ* NextAct = new Level_ICZ(App, G, 1);
 		TransferCommonLevelData(NextAct);
 		App->NextScene = NextAct;
@@ -550,12 +548,10 @@ PUBLIC void Level_CNZ::EarlyUpdate() {
 
             CameraMinX = 0x31E0;
             CameraMaxX = 0x33A0 - App->WIDTH;
-        }
-        else {
+        } else {
             Data->layers[1].Visible = false;
         }
-    }
-    else if (Act == 2) {
+    } else if (Act == 2) {
         // Layer Flags:
         // 0x1: Collidable
         // 0x2: Don't Repeat X
@@ -592,8 +588,7 @@ PUBLIC void Level_CNZ::Subupdate() {
 PUBLIC void Level_CNZ::HandleCamera() {
     if (Act == 1) {
 
-    }
-    else if (Act == 2) {
+    } else if (Act == 2) {
 
     }
     LevelScene::HandleCamera();

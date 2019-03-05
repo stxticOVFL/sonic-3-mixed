@@ -65,54 +65,50 @@ PUBLIC void Level_FBZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_FBZ::LoadZoneSpecificSprites() {
 	if (!SpriteMap["HCZ"]) {
-		SpriteMap["HCZ"] = new ISprite("Sprites/HCZ/Objects.gif", App);
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Button.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Fan.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/HandLauncher.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/BreakBar.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Decoration.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Platform.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Wake.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Bridge.bin");
-		// printf("\n");
+		SpriteMap["HCZ"] = new ISprite("HCZ/Objects.gif", App);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Button.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Fan.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/HandLauncher.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/BreakBar.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Decoration.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Platform.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Wake.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Bridge.bin");
 	}
 	if (!SpriteMap["HCZ Enemies"]) {
-		SpriteMap["HCZ Enemies"] = new ISprite("Sprites/HCZ/Enemies.gif", App);
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Blastoid.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Buggernaut.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/TurboSpiker.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/MegaChomper.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Pointdexter.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Jawz.bin");
-		// printf("\n");
+		SpriteMap["HCZ Enemies"] = new ISprite("HCZ/Enemies.gif", App);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Blastoid.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Buggernaut.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/TurboSpiker.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/MegaChomper.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Pointdexter.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Jawz.bin");
 	}
 	if (!SpriteMap["HCZ Boss"]) {
-		SpriteMap["HCZ Boss"] = new ISprite("Sprites/HCZ/Boss.gif", App);
-		SpriteMap["HCZ Boss"]->LoadAnimation("Sprites/HCZ/LaundroMobile.bin");
-		// printf("\n");
+		SpriteMap["HCZ Boss"] = new ISprite("HCZ/Boss.gif", App);
+		SpriteMap["HCZ Boss"]->LoadAnimation("HCZ/LaundroMobile.bin");
 	}
 
     if (!SpriteMap["MGZ"]) {
-		SpriteMap["MGZ"] = new ISprite("Sprites/MGZ/Objects.gif", App);
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Collapsing Bridge.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Dash Trigger.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Floating Platform.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Head Trigger.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Pulley.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Breakable Wall.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Trigger Platform.bin");
-        SpriteMap["MGZ"]->LoadAnimation("Sprites/MGZ/Swinging Platform.bin");
-		// printf("\n");
+		SpriteMap["MGZ"] = new ISprite("MGZ/Objects.gif", App);
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Collapsing Bridge.bin");
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Dash Trigger.bin");
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Floating Platform.bin");
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Head Trigger.bin");
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Pulley.bin");
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Breakable Wall.bin");
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Trigger Platform.bin");
+        SpriteMap["MGZ"]->LoadAnimation("MGZ/Swinging Platform.bin");
 	}
 
     if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Sprites/Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Sprites/Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Sprites/Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Sprites/Players/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

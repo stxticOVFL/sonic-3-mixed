@@ -111,7 +111,7 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
 	if (!LayoutExtra)
 		LayoutExtra = (Uint8*)calloc(0x400, 1);
 
-    Globe = new ISprite("Sprites/Special/Globe.gif", App);
+    Globe = new ISprite("Special/Globe.gif", App);
 	ISprite::Animation an;
 	an.Name = NULL;
 	an.FrameCount = 1;
@@ -126,38 +126,38 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
 	G->MakeFrameBufferID(Globe, an.Frames + 0);
 	Globe->Animations.push_back(an);
 
-    GlobeSpin = new ISprite("Sprites/Special/GlobeSpin.gif", App);
-    GlobeSpin->LoadAnimation("Sprites/Special/GlobeSpin.bin");
+    GlobeSpin = new ISprite("Special/GlobeSpin.gif", App);
+    GlobeSpin->LoadAnimation("Special/GlobeSpin.bin");
 
-    Horizon = new ISprite("Sprites/Special/Horizon.gif", App);
-    Horizon->LoadAnimation("Sprites/Special/Horizon.bin");
+    Horizon = new ISprite("Special/Horizon.gif", App);
+    Horizon->LoadAnimation("Special/Horizon.bin");
 
-    Objects = new ISprite("Sprites/Special/Objects.gif", App);
-    Objects->LoadAnimation("Sprites/Special/HUD.bin");
-    Objects->LoadAnimation("Sprites/Special/StageObjects.bin");
-    //Objects->LoadAnimation("Sprites/Special/PaletteIcon.bin");
+    Objects = new ISprite("Special/Objects.gif", App);
+    Objects->LoadAnimation("Special/HUD.bin");
+    Objects->LoadAnimation("Special/StageObjects.bin");
+    //Objects->LoadAnimation("Special/PaletteIcon.bin");
 
-    Players = new ISprite("Sprites/Special/Players.gif", App);
+    Players = new ISprite("Special/Players.gif", App);
 
 	switch (SaveGame::CurrentCharacterFlag)
 	{
 	case 0:
-		Players->LoadAnimation("Sprites/Special/Sonic.bin");
+		Players->LoadAnimation("Special/Sonic.bin");
 		break;
 	case 1:
-		Players->LoadAnimation("Sprites/Special/Tails.bin");
+		Players->LoadAnimation("Special/Tails.bin");
 		break;
 	case 2:
-		Players->LoadAnimation("Sprites/Special/Knuckles.bin");
+		Players->LoadAnimation("Special/Knuckles.bin");
 		break;
 	case 3:
-		Players->LoadAnimation("Sprites/Special/Mighty.bin");
+		Players->LoadAnimation("Special/Mighty.bin");
 		break;
 	case 4:
-		Players->LoadAnimation("Sprites/Special/Ray.bin");
+		Players->LoadAnimation("Special/Ray.bin");
 		break;
 	default:
-		Players->LoadAnimation("Sprites/Special/Sonic.bin");
+		Players->LoadAnimation("Special/Sonic.bin");
 		break;
 	}
 
@@ -177,7 +177,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	G->FadeToWhite = true;
 
 	if (!MobileButtonsSprite) {
-		MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App);
+		MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
 		ISprite::Animation an;
 		an.Name = NULL;
 		an.FrameCount = 8;
@@ -196,24 +196,24 @@ PUBLIC void Level_SpecialStage::Init() {
 		MobileButtonsSprite->UpdatePalette();
 	}
 	if (!PauseSprite) {
-		PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App);
+		PauseSprite = new ISprite("UI/PauseMenu.gif", App);
 		PauseSprite->SetTransparentColorIndex(0);
-		PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
+		PauseSprite->LoadAnimation("UI/PauseMenu.bin");
 	}
 
 	if (!ItemsSprite) {
 		//if (SaveGame::CurrentMode == 1) {
-			ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
+			ItemsSprite = new ISprite("Global/Items.gif", App);
 			ItemsSprite->Print = true;
-			ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
-			ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
-			ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
+			ItemsSprite->LoadAnimation("Global/ItemBox.bin");
+			ItemsSprite->LoadAnimation("Global/Ring.bin");
+			ItemsSprite->LoadAnimation("Special/Ring.bin");
 		/*}
 		else {
-			ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
-			ItemsSprite->LoadAnimation("Sprites/GlobalS3K/ItemBox.bin");
-			ItemsSprite->LoadAnimation("Sprites/GlobalS3K/Ring.bin");
-			//ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
+			ItemsSprite = new ISprite("GlobalS3K/Items.gif", App);
+			ItemsSprite->LoadAnimation("GlobalS3K/ItemBox.bin");
+			ItemsSprite->LoadAnimation("GlobalS3K/Ring.bin");
+			//ItemsSprite->LoadAnimation("Special/Ring.bin");
 		}*/
 	}
 

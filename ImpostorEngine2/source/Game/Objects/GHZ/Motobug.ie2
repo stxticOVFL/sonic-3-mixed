@@ -7,7 +7,7 @@ var State:int;
 var Smoke:Object;
 
 event Motobug() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("Sprites/GHZ/Motobug.bin");
+    BinIndex = LevelScene.LoadSpriteBin("GHZ/Motobug.bin");
     Time = 30;
     SmokeDelay = 43;
     Gravity = 10;

@@ -22,7 +22,7 @@ PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_TileConfigBin = "Stages/MHZ/TileConfig1.bin";
         Str_SceneBin = "Stages/MHZ/Scene1.bin";
         Str_TileSprite = "Stages/MHZ/16x16Tiles1.gif";
-        //Str_AnimatedSprites = "Sprites/MHZ/AnimatedTiles";
+        //Str_AnimatedSprites = "MHZ/AnimatedTiles";
         Str_ObjectsList = "Stages/MHZ/Objects1.bin";
         Str_RingsList = "Stages/MHZ/Rings1.bin";
     }
@@ -41,13 +41,13 @@ PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 
 PUBLIC void Level_MHZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Sprites/Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Sprites/Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Sprites/Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Sprites/Players/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
