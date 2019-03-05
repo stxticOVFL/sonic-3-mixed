@@ -310,7 +310,6 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
     std::string checkedFilename(filename);
     if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
         checkedFilename = "Sprites/" + checkedFilename;
-        Filename = checkedFilename;
     }
     IResource* SpriteFile = IResources::Load(checkedFilename.c_str());
     if (SpriteFile == NULL) {
@@ -321,7 +320,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 
     IStreamer reader(SpriteFile);
 
-    IApp::Print(-1 + Print, "\"%s\"", Filename.c_str());
+    IApp::Print(-1 + Print, "\"%s\"", checkedFilename.c_str());
 
     reader.ReadUInt32BE(); // magic
 
