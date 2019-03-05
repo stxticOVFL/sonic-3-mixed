@@ -46,8 +46,7 @@ PUBLIC STATIC IResource* IResources::Load(const char* bpath, bool inMemory, int 
 	const char* path = buffmantime;
     char FullName[256];
     sprintf(FullName, "%s%s", IFILE(""), path);
-	//printf(FullName);
-	IApp::Print(0, FullName);
+
     IResource* res = new IResource();
     res->ZipLoading = false;
     res->RW = NULL;
@@ -178,7 +177,7 @@ PUBLIC STATIC void IResources::FormatPath(const char* path, int mode) {
 //Using RSDK code to fucking make this work AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa - Ducky
 PUBLIC STATIC int IResources::StrCopy(char* dest, char* src)
 {
-	int result;
+	int result = 0;
 	int v3; // ecx
 	char v4; // dl
 
@@ -201,7 +200,7 @@ PUBLIC STATIC int IResources::StrCopy(char* dest, char* src)
 PUBLIC STATIC int IResources::StrAdd(char* dest, char* src)
 {
 	char* v2; // edx
-	int result; // eax
+	int result = 0; // eax
 	char* v4; // edi
 	char v5; // dl
 	char* v6; // esi
