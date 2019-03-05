@@ -177,7 +177,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	G->FadeToWhite = true;
 
 	if (!MobileButtonsSprite) {
-		MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+		MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App);
 		ISprite::Animation an;
 		an.Name = NULL;
 		an.FrameCount = 8;
@@ -196,9 +196,9 @@ PUBLIC void Level_SpecialStage::Init() {
 		MobileButtonsSprite->UpdatePalette();
 	}
 	if (!PauseSprite) {
-		PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+		PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App);
 		PauseSprite->SetTransparentColorIndex(0);
-		PauseSprite->LoadAnimation("UI/PauseMenu.bin");
+		PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 	}
 
 	if (!ItemsSprite) {
