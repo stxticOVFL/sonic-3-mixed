@@ -329,7 +329,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
 
-	MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+	MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App);
 	ISprite::Animation an;
 	an.Name = NULL;
 	an.FrameCount = 8;
@@ -347,8 +347,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	MobileButtonsSprite->SetTransparentColorIndex(0x05);
 	MobileButtonsSprite->UpdatePalette();
 
-	PauseSprite = new ISprite("UI/PauseEN.gif", App);
-	PauseSprite->LoadAnimation("UI/TextEN.bin");
+	PauseSprite = new ISprite("Sprites/UI/PauseEN.gif", App);
+	PauseSprite->LoadAnimation("Sprites/UI/TextEN.bin");
 	//*/
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Creating GlobalDisplaySprite...", (SDL_GetTicks() - startTime) / 1000.0);
@@ -425,7 +425,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	uint64_t startTime = SDL_GetTicks();
 	if (!Data) {
 		AlreadyLoaded = false;
-		std::memset(SpriteMapIDs, 0, 0x100);
+		std::memset(SpriteMapIDs, 0, 0x400);
 
 		FadeAction = FadeActionType::FADEIN;
 		FadeTimerMax = 90;
@@ -435,8 +435,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		startTime = SDL_GetTicks();
 
 		// Test Loading Models
-		if (!GiantRingModel)
+		if (!GiantRingModel) {
 			GiantRingModel = new IModel("Meshes/SpecialRing.bin", G);
+        }
 
 		IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "GiantRingModel", (SDL_GetTicks() - startTime) / 1000.0);
 		startTime = SDL_GetTicks();
@@ -444,23 +445,20 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		if (!PauseSprite) {
 			PauseSprite = new ISprite("UI/PauseMenu.bin", App);
 			PauseSprite->SetTransparentColorIndex(0);
-			//PauseSprite->LoadAnimation("UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
-			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
+			GlobalDisplaySprite = new ISprite("Global/Display.gif", App);
 			GlobalDisplaySprite->Print = App->DEV;
-			GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
-			GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
-			GlobalDisplaySprite->LoadAnimation("Sprites/Global/PlaneSwitch.bin");
-			GlobalDisplaySprite->LoadAnimation("Sprites/Global/TicMark.bin");
+			GlobalDisplaySprite->LoadAnimation("Global/HUD.bin");
+			GlobalDisplaySprite->LoadAnimation("Global/TitleCard.bin");
+			GlobalDisplaySprite->LoadAnimation("Global/PlaneSwitch.bin");
+			GlobalDisplaySprite->LoadAnimation("Global/TicMark.bin");
 		}
 		if (!GlobalDisplaySpriteS3K) {
-			GlobalDisplaySpriteS3K = new ISprite("Sprites/GlobalS3K/Display.gif", App);
-			GlobalDisplaySpriteS3K->LoadAnimation("Sprites/GlobalS3K/HUD.bin");
+			GlobalDisplaySpriteS3K = new ISprite("GlobalS3K/HUD.bin", App);
 		}
 		if (!SuperButtonsSprite) {
-			SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
-			SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
+			SuperButtonsSprite = new ISprite("UI/SuperButtons.bin", App);
 			SuperButtonsSprite->SetPalette(1, 0x282028);
 			SuperButtonsSprite->UpdatePalette();
 		}
@@ -484,82 +482,72 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			MobileButtonsSprite->UpdatePalette();
 		}
 		if (!EditorSprite) {
-			EditorSprite = new ISprite("Sprites/Editor/Icons.gif", App);
-			EditorSprite->LoadAnimation("Sprites/Editor/PlayerIcons.bin");
-			EditorSprite->LoadAnimation("Sprites/Editor/EditorIcons.bin");
+			EditorSprite = new ISprite("Editor/Icons.gif", App);
+			EditorSprite->LoadAnimation("Editor/PlayerIcons.bin");
+			EditorSprite->LoadAnimation("Editor/EditorIcons.bin");
 		}
 		if (!ItemsSprite) {
 			if (SaveGame::CurrentMode == 1) {
-				ItemsSprite = new ISprite("Sprites/Global/Items.gif", App);
-				ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
-				ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
-				ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
-			}
-			else {
-				ItemsSprite = new ISprite("Sprites/GlobalS3K/Items.gif", App);
-				ItemsSprite->LoadAnimation("Sprites/GlobalS3K/ItemBox.bin");
-				ItemsSprite->LoadAnimation("Sprites/GlobalS3K/Ring.bin");
+				ItemsSprite = new ISprite("Global/Items.gif", App);
+				ItemsSprite->LoadAnimation("Global/ItemBox.bin");
+				ItemsSprite->LoadAnimation("Global/Ring.bin");
+				ItemsSprite->LoadAnimation("Special/Ring.bin");
+			} else {
+				ItemsSprite = new ISprite("GlobalS3K/Items.gif", App);
+				ItemsSprite->LoadAnimation("GlobalS3K/ItemBox.bin");
+				ItemsSprite->LoadAnimation("GlobalS3K/Ring.bin");
 			}
 		}
 		if (!AnimalsSprite) {
-			AnimalsSprite = new ISprite("Sprites/Global/Animals.gif", App);
-			AnimalsSprite->LoadAnimation("Sprites/Global/Animals.bin");
+			AnimalsSprite = new ISprite("Global/Animals.bin", App);
 		}
 		if (!ObjectsSprite) {
 			if (SaveGame::CurrentMode == 1) {
-				ObjectsSprite = new ISprite("Sprites/Global/Objects.gif", App);
-				ObjectsSprite->LoadAnimation("Sprites/Global/Springs.bin");
-				ObjectsSprite->LoadAnimation("Sprites/Global/Spikes.bin");
-				ObjectsSprite->LoadAnimation("Sprites/Global/StarPost.bin");
-				ObjectsSprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
+				ObjectsSprite = new ISprite("Global/Objects.gif", App);
+				ObjectsSprite->LoadAnimation("Global/Springs.bin");
+				ObjectsSprite->LoadAnimation("Global/Spikes.bin");
+				ObjectsSprite->LoadAnimation("Global/StarPost.bin");
+				ObjectsSprite->LoadAnimation("Global/ScoreBonus.bin");
 			}
 			else {
-				ObjectsSprite = new ISprite("Sprites/GlobalS3K/Objects.gif", App);
-				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Springs.bin");
-				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Spikes.bin");
-				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/StarPost.bin");
-				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/ScoreBonus.bin");
+				ObjectsSprite = new ISprite("GlobalS3K/Objects.gif", App);
+				ObjectsSprite->LoadAnimation("GlobalS3K/Springs.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/Spikes.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/StarPost.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/ScoreBonus.bin");
 
-				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/Gray Button.bin");
-				ObjectsSprite->LoadAnimation("Sprites/GlobalS3K/EggPrison.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/Gray Button.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/EggPrison.bin");
 			}
-			// printf("\n");
 		}
 		if (!Objects2Sprite) {
-			Objects2Sprite = new ISprite("Sprites/Global/Objects2.gif", App);
-			Objects2Sprite->LoadAnimation("Sprites/Global/SignPost.bin");
-			// printf("\n");
+			Objects2Sprite = new ISprite("Global/SignPost.bin", App);
 		}
 		if (!Objects3Sprite) {
-			Objects3Sprite = new ISprite("Sprites/Global/Objects3.gif", App);
-			Objects3Sprite->LoadAnimation("Sprites/Global/SpecialRing.bin");
-			Objects3Sprite->LoadAnimation("Sprites/Global/SuperSparkle.bin");
-			Objects3Sprite->LoadAnimation("Sprites/Global/Shields.bin");
-			// printf("\n");
+			Objects3Sprite = new ISprite("Global/Objects3.gif", App);
+			Objects3Sprite->LoadAnimation("Global/SpecialRing.bin");
+			Objects3Sprite->LoadAnimation("Global/SuperSparkle.bin");
+			Objects3Sprite->LoadAnimation("Global/Shields.bin");
 		}
 		if (!RobotnikSprite) {
-			RobotnikSprite = new ISprite("Sprites/GlobalS3K/Robotnik.gif", App);
-			RobotnikSprite->LoadAnimation("Sprites/GlobalS3K/EggMobile.bin");
-			RobotnikSprite->LoadAnimation("Sprites/GlobalS3K/Crane.bin");
-			// printf("\n");
+			RobotnikSprite = new ISprite("GlobalS3K/Robotnik.gif", App);
+			RobotnikSprite->LoadAnimation("GlobalS3K/EggMobile.bin");
+			RobotnikSprite->LoadAnimation("GlobalS3K/Crane.bin");
 		}
 		if (!ExplosionSprite) {
 			if (SaveGame::CurrentMode == 1) {
-				ExplosionSprite = new ISprite("Sprites/Global/Explosions.gif", App);
-				ExplosionSprite->LoadAnimation("Sprites/Global/Dust.bin");
-				ExplosionSprite->LoadAnimation("Sprites/Global/Explosions.bin");
+				ExplosionSprite = new ISprite("Global/Explosions.gif", App);
+				ExplosionSprite->LoadAnimation("Global/Dust.bin");
+				ExplosionSprite->LoadAnimation("Global/Explosions.bin");
+			} else {
+				ExplosionSprite = new ISprite("GlobalS3K/Explosions.gif", App);
+				ExplosionSprite->LoadAnimation("GlobalS3K/Dust.bin");
+				ExplosionSprite->LoadAnimation("GlobalS3K/Explosions.bin");
 			}
-			else {
-				ExplosionSprite = new ISprite("Sprites/GlobalS3K/Explosions.gif", App);
-				ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Dust.bin");
-				ExplosionSprite->LoadAnimation("Sprites/GlobalS3K/Explosions.bin");
-			}
-			// printf("\n");
 		}
 		if (!WaterSprite) {
-			WaterSprite = new ISprite("Sprites/Global/Water.gif", App);
-			WaterSprite->Print = true;
-			WaterSprite->LoadAnimation("Sprites/Global/Water.bin");
+			WaterSprite = new ISprite("Global/Water.gif", App, true);
+            WaterSprite->LoadAnimation("Global/Water.bin");
 		}
 
 		IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);
@@ -1489,8 +1477,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			an.Frames[i] = ts_af;
 			G->MakeFrameBufferID(TileSprite, an.Frames + i);
 		}
-	}
-	else {
+	} else {
 		for (int i = 0; i < 0x400; i++) {
 			ISprite::AnimFrame ts_af;
 			ts_af.X = 0;
@@ -1540,8 +1527,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		}
 
 		free(TileData);
-	}
-	else {
+	} else {
 		App->Print(2, "TileConfig at '%s' could not be read.", Str_TileConfigBin);
 		exit(1);
 	}
@@ -1564,12 +1550,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 			LevelTitle = LevelName;
 			while (*LevelTitle) {
-				if (*LevelTitle >= 'a' && *LevelTitle >= 'z')
+				if (*LevelTitle >= 'a' && *LevelTitle >= 'z') {
 					*LevelTitle += 'A' - 'a';
-				else if (*LevelTitle == ' ')
+				} else if (*LevelTitle == ' ') {
 					*LevelTitle = ' ';
-				else
+				} else {
 					*LevelTitle = ' ';
+                }
 				//IApp::Print(2, "Invalid character '%c' in Level Title.", *LevelTitle);
 				LevelTitle++;
 			}
@@ -1581,8 +1568,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			free(reader.ReadRSDKString()); // Song File
 			reader.ReadUInt32(); // Loop Point
 			reader.ReadUInt32(); // Background Color
-		}
-		else {
+		} else {
 			free(reader.ReadBytes(16));
 			free(reader.ReadRSDKString());
 			Data->cameraLayer = reader.ReadByte(); // UnknownByte2
@@ -1897,19 +1883,19 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						bool PRIORITY = false;
 
 						if (ttty == 0) {
-							if (FLIPY)
+							if (FLIPY) {
 								SubType |= 0x20;
-							else
+							} else {
 								SubType |= 0x0;
-						}
-						else if (ttty == 1) {
+                            }
+						} else if (ttty == 1) {
 							SubType |= 0x10;
-						}
-						else if (ttty == 2) {
-							if (!FLIPY)
+						} else if (ttty == 2) {
+							if (!FLIPY) {
 								SubType |= 0x30;
-							else
+							} else {
 								SubType |= 0x40;
+                            }
 						}
 
 						ADD_OBJECT();
@@ -1973,7 +1959,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						RingProps[RingPropCount++] = op;
 						break;
 					}
-
 					case OBJ_MONITOR:
 						objHash = 0xBDE7E33AU;
 					default:
@@ -2545,15 +2530,14 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			}
 
 			IResources::Close(StageBin);
-		}
-		else {
+		} else {
 			App->Print(2, "StageConfig at '%s' could not be read.", Str_StageBin);
 			exit(1);
 		}
-	}
-	else {
-		if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
+	} else {
+		if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000) {
 			TileSprite->PaletteSize = 0x80;
+        }
 		TileSprite->SplitPalette();
 		TileSprite->UpdatePalette();
 
@@ -2672,7 +2656,7 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 	}
 }
 
-PUBLIC STATIC  int  LevelScene::LoadStatic(void* data) {
+PUBLIC STATIC int LevelScene::LoadStatic(void* data) {
 	LevelScene* self = (LevelScene*)data;
 	self->LoadData();
 	return 0;
@@ -2713,8 +2697,9 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	ObjectBreakableCount = 0;
 	ObjectPathSwitcherCount = 0;
 
-	for (int i = 0; i < Data->layerCount; i++)
-		memcpy(Data->layers[i].Tiles, Data->layers[i].TilesBackup, Data->layers[i].Width * Data->layers[i].Height * sizeof(short));
+	for (int i = 0; i < Data->layerCount; i++) {
+        memcpy(Data->layers[i].Tiles, Data->layers[i].TilesBackup, Data->layers[i].Width * Data->layers[i].Height * sizeof(short));
+    }
 
 	StopTimer = false;
 
@@ -2774,8 +2759,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	CameraX = (Player->EZX + Player->CameraX) - App->WIDTH / 2;
 	if (ManiaLevel) {
 		CameraY = (Player->EZY + Player->CameraY - 4) - App->HEIGHT / 2;
-	}
-	else {
+	} else {
 		CameraY = (Player->EZY + Player->CameraY + 8) - App->HEIGHT / 2;
 	}
 
@@ -2836,12 +2820,14 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 
 
 	char* ModeName;
-	if (SaveGame::CurrentMode == 0)
+	if (SaveGame::CurrentMode == 0) {
 		ModeName = "Classic Mode";
-	else if (SaveGame::CurrentMode == 1)
+	} else if (SaveGame::CurrentMode == 1) {
 		ModeName = "Mixed Mode";
-	else if (SaveGame::CurrentMode == 2)
+	} else if (SaveGame::CurrentMode == 2) {
 		ModeName = "Locked On";
+	}
+    
 	Discord_UpdatePresence(ModeName, levelname, imgkey, true);
 }
 
@@ -5920,8 +5906,12 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	}
 	ObjectCount = 0;
     
+	for (size_t i = 0; i < 0x400; i++) {
+        CLEANUP(SpriteMapIDs[i]);
+	}
+    
 	for (size_t i = 0; i < SpriteBinMapIDs.size(); i++) {
-		delete SpriteBinMapIDs.at(i);
+        CLEANUP(SpriteBinMapIDs.at(i));
 	}
 
 	for (int i = 0; i < DebugObjectIDCount; i++) {
@@ -5949,9 +5939,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	CLEANUP(PauseSprite);
 	CLEANUP(GlobalDisplaySprite);
 	CLEANUP(MobileButtonsSprite);
-	CLEANUP(ItemsSprite);
 	CLEANUP(AnimalsSprite);
-	CLEANUP(ObjectsSprite);
 	CLEANUP(Objects2Sprite);
 	CLEANUP(Objects3Sprite);
 	CLEANUP(RobotnikSprite);

@@ -141,6 +141,7 @@ void print_class(const char* directory, CLASSFILE data) {
     fprintf(fp, "#define PROTECTED\n");
     fprintf(fp, "#define STATIC\n");
     fprintf(fp, "#define VIRTUAL\n");
+    fprintf(fp, "#define CONSTRUCTER\n");
     fprintf(fp, "\n");
     for (int i = 0; i < data.classes_needed.size(); i++) {
         fprintf(fp, "class %s;\n", data.classes_needed[i].c_str());

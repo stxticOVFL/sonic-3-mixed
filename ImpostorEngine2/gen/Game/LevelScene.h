@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class ISprite;
 class ISprite;
@@ -214,7 +215,7 @@ public:
     static size_t LoadSpriteBin(const char* Filename);
     virtual void LoadData();
     virtual void Init();
-    static  int  LoadStatic(void* data);
+    static int LoadStatic(void* data);
     void LoadInBackground();
     virtual void RestartStage(bool doActTransition, bool drawBackground);
     virtual void PatchLayer(int layer);

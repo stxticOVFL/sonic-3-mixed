@@ -316,8 +316,7 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
         CutsceneActTimer = 60;
 
         Data->layers[4].OffsetY = 0;
-    }
-    else {
+    } else {
         VisualWaterLevel = 0x528;
         WaterLevel = 0x528;
 
@@ -329,8 +328,7 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
             if (SavedPositionX == -1) {
                 if (!doActTransition) {
                     App->NextScene = new Level_AIZ(App, G, 1);
-                }
-                else {
+                } else {
                     LevelCardTimer = 6.0;
                     FadeTimer = -1;
                     FadeAction = 0;
@@ -344,8 +342,7 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
         if (RoutineNumber == -2) {
             LevelCardTimer = 6.0;
             LevelCardHide = true;
-        }
-        else {
+        } else {
             LevelCardTimer = 0.0;
             LevelCardHide = false;
         }
@@ -391,59 +388,59 @@ PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
     if (!AIZObjectsSprite) {
-		AIZObjectsSprite = new ISprite("Sprites/AIZ/Objects.gif", App);
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Tree.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Zipline Peg.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Animated Sprites.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Breakable Wall.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Caterkiller Jr.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Log Bridge.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor Water.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Drawbridge.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Draw Bridge Fire.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 1).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 2).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 1).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 2).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Flipping Bridge.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Foreground Plant.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Monkey Dude.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Non Animated Sprites.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot Dust.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Ride Vine.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Spiked Log.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Tulipon.bin");
+		AIZObjectsSprite = new ISprite("AIZ/Objects.gif", App);
+        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Tree.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Zipline Peg.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Animated Sprites.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Breakable Wall.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Caterkiller Jr.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Log Bridge.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor Water.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Drawbridge.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Draw Bridge Fire.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 1).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 2).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 1).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 2).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Flipping Bridge.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Foreground Plant.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Monkey Dude.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Non Animated Sprites.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot Dust.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Ride Vine.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Spiked Log.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Tulipon.bin");
 	}
 
     if (!AIZBossSprite) {
-        AIZBossSprite = new ISprite("Sprites/AIZ/Boss.gif", App);
+        AIZBossSprite = new ISprite("AIZ/Boss.gif", App);
         AIZBossSprite->Print = true;
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Background Tree.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Airship.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/End Boss.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Miniboss.bin");
+        AIZBossSprite->LoadAnimation("AIZ/Act 2 Background Tree.bin");
+        AIZBossSprite->LoadAnimation("AIZ/Airship.bin");
+        AIZBossSprite->LoadAnimation("AIZ/End Boss.bin");
+        AIZBossSprite->LoadAnimation("AIZ/Miniboss.bin");
     }
 
     if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Player/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Player/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Player/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Player/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

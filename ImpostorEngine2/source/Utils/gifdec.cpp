@@ -98,8 +98,9 @@ gd_GIF* gd_open_gif(IResource* fd) {//const char *fname) {
 	gif->bgindex = bgidx;
 	gif->canvas = (uint8_t *)&gif[1];
 	gif->frame = &gif->canvas[3 * width * height];
-	if (gif->bgindex)
+	if (gif->bgindex) {
 		memset(gif->frame, gif->bgindex, gif->width * gif->height);
+    }
 	gif->anim_start = fd->Seek(0, RW_SEEK_CUR);
 	goto ok;
 fail:
@@ -110,25 +111,23 @@ ok:
 }
 
 gd_GIF* gd_copy_gif(gd_GIF *other) {
+	if (other == NULL) {
+		return NULL;
+	}
     gd_GIF* gif = (gd_GIF*)calloc(1, sizeof(*gif) + 5 * other->width * other->height);
-	gif->fd = other->fd;
-	gif->width = other->width;
-	gif->height = other->height;
-	gif->depth = other->depth;
-    gif->loop_count = other->loop_count;
-    gif->gce = other->gce;
-    gif->palette = &gif->gct;
-    gif->lct.size = other->lct.size;
-	memcpy(gif->lct.colors, other->lct.colors, 768);
+    
+    memcpy(gif, other, sizeof(*gif) + 5 * other->width * other->height);
     gif->gct.size = other->gct.size;
-	memcpy(gif->gct.colors, other->gct.colors, 768);
-    gif->bgindex = other->bgindex;
-	gif->canvas = (uint8_t *)&gif[1];
-	gif->frame = &gif->canvas[3 * other->width * other->height];
+    memcpy(gif->gct.colors, other->gct.colors, sizeof(other->gct.colors));
+    gif->lct.size = other->lct.size;
+    memcpy(gif->lct.colors, other->lct.colors, sizeof(other->lct.colors));
+    
+    gif->palette = &gif->gct;
+    gif->canvas = (uint8_t *)&gif[1];
+    gif->frame = &gif->canvas[3 * other->width * other->height];
 	if (gif->bgindex) {
 		memset(gif->frame, gif->bgindex, gif->width * gif->height);
     }
-    gif->anim_start = other->anim_start;
     return gif;
 }
 

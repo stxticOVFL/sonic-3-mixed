@@ -85,44 +85,44 @@ PUBLIC void Level_LBZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
     if (!LBZObjectsSprite) {
-		LBZObjectsSprite = new ISprite("Sprites/LBZ/Objects.gif", App);
+		LBZObjectsSprite = new ISprite("LBZ/Objects.gif", App);
 		LBZObjectsSprite->Print = true;
 
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Tunnel Exhaust.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Breakable Wall.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Collapsing Bridge.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Collapsing Ledge.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Cork Floor.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Cup Elevator.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Exploding Trigger.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Flame Thrower.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Exploding Trigger.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Gate Laser.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Knuckles Bomb.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Knuckles Pillar.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Lowering Grapple.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Floating Platform.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/PipePlug.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Player Launcher.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Ride Grapple.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Smashing Spikes.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Spin Launcher.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Trigger Bridge.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Tube Elevator.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Miniboss.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/End Boss.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Final Boss.bin");
-		LBZObjectsSprite->LoadAnimation("Sprites/LBZ/Non Animated Sprites.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Tunnel Exhaust.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Breakable Wall.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Collapsing Bridge.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Collapsing Ledge.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Cork Floor.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Cup Elevator.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Exploding Trigger.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Flame Thrower.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Exploding Trigger.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Gate Laser.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Knuckles Bomb.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Knuckles Pillar.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Lowering Grapple.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Floating Platform.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/PipePlug.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Player Launcher.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Ride Grapple.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Smashing Spikes.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Spin Launcher.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Trigger Bridge.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Tube Elevator.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Miniboss.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/End Boss.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Final Boss.bin");
+		LBZObjectsSprite->LoadAnimation("LBZ/Non Animated Sprites.bin");
 	}
 
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Player/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Player/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Player/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Player/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

@@ -41,13 +41,13 @@ PUBLIC Level_ALZ::Level_ALZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 
 PUBLIC void Level_ALZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Player/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Player/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Player/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Player/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

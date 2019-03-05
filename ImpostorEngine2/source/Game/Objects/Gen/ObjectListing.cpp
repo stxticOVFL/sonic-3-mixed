@@ -321,12 +321,15 @@ Object* GetNewObjectFromID(int ID) {
             return new Motobug();
             break;
         case 0x40DU:
-            return new BlastoidShot();
+            return new MotobugSmoke();
             break;
         case 0x40EU:
-            return new ReliefEye();
+            return new BlastoidShot();
             break;
         case 0x40FU:
+            return new ReliefEye();
+            break;
+        case 0x410U:
             return new Platform();
             break;
 
@@ -655,6 +658,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x219C1E61U:
             return new Motobug();
+            break;
+        case 0x5B38E7A8U:
+            return new MotobugSmoke();
             break;
         case 0x3692A9F5U:
             return new BlastoidShot();

@@ -45,7 +45,7 @@ public:
     uint32_t PaletteAltID;
     IGraphics* G = NULL;
 
-    const char* Filename;
+    std::string Filename;
     ISprite* LinkedSprite = NULL;
 
     bool Print = false; //
@@ -66,19 +66,46 @@ static std::unordered_map<const char*, gd_GIF*> GifMap;
 PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     App = app;
     G = app->G;
-    if (strEndsWith(filename, ".bin")) {
-        LoadBin(filename);
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
     } else {
-        LoadSprite(filename);
+        LoadSprite(Filename.c_str());
+    }
+}
+
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, bool IsPrinting) {
+    App = app;
+    G = app->G;
+    Print = IsPrinting;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename.c_str());
     }
 }
 
 PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
+    App = app;
+    G = app->G;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
 	std::string outfile;
 	switch (mode) {
 		case 0: {
 			outfile.append("Classic/");
-			outfile.append(filename);
+			outfile.append(checkedFilename);
 			std::ifstream cfile(outfile);
 			if ((bool)cfile) {
 				break;
@@ -88,7 +115,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
 		case 2: {
 			outfile.clear();
 			outfile.append("Classic/");
-			outfile.append(filename);
+			outfile.append(checkedFilename);
 			std::ifstream cfile(outfile);
 			if ((bool)cfile) {
 				break;
@@ -96,10 +123,56 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
 		}
 		default: 
 			outfile.clear();
-			outfile.append(filename);
+			outfile.append(checkedFilename);
 	}
-	ISprite(outfile.c_str(), app);
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename.c_str());
+    }
 }
+
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinting) {
+    App = app;
+    G = app->G;
+    Print = IsPrinting;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+	std::string outfile;
+	switch (mode) {
+		case 0: {
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		case 1:
+		case 2: {
+			outfile.clear();
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		default: 
+			outfile.clear();
+			outfile.append(checkedFilename);
+	}
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename.c_str());
+    }
+}
+
 PUBLIC void ISprite::SetTransparentColorIndex(int i) {
     TransparentColorIndex = i;
 
@@ -184,6 +257,7 @@ PUBLIC void ISprite::RotatePaletteLeft(uint32_t* color, int size) {
     }
     *(color + size - 1) = temp;
 }
+
 PUBLIC void ISprite::RotatePaletteRight(uint32_t* color, int size) {
     uint32_t temp = *(color + size - 1);
     for (int i = size - 1; i >= 1; i--) {
@@ -216,16 +290,21 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 }
 
 PUBLIC void ISprite::LoadBin(const char* filename) {
-    IResource* BinFile = IResources::Load(filename);
-    if (!BinFile) {
-        IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+        Filename = checkedFilename;
+    }
+    IResource* BinFile = IResources::Load(checkedFilename.c_str());
+    if (BinFile == NULL) {
+        IApp::Print(2, "Couldn't open file '%s'!", checkedFilename.c_str());
+        fflush(stdin);
         exit(0);
     }
 
     IStreamer reader(BinFile);
 
-    IApp::Print(-1 + Print, "\"%s\"", filename);
+    IApp::Print(-1 + Print, "\"%s\"", Filename);
 
     reader.ReadUInt32BE(); // Magic
 
@@ -284,16 +363,20 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
 }
 
 PUBLIC void ISprite::LoadAnimation(const char* filename) {
-    IResource* SpriteFile = IResources::Load(filename);
-    if (!SpriteFile) {
-        IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+    IResource* SpriteFile = IResources::Load(checkedFilename.c_str());
+    if (SpriteFile == NULL) {
+        IApp::Print(2, "Couldn't open file '%s'!", checkedFilename.c_str());
+        fflush(stdin);
         exit(0);
     }
 
     IStreamer reader(SpriteFile);
 
-    IApp::Print(-1 + Print, "\"%s\"", filename);
+    IApp::Print(-1 + Print, "\"%s\"", checkedFilename.c_str());
 
     reader.ReadUInt32BE(); // magic
 
@@ -350,18 +433,21 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 }
 
 PUBLIC void ISprite::LoadSprite(const char* filename) {
-    IResource* res = IResources::Load(filename, true);
-	if (!res) {
-		IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
-		return;
-	}
-
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+        Filename = checkedFilename;
+    }
+    IResource* res = IResources::Load(checkedFilename.c_str(), true);
+    if (res == NULL) {
+        IApp::Print(2, "Couldn't open file '%s'!", checkedFilename.c_str());
+        fflush(stdin);
+        exit(0);
+    }
+    
     TextureID = 0;
     PaletteID = 0;
     PaletteAltID = 0;
-
-    Filename = filename;
 
     IStreamer stream(res);
     stream.Skip(6);
@@ -371,7 +457,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
 
     int fdsz = stream.ReadByte();
     if ((fdsz & 0x80) == 0) {
-        IApp::Print(2, "Could not make sprite using '%s' without a palette!", filename);
+        IApp::Print(2, "Could not make sprite using '%s' without a palette!", Filename.c_str());
         return;
     }
 
@@ -410,21 +496,25 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
 
     Data = (uint8_t*)malloc(Width * Height);
 
-    res = IResources::Load(filename, true);
+    res = IResources::Load(Filename.c_str(), true);
 
     gd_GIF* gif = NULL;
-    if (!FindGIF(filename)) {
-        gif = gd_open_gif(res);
+    if (FindGIF(Filename.c_str()) && GifMap.find(Filename.c_str())->second != NULL) {
+        gif = GifMap.find(Filename.c_str())->second;
+        GifMap.find(Filename.c_str())->second = gd_copy_gif(gif);
         
-		std::pair<const char *, gd_GIF *> pair(filename, gd_copy_gif(gif));
-        GifMap.insert(pair);
-        
+        gif->fd = res;
         gd_get_frame(gif);
 
         gd_render_frame(gif, Data);
     } else {
-        gif = gd_copy_gif(GifMap.find(filename)->second);
-        gif->fd = res;
+        gif = gd_open_gif(res);
+        
+        if (!FindGIF(Filename.c_str())) {
+            std::pair<const char *, gd_GIF *> pair(Filename.c_str(), gd_copy_gif(gif));
+            GifMap.insert(pair);
+        }
+        
         gd_get_frame(gif);
 
         gd_render_frame(gif, Data);
@@ -446,7 +536,7 @@ PROTECTED inline bool ISprite::FindGIF(const char* filename) {
         return false;
     } else {
         return true;
-    } 
+    }
 }
 
 PUBLIC int ISprite::FindAnimation(const char* animname) {
@@ -491,6 +581,12 @@ PUBLIC void ISprite::Cleanup() {
         free(Data);
         Data = NULL;
     }
+    
+    if (FindGIF(Filename.c_str())) {
+        auto it = GifMap.find(Filename.c_str());
+        gd_close_gif(it->second);
+        GifMap.erase(it);
+    }
 
     if (!LinkedSprite) {
         if (Palette) {
@@ -503,6 +599,21 @@ PUBLIC void ISprite::Cleanup() {
 
     Palette = NULL;
     PaletteAlt = NULL;
+}
+
+PRIVATE bool ISprite::strBeginsWith(const char* str, const char* suffix) {
+    if (str == NULL || suffix == NULL) {
+        return false;
+    }
+
+    size_t str_len = strlen(str);
+    size_t suffix_len = strlen(suffix);
+
+    if (suffix_len > str_len) {
+        return false;
+    }
+
+    return 0 == strncmp( str, suffix, suffix_len );
 }
 
 PRIVATE bool ISprite::strEndsWith(const char* str, const char* suffix) {

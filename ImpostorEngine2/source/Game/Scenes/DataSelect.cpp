@@ -109,25 +109,25 @@ PUBLIC void Scene_DataSelect::Init() {
 	App->Input->UseTouchController = false;
 
 	if (!MenuSprite) {
-		MenuSprite = new ISprite("UI/MainMenu.gif", App);
-		MenuSprite->LoadAnimation("UI/MainMenu.bin");
+		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
+		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
 		MenuSprite->SetTransparentColorIndex(0x2C);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App);
-		SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
+		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
+		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-		TextSprite = new ISprite("UI/CreditsText.gif", App);
-		TextSprite->LoadAnimation("UI/CreditsText.bin");
+		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
+		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 	if (!SaveIconsSprite) {
 		ISprite::Animation an;
-		SaveIconsSprite = new ISprite("UI/SaveIcons.gif", App);
+		SaveIconsSprite = new ISprite("Sprites/UI/SaveIcons.gif", App);
 
 		an.Name = (char*)"Static";
 		an.FrameCount = 4;
@@ -201,8 +201,8 @@ PUBLIC void Scene_DataSelect::Init() {
 		SaveIconsSprite->Animations.push_back(an);
 	}
 	if (!SaveSelectSprite) {
-		SaveSelectSprite = new ISprite("UI/SaveSelectEN.gif", App);
-		SaveSelectSprite->LoadAnimation("UI/SaveSelect.bin");
+		SaveSelectSprite = new ISprite("Sprites/UI/SaveSelectEN.gif", App);
+		SaveSelectSprite->LoadAnimation("Sprites/UI/SaveSelect.bin");
 	}
 
 	FadeTimerMax = 30;

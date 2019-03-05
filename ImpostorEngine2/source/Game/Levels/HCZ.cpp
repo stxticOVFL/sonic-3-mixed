@@ -81,7 +81,7 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_TileSprite = "Stages/HCZ1/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/HCZ1/Animated Tiles.gif";
 
-        WaterLine = new ISprite("Sprites/HCZ/AniTiles2.gif", App);
+        WaterLine = new ISprite("HCZ/AniTiles2.gif", App);
     }
     else {
 		Sound::SoundBank[0] = new ISound("Music/HCZ2.ogg", true);
@@ -282,40 +282,40 @@ PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 	if (!SpriteMap["HCZ"]) {
-		SpriteMap["HCZ"] = new ISprite("Sprites/HCZ/Objects.gif", App);
+		SpriteMap["HCZ"] = new ISprite("HCZ/Objects.gif", App);
 		SpriteMap["HCZ"]->Print = true;
 
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Button.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Fan.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/HandLauncher.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/BreakBar.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Decoration.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Platform.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Wake.bin");
-		SpriteMap["HCZ"]->LoadAnimation("Sprites/HCZ/Bridge.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Button.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Fan.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/HandLauncher.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/BreakBar.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Decoration.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Platform.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Wake.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Bridge.bin");
 	}
 	if (!SpriteMap["HCZ Enemies"]) {
-		SpriteMap["HCZ Enemies"] = new ISprite("Sprites/HCZ/Enemies.gif", App);
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Blastoid.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Buggernaut.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/TurboSpiker.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/MegaChomper.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Pointdexter.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("Sprites/HCZ/Jawz.bin");
+		SpriteMap["HCZ Enemies"] = new ISprite("HCZ/Enemies.gif", App);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Blastoid.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Buggernaut.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/TurboSpiker.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/MegaChomper.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Pointdexter.bin");
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Jawz.bin");
 	}
 	if (!SpriteMap["HCZ Boss"]) {
-		SpriteMap["HCZ Boss"] = new ISprite("Sprites/HCZ/Boss.gif", App);
-		SpriteMap["HCZ Boss"]->LoadAnimation("Sprites/HCZ/LaundroMobile.bin");
+		SpriteMap["HCZ Boss"] = new ISprite("HCZ/Boss.gif", App);
+		SpriteMap["HCZ Boss"]->LoadAnimation("HCZ/LaundroMobile.bin");
 	}
 
     if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Player/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Player/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Player/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Player/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Player/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
+        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
+        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
+        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
+        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Player/Knux.bin");
+        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
