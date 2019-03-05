@@ -428,7 +428,7 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 	}
 
     if (!AIZBossSprite) {
-        AIZBossSprite = new ISprite("Sprites/AIZ/Boss.gif", App);
+        AIZBossSprite = new ISprite("Sprites/AIZ/Boss.gif", App, SaveGame::CurrentMode);
         AIZBossSprite->Print = true;
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Background Tree.bin");
         AIZBossSprite->LoadAnimation("Sprites/AIZ/Airship.bin");
@@ -437,11 +437,11 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
     }
 
     if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneHPZ.gif", App);
+        KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App, 1);
+        KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App, 1);
+        KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App, 1);
+        KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App, 1);
+        KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneHPZ.gif", App, 1);
 
         KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);

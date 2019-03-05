@@ -444,19 +444,19 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		startTime = SDL_GetTicks();
 
 		if (!PauseSprite) {
-			PauseSprite = new ISprite("Sprites/UI/PauseMenu.bin", App, 1);
+			PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App, 1);
 			PauseSprite->SetTransparentColorIndex(0);
-			//PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
+			PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
-			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App, SaveGame::CurrentMode);
+			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App, 1);
 			GlobalDisplaySprite->Print = App->DEV;
 			GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
-			if (SaveGame::CurrentMode != 0) {
+			//if (SaveGame::CurrentMode != 0) {
 				GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
 				GlobalDisplaySprite->LoadAnimation("Sprites/Global/PlaneSwitch.bin");
 				GlobalDisplaySprite->LoadAnimation("Sprites/Global/TicMark.bin");
-			}
+			//}
 		}
 		/*if (!GlobalDisplaySpriteS3K) {
 			GlobalDisplaySpriteS3K = new ISprite("Sprites/GlobalS3K/Display.gif", App, 0);
@@ -4919,6 +4919,7 @@ PUBLIC void LevelScene::RenderTitleCard() {
 		}
 		else {
 			ISprite::AnimFrame Frame;
+			IApp::Print(3, "LevelName[i] - \'A\' = %d", LevelName[i] - 'A');
 			Frame = GlobalDisplaySprite->Animations[15].Frames[LevelName[i] - 'A'];
 			ex += Frame.W + 1;
 		}

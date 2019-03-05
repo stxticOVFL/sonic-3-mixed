@@ -63,7 +63,7 @@ public:
 
 static std::unordered_map<const char*, gd_GIF*> GifMap;
 
-int Mode = 0;
+int Mode = 1;
 
 PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
 	ISprite(filename, app, Mode);

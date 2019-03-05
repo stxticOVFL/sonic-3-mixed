@@ -156,6 +156,9 @@ PUBLIC STATIC void IResources::FormatPath(const char* path, int mode) {
 		}
 	}
 	case 0: {
+		for (int i = 0; i < 0x100; i++) {
+			buffmantime[i] = 0;
+		}
 		StrCopy(temp, "Source/Resources/");
 		StrAdd(temp, "Classic/");
 		StrAdd(temp, helpme);
