@@ -546,8 +546,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			}
 		}
 		if (!WaterSprite) {
-			WaterSprite = new ISprite("Global/Water.bin", App);
-			WaterSprite->Print = true;
+			WaterSprite = new ISprite("Global/Water.gif", App, true);
+            WaterSprite->LoadAnimation("Global/Water.bin");
 		}
 
 		IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);

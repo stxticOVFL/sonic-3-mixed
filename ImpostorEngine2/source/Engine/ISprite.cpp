@@ -78,9 +78,65 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     }
 }
 
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, bool IsPrinting) {
+    App = app;
+    G = app->G;
+    Print = IsPrinting;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename.c_str());
+    }
+}
+
 PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
     App = app;
     G = app->G;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+	std::string outfile;
+	switch (mode) {
+		case 0: {
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		case 1:
+		case 2: {
+			outfile.clear();
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		default: 
+			outfile.clear();
+			outfile.append(checkedFilename);
+	}
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename.c_str());
+    }
+}
+
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinting) {
+    App = app;
+    G = app->G;
+    Print = IsPrinting;
     std::string checkedFilename(filename);
     if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
         checkedFilename = "Sprites/" + checkedFilename;
