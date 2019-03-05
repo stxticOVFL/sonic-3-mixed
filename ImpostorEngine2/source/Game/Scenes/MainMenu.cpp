@@ -33,6 +33,7 @@ public:
 
 #include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
+#include <Game/Scenes/SettingsMenu.h>
 
 #include <Game/Scenes/MainMenu.h>
 #include <ctime>
@@ -164,6 +165,14 @@ PUBLIC void Scene_MainMenu::Update() {
 		if (!FadeIn) {
 			if (selected == 0) {
 				Scene_DataSelect* NextScene = new Scene_DataSelect(App, G, subselected);
+				NextScene->MenuSprite = MenuSprite;
+				NextScene->SuperButtonsSprite = SuperButtonsSprite;
+				NextScene->TextSprite = TextSprite;
+
+				App->NextScene = NextScene;
+			}
+			else if (selected == 2) {
+				Scene_SettingsMenu* NextScene = new Scene_SettingsMenu(App, G);
 				NextScene->MenuSprite = MenuSprite;
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
 				NextScene->TextSprite = TextSprite;

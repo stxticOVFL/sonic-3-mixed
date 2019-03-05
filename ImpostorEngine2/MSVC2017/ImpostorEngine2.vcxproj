@@ -178,12 +178,14 @@
     <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp" />
     <ClCompile Include="..\source\Game\Scenes\LevelSelect.cpp" />
     <ClCompile Include="..\source\Game\Scenes\MainMenu.cpp" />
+    <ClCompile Include="..\source\Game\Scenes\SettingsMenu.cpp" />
     <ClCompile Include="..\source\Game\ScoreGhost.cpp" />
     <ClCompile Include="..\source\Game\Sound.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\Utils\gifdec.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\gen\Game\Scenes\SettingsMenu.h" />
     <ClInclude Include="..\source\Engine\I3D.hh" />
     <ClInclude Include="..\source\Engine\IGenesis.hh" />
     <ClInclude Include="..\source\Engine\IHeader.hh" />
