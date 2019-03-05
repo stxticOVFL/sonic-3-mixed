@@ -425,7 +425,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	uint64_t startTime = SDL_GetTicks();
 	if (!Data) {
 		AlreadyLoaded = false;
-		std::memset(SpriteMapIDs, 0, 0x100);
+		std::memset(SpriteMapIDs, 0, 0x400);
 
 		FadeAction = FadeActionType::FADEIN;
 		FadeTimerMax = 90;
@@ -5920,8 +5920,12 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	}
 	ObjectCount = 0;
     
+	for (size_t i = 0; i < 0x400; i++) {
+        CLEANUP(SpriteMapIDs[i]);
+	}
+    
 	for (size_t i = 0; i < SpriteBinMapIDs.size(); i++) {
-		delete SpriteBinMapIDs.at(i);
+        CLEANUP(SpriteBinMapIDs.at(i));
 	}
 
 	for (int i = 0; i < DebugObjectIDCount; i++) {
@@ -5949,9 +5953,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	CLEANUP(PauseSprite);
 	CLEANUP(GlobalDisplaySprite);
 	CLEANUP(MobileButtonsSprite);
-	CLEANUP(ItemsSprite);
 	CLEANUP(AnimalsSprite);
-	CLEANUP(ObjectsSprite);
 	CLEANUP(Objects2Sprite);
 	CLEANUP(Objects3Sprite);
 	CLEANUP(RobotnikSprite);

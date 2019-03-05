@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class IApp;
 class IGraphics;
@@ -17,6 +18,7 @@ class ISprite;
 
 class ISprite {
 private:
+    bool strBeginsWith(const char* str, const char* suffix);
     bool strEndsWith(const char* str, const char* suffix);
 
 public:
@@ -54,7 +56,7 @@ public:
     uint32_t PaletteID;
     uint32_t PaletteAltID;
     IGraphics* G = NULL;
-    const char* Filename;
+    std::string Filename;
     ISprite* LinkedSprite = NULL;
     bool Print = false; //
 
