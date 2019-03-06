@@ -208,7 +208,7 @@ public:
     bool ViewTileCollision = false;
 
     LevelScene(IApp* app, IGraphics* g);
-    virtual void PlayMusic(const char* path, int loop, int mode);
+    virtual void PlayMusic(const char* ogg, int loop, int mode);
     virtual void AssignSpriteMapIDs();
     virtual void LoadZoneSpecificSprites();
     void SaveState();

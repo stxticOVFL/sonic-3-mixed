@@ -364,9 +364,20 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	VisualAct = Act;
 }
 
-PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop, int mode) {
-        Sound::SoundBank[0] = new ISound(path, true);
-		Sound::Audio->LoopPoint[0] = loop;
+PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* ogg, int loop, int mode) {
+	char MusicPath[0x100];
+	const char* ModePath;
+	if (mode == 0)
+		ModePath = "Classic";
+	else if (mode == -1)
+		sprintf(MusicPath, "Music/%s", ogg);
+	else
+		ModePath = "Mixed";
+	if (mode != -1) 
+		sprintf(MusicPath, "Music/%s/%s", ModePath, ogg);
+	IApp::Print(1, MusicPath);
+    Sound::SoundBank[0] = new ISound(MusicPath, true);
+	Sound::Audio->LoopPoint[0] = loop;
 }
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {

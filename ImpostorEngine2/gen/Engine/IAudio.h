@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class ISound;
 class IApp;
@@ -25,6 +26,7 @@ public:
     bool       Loop = false;
     uint32_t   LoopPoint = 0;
     bool       FadeOut = false;
+    int 	   Volume = 0xFF;
     }; 
     IApp* App = NULL;
     SDL_AudioDeviceID    Device;

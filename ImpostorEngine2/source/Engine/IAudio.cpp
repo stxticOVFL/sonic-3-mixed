@@ -14,6 +14,7 @@ public:
         bool       Loop = false;
         uint32_t   LoopPoint = 0;
         bool       FadeOut = false;
+		int 	   Volume = 0xFF;
     };
 
     IApp* App = NULL;
@@ -42,6 +43,7 @@ public:
 
     double               FadeOutTimer = 1.0;
     double               FadeOutTimerMax = 1.0;
+
 };
 #endif
 
@@ -199,6 +201,14 @@ PUBLIC void IAudio::FadeMusic(double seconds) {
     SDL_UnlockAudioDevice(Device);
 }
 
+/*PUBLIC void IAudio::SetVolume(int vol) {
+	SDL_LockAudioDevice(Device);
+	if (MusicStack.size() > 0) {
+		MusicStack[0]->Volume = vol;
+	}
+	SDL_UnlockAudioDevice(Device);
+}*/
+
 PUBLIC void IAudio::AudioUnpause(int channel) {
     SDL_LockAudioDevice(Device);
     Paused[channel] = false;
@@ -244,7 +254,7 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
                 bool deleted = false;
                 int bytes = audio->MusicStack[0]->Audio->RequestMoreData(AUDIO_SAMPLES, len);
                 if (bytes > 0) {
-                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)len, ((int)(0xFF * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 2) + 1);
+                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)len, ((int)(audio->MusicStack[0]->Volume * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 2) + 1);
                 }
 				else if (bytes == -2) {
 					// waiting

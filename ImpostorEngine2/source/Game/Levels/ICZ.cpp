@@ -144,8 +144,9 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     VisualAct = Act = act;
 
     if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/ICZ1.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
+		PlayMusic("ICZ1.ogg", 1, SaveGame::CurrentMode);
+        //Sound::SoundBank[0] = new ISound("Music/ICZ1.ogg", false);
+		//Sound::Audio->LoopPoint[0] = 0;
 
         Str_TileConfigBin = "Stages/ICZ1/TileConfig.bin";
         Str_SceneBin = "Stages/ICZ1/Scene.bin";
@@ -153,8 +154,9 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/ICZ1/Animated Tiles.gif";
     }
     else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/ICZ2.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
+		PlayMusic("ICZ2.ogg", 1, SaveGame::CurrentMode);
+        //Sound::SoundBank[0] = new ISound("Music/ICZ2.ogg", false);
+		//Sound::Audio->LoopPoint[0] = 0;
 
         Str_TileConfigBin = "Stages/ICZ2/TileConfig.bin";
         Str_SceneBin = "Stages/ICZ2/Scene.bin";

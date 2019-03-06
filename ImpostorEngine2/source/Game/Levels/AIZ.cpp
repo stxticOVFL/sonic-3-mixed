@@ -227,8 +227,9 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     uint64_t startTime = SDL_GetTicks();
 
     if (Act == 0) {
-        Sound::SoundBank[0] = new ISound("Music/AIZ1.ogg", true);
-		Sound::Audio->LoopPoint[0] = 1;
+		PlayMusic("AIZ1.ogg", 1, SaveGame::CurrentMode);
+        //Sound::SoundBank[0] = new ISound("Music/AIZ1.ogg", true);
+		//Sound::Audio->LoopPoint[0] = 1;
 
         Str_TileConfigBin = "Stages/AIZ/TileConfig1.bin";
         Str_SceneBin = "Stages/AIZ/Scene0.bin";
@@ -239,7 +240,7 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         VisualAct = 1;
     }
     else if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/AIZ1.ogg", true);
+		PlayMusic("AIZ1.ogg", 1, SaveGame::CurrentMode);
 		// Sound::Audio->LoopPoint[0] = 2381;
 
         Str_TileConfigBin = "Stages/AIZ1/TileConfig.bin";
@@ -248,8 +249,8 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/AIZ1/Animated Tiles.gif";
     }
     else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/AIZ2.ogg", true);
-        Sound::Audio->LoopPoint[0] = 94550;
+		PlayMusic("AIZ2.ogg", 94550, SaveGame::CurrentMode);
+		Sound::Audio->LoopPoint[0] = 94550;
 		// Sound::Audio->LoopPoint[0] = 85113;
 
         Str_TileConfigBin = "Stages/AIZ2/TileConfig.bin";
