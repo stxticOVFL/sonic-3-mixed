@@ -364,6 +364,11 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	VisualAct = Act;
 }
 
+PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop, int mode) {
+        Sound::SoundBank[0] = new ISound(path, true);
+		Sound::Audio->LoopPoint[0] = loop;
+}
+
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x01] = ItemsSprite;
 	SpriteMapIDs[0x07] = ObjectsSprite;
