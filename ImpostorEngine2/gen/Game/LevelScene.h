@@ -135,6 +135,7 @@ public:
     int         Act = 1;
     int         VisualAct = 1;
     bool        CanWaterRun = true;
+    char 	ZoneLetters[3];
     int         DEBUG_MOUSE_X = -1;
     int         DEBUG_MOUSE_Y = -1;
     vector<Object*> Explosions;
@@ -208,7 +209,7 @@ public:
     bool ViewTileCollision = false;
 
     LevelScene(IApp* app, IGraphics* g);
-    virtual void PlayMusic(const char* ogg, int loop, int mode);
+    virtual void PlayMusic(int act, int loop, int mode);
     virtual void AssignSpriteMapIDs();
     virtual void LoadZoneSpecificSprites();
     void SaveState();

@@ -142,11 +142,13 @@ Uint32 AnPal_PalICZ_4[32] = {
 PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 5;
     VisualAct = Act = act;
+	sprintf(ZoneLetters, "ICZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
-		PlayMusic("ICZ1.ogg", 1, SaveGame::CurrentMode);
         //Sound::SoundBank[0] = new ISound("Music/ICZ1.ogg", false);
 		//Sound::Audio->LoopPoint[0] = 0;
+
 
         Str_TileConfigBin = "Stages/ICZ1/TileConfig.bin";
         Str_SceneBin = "Stages/ICZ1/Scene.bin";
@@ -154,7 +156,6 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/ICZ1/Animated Tiles.gif";
     }
     else if (Act == 2) {
-		PlayMusic("ICZ2.ogg", 1, SaveGame::CurrentMode);
         //Sound::SoundBank[0] = new ISound("Music/ICZ2.ogg", false);
 		//Sound::Audio->LoopPoint[0] = 0;
 

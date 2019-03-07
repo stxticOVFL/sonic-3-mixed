@@ -130,6 +130,7 @@ public:
 	int         Act = 1;
 	int         VisualAct = 1;
 	bool        CanWaterRun = true;
+	char		ZoneLetters[3];
 
 	int         DEBUG_MOUSE_X = -1;
 	int         DEBUG_MOUSE_Y = -1;
@@ -364,21 +365,22 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	VisualAct = Act;
 }
 
-PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* ogg, int loop, int mode) {
+PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode) {
 	char MusicPath[0x100];
 	const char* ModePath;
 	if (mode == 0)
 		ModePath = "Classic";
 	else if (mode == -1)
-		sprintf(MusicPath, "Music/%s", ogg);
+		sprintf(MusicPath, "Music/%s%d.ogg", ZoneLetters, act);
 	else
 		ModePath = "Mixed";
 	if (mode != -1) 
-		sprintf(MusicPath, "Music/%s/%s", ModePath, ogg);
+		sprintf(MusicPath, "Music/%s/%s%d.ogg", ModePath, ZoneLetters, act);
 	IApp::Print(1, MusicPath);
     Sound::SoundBank[0] = new ISound(MusicPath, true);
 	Sound::Audio->LoopPoint[0] = loop;
 }
+
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x01] = ItemsSprite;
@@ -3487,6 +3489,7 @@ PUBLIC VIRTUAL void LevelScene::GoToNextAct() {
 }
 
 int pauseAnimTimer = 60;
+int PauseMusicFade = 0;
 
 PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 	NextAct->GiantRingModel = GiantRingModel;
@@ -3571,7 +3574,7 @@ PUBLIC void LevelScene::OnEvent(Uint32 event) {
 
 		PauseSelectedMenuItem = 0;
 
-		App->Audio->AudioPauseAll();
+		//App->Audio->AudioPauseAll();
 		Sound::Play(Sound::SFX_MENUACCEPT);
 	}
 }
@@ -3589,13 +3592,13 @@ PUBLIC void LevelScene::Update() {
 
 				PauseSelectedMenuItem = 0;
 
-				App->Audio->AudioPauseAll();
+				//App->Audio->AudioPauseAll();
 				Sound::Play(Sound::SFX_MENUACCEPT);
 			}
 			else {
 				Paused = false;
 
-				App->Audio->AudioUnpauseAll();
+				//App->Audio->AudioUnpauseAll();
 				//Sound::Play(Sound::SFX_MENUACCEPT);
 			}
 		}
@@ -3715,7 +3718,7 @@ PUBLIC void LevelScene::Update() {
 						FadeTimerMax = 60 * 5;
 						FadeMax = 0x100;
 						G->FadeToWhite = false;
-						App->Audio->FadeMusic(5.0);
+						App->Audio->FadeMusic(1);
 					}
 				}
 			}
@@ -4185,7 +4188,6 @@ PUBLIC void LevelScene::Update() {
 			if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED] || App->Input->MouseReleased && inBox) { // confirm
 				if (PauseSelectedMenuItem == 0) {
 					Paused = false;
-					App->Audio->AudioUnpauseAll();
 					//Sound::Play(Sound::SFX_MENUACCEPT);
 				}
 				else if (PauseSelectedMenuItem == 1) {
@@ -4196,7 +4198,7 @@ PUBLIC void LevelScene::Update() {
 					SavedPositionX = -1;
 					SavedPositionY = -1;
 					Checkpoint = -1;
-					App->Audio->ClearMusic();
+					App->Audio->FadeMusic(1);
 
 					Sound::Play(Sound::SFX_MENUACCEPT);
 				}
@@ -4205,6 +4207,7 @@ PUBLIC void LevelScene::Update() {
 					FadeTimerMax = 48;
 					FadeMax = 0x120;
 					G->FadeToWhite = false;
+					App->Audio->FadeMusic(1);
 
 					Sound::Play(Sound::SFX_MENUACCEPT);
 				}
@@ -4215,7 +4218,6 @@ PUBLIC void LevelScene::Update() {
 			}
 			else if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) { // deny
 				Paused = false;
-				App->Audio->AudioUnpauseAll();
 			}
 		}
 
@@ -5028,10 +5030,10 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	int anim_off;
 
 	for (int i = 0; i < 9; i++)
-		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 18) % 18]);
+		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 18) % 18]); 
 	
 	//White Tint
-	G->SetDrawAlpha((int)((60 - pauseAnimTimer) * 2));
+	G->SetDrawAlpha((int)((60 - pauseAnimTimer) * 2) < 0 ? 0 : (int)((60 - pauseAnimTimer) * 2)); //theres probably an easier way, dont care
 	for (int i = 0; i < 45; i++) {
 		G->DrawSprite(PauseSprite, 0, 0, 0, (15 * i) - pauseAnimTimer, 0, IE_NOFLIP);
 	}
@@ -5075,7 +5077,8 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	anim_off = 210 - PauseAnim[2] / 0x100;
 	int baseX = 280 + anim_off;
 	int baseY = 70 + 20;
-	if (pauseAnimTimer != 0) pauseAnimTimer -= 10;
+	if (pauseAnimTimer != 0 && Paused) pauseAnimTimer -= 10;
+	if (PauseMusicFade < 60) PauseMusicFade += 2;
 	}
 
 PUBLIC void LevelScene::RenderResults() {
@@ -5825,6 +5828,18 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 PUBLIC VIRTUAL void LevelScene::Render() {
 	if (App->NextScene) return;
+
+	if (App->Audio->MusicStack.size() != 0)
+		if (App->Audio->MusicStack[0]->Volume != 0xFF - (PauseMusicFade * 3))
+			App->Audio->MusicStack[0]->Volume = 0xFF - (PauseMusicFade * 3);
+	if (!Paused) {
+	pauseAnimTimer += 12;
+	if (pauseAnimTimer > 100)
+		pauseAnimTimer = 100;
+	PauseMusicFade -= 4;
+	if (PauseMusicFade < 0)
+		PauseMusicFade = 0;
+	}
 
 	int tCamY = CameraY;
 	if (Data) {
