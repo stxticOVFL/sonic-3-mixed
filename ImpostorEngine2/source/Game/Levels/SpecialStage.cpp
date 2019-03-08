@@ -102,8 +102,9 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     ZoneID = 20;
     Act = 0;
 
-    Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg", true);
-    Sound::Audio->LoopPoint[0] = 5309957;
+	PlayMusic("Music/Mixed/BlueSpheresSPD.ogg", 5309957, -1);
+    //Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg", true);
+    //Sound::Audio->LoopPoint[0] = 5309957;
 
 	if (!LayoutBackup)
 		LayoutBackup = (Uint8*)calloc(0x400, 1);

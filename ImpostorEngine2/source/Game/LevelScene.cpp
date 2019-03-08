@@ -365,7 +365,22 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	VisualAct = Act;
 }
 
+int MusicVolume = 0xFF;
+
+PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop) {
+	PlayMusic(path, loop, 0xFF);
+}
+PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop, int vol) {
+	Sound::SoundBank[0] = new ISound(path, true);
+	Sound::Audio->LoopPoint[0] = loop;
+	MusicVolume = vol;
+}
+
 PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode) {
+	PlayMusic(act, loop, mode, 0xFF);
+}
+
+PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) {
 	char MusicPath[0x100];
 	const char* ModePath;
 	if (mode == 0)
@@ -374,11 +389,9 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode) {
 		sprintf(MusicPath, "Music/%s%d.ogg", ZoneLetters, act);
 	else
 		ModePath = "Mixed";
-	if (mode != -1) 
+	if (mode != -1)
 		sprintf(MusicPath, "Music/%s/%s%d.ogg", ModePath, ZoneLetters, act);
-	IApp::Print(1, MusicPath);
-    Sound::SoundBank[0] = new ISound(MusicPath, true);
-	Sound::Audio->LoopPoint[0] = loop;
+	PlayMusic(MusicPath, loop, vol);
 }
 
 
@@ -3574,12 +3587,30 @@ PUBLIC void LevelScene::OnEvent(Uint32 event) {
 
 		PauseSelectedMenuItem = 0;
 
-		//App->Audio->AudioPauseAll();
+		if (MusicVolume == -1) 
+			App->Audio->AudioPauseAll();
 		Sound::Play(Sound::SFX_MENUACCEPT);
 	}
 }
 
 PUBLIC void LevelScene::Update() {
+	if (MusicVolume != -1)
+		if (App->Audio->MusicStack.size() != 0)
+			if (App->Audio->MusicStack[0]->Volume != MusicVolume - (PauseMusicFade * 3))
+				App->Audio->MusicStack[0]->Volume = MusicVolume - (PauseMusicFade * 3);
+	if (!Paused) {
+		if (MusicVolume == -1 && App->Audio->Paused)
+			App->Audio->AudioUnpauseAll();
+		pauseAnimTimer += 12;
+		if (pauseAnimTimer > 100)
+			pauseAnimTimer = 100;
+		PauseMusicFade -= 4;
+		if (PauseMusicFade < 0)
+			PauseMusicFade = 0;
+	}
+	else
+		if (MusicVolume == -1 && !App->Audio->Paused)
+			App->Audio->AudioPauseAll();
 	// Pause function
 	if (FadeAction == 0 && !ShowResults) {
 		// Toggle pause
@@ -3592,13 +3623,14 @@ PUBLIC void LevelScene::Update() {
 
 				PauseSelectedMenuItem = 0;
 
-				//App->Audio->AudioPauseAll();
+				if (MusicVolume == -1)
+					App->Audio->AudioPauseAll();
 				Sound::Play(Sound::SFX_MENUACCEPT);
 			}
 			else {
 				Paused = false;
-
-				//App->Audio->AudioUnpauseAll();
+				if (MusicVolume == -1)
+					App->Audio->AudioUnpauseAll();
 				//Sound::Play(Sound::SFX_MENUACCEPT);
 			}
 		}
@@ -5828,19 +5860,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 PUBLIC VIRTUAL void LevelScene::Render() {
 	if (App->NextScene) return;
-
-	if (App->Audio->MusicStack.size() != 0)
-		if (App->Audio->MusicStack[0]->Volume != 0xFF - (PauseMusicFade * 3))
-			App->Audio->MusicStack[0]->Volume = 0xFF - (PauseMusicFade * 3);
-	if (!Paused) {
-	pauseAnimTimer += 12;
-	if (pauseAnimTimer > 100)
-		pauseAnimTimer = 100;
-	PauseMusicFade -= 4;
-	if (PauseMusicFade < 0)
-		PauseMusicFade = 0;
-	}
-
+	
 	int tCamY = CameraY;
 	if (Data) {
 		if (CameraX < 0)
