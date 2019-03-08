@@ -298,6 +298,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	AddNewDebugObjectID(Obj_Spring); // Spring
 	AddNewDebugObjectID(Obj_Spikes); // Spikes
 	AddNewDebugObjectID(Obj_SpecialRing); // Special Ring
+	AddNewDebugObjectID(Obj_StarPost); // StarPost
+	AddNewDebugObjectID(Obj_Signpost); // SignPost
 	if (App->DEV) {
 		AddNewDebugObjectID(Obj_AutomaticTunnel); // Automatic Tunnel
 		AddNewDebugObjectID(Obj_RollEnforcer); // Roll Enforcer
@@ -3597,7 +3599,8 @@ PUBLIC void LevelScene::Update() {
 	if (MusicVolume != -1)
 		if (App->Audio->MusicStack.size() != 0)
 			if (App->Audio->MusicStack[0]->Volume != MusicVolume - (PauseMusicFade * 3))
-				App->Audio->MusicStack[0]->Volume = MusicVolume - (PauseMusicFade * 3);
+				if (Paused) App->Audio->MusicStack[0]->Volume = MusicVolume - (PauseMusicFade * 3);
+				else App->Audio->MusicStack[0]->Volume = MusicVolume = 0xFF; // you're welcome RMG :)
 	if (!Paused) {
 		if (MusicVolume == -1 && App->Audio->Paused)
 			App->Audio->AudioUnpauseAll();
@@ -3758,6 +3761,10 @@ PUBLIC void LevelScene::Update() {
 
 		if (!maxLayer) {
 			// We're in debug mode! Time to have fun!
+
+			//Set these so we unstick from shit
+			Player->ForceRoll = false;
+			Player->UnderwaterTimer = 0x1000;
 
 			if (Player->InputLeft || Player->InputRight || Player->InputUp || Player->InputDown) {
 				Player->GroundSpeed += 0x40;

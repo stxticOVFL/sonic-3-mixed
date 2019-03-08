@@ -48,6 +48,9 @@ public:
     deque<StackNode*>    MusicStack;
     double               FadeOutTimer = 1.0;
     double               FadeOutTimerMax = 1.0;
+    float 			GlobalVolume = 1.0f;
+    float 			MusicVolume = 1.0f;
+    float 			SoundFXVolume = 1.0f;
 
     IAudio(IApp* app);
     void SetSound(int channel, uint8_t* buffer, int length);

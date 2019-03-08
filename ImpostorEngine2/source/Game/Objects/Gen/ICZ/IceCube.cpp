@@ -10,6 +10,7 @@ void IceCube::Create() {
     Active = true;
     Priority = false;
     Solid = true;
+    VisualLayer = 1;
     H = 32;
     W = 48;
     Scene->AddSelfToRegistry(this, "Solid");

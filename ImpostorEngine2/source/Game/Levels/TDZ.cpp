@@ -51,7 +51,7 @@ PUBLIC void Level_TDZ::LoadZoneSpecificSprites() {
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
     }
 }
 

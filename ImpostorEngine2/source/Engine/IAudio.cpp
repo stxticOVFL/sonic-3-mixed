@@ -44,6 +44,10 @@ public:
     double               FadeOutTimer = 1.0;
     double               FadeOutTimerMax = 1.0;
 
+	float				GlobalVolume = 1.0f;
+	float				MusicVolume = 1.0f;
+	float				SoundFXVolume = 1.0f;
+
 };
 #endif
 
@@ -254,7 +258,7 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
                 bool deleted = false;
                 int bytes = audio->MusicStack[0]->Audio->RequestMoreData(AUDIO_SAMPLES, len);
                 if (bytes > 0) {
-                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)len, ((int)(audio->MusicStack[0]->Volume * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 2) + 1);
+                    SDL_MixAudioFormat(stream, audio->MusicStack[0]->Audio->Buffer, audio->DeviceFmt.format, (uint32_t)len, ((int)(audio->MusicStack[0]->Volume * (int)((audio->FadeOutTimer / audio->FadeOutTimerMax) * (audio->GlobalVolume * audio->MusicVolume))) >> 2) + 1);
                 }
 				else if (bytes == -2) {
 					// waiting
