@@ -209,8 +209,11 @@ void Monitor::Update() {
             break;
             case ItemTypes::TYPE_SPEED_SHOES:
             Scene->Players[PlayerAggressor]->SpeedSneakersActive = true;
-            Scene->Players[PlayerAggressor]->SpeedSneakersTimer = 1200;
-            App->Audio->PushMusic(Sound::SoundBank[0xFE], false, 0);
+            if (Scene->Players[PlayerAggressor]->SpeedSneakersTimer == 0) {
+                App->Audio->PushMusic(Sound::SoundBank[0xFE], true, 120960);
+            }
+
+            Scene->Players[PlayerAggressor]->SpeedSneakersTimer += 1200;
             break;
             case ItemTypes::TYPE_SHIELD:
             Scene->Players[PlayerAggressor]->Shield = ShieldType::Basic;
@@ -238,8 +241,11 @@ void Monitor::Update() {
             case ItemTypes::TYPE_INVINCIBILITY:
             if (!Scene->Players[PlayerAggressor]->SuperForm && !Scene->Players[PlayerAggressor]->HyperForm) {
                 Scene->Players[PlayerAggressor]->Invincibility = InvincibilityType::Full;
-                Scene->Players[PlayerAggressor]->InvincibilityTimer = 1200;
-                App->Audio->PushMusic(Sound::SoundBank[0xFF], true, 14702);
+                if (Scene->Players[PlayerAggressor]->InvincibilityTimer == 0) {
+                    App->Audio->PushMusic(Sound::SoundBank[0xFF], true, 14702);
+                }
+
+                Scene->Players[PlayerAggressor]->InvincibilityTimer += 1200;
             }
 
             break;
