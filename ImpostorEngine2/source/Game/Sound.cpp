@@ -275,7 +275,7 @@ PUBLIC STATIC void Sound::Init() {
     Sound::SoundBank[0xFC] = new ISound("Music/ActComplete.ogg", true);
     Sound::SoundBank[0xFB] = new ISound("Music/S3 1up.ogg", false);
 
-	Sound::SoundBank[0xF2] = new ISound("Music/S3 Knux Theme.ogg", true);
+	Sound::SoundBank[0xF2] = new ISound("Music/Classic/Knuckles.ogg", true);
 	Sound::SoundBank[0xF1] = new ISound("Music/S3 Miniboss.ogg", true);
 	Sound::SoundBank[0xF0] = new ISound("Music/Boss.ogg", true);
 

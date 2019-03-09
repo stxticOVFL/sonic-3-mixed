@@ -22,11 +22,11 @@ public:
 PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
 	ZoneID = 3;
 	VisualAct = Act = act;
-	sprintf(ZoneLetters, "HCZ");
+	sprintf(ZoneLetters, "MGZ");
 	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 21609) : 0, SaveGame::CurrentMode);
 
 	if (Act == 1) {
-		Sound::SoundBank[0] = new ISound("Music/MGZ1.ogg", true);
+		//Sound::SoundBank[0] = new ISound("Music/MGZ1.ogg", true);
 		// Sound::Audio->LoopPoint[0] = 1007820;
 
 		Str_TileConfigBin = "Stages/MGZ1/TileConfig.bin";
@@ -35,8 +35,8 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 		Str_AnimatedSprites = "Stages/MGZ1/Animated Tiles.gif";
 	}
 	else {
-		Sound::SoundBank[0] = new ISound("Music/MGZ2.ogg", true);
-		Sound::Audio->LoopPoint[0] = 21609;
+		//Sound::SoundBank[0] = new ISound("Music/MGZ2.ogg", true);
+		//Sound::Audio->LoopPoint[0] = 21609;
 		// Sound::Audio->LoopPoint[0] = 1007820;
 
 		Str_TileConfigBin = "Stages/MGZ2/TileConfig.bin";

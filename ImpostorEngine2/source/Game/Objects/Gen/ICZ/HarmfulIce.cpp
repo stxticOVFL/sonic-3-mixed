@@ -24,7 +24,7 @@ void HarmfulIce::Create() {
 }
 
 void HarmfulIce::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 
 int HarmfulIce::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

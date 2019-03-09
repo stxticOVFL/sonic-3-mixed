@@ -99,6 +99,7 @@ Uint32 ColorGlobe = 0x00;
 Sint32 MapThing[0x10][0x100];
 int DropDash = -2;
 int DropDashY = 0;
+bool HitBlue = false;
 
 PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelScene(app, g) {
     ZoneID = 20;
@@ -996,7 +997,8 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 	if (PlayerZ == 0) {
 		if (*LayoutAt(XIndex, YIndex) == SPHERE_RED) {
 			if ((PlayerIsMovingBackwards && PlayerSteps < 0x20) ||
-				(!PlayerIsMovingBackwards && PlayerSteps > 0xE0)) {
+				(!PlayerIsMovingBackwards && PlayerSteps > 0xE0) &&
+				!HitBlue) {
 				PlayerLastTouchedObjectX = XIndex;
 				PlayerLastTouchedObjectY = YIndex;
 				PlayerSteps = 0x00;
@@ -1018,12 +1020,12 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 			}
 		}
 		else if (*LayoutAt(XIndex, YIndex) == (0x80 | SPHERE_RED)) {
-			/*if ((PlayerIsMovingBackwards && PlayerSteps > 0x20) ||
+			if ((PlayerIsMovingBackwards && PlayerSteps > 0x20) ||
 				(!PlayerIsMovingBackwards && PlayerSteps < 0xE0)) {
 				PlayerLastTouchedObjectX = XIndex;
 				PlayerLastTouchedObjectY = YIndex;
 				*LayoutAt(XIndex, YIndex) = SPHERE_RED;
-			}*/
+			}
 		}
 		else if (*LayoutAt(XIndex, YIndex) == SPHERE_BLUE) {
 			if ((PlayerIsMovingBackwards && PlayerSteps < 0x80) ||
@@ -1032,8 +1034,9 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 				PlayerLastTouchedObjectY = YIndex;
 				CheckSurround();
 				BallCount--;
+				HitBlue = true;
 				if (!PlayerDwordC0) {
-					*LayoutAt(XIndex, YIndex) = 0x80 | SPHERE_RED;
+					*LayoutAt(XIndex, YIndex) = SPHERE_RED;
 				}
 				if (BallCount <= 0) {
 					BallCount = 0;
@@ -1108,6 +1111,9 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 
 				*LayoutAt(XIndex, YIndex) = 0;
 			}
+		}
+		if (PlayerSteps == 0) {
+			HitBlue = false;
 		}
 		/*if (DropDash == -1 && PlayerZ == 0) {
 			PlayerSpeed *= 1.5;
