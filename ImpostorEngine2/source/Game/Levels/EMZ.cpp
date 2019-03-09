@@ -17,6 +17,8 @@ public:
 PUBLIC Level_EMZ::Level_EMZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
+	sprintf(ZoneLetters, "EMZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/EMZ/TileConfig1.bin";

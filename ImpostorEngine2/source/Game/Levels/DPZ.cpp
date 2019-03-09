@@ -17,6 +17,8 @@ public:
 PUBLIC Level_DPZ::Level_DPZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
+	sprintf(ZoneLetters, "DPZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/DPZ/TileConfig1.bin";

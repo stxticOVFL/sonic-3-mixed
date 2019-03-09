@@ -97,6 +97,8 @@ Uint32 Color2 = 0x662200;
 Uint32 ColorSky = 0x00;
 Uint32 ColorGlobe = 0x00;
 Sint32 MapThing[0x10][0x100];
+int DropDash = -2;
+int DropDashY = 0;
 
 PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelScene(app, g) {
     ZoneID = 20;
@@ -1051,6 +1053,7 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 				goto RETURN;
 
 			bool go = false;
+			//DropDash = -2;
 			if (PlayerIsMovingBackwards)  {
 				if (PlayerSteps < 0x70) {
 					if (PlayerSteps > 0x10 && PlayerSpeed < 0) {
@@ -1106,13 +1109,36 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 				*LayoutAt(XIndex, YIndex) = 0;
 			}
 		}
+		/*if (DropDash == -1 && PlayerZ == 0) {
+			PlayerSpeed *= 1.5;
+			DropDash = XIndex;
+			DropDashY = YIndex;
+			Sound::Play(Sound::SFX_DROPDASH);
+			if (PlayerIsMovingBackwards) {
+				PlayerIsMoveForwardLocked = true;
+				PlayerSpeed = -PlayerSpeed;
+				PlayerIsMovingBackwards = !PlayerIsMovingBackwards;
+			}
+		}
+		if (DropDash > -1) {
+			if (IMath::abs((int)IMath::pythag(XIndex, YIndex) - (int)IMath::pythag(DropDash, DropDashY)) >= 3) {
+				PlayerSpeed = PlayerMaxSpeed;
+				DropDash = -2;
+			}
+			/*if (PlayerSpeed > PlayerMaxSpeed)
+				PlayerSpeed -= PlayerMaxSpeed * .1;
+			else {
+				PlayerSpeed = PlayerMaxSpeed;
+				DropDash = -2;
+			}
+		}*/
 	} RETURN:
 
     if (Direction == 0) {
-        if (App->Input->GetControllerInput(0)[IInput::I_LEFT]) {
+        if (App->Input->GetControllerInput(0)[IInput::I_LEFT] /*&& DropDash == -2*/) {
             Direction = 1;
         }
-        if (App->Input->GetControllerInput(0)[IInput::I_RIGHT]) {
+        if (App->Input->GetControllerInput(0)[IInput::I_RIGHT] /*&& /*DropDash == -2*/) {
             Direction = -1;
         }
     }
@@ -1124,15 +1150,22 @@ PUBLIC void Level_SpecialStage::EarlyUpdate() {
 		}
 	}
 
-	if (PlayerZ == 0 && (PlayerAngle & 0x3FFF) == 0 && App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
+	if (PlayerZ == 0 && (PlayerAngle & 0x3FFF) == 0 && App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED] && DropDash == -2) {
 		PlayerZSpeed = -0x100000;
-
 		Sound::Play(Sound::SFX_JUMP);
 	}
 	PlayerZSpeed += PlayerMaxSpeed << 12;
 	PlayerZ += PlayerZSpeed;
 	if (PlayerZ > 0)
 		PlayerZ = PlayerZSpeed = 0;
+
+	/*if (SaveGame::CurrentCharacterFlag == 0) {
+		if (IMath::abs(PlayerZ) > 0x100000 && (PlayerAngle & 0x3FFF) == 0 && App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED] && PlayerSpeed != 0 && DropDash == -2) {
+			Sound::Play(Sound::SFX_DROPDASHREADY);
+			DropDash = -1;
+			IApp::Print(1, std::to_string(PlayerZ).c_str());
+		}
+	}*/
 
     if ((PlayerSteps & 0xF0) == 0 && Direction != 0) {
         if (DirectionStep == 0) {
@@ -1362,7 +1395,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
     G->DrawSprite(GlobeSpin, 1, 0, App->WIDTH / 2, 0xA0, 0, IE_NOFLIP);
     G->SetDrawAlpha(0xFF);
 
-	if (PlayerZ == 0) {
+	if (PlayerZ == 0 && DropDash == -2) {
 		if (PlayerMaxSpeed == 0 || PlayerWaitMovementTimer != 0)
 			G->DrawSprite(Players, 0, 0, App->WIDTH / 2, 0xAA, 0, IE_NOFLIP);
 		else

@@ -17,6 +17,8 @@ public:
 PUBLIC Level_FBZ::Level_FBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 8;
     VisualAct = Act = act;
+	sprintf(ZoneLetters, "FBZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/FBZ1/TileConfig.bin";

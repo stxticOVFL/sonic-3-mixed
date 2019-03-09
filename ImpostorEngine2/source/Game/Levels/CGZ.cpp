@@ -17,6 +17,8 @@ public:
 PUBLIC Level_CGZ::Level_CGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
+	sprintf(ZoneLetters, "CGZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/CGZ/TileConfig1.bin";

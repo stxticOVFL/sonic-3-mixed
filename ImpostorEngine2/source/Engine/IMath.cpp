@@ -29,6 +29,10 @@ PUBLIC STATIC void IMath::Init() {
     }
 }
 
+PUBLIC STATIC float IMath::pythag(int a, int b) {
+	return sqrt(pow(a, 2) + pow(b, 2));
+}
+
 PUBLIC STATIC int32_t IMath::cosHex(int n) {
     return Cos[n & 0xFF];
 }

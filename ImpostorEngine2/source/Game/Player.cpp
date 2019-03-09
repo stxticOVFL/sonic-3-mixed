@@ -1303,6 +1303,11 @@ void IPlayer::Update() {
 			}
 		}
 
+		if (InputJump && InputDown) {
+			FlyTimer = 0;
+			Action = ActionType::Jumping;
+		}
+
 		if (!Underwater && !(Scene->Frame & 0xF)) {
 			if (FlyTimer > 0)
 				Sound::Play(Sound::SFX_TAILS_FLY);
@@ -2502,9 +2507,11 @@ void IPlayer::Update() {
 				}
 			}
 			else if (Character == CharacterType::Tails) {
-				Action = ActionType::Fly;
-				FlyFlag = 0x8;
-				FlyTimer = FlyTimerMax;
+				if (!InputDown) {
+					Action = ActionType::Fly;
+					FlyFlag = 0x8;
+					FlyTimer = FlyTimerMax;
+				}
 			}
 			else if (Character == CharacterType::Knuckles) {
 				Action = ActionType::Glide;

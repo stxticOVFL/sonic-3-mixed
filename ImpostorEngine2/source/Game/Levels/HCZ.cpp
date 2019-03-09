@@ -71,10 +71,12 @@ int copymake[4 * 16] = {
 PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 2;
     VisualAct = Act = act;
+	sprintf(ZoneLetters, "HCZ");
+	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 407013) : 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
-		Sound::SoundBank[0] = new ISound("Music/HCZ1.ogg", true);
-		Sound::Audio->LoopPoint[0] = 1;
+		//Sound::SoundBank[0] = new ISound("Music/HCZ1.ogg", true);
+		//Sound::Audio->LoopPoint[0] = 1;
 
         Str_TileConfigBin = "Stages/HCZ1/TileConfig.bin";
         Str_SceneBin = "Stages/HCZ1/Scene.bin";
@@ -84,8 +86,8 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         WaterLine = new ISprite("HCZ/AniTiles2.gif", App);
     }
     else {
-		Sound::SoundBank[0] = new ISound("Music/HCZ2.ogg", true);
-		Sound::Audio->LoopPoint[0] = 1;
+		//Sound::SoundBank[0] = new ISound("Music/HCZ2.ogg", true);
+		//Sound::Audio->LoopPoint[0] = 1;
 		// Sound::Audio->LoopPoint[0] = 329797;
 
         Str_TileConfigBin = "Stages/HCZ2/TileConfig.bin";

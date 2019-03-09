@@ -22,6 +22,8 @@ public:
 PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
 	ZoneID = 3;
 	VisualAct = Act = act;
+	sprintf(ZoneLetters, "HCZ");
+	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 21609) : 0, SaveGame::CurrentMode);
 
 	if (Act == 1) {
 		Sound::SoundBank[0] = new ISound("Music/MGZ1.ogg", true);

@@ -17,6 +17,8 @@ public:
 PUBLIC Level_BPZ::Level_BPZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
+	sprintf(ZoneLetters, "BPZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/BPZ/TileConfig1.bin";

@@ -17,6 +17,8 @@ public:
 PUBLIC Level_ALZ::Level_ALZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
+	sprintf(ZoneLetters, "ALZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/ALZ/TileConfig1.bin";

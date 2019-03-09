@@ -17,6 +17,8 @@ public:
 PUBLIC Level_ASZ::Level_ASZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
+	sprintf(ZoneLetters, "ASZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/ASZ/TileConfig1.bin";

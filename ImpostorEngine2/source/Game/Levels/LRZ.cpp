@@ -17,10 +17,12 @@ public:
 PUBLIC Level_LRZ::Level_LRZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 10;
     VisualAct = Act = act;
+	sprintf(ZoneLetters, "LRZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/LRZ1.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
+        //Sound::SoundBank[0] = new ISound("Music/LRZ1.ogg", false);
+		//Sound::Audio->LoopPoint[0] = 0;
 
         Str_TileConfigBin = "Stages/LRZ1/TileConfig.bin";
         Str_SceneBin = "Stages/LRZ1/Scene.bin";
@@ -28,8 +30,8 @@ PUBLIC Level_LRZ::Level_LRZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/LRZ1/Animated Tiles.gif";
     }
     else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/LRZ2.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
+        //Sound::SoundBank[0] = new ISound("Music/LRZ2.ogg", false);
+		//Sound::Audio->LoopPoint[0] = 0;
 
         Str_TileConfigBin = "Stages/LRZ2/TileConfig.bin";
         Str_SceneBin = "Stages/LRZ2/Scene.bin";

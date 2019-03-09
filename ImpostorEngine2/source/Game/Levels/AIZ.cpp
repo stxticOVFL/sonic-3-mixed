@@ -226,7 +226,7 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     IApp::Print(0, "Starting AIZ...");
 
     uint64_t startTime = SDL_GetTicks();
-	PlayMusic(ACT < 2 ? 1 : 2, ACT < 2 ? 0 : 85113, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);
+	PlayMusic(ACT < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (ACT < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);
 
     if (Act == 0) {
 		//PlayMusic("AIZ1.ogg", 1, SaveGame::CurrentMode);

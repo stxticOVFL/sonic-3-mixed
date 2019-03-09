@@ -369,20 +369,16 @@ Uint32 AnPal_PalCNZ_4[122] = {
 PUBLIC Level_CNZ::Level_CNZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 4;
     VisualAct = Act = act;
+	sprintf(ZoneLetters, "CNZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode, 0x1A0);
 
     if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/CNZ1.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
-
         Str_TileConfigBin = "Stages/CNZ1/TileConfig.bin";
         Str_SceneBin = "Stages/CNZ1/Scene.bin";
         Str_TileSprite = "Stages/CNZ1/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/CNZ1/Animated Tiles.gif";
     }
     else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/CNZ2.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
-
         Str_TileConfigBin = "Stages/CNZ2/TileConfig.bin";
         Str_SceneBin = "Stages/CNZ2/Scene.bin";
         Str_TileSprite = "Stages/CNZ2/16x16Tiles.gif";

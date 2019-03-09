@@ -17,8 +17,9 @@ public:
 PUBLIC Level_HPZ::Level_HPZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
-
-    if (Act == 1) {
+	sprintf(ZoneLetters, "HPZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
+	if (Act == 1) {
         Str_TileConfigBin = "Stages/HPZ/TileConfig1.bin";
         Str_SceneBin = "Stages/HPZ/Scene1.bin";
         Str_TileSprite = "Stages/HPZ/16x16Tiles1.gif";

@@ -3589,7 +3589,7 @@ PUBLIC void LevelScene::OnEvent(Uint32 event) {
 
 		PauseSelectedMenuItem = 0;
 
-		if (MusicVolume == -1) 
+		if (MusicVolume == -1)
 			App->Audio->AudioPauseAll();
 		Sound::Play(Sound::SFX_MENUACCEPT);
 	}
@@ -3598,9 +3598,7 @@ PUBLIC void LevelScene::OnEvent(Uint32 event) {
 PUBLIC void LevelScene::Update() {
 	if (MusicVolume != -1)
 		if (App->Audio->MusicStack.size() != 0)
-			if (App->Audio->MusicStack[0]->Volume != MusicVolume - (PauseMusicFade * 3))
-				if (Paused) App->Audio->MusicStack[0]->Volume = MusicVolume - (PauseMusicFade * 3);
-				else App->Audio->MusicStack[0]->Volume = MusicVolume = 0xFF; // you're welcome RMG :)
+				App->Audio->MusicStack[0]->Volume = MusicVolume - (PauseMusicFade * 3); //you're not welcome rdc fuck you
 	if (!Paused) {
 		if (MusicVolume == -1 && App->Audio->Paused)
 			App->Audio->AudioUnpauseAll();

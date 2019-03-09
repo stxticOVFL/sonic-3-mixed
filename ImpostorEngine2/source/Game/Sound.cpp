@@ -269,7 +269,7 @@ PUBLIC STATIC void Sound::Init() {
 
 	LOADSOUND(SFX_EMERALD, "Sounds/Emerald.wav");
 
-    Sound::SoundBank[0xFF] = new ISound("Music/S3 Invincibility.ogg", true);
+    Sound::SoundBank[0xFF] = new ISound("Music/Mixed/Invincible.ogg", true);
     Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);
     Sound::SoundBank[0xFD] = new ISound("Music/Drowning.ogg", true);
     Sound::SoundBank[0xFC] = new ISound("Music/ActComplete.ogg", true);

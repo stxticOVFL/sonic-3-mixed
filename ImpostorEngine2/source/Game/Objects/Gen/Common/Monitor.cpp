@@ -239,7 +239,7 @@ void Monitor::Update() {
             if (!Scene->Players[PlayerAggressor]->SuperForm && !Scene->Players[PlayerAggressor]->HyperForm) {
                 Scene->Players[PlayerAggressor]->Invincibility = InvincibilityType::Full;
                 Scene->Players[PlayerAggressor]->InvincibilityTimer = 1200;
-                App->Audio->PushMusic(Sound::SoundBank[0xFF], true, 0);
+                App->Audio->PushMusic(Sound::SoundBank[0xFF], true, 14702);
             }
 
             break;
