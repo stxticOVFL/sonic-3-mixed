@@ -1305,7 +1305,8 @@ void IPlayer::Update() {
 
 		if (InputJump && InputDown) {
 			FlyTimer = 0;
-			Action = ActionType::Jumping;
+			Action = ActionType::Rolling;
+			ChangeAnimation((int)AnimationEnum::Jump);
 		}
 
 		if (!Underwater && !(Scene->Frame & 0xF)) {
