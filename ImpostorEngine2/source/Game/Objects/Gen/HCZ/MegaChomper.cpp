@@ -24,6 +24,8 @@ void MegaChomper::Create() {
     StuckX = 0;
     VisualLayer = 1;
     Harmful = false;
+    LRTimer = 100;
+    LRAmount = 0;
 }
 
 int MegaChomper::OnHit() {
@@ -35,6 +37,20 @@ void MegaChomper::Update() {
         StuckX = X - (Scene->Player->EZX);
         Invincible = true;
         Routine = 6;
+    }
+
+    if (Routine == 6) {
+        LRTimer = LRTimer == 0 ? 0 : LRTimer - 1;
+        if (LRTimer == 0) {
+            LRAmount = 0;
+        }
+
+        if (LastFlip != Scene->Player->DisplayFlip) {
+            LRTimer = 100;
+            LRAmount += 1;
+            LastFlip = Scene->Player->DisplayFlip;
+        }
+
     }
 
     if (Routine == 2 && Scene->Player->Action != ActionType::Dead) {
@@ -87,6 +103,13 @@ void MegaChomper::Update() {
         else SubX = (Scene->Player->EZX + StuckX) << 16;
         SubY = (Scene->Player->EZY - 16) << 16;
         if (Y < Scene->WaterLevel) {
+            Routine = 8;
+            XSpeed = 0x200;
+            YSpeed = -0x400;
+            Scene->Player->InputLockLeftRight = false;
+        }
+
+        if (LRAmount > 6) {
             Routine = 8;
             XSpeed = 0x200;
             YSpeed = -0x400;

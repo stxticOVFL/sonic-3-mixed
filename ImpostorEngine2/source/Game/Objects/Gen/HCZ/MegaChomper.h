@@ -22,6 +22,9 @@ public:
     int SubX;
     int SubY;
     int StuckX;
+    int LRTimer;
+    int LRAmount;
+    int LastFlip;
     
     void Create();
     int OnHit();

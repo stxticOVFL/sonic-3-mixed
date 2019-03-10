@@ -20,6 +20,7 @@ public:
 
     static void Init();
     static float pythag(int a, int b);
+    static float pydistance(int a, int b, int a2, int b2);
     static int32_t cosHex(int n);
     static int32_t sinHex(int n);
     static int32_t atanHex(int x, int y);

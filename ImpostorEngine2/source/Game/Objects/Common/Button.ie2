@@ -30,6 +30,8 @@ event Create() {
 
     StartY = this.Y;
     CurrentAnimation = 15;
+    if (Scene.ZoneID == 2)
+        CurrentAnimation = 0;
     Down = false;
     Pressed = false;
 }
@@ -48,7 +50,12 @@ event Update() {
     Y = StartY + 4 + 4 * Down;
 }
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
+    if (Scene.ZoneID != 2) 
+        G.DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
+    else {
+        G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - 4 * Down - CamY + 3, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, CurrentAnimation, Down + 1, X - CamX, StartY - CamY + 7, 0, IE_NOFLIP);
+    }
     // G.DrawRectangle(X - CamX - 16, Y - CamY - 8, 32, 8, 0xB4B4D8);
     // if (!this.Down)
     //     G.DrawRectangle(X - CamX -  7, Y - CamY - 0, 14, 8, 0x6C6C90);

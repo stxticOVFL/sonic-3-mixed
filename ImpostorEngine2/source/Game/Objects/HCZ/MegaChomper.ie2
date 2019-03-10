@@ -9,6 +9,9 @@ var Acceleration:int;
 var SubX:int;
 var SubY:int;
 var StuckX:int;
+var LRTimer:int;
+var LRAmount:int;
+var LastFlip:int;
 
 event Create() {
     Active = true;
@@ -39,6 +42,8 @@ event Create() {
     VisualLayer = 1;
 
     Harmful = false;
+    LRTimer = 100;
+    LRAmount = 0;
 }
 
 event OnHit() : int {
@@ -53,6 +58,19 @@ event Update() {
         StuckX = X - (Scene.Player.EZX);
         Invincible = true;
         Routine = 6;
+    }
+
+    if (Routine == 6) {
+        LRTimer = LRTimer == 0 ? 0 : LRTimer - 1;
+        if (LRTimer == 0) {
+            LRAmount = 0;
+        }
+        //IApp.Print(0, "%d", LRTimer);
+        if (LastFlip != Scene.Player.DisplayFlip) {
+            LRTimer = 100;
+            LRAmount += 1;
+            LastFlip = Scene.Player.DisplayFlip;
+        }
     }
 
     if (Routine == 2 && Scene.Player.Action != ActionType.Dead) {
@@ -114,6 +132,12 @@ event Update() {
         SubY = (Scene.Player.EZY - 16) << 16;
 
         if (Y < Scene.WaterLevel) {
+            Routine = 8;
+            XSpeed = 0x200;
+            YSpeed = -0x400;
+            Scene.Player.InputLockLeftRight = false;
+        }
+        if (LRAmount > 6) {
             Routine = 8;
             XSpeed = 0x200;
             YSpeed = -0x400;

@@ -18,10 +18,13 @@ public:
     int Flip;
     bool Fired;
     int FireTimer;
+    int MoveTimer;
+    int KeptFlip;
     
     void Create();
     int OnHit();
     void Update();
+    void MoveSprite();
     void Render(int CamX, int CamY);
 };
 

@@ -72,7 +72,7 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 2;
     VisualAct = Act = act;
 	sprintf(ZoneLetters, "HCZ");
-	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 407013) : 0, SaveGame::CurrentMode, SaveGame::CurrentMode == 0 ? (act == 1 ? 0xA0 : 0xE0) : 0xFF);
+	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 2506688 : 407013) : 0, SaveGame::CurrentMode, SaveGame::CurrentMode == 0 ? (act == 1 ? 0xA0 : 0xE0) : 0xFF);
 
     if (Act == 1) {
 		//Sound::SoundBank[0] = new ISound("Music/HCZ1.ogg", true);
@@ -267,7 +267,7 @@ PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
 	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
-	// SpriteMapIDs[0x33] = SpriteMap["HCZ"];
+	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
 	SpriteMapIDs[0x39] = SpriteMap["HCZ"];

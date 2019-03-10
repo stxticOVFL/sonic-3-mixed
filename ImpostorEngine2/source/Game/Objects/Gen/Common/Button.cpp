@@ -21,6 +21,8 @@ void Button::Create() {
     Rotation = 0;
     StartY = this->Y;
     CurrentAnimation = 15;
+    if (Scene->ZoneID == 2) CurrentAnimation = 0;
+
     Down = false;
     Pressed = false;
 }
@@ -42,7 +44,11 @@ void Button::Update() {
 }
 
 void Button::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
+    if (Scene->ZoneID != 2) G->DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
+    else {
+        G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - 4 * Down - CamY + 3, 0, IE_NOFLIP);
+        G->DrawSprite(Sprite, CurrentAnimation, Down + 1, X - CamX, StartY - CamY + 7, 0, IE_NOFLIP);
+    }
     }
 
 int Button::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
