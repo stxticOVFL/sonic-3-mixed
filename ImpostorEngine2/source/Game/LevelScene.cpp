@@ -4031,17 +4031,17 @@ PUBLIC void LevelScene::Update() {
 					//*
 					if (obj->VisW > obj->W || obj->VisH > obj->H)
 						OnScreen |= (
-							obj->X + obj->VisW >= CameraX &&
-							obj->Y + obj->VisH >= CameraY &&
-							obj->X - obj->VisW < CameraX + App->WIDTH &&
-							obj->Y - obj->VisH < CameraY + App->HEIGHT);
+							obj->X + obj->VisW >= CameraX - 120 &&
+							obj->Y + obj->VisH >= CameraY - 120 &&
+							obj->X - obj->VisW < CameraX + App->WIDTH + 120 &&
+							obj->Y - obj->VisH < CameraY + App->HEIGHT + 120);
 
 					//*/
 					OnScreen |= (
-						obj->X + obj->W / 2 >= CameraX &&
-						obj->Y + obj->H / 2 >= CameraY &&
-						obj->X - obj->W / 2 < CameraX + App->WIDTH &&
-						obj->Y - obj->H / 2 < CameraY + App->HEIGHT);
+						obj->X + obj->W / 2 >= CameraX - 120 &&
+						obj->Y + obj->H / 2 >= CameraY - 120 &&
+						obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
+						obj->Y - obj->H / 2 < CameraY + App->HEIGHT + 120);
 
 					if (Data->layers[Data->cameraLayer].IsScrollingVertical) {
 						OnScreen |= (
