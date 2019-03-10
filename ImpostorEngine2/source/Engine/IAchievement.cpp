@@ -23,9 +23,6 @@ public:
 PUBLIC IAchievement::IAchievement()
 {
 	//Setup Achievements
-	//AchievementList = (Achievement*)calloc(256, sizeof(Achievement));
-	//memset(AchievementList, 0, 256 * sizeof(Achievement));
-
 	for (int i = 0; i < 0x40; i++)
 	{
 		SetAchievement(i, false);
