@@ -1,7 +1,7 @@
-#ifndef TURBOSPIKER_H
-#define TURBOSPIKER_H
+#ifndef TURBOSPIKERSPIKE_H
+#define TURBOSPIKERSPIKE_H
 
-class TurboSpiker;
+class TurboSpikerSpike;
 
 #include <Utils/Standard.h>
 
@@ -12,17 +12,13 @@ class TurboSpiker;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class TurboSpiker: public Enemy {
+class TurboSpikerSpike: public Enemy {
 public:    
     
-    int Flip;
-    bool Fired;
-    int FireTimer;
     
     void Create();
-    int OnHit();
     void Update();
     void Render(int CamX, int CamY);
 };
 
-#endif /* TURBOSPIKER_H */
+#endif /* TURBOSPIKERSPIKE_H */

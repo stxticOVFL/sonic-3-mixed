@@ -327,9 +327,12 @@ Object* GetNewObjectFromID(int ID) {
             return new BlastoidShot();
             break;
         case 0x40FU:
-            return new ReliefEye();
+            return new TurboSpikerSpike();
             break;
         case 0x410U:
+            return new ReliefEye();
+            break;
+        case 0x411U:
             return new Platform();
             break;
 
@@ -664,6 +667,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x3692A9F5U:
             return new BlastoidShot();
+            break;
+        case 0x77A23BDEU:
+            return new TurboSpikerSpike();
             break;
         case 0xBBCA6AC5U:
             return new ReliefEye();

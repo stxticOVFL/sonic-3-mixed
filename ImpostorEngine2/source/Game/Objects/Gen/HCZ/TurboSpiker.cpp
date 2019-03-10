@@ -17,6 +17,9 @@ void TurboSpiker::Create() {
     if (FlipX) Flip = -1;
 
     HitCount = 1;
+    Fired = false;
+    VisualLayer = -1;
+    FireTimer = -1;
 }
 
 int TurboSpiker::OnHit() {
@@ -24,6 +27,19 @@ int TurboSpiker::OnHit() {
 }
 
 void TurboSpiker::Update() {
+    if (Math::abs(Math::pythag(X, Y) - Math::pythag(Scene->Players[0]->X, Scene->Players[0]->Y)) <= 0x60 && VisualLayer == -1) {
+        VisualLayer = 1;
+        Sound::Play(Sound::SFX_SPLASH);
+        FireTimer = 20;
+    }
+
+    FireTimer = FireTimer == 0 ? 0 : FireTimer - 1;
+    if (FireTimer == 0 && !Fired) {
+        Fired = true;
+        Scene->AddNewObject(Obj_TurboSpikerSpike, 0, X, Y, Flip < 0 ? false : true, false);
+        Sound::Play(Sound::SFX_SLIDE);
+    }
+
     if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
     else if (Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
 
@@ -39,7 +55,8 @@ void TurboSpiker::Render(int CamX, int CamY) {
         G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
     }
     else {
-        G->DrawSprite(Sprite, 9, 0, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+        if (!Fired) G->DrawSprite(Sprite, 9, 0, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+
         G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
     }
     }

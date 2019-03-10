@@ -109,6 +109,7 @@
 #include "GHZ/Motobug.h"			// 219C1E61
 #include "GHZ/MotobugSmoke.h"			// 5B38E7A8
 #include "HCZ/BlastoidShot.h"			// 3692A9F5
+#include "HCZ/TurboSpikerSpike.h"			// 77A23BDE
 #include "MGZ/ReliefEye.h"			// BBCA6AC5
 #include "Test/Platform.h"			// C4B304CC
 
@@ -222,8 +223,9 @@ enum {
     Obj_Motobug = 0x40C,
     Obj_MotobugSmoke = 0x40D,
     Obj_BlastoidShot = 0x40E,
-    Obj_ReliefEye = 0x40F,
-    Obj_Platform = 0x410,
+    Obj_TurboSpikerSpike = 0x40F,
+    Obj_ReliefEye = 0x410,
+    Obj_Platform = 0x411,
 };
 
 Object* GetNewObjectFromID(int ID);
