@@ -124,7 +124,7 @@ public:
     int         ObjectEnemiesCount = 0;
     std::vector<Object*> ObjectsBreakable;
     int         ObjectBreakableCount = 0;
-    Object**    ObjectsPathSwitcher;
+    std::vector<Object*> ObjectsPathSwitcher;
     int         ObjectPathSwitcherCount = 0;
     int16_t*    DebugObjectIDList;
     int32_t     DebugObjectIDCount = 0;
@@ -148,9 +148,9 @@ public:
     bool FlipX = false;
     bool FlipY = false;
     }; 
-    ObjectProp* ObjectProps = NULL;
+    std::vector<ObjectProp> ObjectProps;
     int         ObjectPropCount = 0;
-    ObjectProp* RingProps = NULL;
+    std::vector<ObjectProp> RingProps;
     int         RingPropCount = 0;
     ObjectProp* AnimatedSprite0Props = NULL;
     int         AnimatedSprite0PropCount = 0;

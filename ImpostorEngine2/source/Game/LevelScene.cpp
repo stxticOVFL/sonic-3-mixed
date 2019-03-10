@@ -115,7 +115,7 @@ public:
 	std::vector<Object*> ObjectsBreakable;
 	int         ObjectBreakableCount = 0;
 
-	Object**    ObjectsPathSwitcher;
+	std::vector<Object*> ObjectsPathSwitcher;
 	int         ObjectPathSwitcherCount = 0;
 
 	int16_t*    DebugObjectIDList;
@@ -147,10 +147,10 @@ public:
 		bool FlipY = false;
 	};
 
-	ObjectProp* ObjectProps = NULL;
+	std::vector<ObjectProp> ObjectProps;
 	int         ObjectPropCount = 0;
 
-	ObjectProp* RingProps = NULL;
+	std::vector<ObjectProp> RingProps;
 	int         RingPropCount = 0;
 
 	ObjectProp* AnimatedSprite0Props = NULL;
@@ -250,7 +250,7 @@ public:
 
 #include <Game/SaveGame.h>
 
-#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
+#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectPropCount++; ObjectProps.push_back(op); Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
 const char* ObjectName[347];
 
 int BlankTile = 0;
@@ -287,7 +287,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	ObjectsSpring.reserve(300);
 	ObjectsEnemies.reserve(300);
 	ObjectsBreakable.reserve(300);
-	ObjectsPathSwitcher = (Object**)calloc(300, sizeof(Object*));
+	ObjectsPathSwitcher.reserve(300);
 
 	DebugObjectIDList = (int16_t*)calloc(0xFF, sizeof(int16_t));
 	for (int i = 0; i < 0xFF; i++) {
@@ -310,8 +310,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
         AddNewDebugObjectID(Obj_Motobug); // Motobug
 	}
 
-	ObjectProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
-	RingProps = (ObjectProp*)calloc(0x400, sizeof(ObjectProp));
+	ObjectProps.reserve(0x400);
+	RingProps.reserve(0x400);
 	AnimatedSprite0Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
 	AnimatedSprite1Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
 
@@ -1989,7 +1989,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						op.ID = 0xFF;
 						op.LoadFlag = true;
 
-						RingProps[RingPropCount++] = op;
+                        RingPropCount++;
+						RingProps.push_back(op);
 						break;
 					}
 					case OBJ_MONITOR:
@@ -2098,7 +2099,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					op.FlipX = FLIPX;
 					op.FlipY = FLIPY;
 
-					ObjectProps[ObjectPropCount++] = op;
+					ObjectPropCount++;
+                    ObjectProps.push_back(op);
 
 					Object* obj = GetNewObjectFromID(ID);
 					if (obj) {
@@ -2145,7 +2147,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				op.ID = 0xFF;
 				op.LoadFlag = true;
 
-				RingProps[RingPropCount++] = op;
+                RingPropCount++;
+                RingProps.push_back(op);
 			}
 
 			int animTilesCount = reader.ReadUInt16();
@@ -2355,7 +2358,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							op.ID = 0xFF;
 							op.LoadFlag = true;
 
-							RingProps[RingPropCount++] = op;
+                            RingPropCount++;
+                            RingProps.push_back(op);
 							break;
 						}
 						//*/
@@ -2826,7 +2830,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	}
 
 	for (int o = 0; o < RingPropCount; o++) {
-		RingProps[o].ID = 0xFF;
+		RingProps.at(o).ID = 0xFF;
 	}
 
 	Explosions.clear();
@@ -3801,8 +3805,8 @@ PUBLIC void LevelScene::Update() {
 			}
 
 			if (Player->InputJump) {
-				if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
-					ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
+				if (ObjectCount < Objects.max_size() && ObjectSolidCount < ObjectsSolid.max_size() && ObjectSpringCount < ObjectsSpring.max_size() &&
+					ObjectEnemiesCount < ObjectsEnemies.max_size() && ObjectBreakableCount < ObjectsBreakable.max_size() && ObjectPathSwitcherCount < ObjectsPathSwitcher.max_size()) {
 					Player->Hidden = true;
 					Player->DebugObjectIndex++;
 					Player->DebugObjectIndex = Player->DebugObjectIndex % DebugObjectIDCount;
@@ -3895,8 +3899,8 @@ PUBLIC void LevelScene::Update() {
 			}
 
 			if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED]) {
-				if (ObjectCount < 2000 && ObjectSolidCount < 1000 && ObjectSpringCount < 300 &&
-					ObjectEnemiesCount < 300 && ObjectBreakableCount < 300 && ObjectPathSwitcherCount < 300) {
+				if (ObjectCount < Objects.max_size() && ObjectSolidCount < ObjectsSolid.max_size() && ObjectSpringCount < ObjectsSpring.max_size() &&
+					ObjectEnemiesCount < ObjectsEnemies.max_size() && ObjectBreakableCount < ObjectsBreakable.max_size() && ObjectPathSwitcherCount < ObjectsPathSwitcher.max_size()) {
 					if (Player->DebugObject && Player->DebugObject->OnScreen) {
 						// We want to create a copy for easy use, So we do.
 						uint8_t oldSubType = Player->DebugObject->SubType;
@@ -4576,21 +4580,18 @@ PUBLIC void LevelScene::AddSelfToRegistry(Object* obj, const char* where) {
 	if (!strcmp(where, "Solid")) {
 		ObjectSolidCount++;
 		ObjectsSolid.push_back(obj);
-	}
-	else if (!strcmp(where, "Spring")) {
+	} else if (!strcmp(where, "Spring")) {
 		ObjectSpringCount++;
 		ObjectsSpring.push_back(obj);
-	}
-	else if (!strcmp(where, "Enemies")) {
+	} else if (!strcmp(where, "Enemies")) {
 		ObjectEnemiesCount++;
 		ObjectsEnemies.push_back((Enemy*)obj);
-	}
-	else if (!strcmp(where, "Breakable")) {
+	} else if (!strcmp(where, "Breakable")) {
 		ObjectBreakableCount++;
 		ObjectsBreakable.push_back(obj);
-	}
-	else if (!strcmp(where, "PathSwitcher")) {
-		ObjectsPathSwitcher[ObjectPathSwitcherCount++] = obj;
+	} else if (!strcmp(where, "PathSwitcher")) {
+        ObjectPathSwitcherCount++;
+		ObjectsPathSwitcher.push_back(obj);
 	}
 }
 
@@ -4782,7 +4783,7 @@ PUBLIC void LevelScene::RenderAnimatedSprites(int layer) {
 
 PUBLIC void LevelScene::RenderRings() {
 	for (unsigned int o = 0; o < (unsigned int)RingPropCount; o++) {
-		ObjectProp obj = RingProps[o];
+		ObjectProp obj = RingProps.at(o);
 		if (!obj.ID) continue;
 
 		bool OnScreenH =
@@ -5980,10 +5981,10 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	ObjectsSpring.clear();
 	ObjectsEnemies.clear();
 	ObjectsBreakable.clear();
-	free(ObjectsPathSwitcher);
+	ObjectsPathSwitcher.clear();
 	free(DebugObjectIDList);
-	free(ObjectProps);
-	free(RingProps);
+	ObjectProps.clear();
+	RingProps.clear();
 	free(AnimatedSprite0Props);
 	free(AnimatedSprite1Props);
 	free(SoundBank);
