@@ -2601,6 +2601,11 @@ void IPlayer::Update() {
 	// Handle Air Drag
 	if (Action == ActionType::Jumping && !InputJumpHold && YSpeed < rel && JumpVariable == 1)
 		YSpeed = rel;
+	if (Action == ActionType::Spring && YSpeed < 0) {
+		if (InputJump) {
+			Action = ActionType::Jumping;
+		}
+	}
 	// Change Animation to Air Walk after springed
 	if (Action == ActionType::Spring && YSpeed >= 0) {
 		if (SpringFlip <= 1) {
@@ -4102,7 +4107,7 @@ void IPlayer::GiveRing(int n) {
 	}
 }
 void IPlayer::GiveLife(int n) {
-	Sound::Audio->PushMusic(Sound::SoundBank[0xFB], false, 0);
+	if (!Sound::Audio->IsPlayingMusic(Sound::SoundBank[0xFB])) Sound::Audio->PushMusic(Sound::SoundBank[0xFB], false, 0);
 
 	if (Sidekick)
 		Scene->Player->Lives += n;
@@ -4470,7 +4475,7 @@ void IPlayer::HandleMonitors() {
 					}
 					else {
 						if (obj->OnBreakHorizontal(PlayerID, hitFrom)) {
-							Action = ActionType::Normal;
+							//Action = ActionType::Normal;
 							Vibrate(VibrationType::ImpactSmall);
 						}
 						else {
