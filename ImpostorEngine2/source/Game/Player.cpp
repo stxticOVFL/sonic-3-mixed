@@ -4101,6 +4101,8 @@ void IPlayer::GiveRing(int n) {
 	else
 		Rings += n;
 
+	//App->Achievements->SetAchievement(0, true); //Ring Got!
+
 	if (Rings >= RingLifeValue) {
 		RingLifeValue += 100;
 		GiveLife(1);
