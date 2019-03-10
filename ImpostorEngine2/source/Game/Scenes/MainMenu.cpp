@@ -5,7 +5,7 @@
 class Scene_MainMenu : public IScene {
 public:
 	int selected = 0;
-	int subselected = 0;
+	int subselected = -1;
 	int ran = 0;
 	ISprite* MenuSprite = NULL;
 	ISprite* SphereSprite = NULL;
@@ -46,6 +46,12 @@ int FrameZigzagBlue = 0;
 int frame = 0;
 int triframe = 0;
 int palframe = 0;
+bool opened = true;
+int openBlue = 15;
+int openRed = 15;
+int openTimer = 15;
+int prechange = 0;
+
 int paletteindexes[9] = {
 	68,
 	50,
@@ -224,8 +230,11 @@ PUBLIC void Scene_MainMenu::Update() {
 		}
 
 		if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
-			if (subselected > 0)
+			if (subselected > -1 && opened) {
 				subselected -= 1;
+				if (subselected == -1)
+					subselected = 0;
+			}
 			else if (selected >= 2) {
 				selected -= 2;
 				if (selected / 2 == 0)
@@ -235,7 +244,7 @@ PUBLIC void Scene_MainMenu::Update() {
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
-			if (subselected > -1) {
+			if (subselected > -1 && opened) {
 				if ((subselected == 2 && selected == 0) || (subselected == 1 && selected == 1)) {
 					selected += 2;
 					subselected = -1;
@@ -245,7 +254,7 @@ PUBLIC void Scene_MainMenu::Update() {
 			else if (selected <= 1) {
 				selected += 2;
 				if (selected / 2 == 0)
-					subselected = 0;
+					subselected = -1;
 			}
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
@@ -255,7 +264,7 @@ PUBLIC void Scene_MainMenu::Update() {
 			if ((selected & 1) == 1)
 				selected--;
 			if (selected / 2 == 0)
-				subselected = 0;
+				subselected = -1;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
@@ -263,12 +272,17 @@ PUBLIC void Scene_MainMenu::Update() {
 			if ((selected & 1) == 0)
 				selected++;
 			if (selected / 2 == 0)
-				subselected = 0;
+				subselected = -1;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (Changed) {
 			ran = selected;
+			if (prechange != selected) {
+				openTimer = 20;
+				opened = false;
+				subselected = -1;
+			}
 			if (ran == 1) {
 				std::srand(std::time(nullptr));
 				if (std::rand() % 1024 == 0) {
@@ -276,20 +290,41 @@ PUBLIC void Scene_MainMenu::Update() {
 				}
 			}
 		}
-		if (selected / 2 != 0)
-			subselected = -1;
 	}
 
 	if (CONFIRM_PRESSED) {
 		Sound::Play(Sound::SFX_MENUACCEPT);
-		FadeIn = false;
-		FadeTimerMax = 30;
+		if (selected % 2 != 0 || subselected > -1) {
+			FadeIn = false;
+			FadeTimerMax = 30;
+		}
+		else {
+			openTimer = 15;
+			opened = true;
+			subselected = 0;
+			if (selected == 0) {
+				openBlue = 0;
+			}
+			else {
+				openRed = 0;
+			}
+		}
 	}
 
 	FrameCircle = (FrameCircle + 1) & 0xFF;
 	FrameZigzag = (FrameZigzag + 1) % (40 * 4);
 	FrameZigzagRed = (FrameZigzagRed + 1) % (117 * 4);
 	FrameZigzagBlue = (FrameZigzagBlue + 1) % (110 * 4);
+	openBlue = openRed = 15;
+	if (opened) {
+		openTimer = openTimer > 0 ? openTimer - 1 : 0;
+		if (selected == 0) {
+			openBlue = openTimer;
+		}
+		else {
+			openRed = openTimer;
+		}
+	}
 
 	if (FrameCircle & 1) return;
 
@@ -392,39 +427,50 @@ PUBLIC void Scene_MainMenu::Render() {
 	G->DrawSprite(MenuSprite, 9, 0, App->WIDTH, 12, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
 
-	// Blue Button
-	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 8, 0, cenX - 50 - 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+
 	// Submenus for Blue
 	//Boxes
-	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY + 11, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY + 22, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY - (openBlue * 3) + 11, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY - (openBlue * 3) + 22, 0, IE_NOFLIP);
 	//Triangles
-	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY + 11, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY + 22, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY - (openBlue * 3) + 11, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY - (openBlue * 3) + 22, 0, IE_NOFLIP);
 	//Names
-	G->DrawSprite(MenuSprite, 20, 0, cenX, cenY, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 20, 1, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 20, 0, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 20, 1, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
 	//if (LockedOnNotUnlocked)
-	G->DrawSprite(MenuSprite, 20, 2, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 20, 2, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
 	//else
 	//G->DrawSprite(MenuSprite, 20, 3, cenX, cenY, 0, IE_NOFLIP);
 
+	// Submenus for Red
+	//Boxes
+	G->DrawSprite(MenuSprite, 18, 1, cenX, cenY - (openRed * 3), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 18, 1, cenX, cenY - (openRed * 3) + 11, 0, IE_NOFLIP);
+	//Triangles
+	G->DrawSprite(MenuSprite, 19, 2, cenX, cenY - (openRed * 3), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 19, 2, cenX, cenY - (openRed * 3) + 11, 0, IE_NOFLIP);
+	//Names
+	G->DrawSprite(MenuSprite, 20, 4, cenX, cenY - (openRed * 3), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 20, 5, cenX, cenY - (openRed * 3), 0, IE_NOFLIP);
+	//Submenu Select Triangle
+	if (subselected != -1) {
+		if (selected == 0)
+			G->DrawSprite(MenuSprite, 19, 1, cenX, (cenY - (openBlue * 3)) + (subselected * 11), 0, IE_NOFLIP);
+		else
+			G->DrawSprite(MenuSprite, 19, 3, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
+	}
+	else
+		G->DrawSprite(MenuSprite, 19, 1, cenX, App->WIDTH + 10, 0, IE_NOFLIP); //atleast hide it
+
+	// Blue Button
+	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 8, 0, cenX - 50 - 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
 	// Red Button
 	G->DrawSprite(MenuSprite, 4, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 1, cenX + 50 + 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
-	// Submenus for Red
-	//Boxes
-	G->DrawSprite(MenuSprite, 18, 1, cenX, cenY, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 18, 1, cenX, cenY + 11, 0, IE_NOFLIP);
-	//Triangles
-	G->DrawSprite(MenuSprite, 19, 2, cenX, cenY, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 19, 2, cenX, cenY + 11, 0, IE_NOFLIP);
-	//Names
-	G->DrawSprite(MenuSprite, 20, 4, cenX, cenY, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 20, 5, cenX, cenY, 0, IE_NOFLIP);
 
 
 	// Yellow Button
@@ -464,15 +510,6 @@ PUBLIC void Scene_MainMenu::Render() {
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 	
-	//Submenu Select Triangle
-	if (subselected != -1) {
-		if (selected == 0)
-			G->DrawSprite(MenuSprite, 19, 1, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
-		else
-			G->DrawSprite(MenuSprite, 19, 3, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
-	}
-	else
-		G->DrawSprite(MenuSprite, 19, 1, cenX, App->WIDTH + 10, 0, IE_NOFLIP); //atleast hide it
 
 	/*
 	if (selected == 0) {

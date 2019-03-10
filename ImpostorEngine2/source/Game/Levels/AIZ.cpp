@@ -223,7 +223,7 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     VisualAct = Act = ACT;
 	sprintf(ZoneLetters, "AIZ");
 
-    IApp::Print(0, "Starting AIZ...");
+    IApp::Print(0, "Starting AIZ... %d", ACT);
 
     uint64_t startTime = SDL_GetTicks();
 	PlayMusic(ACT < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (ACT < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);

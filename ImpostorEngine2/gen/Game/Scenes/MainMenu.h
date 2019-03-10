@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class ISprite;
 class ISprite;
@@ -18,7 +19,7 @@ class ISprite;
 class Scene_MainMenu : public IScene {
 public:
     int selected = 0;
-    int subselected = 0;
+    int subselected = -1;
     int ran = 0;
     ISprite* MenuSprite = NULL;
     ISprite* SphereSprite = NULL;
