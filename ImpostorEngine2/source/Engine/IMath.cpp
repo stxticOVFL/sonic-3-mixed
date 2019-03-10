@@ -33,6 +33,10 @@ PUBLIC STATIC float IMath::pythag(int a, int b) {
 	return sqrt(pow(a, 2) + pow(b, 2));
 }
 
+PUBLIC STATIC float IMath::pydistance(int a, int b, int a2, int b2) {
+	return abs(sqrt(pow(a, 2) + pow(b, 2)) - sqrt(pow(a2, 2) + pow(b2, 2)));
+}
+
 PUBLIC STATIC int32_t IMath::cosHex(int n) {
     return Cos[n & 0xFF];
 }
