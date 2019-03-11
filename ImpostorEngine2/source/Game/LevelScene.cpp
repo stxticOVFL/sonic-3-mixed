@@ -395,14 +395,16 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode) {
 PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) {
 	char MusicPath[0x100];
 	const char* ModePath;
-	if (mode == 0)
+	if (mode == 0) {
 		ModePath = "Classic";
-	else if (mode == -1)
+	} else if (mode == -1) {
 		sprintf(MusicPath, "Music/%s%d.ogg", ZoneLetters, act);
-	else
+	} else {
 		ModePath = "Mixed";
-	if (mode != -1)
+	}
+	if (mode != -1) {
 		sprintf(MusicPath, "Music/%s/%s%d.ogg", ModePath, ZoneLetters, act);
+	}
 	PlayMusic(MusicPath, loop, vol);
 }
 
@@ -4093,12 +4095,13 @@ PUBLIC void LevelScene::Update() {
 
 					bool OnScreen = false;
 					//*
-					if (obj->VisW > obj->W || obj->VisH > obj->H)
+					if (obj->VisW > obj->W || obj->VisH > obj->H) {
 						OnScreen |= (
 							obj->X + obj->VisW >= CameraX - 120 &&
 							obj->Y + obj->VisH >= CameraY - 120 &&
 							obj->X - obj->VisW < CameraX + App->WIDTH + 120 &&
 							obj->Y - obj->VisH < CameraY + App->HEIGHT + 120);
+                    }
 
 					//*/
 					OnScreen |= (
@@ -4107,12 +4110,20 @@ PUBLIC void LevelScene::Update() {
 						obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
 						obj->Y - obj->H / 2 < CameraY + App->HEIGHT + 120);
 
-					if (Data->layers[Data->cameraLayer].IsScrollingVertical) {
+					if (Data->layers[Data->cameraLayer].IsScrollingVertical) {         
+                        if (obj->VisW > obj->W || obj->VisH > obj->H) {
+                            OnScreen |= (
+                                obj->X + obj->VisW / 2 >= CameraX - 120 &&
+                                (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CameraY - 120 &&
+                                obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
+                                (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CameraY + App->HEIGHT + 120);
+                        }
+                    
 						OnScreen |= (
-							obj->X + obj->W / 2 >= CameraX &&
-							(obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CameraY &&
-							obj->X - obj->W / 2 < CameraX + App->WIDTH &&
-							(obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CameraY + App->HEIGHT);
+							obj->X + obj->W / 2 >= CameraX - 120 &&
+							(obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CameraY - 120 &&
+							obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
+							(obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CameraY + App->HEIGHT + 120);
 					}
 
 					if (obj->OnScreen && !OnScreen) {
@@ -4135,16 +4146,19 @@ PUBLIC void LevelScene::Update() {
 
 								int hitFrom = (int)CollideSide::RIGHT;
 
-								if (wy > hx)
-									if (wy > -hx)
+								if (wy > hx) {
+									if (wy > -hx) {
 										hitFrom = (int)CollideSide::BOTTOM;
-									else
+									} else {
 										hitFrom = (int)CollideSide::LEFT;
-								else
-									if (wy > -hx)
+                                    }
+								} else {
+									if (wy > -hx) {
 										hitFrom = (int)CollideSide::RIGHT;
-									else
+									} else {
 										hitFrom = (int)CollideSide::TOP;
+                                    }
+                                }
 
 								obj->CollidingWithPlayer |= obj->OnCollisionWithPlayer(Players[p]->PlayerID, hitFrom, 0);
 
@@ -4470,8 +4484,16 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 	int d0 = Data->layers[Data->cameraLayer].Width * 16 - App->WIDTH;
 	int d1 = Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT;
 
-	if (Data->layers[Data->cameraLayer].IsScrollingVertical)
+	if (Data->layers[Data->cameraLayer].IsScrollingVertical) {
 		d1 = 0xFFFFF;
+    }
+    
+	if (CameraMaxX > d0) {
+		CameraMaxX = d0;
+    }
+	if (CameraMaxY < d1) {
+		CameraMaxY = d1;
+    }
 
 	int OffsetX = 0, OffsetY = 0;
 	if (Player) {
@@ -4521,8 +4543,9 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 
 			if (maxLayer == 0) continue;
 
-			if (!Data->layers[Data->cameraLayer].IsScrollingVertical && Player->EZY > CameraMaxY + App->HEIGHT && maxLayer)
+			if (!Data->layers[Data->cameraLayer].IsScrollingVertical && Player->EZY > CameraMaxY + App->HEIGHT && maxLayer) {
 				Player->Die(false);
+            }
 
 			if (CameraX == CameraMinX ||
 				CameraX == CameraMaxX) {
@@ -4604,35 +4627,37 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 		CameraY += OffsetY;
 	}
 
-	if (CameraMaxX > d0)
-		CameraMaxX = d0;
-	if (CameraMaxY > d1)
-		CameraMaxY = d1;
-
-	if (CameraX < CameraMinX)
+	if (CameraX < CameraMinX) {
 		OffsetX = 0;
-	if (CameraX > CameraMaxX)
+    }
+	if (CameraX > CameraMaxX) {
 		OffsetX = 0;
+    }
 
 	CameraDeltaX += OffsetX;
 	CameraDeltaY += OffsetY;
 
-	if (CameraX < CameraMinX)
+	if (CameraX < CameraMinX) {
 		CameraX = CameraMinX;
-	if (CameraX > CameraMaxX)
+    }
+	if (CameraX > CameraMaxX) {
 		CameraX = CameraMaxX;
+    }
 
 	if (!Data->layers[Data->cameraLayer].IsScrollingVertical) {
-		if (CameraY < CameraMinY)
+        if (CameraY < CameraMinY) {
 			CameraY = CameraMinY;
-		if (CameraY > CameraMaxY)
+        }
+		if (CameraY > CameraMaxY) {
 			CameraY = CameraMaxY;
-	}
-	else {
-		if (CameraY < CameraMinY && CameraMinY != 0)
+        }
+	} else {
+		if (CameraY < CameraMinY && CameraMinY != 0) {
 			CameraY = CameraMinY;
-		if (CameraY > CameraMaxY && CameraMaxY != Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT)
+        }
+		if (CameraY > CameraMaxY && CameraMaxY != Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT) {
 			CameraY = CameraMaxY;
+        }
 	}
 }
 
