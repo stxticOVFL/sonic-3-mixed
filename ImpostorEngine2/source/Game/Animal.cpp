@@ -15,7 +15,7 @@ public:
     bool HitGround = false;
     uint32_t SubX = 0;
     uint32_t SubY = 0;
-    uint32_t Gravity = 0;
+	uint32_t Gravity = 0;
     int32_t  JumpSpeed = 0;
 };
 

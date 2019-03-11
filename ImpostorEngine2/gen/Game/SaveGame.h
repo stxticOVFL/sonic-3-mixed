@@ -19,6 +19,8 @@ public:
     uint8_t  Mode;
     uint16_t CharacterFlag;
     uint16_t PartnerFlag;
+    uint8_t  Shield;
+    uint8_t  BlueRing;
     uint8_t  LastZoneID;
     uint16_t Emeralds;
     uint8_t  Lives;
@@ -30,12 +32,14 @@ public:
     static SaveFile Savefiles[36];
     static int32_t  CurrentSaveFile;
     static int8_t   CurrentMode;
+    static int8_t   CurrentShield;
+    static int8_t   CurrentBRingState;
     static int32_t  CurrentZoneID;
     static uint8_t  CurrentCharacterFlag;
     static uint8_t  CurrentPartnerFlag;
     static uint16_t CurrentUsedZoneRings;
     static uint16_t CurrentEmeralds;
-    static bool AchievementData[0x40]; //fuck off errors
+    static bool AchievementData[0x40];
 
     static void Init();
     static void InitializeSaveGame();

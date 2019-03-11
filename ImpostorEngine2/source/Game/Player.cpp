@@ -384,7 +384,7 @@ void IPlayer::Create() {
 		ShieldAnimation = 0;
 		ShieldUsable = true;
 		ShieldAction = false;
-		Shield = ShieldType::None;
+		//Shield = ShieldType::None;
 
 		FlyFlag = 0;
 		FlyTimer = 480;
@@ -683,6 +683,7 @@ PlayerSetPalettes:
 		Sprites[i]->Paletted = 2;
 		Sprites[i]->UpdatePalette();
 	}
+
 }
 
 void IPlayer::ChangeAnimation(int animationID) {
@@ -3955,6 +3956,7 @@ void IPlayer::Hurt(int x, bool spike) {
 	}
 	else if (Invincibility == InvincibilityType::None) {
 		Shield = ShieldType::None;
+		SaveGame::CurrentShield = (byte)Shield;
 		Action = ActionType::Hurt;
 		Vibrate(VibrationType::DamageLarge);
 
@@ -4102,10 +4104,7 @@ void IPlayer::GiveRing(int n) {
 	else
 		Rings += n;
 
-	bool b = SaveGame::AchievementData[0];
-	bool b2 = App->Achievements->AchievementList[0].Achieved;
-	printf("%d %d \n", b, b2);
-	App->Achievements->SetAchievement(0, true); //Ring Got!
+	if (Rings >= 200) App->Achievements->SetAchievement(0, true); //Ring Hog!
 
 	if (Rings >= RingLifeValue) {
 		RingLifeValue += 100;

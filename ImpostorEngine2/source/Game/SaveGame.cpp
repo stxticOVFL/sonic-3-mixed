@@ -9,6 +9,8 @@ public:
 		uint8_t  Mode;
         uint16_t CharacterFlag;
         uint16_t PartnerFlag;
+        uint8_t  Shield;
+        uint8_t  BlueRing;
         uint8_t  LastZoneID;
         uint16_t Emeralds;
         uint8_t  Lives;
@@ -21,13 +23,15 @@ public:
     static SaveFile Savefiles[36];
     static int32_t  CurrentSaveFile;
 	static int8_t   CurrentMode;
+	static int8_t   CurrentShield;
+	static int8_t   CurrentBRingState;
 	static int32_t  CurrentZoneID;
 	static uint8_t  CurrentCharacterFlag;
     static uint8_t  CurrentPartnerFlag;
 	static uint16_t CurrentUsedZoneRings;
 	static uint16_t CurrentEmeralds;
 
-	static bool AchievementData[TOTAL_ACHIEVEMENT_COUNT];
+	static bool AchievementData[0x40];
 };
 #endif
 
@@ -48,6 +52,8 @@ Starting a State 0 file initalizes all the scores and target scores etc..
 int32_t             SaveGame::CurrentSaveFile = -1;
 int8_t				SaveGame::CurrentMode = 0;
 int32_t             SaveGame::CurrentZoneID = -1;
+int8_t              SaveGame::CurrentShield = 0;
+int8_t              SaveGame::CurrentBRingState = 0;
 uint8_t             SaveGame::CurrentCharacterFlag = 0;
 uint8_t             SaveGame::CurrentPartnerFlag = 0xFF;
 uint16_t            SaveGame::CurrentUsedZoneRings = 0x0000; // resets on every zone
@@ -72,6 +78,8 @@ PUBLIC STATIC void SaveGame::Init() {
             Savefiles[s].Mode = reader.ReadByte();
             Savefiles[s].CharacterFlag = reader.ReadUInt16();
             Savefiles[s].PartnerFlag = reader.ReadUInt16();
+            Savefiles[s].Shield = reader.ReadByte();
+            Savefiles[s].BlueRing = reader.ReadByte();
             Savefiles[s].LastZoneID = reader.ReadByte();
             Savefiles[s].Emeralds = reader.ReadUInt16();
             Savefiles[s].Lives = reader.ReadByte();
@@ -103,9 +111,6 @@ PUBLIC STATIC void SaveGame::InitializeSaveGame() {
 }
 PUBLIC STATIC void SaveGame::InitializeSaveGame(int s) {
     SaveGame::Savefiles[s].Lives = StartingLives;
-    // Savefiles[s].Continues = reader.ReadByte();
-    // Savefiles[s].Score = reader.ReadUInt32();
-    // Savefiles[s].TargetScore = reader.ReadUInt32();
 }
 
 PUBLIC STATIC void SaveGame::Flush() {
@@ -117,6 +122,8 @@ PUBLIC STATIC void SaveGame::Flush() {
 			writer.WriteByte(Savefiles[s].Mode);
             writer.WriteUInt16(Savefiles[s].CharacterFlag);
             writer.WriteUInt16(Savefiles[s].PartnerFlag);
+            writer.WriteByte(Savefiles[s].Shield);
+            writer.WriteByte(Savefiles[s].BlueRing);
             writer.WriteByte(Savefiles[s].LastZoneID);
             writer.WriteUInt16(Savefiles[s].Emeralds);
             writer.WriteByte(Savefiles[s].Lives);

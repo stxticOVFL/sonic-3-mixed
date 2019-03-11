@@ -32,7 +32,9 @@ event Create() {
 }
 
 event Update() {
-    if (Falling)
+	if (!isHeldDebugObject)
+	{
+		    if (Falling)
         Gravity = 0xC;
     else
         Scene.Player.UnderwaterTimer = 1800;
@@ -80,6 +82,7 @@ event Update() {
         Timer = -1;
 		StartResults = false;
     }
+	}
 }
 
 event Render(CamX:int, CamY:int) {

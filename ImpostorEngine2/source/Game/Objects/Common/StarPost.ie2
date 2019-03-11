@@ -29,7 +29,9 @@ event Create() {
 }
 
 event Update() {
-    // 2 full rotations, counter clockwise, takes 32 frames
+	if (!isHeldDebugObject)
+	{
+	    // 2 full rotations, counter clockwise, takes 32 frames
     // blinks every 4 frames
     for (var i:int = 0; i < 20; i++) {
         if (Scene.CollisionAt(this.X, this.Y + H / 2 - 1)) {
@@ -60,6 +62,7 @@ event Update() {
 			StarTimer = 0;
 			ShowStars = false;
 		}
+	}	
 	}
 }
 

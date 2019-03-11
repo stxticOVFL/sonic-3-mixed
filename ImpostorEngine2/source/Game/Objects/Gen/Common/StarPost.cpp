@@ -23,29 +23,32 @@ void StarPost::Create() {
 }
 
 void StarPost::Update() {
-    for (int i = 0; i < 20; i++)
+    if (!isHeldDebugObject) {
+        for (int i = 0; i < 20; i++)
 {
-        if (Scene->CollisionAt(this->X, this->Y + H / 2 - 1)) {
-            this->Y -= 1;
+            if (Scene->CollisionAt(this->X, this->Y + H / 2 - 1)) {
+                this->Y -= 1;
+            }
+
+        }
+        if (Scene->Checkpoint > this->SubType) this->Blinking = true;
+
+        if (this->Activated && this->Spin < 32) this->Spin++;
+
+        if (this->Spin == 32) this->Blinking = true;
+
+        if (this->Blinking) this->Frame = ((Scene->Frame >> 2) & 0x1);
+
+        if (ShowStars) {
+            if (StarTimer > 0) {
+                StarTimer--;
+            }
+            else {
+                StarTimer = 0;
+                ShowStars = false;
+            }
         }
 
-    }
-    if (Scene->Checkpoint > this->SubType) this->Blinking = true;
-
-    if (this->Activated && this->Spin < 32) this->Spin++;
-
-    if (this->Spin == 32) this->Blinking = true;
-
-    if (this->Blinking) this->Frame = ((Scene->Frame >> 2) & 0x1);
-
-    if (ShowStars) {
-        if (StarTimer > 0) {
-            StarTimer--;
-        }
-        else {
-            StarTimer = 0;
-            ShowStars = false;
-        }
     }
 
     Object::Update();

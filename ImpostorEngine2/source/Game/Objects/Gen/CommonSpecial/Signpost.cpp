@@ -24,47 +24,50 @@ void Signpost::Create() {
 }
 
 void Signpost::Update() {
-    if (Falling) Gravity = 0xC;
-    else Scene->Player->UnderwaterTimer = 1800;
-    if (X + 24 >= Scene->CameraX + App->WIDTH || X - 24 <= Scene->CameraX) {
-        if (Falling) {
-            XSpeed = -XSpeed;
-        }
-
-    }
-
-    for (int i = -16; i <= 8; i++)
-{
-        if (Scene->CollisionAt(X, Y + 24 + i) || Y + 24 + i >= Scene->CameraY + App->HEIGHT) {
+    if (!isHeldDebugObject) {
+        if (Falling) Gravity = 0xC;
+        else Scene->Player->UnderwaterTimer = 1800;
+        if (X + 24 >= Scene->CameraX + App->WIDTH || X - 24 <= Scene->CameraX) {
             if (Falling) {
-                XSpeed = 0;
-                YSpeed = 0;
-                Falling = false;
-                Timer = 0x48;
-                Gravity = 0;
-                Y += i;
-                break;
+                XSpeed = -XSpeed;
             }
 
         }
 
-    }
-    Rot += SpinSpeed;
-    if (Timer > 0) Timer--;
+        for (int i = -16; i <= 8; i++)
+{
+            if (Scene->CollisionAt(X, Y + 24 + i) || Y + 24 + i >= Scene->CameraY + App->HEIGHT) {
+                if (Falling) {
+                    XSpeed = 0;
+                    YSpeed = 0;
+                    Falling = false;
+                    Timer = 0x48;
+                    Gravity = 0;
+                    Y += i;
+                    break;
+                }
 
-    if (((Rot >> 8) & 0xFF) == 0x80 && Timer == 0) {
-        StartResults = true;
-        Timer = -1;
-    }
+            }
 
-    if (StartResults) {
-        SpinSpeed = 0;
-        XSpeed = 0;
-        YSpeed = 0;
-        App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
-        Scene->DoResults();
-        Timer = -1;
-        StartResults = false;
+        }
+        Rot += SpinSpeed;
+        if (Timer > 0) Timer--;
+
+        if (((Rot >> 8) & 0xFF) == 0x80 && Timer == 0) {
+            StartResults = true;
+            Timer = -1;
+        }
+
+        if (StartResults) {
+            SpinSpeed = 0;
+            XSpeed = 0;
+            YSpeed = 0;
+            App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
+            Scene->DoResults();
+            Timer = -1;
+            StartResults = false;
+        }
+
     }
 
     Object::Update();

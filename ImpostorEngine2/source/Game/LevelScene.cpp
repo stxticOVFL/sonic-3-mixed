@@ -264,7 +264,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	G = g;
 
 	//Create Achievements Here (may change later lol)
-	App->Achievements->CreateAchievement("Ring Got!");
+	App->Achievements->CreateAchievement("Ring Hog");
 
 	//Load up our achievement states
 	for (int i = 0; i < TOTAL_ACHIEVEMENT_COUNT; i++)
@@ -1439,6 +1439,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Player->Scene = this;
 			Player->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
 			Player->PlayerID = 0;
+			Player->Shield = (ShieldType)SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield;
 			Player->Thremixed = SaveGame::CurrentMode == 1;
 			Player->Create();
 			Player->Lives = SaveGame::GetLives();
@@ -2723,6 +2724,8 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 
 	SaveGame::SetLives(Player->Lives);
 	SaveGame::SetZone(ZoneID - 1);
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = (uint8_t)Player->Shield;
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].BlueRing = 0;
 	SaveGame::Flush();
 
 	ObjectsSolid.clear();
