@@ -20,6 +20,8 @@ public:
     int FireTimer;
     int MoveTimer;
     int KeptFlip;
+    int TurnTimer;
+    bool Turning;
     
     void Create();
     int OnHit();
