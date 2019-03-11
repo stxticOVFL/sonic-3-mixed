@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 
 #include <Utils/Standard.h>
@@ -56,12 +57,12 @@ public:
     SFX_COLLAPSE = 0x59,
     SFX_5A = 0x5A,
     SFX_SCORE_ADD = 0x5B,
-    SFX_5C = 0x5C,
-    SFX_5D = 0x5D,
-    SFX_5E = 0x5E,
+    SFX_IMPACT1 = 0x5C,
+    SFX_IMPACT2 = 0x5D,
+    SFX_IMPACT3 = 0x5E,
     SFX_IMPACT4 = 0x5F,
-    SFX_60 = 0x60,
-    SFX_61 = 0x61,
+    SFX_IMPACT5 = 0x60,
+    SFX_IMPACT6 = 0x61,
     SFX_JUMP = 0x62,
     SFX_STARPOST = 0x63,
     SFX_64 = 0x64,

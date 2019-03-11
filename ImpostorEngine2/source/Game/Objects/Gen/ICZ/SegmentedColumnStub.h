@@ -15,11 +15,13 @@ class SegmentedColumnStub;
 class SegmentedColumnStub: public Object {
 public:    
     
-    int Number;
+    int OGY;
     
     void Create();
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
+    void Break();
     void Render(int CamX, int CamY);
+    int OnBreakVertical(int PlayerID, int HitFrom);
     int OnBreakHorizontal(int PlayerID, int HitFrom);
 };
 

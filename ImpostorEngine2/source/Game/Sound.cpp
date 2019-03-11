@@ -49,13 +49,13 @@ public:
 		SFX_COLLAPSE = 0x59,
 		SFX_5A = 0x5A,
 		SFX_SCORE_ADD = 0x5B,
-		SFX_5C = 0x5C,
-		SFX_5D = 0x5D,
-		SFX_5E = 0x5E,
+		SFX_IMPACT1 = 0x5C,
+		SFX_IMPACT2 = 0x5D,
+		SFX_IMPACT3 = 0x5E,
 		SFX_IMPACT4 = 0x5F,
 
-		SFX_60 = 0x60,
-		SFX_61 = 0x61,
+		SFX_IMPACT5 = 0x60,
+		SFX_IMPACT6 = 0x61,
 		SFX_JUMP = 0x62,
 		SFX_STARPOST = 0x63,
 		SFX_64 = 0x64,
@@ -234,7 +234,12 @@ PUBLIC STATIC void Sound::Init() {
 	LOADSOUND(SFX_FAN_SMALL, "Sounds/SmallFan.wav");
 	LOADSOUND(SFX_SLIDE, "Sounds/Waterfall.wav");
 
-	LOADSOUND(SFX_IMPACT4, "Sounds/Impact4.wav");
+	LOADSOUND(SFX_IMPACT1, "Sounds/Impact1.wav");
+	LOADSOUND(SFX_IMPACT2, "Sounds/Impact2.wav");
+	LOADSOUND(SFX_IMPACT3, "Sounds/Impact3.wav");
+	LOADSOUND(SFX_IMPACT4, "Sounds/Impact4.wav");	
+	LOADSOUND(SFX_IMPACT5, "Sounds/Impact5.wav");
+	LOADSOUND(SFX_IMPACT6, "Sounds/Impact6.wav");
 	LOADSOUND(SFX_RUMBLE, "Sounds/Rumble.wav");
 
 	LOADSOUND(SFX_ENTER_SS_RING, "Sounds/SpecialRing.wav");

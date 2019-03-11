@@ -2612,6 +2612,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 PUBLIC VIRTUAL void LevelScene::Init() {
 	LoadData();
+	App->Print(0, "%d", SaveGame::CurrentEmeralds);
 
 	uint64_t startTime = SDL_GetTicks();
 	RestartStage(true, false);
