@@ -3765,8 +3765,7 @@ PUBLIC void LevelScene::Update() {
 
 		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
 		{
-			//if (Player->InputUp)
-			if (IInput::I_EXTRA_PRESSED)
+			if (Player->InputUp)
 			{
 				//"Save" the players
 				PlayerBuffer[1] = Players[0];
