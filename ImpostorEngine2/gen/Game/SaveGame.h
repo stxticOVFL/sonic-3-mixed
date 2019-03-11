@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 
 #include <Utils/Standard.h>
@@ -47,6 +48,8 @@ public:
     static void SetEmerald(int id);
     static void SetEmerald(int id, int value);
     static void SetEmeralds(int value);
+    static bool SuperEmeraldsActive();
+    static void SetSuperEmeraldFlag(bool state);
 };
 
 #endif /* SAVEGAME_H */

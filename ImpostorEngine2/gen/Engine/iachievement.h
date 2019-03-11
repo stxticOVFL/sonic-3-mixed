@@ -15,6 +15,8 @@ class IGraphics;
 #include <Engine/IApp.h>
 #include <Engine/IGraphics.h>
 
+#define TOTAL_ACHIEVEMENT_COUNT (0x40)
+
 class IAchievement {
 public:
     struct Achievement {
@@ -24,7 +26,7 @@ public:
 	bool Initialised = false;
 	//ISprite Icon;
     }; 
-    Achievement AchievementList[0x40];
+    Achievement AchievementList[TOTAL_ACHIEVEMENT_COUNT];
     uint8_t AchievementCount = 0;
 	bool AchievementGet = false;
 	int GotAchievement = 0;
