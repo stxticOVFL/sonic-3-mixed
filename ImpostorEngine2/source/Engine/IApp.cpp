@@ -150,7 +150,7 @@ PUBLIC IApp::IApp() {
 
     Input = new IInput(this);
     Audio = new IAudio(this);
-    Achievements = new IAchievement();
+    Achievements = new IAchievement(this);
 
     Running = true;
 }
@@ -348,6 +348,7 @@ PUBLIC void IApp::Run() {
             Scene->Init();
             Input->Poll();
             Scene->Update();
+			if (Achievements->AchievementGet) Achievements->OnAchievementGet(Achievements->GotAchievement);
             Scene->Render();
 			beginFrameBatch += now - SDL_GetTicks();
         }

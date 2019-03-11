@@ -261,7 +261,7 @@ std::vector<ISprite *> LevelScene::SpriteBinMapIDs;
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
-	//App->Achievements->CreateAchievement("Ring Got!");
+	App->Achievements->CreateAchievement("Ring Got!");
 
 	if (App->DEV) {
 		App->Settings->GetBool("dev", "viewPalettes", &ViewPalettes);
