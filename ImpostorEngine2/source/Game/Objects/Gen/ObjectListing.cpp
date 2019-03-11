@@ -336,9 +336,12 @@ Object* GetNewObjectFromID(int ID) {
             return new SegmentedColumnStub();
             break;
         case 0x411U:
-            return new ReliefEye();
+            return new StarPointerOrbs();
             break;
         case 0x412U:
+            return new ReliefEye();
+            break;
+        case 0x413U:
             return new Platform();
             break;
 
@@ -682,6 +685,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x91BDF05U:
             return new SegmentedColumnStub();
+            break;
+        case 0x802D069AU:
+            return new StarPointerOrbs();
             break;
         case 0xBBCA6AC5U:
             return new ReliefEye();

@@ -1,7 +1,7 @@
-#ifndef STARPOINTER_H
-#define STARPOINTER_H
+#ifndef STARPOINTERORBS_H
+#define STARPOINTERORBS_H
 
-class StarPointer;
+class StarPointerOrbs;
 
 #include <Utils/Standard.h>
 
@@ -12,17 +12,12 @@ class StarPointer;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class StarPointer: public Enemy {
+class StarPointerOrbs: public Enemy {
 public:    
     
-    Object* Orbs[4];
-    float OrbOffsets[4];
-    float RotAngle;
-    float TurnSpeed;
     
     void Create();
-    void Update();
     void Render(int CamX, int CamY);
 };
 
-#endif /* STARPOINTER_H */
+#endif /* STARPOINTERORBS_H */
