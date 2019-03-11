@@ -6003,8 +6003,9 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 
 	if (KnuxSprite[0]) {
 		ClearedKnuxSprite = true;
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 5; i++) {
 			CLEANUP(KnuxSprite[i]);
+		}
 	}
 
 	for (int i = 0; i < PlayerCount; i++) {

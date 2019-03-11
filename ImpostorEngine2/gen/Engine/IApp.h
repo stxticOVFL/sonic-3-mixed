@@ -9,7 +9,6 @@
 #define CONSTRUCTER
 
 class IScene;
-class IScene;
 class IGraphics;
 class IInput;
 class IAudio;
@@ -29,11 +28,11 @@ class IApp {
 public:
     IScene* Scene = NULL;
     IScene* NextScene = NULL;
-    IGraphics* 		G = NULL;
-    IInput* 			Input = NULL;
-    IAudio* 			Audio = NULL;
-    IINI* 			Settings = NULL;
-    IAchievement*       Achievements = NULL;
+    IGraphics* G = NULL;
+    IInput* Input = NULL;
+    IAudio* Audio = NULL;
+    IINI* Settings = NULL;
+    IAchievement* Achievements = NULL;
     float FPS = 60.f;
     bool Running = false;
     int WIDTH = 424;
