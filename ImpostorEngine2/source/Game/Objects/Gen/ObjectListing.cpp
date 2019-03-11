@@ -330,9 +330,12 @@ Object* GetNewObjectFromID(int ID) {
             return new TurboSpikerSpike();
             break;
         case 0x410U:
-            return new ReliefEye();
+            return new SegmentedColumnStub();
             break;
         case 0x411U:
+            return new ReliefEye();
+            break;
+        case 0x412U:
             return new Platform();
             break;
 
@@ -670,6 +673,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x77A23BDEU:
             return new TurboSpikerSpike();
+            break;
+        case 0x91BDF05U:
+            return new SegmentedColumnStub();
             break;
         case 0xBBCA6AC5U:
             return new ReliefEye();

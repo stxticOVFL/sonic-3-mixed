@@ -6,11 +6,10 @@
 typedef IMath Math;
 
 void HarmfulIce::Create() {
-    Object::Create();
+    Enemy::Create();
     Active = true;
     Priority = false;
-    Solid = true;
-    Scene->AddSelfToRegistry(this, "Solid");
+    Invincible = true;
     CurrentAnimation = Sprite->FindAnimation("Harmful Ice");
     W = 32;
     if (SubType == 0) {
@@ -26,12 +25,4 @@ void HarmfulIce::Create() {
 void HarmfulIce::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     }
-
-int HarmfulIce::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
-    if (Scene->Players[PlayerID]->Action != ActionType::Hurt) {
-        Scene->Players[PlayerID]->Hurt(X, true);
-    }
-
-    return 1;
-}
 

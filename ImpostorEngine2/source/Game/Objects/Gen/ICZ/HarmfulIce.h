@@ -12,13 +12,12 @@ class HarmfulIce;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class HarmfulIce: public Object {
+class HarmfulIce: public Enemy {
 public:    
     
     
     void Create();
     void Render(int CamX, int CamY);
-    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
 #endif /* HARMFULICE_H */

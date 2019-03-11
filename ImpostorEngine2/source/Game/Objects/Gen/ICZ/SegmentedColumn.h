@@ -15,6 +15,7 @@ class SegmentedColumn;
 class SegmentedColumn: public Object {
 public:    
     
+    Object* Stubs[4];
     
     void Create();
 };

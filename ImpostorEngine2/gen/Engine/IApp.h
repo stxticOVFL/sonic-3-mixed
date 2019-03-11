@@ -33,7 +33,7 @@ public:
     IInput* 			Input = NULL;
     IAudio* 			Audio = NULL;
     IINI* 			Settings = NULL;
-	IAchievement*       Achievements = NULL;
+    IAchievement*       Achievements = NULL;
     float FPS = 60.f;
     bool Running = false;
     int WIDTH = 424;

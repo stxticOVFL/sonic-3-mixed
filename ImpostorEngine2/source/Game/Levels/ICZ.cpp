@@ -208,6 +208,8 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
 	SpriteMapIDs[0xAE] = ICZObjectsSprite;
 	SpriteMapIDs[0xB6] = ICZObjectsSprite;
 	SpriteMapIDs[0xB8] = ICZObjectsSprite;
+
+	SpriteMapIDs[0x410] = ICZObjectsSprite;
 }
 
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
