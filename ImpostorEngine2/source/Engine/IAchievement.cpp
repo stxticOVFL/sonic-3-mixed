@@ -67,9 +67,9 @@ PUBLIC STATIC void IAchievement::SetAchievement(int AchievementID, bool State)
 PUBLIC STATIC void IAchievement::OnAchievementGet(int AchievementID)
 {
 	//TO-DO: MAKE THIS FUCKING WORK HOLY SHIT
-	G->DrawRectangle(40, 40, 40, 40, 0xFFFFFF);
+	App->G->DrawRectangle(40, 40, 80, 80, 0xFFFFFF);
 
-	G->DrawText(30, 30, AchievementList[AchievementID].Name, 0xFFFFFF);
+	App->G->DrawText(30, 30, AchievementList[AchievementID].Name, 0xFFFFFF);
 
 	if (!PoopGot) PoopTimer++;
 	else PoopTimer--;
