@@ -76,6 +76,14 @@ PUBLIC STATIC void SaveGame::Init() {
             Savefiles[s].TargetScore = reader.ReadUInt32();
             reader.ReadBytesTo((uint8_t*)&Savefiles[s].UsedZoneRings[0], 16 << 1);
         }
+
+		for (int i = 0; i < TOTAL_ACHIEVEMENT_COUNT; i++)
+		{
+			byte b = reader.ReadByte();
+			bool active = (b != 0);
+			IApp::GlobalApp->Achievements->AchievementList[i].Achieved = active;
+		}
+
         IResources::Close(SaveBin);
     }
     // If file does not exist, create one.
@@ -112,6 +120,12 @@ PUBLIC STATIC void SaveGame::Flush() {
             writer.WriteUInt32(Savefiles[s].TargetScore);
             writer.WriteBytes((uint8_t*)&Savefiles[s].UsedZoneRings[0], 16 << 1);
         }
+
+		for (int i = 0; i < TOTAL_ACHIEVEMENT_COUNT; i++)
+		{
+			writer.WriteByte((byte)IApp::GlobalApp->Achievements->AchievementList[i].Achieved);
+		}
+
         IResources::Close(SaveBin);
     }
 }
@@ -167,6 +181,18 @@ PUBLIC STATIC void SaveGame::SetEmerald(int id, int value) {
 }
 PUBLIC STATIC void SaveGame::SetEmeralds(int value) {
 	SaveGame::CurrentEmeralds = value;
+	if (SaveGame::CurrentSaveFile == -1) return;
+
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Emeralds = SaveGame::CurrentEmeralds;
+}
+PUBLIC STATIC bool SaveGame::SuperEmeraldsActive() {
+	if (SaveGame::CurrentSaveFile == -1) return SaveGame::CurrentEmeralds >> 15 & 1;
+
+	return SaveGame::Savefiles[SaveGame::CurrentSaveFile].Emeralds >> 15 & 1;
+}
+PUBLIC STATIC void SaveGame::SetSuperEmeraldFlag(bool state) {
+	//The last bit controls if super emeralds are enabled
+	SaveGame::CurrentEmeralds |= (state & 1) << 15;
 	if (SaveGame::CurrentSaveFile == -1) return;
 
 	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Emeralds = SaveGame::CurrentEmeralds;
