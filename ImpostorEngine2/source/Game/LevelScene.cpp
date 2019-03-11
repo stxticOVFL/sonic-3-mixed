@@ -67,6 +67,7 @@ public:
 
 	IPlayer*    Player = NULL;
 	IPlayer*    Players[7];
+	IPlayer*    PlayerBuffer[2];
 	int         PlayerCount = 1;
 	PlaneSwitch*PlaneSwitchers = NULL;
 	int         PlaneSwitchCount = 0;
@@ -3759,6 +3760,28 @@ PUBLIC void LevelScene::Update() {
 						App->Audio->FadeMusic(1);
 					}
 				}
+			}
+		}
+
+		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
+		{
+			//if (Player->InputUp)
+			if (IInput::I_EXTRA_PRESSED)
+			{
+				//"Save" the players
+				PlayerBuffer[1] = Players[0];
+				PlayerBuffer[0] = Players[1];
+
+				Players[0] = PlayerBuffer[0];
+				Players[1] = PlayerBuffer[1];
+				Players[0]->PlayerID = 0;
+				Players[1]->PlayerID = 1;
+				Players[0]->Sidekick = false;
+				Players[1]->Sidekick = true;
+
+				Players[0]->Lives = Players[1]->Lives;
+
+				Player = Players[0];
 			}
 		}
 

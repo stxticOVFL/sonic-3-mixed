@@ -87,6 +87,7 @@ public:
     ISprite*    KnuxSprite[6];
     IPlayer*    Player = NULL;
     IPlayer*    Players[7];
+    IPlayer*    PlayerBuffer[2];
     int         PlayerCount = 1;
     PlaneSwitch*PlaneSwitchers = NULL;
     int         PlaneSwitchCount = 0;
