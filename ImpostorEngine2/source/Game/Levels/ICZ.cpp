@@ -143,7 +143,7 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 5;
     VisualAct = Act = act;
 	sprintf(ZoneLetters, "ICZ");
-	PlayMusic(act, 0, SaveGame::CurrentMode);
+	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 206454 : 0) : 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         //Sound::SoundBank[0] = new ISound("Music/ICZ1.ogg", false);
