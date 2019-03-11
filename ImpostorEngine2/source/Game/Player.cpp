@@ -737,6 +737,8 @@ void IPlayer::Update() {
 	int16_t air = 0x18;
 	int16_t rel = -0x400;
 
+	HyperEnabled = SaveGame::CurrentEmeralds == 0xFFFF;
+
 	if (Sidekick) {
 		IPlayer* player = Scene->Player;
 		PlayerStatus status = player->PlayerStatusTable[(player->PlayerStatusTableIndex + 0x20 - 0x10) & 0x1F];
@@ -2388,7 +2390,6 @@ void IPlayer::Update() {
 		if (!SuperForm && !HyperForm) {
 			if (Rings >= 50 && !Scene->StopTimer) {
 				if (SaveGame::GetEmeralds() == 0x3FFF) {
-					// if (Character == CharacterType::Sonic) HyperEnabled = true;
 					DoSuperTransform();
 				}
 				else if ((SaveGame::GetEmeralds() & 0x7F) == 0x7F) { // AND if super emerald room hasnt been activated
@@ -4101,6 +4102,9 @@ void IPlayer::GiveRing(int n) {
 	else
 		Rings += n;
 
+	bool b = SaveGame::AchievementData[0];
+	bool b2 = App->Achievements->AchievementList[0].Achieved;
+	printf("%d %d \n", b, b2);
 	App->Achievements->SetAchievement(0, true); //Ring Got!
 
 	if (Rings >= RingLifeValue) {

@@ -10,6 +10,7 @@
 
 
 #include <Utils/Standard.h>
+#include <Engine/iachievement.h>
 
 class SaveGame {
 public:
@@ -34,6 +35,7 @@ public:
     static uint8_t  CurrentPartnerFlag;
     static uint16_t CurrentUsedZoneRings;
     static uint16_t CurrentEmeralds;
+    static bool AchievementData[0x40]; //fuck off errors
 
     static void Init();
     static void InitializeSaveGame();

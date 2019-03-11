@@ -262,7 +262,15 @@ std::vector<ISprite *> LevelScene::SpriteBinMapIDs;
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
+
+	//Create Achievements Here (may change later lol)
 	App->Achievements->CreateAchievement("Ring Got!");
+
+	//Load up our achievement states
+	for (int i = 0; i < TOTAL_ACHIEVEMENT_COUNT; i++)
+	{
+		App->Achievements->AchievementList[i].Achieved = SaveGame::AchievementData[i];
+	}
 
 	if (App->DEV) {
 		App->Settings->GetBool("dev", "viewPalettes", &ViewPalettes);
@@ -3765,22 +3773,48 @@ PUBLIC void LevelScene::Update() {
 
 		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
 		{
-			if (Player->InputUp)
+			if (Player->InputUp && maxLayer)
 			{
 				//"Save" the players
 				PlayerBuffer[1] = Players[0];
 				PlayerBuffer[0] = Players[1];
 
+				//copy the players back
 				Players[0] = PlayerBuffer[0];
 				Players[1] = PlayerBuffer[1];
+
+				//render as player 1
 				Players[0]->PlayerID = 0;
 				Players[1]->PlayerID = 1;
+
+				//set whos in charge
 				Players[0]->Sidekick = false;
 				Players[1]->Sidekick = true;
 
+				//make sure our stuff is set
 				Players[0]->Lives = Players[1]->Lives;
+				Players[0]->Rings = Players[1]->Rings;
+				Players[0]->HyperRings = Players[1]->HyperRings;
+				Players[0]->HyperForm = Players[1]->HyperForm;
+				Players[0]->SuperForm = Players[1]->SuperForm;
 
+				if (Players[0]->SuperForm || Players[0]->HyperForm)
+				{
+					Players[0]->DoSuperTransform();
+				}
+
+				//Partner can't go super/hyper
+				if (Players[1]->SuperForm || Players[1]->HyperForm)
+				{
+					Players[1]->Deform();
+				}
+
+				//Set the controlled player
 				Player = Players[0];
+
+				//Probably helpful idk
+				PlayerBuffer[0] = NULL;
+				PlayerBuffer[1] = NULL;
 			}
 		}
 
@@ -5116,22 +5150,22 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	G->DrawSprite(PauseSprite, 1, 4 + (PauseSelectedMenuItem == 4 ? 5 : 0), 253, 197 + pauseAnimTimer, 0, IE_NOFLIP); //Radio
 
 	//Chaos Emeralds
-	G->DrawSprite(PauseSprite, 3, 1 * (SaveGame::CurrentEmeralds & (1 << 0)), 297 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 2 * (SaveGame::CurrentEmeralds & (1 << 1)), 314 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 3 * (SaveGame::CurrentEmeralds & (1 << 2)), 331 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 4 * (SaveGame::CurrentEmeralds & (1 << 3)), 348 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 5 * (SaveGame::CurrentEmeralds & (1 << 4)), 365 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 6 * (SaveGame::CurrentEmeralds & (1 << 5)), 382 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 3, 7 * (SaveGame::CurrentEmeralds & (1 << 6)), 399 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 1 * (SaveGame::CurrentEmeralds >> 0 & 1), 297 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 2 * (SaveGame::CurrentEmeralds >> 1 & 1), 314 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 3 * (SaveGame::CurrentEmeralds >> 2 & 1), 331 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 4 * (SaveGame::CurrentEmeralds >> 3 & 1), 348 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 5 * (SaveGame::CurrentEmeralds >> 4 & 1), 365 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 6 * (SaveGame::CurrentEmeralds >> 5 & 1), 382 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 3, 7 * (SaveGame::CurrentEmeralds >> 6 & 1), 399 + 8, 199 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
 
 	//Super Emeralds
-	G->DrawSprite(PauseSprite, 2, 1 * (SaveGame::CurrentEmeralds & (1 << 8)), 297 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 2 * (SaveGame::CurrentEmeralds & (1 << 9)), 314 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 3 * (SaveGame::CurrentEmeralds & (1 << 10)), 331 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 4 * (SaveGame::CurrentEmeralds & (1 << 11)), 348 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 5 * (SaveGame::CurrentEmeralds & (1 << 12)), 365 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 6 * (SaveGame::CurrentEmeralds & (1 << 13)), 382 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
-	G->DrawSprite(PauseSprite, 2, 7 * (SaveGame::CurrentEmeralds & (1 << 14)), 399 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 1 * (SaveGame::CurrentEmeralds >> 8 & 1), 297 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 2 * (SaveGame::CurrentEmeralds >> 9 & 1), 314 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 3 * (SaveGame::CurrentEmeralds >> 10 & 1), 331 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 4 * (SaveGame::CurrentEmeralds >> 11 & 1), 348 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 5 * (SaveGame::CurrentEmeralds >> 12 & 1), 365 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 6 * (SaveGame::CurrentEmeralds >> 13 & 1), 382 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+	G->DrawSprite(PauseSprite, 2, 7 * (SaveGame::CurrentEmeralds >> 14 & 1), 399 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
 
 	G->DrawSprite(PauseSprite, 0, 3, 148, 6 - pauseAnimTimer, 0, IE_NOFLIP); //"You are currently Paused"
 

@@ -63,7 +63,7 @@ bool PoopGot = false;
 PUBLIC STATIC void IAchievement::SetAchievement(int AchievementID, bool State)
 {
 	if (State && !AchievementList[AchievementID].Achieved) 
-	{ 
+	{ 		
 		GotAchievement = AchievementID; 
 		AchievementGet = true;
 		PoopTimer = 0;
@@ -71,6 +71,7 @@ PUBLIC STATIC void IAchievement::SetAchievement(int AchievementID, bool State)
 		printf("Got achievement: %s\n", AchievementList[AchievementID].Name);
 	}
 	AchievementList[AchievementID].Achieved = State;
+	SaveGame::AchievementData[AchievementID] = State;
 }
 
 PUBLIC STATIC void IAchievement::OnAchievementGet(int AchievementID)

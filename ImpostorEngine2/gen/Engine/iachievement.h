@@ -14,6 +14,7 @@ class IGraphics;
 #include <Utils/Standard.h>
 #include <Engine/IApp.h>
 #include <Engine/IGraphics.h>
+#include <Game/SaveGame.h>
 
 #define TOTAL_ACHIEVEMENT_COUNT (0x40)
 

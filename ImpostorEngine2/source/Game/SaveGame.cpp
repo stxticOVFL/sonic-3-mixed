@@ -1,5 +1,6 @@
 #if INTERFACE
 #include <Utils/Standard.h>
+#include <Engine/iachievement.h>
 
 class SaveGame {
 public:
@@ -25,6 +26,8 @@ public:
     static uint8_t  CurrentPartnerFlag;
 	static uint16_t CurrentUsedZoneRings;
 	static uint16_t CurrentEmeralds;
+
+	static bool AchievementData[TOTAL_ACHIEVEMENT_COUNT];
 };
 #endif
 
@@ -49,6 +52,7 @@ uint8_t             SaveGame::CurrentCharacterFlag = 0;
 uint8_t             SaveGame::CurrentPartnerFlag = 0xFF;
 uint16_t            SaveGame::CurrentUsedZoneRings = 0x0000; // resets on every zone
 uint16_t            SaveGame::CurrentEmeralds = 0xFFFF;
+bool				SaveGame::AchievementData[TOTAL_ACHIEVEMENT_COUNT];
 
 SaveGame::SaveFile  SaveGame::Savefiles[36];
 
@@ -81,7 +85,8 @@ PUBLIC STATIC void SaveGame::Init() {
 		{
 			byte b = reader.ReadByte();
 			bool active = (b != 0);
-			IApp::GlobalApp->Achievements->AchievementList[i].Achieved = active;
+			
+			AchievementData[i] = active;
 		}
 
         IResources::Close(SaveBin);
@@ -123,7 +128,7 @@ PUBLIC STATIC void SaveGame::Flush() {
 
 		for (int i = 0; i < TOTAL_ACHIEVEMENT_COUNT; i++)
 		{
-			writer.WriteByte((byte)IApp::GlobalApp->Achievements->AchievementList[i].Achieved);
+			writer.WriteByte((byte)AchievementData[i]);
 		}
 
         IResources::Close(SaveBin);
