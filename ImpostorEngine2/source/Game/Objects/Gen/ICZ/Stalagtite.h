@@ -1,7 +1,7 @@
-#ifndef SEGMENTEDCOLUMNSTUB_H
-#define SEGMENTEDCOLUMNSTUB_H
+#ifndef STALAGTITE_H
+#define STALAGTITE_H
 
-class SegmentedColumnStub;
+class Stalagtite;
 
 #include <Utils/Standard.h>
 
@@ -12,16 +12,19 @@ class SegmentedColumnStub;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class SegmentedColumnStub: public Object {
+class Stalagtite: public Object {
 public:    
     
+    int OGY;
+    int OGX;
+    bool Fallen;
+    int FallTimer;
+    int ParticleAnim;
     
     void Create();
+    void Update();
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
-    void Break();
     void Render(int CamX, int CamY);
-    int OnBreakVertical(int PlayerID, int HitFrom);
-    int OnBreakHorizontal(int PlayerID, int HitFrom);
 };
 
-#endif /* SEGMENTEDCOLUMNSTUB_H */
+#endif /* STALAGTITE_H */

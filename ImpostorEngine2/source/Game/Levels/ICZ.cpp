@@ -206,6 +206,7 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x51] = ICZObjectsSprite;
 
 	SpriteMapIDs[0xAE] = ICZObjectsSprite;
+	SpriteMapIDs[0xB5] = ICZObjectsSprite;
 	SpriteMapIDs[0xB6] = ICZObjectsSprite;
 	SpriteMapIDs[0xB8] = ICZObjectsSprite;
 

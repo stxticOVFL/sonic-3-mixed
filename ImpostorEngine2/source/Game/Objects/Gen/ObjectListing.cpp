@@ -272,6 +272,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0xB3U:
             return new SegmentedColumn();
             break;
+        case 0xB5U:
+            return new Stalagtite();
+            break;
         case 0xB6U:
             return new IceCube();
             break;
@@ -616,6 +619,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x5EE8DBE4U:
             return new SegmentedColumn();
+            break;
+        case 0xC73D2821U:
+            return new Stalagtite();
             break;
         case 0xE855624CU:
             return new IceCube();

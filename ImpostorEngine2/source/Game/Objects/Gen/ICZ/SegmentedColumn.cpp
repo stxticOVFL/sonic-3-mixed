@@ -40,7 +40,6 @@ void SegmentedColumn::Update() {
 
     }
     if (BreakTimer <= (SolidCount * 8) && BreakTimer != 0) {
-        IApp::Print(0, "%d", (32 - BreakTimer) / 8);
         Stub = Stubs[(32 - BreakTimer) / 8];
         Stub->Y += 4;
         YStack += 4;

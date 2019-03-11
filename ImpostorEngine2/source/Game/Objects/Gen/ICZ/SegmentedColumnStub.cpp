@@ -9,7 +9,6 @@ void SegmentedColumnStub::Create() {
     Object::Create();
     W = 64;
     H = 32;
-    OGY = Y;
     Active = true;
     Priority = false;
     Solid = true;
@@ -43,7 +42,6 @@ int SegmentedColumnStub::OnBreakVertical(int PlayerID, int HitFrom) {
 }
 
 int SegmentedColumnStub::OnBreakHorizontal(int PlayerID, int HitFrom) {
-    IApp::Print(0, "%d", HitFrom);
     if ((HitFrom & (int)(CollideSide::SIDES)) == 0) return 0;
 
     BreakableByRoll = CollideSide::NONE;

@@ -157,6 +157,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\IceCube.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\SegmentedColumn.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\SegmentedColumnStub.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\Stalagtite.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\StarPointer.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\LBZ\Orbinaut.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\BubblesBadnik.cpp" />
