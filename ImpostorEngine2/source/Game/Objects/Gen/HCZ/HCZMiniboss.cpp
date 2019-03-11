@@ -23,39 +23,39 @@ void HCZMiniboss::Create() {
     HitCount = 6;
     Boss = true;
     int i = 0;
-    MainPalette[i++] = 0x400000;
-    MainPalette[i++] = 0x900000;
-    MainPalette[i++] = 0xe00000;
-    MainPalette[i++] = 0x800000;
-    MainPalette[i++] = 0xb03000;
-    MainPalette[i++] = 0xe07000;
-    MainPalette[i++] = 0xe0a000;
-    MainPalette[i++] = 0xe0c000;
-    MainPalette[i++] = 0x200008;
-    MainPalette[i++] = 0x700010;
-    MainPalette[i++] = 0xe00020;
-    MainPalette[i++] = 0xe84848;
-    MainPalette[i++] = 0xe87878;
-    MainPalette[i++] = 0xe89898;
-    MainPalette[i++] = 0xc00010;
-    MainPalette[i++] = 0x700000;
+    MainPalette[i++] = Sprite->Palette[0x10];
+    MainPalette[i++] = Sprite->Palette[0x11];
+    MainPalette[i++] = Sprite->Palette[0x12];
+    MainPalette[i++] = Sprite->Palette[0x13];
+    MainPalette[i++] = Sprite->Palette[0x14];
+    MainPalette[i++] = Sprite->Palette[0x15];
+    MainPalette[i++] = Sprite->Palette[0x16];
+    MainPalette[i++] = Sprite->Palette[0x17];
+    MainPalette[i++] = Sprite->Palette[0x18];
+    MainPalette[i++] = Sprite->Palette[0x19];
+    MainPalette[i++] = Sprite->Palette[0x1A];
+    MainPalette[i++] = Sprite->Palette[0x1B];
+    MainPalette[i++] = Sprite->Palette[0x1C];
+    MainPalette[i++] = Sprite->Palette[0x1D];
+    MainPalette[i++] = Sprite->Palette[0x1E];
+    MainPalette[i++] = Sprite->Palette[0x1F];
     i = 0;
-    MainPaletteWater[i++] = 0x400000;
-    MainPaletteWater[i++] = 0x900000;
-    MainPaletteWater[i++] = 0xe00000;
-    MainPaletteWater[i++] = 0x800000;
-    MainPaletteWater[i++] = 0xb03000;
-    MainPaletteWater[i++] = 0xe07000;
-    MainPaletteWater[i++] = 0xe0a000;
-    MainPaletteWater[i++] = 0xe0c000;
-    MainPaletteWater[i++] = 0x200008;
-    MainPaletteWater[i++] = 0x700010;
-    MainPaletteWater[i++] = 0xe00020;
-    MainPaletteWater[i++] = 0xe84848;
-    MainPaletteWater[i++] = 0xe87878;
-    MainPaletteWater[i++] = 0xe89898;
-    MainPaletteWater[i++] = 0xc00010;
-    MainPaletteWater[i++] = 0x700000;
+    MainPalette[i++] = Sprite->PaletteAlt[0x10];
+    MainPalette[i++] = Sprite->PaletteAlt[0x11];
+    MainPalette[i++] = Sprite->PaletteAlt[0x12];
+    MainPalette[i++] = Sprite->PaletteAlt[0x13];
+    MainPalette[i++] = Sprite->PaletteAlt[0x14];
+    MainPalette[i++] = Sprite->PaletteAlt[0x15];
+    MainPalette[i++] = Sprite->PaletteAlt[0x16];
+    MainPalette[i++] = Sprite->PaletteAlt[0x17];
+    MainPalette[i++] = Sprite->PaletteAlt[0x18];
+    MainPalette[i++] = Sprite->PaletteAlt[0x19];
+    MainPalette[i++] = Sprite->PaletteAlt[0x1A];
+    MainPalette[i++] = Sprite->PaletteAlt[0x1B];
+    MainPalette[i++] = Sprite->PaletteAlt[0x1C];
+    MainPalette[i++] = Sprite->PaletteAlt[0x1D];
+    MainPalette[i++] = Sprite->PaletteAlt[0x1E];
+    MainPalette[i++] = Sprite->PaletteAlt[0x1F];
     i = 0;
     HurtPalette[i++] = 0xF0F0F0;
     HurtPalette[i++] = 0xF0F0F0;
@@ -103,7 +103,7 @@ void HCZMiniboss::HandleDamage() {
 
     if (InvulnTimer > 0) {
         if (InvulnTimer & 1) {
-            if (this->Y > Scene->WaterLevel) {
+            if (this->Y < Scene->WaterLevel) {
                 Sprite->SetPalette(0x10, 16, MainPaletteWater);
             }
             else {

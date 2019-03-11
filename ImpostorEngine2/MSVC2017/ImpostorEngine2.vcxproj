@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\Engine\IAchievement.cpp" />
     <ClCompile Include="..\source\Engine\IApp.cpp" />
     <ClCompile Include="..\source\Engine\IAudio.cpp" />
     <ClCompile Include="..\source\Engine\IGLGraphics.cpp" />

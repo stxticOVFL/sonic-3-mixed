@@ -6,16 +6,18 @@
 #include <Engine/IScene.h>
 #include <Engine/IMath.h>
 #include <Engine/IINI.h>
+#include <Engine/IAchievement.h>
 
 class IApp {
 public:
     IScene* Scene = NULL;
     IScene* NextScene = NULL;
 
-    IGraphics* G = NULL;
-    IInput*    Input = NULL;
-    IAudio*    Audio = NULL;
-    IINI*      Settings = NULL;
+    IGraphics*			G = NULL;
+    IInput*				Input = NULL;
+    IAudio*				Audio = NULL;
+    IINI*				Settings = NULL;
+	IAchievement*       Achievements = NULL;
 
     float FPS = 60.f;
     bool Running = false;
@@ -46,12 +48,12 @@ public:
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/FBZ.h>
 #include <Game/Levels/MHZ.h>
-//#include <Game/Levels/SOZ.h>
-//#include <Game/Levels/LRZ.h>
-//#include <Game/Levels/HPZ.h>
-//#include <Game/Levels/SSZ.h>
-//#include <Game/Levels/DEZ.h>
-//#include <Game/Levels/TDZ.h>
+#include <Game/Levels/SOZ.h>
+#include <Game/Levels/LRZ.h>
+#include <Game/Levels/HPZ.h>
+#include <Game/Levels/SSZ.h>
+#include <Game/Levels/DEZ.h>
+#include <Game/Levels/TDZ.h>
 #include <Game/Levels/SpecialStage.h>
 
 #include <Game/Scenes/MainMenu.h>
@@ -148,6 +150,7 @@ PUBLIC IApp::IApp() {
 
     Input = new IInput(this);
     Audio = new IAudio(this);
+    Achievements = new IAchievement(this);
 
     Running = true;
 }
@@ -345,6 +348,7 @@ PUBLIC void IApp::Run() {
             Scene->Init();
             Input->Poll();
             Scene->Update();
+			if (Achievements->AchievementGet) Achievements->OnAchievementGet(Achievements->GotAchievement);
             Scene->Render();
 			beginFrameBatch += now - SDL_GetTicks();
         }
@@ -419,6 +423,7 @@ PUBLIC void IApp::Run() {
 }
 
 PUBLIC void IApp::Cleanup() {
+	delete Achievements;
     Input->Cleanup(); delete Input;
     Audio->Cleanup(); delete Audio;
     G->Cleanup(); delete G;
