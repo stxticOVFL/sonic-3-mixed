@@ -2727,7 +2727,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 
 	SaveGame::SetLives(Player->Lives);
 	SaveGame::SetZone(ZoneID - 1);
-	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = (uint8_t)Player->Shield;
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = (uint8_t)Player->Shield < 5 ? (uint8_t)Player->Shield : 0;
 	SaveGame::Savefiles[SaveGame::CurrentSaveFile].BlueRing = 0;
 	SaveGame::Flush();
 
