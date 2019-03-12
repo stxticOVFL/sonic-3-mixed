@@ -206,6 +206,7 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x51] = ICZObjectsSprite;
 
 	SpriteMapIDs[0xAE] = ICZObjectsSprite;
+	SpriteMapIDs[0xB4] = ICZObjectsSprite;
 	SpriteMapIDs[0xB5] = ICZObjectsSprite;
 	SpriteMapIDs[0xB6] = ICZObjectsSprite;
 	SpriteMapIDs[0xB8] = ICZObjectsSprite;
@@ -224,7 +225,6 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         ICZObjectsSprite->LoadAnimation("ICZ/Cork Floor.bin");
         ICZObjectsSprite->LoadAnimation("ICZ/Cork Floor 2.bin");
         ICZObjectsSprite->LoadAnimation("ICZ/Platforms.bin");
-		ICZObjectsSprite->LoadAnimation("ICZ/Platforms 2.bin");
 		ICZObjectsSprite->LoadAnimation("ICZ/Platforms 3.bin");
 		ICZObjectsSprite->LoadAnimation("ICZ/Particles.bin");
         ICZObjectsSprite->LoadAnimation("ICZ/Tension Bridge.bin");
@@ -232,6 +232,9 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         ICZObjectsSprite->LoadAnimation("ICZ/Star Pointer.bin");
 		ICZObjectsSprite->LoadAnimation("ICZ/Ice Cube.bin");
 		ICZObjectsSprite->LoadAnimation("ICZ/Harmful Ice.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Freezer.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Swinging Platform.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/Ring.bin");
     }
 
 	if (!KnuxSprite[0]) {

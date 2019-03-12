@@ -91,6 +91,7 @@
 #include "ICZ/StarPointer.h"			// 804AD12D
 #include "ICZ/CrushingColumn.h"			// A5F30B34
 #include "ICZ/SegmentedColumn.h"			// 5EE8DBE4
+#include "ICZ/SwingingPlatform.h"			// 3200872E
 #include "ICZ/Stalagtite.h"			// C73D2821
 #include "ICZ/IceCube.h"			// E855624C
 #include "ICZ/HarmfulIce.h"			// 8BC9A52C
@@ -113,6 +114,7 @@
 #include "HCZ/TurboSpikerSpike.h"			// 77A23BDE
 #include "ICZ/SegmentedColumnStub.h"			// 91BDF05
 #include "ICZ/StarPointerOrbs.h"			// 802D069A
+#include "ICZ/SwingingPlatformTrigger.h"			// 7A5BA50E
 #include "MGZ/ReliefEye.h"			// BBCA6AC5
 #include "Test/Platform.h"			// C4B304CC
 
@@ -208,6 +210,7 @@ enum {
     Obj_StarPointer = 0x0AE,
     Obj_CrushingColumn = 0x0AF,
     Obj_SegmentedColumn = 0x0B3,
+    Obj_SwingingPlatform = 0x0B4,
     Obj_Stalagtite = 0x0B5,
     Obj_IceCube = 0x0B6,
     Obj_HarmfulIce = 0x0B8,
@@ -230,8 +233,9 @@ enum {
     Obj_TurboSpikerSpike = 0x40F,
     Obj_SegmentedColumnStub = 0x410,
     Obj_StarPointerOrbs = 0x411,
-    Obj_ReliefEye = 0x412,
-    Obj_Platform = 0x413,
+    Obj_SwingingPlatformTrigger = 0x412,
+    Obj_ReliefEye = 0x413,
+    Obj_Platform = 0x414,
 };
 
 Object* GetNewObjectFromID(int ID);

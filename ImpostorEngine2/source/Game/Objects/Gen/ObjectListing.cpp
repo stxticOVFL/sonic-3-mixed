@@ -272,6 +272,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0xB3U:
             return new SegmentedColumn();
             break;
+        case 0xB4U:
+            return new SwingingPlatform();
+            break;
         case 0xB5U:
             return new Stalagtite();
             break;
@@ -339,9 +342,12 @@ Object* GetNewObjectFromID(int ID) {
             return new StarPointerOrbs();
             break;
         case 0x412U:
-            return new ReliefEye();
+            return new SwingingPlatformTrigger();
             break;
         case 0x413U:
+            return new ReliefEye();
+            break;
+        case 0x414U:
             return new Platform();
             break;
 
@@ -623,6 +629,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x5EE8DBE4U:
             return new SegmentedColumn();
             break;
+        case 0x3200872EU:
+            return new SwingingPlatform();
+            break;
         case 0xC73D2821U:
             return new Stalagtite();
             break;
@@ -688,6 +697,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x802D069AU:
             return new StarPointerOrbs();
+            break;
+        case 0x7A5BA50EU:
+            return new SwingingPlatformTrigger();
             break;
         case 0xBBCA6AC5U:
             return new ReliefEye();
