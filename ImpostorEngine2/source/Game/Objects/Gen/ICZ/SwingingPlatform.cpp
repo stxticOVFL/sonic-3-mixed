@@ -24,9 +24,10 @@ void SwingingPlatform::Create() {
 void SwingingPlatform::Update() {
     if (!Trigger) return;
 
-    SubType = SubType == 0 ? 0 : SubType - 2;
+    SubType = SubType == 0 ? 0 : SubType - 1;
     VisualCircle = SubType > 180 ? 180 : SubType;
-    X = sin(VisualCircle) + InitialX;
+    X = sin(VisualCircle) * 0x50 + InitialX;
+    IApp::Print(0, "%d %d", VisualCircle, sin(VisualCircle));
     Y = Y;
     Trigger->X = X + (FlipX ? -28 : 28);
     Trigger->Y = Y - 16;
