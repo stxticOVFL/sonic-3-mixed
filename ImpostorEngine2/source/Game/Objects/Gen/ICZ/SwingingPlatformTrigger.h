@@ -20,7 +20,6 @@ public:
     
     void Create();
     void Update();
-    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
 #endif /* SWINGINGPLATFORMTRIGGER_H */

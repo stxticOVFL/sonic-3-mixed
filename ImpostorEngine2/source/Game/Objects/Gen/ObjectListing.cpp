@@ -269,6 +269,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0xAFU:
             return new CrushingColumn();
             break;
+        case 0xB2U:
+            return new Freezer();
+            break;
         case 0xB3U:
             return new SegmentedColumn();
             break;
@@ -625,6 +628,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0xA5F30B34U:
             return new CrushingColumn();
+            break;
+        case 0xDE608819U:
+            return new Freezer();
             break;
         case 0x5EE8DBE4U:
             return new SegmentedColumn();

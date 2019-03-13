@@ -153,6 +153,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\TurboSpiker.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\TurboSpikerSpike.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\CrushingColumn.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\Freezer.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\HarmfulIce.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\IceCube.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\SegmentedColumn.cpp" />

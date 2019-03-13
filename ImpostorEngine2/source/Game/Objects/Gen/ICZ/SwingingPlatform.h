@@ -20,10 +20,12 @@ public:
     Object* Trigger;
     int VisualCircle;
     int Pivot;
+    IPlayer* Player;
     
     void Create();
     void Update();
     void Render(int CamX, int CamY);
+    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
 #endif /* SWINGINGPLATFORM_H */

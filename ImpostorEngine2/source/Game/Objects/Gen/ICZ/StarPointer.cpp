@@ -29,6 +29,7 @@ void StarPointer::Update() {
         RotAngle = 0;
         RotAngle += OrbOffsets[i];
         RotAngle += TurnSpeed;
+        IApp::Print(0, "%d %d", RotAngle, sin(RotAngle));
         Orbs[i]->X = sin(RotAngle) * 20 + X;
         Orbs[i]->Y = cos(RotAngle) * 20 + Y;
         OrbOffsets[i] = RotAngle;
