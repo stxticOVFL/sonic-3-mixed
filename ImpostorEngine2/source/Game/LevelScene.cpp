@@ -1441,7 +1441,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Player->Scene = this;
 			Player->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
 			Player->PlayerID = 0;
-			Player->Shield = (ShieldType)SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield;
+			Player->Shield = (ShieldType)(SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield < 5 ? (uint8_t)Player->Shield : 0);
 			Player->Thremixed = SaveGame::CurrentMode == 1;
 			Player->Create();
 			Player->Lives = SaveGame::GetLives();
