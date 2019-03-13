@@ -30,16 +30,13 @@ Object A7 (Obj_CNZBoss) has not been implemented!
 ICZ:
 Object AD (Obj_Penguinator) has not been implemented!
 Object AE (Obj_StarPointer) has not been implemented! //Almost
-Object AF (Obj_CrushingColumn) has not been implemented! //In progress
+Object AF (Obj_CrushingColumn) has not been implemented! //Almost
 Object B0 (Obj_PathFollowPlatform) has not been implemented!
 Object B1 (Obj_ICZBreakableWall) has not been implemented!
-Object B2 (Obj_Freezer) has not been implemented!
-Object B3 (Obj_SegmentColumn) has not been implemented!
-Object B4 (Obj_ICZSwingingPlatform) has not been implemented!
-Object B5 (Obj_Stalagtite) has not been implemented!
+Object B2 (Obj_Freezer) has not been implemented! //In progress
+Object B4 (Obj_ICZSwingingPlatform) has not been implemented! //In progress
 Object B6 (Obj_IceCube) has not been implemented!
 Object B7 (Obj_IceSpikes) has not been implemented!
-Object B8 (Obj_HarmfulIce) has not been implemented!
 
 LBZ:
 Object 10 (Obj_TubeElevator) has not been implemented!
