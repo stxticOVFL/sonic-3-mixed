@@ -4093,38 +4093,69 @@ PUBLIC void LevelScene::Update() {
 			if (obj != NULL) {
 				if (obj->Active) {
 					LastObjectUpdated = obj;
+                    
+                    int32_t NoNegativeCamY = CameraY + App->HEIGHT / 2;
 
 					bool OnScreen = false;
-					//*
 					if (obj->VisW > obj->W || obj->VisH > obj->H) {
 						OnScreen |= (
 							obj->X + obj->VisW >= CameraX - 120 &&
-							obj->Y + obj->VisH >= CameraY - 120 &&
+							obj->Y + obj->VisH >= NoNegativeCamY - 120 &&
 							obj->X - obj->VisW < CameraX + App->WIDTH + 120 &&
-							obj->Y - obj->VisH < CameraY + App->HEIGHT + 120);
+							obj->Y - obj->VisH < NoNegativeCamY + App->HEIGHT + 120);
+                    } else {
+                        OnScreen |= (
+                            obj->X + obj->W / 2 >= CameraX - 120 &&
+                            obj->Y + obj->H / 2 >= NoNegativeCamY - 120 &&
+                            obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
+                            obj->Y - obj->H / 2 < NoNegativeCamY + App->HEIGHT + 120);
                     }
 
-					//*/
-					OnScreen |= (
-						obj->X + obj->W / 2 >= CameraX - 120 &&
-						obj->Y + obj->H / 2 >= CameraY - 120 &&
-						obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-						obj->Y - obj->H / 2 < CameraY + App->HEIGHT + 120);
-
-					if (Data->layers[Data->cameraLayer].IsScrollingVertical) {         
-                        if (obj->VisW > obj->W || obj->VisH > obj->H) {
+					if (Data->layers[Data->cameraLayer].IsScrollingVertical) { 
+                        int32_t objWrapCameraY = 0;
+                        //int16_t objWrapY = 0;
+                        
+                        if (ManiaLevel) {
+                            objWrapCameraY = obj->Y - 4;
+                        } else {
+                            objWrapCameraY = obj->Y + 8;
+                        }
+                        
+                        if (objWrapCameraY - NoNegativeCamY >= 0 && CameraY < 0) {
+                            //App->Print(0, "objWrapCameraY caculation is: %08X", (objWrapCameraY - NoNegativeCamY));
+                            //App->Print(0, "objWrapCameraY is: %04X", objWrapCameraY);
+                            //App->Print(0, "Max Camera Height is: %08X", Data->layers[Data->cameraLayer].Height * 16);
+                            
+                            // TODO: Figure out how to wrap the objects caculation camera around to match ours
+                            // in terms of caculation OR wrap the object caculation Y around to pass the caculations.
+                            int32_t CaculationCameraY = NoNegativeCamY;
+                            
+                            if (obj->VisW > obj->W || obj->VisH > obj->H) {
+                                OnScreen |= (
+                                    obj->X + obj->VisW / 2 >= CameraX - 120 &&
+                                    (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
+                                    obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
+                                    (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
+                            } else {
+                                OnScreen |= (
+                                    obj->X + obj->W / 2 >= CameraX - 120 &&
+                                    (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
+                                    obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
+                                    (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
+                            }
+                        } else if (obj->VisW > obj->W || obj->VisH > obj->H) {
                             OnScreen |= (
                                 obj->X + obj->VisW / 2 >= CameraX - 120 &&
-                                (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CameraY - 120 &&
+                                (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
                                 obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
-                                (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CameraY + App->HEIGHT + 120);
+                                (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
+                        } else {
+                            OnScreen |= (
+                                obj->X + obj->W / 2 >= CameraX - 120 &&
+                                (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
+                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
+                                (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
                         }
-                    
-						OnScreen |= (
-							obj->X + obj->W / 2 >= CameraX - 120 &&
-							(obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CameraY - 120 &&
-							obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-							(obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CameraY + App->HEIGHT + 120);
 					}
 
 					if (obj->OnScreen && !OnScreen) {
@@ -4580,13 +4611,15 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 
 		int camX = int(Player->EZX + Player->CameraX);
 		int camY;
-		if (ManiaLevel)
+		if (ManiaLevel) {
 			camY = int(Player->EZY + Player->CameraY - 4);
-		else
+		} else {
 			camY = int(Player->EZY + Player->CameraY + 8);
+        }
 
-		if (Player->Action == ActionType::Rolling)
+		if (Player->Action == ActionType::Rolling) {
 			camY -= Player->H / 2 - 16;
+        }
 
 		OffsetX = (camX - (CameraX + App->WIDTH / 2 - 8 * OffCenteredCamera));
 		OffsetY = (camY - (CameraY + App->HEIGHT / 2));
@@ -4595,28 +4628,31 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 		if (ZoneID == 5 && Act == 1 && Player->EZX < 0x3880) {
 			Max = 0x90;
 		}
+        
 		if (IMath::abs(OffsetX) > 8) {
 			OffsetX -= 8 * IMath::sign(OffsetX);
-		}
-		else {
+		} else {
 			OffsetX = 0;
 		}
 
-		if (Player->CameraLockTimer > 0)
+		if (Player->CameraLockTimer > 0) {
 			OffsetX = 0;
+        }
 
 		OffsetX = IMath::min(IMath::abs(OffsetX), Max) * IMath::sign(OffsetX);
 
 		if (!Player->Ground) {
-			if (IMath::abs(OffsetY) > 32)
+			if (IMath::abs(OffsetY) > 32) {
 				OffsetY -= 32 * IMath::sign(OffsetY);
-			else
+			} else {
 				OffsetY = 0;
+            }
 		}
 
 		Max = 6;
-		if (IMath::abs(Player->YSpeed) >= 0x43C && Player->Ground)
+		if (IMath::abs(Player->YSpeed) >= 0x43C && Player->Ground) {
 			Max = 24;
+        }
 
 		// NOTE: Mania notes
 		// When player lands, wait 16 frames
@@ -5791,6 +5827,10 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		sprintf(pooerp, "%04X %04X", CameraX, CameraY);
 		G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
 		Y += 8;
+        
+		sprintf(pooerp, "%04X %04X", Player->CameraX, Player->CameraY);
+		G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
+		Y += 8;
 
 		sprintf(pooerp, "Sensor A: %d", Player->SensorA);
 		G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0x00FF00);
@@ -6008,6 +6048,7 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 	}
 
 	G->SetFilter(0);
+    //App->Print(0, "Unfiltered CameraY is: %04X", (Player->EZY + Player->CameraY + 8));
 }
 
 PUBLIC VIRTUAL void LevelScene::Cleanup() {

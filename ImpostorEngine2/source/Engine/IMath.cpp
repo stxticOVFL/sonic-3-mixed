@@ -77,21 +77,27 @@ PUBLIC STATIC int IMath::abs(int n) {
         return -n;
     return n;
 }
+
 PUBLIC STATIC int IMath::max(int a, int b) {
     return a > b ? a : b;
 }
+
 PUBLIC STATIC int IMath::min(int a, int b) {
     return a < b ? a : b;
 }
+
 PUBLIC STATIC int IMath::clamp(int v, int a, int b) {
     return IMath::max(a, IMath::min(v, b));
 }
+
 PUBLIC STATIC double IMath::clampDouble(double v, double a, double b) {
     return fmax(a, fmin(v, b));
 }
+
 PUBLIC STATIC double IMath::clampDoubleDown(double v, double a, double b) {
     return fmax(a, fmin(v, b)) - a;
 }
+
 PUBLIC STATIC float IMath::sign(float a) {
     if (a < 0)
         return -1.0;
@@ -99,6 +105,7 @@ PUBLIC STATIC float IMath::sign(float a) {
         return 1.0;
     return 0.0;
 }
+
 PUBLIC STATIC int IMath::sign(int a) {
     if (a < 0)
         return -1;
@@ -106,18 +113,23 @@ PUBLIC STATIC int IMath::sign(int a) {
         return 1;
     return 0;
 }
+
 PUBLIC STATIC int IMath::floor(double a) {
     return std::floor(a);
 }
+
 PUBLIC STATIC int IMath::floor(float a) {
     return std::floor(a);
 }
+
 PUBLIC STATIC int IMath::ceil(double a) {
     return std::ceil(a);
 }
+
 PUBLIC STATIC int IMath::ceil(float a) {
     return std::ceil(a);
 }
+
 PUBLIC STATIC int IMath::wrapDeg(int d) {
     while (d < 0)
         d += 360;
@@ -125,6 +137,7 @@ PUBLIC STATIC int IMath::wrapDeg(int d) {
         d -= 360;
     return d;
 }
+
 PUBLIC STATIC int IMath::randRange(int min, int max) {
     return (rand() % (max - min + 1)) + min;
 }

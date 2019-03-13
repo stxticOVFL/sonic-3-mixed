@@ -3456,8 +3456,7 @@ void IPlayer::LateUpdate() {
 					if (OCMode) {
 						Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palHyper[p], palNormal[p], superblend));
 						Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palHyper[p], palNormalHCZ[p], superblend));
-					}
-					else {
+					} else {
 						HyperLoopIndex++;
 						if (HyperLoopIndex >= HyperLoopMaxIndex) {
 							LastHyperIndex = (LastHyperIndex + 1) % hyperFullPalCount;
@@ -3468,16 +3467,14 @@ void IPlayer::LateUpdate() {
 						Sprites[i]->SetPalette(palWhere + p, blendColor);
 						Sprites[i]->SetPaletteAlt(palWhere + p, blendColorHCZ);
 					}
-				}
-				else {
+				} else {
 					Sprites[i]->SetPalette(palWhere + p, G->ColorBlend(palSuper[p], palNormal[p], superblend));
 					Sprites[i]->SetPaletteAlt(palWhere + p, G->ColorBlend(palSuperHCZ[p], palNormalHCZ[p], superblend));
 				}
 			}
 			Sprites[i]->UpdatePalette();
 		}
-	}
-	else {
+	} else {
 		for (int i = 0; i < 4; i++) {
 			if (!Sprites[i]) break;
 
@@ -3495,36 +3492,41 @@ void IPlayer::LateUpdate() {
 	if (IMath::abs((int8_t)Angle) >= 0x1C) {
 		FinalAngle = (int8_t)Angle;
 	}
-	if (FinalAngle > 0x0)
+	if (FinalAngle > 0x0) {
 		FinalAngle = (FinalAngle - 0x10) & 0xE0;
-	else
+	} else {
 		FinalAngle = (FinalAngle + 0x10) & 0xE0;
+    }
+    
 	shortestrot = (FinalAngle - ((uint16_t)DisplayAngle >> 8)) & 0xFF;
 	if (DisplayAngle == 0 && shortestrot < 0) {
 		DisplayAngle = -1;
 		shortestrot = -1;
 	}
 	if (shortestrot < 0) {
-		if (Ground)
+		if (Ground) {
 			DisplayAngle -= 0x600;
-		else
+		} else {
 			DisplayAngle -= 0x400;
+        }
 
 		DisplayAngle &= 0xFFFF;
 
-		if (DisplayAngle < FinalAngle * 0x100)
+		if (DisplayAngle < FinalAngle * 0x100) {
 			DisplayAngle = FinalAngle * 0x100;
-	}
-	else if (shortestrot > 0) {
-		if (Ground)
+        }
+	} else if (shortestrot > 0) {
+		if (Ground) {
 			DisplayAngle += 0x600;
-		else
+		} else {
 			DisplayAngle += 0x400;
+        }
 
 		DisplayAngle &= 0xFFFF;
 
-		if ((DisplayAngle >> 8) > FinalAngle)
+		if ((DisplayAngle >> 8) > FinalAngle) {
 			DisplayAngle = FinalAngle << 8;
+        }
 	}
 
 	// For animations that don't rotate, set DisplayAngle to 0
@@ -3538,48 +3540,38 @@ void IPlayer::LateUpdate() {
 	if (Action == ActionType::CrouchDown) {
 		if (CameraLookTimer >= 60) {
 			CameraY = IMath::min(CameraY + 2, 88);
+		} else if (CameraY < 0) {
+            CameraY = IMath::min(CameraY + 2, 0);
+        } else if (CameraY > 0) {
+            CameraY = IMath::max(CameraY - 2, 0);
 		}
-		else {
-			if (CameraY < 0)
-				CameraY = IMath::min(CameraY + 2, 0);
-			if (CameraY > 0)
-				CameraY = IMath::max(CameraY - 2, 0);
-		}
-	}
-	else if (Action == ActionType::LookUp) {
+	} else if (Action == ActionType::LookUp) {
 		if (CameraLookTimer >= 60) {
 			CameraY = IMath::max(CameraY - 2, -104);
+        } else if (CameraY < 0) {
+            CameraY = IMath::min(CameraY + 2, 0);
+        } else if (CameraY > 0) {
+            CameraY = IMath::max(CameraY - 2, 0);
 		}
-		else {
-			if (CameraY < 0)
-				CameraY = IMath::min(CameraY + 2, 0);
-			if (CameraY > 0)
-				CameraY = IMath::max(CameraY - 2, 0);
-		}
-	}
-	else if (Action == ActionType::Rolling) {
+	} else if (Action == ActionType::Rolling) {
 		CameraX = (IMath::sinHex(Angle) * (H / 2 - 16)) >> 16;
 		CameraY = (IMath::cosHex(Angle) * (H / 2 - 16)) >> 16;
-	}
-	else {
-		if (CameraLookTimer >= 60) {
-			if (CameraY < 0)
-				CameraY = IMath::min(CameraY + 2, 0);
-			else if (CameraY > 0)
-				CameraY = IMath::max(CameraY - 2, 0);
-			else
-				CameraLookTimer = 0;
-		}
-		else {
-			CameraY = 0;
-		}
-	}
+	} else if (CameraLookTimer >= 60) {
+        if (CameraY < 0) {
+            CameraY = IMath::min(CameraY + 2, 0);
+        } else if (CameraY > 0) {
+            CameraY = IMath::max(CameraY - 2, 0);
+        } else {
+            CameraLookTimer = 0;
+        }
+    } else {
+        CameraY = 0;
+    }
 
 	if (CameraLockTimer == 0) {
 		if (Action == ActionType::CrouchDown) {
 			CameraLookTimer += 1;
-		}
-		else if (Action == ActionType::LookUp) {
+		} else if (Action == ActionType::LookUp) {
 			CameraLookTimer += 1;
 		}
 	}
@@ -4083,17 +4075,17 @@ void IPlayer::CheckDespawn() {
 
 	if (OnScreen) {
 		RespawnTimer = 0;
-	}
-	else {
+	} else {
 		RespawnTimer++;
 		if (RespawnTimer >= 0x12C) {
 			Action = ActionType::Respawn;
 			RespawnTimer = 0;
 			EZX = Scene->Player->EZX;
-			if (Scene->CameraY - 0x60 > 0)
+			if (Scene->CameraY - 0x60 > 0) {
 				EZY = Scene->CameraY - 0x60;
-			else
+			} else {
 				EZY = 0;
+            }
 		}
 	}
 }
