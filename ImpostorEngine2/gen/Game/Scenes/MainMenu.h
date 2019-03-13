@@ -21,6 +21,11 @@ public:
     int selected = 0;
     int subselected = -1;
     int ran = 0;
+    bool opened = false;
+    int openBlue = 15;
+    int openRed = 15;
+    int openTimer = 15;
+    int prechange = 0;
     ISprite* MenuSprite = NULL;
     ISprite* SphereSprite = NULL;
     ISprite* SuperButtonsSprite = NULL;

@@ -12,9 +12,15 @@ public:
 	int FrameZigzag = 0;
 	int FrameZigzagRed = 0;
 	int FrameZigzagBlue = 0;
+	int  ElementY = 40;
+	int  ElementH = 150;
+	int paletteindexes[9];
+	int paletteToCycle[18];
+	bool GoBack = false;
 	ISprite* MenuSprite = NULL;
 	ISprite* SuperButtonsSprite = NULL;
 	ISprite* TextSprite = NULL;
+	IINI* Settings = NULL;
 };
 
 #endif
@@ -27,7 +33,7 @@ public:
 PUBLIC Scene_SettingsMenu::Scene_SettingsMenu(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
-
+	Settings = App->Settings;
 	Sound::Audio = App->Audio;
 	Sound::Init();
 
@@ -40,7 +46,88 @@ PUBLIC Scene_SettingsMenu::Scene_SettingsMenu(IApp* app, IGraphics* g) {
 	Discord_UpdatePresence("Main Menu", "Settings", "icon", false);
 }
 
+PUBLIC void Scene_SettingsMenu::Init() {
+	if (!MenuSprite) {
+		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
+		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
+		for (int i = 0; i < 9; i++)
+			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
+		MenuSprite->SetTransparentColorIndex(0x2C);
+		MenuSprite->UpdatePalette();
+	}
+	if (!SuperButtonsSprite) {
+		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
+		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
+		SuperButtonsSprite->SetPalette(1, 0x282028);
+		SuperButtonsSprite->UpdatePalette();
+	}
+	if (!TextSprite) {
+		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
+		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
+		TextSprite->UpdatePalette();
+	}
 
+	if (!App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
+		App->Audio->ClearMusic();
+		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	}
+
+	App->Input->UseTouchController = false;
+
+	FadeTimerMax = 30;
+	FadeIn = true;
+	Discord_UpdatePresence("Main Menu", "", "icon", false);
+}
+
+PUBLIC void Scene_SettingsMenu::Update() {
+	bool CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
+	bool CONFIRM_DOWN = App->Input->GetControllerInput(0)[IInput::I_CONFIRM] || App->Input->MouseDown;
+	bool BACK_PRESSED = App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED];
+
+	int mx = App->Input->MouseX;
+	int my = App->Input->MouseY;
+	if (App->Input->MouseReleased && mx < 128 && my > ElementY + ElementH)
+		BACK_PRESSED = true;
+	if (FadeTimer == -1 && FadeTimerMax > 1)
+		FadeTimer = FadeTimerMax;
+	if (FadeTimer > 0) {
+		FadeTimer--;
+		if (!FadeIn)
+			G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));
+		else
+			G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
+	}
+
+	if (BACK_PRESSED) {
+		GoBack = true;
+		FadeIn = false;
+		FadeTimerMax = 30;
+	}
+
+	// Do Fade actions
+	if (FadeTimer == 0) {
+		FadeTimer = -1;
+		FadeTimerMax = 0;
+
+		if (!FadeIn) {
+			if (GoBack) {
+				Scene_MainMenu* NextScene = new Scene_MainMenu(App, G);
+				NextScene->MenuSprite = MenuSprite;
+				NextScene->SuperButtonsSprite = SuperButtonsSprite;
+				NextScene->TextSprite = TextSprite;
+				App->NextScene = NextScene;
+			}
+		}
+	}
+	FrameCircle = (FrameCircle + 1) & 0xFF;
+	FrameZigzag = (FrameZigzag + 1) % (40 * 4);
+	FrameZigzagRed = (FrameZigzagRed + 1) % (117 * 4);
+	FrameZigzagBlue = (FrameZigzagBlue + 1) % (110 * 4);
+
+	frame++;
+	if (frame > (32 << 1))
+		frame = 0;
+}
 PUBLIC void Scene_SettingsMenu::Render() {
 	G->SetFilter(IE_FILTER_FADEABLE);
 
@@ -119,5 +206,6 @@ PUBLIC void Scene_SettingsMenu::Render() {
 	//*/
 
 	// Menu Title
-	G->DrawSprite(MenuSprite, 9, (1 + 0), App->WIDTH, 12, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 9, 6, App->WIDTH, 12, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 10, 3, App->WIDTH - 12, 12, 0, IE_NOFLIP);
 }
