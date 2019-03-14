@@ -40,5 +40,15 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (!Solid) return 0;
+	
+	if (Scene.Players[PlayerID].Shield == ShieldType.Fire)
+	{
+		//Do a melting thing
+		Solid = false;
+		Visible = false;
+		BreakableByJump = CollideSide.NONE;
+		Break();
+	}
+	
     return 1;
 }

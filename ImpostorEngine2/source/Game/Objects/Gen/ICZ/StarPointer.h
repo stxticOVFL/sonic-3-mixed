@@ -21,6 +21,7 @@ public:
     float TurnSpeed;
     
     void Create();
+    int OnHit();
     void Update();
     void Render(int CamX, int CamY);
 };

@@ -7,65 +7,40 @@ typedef IMath Math;
 
 void Orbinaut::Create() {
     Enemy::Create();
-    this->Active = true;
-    this->Priority = false;
-    this->W = 32;
-    this->H = 32;
-    this->CurrentAnimation = Sprite->FindAnimation("Orbinaut");
-    OrbXPos[0] = 0;
-    OrbYPos[0] = 0;
-    OrbXPos[1] = 0;
-    OrbYPos[1] = 0;
-    OrbXPos[2] = 0;
-    OrbYPos[2] = 0;
-    OrbXPos[3] = 0;
-    OrbYPos[3] = 0;
-    OrbOffsets[0] = 0;
-    OrbOffsets[1] = 90;
-    OrbOffsets[2] = 180;
-    OrbOffsets[3] = 270;
+    Active = true;
+    Priority = false;
+    W = 32;
+    H = 32;
+    for (int i = 0; i < 4; i++)
+{
+        Orbs[i] = Scene->AddNewObject(Obj_StarPointerOrbs, i, X, Y, FlipX, false);
+        Orbs[i]->CurrentAnimation = CurrentAnimation;
+        OrbOffsets[i] = i * 90;
+    }
     RotAngle = 0;
-    TurnSpeed = 0.1;
+    TurnSpeed = 0.01;
+}
+
+int Orbinaut::OnHit() {
+    Orbs[0]->Active = false;
+    Orbs[1]->Active = false;
+    Orbs[2]->Active = false;
+    Orbs[3]->Active = false;
+    return OnDeath();
 }
 
 void Orbinaut::Update() {
-    if (Scene->Players[0]->XSpeed != 0) {
+    for (int i = 0; i < 4; i++)
+{
         RotAngle = 0;
-        RotAngle += OrbOffsets[0];
+        RotAngle += OrbOffsets[i];
         RotAngle += TurnSpeed;
-        OrbXPos[0] = sin(RotAngle) * 20 + this->X;
-        OrbYPos[0] = cos(RotAngle) * 20 + this->Y;
-        OrbOffsets[0] = RotAngle;
-        RotAngle = 0;
-        RotAngle += OrbOffsets[1];
-        RotAngle += TurnSpeed;
-        OrbXPos[1] = sin(RotAngle) * 20 + this->X;
-        OrbYPos[1] = cos(RotAngle) * 20 + this->Y;
-        OrbOffsets[1] = RotAngle;
-        RotAngle = 0;
-        RotAngle += OrbOffsets[2];
-        RotAngle += TurnSpeed;
-        OrbXPos[2] = sin(RotAngle) * 20 + this->X;
-        OrbYPos[2] = cos(RotAngle) * 20 + this->Y;
-        OrbOffsets[2] = RotAngle;
-        RotAngle = 0;
-        RotAngle += OrbOffsets[3];
-        RotAngle += TurnSpeed;
-        OrbXPos[3] = sin(RotAngle) * 20 + this->X;
-        OrbYPos[3] = cos(RotAngle) * 20 + this->Y;
-        OrbOffsets[3] = RotAngle;
+        IApp::Print(0, "%d %d", RotAngle, sin(RotAngle));
+        Orbs[i]->X = sin(RotAngle) * 20 + X;
+        Orbs[i]->Y = cos(RotAngle) * 20 + Y;
+        OrbOffsets[i] = RotAngle;
     }
-
-    if (Scene->Players[0]->XSpeed < 0) {
-        X -= 0.1;
-        this->FlipX = false;
-    }
-
-    if (Scene->Players[0]->XSpeed > 0) {
-        X += 0.1;
-        this->FlipX = true;
-    }
-
+    X -= 0.01;
     Object::Update();
 }
 
@@ -75,10 +50,6 @@ void Orbinaut::Render(int CamX, int CamY) {
     }
     else {
         G->DrawSprite(this->Sprite, CurrentAnimation, Frame >> 8, this->X - CamX, this->Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-        G->DrawSprite(this->Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[0] - CamX, OrbYPos[0] - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-        G->DrawSprite(this->Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[1] - CamX, OrbYPos[1] - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-        G->DrawSprite(this->Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[2] - CamX, OrbYPos[2] - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-        G->DrawSprite(this->Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[3] - CamX, OrbYPos[3] - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
     }
     }
 

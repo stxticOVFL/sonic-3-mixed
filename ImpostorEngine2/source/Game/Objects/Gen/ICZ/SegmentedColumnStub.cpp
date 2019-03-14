@@ -44,11 +44,15 @@ int SegmentedColumnStub::OnBreakVertical(int PlayerID, int HitFrom) {
 int SegmentedColumnStub::OnBreakHorizontal(int PlayerID, int HitFrom) {
     if ((HitFrom & (int)(CollideSide::SIDES)) == 0) return 0;
 
-    BreakableByRoll = CollideSide::NONE;
-    Sound::Play(Sound::SFX_COLLAPSE);
-    Solid = false;
-    Visible = false;
-    Break();
-    return 1;
+    if (Scene->Players[PlayerID]->XSpeed > 0x12) {
+        BreakableByRoll = CollideSide::NONE;
+        Sound::Play(Sound::SFX_COLLAPSE);
+        Solid = false;
+        Visible = false;
+        Break();
+        return 1;
+    }
+
+    return 0;
 }
 

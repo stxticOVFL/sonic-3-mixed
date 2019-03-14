@@ -32,14 +32,17 @@ void Freezer::Update() {
     for (int i = 0; i < Scene->PlayerCount; i++)
 {
         if ((Scene->Players[i]->Y >= Y && Scene->Players[i]->Y <= Y + Range && Scene->Players[i]->X >= X - 16 && Scene->Players[i]->X <= X + 16) && (!Frozen[i] && FrozenTimer[i] == 0) && (Range != 0)) {
-            Frozen[i] = true;
-            FrozenTimer[i] = 80;
-            Scene->Players[i]->ControlLocked = true;
-            Scene->Players[i]->InputLockLeftRight = true;
-            Scene->Players[i]->AnimationStop = true;
-            StoredX[i] = Scene->Players[i]->X;
-            StoredY[i] = Scene->Players[i]->Y;
-            StoredFrame[i] = Scene->Players[i]->Frame;
+            if (Scene->Players[i]->Shield != ShieldType::Fire) {
+                Frozen[i] = true;
+                FrozenTimer[i] = 80;
+                Scene->Players[i]->ControlLocked = true;
+                Scene->Players[i]->InputLockLeftRight = true;
+                Scene->Players[i]->AnimationStop = true;
+                StoredX[i] = Scene->Players[i]->X;
+                StoredY[i] = Scene->Players[i]->Y;
+                StoredFrame[i] = Scene->Players[i]->Frame;
+            }
+
         }
 
         if (Frozen[i]) {

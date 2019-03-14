@@ -204,6 +204,7 @@ int Rock::OnBreakHorizontal(int PlayerID, int HitFrom) {
     BreakableBySuper = CollideSide::NONE;
     BreakableByGlide = CollideSide::NONE;
     BreakableByKnuckles = CollideSide::NONE;
+    BreakableByMighty = CollideSide::NONE;
     Solid = false;
     int HitSide = -1;
     if (HitFrom == CollideSide::RIGHT) HitSide = 1;

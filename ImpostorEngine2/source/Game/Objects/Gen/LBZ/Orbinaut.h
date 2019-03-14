@@ -15,14 +15,13 @@ class Orbinaut;
 class Orbinaut: public Enemy {
 public:    
     
-    Uint32 OrbXPos[4];
-    Uint32 OrbYPos[4];
+    Object* Orbs[4];
     float OrbOffsets[4];
     float RotAngle;
     float TurnSpeed;
-    int i;
     
     void Create();
+    int OnHit();
     void Update();
     void Render(int CamX, int CamY);
 };

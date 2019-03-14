@@ -228,6 +228,7 @@ event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
     BreakableBySuper = CollideSide.NONE;
     BreakableByGlide = CollideSide.NONE;
     BreakableByKnuckles = CollideSide.NONE;
+    BreakableByMighty = CollideSide.NONE;
     Solid = false;
 
     var HitSide:int = -1;
