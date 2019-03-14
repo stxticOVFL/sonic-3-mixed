@@ -54,15 +54,15 @@ int triframe = 0;
 int palframe = 0;
 
 int paletteindexes[9] = {
-	68,
-	50,
-	48,
-	23,
-	22,
-	0x0B,
-	0x0A,
-	0x09,
-	0x07,
+	1,
+	2,
+	3,
+	4,
+	5,
+	6,
+	7,
+	8,
+	9,
 };
 int paletteToCycle[18] = {
 	0xEAD100,
@@ -106,7 +106,7 @@ PUBLIC void Scene_MainMenu::Init() {
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
-		MenuSprite->SetTransparentColorIndex(0x2C);
+		MenuSprite->SetTransparentColorIndex(0x0);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SphereSprite) {
@@ -462,6 +462,10 @@ PUBLIC void Scene_MainMenu::Render() {
 	//Names
 	G->DrawSprite(MenuSprite, 20, 4, cenX, cenY - (openRed * 3), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 20, 5, cenX, cenY - (openRed * 3), 0, IE_NOFLIP);
+	// Selection
+	for (int i = 0; i < 9; i++)
+		MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
+	MenuSprite->UpdatePalette();
 	//Submenu Select Triangle
 	if (subselected != -1) {
 		if (selected == 0)
@@ -487,11 +491,6 @@ PUBLIC void Scene_MainMenu::Render() {
 	// Green Button
 	G->DrawSprite(MenuSprite, 6, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 3, cenX + 50 + 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
-
-	// Selection
-	for (int i = 0; i < 9; i++)
-		MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
-	MenuSprite->UpdatePalette();
 
 	// Circle
 
