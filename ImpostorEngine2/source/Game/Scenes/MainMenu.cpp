@@ -7,6 +7,11 @@ public:
 	int selected = 0;
 	int subselected = -1;
 	int ran = 0;
+	bool opened = false;
+	int openBlue = 15;
+	int openRed = 15;
+	int openTimer = 15;
+	int prechange = 0;
 	ISprite* MenuSprite = NULL;
 	ISprite* SphereSprite = NULL;
 	ISprite* SuperButtonsSprite = NULL;
@@ -37,6 +42,7 @@ public:
 
 #include <Game/Scenes/MainMenu.h>
 #include <ctime>
+#include <algorithm>
 
 int FrameCircle = 0;
 int FrameZigzag = 0;
@@ -46,11 +52,6 @@ int FrameZigzagBlue = 0;
 int frame = 0;
 int triframe = 0;
 int palframe = 0;
-bool opened = true;
-int openBlue = 15;
-int openRed = 15;
-int openTimer = 15;
-int prechange = 0;
 
 int paletteindexes[9] = {
 	68,
@@ -167,6 +168,7 @@ PUBLIC void Scene_MainMenu::Update() {
 	if (FadeTimer == 0) {
 		FadeTimer = -1;
 		FadeTimerMax = 0;
+		openTimer -= 1;
 
 		if (!FadeIn) {
 			if (selected == 0) {
@@ -182,6 +184,8 @@ PUBLIC void Scene_MainMenu::Update() {
 				NextScene->MenuSprite = MenuSprite;
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
 				NextScene->TextSprite = TextSprite;
+				std::copy(std::begin(paletteindexes), std::end(paletteindexes), std::begin(NextScene->paletteindexes));
+				std::copy(std::begin(paletteToCycle), std::end(paletteToCycle), std::begin(NextScene->paletteToCycle));
 
 				App->NextScene = NextScene;
 			}
@@ -237,8 +241,8 @@ PUBLIC void Scene_MainMenu::Update() {
 			}
 			else if (selected >= 2) {
 				selected -= 2;
-				if (selected / 2 == 0)
-					subselected = 0;
+				//if (selected / 2 == 0)
+					//subselected = 0;
 			}
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
@@ -253,8 +257,8 @@ PUBLIC void Scene_MainMenu::Update() {
 			}
 			else if (selected <= 1) {
 				selected += 2;
-				if (selected / 2 == 0)
-					subselected = -1;
+				//if (selected / 2 == 0)
+					//subselected = -1;
 			}
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
@@ -263,16 +267,16 @@ PUBLIC void Scene_MainMenu::Update() {
 		if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED]) {
 			if ((selected & 1) == 1)
 				selected--;
-			if (selected / 2 == 0)
-				subselected = -1;
+			//if (selected / 2 == 0)
+				//subselected = -1;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
 			if ((selected & 1) == 0)
 				selected++;
-			if (selected / 2 == 0)
-				subselected = -1;
+			//if (selected / 2 == 0)
+				//subselected = -1;
 			Changed = true;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
@@ -283,6 +287,7 @@ PUBLIC void Scene_MainMenu::Update() {
 				opened = false;
 				subselected = -1;
 			}
+			prechange = selected;
 			if (ran == 1) {
 				std::srand(std::time(nullptr));
 				if (std::rand() % 1024 == 0) {
@@ -294,9 +299,11 @@ PUBLIC void Scene_MainMenu::Update() {
 
 	if (CONFIRM_PRESSED) {
 		Sound::Play(Sound::SFX_MENUACCEPT);
-		if (selected % 2 != 0 || subselected > -1) {
+		if (selected / 2 != 0 || subselected > -1) {
 			FadeIn = false;
 			FadeTimerMax = 30;
+			//opened = false;
+			//openTimer = 20;
 		}
 		else {
 			openTimer = 15;
@@ -460,10 +467,10 @@ PUBLIC void Scene_MainMenu::Render() {
 		if (selected == 0)
 			G->DrawSprite(MenuSprite, 19, 1, cenX, (cenY - (openBlue * 3)) + (subselected * 11), 0, IE_NOFLIP);
 		else
-			G->DrawSprite(MenuSprite, 19, 3, cenX, cenY + (subselected * 11), 0, IE_NOFLIP);
+			G->DrawSprite(MenuSprite, 19, 3, cenX, (cenY - (openRed * 3)) + (subselected * 11), 0, IE_NOFLIP);
 	}
-	else
-		G->DrawSprite(MenuSprite, 19, 1, cenX, App->WIDTH + 10, 0, IE_NOFLIP); //atleast hide it
+	//else
+		//G->DrawSprite(MenuSprite, 19, 1, cenX, App->WIDTH + 10, 0, IE_NOFLIP); //atleast hide it
 
 	// Blue Button
 	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
@@ -499,13 +506,13 @@ PUBLIC void Scene_MainMenu::Render() {
 
 	// Spinny Triangle
 	G->DrawRectangle(cenX + (-129 + 2), cenY + (-39), 12, 9, 0x000000);
-	if (selected == 0)
+	if (selected == 0&& subselected > -1)
 		G->DrawSprite(MenuSprite, 2, triframe, cenX + (-129 + 2), cenY + (-39), 0, IE_NOFLIP);
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (-129 + 2), cenY + (-39), 0, IE_NOFLIP);
 
 	G->DrawRectangle(cenX + (117 - 2), cenY + (-39), 12, 9, 0x000000);
-	if (selected == 1)
+	if (selected == 1 && subselected > -1)
 		G->DrawSprite(MenuSprite, 2, triframe, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);

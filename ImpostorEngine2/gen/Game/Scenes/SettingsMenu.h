@@ -11,6 +11,7 @@
 class ISprite;
 class ISprite;
 class ISprite;
+class IINI;
 
 #include <Engine/IScene.h>
 #include <Engine/ISprite.h>
@@ -24,11 +25,19 @@ public:
     int FrameZigzag = 0;
     int FrameZigzagRed = 0;
     int FrameZigzagBlue = 0;
+    int  ElementY = 40;
+    int  ElementH = 150;
+    int paletteindexes[9];
+    int paletteToCycle[18];
+    bool GoBack = false;
     ISprite* MenuSprite = NULL;
     ISprite* SuperButtonsSprite = NULL;
     ISprite* TextSprite = NULL;
+    IINI* Settings = NULL;
 
     Scene_SettingsMenu(IApp* app, IGraphics* g);
+    void Init();
+    void Update();
     void Render();
 };
 

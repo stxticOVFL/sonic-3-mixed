@@ -296,7 +296,7 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
                     if (audio->MusicStack[0]->Length > 0) {
                         int possibleSampleLength = ((uint32_t)len > audio->MusicStack[0]->Length) ? audio->MusicStack[0]->Length : (uint32_t)len;
 
-                        SDL_MixAudioFormat(stream, audio->MusicStack[0]->Buffer, audio->DeviceFmt.format, possibleSampleLength, ((int)(0x60 * (audio->FadeOutTimer / audio->FadeOutTimerMax)) >> 3) + 1);
+                        SDL_MixAudioFormat(stream, audio->MusicStack[0]->Buffer, audio->DeviceFmt.format, possibleSampleLength, ((int)(0x60 * ((audio->FadeOutTimer / audio->FadeOutTimerMax) * (audio->GlobalVolume * audio->SoundFXVolume))) >> 3) + 1);
 
                         audio->MusicStack[0]->Buffer += possibleSampleLength;
                         audio->MusicStack[0]->Length -= possibleSampleLength;
@@ -337,7 +337,7 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
                 if (audio->Length[i] > 0) {
                     int possibleSampleLength = ((uint32_t)len > audio->Length[i]) ? audio->Length[i] : (uint32_t)len;
 
-                    SDL_MixAudioFormat(stream, audio->Buffer[i], audio->DeviceFmt.format, possibleSampleLength, (0xC0) >> 3);
+                    SDL_MixAudioFormat(stream, audio->Buffer[i], audio->DeviceFmt.format, possibleSampleLength, (int)(0xC0 * (audio->GlobalVolume* audio->SoundFXVolume)) >> 3);
 
                     audio->Buffer[i] += possibleSampleLength;
                     audio->Length[i] -= possibleSampleLength;
