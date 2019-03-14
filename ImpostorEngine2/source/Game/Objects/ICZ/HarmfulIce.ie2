@@ -10,8 +10,7 @@ event Create() {
     if (SubType == 0) {
         H = 48;
         Frame = 1;
-    }
-    else {
+    } else {
         H = 32;
         Frame = 0;
     }
