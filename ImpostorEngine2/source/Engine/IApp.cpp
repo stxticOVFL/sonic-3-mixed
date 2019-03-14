@@ -419,6 +419,15 @@ PUBLIC void IApp::Run() {
             FPS = 1000.f / (now - beginFrameBatch) * 60;
             beginFrameBatch = now;
         }
+
+		//Audio be like *wiggly air noises*
+		int audiopoop;
+		Settings->GetInteger("audio", "global", &audiopoop);
+		Audio->GlobalVolume = (float)audiopoop / 100;
+		Settings->GetInteger("audio", "music", &audiopoop);
+		Audio->MusicVolume = (float)audiopoop / 100;
+		Settings->GetInteger("audio", "sfx", &audiopoop);
+		Audio->SoundFXVolume = (float)audiopoop / 100;
     }
 }
 
@@ -426,6 +435,7 @@ PUBLIC void IApp::Cleanup() {
 	delete Achievements;
     Input->Cleanup(); delete Input;
     Audio->Cleanup(); delete Audio;
+	Settings->Cleanup(); delete Settings;
     G->Cleanup(); delete G;
 
     SDL_Quit();
