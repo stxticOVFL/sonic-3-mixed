@@ -4113,7 +4113,6 @@ PUBLIC void LevelScene::Update() {
 
 					if (Data->layers[Data->cameraLayer].IsScrollingVertical) { 
                         int32_t objWrapCameraY = 0;
-                        //int16_t objWrapY = 0;
                         
                         if (ManiaLevel) {
                             objWrapCameraY = obj->Y - 4;
@@ -4121,40 +4120,56 @@ PUBLIC void LevelScene::Update() {
                             objWrapCameraY = obj->Y + 8;
                         }
                         
-                        if (objWrapCameraY - NoNegativeCamY >= 0 && CameraY < 0) {
-                            //App->Print(0, "objWrapCameraY caculation is: %08X", (objWrapCameraY - NoNegativeCamY));
-                            //App->Print(0, "objWrapCameraY is: %04X", objWrapCameraY);
-                            //App->Print(0, "Max Camera Height is: %08X", Data->layers[Data->cameraLayer].Height * 16);
-                            
-                            // TODO: Figure out how to wrap the objects caculation camera around to match ours
-                            // in terms of caculation OR wrap the object caculation Y around to pass the caculations.
-                            int32_t CaculationCameraY = NoNegativeCamY;
-                            
+                        if (obj->Y + CameraY >= 0 || obj->Y - CameraY < 0) {
+                                // TODO: Figure out how to wrap the objects caculation camera around to match ours
+                                // in terms of caculation OR wrap the object caculation Y around to pass the caculations.
+                                int32_t CaculationCameraY = NoNegativeCamY;
+                                int16_t YWrapped = obj->Y;
+                                
+                                if (obj->Y - CameraY >= 0) {
+                                    YWrapped = CaculationCameraY + (obj->Y - CameraY);
+                                } else if (obj->Y + CameraY < 0) {
+                                    YWrapped = CaculationCameraY - (obj->Y + CameraY);
+                                }
+                                
+                                /*
+                                if (obj->ID == Obj_HarmfulIce && (obj->Y - CameraY >= 0 || obj->Y + CameraY < 0)) {
+                                    //App->Print(0, "objWrapCameraY caculation is: %08X", (objWrapCameraY - NoNegativeCamY));
+                                    //App->Print(0, "objWrapCameraY is: %04X", objWrapCameraY);
+                                    //App->Print(0, "Max Camera Height is: %08X", Data->layers[Data->cameraLayer].Height * 16);
+                                    App->Print(0, "YWrapped is: %04X", YWrapped);
+                                }
+                                */
+                                
+                                
+                                if (obj->VisW > obj->W || obj->VisH > obj->H) {
+                                    OnScreen |= (
+                                        obj->X + obj->VisW >= CameraX - 120 &&
+                                        obj->Y + obj->VisH >= NoNegativeCamY - 120 &&
+                                        obj->X - obj->VisW < CameraX + App->WIDTH + 120 &&
+                                        obj->Y - obj->VisH < NoNegativeCamY + App->HEIGHT + 120);
+                                } else {
+                                    OnScreen |= (
+                                        obj->X + obj->W / 2 >= CameraX - 120 &&
+                                        obj->Y + obj->H / 2 >= NoNegativeCamY - 120 &&
+                                        obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
+                                        obj->Y - obj->H / 2 < NoNegativeCamY + App->HEIGHT + 120);
+                                }
+                                
+                        } else {
                             if (obj->VisW > obj->W || obj->VisH > obj->H) {
                                 OnScreen |= (
                                     obj->X + obj->VisW / 2 >= CameraX - 120 &&
-                                    (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
+                                    (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
                                     obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
-                                    (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
+                                    (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
                             } else {
                                 OnScreen |= (
                                     obj->X + obj->W / 2 >= CameraX - 120 &&
-                                    (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
+                                    (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
                                     obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-                                    (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
+                                    (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
                             }
-                        } else if (obj->VisW > obj->W || obj->VisH > obj->H) {
-                            OnScreen |= (
-                                obj->X + obj->VisW / 2 >= CameraX - 120 &&
-                                (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
-                                obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
-                                (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
-                        } else {
-                            OnScreen |= (
-                                obj->X + obj->W / 2 >= CameraX - 120 &&
-                                (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
-                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-                                (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
                         }
 					}
 
