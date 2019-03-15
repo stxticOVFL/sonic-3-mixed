@@ -414,8 +414,10 @@ PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;
 	SpriteMapIDs[0x33] = ObjectsSprite;
-	SpriteMapIDs[0x34] = ObjectsSprite;
+	SpriteMapIDs[0x34] = ObjectsSprite; //StarPost
 	SpriteMapIDs[0x81] = ObjectsSprite;
+
+	SpriteMapIDs[0x408] = ObjectsSprite; //WarpStar
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
@@ -3785,6 +3787,12 @@ PUBLIC void LevelScene::Update() {
 					}
 				}
 			}
+		}
+
+		if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction == FadeActionType::TO_BONUS_STAGE1) {
+			if (Player) {
+			}
+			App->Print(3, "imagine we went to the bonus stage uwu");
 		}
 
 		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)

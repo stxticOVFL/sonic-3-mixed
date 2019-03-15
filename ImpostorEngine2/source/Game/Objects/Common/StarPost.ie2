@@ -6,6 +6,7 @@ var Blinking:bool;
 
 var ShowStars:bool;
 var StarTimer:int;
+var Stars:Object[4];
 
 event Create() {
     Active = true;
@@ -24,6 +25,11 @@ event Create() {
 
 	ShowStars = false;
 	StarTimer = 0x400;
+
+	Stars[0] = Scene.AddNewObject(Obj_WarpStars, 0, X, Y, FlipX, false);
+	Stars[1] = Scene.AddNewObject(Obj_WarpStars, 1, X, Y, FlipX, false);
+	Stars[2] = Scene.AddNewObject(Obj_WarpStars, 2, X, Y, FlipX, false);
+	Stars[3] = Scene.AddNewObject(Obj_WarpStars, 3, X, Y, FlipX, false);
 
     // TODO: Go through level editor and move all StarPosts out of the ground
 }
@@ -53,6 +59,13 @@ event Update() {
 	
 	if (ShowStars)
 	{
+		if (StarTimer = 0x400)
+		{
+			Stars[0].Create();
+			Stars[1].Create();
+			Stars[2].Create();
+			Stars[3].Create();
+		}
 		if (StarTimer > 0)
 		{
 			StarTimer--;
@@ -104,10 +117,10 @@ event Render(CamX:int, CamY:int) {
 	if (ShowStars)
 	{
 		//Draw Stars
+        /*G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
         G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
         G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
-        G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
-        G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);*/
 		//DrawStar(0,Frame,0,CamX,CamY);
 	}
 	

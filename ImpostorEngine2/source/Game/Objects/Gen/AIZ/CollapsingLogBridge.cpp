@@ -110,6 +110,12 @@ void CollapsingLogBridge::Render(int CamX, int CamY) {
         G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX + 45, Y - CamY, 0, IE_NOFLIP);
         G->DrawSprite(Sprite, CurrentAnimation, 2, X - CamX + 75, Y - CamY, 0, IE_NOFLIP);
     }
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 
 int CollapsingLogBridge::CustomSolidityCheck(int probeX, int probeY, int PlayerID, int checkJumpThrough) {
