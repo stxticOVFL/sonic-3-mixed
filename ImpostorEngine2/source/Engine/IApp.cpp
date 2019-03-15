@@ -137,7 +137,7 @@ PUBLIC IApp::IApp() {
             desH = 640;
             isSharp = 0;
         #elif ANDROID
-            desW = WIDTH * 3;
+            desW = WIDTH * 3;	
             desH = HEIGHT * 3;
             isSharp = 0;
         #else
@@ -147,6 +147,9 @@ PUBLIC IApp::IApp() {
     }
 	G->SetDisplay(desW, desH, isSharp);
     SDL_SetWindowTitle(G->Window, "Sonic 3'Mixed");
+	int full = 0;
+	Settings->GetInteger("display", "fullscreen", &full);
+	SDL_SetWindowFullscreen(G->Window, full);
 
     Input = new IInput(this);
     Audio = new IAudio(this);
