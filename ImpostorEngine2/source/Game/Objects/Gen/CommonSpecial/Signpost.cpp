@@ -24,6 +24,7 @@ void Signpost::Create() {
 }
 
 void Signpost::Update() {
+    SpinSpeed = SpinSpeed <= 0x400 ? 0x400 : SpinSpeed - 0x20;
     if (!isHeldDebugObject) {
         if (Falling) Gravity = 0xC;
         else Scene->Player->UnderwaterTimer = 1800;
