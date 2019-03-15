@@ -49,6 +49,12 @@ void Button::Render(int CamX, int CamY) {
         G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - 4 * Down - CamY + 3, 0, IE_NOFLIP);
         G->DrawSprite(Sprite, CurrentAnimation, Down + 1, X - CamX, StartY - CamY + 7, 0, IE_NOFLIP);
     }
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 
 int Button::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

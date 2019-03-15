@@ -300,5 +300,11 @@ void AIZMiniboss::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
     G->DrawSprite(Sprite, CurrentAnimation, 1 + (Scene->Frame >> 1 & 1), X - CamX, Y - CamY, 0, FlipX);
     G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, FlipX);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

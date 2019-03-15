@@ -137,6 +137,12 @@ PUBLIC void Ring::Render(int CamX, int CamY) {
     if (ShouldRingFall && Timer < 64 && ((Timer >> 1) & 1) == 0) return;
 
     G->DrawSprite(Scene->ItemsSprite, 7, CurrentFrame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+
+	if (App->viewObjectCollision) {
+		G->SetDrawAlpha(0x80);
+		G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G->SetDrawAlpha(0xFF);
+	}
 }
 
 PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

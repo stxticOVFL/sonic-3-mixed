@@ -133,6 +133,12 @@ event Render(CamX:int, CamY:int) {
         X - CamX + x + 24,
         Y - CamY + 22 + Sprite.Animations[5].Frames[Frame >> 8].OffY,
         0, IE_NOFLIP, w - x, 30);
+		
+			if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

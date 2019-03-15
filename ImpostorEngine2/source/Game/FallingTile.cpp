@@ -43,4 +43,10 @@ PUBLIC void FallingTile::Update() {
 
 PUBLIC void FallingTile::Render(int CamX, int CamY) {
     G->DrawSprite(Scene->TileSprite, 0, Tile, X - CamX + 8, Y - CamY + 8, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
+
+	if (App->viewObjectCollision) {
+		G->SetDrawAlpha(0x80);
+		G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G->SetDrawAlpha(0xFF);
+	}
 }

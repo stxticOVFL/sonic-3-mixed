@@ -88,6 +88,12 @@ event DrawStar(Rock:int, Ang:int, Side:int, CamX:int, CamY:int) {
             Sprite.Animations[13].Frames[0].OffX,
             Sprite.Animations[13].Frames[0].OffY);
     }
+	
+				if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(xx - (16 / 2) - CamX, yy - (16 / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
 }
 
 event Render(CamX:int, CamY:int) {
@@ -103,6 +109,12 @@ event Render(CamX:int, CamY:int) {
         G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
         G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
 		//DrawStar(0,Frame,0,CamX,CamY);
+	}
+	
+				if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
 	}
 }
 

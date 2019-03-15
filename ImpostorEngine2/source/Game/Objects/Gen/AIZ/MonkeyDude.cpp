@@ -98,20 +98,21 @@ void MonkeyDude::Render(int CamX, int CamY) {
         angle = ((Math::sinHex((frame_arm - i * 4) * 2) * 0x2A) >> 16) - 0x15;
         final_x -= Flip * (Math::cosHex(angle) * i * 8) >> 16;
         final_y -= (Math::sinHex(angle) * i * 8) >> 16;
-        if (DrawCollisions) {
+        G->DrawSprite(Sprite, CurrentAnimation, 3 + (i == 4 ? 1 : 0), final_x - 4, final_y - 4, 0, IE_NOFLIP);
+        if (App->viewObjectCollision) {
+            G->SetDrawAlpha(0x80);
             G->DrawRectangle(final_x - 4, final_y - 4, W / 2, H / 2, DrawNoCollisionsColor);
+            G->SetDrawAlpha(0xFF);
         }
-        else {
-            G->DrawSprite(Sprite, CurrentAnimation, 3 + (i == 4 ? 1 : 0), final_x - 4, final_y - 4, 0, IE_NOFLIP);
-        }
+
         if (HasCoconut && i == 4) {
-            if (DrawCollisions) {
+            G->DrawSprite(Sprite, CurrentAnimation, 6, final_x - 4, final_y - 4, 0, IE_NOFLIP);
+            if (App->viewObjectCollision) {
                 G->SetDrawAlpha(0x80);
-                G->DrawRectangle(final_x - 4, final_y - 4, W / 2, H / 2, DrawNoCollisionsColor);
+                G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
                 G->SetDrawAlpha(0xFF);
             }
 
-            G->DrawSprite(Sprite, CurrentAnimation, 6, final_x - 4, final_y - 4, 0, IE_NOFLIP);
         }
 
     }
@@ -121,22 +122,22 @@ void MonkeyDude::Render(int CamX, int CamY) {
             f = 2 - f;
         }
 
-        if (DrawCollisions) {
+        G->DrawSprite(Sprite, CurrentAnimation, f, X - CamX, Y - CamY, 0, FlipX);
+        if (App->viewObjectCollision) {
             G->SetDrawAlpha(0x80);
-            G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+            G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
             G->SetDrawAlpha(0xFF);
         }
 
-        G->DrawSprite(Sprite, CurrentAnimation, f, X - CamX, Y - CamY, 0, FlipX);
     }
     else {
-        if (DrawCollisions) {
+        G->DrawSprite(Sprite, CurrentAnimation, frame_face / 8, X - CamX, Y - CamY, 0, FlipX);
+        if (App->viewObjectCollision) {
             G->SetDrawAlpha(0x80);
-            G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+            G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
             G->SetDrawAlpha(0xFF);
         }
 
-        G->DrawSprite(Sprite, CurrentAnimation, frame_face / 8, X - CamX, Y - CamY, 0, FlipX);
     }
     }
 

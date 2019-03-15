@@ -30,5 +30,11 @@ void AIZMinibossBomb::Update() {
 
 void AIZMinibossBomb::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, 12 + (Scene->Frame >> 1 & 1), X - CamX, Y - CamY, 0, FlipY << 1);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 
