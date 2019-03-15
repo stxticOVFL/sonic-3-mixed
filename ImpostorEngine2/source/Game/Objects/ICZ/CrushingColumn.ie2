@@ -154,8 +154,13 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    if (!Visible) return;
-    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (!Visible) {return;}
+	if (DrawCollisions) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	} 
+	G.DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

@@ -3972,6 +3972,7 @@ void IPlayer::Die(bool drown) {
 	AngleMode = 0;
 	DisplayAngle = 0;
 	Ground = false;
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = 0;
 	if (drown) {
 		YSpeed = 0;
 		Sound::Play(Sound::SFX_DROWN);

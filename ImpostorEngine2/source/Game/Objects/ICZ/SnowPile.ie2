@@ -1,27 +1,28 @@
+object 0xB9;
 
 event Create() {
     Active = true;
     Priority = false;
-    Frame = 1;
+    Solid = true;
+	VisualLayer = -1;
+    H = 16;
+    W = 64;
+    CurrentAnimation = Sprite.FindAnimation("SnowPile");
 
-    W = 32;
-    H = 32;
 }
 
 event Render(CamX:int, CamY:int) {
 	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
-		G.SetDrawAlpha(0x80);
+		G.SetDrawAlpha(0xFF);
 	} 
 	G.DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
-	if (!Scene.Players[PlayerID]) return 0;
-	
-	if (Scene.Players[PlayerID].Shield == ShieldType.None) Scene.Players[PlayerID].Hurt(Scene.Players[PlayerID].X, false);
-	else Active = false;
-	
+
+	Scene.Players[PlayerID].XSpeed/=2;
+
     return 1;
 }

@@ -156,10 +156,12 @@ event Render(CamX:int, CamY:int) {
     }
     if (DrawCollisions) {
         if (Frame == 2) {
+			G.SetDrawAlpha(0x80);
             G.DrawRectangle(X - CamX + Flip * 14, Y - CamY + 1, W, H, DrawCollisionsColor);
-        } else {
+			G.SetDrawAlpha(0xFF);
+        } 
             G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
-        }
+        
     } else {
         G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
         if (Frame == 2)

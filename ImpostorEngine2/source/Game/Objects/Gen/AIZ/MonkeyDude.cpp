@@ -106,11 +106,12 @@ void MonkeyDude::Render(int CamX, int CamY) {
         }
         if (HasCoconut && i == 4) {
             if (DrawCollisions) {
+                G->SetDrawAlpha(0x80);
                 G->DrawRectangle(final_x - 4, final_y - 4, W / 2, H / 2, DrawNoCollisionsColor);
+                G->SetDrawAlpha(0xFF);
             }
-            else {
-                G->DrawSprite(Sprite, CurrentAnimation, 6, final_x - 4, final_y - 4, 0, IE_NOFLIP);
-            }
+
+            G->DrawSprite(Sprite, CurrentAnimation, 6, final_x - 4, final_y - 4, 0, IE_NOFLIP);
         }
 
     }
@@ -121,19 +122,21 @@ void MonkeyDude::Render(int CamX, int CamY) {
         }
 
         if (DrawCollisions) {
+            G->SetDrawAlpha(0x80);
             G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+            G->SetDrawAlpha(0xFF);
         }
-        else {
-            G->DrawSprite(Sprite, CurrentAnimation, f, X - CamX, Y - CamY, 0, FlipX);
-        }
+
+        G->DrawSprite(Sprite, CurrentAnimation, f, X - CamX, Y - CamY, 0, FlipX);
     }
     else {
         if (DrawCollisions) {
+            G->SetDrawAlpha(0x80);
             G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+            G->SetDrawAlpha(0xFF);
         }
-        else {
-            G->DrawSprite(Sprite, CurrentAnimation, frame_face / 8, X - CamX, Y - CamY, 0, FlipX);
-        }
+
+        G->DrawSprite(Sprite, CurrentAnimation, frame_face / 8, X - CamX, Y - CamY, 0, FlipX);
     }
     }
 

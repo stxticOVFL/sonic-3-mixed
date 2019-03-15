@@ -34,6 +34,12 @@ void SegmentedColumnStub::Break() {
 void SegmentedColumnStub::Render(int CamX, int CamY) {
     if (!Visible) return;
 
+    if (DrawCollisions) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 

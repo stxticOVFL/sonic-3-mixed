@@ -9,6 +9,7 @@
 #define CONSTRUCTER
 
 class IScene;
+class IScene;
 class IGraphics;
 class IInput;
 class IAudio;
@@ -26,19 +27,20 @@ class IAchievement;
 
 class IApp {
 public:
-    IScene* Scene = NULL;
-    IScene* NextScene = NULL;
-    IGraphics* G = NULL;
-    IInput* Input = NULL;
-    IAudio* Audio = NULL;
-    IINI* Settings = NULL;
-    IAchievement* Achievements = NULL;
+    IScene* 			Scene = NULL;
+    IScene* 			NextScene = NULL;
+    IGraphics* 		G = NULL;
+    IInput* 			Input = NULL;
+    IAudio* 			Audio = NULL;
+    IINI* 			Settings = NULL;
+    IAchievement*       Achievements = NULL;
     float FPS = 60.f;
     bool Running = false;
     int WIDTH = 424;
     int HEIGHT = 240;
     const bool DEBUG = true;
     const bool DEV = true;
+    bool viewObjectCollision = false;
     uint32_t MetricUpdateTime = -1;
     uint32_t MetricRenderTime = -1;
     bool UnlockedFramerate = false;

@@ -120,9 +120,17 @@ void CrushingColumn::Update() {
 }
 
 void CrushingColumn::Render(int CamX, int CamY) {
-    if (!Visible) return;
+    if (!Visible) {
+        return;
+    }
 
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (DrawCollisions) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
+    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 
 int CrushingColumn::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

@@ -287,6 +287,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0xB8U:
             return new HarmfulIce();
             break;
+        case 0xB9U:
+            return new SnowPile();
+            break;
         case 0xC0U:
             return new Orbinaut();
             break;
@@ -646,6 +649,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x8BC9A52CU:
             return new HarmfulIce();
+            break;
+        case 0xCF9FDC21U:
+            return new SnowPile();
             break;
         case 0x75BEA9FBU:
             return new Orbinaut();

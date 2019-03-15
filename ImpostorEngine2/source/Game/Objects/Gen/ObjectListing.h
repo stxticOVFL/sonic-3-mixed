@@ -96,6 +96,7 @@
 #include "ICZ/Stalagtite.h"			// C73D2821
 #include "ICZ/IceCube.h"			// E855624C
 #include "ICZ/HarmfulIce.h"			// 8BC9A52C
+#include "ICZ/SnowPile.h"			// CF9FDC21
 #include "LBZ/Orbinaut.h"			// 75BEA9FB
 #include "AIZ/AirshipBomb.h"			// 8E8C37A1
 #include "AIZ/AIZMinibossBomb.h"			// 89077B11
@@ -216,6 +217,7 @@ enum {
     Obj_Stalagtite = 0x0B5,
     Obj_IceCube = 0x0B6,
     Obj_HarmfulIce = 0x0B8,
+    Obj_SnowPile = 0x0B9,
     Obj_Orbinaut = 0x0C0,
     Obj_AirshipBomb = 0x400,
     Obj_AIZMinibossBomb = 0x401,

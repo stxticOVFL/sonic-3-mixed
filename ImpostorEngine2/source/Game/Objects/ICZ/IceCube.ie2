@@ -15,8 +15,12 @@ event Create() {
 }
 
 event Render(CamX:int, CamY:int) {
-    if (!Visible) return;
-    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+	if (DrawCollisions) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0x80);
+	} 
+	G.DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
 }
 
 event Break() {
@@ -30,8 +34,7 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     if (HitFrom != CollideSide.TOP) return 0;
     Solid = false;
     Visible = false;
-    //Scene.Players[PlayerID].YSpeed -= 0x80;
-    //Scene.Players[PlayerID].Action = ActionType.Jumping;
+	Active = false;
     Sound.Play(Sound.SFX_COLLAPSE);
     BreakableByJump = CollideSide.NONE;
     Break();
@@ -40,15 +43,19 @@ event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (!Solid) return 0;
+	if (Scene.Players[PlayerID].Shield != ShieldType.Fire) return 0;
 	
 	if (Scene.Players[PlayerID].Shield == ShieldType.Fire)
 	{
 		//Do a melting thing
 		Solid = false;
 		Visible = false;
+		Active = false;
 		BreakableByJump = CollideSide.NONE;
 		Break();
+			
+		return 1;
 	}
 	
-    return 1;
+    return 0;
 }

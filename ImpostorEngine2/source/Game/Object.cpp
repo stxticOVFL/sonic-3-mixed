@@ -263,7 +263,7 @@ int Object::Swing_UpAndDown() {
 
     // Add upward acceleration
     if (SwingDirection == 0) {
-        NewYSpeed -= Acceleration;
+		NewYSpeed -= Acceleration;
         if (NewYSpeed > -MaxAccel) {
             YSpeed = NewYSpeed;
             return HasChanged;

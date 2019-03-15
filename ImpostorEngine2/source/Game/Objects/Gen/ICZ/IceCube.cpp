@@ -20,9 +20,13 @@ void IceCube::Create() {
 }
 
 void IceCube::Render(int CamX, int CamY) {
-    if (!Visible) return;
+    if (DrawCollisions) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0x80);
+    }
 
-    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 
 void IceCube::Break() {
@@ -37,6 +41,7 @@ int IceCube::OnBreakVertical(int PlayerID, int HitFrom) {
 
     Solid = false;
     Visible = false;
+    Active = false;
     Sound::Play(Sound::SFX_COLLAPSE);
     BreakableByJump = CollideSide::NONE;
     Break();
@@ -46,13 +51,17 @@ int IceCube::OnBreakVertical(int PlayerID, int HitFrom) {
 int IceCube::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (!Solid) return 0;
 
+    if (Scene->Players[PlayerID]->Shield != ShieldType::Fire) return 0;
+
     if (Scene->Players[PlayerID]->Shield == ShieldType::Fire) {
         Solid = false;
         Visible = false;
+        Active = false;
         BreakableByJump = CollideSide::NONE;
         Break();
+        return 1;
     }
 
-    return 1;
+    return 0;
 }
 

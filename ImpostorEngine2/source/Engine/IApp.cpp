@@ -10,8 +10,8 @@
 
 class IApp {
 public:
-    IScene* Scene = NULL;
-    IScene* NextScene = NULL;
+    IScene*				Scene = NULL;
+    IScene*				NextScene = NULL;
 
     IGraphics*			G = NULL;
     IInput*				Input = NULL;
@@ -27,6 +27,7 @@ public:
 
     const bool DEBUG = true;
     const bool DEV = true;
+	bool viewObjectCollision = false;
     uint32_t MetricUpdateTime = -1;
     uint32_t MetricRenderTime = -1;
     bool UnlockedFramerate = false;
@@ -428,6 +429,8 @@ PUBLIC void IApp::Run() {
 		Audio->MusicVolume = (float)audiopoop / 100;
 		Settings->GetInteger("audio", "sfx", &audiopoop);
 		Audio->SoundFXVolume = (float)audiopoop / 100;
+
+		Settings->GetBool("dev", "viewObjectCollision", &viewObjectCollision);
     }
 }
 
