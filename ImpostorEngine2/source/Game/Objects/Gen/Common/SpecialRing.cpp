@@ -103,6 +103,12 @@ void SpecialRing::Render(int CamX, int CamY) {
     else {
         G->DrawModelOn2D(Scene->GiantRingModel, this->X - CamX, this->Y - CamY, 1.0, 0, Scene->Frame & 0xFF, (Scene->Frame / 5) & 0xFF, HyperColor, false);
     }
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 
 int SpecialRing::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

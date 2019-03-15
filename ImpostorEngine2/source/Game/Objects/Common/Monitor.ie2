@@ -361,6 +361,12 @@ event Render(CamX:int, CamY:int) {
         G.SetDrawAlpha(0xFF);
     }
     */
+	
+				if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
 }
 
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {

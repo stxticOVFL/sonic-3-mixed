@@ -47,10 +47,11 @@ void StarPointer::Update() {
 
 void StarPointer::Render(int CamX, int CamY) {
     if (DrawCollisions) {
+        G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0x80);
     }
-    else {
-        G->DrawSprite(this->Sprite, CurrentAnimation, Frame >> 8, this->X - CamX, this->Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-    }
+
+    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 

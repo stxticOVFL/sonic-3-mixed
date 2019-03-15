@@ -96,6 +96,7 @@
 #include "ICZ/Stalagtite.h"			// C73D2821
 #include "ICZ/IceCube.h"			// E855624C
 #include "ICZ/HarmfulIce.h"			// 8BC9A52C
+#include "ICZ/SnowPile.h"			// CF9FDC21
 #include "LBZ/Orbinaut.h"			// 75BEA9FB
 #include "AIZ/AirshipBomb.h"			// 8E8C37A1
 #include "AIZ/AIZMinibossBomb.h"			// 89077B11
@@ -105,6 +106,7 @@
 #include "CNZ/BatbrightParts.h"			// D5ADBFDB
 #include "Common/BubbleAir.h"			// 11DAFFC3
 #include "Common/PlatformOutliner.h"			// 5DFC3336
+#include "Common/WarpStars.h"			// 7E49DBD3
 #include "CommonSpecial/EggCapsuleButton.h"			// A0128E04
 #include "CommonSpecial/Signpost.h"			// 6A8C340C
 #include "CommonSpecial/TensionBridgeChild.h"			// 8ED6F84C
@@ -216,6 +218,7 @@ enum {
     Obj_Stalagtite = 0x0B5,
     Obj_IceCube = 0x0B6,
     Obj_HarmfulIce = 0x0B8,
+    Obj_SnowPile = 0x0B9,
     Obj_Orbinaut = 0x0C0,
     Obj_AirshipBomb = 0x400,
     Obj_AIZMinibossBomb = 0x401,
@@ -225,19 +228,20 @@ enum {
     Obj_BatbrightParts = 0x405,
     Obj_BubbleAir = 0x406,
     Obj_PlatformOutliner = 0x407,
-    Obj_EggCapsuleButton = 0x408,
-    Obj_Signpost = 0x409,
-    Obj_TensionBridgeChild = 0x40A,
-    Obj_ViewCollisionToggler = 0x40B,
-    Obj_Motobug = 0x40C,
-    Obj_MotobugSmoke = 0x40D,
-    Obj_BlastoidShot = 0x40E,
-    Obj_TurboSpikerSpike = 0x40F,
-    Obj_SegmentedColumnStub = 0x410,
-    Obj_StarPointerOrbs = 0x411,
-    Obj_SwingingPlatformTrigger = 0x412,
-    Obj_ReliefEye = 0x413,
-    Obj_Platform = 0x414,
+    Obj_WarpStars = 0x408,
+    Obj_EggCapsuleButton = 0x409,
+    Obj_Signpost = 0x40A,
+    Obj_TensionBridgeChild = 0x40B,
+    Obj_ViewCollisionToggler = 0x40C,
+    Obj_Motobug = 0x40D,
+    Obj_MotobugSmoke = 0x40E,
+    Obj_BlastoidShot = 0x40F,
+    Obj_TurboSpikerSpike = 0x410,
+    Obj_SegmentedColumnStub = 0x411,
+    Obj_StarPointerOrbs = 0x412,
+    Obj_SwingingPlatformTrigger = 0x413,
+    Obj_ReliefEye = 0x414,
+    Obj_Platform = 0x415,
 };
 
 Object* GetNewObjectFromID(int ID);

@@ -27,13 +27,17 @@ event Update() {
     SubType = SubType == 0 ? 0 : SubType - 1;
     VisualCircle = SubType > 90 ? 90 : SubType;
     X = ((Math.sinHex(VisualCircle) * 0x50) >> 16) + InitialX;
-    IApp.Print(0, "%d %d", VisualCircle, ((Math.sinHex(VisualCircle) * 0x50) >> 16));
-	//Y = ((Math.cosHex(VisualCircle) * 0x50) >> 16) + Pivot;
     Trigger.X = X + (FlipX ? -28 : 28);
     Trigger.Y = Y - 16;
 }
 
 event Render(CamX:int, CamY:int) {
+	if (DrawCollisions) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
+
     G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - 8 - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 
     G.DrawSprite(Sprite, RingAnimation, 0, InitialX - CamX, InitialY - Pivot - CamY, 0, IE_NOFLIP);
@@ -41,8 +45,7 @@ event Render(CamX:int, CamY:int) {
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     Player = Scene.Players[PlayerID];
-    if (Player.GroundSpeed <= 0x10 || !Player.Ground || SubType != 0) return 0;
-    IApp.Print(0, "%d", Player.GroundSpeed / 2); 
+    if (Player.GroundSpeed <= 0x10 || !Player.Ground || SubType != 0) return 0; 
     SubType = Player.GroundSpeed / 2;
     return 1;
 }

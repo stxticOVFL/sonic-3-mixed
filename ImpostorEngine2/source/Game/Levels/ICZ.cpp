@@ -211,6 +211,7 @@ PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
 	SpriteMapIDs[0xB5] = ICZObjectsSprite;
 	SpriteMapIDs[0xB6] = ICZObjectsSprite;
 	SpriteMapIDs[0xB8] = ICZObjectsSprite;
+	SpriteMapIDs[0xB9] = ICZObjectsSprite;
 
 	SpriteMapIDs[0x410] = ICZObjectsSprite;
 	SpriteMapIDs[0x411] = ICZObjectsSprite;
@@ -235,6 +236,7 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
 		ICZObjectsSprite->LoadAnimation("ICZ/Harmful Ice.bin");
 		ICZObjectsSprite->LoadAnimation("ICZ/Freezer.bin");
 		ICZObjectsSprite->LoadAnimation("ICZ/Swinging Platform.bin");
+		ICZObjectsSprite->LoadAnimation("ICZ/SnowPile.bin");
 		ICZObjectsSprite->LoadAnimation("ICZ/Ring.bin");
     }
 

@@ -127,6 +127,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\StarPost.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\WarpStars.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\Motobug.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\MotobugSmoke.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Blastoid.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\IceCube.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\SegmentedColumn.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\SegmentedColumnStub.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\SnowPile.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\Stalagtite.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\StarPointer.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\StarPointerOrbs.cpp" />

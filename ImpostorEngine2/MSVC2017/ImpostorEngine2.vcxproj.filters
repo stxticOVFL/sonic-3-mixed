@@ -495,9 +495,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\CrushingColumn.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\IceCube.cpp">
-      <Filter>Source Files\Game\Objects\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\Levels\DEZ.cpp">
       <Filter>Source Files\Game\Levels</Filter>
     </ClCompile>
@@ -577,6 +574,15 @@
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\ICZ\Freezer.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\SnowPile.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\ICZ\IceCube.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\WarpStars.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
   </ItemGroup>

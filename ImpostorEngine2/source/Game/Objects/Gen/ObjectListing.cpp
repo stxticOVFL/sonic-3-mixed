@@ -287,6 +287,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0xB8U:
             return new HarmfulIce();
             break;
+        case 0xB9U:
+            return new SnowPile();
+            break;
         case 0xC0U:
             return new Orbinaut();
             break;
@@ -315,42 +318,45 @@ Object* GetNewObjectFromID(int ID) {
             return new PlatformOutliner();
             break;
         case 0x408U:
-            return new EggCapsuleButton();
+            return new WarpStars();
             break;
         case 0x409U:
-            return new Signpost();
+            return new EggCapsuleButton();
             break;
         case 0x40AU:
-            return new TensionBridgeChild();
+            return new Signpost();
             break;
         case 0x40BU:
-            return new ViewCollisionToggler();
+            return new TensionBridgeChild();
             break;
         case 0x40CU:
-            return new Motobug();
+            return new ViewCollisionToggler();
             break;
         case 0x40DU:
-            return new MotobugSmoke();
+            return new Motobug();
             break;
         case 0x40EU:
-            return new BlastoidShot();
+            return new MotobugSmoke();
             break;
         case 0x40FU:
-            return new TurboSpikerSpike();
+            return new BlastoidShot();
             break;
         case 0x410U:
-            return new SegmentedColumnStub();
+            return new TurboSpikerSpike();
             break;
         case 0x411U:
-            return new StarPointerOrbs();
+            return new SegmentedColumnStub();
             break;
         case 0x412U:
-            return new SwingingPlatformTrigger();
+            return new StarPointerOrbs();
             break;
         case 0x413U:
-            return new ReliefEye();
+            return new SwingingPlatformTrigger();
             break;
         case 0x414U:
+            return new ReliefEye();
+            break;
+        case 0x415U:
             return new Platform();
             break;
 
@@ -647,6 +653,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x8BC9A52CU:
             return new HarmfulIce();
             break;
+        case 0xCF9FDC21U:
+            return new SnowPile();
+            break;
         case 0x75BEA9FBU:
             return new Orbinaut();
             break;
@@ -673,6 +682,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x5DFC3336U:
             return new PlatformOutliner();
+            break;
+        case 0x7E49DBD3U:
+            return new WarpStars();
             break;
         case 0xA0128E04U:
             return new EggCapsuleButton();

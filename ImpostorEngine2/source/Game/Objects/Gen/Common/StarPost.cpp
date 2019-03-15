@@ -20,6 +20,10 @@ void StarPost::Create() {
     CleanupInactiveObject = true;
     ShowStars = false;
     StarTimer = 0x400;
+    Stars[0] = Scene->AddNewObject(Obj_WarpStars, 0, X, Y, FlipX, false);
+    Stars[1] = Scene->AddNewObject(Obj_WarpStars, 1, X, Y, FlipX, false);
+    Stars[2] = Scene->AddNewObject(Obj_WarpStars, 2, X, Y, FlipX, false);
+    Stars[3] = Scene->AddNewObject(Obj_WarpStars, 3, X, Y, FlipX, false);
 }
 
 void StarPost::Update() {
@@ -40,6 +44,13 @@ void StarPost::Update() {
         if (this->Blinking) this->Frame = ((Scene->Frame >> 2) & 0x1);
 
         if (ShowStars) {
+            if (StarTimer = 0x400) {
+                Stars[0]->Create();
+                Stars[1]->Create();
+                Stars[2]->Create();
+                Stars[3]->Create();
+            }
+
             if (StarTimer > 0) {
                 StarTimer--;
             }
@@ -68,16 +79,24 @@ void StarPost::DrawStar(int Rock, int Ang, int Side, int CamX, int CamY) {
         G->DrawSprite(Sprite, Sprite->Animations[13].Frames[0].X, Sprite->Animations[13].Frames[0].Y, Sprite->Animations[13].Frames[0].W, Sprite->Animations[13].Frames[0].H, X - CamX + xx, Y - CamY + yy, 0, IE_NOFLIP, Sprite->Animations[13].Frames[0].OffX, Sprite->Animations[13].Frames[0].OffY);
     }
 
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(xx - (16 / 2) - CamX, yy - (16 / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
 }
 
 void StarPost::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 8, 0, this->X - CamX, this->Y - CamY, 0, IE_NOFLIP);
     G->DrawSprite(Sprite, 9 + Frame, Frame, this->X - CamX + (Math::sinHex(this->Spin << 4) >> 13), this->Y - CamY - 16 - (Math::cosHex(this->Spin << 4) >> 13), 0, IE_NOFLIP);
     if (ShowStars) {
-        G->DrawSprite(Sprite, 8 + 5, 0, this->X - CamX, (this->Y - 40) - CamY, 0, IE_NOFLIP);
-        G->DrawSprite(Sprite, 8 + 5, 0, this->X - CamX, (this->Y - 40) - CamY, 0, IE_NOFLIP);
-        G->DrawSprite(Sprite, 8 + 5, 0, this->X - CamX, (this->Y - 40) - CamY, 0, IE_NOFLIP);
-        G->DrawSprite(Sprite, 8 + 5, 0, this->X - CamX, (this->Y - 40) - CamY, 0, IE_NOFLIP);
+    }
+
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
     }
 
     }

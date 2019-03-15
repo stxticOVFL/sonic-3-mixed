@@ -86,6 +86,12 @@ event DrawAIZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 1) return;
 
     G.DrawSprite(Sprite, CurrentAnimation, SubType & 0xF, X - CamX, Y - CamY, 0, IE_NOFLIP);
+	
+		if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
 }
 event DrawHCZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 2) return;
@@ -121,6 +127,12 @@ event DrawHCZ(CamX:int, CamY:int) {
         G.DrawSprite(Scene.TileSprite, 0, 0x91, 8 + X - CamX + (-16), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
         G.DrawSprite(Scene.TileSprite, 0, 0x92, 8 + X - CamX + (0), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
     }
+	
+		if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
 }
 event DrawMGZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 3) return;
@@ -149,6 +161,12 @@ event DrawMGZ(CamX:int, CamY:int) {
     G.DrawSprite(Scene.TileSprite, 0, 0x45, 8 + X - CamX - 16 + (0), 8 + Y + h - CamY + (-16), 0, IE_NOFLIP);
     G.DrawSprite(Scene.TileSprite, 0, 0x45, 8 + X - CamX + 00 + ( 0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
     G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX + 16 + ( 0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
+	
+		if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
 }
 
 event BreakHCZ(HitSide:int) {

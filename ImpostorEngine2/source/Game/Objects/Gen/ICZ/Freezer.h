@@ -18,6 +18,7 @@ public:
     int FreezeTimer;
     bool OnOff;
     int DustAnimation;
+    int IceCubeAnimation;
     int WaitTimer;
     int Range;
     int FrozenTimer[7];

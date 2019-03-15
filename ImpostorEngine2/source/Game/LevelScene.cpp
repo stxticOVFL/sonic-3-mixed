@@ -414,8 +414,10 @@ PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;
 	SpriteMapIDs[0x33] = ObjectsSprite;
-	SpriteMapIDs[0x34] = ObjectsSprite;
+	SpriteMapIDs[0x34] = ObjectsSprite; //StarPost
 	SpriteMapIDs[0x81] = ObjectsSprite;
+
+	SpriteMapIDs[0x408] = ObjectsSprite; //WarpStar
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
@@ -1441,7 +1443,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Player->Scene = this;
 			Player->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
 			Player->PlayerID = 0;
-			Player->Shield = (ShieldType)(SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield < 5 ? (uint8_t)Player->Shield : 0);
+			Player->Shield = (ShieldType)(SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield < 5 ? (uint8_t)SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield : 0);
 			Player->Thremixed = SaveGame::CurrentMode == 1;
 			Player->Create();
 			Player->Lives = SaveGame::GetLives();
@@ -1464,6 +1466,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				PlayerCount = 2;
 			}
 
+			//UNCOMMEN FOR SOME FUCKIN FUN LMAO
 			/*for (int i = 0; i < 5; i++) {
 				Players[i + 2] = new IPlayer();
 				IPlayer* poopler = Players[i + 2];
@@ -2038,6 +2041,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							obj->Attributes = (int*)calloc(ArgumentCount, sizeof(int));
 							memcpy(obj->Attributes, args, ArgumentCount * sizeof(int));
 
+							obj->DrawCollisions = App->viewObjectCollision;
+
 							ObjectCount++;
 							Objects.push_back(obj);
 						}
@@ -2136,6 +2141,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                             obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
                         
+						obj->DrawCollisions = App->viewObjectCollision;
+
 						obj->SubType = SubType;
 						ObjectCount++;
 						Objects.push_back(obj);
@@ -2405,6 +2412,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 							obj->Attributes = (int*)calloc(AttributeCount, sizeof(int));
 							memcpy(obj->Attributes, args, AttributeCount * sizeof(int));
+
+							obj->DrawCollisions = App->viewObjectCollision;
 
 							ObjectCount++;
 							Objects.push_back(obj);
@@ -2842,6 +2851,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 		Object *object = Objects.at(i);
 		if (object != NULL) {
 			object->Create();
+			object->DrawCollisions = App->viewObjectCollision;
 		}
 	}
 
@@ -3244,6 +3254,7 @@ PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
 	ring->Active = true;
 	ring->Priority = true;
 	ring->MagnetizedTo = mag;
+	ring->DrawCollisions = App->viewObjectCollision;
 	Objects.push_back(ring);
 	ObjectCount++;
 	ObjectNewCount++;
@@ -3464,6 +3475,7 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 
 		obj->SubType = SubType;
 		obj->Create();
+		obj->DrawCollisions = App->viewObjectCollision;
 		ObjectCount++;
 		Objects.push_back(obj);
 	}
@@ -3777,6 +3789,12 @@ PUBLIC void LevelScene::Update() {
 			}
 		}
 
+		if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction == FadeActionType::TO_BONUS_STAGE1) {
+			if (Player) {
+			}
+			App->Print(3, "imagine we went to the bonus stage uwu");
+		}
+
 		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
 		{
 			if (Player->InputUp && maxLayer)
@@ -3941,6 +3959,8 @@ PUBLIC void LevelScene::Update() {
 							obj->Active = true;
 						}
 
+						obj->DrawCollisions = App->viewObjectCollision;
+
 						ObjectCount++;
 						Objects.push_back(obj);
 						//Objects[ObjectCount++] = obj;
@@ -4020,6 +4040,8 @@ PUBLIC void LevelScene::Update() {
 							if (!obj->Active) {
 								obj->Active = true;
 							}
+
+							obj->DrawCollisions = App->viewObjectCollision;
 
 							ObjectCount++;
 							Objects.push_back(obj);
@@ -4113,6 +4135,7 @@ PUBLIC void LevelScene::Update() {
 
 					if (Data->layers[Data->cameraLayer].IsScrollingVertical) { 
                         int32_t objWrapCameraY = 0;
+                        //int16_t objWrapY = 0;
                         
                         if (ManiaLevel) {
                             objWrapCameraY = obj->Y - 4;
@@ -4120,56 +4143,40 @@ PUBLIC void LevelScene::Update() {
                             objWrapCameraY = obj->Y + 8;
                         }
                         
-                        if (obj->Y + CameraY >= 0 || obj->Y - CameraY < 0) {
-                                // TODO: Figure out how to wrap the objects caculation camera around to match ours
-                                // in terms of caculation OR wrap the object caculation Y around to pass the caculations.
-                                int32_t CaculationCameraY = NoNegativeCamY;
-                                int16_t YWrapped = obj->Y;
-                                
-                                if (obj->Y - CameraY >= 0) {
-                                    YWrapped = CaculationCameraY + (obj->Y - CameraY);
-                                } else if (obj->Y + CameraY < 0) {
-                                    YWrapped = CaculationCameraY - (obj->Y + CameraY);
-                                }
-                                
-                                /*
-                                if (obj->ID == Obj_HarmfulIce && (obj->Y - CameraY >= 0 || obj->Y + CameraY < 0)) {
-                                    //App->Print(0, "objWrapCameraY caculation is: %08X", (objWrapCameraY - NoNegativeCamY));
-                                    //App->Print(0, "objWrapCameraY is: %04X", objWrapCameraY);
-                                    //App->Print(0, "Max Camera Height is: %08X", Data->layers[Data->cameraLayer].Height * 16);
-                                    App->Print(0, "YWrapped is: %04X", YWrapped);
-                                }
-                                */
-                                
-                                
-                                if (obj->VisW > obj->W || obj->VisH > obj->H) {
-                                    OnScreen |= (
-                                        obj->X + obj->VisW >= CameraX - 120 &&
-                                        obj->Y + obj->VisH >= NoNegativeCamY - 120 &&
-                                        obj->X - obj->VisW < CameraX + App->WIDTH + 120 &&
-                                        obj->Y - obj->VisH < NoNegativeCamY + App->HEIGHT + 120);
-                                } else {
-                                    OnScreen |= (
-                                        obj->X + obj->W / 2 >= CameraX - 120 &&
-                                        obj->Y + obj->H / 2 >= NoNegativeCamY - 120 &&
-                                        obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-                                        obj->Y - obj->H / 2 < NoNegativeCamY + App->HEIGHT + 120);
-                                }
-                                
-                        } else {
+                        if (objWrapCameraY - NoNegativeCamY >= 0 && CameraY < 0) {
+                            //App->Print(0, "objWrapCameraY caculation is: %08X", (objWrapCameraY - NoNegativeCamY));
+                            //App->Print(0, "objWrapCameraY is: %04X", objWrapCameraY);
+                            //App->Print(0, "Max Camera Height is: %08X", Data->layers[Data->cameraLayer].Height * 16);
+                            
+                            // TODO: Figure out how to wrap the objects caculation camera around to match ours
+                            // in terms of caculation OR wrap the object caculation Y around to pass the caculations.
+                            int32_t CaculationCameraY = NoNegativeCamY;
+                            
                             if (obj->VisW > obj->W || obj->VisH > obj->H) {
                                 OnScreen |= (
                                     obj->X + obj->VisW / 2 >= CameraX - 120 &&
-                                    (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
+                                    (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
                                     obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
-                                    (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
+                                    (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
                             } else {
                                 OnScreen |= (
                                     obj->X + obj->W / 2 >= CameraX - 120 &&
-                                    (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
+                                    (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
                                     obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-                                    (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
+                                    (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
                             }
+                        } else if (obj->VisW > obj->W || obj->VisH > obj->H) {
+                            OnScreen |= (
+                                obj->X + obj->VisW / 2 >= CameraX - 120 &&
+                                (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
+                                obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
+                                (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
+                        } else {
+                            OnScreen |= (
+                                obj->X + obj->W / 2 >= CameraX - 120 &&
+                                (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
+                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
+                                (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
                         }
 					}
 
@@ -4360,6 +4367,7 @@ PUBLIC void LevelScene::Update() {
 					SavedPositionX = -1;
 					SavedPositionY = -1;
 					Checkpoint = -1;
+
 					App->Audio->FadeMusic(1);
 
 					Sound::Play(Sound::SFX_MENUACCEPT);
@@ -4467,6 +4475,8 @@ PUBLIC void LevelScene::Update() {
 		if (FadeAction == FadeActionType::RESTART) {
 			Paused = false;
 			PauseFinished = true;
+			Player->Shield = ShieldType::None;
+			SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = 0;
 			RestartStage(false, true);
 			FadeAction = FadeActionType::FADEIN;
 			FadeTimerMax = 90;
@@ -4781,6 +4791,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			}
 			continue;
 		}
+		Objects.at(i)->DrawCollisions = App->viewObjectCollision;
 		RefreshObjects.push_back(Objects.at(i));
 	}
 
@@ -5653,6 +5664,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 			if (obj->Active && obj->OnScreen) {
 				if (l == Data->cameraLayer + obj->VisualLayer) {
+					obj->DrawCollisions = App->viewObjectCollision;
 					obj->Render(CameraX, CameraY);
 				}
 			}

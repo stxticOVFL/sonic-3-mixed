@@ -32,10 +32,11 @@ void MonkeyDudeCoconut::Update() {
 
 void MonkeyDudeCoconut::Render(int CamX, int CamY) {
     if (DrawCollisions) {
+        G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
     }
-    else {
-        G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    }
+
+    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 

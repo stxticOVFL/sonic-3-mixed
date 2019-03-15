@@ -122,5 +122,11 @@ void CaterkillerJr::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, 1, x - CamX, y - CamY, 0, fX | FlipY << 1);
     G->DrawSprite(Sprite, CurrentAnimation, 3 + ((Scene->Frame >> 2) % 3), x - CamX, y - CamY, 0, fX);
     G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX | FlipY << 1);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

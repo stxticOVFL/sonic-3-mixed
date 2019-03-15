@@ -3797,7 +3797,13 @@ void IPlayer::Render(int CamX, int CamY) {
 		G->SetDrawAlpha(0xFF);
 
 		G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, EZX + x - CamX, EZY + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
-	}
+	
+		if (App->viewObjectCollision) {
+			G->SetDrawAlpha(0x80);
+			G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+			G->SetDrawAlpha(0xFF);
+		}
+}
 
 	// Draw spindash dust
 	if (Action == ActionType::Spindash)
@@ -3972,6 +3978,7 @@ void IPlayer::Die(bool drown) {
 	AngleMode = 0;
 	DisplayAngle = 0;
 	Ground = false;
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = 0;
 	if (drown) {
 		YSpeed = 0;
 		Sound::Play(Sound::SFX_DROWN);

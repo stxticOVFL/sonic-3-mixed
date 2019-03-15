@@ -1,7 +1,7 @@
-#ifndef STARPOST_H
-#define STARPOST_H
+#ifndef WARPSTARS_H
+#define WARPSTARS_H
 
-class StarPost;
+class WarpStars;
 
 #include <Utils/Standard.h>
 
@@ -12,22 +12,15 @@ class StarPost;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class StarPost: public Object {
+class WarpStars: public Object {
 public:    
     
     bool Activated;
-    int Spin;
-    bool Blinking;
-    bool ShowStars;
-    int StarTimer;
-    Object* Stars[4];
     
     void Create();
     void Update();
-    int OnLeaveScreen();
-    void DrawStar(int Rock, int Ang, int Side, int CamX, int CamY);
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
-#endif /* STARPOST_H */
+#endif /* WARPSTARS_H */

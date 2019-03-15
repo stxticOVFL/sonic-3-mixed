@@ -184,6 +184,12 @@ void Rock::Render(int CamX, int CamY) {
     if (!Solid) return;
 
     DrawAIZ(CamX, CamY);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 
 int Rock::OnBreakVertical(int PlayerID, int HitFrom) {

@@ -24,7 +24,7 @@ PUBLIC ScoreGhost::ScoreGhost() {
 }
 
 PUBLIC void ScoreGhost::Update() {
-    Y += (SubY - Y) / 8;
+	Y += (SubY - Y) / 8;
 
     if (Y >= Scene->CameraY + App->HEIGHT)
         Active = false;

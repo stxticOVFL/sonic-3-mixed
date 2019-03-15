@@ -13,6 +13,7 @@ void Freezer::Create() {
     FreezeTimer = 0;
     CurrentAnimation = Sprite->FindAnimation("Freezer");
     DustAnimation = Sprite->FindAnimation("Particles");
+    IceCubeAnimation = Sprite->FindAnimation("Player Ice Cube");
     VisualLayer = 1;
     FreezeTimer = 0;
     OnOff = true;
@@ -46,7 +47,6 @@ void Freezer::Update() {
         }
 
         if (Frozen[i]) {
-            IApp::Print(0, "%d", FrozenTimer[i]);
             Scene->Players[i]->X = StoredX[i];
             Scene->Players[i]->Y = StoredY[i];
             Scene->Players[i]->ChangeAnimation(18);
@@ -73,6 +73,13 @@ void Freezer::Render(int CamX, int CamY) {
     for (int i = 0; i < FreezeTimer / 10; i++)
 {
         G->DrawSprite(Sprite, DustAnimation, Math::ceil((float)(i / 1.5)) + 13, X - CamX + Math::randRange(10, -10) - 20, Y + (i * 20) - CamY + Math::randRange(10, -10), Math::randRange(10, -10), IE_NOFLIP);
+    }
+    for (int i = 0; i < 8; i++)
+{
+        if (Frozen[i]) {
+            G->DrawSprite(Sprite, IceCubeAnimation, Frame, StoredX[i] - CamX, StoredY[i] - CamY, 0, IE_NOFLIP);
+        }
+
     }
     }
 

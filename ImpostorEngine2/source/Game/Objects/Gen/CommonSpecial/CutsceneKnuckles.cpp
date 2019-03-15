@@ -139,6 +139,12 @@ void CutsceneKnuckles::Render(int CamX, int CamY) {
     if (Scene->ZoneID == 2 && Scene->Act == 2) G->DrawSprite(Scene->SpriteMap["HCZ"], 0, 0, InitialX - 4 - CamX, InitialY + 20 - CamY, 0, IE_NOFLIP);
 
     G->DrawSprite(Scene->KnuxSprite[0], CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, !FlipX ? IE_NOFLIP : IE_FLIPX);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 
 void CutsceneKnuckles::Chuckle() {

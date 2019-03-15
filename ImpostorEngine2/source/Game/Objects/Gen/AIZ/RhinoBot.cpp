@@ -145,20 +145,23 @@ void RhinoBot::Render(int CamX, int CamY) {
         Flip = -Flip;
     }
 
-    if (DrawCollisions) {
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
+    if (Frame == 2) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+
+    if (Timer != -1) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
         if (Frame == 2) {
-            G->DrawRectangle(X - CamX + Flip * 14, Y - CamY + 1, W, H, DrawCollisionsColor);
+            G->SetDrawAlpha(0x80);
+            G->DrawRectangle(X - (W / 2) - CamX + Flip * 14, Y - (H / 2) - CamY + 1, W, H, DrawCollisionsColor);
+            G->SetDrawAlpha(0xFF);
         }
-        else {
-            G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
-        }
-    }
-    else {
-        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
-        if (Frame == 2) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
 
-        if (Timer != -1) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
-
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
     }
+
     }
 
