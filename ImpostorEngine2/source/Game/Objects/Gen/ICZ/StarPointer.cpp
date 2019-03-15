@@ -17,10 +17,17 @@ void StarPointer::Create() {
         Orbs[i] = Scene->AddNewObject(Obj_StarPointerOrbs, i, X, Y, FlipX, false);
         Orbs[i]->CurrentAnimation = CurrentAnimation;
         OrbOffsets[i] = i * 90;
-        IApp::Print(0, "%d %d", OrbOffsets[i], i);
     }
     RotAngle = 0;
     TurnSpeed = 0.01;
+}
+
+int StarPointer::OnHit() {
+    Orbs[0]->Active = false;
+    Orbs[1]->Active = false;
+    Orbs[2]->Active = false;
+    Orbs[3]->Active = false;
+    return OnDeath();
 }
 
 void StarPointer::Update() {

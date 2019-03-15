@@ -51,14 +51,17 @@ event Update() {
             !Frozen[i] && FrozenTimer[i] == 0)
             && ( //RANGE CHCEK
             Range != 0)) {
-                Frozen[i] = true;
-                FrozenTimer[i] = 80;
-                Scene.Players[i].ControlLocked = true;
-                Scene.Players[i].InputLockLeftRight = true;
-                Scene.Players[i].AnimationStop = true;
-                StoredX[i] = Scene.Players[i].X;
-                StoredY[i] = Scene.Players[i].Y;
-                StoredFrame[i] = Scene.Players[i].Frame;
+				if (Scene.Players[i].Shield != ShieldType.Fire)
+				{
+				    Frozen[i] = true;
+					FrozenTimer[i] = 80;
+					Scene.Players[i].ControlLocked = true;
+					Scene.Players[i].InputLockLeftRight = true;
+					Scene.Players[i].AnimationStop = true;
+					StoredX[i] = Scene.Players[i].X;
+					StoredY[i] = Scene.Players[i].Y;
+					StoredFrame[i] = Scene.Players[i].Frame;	
+				}
         }
         //KEEP PLAYER IN PLACE
         if (Frozen[i]) {

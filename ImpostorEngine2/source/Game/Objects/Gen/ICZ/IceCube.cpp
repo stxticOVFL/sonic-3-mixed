@@ -46,6 +46,13 @@ int IceCube::OnBreakVertical(int PlayerID, int HitFrom) {
 int IceCube::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (!Solid) return 0;
 
+    if (Scene->Players[PlayerID]->Shield == ShieldType::Fire) {
+        Solid = false;
+        Visible = false;
+        BreakableByJump = CollideSide::NONE;
+        Break();
+    }
+
     return 1;
 }
 

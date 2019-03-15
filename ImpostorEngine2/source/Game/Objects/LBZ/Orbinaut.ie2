@@ -2,87 +2,51 @@ object 0xC0;
 
 subclass Enemy;
 
-var OrbXPos:Uint32[4];
-var OrbYPos:Uint32[4];
+var Orbs:Object[4];
 var OrbOffsets:float[4];
 
 var RotAngle:float;
 var TurnSpeed:float;
 
-var i:int;
-
 event Create() {
-    this.Active = true;
-    this.Priority = false;
+    Active = true;
+    Priority = false;
 
-    this.W = 32;
-    this.H = 32;
+    W = 32;
+    H = 32;
 
-    this.CurrentAnimation = Sprite.FindAnimation("Orbinaut");
-	
-	OrbXPos[0] = 0;
-	OrbYPos[0] = 0;
-	OrbXPos[1] = 0;
-	OrbYPos[1] = 0;
-	OrbXPos[2] = 0;
-	OrbYPos[2] = 0;
-	OrbXPos[3] = 0;
-	OrbYPos[3] = 0;
-	
-	OrbOffsets[0] = 0;
-	OrbOffsets[1] = 90;
-	OrbOffsets[2] = 180;
-	OrbOffsets[3] = 270;
+	//Aurum my boi pls add the anims
+    //CurrentAnimation = Sprite.FindAnimation("Orbinaut");
+
+	for (var i:int = 0; i < 4; i++) {
+        Orbs[i] = Scene.AddNewObject(Obj_StarPointerOrbs, i, X, Y, FlipX, false);
+		Orbs[i].CurrentAnimation = CurrentAnimation;
+		OrbOffsets[i] = i * 90;
+	}	
 	
 	RotAngle = 0;
-	TurnSpeed = 0.1;
+	TurnSpeed = 0.01;
+}
+
+event OnHit() : int {
+    Orbs[0].Active = false;
+    Orbs[1].Active = false;
+    Orbs[2].Active = false;
+    Orbs[3].Active = false;
+    return OnDeath();
 }
 
 event Update() {	
-
-	
-	if (Scene.Players[0].XSpeed != 0)
-	{
+	for (var i:int = 0; i < 4; i++) {
 		RotAngle = 0;
-		RotAngle+=OrbOffsets[0]; 
-		RotAngle+=TurnSpeed;
-		OrbXPos[0] = sin(RotAngle)*20 + this.X;
-		OrbYPos[0] = cos(RotAngle)*20 + this.Y;
-		OrbOffsets[0]=RotAngle;
-		
-		RotAngle = 0;
-		RotAngle+=OrbOffsets[1]; 
-		RotAngle+=TurnSpeed;
-		OrbXPos[1] = sin(RotAngle)*20 + this.X;
-		OrbYPos[1] = cos(RotAngle)*20 + this.Y;
-		OrbOffsets[1]=RotAngle;
-				
-		RotAngle = 0;
-		RotAngle+=OrbOffsets[2]; 
-		RotAngle+=TurnSpeed;
-		OrbXPos[2] = sin(RotAngle)*20 + this.X;
-		OrbYPos[2] = cos(RotAngle)*20 + this.Y;
-		OrbOffsets[2]=RotAngle;
-				
-		RotAngle = 0;
-		RotAngle+=OrbOffsets[3]; 
-		RotAngle+=TurnSpeed;
-		OrbXPos[3] = sin(RotAngle)*20 + this.X;
-		OrbYPos[3] = cos(RotAngle)*20 + this.Y;
-		OrbOffsets[3]=RotAngle;		
+		RotAngle += OrbOffsets[i];
+		RotAngle += TurnSpeed; 
+		IApp.Print(0, "%d %d", RotAngle, sin(RotAngle));
+		Orbs[i].X = sin(RotAngle)*20 + X;
+		Orbs[i].Y = cos(RotAngle)*20 + Y;
+		OrbOffsets[i] = RotAngle;
 	}		
-
-	if (Scene.Players[0].XSpeed < 0)	
-	{
-		X-=0.1;
-		this.FlipX=false;
-	}	
-	
-	if (Scene.Players[0].XSpeed > 0)	
-	{
-		X+=0.1;
-		this.FlipX=true;
-	}
+	X -= 0.01;		
 }
 
 event Render(CamX:int, CamY:int) {
@@ -90,11 +54,5 @@ event Render(CamX:int, CamY:int) {
 		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
 	} else {
         G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
-        
-		
-		G.DrawSprite(this.Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[0] - CamX, OrbYPos[0] - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
-		G.DrawSprite(this.Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[1] - CamX, OrbYPos[1] - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
-		G.DrawSprite(this.Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[2] - CamX, OrbYPos[2] - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
-		G.DrawSprite(this.Sprite, CurrentAnimation, (Frame >> 8) + 1, OrbXPos[3] - CamX, OrbYPos[3] - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 }

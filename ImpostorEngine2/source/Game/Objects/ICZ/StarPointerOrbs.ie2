@@ -1,4 +1,3 @@
-subclass Enemy;
 
 event Create() {
     Active = true;
@@ -11,4 +10,13 @@ event Create() {
 
 event Render(CamX:int, CamY:int) {
     G.DrawSprite(this.Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+	if (!Scene.Players[PlayerID]) return 0;
+	
+	if (Scene.Players[PlayerID].Shield == ShieldType.None) Scene.Players[PlayerID].Hurt(Scene.Players[PlayerID].X, false);
+	else Active = false;
+	
+    return 1;
 }

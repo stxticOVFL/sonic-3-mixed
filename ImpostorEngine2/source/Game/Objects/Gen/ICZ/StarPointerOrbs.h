@@ -12,12 +12,13 @@ class StarPointerOrbs;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class StarPointerOrbs: public Enemy {
+class StarPointerOrbs: public Object {
 public:    
     
     
     void Create();
     void Render(int CamX, int CamY);
+    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
 #endif /* STARPOINTERORBS_H */
