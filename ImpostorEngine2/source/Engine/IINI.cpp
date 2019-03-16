@@ -175,6 +175,74 @@ PUBLIC int IINI::SetBool(const char* section, const char* key, bool value) {
 	return 1;
 }
 
+PUBLIC void IINI::Write(const char* filename) {
+
+	FILE* f;
+	if ((f = fopen(filename, "w")) == NULL) {
+		IApp::Print(2, "Couldn't open file '%s' for writing!", filename);
+		return;
+	}
+
+	fprintf(f, "[%s]\n", "display");
+	for (int i = 0; i < count; i++)
+	{
+		if (item[i].section[0] == 'd') //fuck you too!
+		{
+			if (item[i].section[1] == 'i') //fuck you too!
+			{
+				fprintf(f, "%s = %s\n", item[i].key, item[i].value);
+			}
+		}
+	}
+
+	fprintf(f, "[%s]\n", "input1");
+	for (int i = 0; i < count; i++)
+	{
+		if (item[i].section[0] == 'i')
+		{
+			if (item[i].section[5] == '1')
+			{
+				fprintf(f, "%s = %s\n", item[i].key, item[i].value);
+			}
+		}
+	}
+
+	fprintf(f, "[%s]\n", "input2");
+	for (int i = 0; i < count; i++)
+	{
+		if (item[i].section[0] == 'i')
+		{
+			if (item[i].section[5] == '2')
+			{
+				fprintf(f, "%s = %s\n", item[i].key, item[i].value);
+			}
+		}
+	}
+
+	fprintf(f, "[%s]\n", "audio");
+	for (int i = 0; i < count; i++)
+	{
+		if (item[i].section[0] == 'a') //fuck you too!
+		{
+			fprintf(f, "%s = %s\n", item[i].key, item[i].value);
+		}
+	}
+
+	fprintf(f, "[%s]\n", "dev");
+	for (int i = 0; i < count; i++)
+	{
+		if (item[i].section[0] == 'd') //fuck you too!
+		{
+			if (item[i].section[1] == 'e') //fuck you too!
+			{
+				fprintf(f, "%s = %s\n", item[i].key, item[i].value);
+			}
+		}
+	}
+
+	fclose(f);
+}
+
 PUBLIC void IINI::Cleanup() {
 
 }

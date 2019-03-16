@@ -1238,7 +1238,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
             App->WIDTH / 2, 0, 0, fl ? IE_FLIPX : IE_NOFLIP);
     }
 
-	/*
+	
 	G->SetDrawFunc(1);
 	// Sky
 	G->SetDrawAlpha(ColorSky);
@@ -1250,7 +1250,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
     G->DrawSprite(Horizon, 0, 0, App->WIDTH / 2, 0, 0, IE_FLIPX);
     G->SetDrawFunc(0);
     G->SetDrawAlpha(0xFF);
-	//*/
+	
 
     // Draw spheres
     int sh[9] = { -4, 4, -3, 3, -2, 2, -1, 1, 0 };

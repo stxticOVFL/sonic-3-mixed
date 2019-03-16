@@ -310,6 +310,7 @@ PUBLIC void Scene_SettingsMenu::HandleChange(bool up) {
 		if (subselected == 0) {
 			Settings->GetBool("display", "fullscreen", &full);
 			Settings->SetBool("display", "fullscreen", !full);
+			App->Settings->Write("config.ini");
 		}
 		if (subselected == 1) {
 			int cW, cH, mult;
@@ -321,6 +322,7 @@ PUBLIC void Scene_SettingsMenu::HandleChange(bool up) {
 				return; //no less than 1, no more than 4
 			Settings->SetInteger("display", "width", 424 * mult);
 			Settings->SetInteger("display", "height", 240 * mult);
+			App->Settings->Write("config.ini");
 		}
 		if (subselected == 2) {
 			int crt, sharp, current;
@@ -335,10 +337,12 @@ PUBLIC void Scene_SettingsMenu::HandleChange(bool up) {
 				current = 2;
 			App->Print(0, "%d", current);
 			Settings->SetInteger("display", "sharp", current / 2);
+			App->Settings->Write("config.ini");
 			if (current / 2 == 1)
 				Settings->SetInteger("display", "crt", (current + 1) % 2);
 			else 
 				Settings->SetInteger("display", "crt", 0);
+			App->Settings->Write("config.ini");
 		}
 	}
 	if (selected == 1) {
@@ -357,6 +361,7 @@ PUBLIC void Scene_SettingsMenu::HandleChange(bool up) {
 		if (current > 100)
 			current = 100;
 		App->Settings->SetInteger("audio", name, current);
+		App->Settings->Write("config.ini");
 	}
 }
 

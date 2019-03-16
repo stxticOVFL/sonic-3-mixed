@@ -3797,7 +3797,7 @@ PUBLIC void LevelScene::Update() {
 
 		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
 		{
-			if (Player->InputUp && maxLayer)
+			if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED] && maxLayer)
 			{
 				//"Save" the players
 				PlayerBuffer[1] = Players[0];
@@ -3818,6 +3818,8 @@ PUBLIC void LevelScene::Update() {
 				//make sure our stuff is set
 				Players[0]->Lives = Players[1]->Lives;
 				Players[0]->Rings = Players[1]->Rings;
+				Players[0]->Shield = Players[1]->Shield;
+				Players[1]->Shield = ShieldType::None;
 				Players[0]->HyperRings = Players[1]->HyperRings;
 				Players[0]->HyperForm = Players[1]->HyperForm;
 				Players[0]->SuperForm = Players[1]->SuperForm;

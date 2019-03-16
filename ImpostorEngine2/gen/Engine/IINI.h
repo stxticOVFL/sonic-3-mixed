@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 
 #include <Utils/Standard.h>
@@ -30,6 +31,7 @@ public:
     int SetString(const char* section, const char* key, char* value);
     int SetInteger(const char* section, const char* key, int value);
     int SetBool(const char* section, const char* key, bool value);
+    void Write(const char* filename);
     void Cleanup();
 };
 
