@@ -20,10 +20,14 @@ void StarPost::Create() {
     CleanupInactiveObject = true;
     ShowStars = false;
     StarTimer = 0x400;
-    Stars[0] = Scene->AddNewObject(Obj_WarpStars, 0, X, Y, FlipX, false);
-    Stars[1] = Scene->AddNewObject(Obj_WarpStars, 1, X, Y, FlipX, false);
-    Stars[2] = Scene->AddNewObject(Obj_WarpStars, 2, X, Y, FlipX, false);
-    Stars[3] = Scene->AddNewObject(Obj_WarpStars, 3, X, Y, FlipX, false);
+    Stars[0] = Scene->AddNewObject(Obj_WarpStars, 0, X, Y - 64, FlipX, false);
+    Stars[1] = Scene->AddNewObject(Obj_WarpStars, 1, X, Y - 64, FlipX, false);
+    Stars[2] = Scene->AddNewObject(Obj_WarpStars, 2, X, Y - 64, FlipX, false);
+    Stars[3] = Scene->AddNewObject(Obj_WarpStars, 3, X, Y - 64, FlipX, false);
+    Stars[0]->Active = false;
+    Stars[1]->Active = false;
+    Stars[2]->Active = false;
+    Stars[3]->Active = false;
 }
 
 void StarPost::Update() {
@@ -45,10 +49,10 @@ void StarPost::Update() {
 
         if (ShowStars) {
             if (StarTimer = 0x400) {
-                Stars[0]->Create();
-                Stars[1]->Create();
-                Stars[2]->Create();
-                Stars[3]->Create();
+                Stars[0]->Active = true;
+                Stars[1]->Active = true;
+                Stars[2]->Active = true;
+                Stars[3]->Active = true;
             }
 
             if (StarTimer > 0) {
