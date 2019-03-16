@@ -6,20 +6,24 @@
 class Scene_SettingsMenu : public IScene {
 public:
 	int selected = 0;
-	int ran = 0;
+	int subselected = -1;
+	bool inselect = false;
 	int frame = 0;
+	int palframe = 0;
 	int FrameCircle = 0;
 	int FrameZigzag = 0;
 	int FrameZigzagRed = 0;
 	int FrameZigzagBlue = 0;
-	int  ElementY = 40;
-	int  ElementH = 150;
+	int ElementY = 40;
+	int ElementH = 150;
 	int paletteindexes[9];
 	int paletteToCycle[18];
 	bool GoBack = false;
+	int triframe = 0;
 	ISprite* MenuSprite = NULL;
 	ISprite* SuperButtonsSprite = NULL;
 	ISprite* TextSprite = NULL;
+	ISprite* SettingsSprite = NULL;
 	IINI* Settings = NULL;
 };
 
@@ -30,10 +34,26 @@ public:
 #include <Game/Scenes/MainMenu.h>
 #include <Game/Scenes/SettingsMenu.h>
 
+//0: on/off, default
+//1: leftright switch
+//2: slider (limited)
+//3: slider (0-100)
+int SettingsType[9] = {
+	//visual
+	0, //fullscreen
+	2, //window size
+	1, //shaders
+	//audio
+	3, 3, 3, //global, music, sfx
+	//controls
+	0, 0, 0 // i have no fucking idea how we're gonna handle these
+};
+
 PUBLIC Scene_SettingsMenu::Scene_SettingsMenu(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
-	Settings = App->Settings;
+	Settings = App->Settings; //used mainly for graphics
+
 	Sound::Audio = App->Audio;
 	Sound::Init();
 
@@ -52,8 +72,16 @@ PUBLIC void Scene_SettingsMenu::Init() {
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
-		MenuSprite->SetTransparentColorIndex(0x2C);
+		MenuSprite->SetTransparentColorIndex(0x0);
 		MenuSprite->UpdatePalette();
+	}
+	if (!SettingsSprite) {
+		SettingsSprite = new ISprite("Sprites/UI/Settings.gif", App);
+		SettingsSprite->LoadAnimation("Sprites/UI/Settings.bin");
+		for (int i = 0; i < 9; i++)
+			SettingsSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
+		SettingsSprite->SetTransparentColorIndex(0x0);
+		SettingsSprite->UpdatePalette();
 	}
 	if (!SuperButtonsSprite) {
 		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
@@ -98,11 +126,8 @@ PUBLIC void Scene_SettingsMenu::Update() {
 			G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
 	}
 
-	if (BACK_PRESSED) {
-		GoBack = true;
-		FadeIn = false;
-		FadeTimerMax = 30;
-	}
+	palframe += 1;
+	palframe %= 288;
 
 	// Do Fade actions
 	if (FadeTimer == 0) {
@@ -119,16 +144,87 @@ PUBLIC void Scene_SettingsMenu::Update() {
 			}
 		}
 	}
+
+	//controlll ,. .
+	if (FadeTimer == -1) {
+		bool Changed = false;
+		if (!inselect) {
+			if (BACK_PRESSED) {
+				GoBack = true;
+				FadeIn = false;
+				FadeTimerMax = 30;
+			}
+			if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
+				selected--;
+				if (selected < 0)
+					selected = 0;
+
+				Sound::Play(Sound::SFX_MENUBLEEP);
+				Changed = true;
+			}
+			if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+				selected++;
+				if (selected > 2)
+					selected = 2;
+
+				Sound::Play(Sound::SFX_MENUBLEEP);
+				Changed = true;
+			}
+			if (CONFIRM_PRESSED) {
+				Sound::Play(Sound::SFX_MENUACCEPT);
+				inselect = true;
+				subselected = 0;
+			}
+		}
+		if (inselect) {
+			if (BACK_PRESSED) {
+				Sound::Play(Sound::SFX_MENUBLEEP);
+				inselect = false;
+				subselected = -1;
+			}
+			if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
+				subselected--;
+				if (subselected < 0)
+					subselected = 0;
+
+				Sound::Play(Sound::SFX_MENUBLEEP);
+				Changed = true;
+			}
+			if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+				subselected++;
+				if (subselected > 2)
+					subselected = 2;
+
+				Sound::Play(Sound::SFX_MENUBLEEP);
+				Changed = true;
+			}
+			if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED] || App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
+				HandleChange(App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]);
+				Sound::Play(Sound::SFX_MENUBLEEP);
+			}
+		}
+	}
+
 	FrameCircle = (FrameCircle + 1) & 0xFF;
 	FrameZigzag = (FrameZigzag + 1) % (40 * 4);
 	FrameZigzagRed = (FrameZigzagRed + 1) % (117 * 4);
 	FrameZigzagBlue = (FrameZigzagBlue + 1) % (110 * 4);
 
 	frame++;
-	if (frame > (32 << 1))
+	if (frame > (20 << 1))
 		frame = 0;
+
+	triframe = frame >> 1;
+	if (triframe < 6)
+		triframe = 0;
+	else if (triframe < 10)
+		triframe = 1;
+	else if (triframe < 16)
+		triframe = 2;
+	else
+		triframe = 3;
 }
-PUBLIC void Scene_SettingsMenu::Render() {
+PUBLIC void Scene_SettingsMenu::RenderBack() {
 	G->SetFilter(IE_FILTER_FADEABLE);
 
 	int cenX = App->WIDTH / 2;
@@ -140,7 +236,7 @@ PUBLIC void Scene_SettingsMenu::Render() {
 	// Zigzags
 	int pX = cenX - (260 - 186) - 5;
 	int pY = 223 - 5;
-	G->SetClip(0, App->HEIGHT - 60, 293, 60);
+	G->SetClip(0, App->HEIGHT - 58, 293, 60);
 	G->DrawSprite(MenuSprite, 16, 0, pX - (FrameZigzag / 4), pY - (FrameZigzag / 4), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 16, 0, pX - (FrameZigzag / 4) + 40, pY - (FrameZigzag / 4) + 40, 0, IE_NOFLIP);
 	G->ClearClip();
@@ -194,18 +290,158 @@ PUBLIC void Scene_SettingsMenu::Render() {
 	G->DrawSprite(MenuSprite, 1, 0, App->WIDTH - 424, 0, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 1, 1, App->WIDTH - 424, App->HEIGHT, 0, IE_NOFLIP);
 	//G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
+	G->DrawRectangle(0, 0, blackGirth, App->HEIGHT, 0x000000);
+	G->DrawRectangle(App->WIDTH - blackGirth, 0, blackGirth, App->HEIGHT, 0x000000);
 
 	G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 	G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
-	/*
-	G->DrawRectangle(0, 0, blackGirth, App->HEIGHT, 0x000000);
-	G->DrawRectangle(App->WIDTH - blackGirth, 0, blackGirth, App->HEIGHT, 0x000000);
 	// Triangles
 	for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, blackGirth, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
 	for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, App->WIDTH - blackGirth, i * 20 - (frame >> 1), 0, IE_FLIPX);
-	//*/
 
 	// Menu Title
 	G->DrawSprite(MenuSprite, 9, 6, App->WIDTH, 12, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 10, 3, App->WIDTH - 12, 12, 0, IE_NOFLIP);
+}
+
+PUBLIC void Scene_SettingsMenu::HandleChange(bool up) {
+	if (selected == 0) {
+		bool full;
+		if (subselected == 0) {
+			Settings->GetBool("display", "fullscreen", &full);
+			Settings->SetBool("display", "fullscreen", !full);
+		}
+		if (subselected == 1) {
+			int cW, cH, mult;
+			Settings->GetInteger("display", "width", &cW);
+			Settings->GetInteger("display", "height", &cH);
+			mult = sqrt((cW * cH) / (424 * 240)) + up ? 1 : -1; //current / internal
+			App->Print(0, "%d", mult);
+			if (mult >= 5 || mult <= 0)
+				return; //no less than 1, no more than 4
+			Settings->SetInteger("display", "width", 424 * mult);
+			Settings->SetInteger("display", "height", 240 * mult);
+		}
+		if (subselected == 2) {
+			int crt, sharp, current;
+			Settings->GetInteger("display", "sharp", &sharp);
+			Settings->GetInteger("display", "crt", &crt);
+			current = crt + sharp;
+			current += up ? 1 : -1;
+			App->Print(0, "%d", current);
+			if (current > 2)
+				current = 0;
+			if (current < 0)
+				current = 2;
+			App->Print(0, "%d", current);
+			Settings->SetInteger("display", "sharp", current / 2);
+			if (current / 2 == 1)
+				Settings->SetInteger("display", "crt", (current + 1) % 2);
+			else 
+				Settings->SetInteger("display", "crt", 0);
+		}
+	}
+	if (selected == 1) {
+		char name[7];
+		if (subselected == 0)
+			sprintf(name, "global");
+		if (subselected == 1)
+			sprintf(name, "music");
+		if (subselected == 2)
+			sprintf(name, "sfx");
+		int current = 0;
+		App->Settings->GetInteger("audio", name, &current);
+		current += up ? 10 : -10;
+		if (current < 0)
+			current = 0;
+		if (current > 100)
+			current = 100;
+		App->Settings->SetInteger("audio", name, current);
+	}
+}
+
+PUBLIC void Scene_SettingsMenu::Render() {
+	RenderBack();
+	for (int i = 0; i < 9; i++)
+		SettingsSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
+	SettingsSprite->UpdatePalette();
+
+	int cenX = App->WIDTH / 2;
+	int cenY = App->HEIGHT / 2;
+
+	bool nowSelected = false;
+	for (int i = 0; i < 3; i++) {
+		int add = 0;
+		if (nowSelected)
+			add = 3;
+		G->DrawSprite(SettingsSprite, 0, 0, cenX, cenY + ((i + add) * 32), 0, IE_NOFLIP);
+		G->DrawSprite(SettingsSprite, 2, i, cenX, cenY + 32 * add, 0, IE_NOFLIP);
+		G->DrawSprite(SettingsSprite, 3, i, cenX, cenY + 32 * add, 0, IE_NOFLIP);
+
+		if (i == selected) {
+			G->DrawSprite(SettingsSprite, 1, 0, cenX, cenY + (i * 32), 0, IE_NOFLIP);
+			nowSelected = true;
+		}
+	}
+	if (!inselect) {
+		for (int i = 0; i < 9; i++)
+			SettingsSprite->SetPalette(paletteindexes[i], paletteToCycle[i + 9]);
+		SettingsSprite->UpdatePalette();
+	}
+
+	G->DrawSprite(SettingsSprite, 0, 1, cenX, cenY + (selected * 32), 0, IE_NOFLIP);
+	for (int i = 0; i < 3; i++) {
+		//G->DrawSprite(SettingsSprite, 4, selected * 3 + i, cenX, cenY, 0, IE_NOFLIP);
+		int fl = 0;
+		if (selected == 0) {
+			if (i == 0)
+				Settings->GetInteger("display", "fullscreen", &fl);
+			if (i == 1) {
+				int cW, cH, mult;
+				Settings->GetInteger("display", "width", &cW);
+				Settings->GetInteger("display", "height", &cH);
+				mult = (cW * cH) / (424 * 240); //current / internal
+				fl = sqrt(mult);
+			}
+			if (i == 2) {
+				int crt = 0;
+				App->Settings->GetInteger("display", "sharp", &fl);
+				App->Settings->GetInteger("display", "crt", &crt);
+				fl = fl + crt;
+			}	
+		}
+		if (selected == 1) {
+			App->Settings->GetInteger("audio", i == 0 ? "global" : (i == 1 ? "music" : "sfx"), &fl);
+		}
+		RenderTypes(SettingsType[selected * 3 + i], 64 + (selected * 32) + i * 32, fl, i);
+	}
+}
+
+PUBLIC void Scene_SettingsMenu::RenderTypes(int t, int y, int fl, int i) {
+	G->DrawSprite(SettingsSprite, 5 + (t < 2 ? t : 2), 0, 76, y, 0, IE_NOFLIP);
+	switch (t) {
+		case 0: { //onoff
+			G->DrawSprite(SettingsSprite, 5, fl == 1 ? 3 : 1, 77, y + 1, 0, IE_NOFLIP);
+			G->DrawSprite(SettingsSprite, 5, fl == 0 ? 4 : 2, 77 + 25, y + 1, 0, IE_NOFLIP);
+		} break;
+		case 1: { //leftright
+			if (i == subselected)
+				G->DrawSprite(SettingsSprite, 6, 1, 76, y, 0, IE_NOFLIP);
+			else {
+				G->DrawSprite(SettingsSprite, 6, 2, 76, y, 0, IE_NOFLIP);
+				G->DrawSprite(SettingsSprite, 6, 3, 76, y, 0, IE_NOFLIP);
+			}
+			G->DrawSprite(SettingsSprite, 8, i == subselected ? fl + 3 : fl, 76, y, 0, IE_NOFLIP);
+			if (i == subselected && frame > 20) {
+				G->DrawSprite(SettingsSprite, 6, 2, 76, y, 0, IE_NOFLIP);
+				G->DrawSprite(SettingsSprite, 6, 3, 76, y, 0, IE_NOFLIP);
+			}
+		} break;
+		case 2:
+		case 3: { //slider
+			//App->Print(0, "%d", t);	
+			int x = t == 2 ? (fl + 1) * 11 : (fl / 1.5);
+			G->DrawSprite(SettingsSprite, 7, i == subselected ? 2 : 1, 76 + x, y, 0, IE_NOFLIP);
+		} break;
+	}
 }

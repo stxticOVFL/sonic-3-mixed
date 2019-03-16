@@ -111,7 +111,7 @@ PUBLIC void Scene_DataSelect::Init() {
 	if (!MenuSprite) {
 		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
-		MenuSprite->SetTransparentColorIndex(0x2C);
+		MenuSprite->SetTransparentColorIndex(0x0);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SuperButtonsSprite) {
