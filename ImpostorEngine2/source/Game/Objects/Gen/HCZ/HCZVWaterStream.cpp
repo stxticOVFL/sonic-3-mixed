@@ -35,5 +35,11 @@ void HCZVWaterStream::Render(int CamX, int CamY) {
     G->DrawSprite(Scene->TileSprite, 0, 0x8C, 8 + this->X - CamX + (0), 8 + this->Y + 16 - CamY + (-16), 0, IE_NOFLIP);
     G->DrawSprite(Scene->TileSprite, 0, 0x8D, 8 + this->X - CamX + (-16), 8 + this->Y + 16 - CamY + (0), 0, IE_NOFLIP);
     G->DrawSprite(Scene->TileSprite, 0, 0x8E, 8 + this->X - CamX + (0), 8 + this->Y + 16 - CamY + (0), 0, IE_NOFLIP);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

@@ -91,17 +91,18 @@ void HoverFan::Update() {
 }
 
 void HoverFan::Render(int CamX, int CamY) {
-    if (DrawCollisions) {
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    if (HaveBlock) {
+        G->DrawSprite(Scene->TileSprite, 0, 0x8B, 8 + X - CamX + (-16), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
+        G->DrawSprite(Scene->TileSprite, 0, 0x8C, 8 + X - CamX + (0), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
+        G->DrawSprite(Scene->TileSprite, 0, 0x8D, 8 + X - CamX + (-16), 8 + Y - CamY + (0), 0, IE_NOFLIP);
+        G->DrawSprite(Scene->TileSprite, 0, 0x8E, 8 + X - CamX + (0), 8 + Y - CamY + (0), 0, IE_NOFLIP);
     }
-    else {
-        if (HaveBlock) {
-            G->DrawSprite(Scene->TileSprite, 0, 0x8B, 8 + X - CamX + (-16), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
-            G->DrawSprite(Scene->TileSprite, 0, 0x8C, 8 + X - CamX + (0), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
-            G->DrawSprite(Scene->TileSprite, 0, 0x8D, 8 + X - CamX + (-16), 8 + Y - CamY + (0), 0, IE_NOFLIP);
-            G->DrawSprite(Scene->TileSprite, 0, 0x8E, 8 + X - CamX + (0), 8 + Y - CamY + (0), 0, IE_NOFLIP);
-        }
 
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
     }
+
     }
 

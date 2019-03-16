@@ -112,6 +112,8 @@ event Render(CamX:int, CamY:int) {
     G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
     
     if (DrawCollisions) {
+		G.SetDrawAlpha(0x80);
+
         // Bottom
         G.DrawRectangle((X - (W / 2)) - CamX, (Y + (H / 2)) - CamY, W, 2, DrawCollisionsColor);
         
@@ -134,6 +136,7 @@ event Render(CamX:int, CamY:int) {
             // Player Left
             G.DrawRectangle(((Player.X - (Player.W / 2)) - 2) - CamX, (Player.Y - (Player.H / 2)) - CamY, 2, Player.H, DrawCollisionsColor);
         }
+		G.SetDrawAlpha(0xFF);
     }
 }
 

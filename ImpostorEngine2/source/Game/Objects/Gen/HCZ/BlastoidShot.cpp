@@ -30,5 +30,11 @@ void BlastoidShot::Update() {
 
 void BlastoidShot::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Timer, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

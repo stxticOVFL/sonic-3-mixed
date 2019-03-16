@@ -126,9 +126,6 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-	if (DrawCollisions) {
-		G.DrawRectangle(X - CamX, Y - CamY + 64 - outY - lastOutY2, W, H, DrawCollisionsColor);
-	} else {
         G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
 
         if (Timer > 0) {
@@ -136,5 +133,10 @@ event Render(CamX:int, CamY:int) {
         } else if (Near) {
             G.DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
         }
-    }
+    
+					if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+		}
 }

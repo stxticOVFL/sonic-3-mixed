@@ -54,5 +54,11 @@ int LargeFan::OnLeaveScreen() {
 
 void LargeFan::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY + OutY, 0, IE_NOFLIP);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

@@ -46,5 +46,11 @@ void MGZSwingingPlatform::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 7, 0, InitialX - CamX + ((Math::cosHex(Scene->Frame + SubType) * 64) >> 16), InitialY - CamY - ((Math::sinHex(Scene->Frame + SubType) * 64) >> 16), 0, IE_NOFLIP);
     G->DrawSprite(Sprite, 7, 1, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
     G->DrawSprite(Sprite, 7, 2, LastX - CamX, LastY - CamY, 0, IE_NOFLIP);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

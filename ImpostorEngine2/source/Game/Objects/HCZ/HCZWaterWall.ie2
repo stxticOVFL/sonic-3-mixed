@@ -12,9 +12,11 @@ event Create() {
     this.VisualLayer = 1;
 }
 event Render(CamX:int, CamY:int) {
-	if (DrawCollisions) {
-		G.DrawRectangle(this.X - this.W / 2 - CamX, this.Y - this.H / 2 - CamY, this.W, this.H, 0xFFFFFF);
-	}
+				if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+		}
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

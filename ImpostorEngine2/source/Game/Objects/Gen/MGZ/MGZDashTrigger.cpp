@@ -30,6 +30,12 @@ void MGZDashTrigger::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 1, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     if (Rev & 1) G->DrawSprite(Sprite, 1, 4, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 
 int MGZDashTrigger::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

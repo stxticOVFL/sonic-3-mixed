@@ -117,18 +117,19 @@ void HandLauncher::Update() {
 }
 
 void HandLauncher::Render(int CamX, int CamY) {
-    if (DrawCollisions) {
-        G->DrawRectangle(X - CamX, Y - CamY + 64 - outY - lastOutY2, W, H, DrawCollisionsColor);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
+    if (Timer > 0) {
+        G->DrawSprite(Sprite, 6, 0, X - CamX, Y - CamY + 68 - outY - lastOutY2, 0, IE_NOFLIP);
     }
-    else {
-        G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
-        if (Timer > 0) {
-            G->DrawSprite(Sprite, 6, 0, X - CamX, Y - CamY + 68 - outY - lastOutY2, 0, IE_NOFLIP);
-        }
-        else if (Near) {
-            G->DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
-        }
+    else if (Near) {
+        G->DrawSprite(Sprite, 5, 0, X - CamX, Y - CamY + 64 - outY - lastOutY2, 0, IE_NOFLIP);
+    }
 
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
     }
+
     }
 

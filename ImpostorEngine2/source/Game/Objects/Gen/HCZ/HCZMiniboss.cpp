@@ -215,5 +215,11 @@ void HCZMiniboss::Render(int CamX, int CamY) {
     DrawRocket(RocketTurn + 0x20, 0xE0, IE_NOFLIP, -1, CamX, CamY);
     DrawRocket(RocketTurn + 0x10, 0xA0, IE_FLIPX, -1, CamX, CamY);
     DrawRocket(RocketTurn + 0x30, 0xA0, IE_FLIPX, -1, CamX, CamY);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

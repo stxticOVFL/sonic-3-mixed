@@ -230,6 +230,12 @@ void FloatingPlatform::Render(int CamX, int CamY) {
     }
     else {
         G->DrawRectangle(nX - CamX - W / 2, nY - CamY - H / 2, W, H, 0xFF0000);
+        if (App->viewObjectCollision) {
+            G->SetDrawAlpha(0x80);
+            G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+            G->SetDrawAlpha(0xFF);
+        }
+
     }
     }
 

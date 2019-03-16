@@ -22,5 +22,11 @@ void Relief::Create() {
 
 void Relief::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 3, 6, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

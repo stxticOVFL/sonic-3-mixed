@@ -237,7 +237,13 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, SubType >= 0x80 ? 0xFF0000 : 0x0000FF);
+    
+	
+					if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, SubType >= 0x80 ? 0xFF0000 : 0x0000FF);
+		G.SetDrawAlpha(0xFF);
+		}
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

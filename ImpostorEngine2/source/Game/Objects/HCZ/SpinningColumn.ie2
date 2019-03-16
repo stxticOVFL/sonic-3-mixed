@@ -103,11 +103,14 @@ event Update() {
 event Render(CamX:int, CamY:int) {
     var nX:int = LastX;
     var nY:int = Y;
-	if (DrawCollisions) {
-		G.DrawRectangle(nX - CamX, nY - CamY, W, H, DrawCollisionsColor);
-	} else {
+
         G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, nX - CamX, nY - CamY, 0, IE_NOFLIP);
-    }
+    
+					if (App.viewObjectCollision) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+		}
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {

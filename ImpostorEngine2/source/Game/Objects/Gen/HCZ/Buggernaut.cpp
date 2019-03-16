@@ -116,5 +116,11 @@ void Buggernaut::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 3, 0, (ChildSubX >> 16) - CamX, (ChildSubY >> 16) - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
     G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
     G->DrawSprite(Sprite, 2, 0, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
+    }
+
     }
 

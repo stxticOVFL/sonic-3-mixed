@@ -120,18 +120,19 @@ void Fan::Update() {
 }
 
 void Fan::Render(int CamX, int CamY) {
-    if (DrawCollisions) {
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, (X) - CamX, (Y) - CamY - 28, 0, IE_NOFLIP);
+    if (HaveBlock) {
+        G->DrawSprite(Scene->TileSprite, 0, 0x8B, 8 + X - CamX + (-16), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
+        G->DrawSprite(Scene->TileSprite, 0, 0x8C, 8 + X - CamX + (0), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
+        G->DrawSprite(Scene->TileSprite, 0, 0x8D, 8 + X - CamX + (-16), 8 + Y - CamY + (0), 0, IE_NOFLIP);
+        G->DrawSprite(Scene->TileSprite, 0, 0x8E, 8 + X - CamX + (0), 8 + Y - CamY + (0), 0, IE_NOFLIP);
     }
-    else {
-        G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, (X) - CamX, (Y) - CamY - 28, 0, IE_NOFLIP);
-        if (HaveBlock) {
-            G->DrawSprite(Scene->TileSprite, 0, 0x8B, 8 + X - CamX + (-16), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
-            G->DrawSprite(Scene->TileSprite, 0, 0x8C, 8 + X - CamX + (0), 8 + Y - CamY + (-16), 0, IE_NOFLIP);
-            G->DrawSprite(Scene->TileSprite, 0, 0x8D, 8 + X - CamX + (-16), 8 + Y - CamY + (0), 0, IE_NOFLIP);
-            G->DrawSprite(Scene->TileSprite, 0, 0x8E, 8 + X - CamX + (0), 8 + Y - CamY + (0), 0, IE_NOFLIP);
-        }
 
+    if (App->viewObjectCollision) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
     }
+
     }
 

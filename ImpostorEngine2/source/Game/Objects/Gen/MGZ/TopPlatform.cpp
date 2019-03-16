@@ -112,6 +112,7 @@ void TopPlatform::MoveSprite() {
 void TopPlatform::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
     if (DrawCollisions) {
+        G->SetDrawAlpha(0x80);
         G->DrawRectangle((X - (W / 2)) - CamX, (Y + (H / 2)) - CamY, W, 2, DrawCollisionsColor);
         G->DrawRectangle((X - (W / 2)) - CamX, (Y - (H / 2)) - CamY, W, 2, DrawCollisionsColor);
         G->DrawRectangle((X + (W / 2)) - CamX, (Y - (H / 2)) - CamY, 2, H, DrawCollisionsColor);
@@ -122,6 +123,7 @@ void TopPlatform::Render(int CamX, int CamY) {
             G->DrawRectangle(((Player->X - (Player->W / 2)) - 2) - CamX, (Player->Y - (Player->H / 2)) - CamY, 2, Player->H, DrawCollisionsColor);
         }
 
+        G->SetDrawAlpha(0xFF);
     }
 
     }
