@@ -56,6 +56,10 @@ void Spring::Create() {
         H = 28;
     }
 
+    if (Rotation == 0) {
+        X += 1;
+    }
+
 }
 
 void Spring::Update() {

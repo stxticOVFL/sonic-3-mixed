@@ -66,6 +66,11 @@ event Create() {
         W = 28;
         H = 28;
     }
+	
+	if (Rotation == 0)
+	{
+		X+=1;
+	}
 }
 
 event Update() {

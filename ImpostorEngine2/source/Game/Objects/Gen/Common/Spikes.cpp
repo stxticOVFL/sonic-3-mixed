@@ -61,10 +61,12 @@ void Spikes::Update() {
             if (In) {
                 X += Math::sinHex(Rotation) >> 13;
                 Y += Math::cosHex(Rotation) >> 13;
+                Y += 1;
             }
             else {
                 X -= Math::sinHex(Rotation) >> 13;
                 Y -= Math::cosHex(Rotation) >> 13;
+                Y -= 1;
             }
         }
 

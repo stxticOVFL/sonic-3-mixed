@@ -243,12 +243,7 @@ void RideVine::Render(int CamX, int CamY) {
                 nY += Math::cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) - 4) / 8;
-                if (DrawCollisions) {
-                    G->DrawRectangle(nX - CamX, nY - CamY, W / 2, H / 2, DrawCollisionsColor);
-                }
-                else {
-                    G->DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
-                }
+                G->DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
             }
         }
         else {
@@ -263,12 +258,7 @@ void RideVine::Render(int CamX, int CamY) {
                 nY += Math::cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) + 4) / 8;
-                if (DrawCollisions) {
-                    G->DrawRectangle(nX - CamX, nY - CamY, W / 2, H / 2, DrawCollisionsColor);
-                }
-                else {
-                    G->DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
-                }
+                G->DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
             }
         }
     }

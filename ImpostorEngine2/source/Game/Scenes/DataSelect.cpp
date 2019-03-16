@@ -84,6 +84,8 @@ const char* LevelLabels[20] = {
 
 bool GoBack = false;
 
+bool PhantomSavefileStates[36];
+
 PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 	App = app;
 	G = g;
@@ -749,23 +751,27 @@ PUBLIC void Scene_DataSelect::Render() {
 		int pf = PartnerFlag;
 		if (i != (selected + (12 * Mode)) || SaveGame::Savefiles[i].State > 0)
 		{
+			if (!PhantomSavefileStates[i] && SaveGame::Savefiles[i].State <= 0)
+			{
+				pf = SaveGame::Savefiles[i].PartnerFlag = 0xFF;
+			}
+			PhantomSavefileStates[i] = true;
 			cf = SaveGame::Savefiles[i].CharacterFlag;
 			pf = SaveGame::Savefiles[i].PartnerFlag;
 		}
-
 
 		//if we have a buddy
 		if (pf != 0xFF)
 		{
 			//Partner Shadow
-			G->DrawSprite(SaveSelectSprite, 20, pf, myX + 100 / 2 + 4, myY + 90 + 4, 0, IE_FLIPX);
+			G->DrawSprite(SaveSelectSprite, 20, pf, myX + 110 / 2 + 4, myY + 85 + 4, 0, IE_FLIPX);
 			//Main Character Shadow
-			G->DrawSprite(SaveSelectSprite, 20, cf, myX + 70 / 2 + 4, myY + 80 + 4, 0, 0);
+			G->DrawSprite(SaveSelectSprite, 20, cf, myX + 40 / 2 + 4, myY + 85 + 4, 0, 0);
 
 			//Partner Character
-			G->DrawSprite(SaveSelectSprite, 19, pf, myX + 100 / 2, myY + 90, 0, IE_FLIPX);
+			G->DrawSprite(SaveSelectSprite, 19, pf, myX + 110 / 2, myY + 85, 0, IE_FLIPX);
 			//Main Character
-			G->DrawSprite(SaveSelectSprite, 19, cf, myX + 70 / 2, myY + 80, 0, 0);
+			G->DrawSprite(SaveSelectSprite, 19, cf, myX + 40 / 2, myY + 85, 0, 0);
 		}
 		else //no buddy
 		{

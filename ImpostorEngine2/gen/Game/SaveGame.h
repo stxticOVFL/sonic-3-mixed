@@ -18,7 +18,7 @@ public:
     uint8_t  State;
     uint8_t  Mode;
     uint16_t CharacterFlag;
-    uint16_t PartnerFlag;
+    uint16_t PartnerFlag = 0xFF;
     uint8_t  Shield;
     uint8_t  BlueRing;
     uint8_t  LastZoneID;

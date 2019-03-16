@@ -3844,6 +3844,15 @@ PUBLIC void LevelScene::Update() {
 			}
 		}
 
+		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
+		{
+			if (!Players[1]->OnScreen && Players[0]->Action == ActionType::LookUp)
+			{
+				Players[1]->X = Players[0]->X;
+				Players[1]->Y = CameraY - 20;
+			}
+		}
+
 		if (!maxLayer) {
 			// We're in debug mode! Time to have fun!
 
@@ -4960,6 +4969,11 @@ PUBLIC void LevelScene::RenderRings() {
 			else {
 				G->DrawSprite(ItemsSprite, 7, RingAnimationFrame >> 10, obj.X - CameraX, oY - CameraY, 0, IE_NOFLIP);
 			}
+			if (App->viewObjectCollision) {
+				G->SetDrawAlpha(0x80);
+				G->DrawRectangle(obj.X - (16 / 2) - CameraX, obj.Y - (16 / 2) - CameraY, 16, 16, 0x49ED80);
+				G->SetDrawAlpha(0xFF);
+			}
 		}
 	}
 }
@@ -4973,7 +4987,7 @@ PUBLIC void LevelScene::RenderHUD() {
 	int STR_X = 16 - (HUDAnim >> 1);
 
 	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
-	if (!SaveGame::CurrentMode == 1) {
+	if (SaveGame::CurrentMode == 0) {
 		GlobalDisplaySprite = GlobalDisplaySpriteS3K;
 	}
 	// Score
