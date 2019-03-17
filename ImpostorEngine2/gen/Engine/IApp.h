@@ -14,26 +14,25 @@ class IGraphics;
 class IInput;
 class IAudio;
 class IINI;
-class IAchievement;
 
 #include <Utils/Standard.h>
 #include <Engine/IGraphics.h>
+#include <Engine/IAchievement.h>
 #include <Engine/IInput.h>
 #include <Engine/IAudio.h>
 #include <Engine/IScene.h>
 #include <Engine/IMath.h>
 #include <Engine/IINI.h>
-#include <Engine/IAchievement.h>
 
 class IApp {
 public:
-    IScene* 			Scene = NULL;
-    IScene* 			NextScene = NULL;
-    IGraphics* 		G = NULL;
-    IInput* 			Input = NULL;
-    IAudio* 			Audio = NULL;
-    IINI* 			Settings = NULL;
-    IAchievement*       Achievements = NULL;
+    IScene* Scene = NULL;
+    IScene* NextScene = NULL;
+    IGraphics* G = NULL;
+    IInput* Input = NULL;
+    IAudio* Audio = NULL;
+    IINI* Settings = NULL;
+    IAchievement* Achievements = NULL;
     float FPS = 60.f;
     bool Running = false;
     int WIDTH = 424;
