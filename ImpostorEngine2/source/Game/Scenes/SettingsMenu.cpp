@@ -446,6 +446,7 @@ PUBLIC void Scene_SettingsMenu::Render() {
 			App->Settings->GetInteger("audio", i == 0 ? "global" : (i == 1 ? "music" : "sfx"), &fl);
 		}
 		RenderTypes(SettingsType[selected * 3 + i], 64 + (selected * 32) + i * 32, fl, i);
+		G->DrawSprite(SettingsSprite, 4, selected * 3 + i, 76, 64 + (selected * 32) + i * 32 - 14, 0, IE_NOFLIP);
 	}
 }
 
