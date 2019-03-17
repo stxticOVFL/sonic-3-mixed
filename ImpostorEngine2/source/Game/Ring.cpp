@@ -27,6 +27,9 @@ public:
 PUBLIC Ring::Ring() {
     Timer = 0xFF;
     CleanupInactiveObject = true;
+	AttributeValue av;
+	av.value_uint8 = 5;
+	attributes.emplace("five", av);
 }
 
 PUBLIC void Ring::Update() {
@@ -120,6 +123,8 @@ PUBLIC void Ring::Update() {
             CurrentFrame = Scene->RingAnimationFrame >> 2;
         }
     }
+
+	printf("Atrribute: %d", GetAttribute("five")->value_uint8);
 
     MyX += XSpeed;
     MyY += YSpeed;

@@ -7,6 +7,8 @@
 #define CONSTRUCTER
 #endif
 
+#include <map>
+
 class LevelScene;
 class IPlayer;
 
@@ -412,6 +414,31 @@ bool operator!=(const int& left, const CollideSide& right);
 
 class Object;
 
+struct colour {
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+};
+
+struct position {
+	float X;
+	float Y;
+};
+
+struct AttributeValue {
+	uint8_t value_uint8;
+	uint16_t value_uint16;
+	uint32_t value_uint32;
+	int8_t value_int8;
+	int16_t value_int16;
+	int32_t value_int32;
+	char* value_string;
+	int32_t value_var;
+	bool value_bool;
+	colour value_colour;
+	position value_position;
+};
+
 class Object {
 public:
     IApp* App;
@@ -421,6 +448,8 @@ public:
     ISprite* Sprite = NULL;
     
     void *Parent = NULL;
+
+	std::map<std::string, AttributeValue> attributes;
 
     uint32_t  InitialX;
     uint32_t  InitialY;
@@ -529,6 +558,11 @@ public:
     
     virtual Object* GetObjectParent();
     virtual bool IsParentFloatingPlatform();
+
+	virtual AttributeValue* GetAttribute(char* name)
+	{
+		return &attributes[name];
+	}
 
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)
