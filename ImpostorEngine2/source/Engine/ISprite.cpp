@@ -510,17 +510,21 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     } else {
         gif = gd_open_gif(res);
         
-        if (!FindGIF(Filename.c_str())) {
-            std::pair<const char *, gd_GIF *> pair(Filename.c_str(), gd_copy_gif(gif));
-            GifMap.insert(pair);
-        }
-        
-        gd_get_frame(gif);
+		if (gif != NULL) {
+			if (!FindGIF(Filename.c_str())) {
+				std::pair<const char *, gd_GIF *> pair(Filename.c_str(), gd_copy_gif(gif));
+				GifMap.insert(pair);
+			}
 
-        gd_render_frame(gif, Data);
+			gd_get_frame(gif);
+
+			gd_render_frame(gif, Data);
+		}
     }
     
-    gd_close_gif(gif);
+	if (gif != NULL) {
+		gd_close_gif(gif);
+	}
 
     IResources::Close(res);
 

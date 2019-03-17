@@ -409,44 +409,43 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
     if (Act <= 1) {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = CNZObjectsSprite;
-        SpriteMapIDs[0x05] = CNZObjectsSprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = CNZObjectsSprite;
-        SpriteMapIDs[0x0A] = CNZObjectsSprite;
-        SpriteMapIDs[0x0C] = CNZObjectsSprite;
-        SpriteMapIDs[0x0D] = CNZObjectsSprite;
-        SpriteMapIDs[0x0F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x2F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = CNZObjectsSprite;
-        SpriteMapIDs[0x4A] = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x01) = ItemsSprite;
+        SpriteMapIDs.at(0x04) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x05) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x07) = ObjectsSprite;
+    	SpriteMapIDs.at(0x08) = ObjectsSprite;
+        SpriteMapIDs.at(0x09) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0A) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0C) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0D) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x2F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x34) = ObjectsSprite;
+        SpriteMapIDs.at(0x35) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x4A) = CNZObjectsSprite;
 
-    	SpriteMapIDs[0x51] = CNZObjectsSprite;
-        SpriteMapIDs[0xA5] = CNZObjectsSprite;
-    }
-    else {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = CNZObjectsSprite;
-        SpriteMapIDs[0x05] = CNZObjectsSprite;
-        SpriteMapIDs[0x06] = CNZObjectsSprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = CNZObjectsSprite;
-        SpriteMapIDs[0x0A] = CNZObjectsSprite;
-        SpriteMapIDs[0x0C] = CNZObjectsSprite;
-        SpriteMapIDs[0x0D] = CNZObjectsSprite;
-        SpriteMapIDs[0x0F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x2F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = CNZObjectsSprite;
-		SpriteMapIDs[0x35] = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x51) = CNZObjectsSprite;
+        SpriteMapIDs.at(0xA5) = CNZObjectsSprite;
+    } else {
+    	SpriteMapIDs.at(0x01) = ItemsSprite;
+        SpriteMapIDs.at(0x04) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x05) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x06) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x07) = ObjectsSprite;
+    	SpriteMapIDs.at(0x08) = ObjectsSprite;
+        SpriteMapIDs.at(0x09) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0A) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0C) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0D) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x2F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x34) = ObjectsSprite;
+        SpriteMapIDs.at(0x35) = CNZObjectsSprite;
+		SpriteMapIDs.at(0x35) = CNZObjectsSprite;
 
-    	SpriteMapIDs[0x51] = CNZObjectsSprite;
-        SpriteMapIDs[0x8C] = CNZObjectsSprite;
-        SpriteMapIDs[0xA5] = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x51) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x8C) = CNZObjectsSprite;
+        SpriteMapIDs.at(0xA5) = CNZObjectsSprite;
     }
 }
 

@@ -24,7 +24,6 @@ class ISprite;
 class ISprite;
 class ISprite;
 class ISprite;
-class ISprite;
 class IModel;
 class ISound;
 
@@ -130,7 +129,7 @@ public:
     int16_t*    DebugObjectIDList;
     int32_t     DebugObjectIDCount = 0;
     unordered_map<string, ISprite*> SpriteMap;
-    ISprite**   SpriteMapIDs;
+    std::vector<ISprite *> SpriteMapIDs;
     static std::vector<ISprite *> SpriteBinMapIDs;
     int         ZoneID = 0;
     int         Act = 1;
