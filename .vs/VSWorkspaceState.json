@@ -2,17 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\ImpostorEngine2",
-    "\\ImpostorEngine2\\MSVC2017",
-    "\\ImpostorEngine2\\MSVC2017\\External",
-    "\\ImpostorEngine2\\MSVC2017\\External\\Debug",
-    "\\ImpostorEngine2\\MSVC2017\\External\\Debug\\include",
-    "\\ImpostorEngine2\\MSVC2017\\External\\Debug\\include\\SDL2",
-    "\\ImpostorEngine2\\MSVC2017\\External\\Release",
-    "\\ImpostorEngine2\\MSVC2017\\External\\Release\\include",
-    "\\ImpostorEngine2\\MSVC2017\\External\\Release\\include\\SDL2",
-    "\\makeheaders",
-    "\\makeheaders\\MSVC2013",
-    "\\makeheaders\\MSVC2013\\makeheaders"
+    "\\ImpostorEngine2\\tools",
+    "\\ImpostorEngine2\\tools\\Ogg.framework",
+    "\\ImpostorEngine2\\tools\\Ogg.framework\\Headers"
   ],
   "PreviewInSolutionExplorer": false
 }

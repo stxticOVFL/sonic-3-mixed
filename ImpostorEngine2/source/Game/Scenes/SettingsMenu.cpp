@@ -136,6 +136,46 @@ PUBLIC void Scene_SettingsMenu::Update() {
 
 		if (!FadeIn) {
 			if (GoBack) {
+				int f, w, h, s;
+				for (int i = 0; i < 4; i++) {
+					char name[11];
+					if (i == 0)
+						sprintf(name, "fullscreen");
+					if (i == 1)
+						sprintf(name, "width");
+					if (i == 2)
+						sprintf(name, "height");
+					if (i == 3)
+						sprintf(name, "shader");
+					int buffer;
+					Settings->GetInteger("display", name, &buffer);
+					if (i == 0)
+						Settings->GetInteger("display", name, &f);
+					if (i == 1)
+						Settings->GetInteger("display", name, &w);
+					if (i == 2)
+						Settings->GetInteger("display", name, &h);
+					if (i == 3)
+						Settings->GetInteger("display", name, &s);
+					App->Print(0, "%x %x", &buffer, buffer);
+					App->Settings->SetInteger("display", name, buffer);
+				}
+				App->Settings->Write("config.ini");
+				//how does this work but not when its used
+				//what fucking wizardry is c++
+				//int s[4];
+				//for (int i = 0; i < 4; i++)
+					//s[i] = *p[i];
+				App->Print(0, "%d %d %d %d", f, w, h, s);
+				SDL_SetWindowFullscreen(G->Window, f);
+				if (s == 0)
+					SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+				else
+					SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+				G->WindowWidth = w;
+				G->WindowHeight = h;
+				
+				//someone else can fix i have no fucking idea what happened*/
 				Scene_MainMenu* NextScene = new Scene_MainMenu(App, G);
 				NextScene->MenuSprite = MenuSprite;
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
@@ -310,39 +350,28 @@ PUBLIC void Scene_SettingsMenu::HandleChange(bool up) {
 		if (subselected == 0) {
 			Settings->GetBool("display", "fullscreen", &full);
 			Settings->SetBool("display", "fullscreen", !full);
-			App->Settings->Write("config.ini");
 		}
 		if (subselected == 1) {
 			int cW, cH, mult;
 			Settings->GetInteger("display", "width", &cW);
 			Settings->GetInteger("display", "height", &cH);
 			mult = sqrt((cW * cH) / (424 * 240)) + up ? 1 : -1; //current / internal
-			App->Print(0, "%d", mult);
+			App->Print(0, "%d %d %d", mult, cW, cH);
 			if (mult >= 5 || mult <= 0)
 				return; //no less than 1, no more than 4
 			Settings->SetInteger("display", "width", 424 * mult);
 			Settings->SetInteger("display", "height", 240 * mult);
-			App->Settings->Write("config.ini");
 		}
 		if (subselected == 2) {
-			int crt, sharp, current;
-			Settings->GetInteger("display", "sharp", &sharp);
-			Settings->GetInteger("display", "crt", &crt);
-			current = crt + sharp;
+			int current;
+			Settings->GetInteger("display", "shader", &current);
 			current += up ? 1 : -1;
-			App->Print(0, "%d", current);
+			App->Print(0, "%d %d %d", current);
 			if (current > 2)
 				current = 0;
 			if (current < 0)
 				current = 2;
-			App->Print(0, "%d", current);
-			Settings->SetInteger("display", "sharp", current / 2);
-			App->Settings->Write("config.ini");
-			if (current / 2 == 1)
-				Settings->SetInteger("display", "crt", (current + 1) % 2);
-			else 
-				Settings->SetInteger("display", "crt", 0);
-			App->Settings->Write("config.ini");
+			Settings->SetInteger("display", "shader", current);
 		}
 	}
 	if (selected == 1) {
@@ -361,7 +390,6 @@ PUBLIC void Scene_SettingsMenu::HandleChange(bool up) {
 		if (current > 100)
 			current = 100;
 		App->Settings->SetInteger("audio", name, current);
-		App->Settings->Write("config.ini");
 	}
 }
 
@@ -409,10 +437,9 @@ PUBLIC void Scene_SettingsMenu::Render() {
 				fl = sqrt(mult);
 			}
 			if (i == 2) {
-				int crt = 0;
-				App->Settings->GetInteger("display", "sharp", &fl);
-				App->Settings->GetInteger("display", "crt", &crt);
-				fl = fl + crt;
+				//int crt = 0;
+				App->Settings->GetInteger("display", "shader", &fl);
+				//fl = fl + crt;
 			}	
 		}
 		if (selected == 1) {

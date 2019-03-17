@@ -146,7 +146,7 @@ PUBLIC IApp::IApp() {
             desH = HEIGHT * 3;
     	#endif
     }
-	Settings->GetInteger("display", "sharp", &isSharp);
+	Settings->GetInteger("display", "shader", &isSharp);
 	G->SetDisplay(desW, desH, isSharp);
     SDL_SetWindowTitle(G->Window, "Sonic 3'Mixed");
 	int full = 0;

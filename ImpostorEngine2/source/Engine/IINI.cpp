@@ -18,6 +18,8 @@ public:
 #endif
 
 #include <Engine/IINI.h>
+#include <algorithm>
+#include <vector>
 
 PUBLIC IINI::IINI(const char* filename) {
     char buf[120];
@@ -183,9 +185,12 @@ PUBLIC void IINI::Write(const char* filename) {
 		return;
 	}
 
-	fprintf(f, "[%s]\n", "display");
+	//below is the virgin rdc way
+	//enter if you dare
+	/*fprintf(f, "[%s]\n", "display");
 	for (int i = 0; i < count; i++)
 	{
+		IApp::Print(0, item[i].section);
 		if (item[i].section[0] == 'd') //fuck you too!
 		{
 			if (item[i].section[1] == 'i') //fuck you too!
@@ -237,6 +242,31 @@ PUBLIC void IINI::Write(const char* filename) {
 			{
 				fprintf(f, "%s = %s\n", item[i].key, item[i].value);
 			}
+		}
+	}//*/
+
+	//the chad rmg way that took like 3 hours
+	char sections[10][60]; //extend when needed
+	char past[60];
+	int k = 0;
+	for (int i = 0; i < count; i++) {
+		if (std::find(std::begin(sections), std::end(sections), item[i].section) == std::end(sections) && strcmp(past, item[i].section) != 0) {
+			strcpy(past, item[i].section);
+			//past = item[i].section;
+			strcpy(sections[k], item[i].section);
+			IApp::Print(0, "%s %s %s", sections[k], item[i].section, past);
+			k++;
+		}
+	}
+
+	if (strcmp(sections[0], sections[k - 1]) == 0)
+		k--;
+
+	for (int i = 0; i < k; i++) {
+		fprintf(f, "[%s]\n", sections[i]);
+		for (int j = 0; j < count; j++) {
+			if (strcmp(sections[i], item[j].section) == 0)
+				fprintf(f, "%s = %s\n", item[j].key, item[j].value);
 		}
 	}
 

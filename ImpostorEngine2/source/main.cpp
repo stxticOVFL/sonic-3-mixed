@@ -45,22 +45,7 @@
         Inited = true;
     }
 	void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey) {
-		if (!Inited) return;
-
-		DiscordRichPresence discordPresence;
-		memset(&discordPresence, 0, sizeof(discordPresence));
-		discordPresence.details = header;
-		discordPresence.state = state;
-		if (imgkey)
-			discordPresence.largeImageKey = imgkey;
-		bool multiplayer = false;
-		if (multiplayer) {
-			//discordPresence.partyId = 0;
-			discordPresence.partySize = 1;
-			discordPresence.partyMax = 4;
-		}
-		discordPresence.instance = 1;
-		Discord_UpdatePresence(&discordPresence);
+		//Discord_UpdatePresence(header, state, imgkey, false);
 	}
     void Discord_UpdatePresence(const char* header, const char* state, const char* imgkey, bool time) {
         if (!Inited) return;
