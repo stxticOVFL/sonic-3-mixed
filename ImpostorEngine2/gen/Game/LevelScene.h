@@ -130,8 +130,9 @@ public:
     int         ObjectPathSwitcherCount = 0;
     int16_t*    DebugObjectIDList;
     int32_t     DebugObjectIDCount = 0;
-    unordered_map<string, ISprite*> SpriteMap;
+    std::unordered_map<std::string, ISprite*> SpriteMap;
     std::vector<ISprite *> SpriteMapIDs;
+    static std::unordered_map<std::string, size_t> SpriteBinMap;
     static std::vector<ISprite *> SpriteBinMapIDs;
     int         ZoneID = 0;
     int         Act = 1;
@@ -275,6 +276,8 @@ public:
     virtual void RenderEverything();
     virtual void Render();
     virtual void Cleanup();
+protected:
+    static bool FindSpriteBin(std::string filename);
 };
 
 #endif /* LEVELSCENE_H */

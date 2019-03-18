@@ -124,9 +124,10 @@ public:
 	int16_t*    DebugObjectIDList;
 	int32_t     DebugObjectIDCount = 0;
 
-	unordered_map<string, ISprite*> SpriteMap;
+	std::unordered_map<std::string, ISprite*> SpriteMap;
 	std::vector<ISprite *> SpriteMapIDs;
 
+    static std::unordered_map<std::string, size_t> SpriteBinMap;
     static std::vector<ISprite *> SpriteBinMapIDs;
 
 	int         ZoneID = 0;
@@ -258,8 +259,8 @@ const char* ObjectName[347];
 
 int BlankTile = 0;
 
+std::unordered_map<std::string, size_t> LevelScene::SpriteBinMap;
 std::vector<ISprite *> LevelScene::SpriteBinMapIDs;
-
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
@@ -393,6 +394,7 @@ int MusicVolume = 0xFF;
 PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop) {
 	PlayMusic(path, loop, 0xFF);
 }
+
 PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop, int vol) {
 	Sound::SoundBank[0] = new ISound(path, true);
 	Sound::Audio->LoopPoint[0] = loop;
@@ -471,25 +473,54 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     if (IApp::GlobalApp == NULL) {
         return 0xFFFFFFFF;
     }
-    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
-    SpriteBinMapIDs.push_back(BinSprite);
-    SpriteBinMapIDs.shrink_to_fit();
-    return SpriteBinMapIDs.size() - 1;
+    
+    if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
+        return SpriteBinMap.find(std::string(Filename))->second;
+    } else {
+        ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
+        SpriteBinMapIDs.push_back(BinSprite);
+        SpriteBinMapIDs.shrink_to_fit();
+        
+        if (!FindSpriteBin(std::string(Filename))) {
+            std::pair<std::string, size_t> pair(std::string(Filename), SpriteBinMapIDs.size() - 1);
+            SpriteBinMap.insert(pair);
+        }
+        return SpriteBinMapIDs.size() - 1;
+    }
 };
 
 PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
     if (IApp::GlobalApp == NULL) {
         return NULL;
     }
-    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
-    SpriteBinMapIDs.push_back(BinSprite);
-    SpriteBinMapIDs.shrink_to_fit();
-    return BinSprite;
+
+    if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
+        return GetSpriteFromBinIndex(SpriteBinMap.find(std::string(Filename))->second);
+    } else {
+        ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
+        SpriteBinMapIDs.push_back(BinSprite);
+        SpriteBinMapIDs.shrink_to_fit();
+        
+        if (!FindSpriteBin(std::string(Filename))) {
+            std::pair<std::string, size_t> pair(std::string(Filename), SpriteBinMapIDs.size() - 1);
+            SpriteBinMap.insert(pair);
+        }
+        return BinSprite;
+    }
 };
 
 PUBLIC STATIC ISprite* LevelScene::GetSpriteFromBinIndex(size_t index) {
     return SpriteBinMapIDs.at(index);
 };
+
+PROTECTED STATIC bool LevelScene::FindSpriteBin(std::string filename) {
+    auto it = SpriteBinMap.find(filename);
+    if (it == SpriteBinMap.end()) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 PUBLIC VIRTUAL void LevelScene::LoadData() {
 	/// Init
@@ -6168,6 +6199,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	free(AnimatedSprite1Props);
 	free(SoundBank);
 	SpriteMapIDs.clear();
+    SpriteBinMap.clear();
     SpriteBinMapIDs.clear();
 
 	CLEANUP(TileSprite);
