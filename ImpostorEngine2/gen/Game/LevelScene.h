@@ -59,6 +59,8 @@ public:
     int32_t     CameraDeltaY = 0;
     int         CameraAutoScrollX = 0;
     int         CameraAutoScrollY = 0;
+    size_t      ScreenXWrapValue = -1;
+    size_t      ScreenYWrapValue = -1;
     int         Frame = 0;
     int         Timer = 0;
     int         Score = 0;
