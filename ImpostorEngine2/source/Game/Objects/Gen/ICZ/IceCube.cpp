@@ -6,7 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER IceCube::IceCube() {
-    BinIndex = LevelScene::LoadSpriteBin("Ice Cube.bin");
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Ice Cube.bin");
 }
 
 void IceCube::Create() {

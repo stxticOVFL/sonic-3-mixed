@@ -16,7 +16,7 @@ var StoredY:int[7];
 var StoredFrame:int[7]; //most likely will go unused when fill functionality happens
 
 event Freezer() : CONSTRUCTER {
-    //BinIndex = LevelScene.LoadSpriteBin("Freezer.bin");
+    //BinIndex = LevelScene.LoadSpriteBin("ICZ/Freezer.bin");
 }
 
 event Create() {

@@ -6,7 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER StarPointer::StarPointer() {
-    BinIndex = LevelScene::LoadSpriteBin("Star Pointer.bin");
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Star Pointer.bin");
 }
 
 void StarPointer::Create() {

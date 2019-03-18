@@ -7,7 +7,7 @@ var FallTimer:int;
 var ParticleAnim:int;
 
 event Stalagtite() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("Wall and Column.bin");
+    BinIndex = LevelScene.LoadSpriteBin("ICZ/Wall and Column.bin");
 }
 
 event Create() {

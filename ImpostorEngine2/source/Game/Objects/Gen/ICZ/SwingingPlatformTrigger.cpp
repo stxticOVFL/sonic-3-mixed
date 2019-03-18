@@ -5,7 +5,7 @@
 
 typedef IMath Math;
 
-CONSTRUCTER SwingingPlatformTrigger::HarmfulIce() {
+CONSTRUCTER SwingingPlatformTrigger::SwingingPlatformTrigger() {
 }
 
 void SwingingPlatformTrigger::Create() {

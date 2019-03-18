@@ -1,7 +1,7 @@
 var Player:IPlayer;
 var SwingPlatform:Object;
 
-event HarmfulIce() : CONSTRUCTER {
+event SwingingPlatformTrigger() : CONSTRUCTER {
     //load none, is invisible
 }
 

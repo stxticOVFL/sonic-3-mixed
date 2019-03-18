@@ -1,5 +1,5 @@
 event SegmentedColumnStub() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("Wall and Column.bin"); //TODO give seperate bin/animation
+    BinIndex = LevelScene.LoadSpriteBin("ICZ/Wall and Column.bin"); //TODO give seperate bin/animation
 }
 
 

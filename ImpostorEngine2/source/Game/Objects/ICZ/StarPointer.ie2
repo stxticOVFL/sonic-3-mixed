@@ -9,7 +9,7 @@ var RotAngle:float;
 var TurnSpeed:float;
 
 event StarPointer() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("Star Pointer.bin");
+    BinIndex = LevelScene.LoadSpriteBin("ICZ/Star Pointer.bin");
 }
 
 event Create() {

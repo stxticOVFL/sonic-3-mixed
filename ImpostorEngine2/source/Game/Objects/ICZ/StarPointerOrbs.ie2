@@ -1,5 +1,5 @@
 event StarPointerOrbs() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("Star Pointer.bin");
+    BinIndex = LevelScene.LoadSpriteBin("ICZ/Star Pointer.bin");
 }
 
 

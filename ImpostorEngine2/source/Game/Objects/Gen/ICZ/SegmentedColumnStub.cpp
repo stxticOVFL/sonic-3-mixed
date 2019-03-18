@@ -6,7 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER SegmentedColumnStub::SegmentedColumnStub() {
-    BinIndex = LevelScene::LoadSpriteBin("Wall and Column.bin");
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Wall and Column.bin");
 }
 
 void SegmentedColumnStub::Create() {

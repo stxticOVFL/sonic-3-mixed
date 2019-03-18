@@ -6,7 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER Stalagtite::Stalagtite() {
-    BinIndex = LevelScene::LoadSpriteBin("Wall and Column.bin");
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Wall and Column.bin");
 }
 
 void Stalagtite::Create() {

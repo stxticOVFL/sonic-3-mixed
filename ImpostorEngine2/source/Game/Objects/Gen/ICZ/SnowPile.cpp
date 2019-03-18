@@ -6,7 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER SnowPile::SnowPile() {
-    BinIndex = LevelScene::LoadSpriteBin("Snowpile.bin");
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Snowpile.bin");
 }
 
 void SnowPile::Create() {
