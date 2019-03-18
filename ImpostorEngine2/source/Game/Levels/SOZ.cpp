@@ -35,6 +35,7 @@ PUBLIC Level_SOZ::Level_SOZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_SceneBin = "Stages/SOZ2/Scene.bin";
         Str_TileSprite = "Stages/SOZ2/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/SOZ2/Animated Tiles.gif";
+        ScreenYWrapValue = 0x7FF;
     }
 
     sprintf(LevelName, "SANDOPOLIS");

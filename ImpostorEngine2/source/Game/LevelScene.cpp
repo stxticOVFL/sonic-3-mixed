@@ -36,6 +36,8 @@ public:
 	int32_t     CameraDeltaY = 0;
 	int         CameraAutoScrollX = 0;
 	int         CameraAutoScrollY = 0;
+    size_t      ScreenXWrapValue = -1;
+    size_t      ScreenYWrapValue = -1;
 	int         Frame = 0;
 	int         Timer = 0;
 	int         Score = 0;
@@ -4152,39 +4154,22 @@ PUBLIC void LevelScene::Update() {
                             obj->Y - obj->H / 2 < NoNegativeCamY + App->HEIGHT + 120);
                     }
 
-					if (Data->layers[Data->cameraLayer].IsScrollingVertical) { 
-                        int32_t objWrapCameraY = 0;
-                        //int16_t objWrapY = 0;
+					if (Data->layers[Data->cameraLayer].IsScrollingVertical) {     
+                         
+                         // Reverse Engineered code from Sonic 3 & Knuckles, Ported to our form.
+                         /*
+                         OnScreen |= (
+                                  -1 < (obj->X - CameraX) + obj->W &&
+                                  ((obj->X - CameraX) - obj->W) < 0x140 &&
+                                  ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < (obj->H * 2 + 0xe0));
+              
+                         OnScreen |= (
+                                (((obj->X - CameraX) + obj->W) < 0) ||
+                                (0x13f < ((obj->X - CameraX) - obj->W)) ||
+                                obj->H * 2 + 0xe0 <= ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
+                        */
                         
-                        if (ManiaLevel) {
-                            objWrapCameraY = obj->Y - 4;
-                        } else {
-                            objWrapCameraY = obj->Y + 8;
-                        }
-                        
-                        if (objWrapCameraY - NoNegativeCamY >= 0 && CameraY < 0) {
-                            //App->Print(0, "objWrapCameraY caculation is: %08X", (objWrapCameraY - NoNegativeCamY));
-                            //App->Print(0, "objWrapCameraY is: %04X", objWrapCameraY);
-                            //App->Print(0, "Max Camera Height is: %08X", Data->layers[Data->cameraLayer].Height * 16);
-                            
-                            // TODO: Figure out how to wrap the objects caculation camera around to match ours
-                            // in terms of caculation OR wrap the object caculation Y around to pass the caculations.
-                            int32_t CaculationCameraY = NoNegativeCamY;
-                            
-                            if (obj->VisW > obj->W || obj->VisH > obj->H) {
-                                OnScreen |= (
-                                    obj->X + obj->VisW / 2 >= CameraX - 120 &&
-                                    (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
-                                    obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
-                                    (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
-                            } else {
-                                OnScreen |= (
-                                    obj->X + obj->W / 2 >= CameraX - 120 &&
-                                    (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CaculationCameraY - 120 &&
-                                    obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-                                    (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CaculationCameraY + App->HEIGHT + 120);
-                            }
-                        } else if (obj->VisW > obj->W || obj->VisH > obj->H) {
+                        if (obj->VisW > obj->W || obj->VisH > obj->H) {
                             OnScreen |= (
                                 obj->X + obj->VisW / 2 >= CameraX - 120 &&
                                 (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
