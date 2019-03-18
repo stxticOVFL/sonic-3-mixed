@@ -1,5 +1,10 @@
 object 0xB6;
 
+event IceCube() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Ice Cube.bin");
+}
+
+
 event Create() {
     Active = true;
     Priority = false;

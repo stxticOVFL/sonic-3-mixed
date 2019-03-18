@@ -1,3 +1,7 @@
+event StarPointerOrbs() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Star Pointer.bin");
+}
+
 
 event Create() {
     Active = true;

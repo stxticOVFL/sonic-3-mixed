@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER HarmfulIce::HarmfulIce() {
+    BinIndex = LevelScene::LoadSpriteBin("Harmful Ice.bin");
+}
+
 void HarmfulIce::Create() {
     Enemy::Create();
     Active = true;

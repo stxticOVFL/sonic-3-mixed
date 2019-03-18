@@ -16,6 +16,7 @@ class IceCube: public Object {
 public:    
     
     
+    CONSTRUCTER IceCube();
     void Create();
     void Render(int CamX, int CamY);
     void Break();

@@ -18,6 +18,7 @@ public:
     IPlayer* Player;
     Object* SwingPlatform;
     
+    CONSTRUCTER HarmfulIce();
     void Create();
     void Update();
 };

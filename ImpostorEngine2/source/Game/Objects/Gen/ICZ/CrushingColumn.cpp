@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER CrushingColumn::CrushingColumn() {
+    BinIndex = LevelScene::LoadSpriteBin("Wall and Column.bin");
+}
+
 void CrushingColumn::Create() {
     Object::Create();
     Active = true;

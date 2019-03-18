@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER SnowPile::SnowPile() {
+    BinIndex = LevelScene::LoadSpriteBin("Snowpile.bin");
+}
+
 void SnowPile::Create() {
     Object::Create();
     Active = true;

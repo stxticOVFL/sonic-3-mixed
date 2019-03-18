@@ -8,6 +8,10 @@ var OrbOffsets:float[4];
 var RotAngle:float;
 var TurnSpeed:float;
 
+event StarPointer() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Star Pointer.bin");
+}
+
 event Create() {
     Active = true;
     Priority = false;

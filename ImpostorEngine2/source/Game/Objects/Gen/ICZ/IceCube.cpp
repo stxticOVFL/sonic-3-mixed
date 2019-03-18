@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER IceCube::IceCube() {
+    BinIndex = LevelScene::LoadSpriteBin("Ice Cube.bin");
+}
+
 void IceCube::Create() {
     Object::Create();
     Active = true;

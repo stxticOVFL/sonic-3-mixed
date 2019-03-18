@@ -1,6 +1,10 @@
 object 0xB8;
 subclass Enemy;
 
+event HarmfulIce() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Harmful Ice.bin");
+}
+
 event Create() {
     Active = true;
     Priority = false;

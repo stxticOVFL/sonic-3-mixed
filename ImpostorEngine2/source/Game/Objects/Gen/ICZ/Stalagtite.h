@@ -21,6 +21,7 @@ public:
     int FallTimer;
     int ParticleAnim;
     
+    CONSTRUCTER Stalagtite();
     void Create();
     void Update();
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);

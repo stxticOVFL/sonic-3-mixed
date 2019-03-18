@@ -1,6 +1,10 @@
 var Player:IPlayer;
 var SwingPlatform:Object;
 
+event HarmfulIce() : CONSTRUCTER {
+    //load none, is invisible
+}
+
 event Create() {
     W = 8;
     H = 48;

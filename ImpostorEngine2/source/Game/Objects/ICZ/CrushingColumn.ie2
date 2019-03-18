@@ -6,6 +6,10 @@ var TimerAction:int;
 
 var FloorY:int;
 
+event CrushingColumn() : CONSTRUCTER { 
+    BinIndex = LevelScene.LoadSpriteBin("Wall and Column.bin");
+}
+
 enum PillarType {
     UNKNOWN,
     CEILING_CRUSH,

@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Stalagtite::Stalagtite() {
+    BinIndex = LevelScene::LoadSpriteBin("Wall and Column.bin");
+}
+
 void Stalagtite::Create() {
     Object::Create();
     W = 32;

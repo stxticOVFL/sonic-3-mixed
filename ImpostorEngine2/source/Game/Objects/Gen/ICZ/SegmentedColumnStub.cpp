@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER SegmentedColumnStub::SegmentedColumnStub() {
+    BinIndex = LevelScene::LoadSpriteBin("Wall and Column.bin");
+}
+
 void SegmentedColumnStub::Create() {
     Object::Create();
     W = 64;

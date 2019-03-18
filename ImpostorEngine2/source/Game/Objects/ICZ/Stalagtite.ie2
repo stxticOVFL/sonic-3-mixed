@@ -6,6 +6,10 @@ var Fallen:bool;
 var FallTimer:int;
 var ParticleAnim:int;
 
+event Stalagtite() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Wall and Column.bin");
+}
+
 event Create() {
     W = 32;
     H = 64;

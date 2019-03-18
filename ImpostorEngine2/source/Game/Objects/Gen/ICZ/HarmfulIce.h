@@ -16,6 +16,7 @@ class HarmfulIce: public Enemy {
 public:    
     
     
+    CONSTRUCTER HarmfulIce();
     void Create();
     void Render(int CamX, int CamY);
 };

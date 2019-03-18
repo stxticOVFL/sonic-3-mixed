@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER StarPointer::StarPointer() {
+    BinIndex = LevelScene::LoadSpriteBin("Star Pointer.bin");
+}
+
 void StarPointer::Create() {
     Enemy::Create();
     Active = true;

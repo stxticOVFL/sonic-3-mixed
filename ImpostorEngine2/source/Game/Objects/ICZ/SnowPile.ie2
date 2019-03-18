@@ -1,5 +1,9 @@
 object 0xB9;
 
+event SnowPile() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("Snowpile.bin");
+}
+
 event Create() {
     Active = true;
     Priority = false;
