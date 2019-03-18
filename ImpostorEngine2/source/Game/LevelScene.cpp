@@ -123,7 +123,7 @@ public:
 	int32_t     DebugObjectIDCount = 0;
 
 	unordered_map<string, ISprite*> SpriteMap;
-	ISprite**   SpriteMapIDs;
+	std::vector<ISprite *> SpriteMapIDs;
 
     static std::vector<ISprite *> SpriteBinMapIDs;
 
@@ -251,7 +251,7 @@ public:
 
 #include <Game/SaveGame.h>
 
-#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectPropCount++; ObjectProps.push_back(op); Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
+#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectPropCount++; ObjectProps.push_back(op); Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs.at(ID)) ID--; obj->Sprite = SpriteMapIDs.at(ID); obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
 const char* ObjectName[347];
 
 int BlankTile = 0;
@@ -293,11 +293,17 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	std::memset(Signal, 0, sizeof(Signal));
 
 	Objects.reserve(2000);
+    Objects.assign(2000, NULL);
 	ObjectsSolid.reserve(1000);
+    ObjectsSolid.assign(1000, NULL);
 	ObjectsSpring.reserve(300);
+    ObjectsSpring.assign(300, NULL);
 	ObjectsEnemies.reserve(300);
+    ObjectsEnemies.assign(300, NULL);
 	ObjectsBreakable.reserve(300);
+    ObjectsBreakable.assign(300, NULL);
 	ObjectsPathSwitcher.reserve(300);
+    ObjectsPathSwitcher.assign(300, NULL);
 
 	DebugObjectIDList = (int16_t*)calloc(0xFF, sizeof(int16_t));
 	for (int i = 0; i < 0xFF; i++) {
@@ -322,6 +328,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	ObjectProps.reserve(0x400);
 	RingProps.reserve(0x400);
+    
 	AnimatedSprite0Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
 	AnimatedSprite1Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
 
@@ -329,9 +336,11 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	SoundBank = (ISound**)calloc(0x100, sizeof(ISound*));
 
-	SpriteMapIDs = (ISprite**)calloc(0x400, sizeof(ISprite*));
+	SpriteMapIDs.reserve(0x600);
+    SpriteMapIDs.assign(0x600, NULL);
     
-    SpriteBinMapIDs.reserve(0x400);
+    SpriteBinMapIDs.reserve(0x600);
+    SpriteBinMapIDs.assign(0x600, NULL);
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
@@ -410,14 +419,14 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
-	SpriteMapIDs[0x01] = ItemsSprite;
-	SpriteMapIDs[0x07] = ObjectsSprite;
-	SpriteMapIDs[0x08] = ObjectsSprite;
-	SpriteMapIDs[0x33] = ObjectsSprite;
-	SpriteMapIDs[0x34] = ObjectsSprite; //StarPost
-	SpriteMapIDs[0x81] = ObjectsSprite;
+	SpriteMapIDs.at(0x01) = ItemsSprite;
+	SpriteMapIDs.at(0x07) = ObjectsSprite;
+	SpriteMapIDs.at(0x08) = ObjectsSprite;
+	SpriteMapIDs.at(0x33) = ObjectsSprite;
+	SpriteMapIDs.at(0x34) = ObjectsSprite; // Star Post
+	SpriteMapIDs.at(0x81) = ObjectsSprite;
 
-	SpriteMapIDs[0x408] = ObjectsSprite; //WarpStar
+	SpriteMapIDs.at(0x408) = ObjectsSprite; // Warp Star
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
@@ -472,7 +481,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	uint64_t startTime = SDL_GetTicks();
 	if (!Data) {
 		AlreadyLoaded = false;
-		std::memset(SpriteMapIDs, 0, 0x400);
 
 		FadeAction = FadeActionType::FADEIN;
 		FadeTimerMax = 90;
@@ -2030,9 +2038,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							obj->FlipX = false;
 							obj->FlipY = false;
 							obj->ID = 0;
-							//while (!SpriteMapIDs[ID])
+							//while (!SpriteMapIDs.at(ID))
 								//ID--;
-							//obj->Sprite = SpriteMapIDs[ID];
+							//obj->Sprite = SpriteMapIDs.at(ID);
 
 							if (objHash == 0xBDE7E33AU) {
 								obj->Sprite = ItemsSprite;
@@ -2132,11 +2140,11 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->ID = ID;
 
                         if (obj->BinIndex == 0xFFFFFFFF) {
-                            while (!SpriteMapIDs[ID]) {
+                            while (!SpriteMapIDs.at(ID)) {
                                 ID--;
                             }
 
-                            obj->Sprite = SpriteMapIDs[ID];
+                            obj->Sprite = SpriteMapIDs.at(ID);
                         } else {
                             obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
@@ -3464,11 +3472,11 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 		obj->FlipY = FLIPY == 1;
 		obj->ID = ID;
         if (obj->BinIndex == 0xFFFFFFFF) {
-            while (!SpriteMapIDs[ID]) {
+            while (!SpriteMapIDs.at(ID)) {
                 ID--;
             }
 
-            obj->Sprite = SpriteMapIDs[ID];
+            obj->Sprite = SpriteMapIDs.at(ID);
         } else {
             obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
         }
@@ -3951,11 +3959,11 @@ PUBLIC void LevelScene::Update() {
 						obj->FlipY = 0;
 						obj->ID = objId;
                         if (obj->BinIndex == 0xFFFFFFFF) {
-                            while (!SpriteMapIDs[obj->ID]) {
+                            while (!SpriteMapIDs.at(obj->ID)) {
                                 obj->ID--;
                             }
 
-                            obj->Sprite = SpriteMapIDs[obj->ID];
+                            obj->Sprite = SpriteMapIDs.at(obj->ID);
                         } else {
                             obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
@@ -4033,11 +4041,11 @@ PUBLIC void LevelScene::Update() {
 							obj->FlipY = 0;
 							obj->ID = objId;
                             if (obj->BinIndex == 0xFFFFFFFF) {
-                                while (!SpriteMapIDs[obj->ID]) {
+                                while (!SpriteMapIDs.at(obj->ID)) {
                                     obj->ID--;
                                 }
 
-                                obj->Sprite = SpriteMapIDs[obj->ID];
+                                obj->Sprite = SpriteMapIDs.at(obj->ID);
                             } else {
                                 obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                             }
@@ -6135,7 +6143,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	ObjectCount = 0;
     
 	for (size_t i = 0; i < 0x400; i++) {
-        CLEANUP(SpriteMapIDs[i]);
+        CLEANUP(SpriteMapIDs.at(i));
 	}
     
 	for (size_t i = 0; i < SpriteBinMapIDs.size(); i++) {
@@ -6159,7 +6167,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	free(AnimatedSprite0Props);
 	free(AnimatedSprite1Props);
 	free(SoundBank);
-	free(SpriteMapIDs);
+	SpriteMapIDs.clear();
     SpriteBinMapIDs.clear();
 
 	CLEANUP(TileSprite);

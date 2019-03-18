@@ -17,7 +17,7 @@ public:
 #include <Game/Levels/CNZ.h>
 #include <Game/Levels/FBZ.h>
 
-#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
+#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs.at(ID]) ID--; obj->Sprite = SpriteMapIDs.at(ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
 
 PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
 	ZoneID = 3;
@@ -112,19 +112,19 @@ PUBLIC void Level_MGZ::GoToNextAct() {
 PUBLIC void Level_MGZ::AssignSpriteMapIDs() {
 	LevelScene::AssignSpriteMapIDs();
 
-	SpriteMapIDs[0x0D] = MGZObjectsSprite;
-	SpriteMapIDs[0x0F] = MGZObjectsSprite;
-	SpriteMapIDs[0x2F] = MGZObjectsSprite;
-	SpriteMapIDs[0x51] = MGZObjectsSprite;
-	SpriteMapIDs[0x52] = MGZObjectsSprite;
-	SpriteMapIDs[0x5B] = MGZObjectsSprite;
-	SpriteMapIDs[0x9B] = MGZObjectsSprite;
-	SpriteMapIDs[0x9C] = MGZObjectsSprite;
-	SpriteMapIDs[0x9D] = MGZObjectsSprite;
-	SpriteMapIDs[0x9E] = MGZObjectsSprite;
-	SpriteMapIDs[0x9F] = MGZObjectsSprite;
-	SpriteMapIDs[0xA0] = MGZObjectsSprite;
-	SpriteMapIDs[0xA1] = MGZObjectsSprite;
+	SpriteMapIDs.at(0x0D) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x0F) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x2F) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x51) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x52) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x5B) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x9B) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x9C) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x9D) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x9E) = MGZObjectsSprite;
+	SpriteMapIDs.at(0x9F) = MGZObjectsSprite;
+	SpriteMapIDs.at(0xA0) = MGZObjectsSprite;
+	SpriteMapIDs.at(0xA1) = MGZObjectsSprite;
 }
 
 PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {

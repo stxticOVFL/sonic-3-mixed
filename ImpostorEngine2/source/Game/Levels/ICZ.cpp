@@ -188,33 +188,33 @@ PUBLIC void Level_ICZ::RestartStage(bool doActTransition, bool drawBackground) {
 PUBLIC void Level_ICZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-	SpriteMapIDs[0x01] = ItemsSprite;
-    SpriteMapIDs[0x04] = ICZObjectsSprite;
-    SpriteMapIDs[0x05] = ICZObjectsSprite;
-	SpriteMapIDs[0x07] = ObjectsSprite;
-	SpriteMapIDs[0x08] = ObjectsSprite;
-    SpriteMapIDs[0x09] = ICZObjectsSprite;
-    SpriteMapIDs[0x0A] = ICZObjectsSprite;
-    SpriteMapIDs[0x0C] = ICZObjectsSprite;
-    SpriteMapIDs[0x0D] = ICZObjectsSprite;
-    SpriteMapIDs[0x0F] = ICZObjectsSprite;
-	SpriteMapIDs[0x2F] = ICZObjectsSprite;
+	SpriteMapIDs.at(0x01) = ItemsSprite;
+    SpriteMapIDs.at(0x04) = ICZObjectsSprite;
+    SpriteMapIDs.at(0x05) = ICZObjectsSprite;
+	SpriteMapIDs.at(0x07) = ObjectsSprite;
+	SpriteMapIDs.at(0x08) = ObjectsSprite;
+    SpriteMapIDs.at(0x09) = ICZObjectsSprite;
+    SpriteMapIDs.at(0x0A) = ICZObjectsSprite;
+    SpriteMapIDs.at(0x0C) = ICZObjectsSprite;
+    SpriteMapIDs.at(0x0D) = ICZObjectsSprite;
+    SpriteMapIDs.at(0x0F) = ICZObjectsSprite;
+	SpriteMapIDs.at(0x2F) = ICZObjectsSprite;
 
-	SpriteMapIDs[0x34] = ObjectsSprite;
-    SpriteMapIDs[0x35] = ICZObjectsSprite;
+	SpriteMapIDs.at(0x34) = ObjectsSprite;
+    SpriteMapIDs.at(0x35) = ICZObjectsSprite;
 
-	SpriteMapIDs[0x51] = ICZObjectsSprite;
+	SpriteMapIDs.at(0x51) = ICZObjectsSprite;
 
-	SpriteMapIDs[0xAE] = ICZObjectsSprite;
-	SpriteMapIDs[0xB3] = ICZObjectsSprite;
-	SpriteMapIDs[0xB4] = ICZObjectsSprite;
-	SpriteMapIDs[0xB5] = ICZObjectsSprite;
-	SpriteMapIDs[0xB6] = ICZObjectsSprite;
-	SpriteMapIDs[0xB8] = ICZObjectsSprite;
-	SpriteMapIDs[0xB9] = ICZObjectsSprite;
+	SpriteMapIDs.at(0xAE) = ICZObjectsSprite;
+	SpriteMapIDs.at(0xB3) = ICZObjectsSprite;
+	SpriteMapIDs.at(0xB4) = ICZObjectsSprite;
+	SpriteMapIDs.at(0xB5) = ICZObjectsSprite;
+	SpriteMapIDs.at(0xB6) = ICZObjectsSprite;
+	SpriteMapIDs.at(0xB8) = ICZObjectsSprite;
+	SpriteMapIDs.at(0xB9) = ICZObjectsSprite;
 
-	SpriteMapIDs[0x410] = ICZObjectsSprite;
-	SpriteMapIDs[0x411] = ICZObjectsSprite;
+	SpriteMapIDs.at(0x410) = ICZObjectsSprite;
+	SpriteMapIDs.at(0x411) = ICZObjectsSprite;
 }
 
 PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
