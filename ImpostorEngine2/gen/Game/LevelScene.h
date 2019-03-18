@@ -220,6 +220,8 @@ public:
     void SaveState();
     void LoadState();
     static size_t LoadSpriteBin(const char* Filename);
+    static ISprite* LoadSpriteFromBin(const char* Filename);
+    static ISprite* GetSpriteFromBinIndex(size_t index);
     virtual void LoadData();
     virtual void Init();
     static int LoadStatic(void* data);

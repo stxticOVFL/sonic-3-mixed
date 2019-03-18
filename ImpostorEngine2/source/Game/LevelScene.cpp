@@ -477,6 +477,20 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     return SpriteBinMapIDs.size() - 1;
 };
 
+PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
+    if (IApp::GlobalApp == NULL) {
+        return NULL;
+    }
+    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
+    SpriteBinMapIDs.push_back(BinSprite);
+    SpriteBinMapIDs.shrink_to_fit();
+    return BinSprite;
+};
+
+PUBLIC STATIC ISprite* LevelScene::GetSpriteFromBinIndex(size_t index) {
+    return SpriteBinMapIDs.at(index);
+};
+
 PUBLIC VIRTUAL void LevelScene::LoadData() {
 	/// Init
 	bool AlreadyLoaded = true;
