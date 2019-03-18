@@ -5680,8 +5680,9 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		}
 
 		// Rendering rings
-		if (l == Data->cameraLayer)
+		if (l == Data->cameraLayer) {
 			RenderRings();
+		}
 
 		// Rendering temporary sprites
 		for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {

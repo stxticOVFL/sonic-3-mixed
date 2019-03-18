@@ -22,21 +22,49 @@ void CrushingColumn::Create() {
     Type = SubType;
     State = PillarState::INIT;
     VisualLayer = 1;
-    if (X < 0x3880) FloorY = 0x680;
-    else if (X < 0x3AE0) FloorY = 0x700;
-    else if (X < 0x47D0) FloorY = 0x6E0;
-    else if (X < 0x4880) FloorY = 0x670;
-    else if (X < 0x4D70) FloorY = 0xF8;
-    else if (X < 0x4EF0) FloorY = 0x178;
-    else if (X < 0x4FF0) FloorY = 0x180;
-    else if (X < 0x5100) FloorY = 0x1B8;
-    else if (X < 0x5240) FloorY = 0x400;
-    else if (X < 0x52A0) FloorY = 0x400;
-    else if (X < 0x5F70) FloorY = 0xF8;
-    else if (X < 0x6070) FloorY = 0x178;
-    else if (X < 0x6980) FloorY = 0x300;
+    if (X < 0x3880) {
+        FloorY = 0x680;
+    }
+    else if (X < 0x3AE0) {
+        FloorY = 0x700;
+    }
+    else if (X < 0x47D0) {
+        FloorY = 0x6E0;
+    }
+    else if (X < 0x4880) {
+        FloorY = 0x670;
+    }
+    else if (X < 0x4D70) {
+        FloorY = 0xF8;
+    }
+    else if (X < 0x4EF0) {
+        FloorY = 0x178;
+    }
+    else if (X < 0x4FF0) {
+        FloorY = 0x180;
+    }
+    else if (X < 0x5100) {
+        FloorY = 0x1B8;
+    }
+    else if (X < 0x5240) {
+        FloorY = 0x400;
+    }
+    else if (X < 0x52A0) {
+        FloorY = 0x400;
+    }
+    else if (X < 0x5F70) {
+        FloorY = 0xF8;
+    }
+    else if (X < 0x6070) {
+        FloorY = 0x178;
+    }
+    else if (X < 0x6980) {
+        FloorY = 0x300;
+    }
 
-    if (Type == PillarType::STATIONARY_KNUX_ONLY && Scene->Player->Character != CharacterType::Knuckles) Active = false;
+    if (Type == PillarType::STATIONARY_KNUX_ONLY && Scene->Player->Character != CharacterType::Knuckles) {
+        Active = false;
+    }
 
 }
 
@@ -134,7 +162,7 @@ void CrushingColumn::Render(int CamX, int CamY) {
         G->SetDrawAlpha(0xFF);
     }
 
-    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 
 int CrushingColumn::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

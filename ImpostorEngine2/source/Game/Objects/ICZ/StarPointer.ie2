@@ -53,11 +53,11 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-	G.DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
-	
-		if (DrawCollisions) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0x80);
-	} 
+	}
+    
+    G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 }

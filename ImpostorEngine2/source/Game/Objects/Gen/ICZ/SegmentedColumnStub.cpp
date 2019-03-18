@@ -36,7 +36,9 @@ void SegmentedColumnStub::Break() {
 }
 
 void SegmentedColumnStub::Render(int CamX, int CamY) {
-    if (!Visible) return;
+    if (!Visible) {
+        return;
+    }
 
     if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
@@ -52,7 +54,9 @@ int SegmentedColumnStub::OnBreakVertical(int PlayerID, int HitFrom) {
 }
 
 int SegmentedColumnStub::OnBreakHorizontal(int PlayerID, int HitFrom) {
-    if ((HitFrom & (int)(CollideSide::SIDES)) == 0) return 0;
+    if ((HitFrom & (int)(CollideSide::SIDES)) == 0) {
+        return 0;
+    }
 
     if (Scene->Players[PlayerID]->XSpeed > 0x12) {
         BreakableByRoll = CollideSide::NONE;

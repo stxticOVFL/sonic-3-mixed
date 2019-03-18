@@ -30,7 +30,7 @@ void IceCube::Render(int CamX, int CamY) {
         G->SetDrawAlpha(0x80);
     }
 
-    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 
 void IceCube::Break() {

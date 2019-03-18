@@ -6,7 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER HarmfulIce::HarmfulIce() {
-    BinIndex = LevelScene::LoadSpriteBin("Harmful Ice.bin");
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Harmful Ice.bin");
 }
 
 void HarmfulIce::Create() {
@@ -33,6 +33,6 @@ void HarmfulIce::Render(int CamX, int CamY) {
         G->SetDrawAlpha(0xFF);
     }
 
-    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 
