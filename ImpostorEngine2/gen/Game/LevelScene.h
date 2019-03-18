@@ -277,6 +277,7 @@ public:
     virtual void Render();
     virtual void Cleanup();
 protected:
+    static size_t ResetSpriteBin(const char* Filename);
     static bool FindSpriteBin(std::string filename);
 };
 

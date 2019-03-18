@@ -544,9 +544,14 @@ PROTECTED inline bool ISprite::FindGIF(const char* filename) {
 }
 
 PUBLIC int ISprite::FindAnimation(const char* animname) {
-    for (int a = 0; a < AnimCount; a++)
-        if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name, animname))
-            return a;
+#ifndef NDEBUG
+	assert(this != nullptr);
+#endif
+	for (int a = 0; a < AnimCount; a++) {
+		if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name, animname)) {
+			return a;
+		}
+	}
 
     return -1;
 }

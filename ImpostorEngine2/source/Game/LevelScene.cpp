@@ -475,18 +475,46 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     }
     
     if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
-        return SpriteBinMap.find(std::string(Filename))->second;
+        size_t BinIndex = SpriteBinMap.find(std::string(Filename))->second;
+        // If BinIndex is bigger then SpriteBinMap.size(), Then a clear happened,
+        // And for some reason the SpriteBinMap wasn't also cleared.
+        if (BinIndex > SpriteBinMap.size() || GetSpriteFromBinIndex(BinIndex) == nullptr) {
+            return ResetSpriteBin(Filename);
+        } else {
+            return BinIndex;
+        }
     } else {
         ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
         SpriteBinMapIDs.push_back(BinSprite);
         SpriteBinMapIDs.shrink_to_fit();
+        size_t BinIndex = SpriteBinMapIDs.size() - 1;
         
         if (!FindSpriteBin(std::string(Filename))) {
-            std::pair<std::string, size_t> pair(std::string(Filename), SpriteBinMapIDs.size() - 1);
+            std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
             SpriteBinMap.insert(pair);
         }
-        return SpriteBinMapIDs.size() - 1;
+        return BinIndex;
     }
+};
+
+PROTECTED STATIC size_t LevelScene::ResetSpriteBin(const char* Filename) {
+    if (IApp::GlobalApp == NULL) {
+        return 0xFFFFFFFF;
+    }
+    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
+    SpriteBinMapIDs.push_back(BinSprite);
+    SpriteBinMapIDs.shrink_to_fit();
+    size_t BinIndex = SpriteBinMapIDs.size() - 1;
+    
+    if (!FindSpriteBin(std::string(Filename))) {
+        std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
+        SpriteBinMap.insert(pair);
+    } else {
+        SpriteBinMap.erase(SpriteBinMap.find(std::string(Filename)));
+        std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
+        SpriteBinMap.insert(pair);   
+    }
+    return BinIndex;
 };
 
 PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
@@ -495,14 +523,19 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
     }
 
     if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
-        return GetSpriteFromBinIndex(SpriteBinMap.find(std::string(Filename))->second);
+        ISprite* sprite = SpriteBinMapIDs.at(SpriteBinMap.find(std::string(Filename))->second);
+        if (sprite == nullptr) {
+            sprite = SpriteBinMapIDs.at(ResetSpriteBin(Filename));
+        }
+        return sprite;
     } else {
         ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
         SpriteBinMapIDs.push_back(BinSprite);
         SpriteBinMapIDs.shrink_to_fit();
+        size_t BinIndex = SpriteBinMapIDs.size() - 1;
         
         if (!FindSpriteBin(std::string(Filename))) {
-            std::pair<std::string, size_t> pair(std::string(Filename), SpriteBinMapIDs.size() - 1);
+            std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
             SpriteBinMap.insert(pair);
         }
         return BinSprite;
@@ -2192,7 +2225,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                             }
 
                             obj->Sprite = SpriteMapIDs.at(ID);
-                        } else {
+                        } else if (obj->BinIndex < SpriteBinMapIDs.size()) {
                             obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
                         
@@ -2782,6 +2815,8 @@ PUBLIC void LevelScene::LoadInBackground() {
 }
 
 PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBackground) {
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+
 	if (Sound::SoundBank[0]) {
 		App->Audio->ClearMusic();
 		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
@@ -2899,6 +2934,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	}
 	Objects.erase(Objects.begin() + ObjectCount, Objects.begin() + (ObjectCount + ObjectNewCount));
 	Objects.shrink_to_fit();
+    
 
 	ObjectNewCount = 0;
 
@@ -4011,7 +4047,7 @@ PUBLIC void LevelScene::Update() {
                             }
 
                             obj->Sprite = SpriteMapIDs.at(obj->ID);
-                        } else {
+                        } else if (obj->BinIndex < SpriteBinMapIDs.size()) {
                             obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
 
@@ -4093,7 +4129,7 @@ PUBLIC void LevelScene::Update() {
                                 }
 
                                 obj->Sprite = SpriteMapIDs.at(obj->ID);
-                            } else {
+                            } else if (obj->BinIndex < SpriteBinMapIDs.size()) {
                                 obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                             }
 

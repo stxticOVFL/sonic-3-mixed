@@ -21,7 +21,6 @@ void CrushingColumn::Create() {
     YSpeed = 0;
     Type = SubType;
     State = PillarState::INIT;
-    VisualLayer = 1;
     if (X < 0x3880) {
         FloorY = 0x680;
     }
