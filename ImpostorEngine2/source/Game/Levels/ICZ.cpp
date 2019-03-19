@@ -154,7 +154,7 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_SceneBin = "Stages/ICZ1/Scene.bin";
         Str_TileSprite = "Stages/ICZ1/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/ICZ1/Animated Tiles.gif";
-        ScreenYWrapValue = 0x7FF;
+		ScreenYWrapValue = 0x7FF;
     } else if (Act == 2) {
         //Sound::SoundBank[0] = new ISound("Music/ICZ2.ogg", false);
 		//Sound::Audio->LoopPoint[0] = 0;
@@ -163,7 +163,7 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         Str_SceneBin = "Stages/ICZ2/Scene.bin";
         Str_TileSprite = "Stages/ICZ2/16x16Tiles.gif";
         Str_AnimatedSprites = "Stages/ICZ2/Animated Tiles.gif";
-        ScreenYWrapValue = 0xFFF;
+		ScreenYWrapValue = 0xFFF;
     }
 
     sprintf(LevelName, "ICECAP");
