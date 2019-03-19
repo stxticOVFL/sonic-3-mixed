@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class IResource;
 
@@ -39,6 +40,7 @@ public:
     char* ReadLine();
     char* ReadString();
     char* ReadRSDKString();
+    char* ReadRSDKUnicodeString();
     void WriteByte(unsigned char data);
     void WriteBytes(unsigned char* data, int n);
     void WriteUInt16(unsigned short data);

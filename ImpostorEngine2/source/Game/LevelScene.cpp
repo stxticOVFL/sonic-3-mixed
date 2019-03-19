@@ -466,6 +466,24 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     return SpriteBinMapIDs.size() - 1;
 };
 
+PUBLIC VIRTUAL void LevelScene::CreateAttributeValue(AttributeValue* Attribute)
+{
+	Attribute->value_bool = false;
+	Attribute->value_colour.r = 255;
+	Attribute->value_colour.g = 255;
+	Attribute->value_colour.b = 255;
+	Attribute->value_int16 = 0;
+	Attribute->value_int32 = 0;
+	Attribute->value_int8 = 0;
+	Attribute->value_position.X = 0;
+	Attribute->value_position.Y = 0;
+	Attribute->value_string = "String";
+	Attribute->value_uint16 = 0;
+	Attribute->value_uint32 = 0;
+	Attribute->value_uint8 = 0;
+	Attribute->value_var = 0;
+}
+
 PUBLIC VIRTUAL void LevelScene::LoadData() {
 	/// Init
 	bool AlreadyLoaded = true;
@@ -1816,17 +1834,18 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				//Allocate our types
 				int AttributeCount = reader.ReadByte();
-				int* AttributeTypes = (int*)calloc(AttributeCount, sizeof(int));
+				int AttributeTypes[0x10];
+				AttributeValue attributes[0x10];
 
-				//hold our types
-				AttributeTypes[0] = 9;
-
-				//Allocate Space for our attributes
-				AttributeValue* attributes = (AttributeValue*)calloc(AttributeCount, sizeof(AttributeValue));
+				for (int i = 0; i < 0x10; i++)
+				{
+					AttributeTypes[i] = 0xFF;
+					CreateAttributeValue(&attributes[i]);
+				}
 
 				//Load Attribue Names
 				//Skip 'filter' (it's handled weirdly)
-				for (int n = 1; n < AttributeCount; n++) {
+				for (int n = 1; n < AttributeCount; ++n) {
 					//read our attribute hash into our array
 					for (int n2 = 0; n2 < 16; n2++) {
 						attributes[n].namehash[n2] = reader.ReadByte();
@@ -1840,7 +1859,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				int EntityCount = reader.ReadUInt16();
 
 				//Load all Entities
-				for (int n = 0; n < EntityCount; n++) {
+				for (int n = 0; n < EntityCount; ++n) {
 					//Spawn in our entity
 					Object* obj = GetNewObjectFromCRC32(objHash);
 
@@ -1848,10 +1867,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 					obj->SlotID = reader.ReadUInt16(); //SlotID
 
-					unsigned short X_high = reader.ReadUInt16();
-					short X_low = reader.ReadInt16();
-					unsigned short Y_high = reader.ReadUInt16();
-					short Y_low = reader.ReadInt16();
+					unsigned short X_low = reader.ReadUInt16();
+					short X_high = reader.ReadInt16();
+					unsigned short Y_low = reader.ReadUInt16();
+					short Y_high = reader.ReadInt16();
 
 					obj->X = X_high + ((float)X_low / 0x10000);
 					obj->Y = Y_high + ((float)Y_low / 0x10000);
@@ -1877,22 +1896,23 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							case ATTRIBUTE_BOOL:
 								attributes[a].value_bool = reader.ReadUInt32() != 0;
 							case ATTRIBUTE_COLOR:
-								attributes[a].value_colour.r = reader.ReadByte();
-								attributes[a].value_colour.g = reader.ReadByte();
 								attributes[a].value_colour.b = reader.ReadByte();
+								attributes[a].value_colour.g = reader.ReadByte();
+								attributes[a].value_colour.r = reader.ReadByte();
+								attributes[a].value_colour.a = reader.ReadByte();
 							case ATTRIBUTE_INT32:
 								attributes[a].value_int32 = (int)reader.ReadInt32();
 							case ATTRIBUTE_UINT32:
 								attributes[a].value_uint32 = (unsigned int)reader.ReadUInt32();
 								break;
 							case ATTRIBUTE_STRING:
-								attributes[a].value_string = reader.ReadRSDKString();
+								attributes[a].value_string = reader.ReadRSDKUnicodeString();
 								break;
 							case ATTRIBUTE_POSITION:
-								short pos_X_low = reader.ReadInt16();
-								unsigned short pos_X_high = reader.ReadInt16();
-								short pos_Y_low = reader.ReadInt16();
-								unsigned short pos_Y_high = reader.ReadInt16();
+								short pos_X_high = reader.ReadInt16();
+								unsigned short pos_X_low = reader.ReadInt16();
+								short pos_Y_high = reader.ReadInt16();
+								unsigned short pos_Y_low = reader.ReadInt16();
 
 								//remind me to make it better
 								attributes[a].value_position.X = pos_X_high + ((float)pos_X_low / 0x10000);
@@ -1904,9 +1924,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						}
 					}
 				}
-
-				//Free!
-				free(AttributeTypes);
 			}
 		}
 		// ImpostorEngine2-temp-type Loading

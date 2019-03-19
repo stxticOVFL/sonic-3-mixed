@@ -24,6 +24,7 @@ public:
 
     int WIDTH = 424;
     int HEIGHT = 240;
+	int SCALE = 1;
 
     const bool DEBUG = true;
     const bool DEV = true;
@@ -126,26 +127,32 @@ PUBLIC IApp::IApp() {
         G = new IGLGraphics(this);
     }
 
-    int desW, desH;
+    int desW, desH,scale;
     int isSharp = 1;
-    if (Settings->GetInteger("display", "width", &desW) && Settings->GetInteger("display", "height", &desH)) { }
+    if (Settings->GetInteger("display", "width", &desW) && Settings->GetInteger("display", "height", &desH) && Settings->GetInteger("display", "scale", &scale)) { }
     else {
         #if NX
             desW = 1280;
             desH = 720;
+			scale = 1;
         #elif IOS
             desW = 1138;
             desH = 640;
             isSharp = 0;
+			scale = 1;
         #elif ANDROID
             desW = WIDTH * 3;	
             desH = HEIGHT * 3;
             isSharp = 0;
+			scale = 1;
         #else
             desW = WIDTH * 3;
             desH = HEIGHT * 3;
+			scale = 1;
     	#endif
     }
+	desW *= scale;
+	desH *= scale;
 	Settings->GetInteger("display", "shader", &isSharp);
 	G->SetDisplay(desW, desH, isSharp);
     SDL_SetWindowTitle(G->Window, "Sonic 3'Mixed");

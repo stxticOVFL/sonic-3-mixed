@@ -412,6 +412,7 @@ struct colour {
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
+	uint8_t a;
 };
 struct position {
 	float X;
@@ -419,7 +420,6 @@ struct position {
 };
 struct AttributeValue {
 	char namehash[16];
-	char* name;
 	uint8_t value_uint8;
 	uint16_t value_uint16;
 	uint32_t value_uint32;
