@@ -585,6 +585,9 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\WarpStars.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\BlankObject.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

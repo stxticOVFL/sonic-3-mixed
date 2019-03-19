@@ -8,6 +8,7 @@
 #endif
 
 #include <map>
+#include <Game/ObjectNames.h>
 
 class LevelScene;
 class IPlayer;
@@ -407,25 +408,18 @@ namespace ThremixedIDS {
 	};
 };
 
-bool operator==(const CollideSide& left, const int& right);
-bool operator==(const int& left, const CollideSide& right);
-bool operator!=(const CollideSide& left, const int& right);
-bool operator!=(const int& left, const CollideSide& right);
-
-class Object;
-
 struct colour {
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
 };
-
 struct position {
 	float X;
 	float Y;
 };
-
 struct AttributeValue {
+	char namehash[16];
+	char* name;
 	uint8_t value_uint8;
 	uint16_t value_uint16;
 	uint32_t value_uint32;
@@ -439,6 +433,13 @@ struct AttributeValue {
 	position value_position;
 };
 
+bool operator==(const CollideSide& left, const int& right);
+bool operator==(const int& left, const CollideSide& right);
+bool operator!=(const CollideSide& left, const int& right);
+bool operator!=(const int& left, const CollideSide& right);
+
+class Object;
+
 class Object {
 public:
     IApp* App;
@@ -451,10 +452,12 @@ public:
 
 	std::map<std::string, AttributeValue> attributes;
 
+	//Unused, but may be useful to store
+	unsigned short SlotID;
+
     uint32_t  InitialX;
     uint32_t  InitialY;
     uint32_t* InitialValues;
-	int*      Attributes = NULL;
 
     int32_t  SubX = 0;
     int32_t  SubY = 0;
@@ -561,7 +564,10 @@ public:
 
 	virtual AttributeValue* GetAttribute(char* name)
 	{
-		return &attributes[name];
+		MD5 md5 = MD5(name);
+
+		string hash = md5.hexdigest();
+		return &attributes[hash];
 	}
 
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
