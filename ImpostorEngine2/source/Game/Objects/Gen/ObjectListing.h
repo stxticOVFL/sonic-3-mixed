@@ -1,6 +1,7 @@
 #ifndef OBJECTLISTING_H
 #define OBJECTLISTING_H
 
+#include "Common/Ring.h"			// 2EA61FD6
 #include "Common/Monitor.h"			// BDE7E33A
 #include "AIZ/HollowTree.h"			// 1E5BFA5F
 #include "Common/CollapsingPlatform.h"			// 95087B30
@@ -124,6 +125,7 @@
 
 
 enum {
+    Obj_Ring = 0x000,
     Obj_Monitor = 0x001,
     Obj_HollowTree = 0x003,
     Obj_CollapsingPlatform = 0x004,

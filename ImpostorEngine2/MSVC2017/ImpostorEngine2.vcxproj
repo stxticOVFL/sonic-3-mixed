@@ -123,6 +123,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\PlatformOutliner.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Ridge.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Ring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\RollEnforcer.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\SpecialRing.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp" />
@@ -185,7 +186,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Test\Platform.cpp" />
     <ClCompile Include="..\source\Game\Player.cpp" />
-    <ClCompile Include="..\source\Game\Ring.cpp" />
     <ClCompile Include="..\source\Game\SaveGame.cpp" />
     <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp" />
     <ClCompile Include="..\source\Game\Scenes\LevelSelect.cpp" />

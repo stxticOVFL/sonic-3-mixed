@@ -560,7 +560,7 @@ public:
     virtual void MoveWithParent();
     
     virtual Object* GetObjectParent();
-    virtual bool IsParentFloatingPlatform();
+	virtual bool IsParentFloatingPlatform();
 
 	virtual AttributeValue* GetAttribute(char* name)
 	{

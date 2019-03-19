@@ -2,6 +2,9 @@
 
 Object* GetNewObjectFromID(int ID) {
     switch (ID) {
+        case 0x00U:
+            return new Ring();
+            break;
         case 0x01U:
             return new Monitor();
             break;
@@ -371,6 +374,9 @@ Object* GetNewObjectFromID(int ID) {
 
 Object* GetNewObjectFromCRC32(uint32_t Hash) {
     switch (Hash) {
+        case 0x2EA61FD6U:
+            return new Ring();
+            break;
         case 0xBDE7E33AU:
             return new Monitor();
             break;

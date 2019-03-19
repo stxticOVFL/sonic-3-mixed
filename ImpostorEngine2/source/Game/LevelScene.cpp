@@ -1602,6 +1602,114 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileConfig loading", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
 
+	// Loading StageConfig
+	// Stageconfig has to be loaded before the scene file so we get the object names
+	if (Str_StageBin) {
+		App->Print(0, "Loading StageConfig...");
+		IResource* StageBin = IResources::Load(Str_StageBin);
+		if (StageBin) {
+			IStreamer stageReader(StageBin);
+			free(stageReader.ReadByte4()); // Magic CFG0
+			stageReader.ReadByte(); // UseGameObjects
+
+			//Free previous Object Names
+			clearObjectNames();
+			//for (int i = 0; i < ObjectNameList.size(); i++)
+			//{
+				//free(ObjectNameList.at(i));
+			//}
+
+			// Read objects names
+			int object_count = stageReader.ReadByte();
+			for (int i = 0; i < object_count; i++) {
+				SetObjectName(stageReader.ReadRSDKString()); // Object name
+				//free(stageReader.ReadRSDKString());
+			}
+
+			// Read palette
+			TileSprite->PaletteSize = 0x100;
+			int pp = 0;
+			for (int i = 0; i < 8; i++) {
+				// IApp::Print(0, "yup: %X", pp);
+				int ii = 0;
+				int bitmap = stageReader.ReadUInt16();
+
+				int size = 0;
+				for (int col = 0; col < 16; col++) {
+					if ((bitmap & (1 << col)) != 0) {
+						size += 0x10;
+					}
+				}
+				// IApp::Print(0, "size: %X", size);
+				for (int col = 0; col < 16; col++) {
+					if ((bitmap & (1 << col)) != 0) {
+						for (int d = 0; d < 16; d++) {
+							uint8_t R = stageReader.ReadByte();
+							uint8_t G = stageReader.ReadByte();
+							uint8_t B = stageReader.ReadByte();
+
+							if (i == 3) {
+								TileSprite->SetPalette(ii + 0x80, R << 16 | G << 8 | B);
+							}
+							if (i >= 3) {
+								TileSprite->SetPaletteAlt(pp - 0x40, R << 16 | G << 8 | B);
+							}
+
+							pp++;
+							ii++;
+						}
+					}
+				}
+			}
+			TileSprite->UpdatePalette();
+
+			/*
+			FILE* f;
+			f = fopen(IFILE("Stages/HCZ/ManiaPalette.bin"), "wb");
+			fwrite(TileSprite->Palette + 128, 4, 128, f);
+			fwrite(TileSprite->PaletteAlt + 128, 4, 128, f);
+			fwrite(TileSprite->PaletteAlt, 4, 96, f);
+			fclose(f);
+			//*/
+
+			// Read WAV channel's max concurrent play
+			int wavs_count = stageReader.ReadByte();
+			for (int i = 0; i < wavs_count; i++) {
+				free(stageReader.ReadRSDKString()); // WAV name
+				stageReader.ReadByte(); // Max Concurrent Play
+				//App->Print(0, "WAV: '%s' (max: %d)", wav_name, max_concurrent_play);
+			}
+
+			IResources::Close(StageBin);
+		}
+		else {
+			App->Print(2, "StageConfig at '%s' could not be read.", Str_StageBin);
+			exit(1);
+		}
+	}
+	else {
+		if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000) {
+			TileSprite->PaletteSize = 0x80;
+		}
+		TileSprite->SplitPalette();
+		TileSprite->UpdatePalette();
+
+		if (AnimTileSprite) {
+			if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
+				AnimTileSprite->PaletteSize = 0x80;
+			AnimTileSprite->SplitPalette();
+			AnimTileSprite->UpdatePalette();
+		}
+
+		ItemsSprite->SplitPalette();
+		ObjectsSprite->SplitPalette();
+		ExplosionSprite->SplitPalette();
+
+		ItemsSprite->UpdatePalette();
+		ObjectsSprite->UpdatePalette();
+		ExplosionSprite->UpdatePalette();
+	}
+
 	// Loading SceneBin
 	IResource* SceneBin = IResources::Load(Str_SceneBin); // Stages/MSZ/Scene2.bin
 	if (SceneBin) {
@@ -1816,6 +1924,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ObjectHashes[hash] = ObjectNames(i);
 			}
 
+
+			for (int i = 0; i < GetObjectNamesSize(); i++) {
+				string hash = MD5I(string(GetObjectName(i))); //Create a hash for the name
+				ObjectHashes[hash] = GetObjectName(i); //set the name to be assosiated with said hash
+			}
+
 			Data->objectDefinitionCount = reader.ReadByte();
 			for (int i = 0; i < Data->objectDefinitionCount; i++) {
 				char str[16];
@@ -1992,6 +2106,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                     ObjectProps.push_back(op);
 
 					Object* obj = GetNewObjectFromID(ID);
+					if (obj == NULL) obj = new BlankObject();
 					if (obj) {
 						obj->G = G;
 						obj->App = App;
@@ -2250,6 +2365,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						objHash = 0xB3C47F67U;
 					default:
 						Object * obj = GetNewObjectFromCRC32(objHash);
+						if (obj == NULL) obj = new BlankObject();
 						if (obj) {
 							if (objHash != 0xA5066DF4U &&
 								objHash != 0xB3C47F67U) {
@@ -2377,103 +2493,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
-
-	// Loading StageConfig
-	if (Str_StageBin) {
-		App->Print(0, "Loading StageConfig...");
-		IResource* StageBin = IResources::Load(Str_StageBin); // Stages/MSZ/StageConfig.bin
-		if (StageBin) {
-			IStreamer stageReader(StageBin);
-			free(stageReader.ReadByte4()); // Magic CFG0
-			stageReader.ReadByte(); // UseGameObjects
-
-			// Read objects names
-			int object_count = stageReader.ReadByte();
-			for (int i = 0; i < object_count; i++) {
-				free(stageReader.ReadRSDKString()); // Object name
-			}
-
-			// Read palette
-			TileSprite->PaletteSize = 0x100;
-			int pp = 0;
-			for (int i = 0; i < 8; i++) {
-				// IApp::Print(0, "yup: %X", pp);
-				int ii = 0;
-				int bitmap = stageReader.ReadUInt16();
-
-				int size = 0;
-				for (int col = 0; col < 16; col++) {
-					if ((bitmap & (1 << col)) != 0) {
-						size += 0x10;
-					}
-				}
-				// IApp::Print(0, "size: %X", size);
-				for (int col = 0; col < 16; col++) {
-					if ((bitmap & (1 << col)) != 0) {
-						for (int d = 0; d < 16; d++) {
-							uint8_t R = stageReader.ReadByte();
-							uint8_t G = stageReader.ReadByte();
-							uint8_t B = stageReader.ReadByte();
-
-							if (i == 3) {
-								TileSprite->SetPalette(ii + 0x80, R << 16 | G << 8 | B);
-							}
-							if (i >= 3) {
-								TileSprite->SetPaletteAlt(pp - 0x40, R << 16 | G << 8 | B);
-							}
-
-							pp++;
-							ii++;
-						}
-					}
-				}
-			}
-			TileSprite->UpdatePalette();
-
-			/*
-			FILE* f;
-			f = fopen(IFILE("Stages/HCZ/ManiaPalette.bin"), "wb");
-			fwrite(TileSprite->Palette + 128, 4, 128, f);
-			fwrite(TileSprite->PaletteAlt + 128, 4, 128, f);
-			fwrite(TileSprite->PaletteAlt, 4, 96, f);
-			fclose(f);
-			//*/
-
-			// Read WAV channel's max concurrent play
-			int wavs_count = stageReader.ReadByte();
-			for (int i = 0; i < wavs_count; i++) {
-				free(stageReader.ReadRSDKString()); // WAV name
-				stageReader.ReadByte(); // Max Concurrent Play
-				//App->Print(0, "WAV: '%s' (max: %d)", wav_name, max_concurrent_play);
-			}
-
-			IResources::Close(StageBin);
-		} else {
-			App->Print(2, "StageConfig at '%s' could not be read.", Str_StageBin);
-			exit(1);
-		}
-	} else {
-		if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000) {
-			TileSprite->PaletteSize = 0x80;
-        }
-		TileSprite->SplitPalette();
-		TileSprite->UpdatePalette();
-
-		if (AnimTileSprite) {
-			if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
-				AnimTileSprite->PaletteSize = 0x80;
-			AnimTileSprite->SplitPalette();
-			AnimTileSprite->UpdatePalette();
-		}
-
-		ItemsSprite->SplitPalette();
-		ObjectsSprite->SplitPalette();
-		ExplosionSprite->SplitPalette();
-
-		ItemsSprite->UpdatePalette();
-		ObjectsSprite->UpdatePalette();
-		ExplosionSprite->UpdatePalette();
-	}
 
 	startTime = SDL_GetTicks();
 }
@@ -3100,7 +3119,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 }
 
 PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
-	Ring* ring = new Ring();
+	Ring* ring = (Ring*)GetNewObjectFromID(0);
 	ring->X = x;
 	ring->Y = y;
 	ring->MyX = x << 8;
@@ -3778,7 +3797,7 @@ PUBLIC void LevelScene::Update() {
 
 					switch (objId) {
 					case 0x00: // Ring
-						ring = new Ring();
+						ring = (Ring*)GetNewObjectFromID(0);
 						ring->X = Player->DisplayX;
 						ring->Y = Player->DisplayY;
 						ring->MyX = Player->DisplayX << 8;
@@ -3866,7 +3885,7 @@ PUBLIC void LevelScene::Update() {
 
 						switch (objId) {
 						case 0x00:
-							ring = new Ring();
+							ring = (Ring*)GetNewObjectFromID(0);
 							ring->X = Player->DisplayX;
 							ring->Y = Player->DisplayY;
 							ring->MyX = Player->DisplayX << 8;

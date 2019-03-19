@@ -366,7 +366,7 @@ PUBLIC void Scene_DataSelect::Update() {
 				SaveGame::Flush();
 				switch (SaveGame::Savefiles[i].LastZoneID) {
 					LevelScene* ls;
-				/*case 0:
+				case 0:
 					App->NextScene = new Level_AIZ(App, G, 1);
 					break;
 				case 1:
@@ -374,16 +374,16 @@ PUBLIC void Scene_DataSelect::Update() {
 					break;
 				case 2:
 					App->NextScene = new Level_MGZ(App, G, 1);
-					break;*/
+					break;
 				case 3:
 					App->NextScene = new Level_CNZ(App, G, 1);
 					break;
 				case 4:
 					App->NextScene = new Level_ICZ(App, G, 1);
 					break;
-				case 5:
-					App->NextScene = new Level_LBZ(App, G, 1);
-					break;
+				//case 5:
+					//App->NextScene = new Level_LBZ(App, G, 1);
+					//break;
 				case 6:
 					App->NextScene = new Level_MHZ(App, G, 1);
 					break;
