@@ -168,9 +168,6 @@
     <ClCompile Include="..\source\Game\ObjectNames.cpp">
       <Filter>Source Files\Game\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Game\Ring.cpp">
-      <Filter>Source Files\Game\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Game\ScoreGhost.cpp">
       <Filter>Source Files\Game\Objects</Filter>
     </ClCompile>
@@ -583,6 +580,12 @@
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Game\Objects\Gen\Common\WarpStars.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\BlankObject.cpp">
+      <Filter>Source Files\Game\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Ring.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
   </ItemGroup>

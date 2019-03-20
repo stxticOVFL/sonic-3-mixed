@@ -381,9 +381,9 @@ PUBLIC void Scene_DataSelect::Update() {
 				case 4:
 					App->NextScene = new Level_ICZ(App, G, 1);
 					break;
-				case 5:
-					App->NextScene = new Level_LBZ(App, G, 1);
-					break;
+				//case 5:
+					//App->NextScene = new Level_LBZ(App, G, 1);
+					//break;
 				case 6:
 					App->NextScene = new Level_MHZ(App, G, 1);
 					break;

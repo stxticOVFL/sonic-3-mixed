@@ -7,6 +7,9 @@
 #define CONSTRUCTER
 #endif
 
+#include <map>
+#include <Game/ObjectNames.h>
+
 class LevelScene;
 class IPlayer;
 
@@ -405,6 +408,31 @@ namespace ThremixedIDS {
 	};
 };
 
+struct colour {
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
+	uint8_t a;
+};
+struct position {
+	float X;
+	float Y;
+};
+struct AttributeValue {
+	char namehash[16];
+	uint8_t value_uint8;
+	uint16_t value_uint16;
+	uint32_t value_uint32;
+	int8_t value_int8;
+	int16_t value_int16;
+	int32_t value_int32;
+	char* value_string;
+	int32_t value_var;
+	bool value_bool;
+	colour value_colour;
+	position value_position;
+};
+
 bool operator==(const CollideSide& left, const int& right);
 bool operator==(const int& left, const CollideSide& right);
 bool operator!=(const CollideSide& left, const int& right);
@@ -422,10 +450,14 @@ public:
     
     void *Parent = NULL;
 
+	std::map<std::string, AttributeValue> attributes;
+
+	//Unused, but may be useful to store
+	unsigned short SlotID;
+
     uint32_t  InitialX;
     uint32_t  InitialY;
     uint32_t* InitialValues;
-	int*      Attributes = NULL;
 
     int32_t  SubX = 0;
     int32_t  SubY = 0;
@@ -528,7 +560,15 @@ public:
     virtual void MoveWithParent();
     
     virtual Object* GetObjectParent();
-    virtual bool IsParentFloatingPlatform();
+	virtual bool IsParentFloatingPlatform();
+
+	virtual AttributeValue* GetAttribute(char* name)
+	{
+		MD5 md5 = MD5(name);
+
+		string hash = md5.hexdigest();
+		return &attributes[hash];
+	}
 
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)

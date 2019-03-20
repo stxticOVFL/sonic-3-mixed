@@ -13,7 +13,7 @@ void Platform::Create() {
     W = 64;
     H = 64;
     int i = 0;
-    Type = Attributes[0];
+    /*Type = Attributes[0];
     AmplitudeX = Attributes[1];
     Speed = Attributes[2];
     HasTension = Attributes[3];
@@ -21,7 +21,7 @@ void Platform::Create() {
     Collision = Attributes[5];
     TileOriginX = Attributes[6];
     ChildCount = Attributes[7];
-    Angle = Attributes[8];
+    Angle = Attributes[8];*/
     if (Collision == 0) SolidTop = true;
     else Solid = true;
     if (Type == PlatformType::PUSHABLE) {

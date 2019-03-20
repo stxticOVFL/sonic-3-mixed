@@ -2,6 +2,9 @@
 
 Object* GetNewObjectFromID(int ID) {
     switch (ID) {
+        case 0x00U:
+            return new Ring();
+            break;
         case 0x01U:
             return new Monitor();
             break;
@@ -312,51 +315,54 @@ Object* GetNewObjectFromID(int ID) {
             return new BatbrightParts();
             break;
         case 0x406U:
-            return new BubbleAir();
+            return new BlankObject();
             break;
         case 0x407U:
-            return new PlatformOutliner();
+            return new BubbleAir();
             break;
         case 0x408U:
-            return new WarpStars();
+            return new PlatformOutliner();
             break;
         case 0x409U:
-            return new EggCapsuleButton();
+            return new WarpStars();
             break;
         case 0x40AU:
-            return new Signpost();
+            return new EggCapsuleButton();
             break;
         case 0x40BU:
-            return new TensionBridgeChild();
+            return new Signpost();
             break;
         case 0x40CU:
-            return new ViewCollisionToggler();
+            return new TensionBridgeChild();
             break;
         case 0x40DU:
-            return new Motobug();
+            return new ViewCollisionToggler();
             break;
         case 0x40EU:
-            return new MotobugSmoke();
+            return new Motobug();
             break;
         case 0x40FU:
-            return new BlastoidShot();
+            return new MotobugSmoke();
             break;
         case 0x410U:
-            return new TurboSpikerSpike();
+            return new BlastoidShot();
             break;
         case 0x411U:
-            return new SegmentedColumnStub();
+            return new TurboSpikerSpike();
             break;
         case 0x412U:
-            return new StarPointerOrbs();
+            return new SegmentedColumnStub();
             break;
         case 0x413U:
-            return new SwingingPlatformTrigger();
+            return new StarPointerOrbs();
             break;
         case 0x414U:
-            return new ReliefEye();
+            return new SwingingPlatformTrigger();
             break;
         case 0x415U:
+            return new ReliefEye();
+            break;
+        case 0x416U:
             return new Platform();
             break;
 
@@ -368,6 +374,9 @@ Object* GetNewObjectFromID(int ID) {
 
 Object* GetNewObjectFromCRC32(uint32_t Hash) {
     switch (Hash) {
+        case 0x2EA61FD6U:
+            return new Ring();
+            break;
         case 0xBDE7E33AU:
             return new Monitor();
             break;
@@ -676,6 +685,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0xD5ADBFDBU:
             return new BatbrightParts();
+            break;
+        case 0x8D487F51U:
+            return new BlankObject();
             break;
         case 0x11DAFFC3U:
             return new BubbleAir();

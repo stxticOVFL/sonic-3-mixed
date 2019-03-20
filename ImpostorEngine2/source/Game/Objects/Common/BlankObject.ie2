@@ -1,0 +1,10 @@
+
+event Create() {
+    Active = true;
+}
+event Update() {
+
+}
+event Render(CamX:int, CamY:int) {
+
+}
