@@ -676,6 +676,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int fr
 		assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
 	}
 
+	if (sprite == NULL)
+	{
+		IApp::Print(2, "sprite %s is NULL or corrupted!", sprite->Filename);
+	}
+
 	ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 	IGraphics::DrawSprite(sprite, animframe.X, animframe.Y, animframe.W, animframe.H, x, y, angle, flip, animframe.OffX, animframe.OffY);
 }
@@ -689,6 +694,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteSized(ISprite* sprite, int animation, i
 	if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
 		IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
 		assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
+	}
+
+	if (sprite == NULL)
+	{
+		IApp::Print(2, "sprite %s is NULL or corrupted!", sprite->Filename);
 	}
 
 	ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];

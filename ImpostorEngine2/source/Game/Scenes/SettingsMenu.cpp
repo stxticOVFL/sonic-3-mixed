@@ -59,9 +59,9 @@ PUBLIC Scene_SettingsMenu::Scene_SettingsMenu(IApp* app, IGraphics* g) {
 
 	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
 	// Sound::Audio->LoopPoint[0] = 131859;
-	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Menu.ogg")) {
-		Sound::SoundBank[0] = new ISound("Music/Menu.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
+	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Data Select.ogg")) {
+		Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
+		Sound::Audio->LoopPoint[0] = 40308;
 	}
 	Discord_UpdatePresence("Main Menu", "Settings", "icon", false);
 }
@@ -446,7 +446,6 @@ PUBLIC void Scene_SettingsMenu::Render() {
 			App->Settings->GetInteger("audio", i == 0 ? "global" : (i == 1 ? "music" : "sfx"), &fl);
 		}
 		RenderTypes(SettingsType[selected * 3 + i], 64 + (selected * 32) + i * 32, fl, i);
-		G->DrawSprite(SettingsSprite, 4, selected * 3 + i, 76, 64 + (selected * 32) + i * 32 - 14, 0, IE_NOFLIP);
 	}
 }
 

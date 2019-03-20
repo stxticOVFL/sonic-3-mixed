@@ -18,7 +18,7 @@ PUBLIC Level_DEZ::Level_DEZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 7;
     Act = act;
 	sprintf(ZoneLetters, "DEZ");
-	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 0) : (act == 1 ? 76070 : 0), SaveGame::CurrentMode);
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/DEZ/TileConfig1.bin";

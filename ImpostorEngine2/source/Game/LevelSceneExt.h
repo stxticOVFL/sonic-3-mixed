@@ -7,6 +7,9 @@ struct TileCfg {
     unsigned char Collision[16];
     bool HasCollision[16];
     bool IsCeiling;
+	/// <summary>
+	/// Angle, Physics, Momentum, Unknown, Special. In that order.
+	/// </summary>
     unsigned char Config[5];
 };
 struct ScrollingInfo {
