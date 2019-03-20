@@ -135,11 +135,5 @@ int main(int argc, char* args[]) {
 #if MSVC | MACOSX
 		Discord_Shutdown();
 #endif
-
-		_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
-		printf("Was there a leak? %d\n", _CrtDumpMemoryLeaks());
-
-		system("pause");
-
     return 0;
 }

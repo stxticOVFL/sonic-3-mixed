@@ -173,29 +173,6 @@ PUBLIC char* IStreamer::ReadRSDKString() {
     return data;
 }
 
-PUBLIC char* IStreamer::ReadRSDKUnicodeString() {
-	if (res) {
-		unsigned char count = ReadUInt16();
-		char* data = (char*)malloc(count + 1);
-		for (int i = 0; i < count; i++)
-		{
-			data[i] = ReadByte();
-			ReadByte();
-		}
-		//res->Read(data, 1 * count);
-		data[count] = 0;
-		return data;
-	}
-	unsigned char count = *ptr;
-	ptr++;
-	char* data = (char*)malloc(count + 1);
-	memcpy(data, ptr, count);
-	data[count] = 0;
-	ptr += count;
-	distance += count + 1;
-	return data;
-}
-
 /// Write functions
 PUBLIC void IStreamer::WriteByte(unsigned char data) {
     if (res) {
