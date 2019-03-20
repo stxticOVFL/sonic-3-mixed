@@ -43,14 +43,14 @@ public:
     uint BufferID;
     }; 
     struct Animation {
-    char* Name;
+    std::string Name;
     int FrameCount;
     int AnimationSpeed;
     int FrameToLoop;
     int Flags;
     AnimFrame* Frames;
     }; 
-    vector<Animation> Animations;
+    std::vector<Animation> Animations;
     int AnimCount = 0;
     uint32_t TextureID;
     uint32_t PaletteID;
@@ -64,6 +64,7 @@ public:
     ISprite(const char* filename, IApp* app, bool IsPrinting);
     ISprite(const char* filename, IApp* app, int mode);
     ISprite(const char* filename, IApp* app, int mode, bool IsPrinting);
+    ~ISprite();
     void SetTransparentColorIndex(int i);
     void SetPalette(int i, uint32_t col);
     void SetPaletteAlt(int i, uint32_t col);
@@ -80,9 +81,10 @@ public:
     void LoadBin(const char* filename);
     void LoadAnimation(const char* filename);
     void LoadSprite(const char* filename);
+    void LoadSprite(std::string filename);
     int FindAnimation(const char* animname);
     int FindAnimation(const char* animname, const bool dir);
-    void LinkAnimation(vector<Animation> ani);
+    void LinkAnimation(std::vector<Animation> ani);
     void Cleanup();
 
 protected:

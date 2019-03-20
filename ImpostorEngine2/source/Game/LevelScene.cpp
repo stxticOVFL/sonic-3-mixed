@@ -600,7 +600,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		if (!MobileButtonsSprite) {
 			MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
 			ISprite::Animation an;
-			an.Name = NULL;
+			an.Name = "";
 			an.FrameCount = 8;
 			an.Frames = (ISprite::AnimFrame*)calloc(8, sizeof(ISprite::AnimFrame));
 			for (int i = 0; i < 8; i++) {
@@ -1601,7 +1601,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	startTime = SDL_GetTicks();
 
 	ISprite::Animation an;
-	an.Name = NULL;
+	an.Name = "";
 	an.FrameCount = 0x400;
 	an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
 	if (TileSprite->Width > 16) {
@@ -1678,36 +1678,35 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		IStreamer reader(SceneBin);
 		uint32_t mag = reader.ReadUInt32BE(); // magic
 		if (mag == 0x4953434E) {
-			char* LevelTitle = reader.ReadRSDKString();
-			strcpy(LevelNameDiscord, LevelTitle);
-			strcpy(LevelName, LevelTitle);
-			free(LevelTitle);
+			std::string LevelTitle = reader.ReadRSDKString();
+			strcpy(LevelNameDiscord, LevelTitle.c_str());
+			strcpy(LevelName, LevelTitle.c_str());
 
 			IApp::Print(2, "Loading '%s'...", LevelName);
 
-			LevelTitle = LevelName;
-			while (*LevelTitle) {
-				if (*LevelTitle >= 'a' && *LevelTitle >= 'z') {
-					*LevelTitle += 'A' - 'a';
-				} else if (*LevelTitle == ' ') {
-					*LevelTitle = ' ';
+			char *TitleCheck = LevelName;
+			while (*TitleCheck) {
+				if (*TitleCheck >= 'a' && *TitleCheck >= 'z') {
+					*TitleCheck += 'A' - 'a';
+				} else if (*TitleCheck == ' ') {
+					*TitleCheck = ' ';
 				} else {
-					*LevelTitle = ' ';
+					*TitleCheck = ' ';
                 }
 				//IApp::Print(2, "Invalid character '%c' in Level Title.", *LevelTitle);
-				LevelTitle++;
+				TitleCheck++;
 			}
 
 			ZoneID = reader.ReadByte();
 			Act = reader.ReadByte();
 			HUDVisible = reader.ReadByte();
 			HUDAnim = (HUDVisible ^ 1) * 0x100;
-			free(reader.ReadRSDKString()); // Song File
+			reader.ReadRSDKString(); // Song File
 			reader.ReadUInt32(); // Loop Point
 			reader.ReadUInt32(); // Background Color
 		} else {
 			free(reader.ReadBytes(16));
-			free(reader.ReadRSDKString());
+			reader.ReadRSDKString();
 			Data->cameraLayer = reader.ReadByte(); // UnknownByte2
 		}
 
@@ -1715,11 +1714,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		Data->layerCount = reader.ReadByte();
 		for (int i = 0; i < Data->layerCount; i++) {
 			reader.ReadByte(); // Ignored Byte
-			char* Name = reader.ReadRSDKString();
+			std::string Name = reader.ReadRSDKString();
 
-			std::memset(Data->layers[i].Name, 0, 50);
-			strcpy(Data->layers[i].Name, Name);
-			free(Name);
+			//std::memset(Data->layers[i].Name, 0, 50);
+			strcpy(Data->layers[i].Name, Name.c_str());
 
 			Data->layers[i].IsScrollingVertical = reader.ReadByte() == 1 ? true : false;
 			Data->layers[i].Flags = reader.ReadByte();
@@ -2297,7 +2295,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				}
 
 				ISprite::Animation an;
-				an.Name = NULL;
+				an.Name = "";
 				an.FrameCount = framecount;
 				an.Frames = (ISprite::AnimFrame*)malloc(framecount * sizeof(ISprite::AnimFrame));
 				for (int i = 0; i < framecount; i++) {
@@ -2319,7 +2317,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Data->objectDefinitionCount = reader.ReadUInt16();
 			for (int i = 0; i < Data->objectDefinitionCount; i++) {
 				uint32_t objHash = reader.ReadUInt32();
-				const char* name = reader.ReadRSDKString();
+				std::string name = reader.ReadRSDKString();
 
 				int AttributeCount = reader.ReadByte();
 				int* AttributeTypes = (int*)calloc(AttributeCount, sizeof(int));
@@ -2328,7 +2326,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				}
 
 				int ObjCount = reader.ReadUInt16();
-				App->Print(2, "Object Hash: %08X (%s) Count: %d AttributeCount: %d", objHash, name, ObjCount, AttributeCount);
+				App->Print(2, "Object Hash: %08X (%s) Count: %d AttributeCount: %d", objHash, name.c_str(), ObjCount, AttributeCount);
 
 				if (objHash == OBJ_SPRING || objHash == 0xFD8527A9U || objHash == 0xB3C47F67U) {
 					const char* ArgTypes[12] = { "Uint8", "Uint16", "Uint32", "Int8", "Int16", "Int32", "enum", "bool", "string", "position", "unknown", "color" };
@@ -2619,7 +2617,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			// Read objects names
 			int object_count = stageReader.ReadByte();
 			for (int i = 0; i < object_count; i++) {
-				free(stageReader.ReadRSDKString()); // Object name
+				stageReader.ReadRSDKString(); // Object name
 			}
 
 			// Read palette
@@ -2671,7 +2669,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			// Read WAV channel's max concurrent play
 			int wavs_count = stageReader.ReadByte();
 			for (int i = 0; i < wavs_count; i++) {
-				free(stageReader.ReadRSDKString()); // WAV name
+			    stageReader.ReadRSDKString(); // WAV name
 				stageReader.ReadByte(); // Max Concurrent Play
 				//App->Print(0, "WAV: '%s' (max: %d)", wav_name, max_concurrent_play);
 			}

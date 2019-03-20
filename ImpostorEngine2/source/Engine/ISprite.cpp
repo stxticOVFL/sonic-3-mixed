@@ -29,7 +29,7 @@ public:
     };
 
     struct Animation {
-        char* Name;
+        std::string Name;
         int FrameCount;
         int AnimationSpeed;
         int FrameToLoop;
@@ -37,7 +37,7 @@ public:
         AnimFrame* Frames;
     };
 
-    vector<Animation> Animations;
+    std::vector<Animation> Animations;
     int AnimCount = 0;
 
     uint32_t TextureID;
@@ -74,7 +74,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     if (strEndsWith(Filename.c_str(), ".bin")) {
         LoadBin(Filename.c_str());
     } else {
-        LoadSprite(Filename.c_str());
+        LoadSprite(Filename);
     }
 }
 
@@ -90,7 +90,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, bool IsPrinting) {
     if (strEndsWith(Filename.c_str(), ".bin")) {
         LoadBin(Filename.c_str());
     } else {
-        LoadSprite(Filename.c_str());
+        LoadSprite(Filename);
     }
 }
 
@@ -129,7 +129,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
     if (strEndsWith(Filename.c_str(), ".bin")) {
         LoadBin(Filename.c_str());
     } else {
-        LoadSprite(Filename.c_str());
+        LoadSprite(Filename);
     }
 }
 
@@ -169,8 +169,12 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinti
     if (strEndsWith(Filename.c_str(), ".bin")) {
         LoadBin(Filename.c_str());
     } else {
-        LoadSprite(Filename.c_str());
+        LoadSprite(Filename);
     }
+}
+
+PUBLIC ISprite::~ISprite() {
+    Cleanup();
 }
 
 PUBLIC void ISprite::SetTransparentColorIndex(int i) {
@@ -314,17 +318,16 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
 
     int sheets = reader.ReadByte();
     for (int i = 0; i < sheets; i++) {
-        char *sheet = reader.ReadRSDKString();
+        std::string sheet = reader.ReadRSDKString();
         LoadSprite(sheet);
-        free(sheet);
     }
 
     int collisionboxes = reader.ReadByte();
     for (int i = 0; i < collisionboxes; i++) {
-        char* attr = reader.ReadRSDKString();
-        if (!strcmp(attr, "Solid"))
-            solid = true;
-        free(attr);
+        std::string attr = reader.ReadRSDKString();
+		if (!strcmp(attr.c_str(), "Solid")) {
+			solid = true;
+		}
     }
 
     int count = reader.ReadUInt16();
@@ -336,18 +339,20 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
         an.AnimationSpeed = reader.ReadUInt16();
         an.FrameToLoop = reader.ReadByte();
         an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation, 3: Static rotation using extra frames, 4: Unknown (used alot in Mania)
-        an.Frames = (AnimFrame*)malloc(sizeof(AnimFrame) * an.FrameCount);
-		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
+        an.Frames = new AnimFrame[an.FrameCount];
+		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name.c_str(), a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
         for (int i = 0; i < an.FrameCount; i++) {
-            an.Frames[i].SheetNumber = reader.ReadByte();
-            an.Frames[i].Duration = reader.ReadInt16();
+            AnimFrame frame;
+            frame.SheetNumber = reader.ReadByte();
+            frame.Duration = reader.ReadInt16();
             reader.ReadUInt16(); //int ID = reader.ReadUInt16();
-            an.Frames[i].X = reader.ReadUInt16();
-            an.Frames[i].Y = reader.ReadUInt16();
-            an.Frames[i].W = reader.ReadUInt16();
-            an.Frames[i].H = reader.ReadUInt16();
-            an.Frames[i].OffX = reader.ReadInt16(); // Center X
-            an.Frames[i].OffY = reader.ReadInt16(); // Center Y
+            frame.X = reader.ReadUInt16();
+            frame.Y = reader.ReadUInt16();
+            frame.W = reader.ReadUInt16();
+            frame.H = reader.ReadUInt16();
+            frame.OffX = reader.ReadInt16(); // Center X
+            frame.OffY = reader.ReadInt16(); // Center Y
+            an.Frames[i] = frame;
             for (int h = 0; h < collisionboxes; h++) {
                 reader.ReadUInt16(); // Left
                 reader.ReadUInt16(); // Top
@@ -386,15 +391,15 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 
     int sheets = reader.ReadByte();
     for (int i = 0; i < sheets; i++) {
-        free(reader.ReadRSDKString());
+        std::string sheet = reader.ReadRSDKString();
     }
 
     int collisionboxes = reader.ReadByte();
     for (int i = 0; i < collisionboxes; i++) {
-        char* attr = reader.ReadRSDKString();
-        if (!strcmp(attr, "Solid"))
-            solid = true;
-        free(attr);
+        std::string attr = reader.ReadRSDKString();
+		if (!strcmp(attr.c_str(), "Solid")) {
+			solid = true;
+		}
     }
 
     int count = reader.ReadUInt16();
@@ -406,18 +411,20 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
         an.AnimationSpeed = reader.ReadUInt16();
         an.FrameToLoop = reader.ReadByte();
         an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation, 3: Static rotation using extra frames, 4: Unknown (used alot in Mania)
-        an.Frames = (AnimFrame*)malloc(sizeof(AnimFrame) * an.FrameCount);
-		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
+        an.Frames = new AnimFrame[an.FrameCount];
+		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name.c_str(), a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
         for (int i = 0; i < an.FrameCount; i++) {
-            an.Frames[i].SheetNumber = reader.ReadByte();
-            an.Frames[i].Duration = reader.ReadInt16();
+            AnimFrame frame;
+            frame.SheetNumber = reader.ReadByte();
+            frame.Duration = reader.ReadInt16();
             reader.ReadUInt16(); //int ID = reader.ReadUInt16();
-            an.Frames[i].X = reader.ReadUInt16();
-            an.Frames[i].Y = reader.ReadUInt16();
-            an.Frames[i].W = reader.ReadUInt16();
-            an.Frames[i].H = reader.ReadUInt16();
-            an.Frames[i].OffX = reader.ReadInt16(); // Center X
-            an.Frames[i].OffY = reader.ReadInt16(); // Center Y
+            frame.X = reader.ReadUInt16();
+            frame.Y = reader.ReadUInt16();
+            frame.W = reader.ReadUInt16();
+            frame.H = reader.ReadUInt16();
+            frame.OffX = reader.ReadInt16(); // Center X
+            frame.OffY = reader.ReadInt16(); // Center Y
+            an.Frames[i] = frame;
             for (int h = 0; h < collisionboxes; h++) {
                 reader.ReadUInt16(); // Left
                 reader.ReadUInt16(); // Top
@@ -437,6 +444,127 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Stages")) {
         checkedFilename = "Sprites/" + checkedFilename;
         Filename = checkedFilename;
+    }
+    IResource* res = IResources::Load(checkedFilename.c_str(), true);
+    if (res == NULL) {
+        IApp::Print(2, "Couldn't open file '%s'!", checkedFilename.c_str());
+        fflush(stdin);
+        exit(0);
+    }
+    
+    TextureID = 0;
+    PaletteID = 0;
+    PaletteAltID = 0;
+
+    IStreamer stream(res);
+    stream.Skip(6);
+
+    Width = stream.ReadUInt16();
+    Height = stream.ReadUInt16();
+
+    int fdsz = stream.ReadByte();
+    if ((fdsz & 0x80) == 0) {
+        IApp::Print(2, "Could not make sprite using '%s' without a palette!", Filename.c_str());
+        return;
+    }
+
+    if (!LinkedSprite) {
+        if (Palette) {
+            free(Palette);
+            Palette = NULL;
+        }
+        if (PaletteAlt) {
+            free(PaletteAlt);
+            PaletteAlt = NULL;
+        }
+    }
+    
+    Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
+    PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
+
+    assert(Palette != NULL);
+    assert(PaletteAlt != NULL);
+
+    PaletteSize = 1 << ((fdsz & 0x07) + 1);
+    TransparentColorIndex = stream.ReadByte();
+
+    stream.Skip(1);
+
+    for (int i = 0; i < PaletteSize; i++) {
+        uint8_t* color = stream.ReadBytes(3);
+        Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
+        free(color);
+
+        Palette[i] |= 0xFF000000;
+        #if ANDROID
+        Palette[i] = ReverseColor(Palette[i]);
+        #endif
+
+        if (Palette[i] == 0xFF00FF) {
+    		TransparentColorIndex = i;
+        }
+    }
+    IResources::Close(res);
+
+	if (TransparentColorIndex == 0xFF) {
+        TransparentColorIndex = 0;
+    }
+
+    SetTransparentColorIndex(TransparentColorIndex);
+    
+    
+    if (Data != NULL) {
+        free(Data);
+        Data = NULL;
+    }
+
+    Data = (uint8_t*)malloc(Width * Height);
+
+    res = IResources::Load(Filename.c_str(), true);
+
+    gd_GIF* gif = NULL;
+    if (FindGIF(Filename.c_str()) && GifMap.find(Filename.c_str())->second != NULL) {
+        gif = GifMap.find(Filename.c_str())->second;
+        GifMap.find(Filename.c_str())->second = gd_copy_gif(gif);
+        
+        gif->fd = res;
+        gd_get_frame(gif);
+
+        gd_render_frame(gif, Data);
+    } else {
+        gif = gd_open_gif(res);
+        
+		if (gif != NULL) {
+			if (!FindGIF(Filename.c_str())) {
+				std::pair<const char *, gd_GIF *> pair(Filename.c_str(), gd_copy_gif(gif));
+				GifMap.insert(pair);
+			}
+
+			gd_get_frame(gif);
+
+			gd_render_frame(gif, Data);
+		}
+    }
+    
+	if (gif != NULL) {
+		gd_close_gif(gif);
+	}
+
+    IResources::Close(res);
+
+    Paletted = 1;
+    
+    G->MakeTexture(this);
+    UpdatePalette();
+}
+
+PUBLIC void ISprite::LoadSprite(std::string filename) {
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename.c_str(), "Sprites") && !strBeginsWith(filename.c_str(), "Stages")) {
+        std::string newString("Sprites/");
+        newString += filename.c_str();
+        checkedFilename = std::string(newString);
+        Filename = newString;
     }
     IResource* res = IResources::Load(checkedFilename.c_str(), true);
     if (res == NULL) {
@@ -493,7 +621,12 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     }
 
     SetTransparentColorIndex(TransparentColorIndex);
-
+    
+    if (Data != NULL) {
+        free(Data);
+        Data = NULL;
+    }
+    
     Data = (uint8_t*)malloc(Width * Height);
 
     res = IResources::Load(Filename.c_str(), true);
@@ -548,7 +681,7 @@ PUBLIC int ISprite::FindAnimation(const char* animname) {
 	assert(this != nullptr);
 #endif
 	for (int a = 0; a < AnimCount; a++) {
-		if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name, animname)) {
+		if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name.c_str(), animname)) {
 			return a;
 		}
 	}
@@ -558,33 +691,31 @@ PUBLIC int ISprite::FindAnimation(const char* animname) {
 
 PUBLIC int ISprite::FindAnimation(const char* animname, const bool dir) {
     if (dir) return FindAnimation(animname);
-    vector<Animation> Reversed = Animations;
+    std::vector<Animation> Reversed = Animations;
     std::reverse(Reversed.begin(), Reversed.end());
 
     for (int a = 0; a < AnimCount; a++)
-        if (Reversed[a].Name[0] == animname[0] && !strcmp(Reversed[a].Name, animname))
+        if (Reversed[a].Name[0] == animname[0] && !strcmp(Reversed[a].Name.c_str(), animname))
             return a;
 
     return -1;
 }
 
-PUBLIC void ISprite::LinkAnimation(vector<Animation> ani) {
+PUBLIC void ISprite::LinkAnimation(std::vector<Animation> ani) {
     Animations = ani;
 }
 
 PUBLIC void ISprite::Cleanup() {
     for (int a = 0; a < AnimCount; a++) {
-        if (Animations[a].Name) {
-            free(Animations[a].Name);
-            Animations[a].Name = NULL;
-        }
-        if (Animations[a].Frames) {
-            for (int f = 0; f < Animations[a].FrameCount; f++)
-                G->DeleteBufferID(Animations[a].Frames[f].BufferID);
-            free(Animations[a].Frames);
-            Animations[a].Frames = NULL;
+        if (Animations.at(a).Frames) {
+            for (int f = 0; f < Animations.at(a).FrameCount; f++) {
+                G->DeleteBufferID(Animations.at(a).Frames[f].BufferID);
+            }
+            delete Animations.at(a).Frames;
+            Animations.at(a).Frames = NULL;
         }
     }
+	Animations.clear();
     
     if (Data) {
         free(Data);

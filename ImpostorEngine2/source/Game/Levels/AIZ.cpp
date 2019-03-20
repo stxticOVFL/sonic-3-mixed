@@ -847,7 +847,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                 TileSpriteBackup = TileSprite;
 
                 ISprite::Animation an;
-                an.Name = NULL;
+                an.Name = "";
                 an.FrameCount = 0x400;
                 an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
                 for (int i = 0; i < 0x400; i++) {
