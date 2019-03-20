@@ -3,15 +3,10 @@
 
 #include <cstring>
 #include <iostream>
-#include <vector>
 
 const char* ObjectNames(int n);
 uint32_t crc32(char* c, uint32_t len);
 
-void SetObjectName(const char* name);
-const char* GetObjectName(int n);
-int GetObjectNamesSize();
-void clearObjectNames();
 // a small class for calculating MD5 hashes of strings or byte arrays
 // it is not meant to be fast or secure
 //

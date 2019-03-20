@@ -219,7 +219,6 @@ public:
     void SaveState();
     void LoadState();
     static size_t LoadSpriteBin(const char* Filename);
-    virtual void CreateAttributeValue(AttributeValue* Attribute);
     virtual void LoadData();
     virtual void Init();
     static int LoadStatic(void* data);
