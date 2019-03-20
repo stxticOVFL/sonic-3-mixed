@@ -476,7 +476,7 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     
     if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
         size_t BinIndex = SpriteBinMap.find(std::string(Filename))->second;
-        // If BinIndex is bigger then SpriteBinMap.size(), Then a clear happened,
+        // If BinIndex is bigger then SpriteBinMapIDs.size(), Then a clear happened,
         // And for some reason the SpriteBinMap wasn't also cleared.
         if (BinIndex > SpriteBinMap.size() || GetSpriteFromBinIndex(BinIndex) == nullptr) {
             return ResetSpriteBin(Filename);
@@ -2118,7 +2118,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							obj->FlipX = false;
 							obj->FlipY = false;
 							obj->ID = 0;
-							//while (!SpriteMapIDs.at(ID))
+							//while (obj->ID >= SpriteMapIDs.size() || !SpriteMapIDs.at(ID))
 								//ID--;
 							//obj->Sprite = SpriteMapIDs.at(ID);
 
@@ -2220,7 +2220,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->ID = ID;
 
                         if (obj->BinIndex == 0xFFFFFFFF) {
-                            while (!SpriteMapIDs.at(ID)) {
+                            while (obj->ID >= SpriteMapIDs.size() || !SpriteMapIDs.at(ID)) {
                                 ID--;
                             }
 
@@ -4042,7 +4042,7 @@ PUBLIC void LevelScene::Update() {
 						obj->FlipY = 0;
 						obj->ID = objId;
                         if (obj->BinIndex == 0xFFFFFFFF) {
-                            while (!SpriteMapIDs.at(obj->ID)) {
+                            while (obj->ID >= SpriteMapIDs.size() || !SpriteMapIDs.at(obj->ID)) {
                                 obj->ID--;
                             }
 
@@ -4124,7 +4124,7 @@ PUBLIC void LevelScene::Update() {
 							obj->FlipY = 0;
 							obj->ID = objId;
                             if (obj->BinIndex == 0xFFFFFFFF) {
-                                while (!SpriteMapIDs.at(obj->ID)) {
+                                while (obj->ID >= SpriteMapIDs.size() || !SpriteMapIDs.at(obj->ID)) {
                                     obj->ID--;
                                 }
 
@@ -4218,52 +4218,97 @@ PUBLIC void LevelScene::Update() {
 				if (obj->Active) {
 					LastObjectUpdated = obj;
                     
-                    int32_t NoNegativeCamY = CameraY + App->HEIGHT / 2;
+                    //int32_t NoNegativeCamY = CameraY + App->HEIGHT / 2;
 
 					bool OnScreen = false;
-					if (obj->VisW > obj->W || obj->VisH > obj->H) {
-						OnScreen |= (
-							obj->X + obj->VisW >= CameraX - 120 &&
-							obj->Y + obj->VisH >= NoNegativeCamY - 120 &&
-							obj->X - obj->VisW < CameraX + App->WIDTH + 120 &&
-							obj->Y - obj->VisH < NoNegativeCamY + App->HEIGHT + 120);
-                    } else {
-                        OnScreen |= (
-                            obj->X + obj->W / 2 >= CameraX - 120 &&
-                            obj->Y + obj->H / 2 >= NoNegativeCamY - 120 &&
-                            obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-                            obj->Y - obj->H / 2 < NoNegativeCamY + App->HEIGHT + 120);
-                    }
 
 					if (Data->layers[Data->cameraLayer].IsScrollingVertical) {     
                          
                          // Reverse Engineered code from Sonic 3 & Knuckles, Ported to our form.
                          /*
+                         // Original Version
                          OnScreen |= (
                                   -1 < (obj->X - CameraX) + obj->W &&
                                   ((obj->X - CameraX) - obj->W) < 0x140 &&
-                                  ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < (obj->H * 2 + 0xe0));
+                                  ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < ((obj->H * 2) + 0xe0));
+                                  
+                         // Split up version.
+                         OnScreen |= (
+                                (-1 < ((obj->X - CameraX) + obj->W)) &&
+                                (((obj->X - CameraX) - obj->W) < 0x140) &&
+                                ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) &&
+                                (((obj->Y - CameraY) - obj->H & ScreenYWrapValue) < 0xe0));
               
+                         // If this was true in the original, It'd skip the part where the 
+                         // flag for being visible was modified.
                          OnScreen |= (
                                 (((obj->X - CameraX) + obj->W) < 0) ||
                                 (0x13f < ((obj->X - CameraX) - obj->W)) ||
                                 obj->H * 2 + 0xe0 <= ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
+                                
+                         // Modified version to work the reverse of the one above.
+                         OnScreen |= (
+                                (((obj->X - CameraX) + obj->W) >= 0) ||
+                                (0x13f >= ((obj->X - CameraX) - obj->W)) ||
+                                obj->H * 2 + 0xe0 > ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
+                               
+                         OnScreen |= (
+                                (-1 < ((obj->X - 0x80) + obj->W)) &&
+                                (((obj->X - 0x80) - obj->W) < 0x140) &&
+                                (-1 < ((obj->Y - 0x80) + obj->H)) &&
+                                (((obj->Y - 0x80) - obj->H) < 0xe0));
                         */
                         
                         if (obj->VisW > obj->W || obj->VisH > obj->H) {
                             OnScreen |= (
-                                obj->X + obj->VisW / 2 >= CameraX - 120 &&
-                                (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
-                                obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 120 &&
-                                (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
+                                  -1 < (obj->X - CameraX) + obj->VisW &&
+                                  ((obj->X - CameraX) - obj->VisW) < 0x140 &&
+                                  ((obj->Y - CameraY) + obj->VisH & ScreenYWrapValue) < ((obj->VisH * 2) + 0xe0));
+                                
+                            /*
+                            OnScreen |= (
+                                obj->X + obj->VisW / 2 >= CameraX - 0x80 &&
+                                (obj->Y + obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CameraY - 0x80 &&
+                                obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 0x80 &&
+                                (obj->Y - obj->VisH / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
+                            */
+                        } else {   
+                            int16_t Calc = (obj->Y - CameraY) + obj->H & ScreenYWrapValue;
+							if ((obj->Y - CameraY) + obj->H > ScreenYWrapValue) {
+								Calc = (((obj->Y - CameraY) + obj->H) + ScreenYWrapValue) & ScreenYWrapValue;
+							}
+                            OnScreen |= (
+                                  -1 < (obj->X - CameraX) + obj->W &&
+                                  ((obj->X - CameraX) - obj->W) < 0x140 &&
+                                  (Calc < (obj->H * 2) + 0xe0));
+                                  
+                            if (obj->PrintDebuggingInfo) {
+                                App->Print(0, "%04X, %04X", Calc, (obj->H * 2) + 0xe0);
+                            }
+                                
+                            /*
+                            OnScreen |= (
+                                obj->X + obj->W / 2 >= CameraX - 0x80 &&
+                                (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= CameraY - 0x80 &&
+                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
+                                (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
+                            */
+                        }
+					} else {
+                        if (obj->VisW > obj->W || obj->VisH > obj->H) {
+                            OnScreen |= (
+                                obj->X + obj->VisW >= CameraX - 0x80 &&
+                                obj->Y + obj->VisH >= CameraY - 0x80 &&
+                                obj->X - obj->VisW < CameraX + App->WIDTH + 0x80 &&
+                                obj->Y - obj->VisH < CameraY + App->HEIGHT + 0x80);
                         } else {
                             OnScreen |= (
-                                obj->X + obj->W / 2 >= CameraX - 120 &&
-                                (obj->Y + obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) >= NoNegativeCamY - 120 &&
-                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 120 &&
-                                (obj->Y - obj->H / 2) % (Data->layers[Data->cameraLayer].Height * 16) < NoNegativeCamY + App->HEIGHT + 120);
+                                obj->X + obj->W / 2 >= CameraX - 0x80 &&
+                                obj->Y + obj->H / 2 >= CameraY - 0x80 &&
+                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
+                                obj->Y - obj->H / 2 < CameraY + App->HEIGHT + 0x80);
                         }
-					}
+                    }
 
 					if (obj->OnScreen && !OnScreen) {
 						obj->OnScreen = OnScreen;
@@ -6138,7 +6183,7 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 			CameraY = tCamY + Shaking[Frame & 0x3F];
 		}
 		if (!Data->layers[Data->cameraLayer].IsScrollingVertical && CameraY > Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT)
-			CameraY = Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT;
+			CameraY = CameraY & Data->layers[Data->cameraLayer].Height * 16 - App->HEIGHT;
 	}
 
 	if (FadeAction != 0)

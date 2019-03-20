@@ -439,6 +439,8 @@ public:
     
     bool     isDebugModeObject = false;
     bool     isHeldDebugObject = false;
+    
+    bool     PrintDebuggingInfo = false;
 
     int16_t  W = 32;
     int16_t  H = 32;

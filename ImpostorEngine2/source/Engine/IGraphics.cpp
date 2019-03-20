@@ -402,6 +402,7 @@ PUBLIC VIRTUAL void IGraphics::SetDrawAlpha(int a) {
 	else
 		SetPixelFunction = &IGraphics::SetPixelAlpha;
 }
+
 PUBLIC VIRTUAL void IGraphics::SetDrawFunc(int a) {
 	switch (a) {
 		case 1:
