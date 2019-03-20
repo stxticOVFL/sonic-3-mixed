@@ -410,6 +410,7 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
+	SpriteMapIDs[0x00] = ItemsSprite;
 	SpriteMapIDs[0x01] = ItemsSprite;
 	SpriteMapIDs[0x07] = ObjectsSprite;
 	SpriteMapIDs[0x08] = ObjectsSprite;
@@ -1948,10 +1949,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				//Allocate our types
 				int AttributeCount = reader.ReadByte();
-				int AttributeTypes[0x10];
-				AttributeValue attributes[0x10];
+				int* AttributeTypes = (int*)calloc(AttributeCount, sizeof(AttributeValue));
+				AttributeValue* attributes = (AttributeValue*)calloc(AttributeCount, sizeof(AttributeValue));
 
-				for (int i = 0; i < 0x10; i++)
+				for (int n = 1; n < AttributeCount; n++)
 				{
 					AttributeTypes[i] = 0xFF;
 					CreateAttributeValue(&attributes[i]);
@@ -1979,15 +1980,19 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 					if (obj == NULL) obj = new BlankObject();
 
-					obj->SlotID = reader.ReadUInt16(); //SlotID
+					unsigned short SlotID = reader.ReadUInt16(); //SlotID
+					if (obj) obj->SlotID = SlotID;
 
 					unsigned short X_low = reader.ReadUInt16();
 					short X_high = reader.ReadInt16();
 					unsigned short Y_low = reader.ReadUInt16();
 					short Y_high = reader.ReadInt16();
 
-					obj->X = X_high + ((float)X_low / 0x10000);
-					obj->Y = Y_high + ((float)Y_low / 0x10000);
+					if (obj)
+					{
+						obj->X = X_high + ((float)X_low / 0x10000);
+						obj->Y = Y_high + ((float)Y_low / 0x10000);
+					}
 
 					//if we have more than one attribute
 					if (AttributeCount > 1) {
@@ -2034,9 +2039,25 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								break;
 							}
 							string hash = attributes[a].namehash;
-							obj->attributes.emplace(hash, attributes[a]);
+							if (obj) obj->attributes.emplace(hash, attributes[a]);
 						}
 					}
+
+					if (obj)
+					{
+						//Dunno what do to with filter so fuck it for now
+						obj->attributeCount = AttributeCount - 1;
+
+						//Add our object to the scene
+						Objects.push_back(obj);
+						ObjectCount++;
+						ObjectNewCount++;
+					}
+				}
+
+				if (AttributeCount > 1) {
+					free(AttributeTypes);
+					free(attributes);
 				}
 			}
 		}
@@ -3120,6 +3141,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 
 PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
 	Ring* ring = (Ring*)GetNewObjectFromID(0);
+	ring->Create();
 	ring->X = x;
 	ring->Y = y;
 	ring->MyX = x << 8;
@@ -3798,6 +3820,7 @@ PUBLIC void LevelScene::Update() {
 					switch (objId) {
 					case 0x00: // Ring
 						ring = (Ring*)GetNewObjectFromID(0);
+						ring->Create();
 						ring->X = Player->DisplayX;
 						ring->Y = Player->DisplayY;
 						ring->MyX = Player->DisplayX << 8;
@@ -3886,6 +3909,7 @@ PUBLIC void LevelScene::Update() {
 						switch (objId) {
 						case 0x00:
 							ring = (Ring*)GetNewObjectFromID(0);
+							ring->Create();
 							ring->X = Player->DisplayX;
 							ring->Y = Player->DisplayY;
 							ring->MyX = Player->DisplayX << 8;

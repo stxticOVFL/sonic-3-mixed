@@ -11,7 +11,6 @@ void Ring::Create() {
     CleanupInactiveObject = true;
     MyX = 0;
     MyY = 0;
-    Sprite = Scene->ItemsSprite;
     CurrentAnimation = Sprite->FindAnimation("Ring Normal");
     CurrentFrame = 0;
     MagnetizedTo = -1;

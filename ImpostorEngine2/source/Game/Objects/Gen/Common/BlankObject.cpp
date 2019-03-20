@@ -8,6 +8,9 @@ typedef IMath Math;
 void BlankObject::Create() {
     Object::Create();
     Active = true;
+    AttributeValue* AttributeVal;
+    AttributeVal = GetAttribute("zoneName");
+    App->Print(0, AttributeVal->value_string);
 }
 
 void BlankObject::Update() {

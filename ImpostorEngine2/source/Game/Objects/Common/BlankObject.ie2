@@ -1,6 +1,12 @@
 
 event Create() {
     Active = true;
+	
+	var AttributeVal:AttributeValue;
+	
+	AttributeVal = GetAttribute("zoneName");
+	
+	App.Print(0,AttributeVal.value_string);
 }
 event Update() {
 

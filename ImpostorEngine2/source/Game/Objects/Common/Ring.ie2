@@ -13,7 +13,6 @@ event Create() {
 	
 	MyX = 0;
 	MyY = 0;
-	Sprite = Scene.ItemsSprite;
 	CurrentAnimation = Sprite.FindAnimation("Ring Normal");
 	CurrentFrame = 0;
 	MagnetizedTo = -1;
@@ -160,7 +159,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
             ringsparkle.CurrentAnimation = 9;
             ringsparkle.FlipX = false;
             ringsparkle.Active = true;
-            ringsparkle.Sprite = Scene.ItemsSprite;
+            ringsparkle.Sprite = Sprite;
             ringsparkle.X = X + rx[i];
             ringsparkle.Y = Y + ry[i];
             Scene.Explosions.push_back(ringsparkle);
@@ -173,7 +172,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         ringsparkle.CurrentAnimation = 9;
         ringsparkle.FlipX = false;
         ringsparkle.Active = true;
-        ringsparkle.Sprite = Scene.ItemsSprite;
+        ringsparkle.Sprite = Sprite;
         ringsparkle.X = X;
         ringsparkle.Y = Y;
         Scene.Explosions.push_back(ringsparkle);

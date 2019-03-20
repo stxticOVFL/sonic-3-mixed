@@ -157,6 +157,7 @@ PUBLIC void Scene_LevelSelect::Update() {
                     Sound::SoundBank[0] = NULL;
 					if (mode != 2) {
 						switch (selected) {
+							LevelScene* ls;
 						case 0:
 						case 1:
 							App->NextScene = new Level_AIZ(App, G, (selected % 2) + 1);
@@ -177,10 +178,10 @@ PUBLIC void Scene_LevelSelect::Update() {
 						case 9:
 							App->NextScene = new Level_ICZ(App, G, (selected % 2) + 1);
 							break;
-						case 10:
-						case 11:
-							App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
-							break;
+						//case 10:
+						//case 11:
+						//	App->NextScene = new Level_LBZ(App, G, (selected % 2) + 1);
+						//	break;
 						case 12:
 						case 13:
 							App->NextScene = new Level_MHZ(App, G, (selected % 2) + 1);
@@ -211,6 +212,24 @@ PUBLIC void Scene_LevelSelect::Update() {
 							App->NextScene = new Level_TDZ(App, G, (selected % 2) + 1);
 							break;
 						default:
+							//BENT LETTUCE BABY
+							SaveGame::CurrentEmeralds = 0x0000;
+							ls = new LevelScene(App, G);
+							Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
+							Sound::Audio->LoopPoint[0] = 179390 / 4;
+							ls->Str_StageBin = "Stages/MSZ/StageConfig.bin";
+							ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
+							ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
+							ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
+							ls->PlayerStartX = 160;
+							ls->PlayerStartY = 1328;
+							SaveGame::CurrentMode = 1; //Force it to mixed mode
+							App->Print(0, "Poop! %d", SaveGame::CurrentMode);
+							ls->ZoneID = 1;
+							ls->VisualAct = 2;
+							sprintf(ls->LevelName, "BENT LETTUCE");
+							sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
+							App->NextScene = ls;
 							break;
 						}
 						//handle SPECIALS

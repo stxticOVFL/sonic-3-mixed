@@ -451,6 +451,7 @@ public:
     void *Parent = NULL;
 
 	std::map<std::string, AttributeValue> attributes;
+	int		attributeCount = 0;
 
 	//Unused, but may be useful to store
 	unsigned short SlotID;
@@ -564,12 +565,68 @@ public:
 
 	virtual AttributeValue* GetAttribute(char* name)
 	{
+		AttributeValue av;
+		if (attributeCount > 1)
+		{
+			MD5 md5 = MD5(name);
+
+			string hash = md5.hexdigest();
+			if (attributes.find(hash) == attributes.end())
+			{
+				//Not Found :(
+				goto AttribNULL;
+			}
+			else
+			{
+				//yay we found it!
+				return &attributes[hash];
+			}
+		}
+		else
+		{
+			AddAttribute("attribute");
+		}
+	AttribNULL:
+		av.value_bool = false;
+		av.value_colour.r = 255;
+		av.value_colour.g = 255;
+		av.value_colour.b = 255;
+		av.value_int16 = 0;
+		av.value_int32 = 0;
+		av.value_int8 = 0;
+		av.value_position.X = 0;
+		av.value_position.Y = 0;
+		av.value_string = "String";
+		av.value_uint16 = 0;
+		av.value_uint32 = 0;
+		av.value_uint8 = 0;
+		av.value_var = 0;
+		//return &av;
+		return NULL; //Make a default
+	}
+	virtual void AddAttribute(char* name)
+	{
+		AttributeValue av;
+		av.value_bool = false;
+		av.value_colour.r = 255;
+		av.value_colour.g = 255;
+		av.value_colour.b = 255;
+		av.value_int16 = 0;
+		av.value_int32 = 0;
+		av.value_int8 = 0;
+		av.value_position.X = 0;
+		av.value_position.Y = 0;
+		av.value_string = "String";
+		av.value_uint16 = 0;
+		av.value_uint32 = 0;
+		av.value_uint8 = 0;
+		av.value_var = 0;
+
 		MD5 md5 = MD5(name);
 
 		string hash = md5.hexdigest();
-		return &attributes[hash];
+		attributes.emplace(hash, av);
 	}
-
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)
             Frame = startFrame * 0x100;

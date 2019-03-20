@@ -381,9 +381,9 @@ PUBLIC void Scene_DataSelect::Update() {
 				case 4:
 					App->NextScene = new Level_ICZ(App, G, 1);
 					break;
-				//case 5:
-					//App->NextScene = new Level_LBZ(App, G, 1);
-					//break;
+				case 5:
+					App->NextScene = new Level_LBZ(App, G, 1);
+					break;
 				case 6:
 					App->NextScene = new Level_MHZ(App, G, 1);
 					break;
@@ -434,8 +434,7 @@ PUBLIC void Scene_DataSelect::Update() {
 					ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
 					ls->PlayerStartX = 160;
 					ls->PlayerStartY = 1328;
-					//ls->Thremixed = true;
-					SaveGame::CurrentMode = 1; //Set it to mixed mode
+					SaveGame::CurrentMode = 1; //Force it to mixed mode
 					ls->ZoneID = 1;
 					ls->VisualAct = 2;
 					sprintf(ls->LevelName, "BENT LETTUCE");
@@ -443,25 +442,6 @@ PUBLIC void Scene_DataSelect::Update() {
 					App->NextScene = ls;
 					break;
 				}
-
-				/*
-				SaveGame::CurrentEmeralds = 0x0000;
-				LevelScene* ls = new LevelScene(App, G);
-				Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
-				Sound::Audio->LoopPoint[0] = 179390 / 4;
-				ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
-				ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
-				ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
-				ls->PlayerStartX = 160;
-				ls->PlayerStartY = 1328;
-				ls->Thremixed = true;
-				ls->ZoneID = 1;
-				ls->VisualAct = 1;
-				SaveGame::CurrentCharacterFlag = (int)CharacterType::Ray;
-				sprintf(ls->LevelName, "TEST BENIS");
-				sprintf(ls->LevelNameDiscord, "Mirage Saloon");
-				App->NextScene = ls;
-				//*/
 			}
 		}
 	}
