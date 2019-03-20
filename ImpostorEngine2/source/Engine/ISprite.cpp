@@ -21,6 +21,7 @@ public:
         int Y;
         int W;
         int H;
+        int Extra;
         int OffX;
         int OffY;
         int SheetNumber;
@@ -405,13 +406,13 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
         an.FrameCount = reader.ReadUInt16();
         an.AnimationSpeed = reader.ReadUInt16();
         an.FrameToLoop = reader.ReadByte();
-        an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation, 3: Static rotation using extra frames, 4: Unknown (used alot in Mania)
+        an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation (intervals of 45), 3: Static rotation using extra frames, 4: Partial engine rotation (intervals of 90), 5: Partial engine rotation (intervals of like 135)
         an.Frames = (AnimFrame*)malloc(sizeof(AnimFrame) * an.FrameCount);
-		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
+		//IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name, a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
         for (int i = 0; i < an.FrameCount; i++) {
             an.Frames[i].SheetNumber = reader.ReadByte();
             an.Frames[i].Duration = reader.ReadInt16();
-            reader.ReadUInt16(); //int ID = reader.ReadUInt16();
+			an.Frames[i].Extra = reader.ReadUInt16(); //Go nuts bois
             an.Frames[i].X = reader.ReadUInt16();
             an.Frames[i].Y = reader.ReadUInt16();
             an.Frames[i].W = reader.ReadUInt16();
