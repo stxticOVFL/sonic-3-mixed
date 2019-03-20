@@ -28,6 +28,7 @@ int SegmentedColumnStub::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Da
 }
 
 void SegmentedColumnStub::Break() {
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Ice Cube.bin");
     CurrentAnimation = Sprite->FindAnimation("Ice Cube");
     Scene->AddMovingSprite(Sprite, X + 12, Y + 4, CurrentAnimation + 1, 0 + (4 & 3), false, false, 0x1C0, -0x1C0, 0xA0);
     Scene->AddMovingSprite(Sprite, X - 12, Y + 4, CurrentAnimation + 1, 0 + (3 & 3), false, false, -0x1B0, -0x1C0, 0xA0);
