@@ -466,24 +466,6 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     return SpriteBinMapIDs.size() - 1;
 };
 
-PUBLIC VIRTUAL void LevelScene::CreateAttributeValue(AttributeValue* Attribute)
-{
-	Attribute->value_bool = false;
-	Attribute->value_colour.r = 255;
-	Attribute->value_colour.g = 255;
-	Attribute->value_colour.b = 255;
-	Attribute->value_int16 = 0;
-	Attribute->value_int32 = 0;
-	Attribute->value_int8 = 0;
-	Attribute->value_position.X = 0;
-	Attribute->value_position.Y = 0;
-	Attribute->value_string = "String";
-	Attribute->value_uint16 = 0;
-	Attribute->value_uint32 = 0;
-	Attribute->value_uint8 = 0;
-	Attribute->value_var = 0;
-}
-
 PUBLIC VIRTUAL void LevelScene::LoadData() {
 	/// Init
 	bool AlreadyLoaded = true;
@@ -1602,114 +1584,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileConfig loading", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
 
-	// Loading StageConfig
-	// Stageconfig has to be loaded before the scene file so we get the object names
-	if (Str_StageBin) {
-		App->Print(0, "Loading StageConfig...");
-		IResource* StageBin = IResources::Load(Str_StageBin);
-		if (StageBin) {
-			IStreamer stageReader(StageBin);
-			free(stageReader.ReadByte4()); // Magic CFG0
-			stageReader.ReadByte(); // UseGameObjects
-
-			//Free previous Object Names
-			clearObjectNames();
-			//for (int i = 0; i < ObjectNameList.size(); i++)
-			//{
-				//free(ObjectNameList.at(i));
-			//}
-
-			// Read objects names
-			int object_count = stageReader.ReadByte();
-			for (int i = 0; i < object_count; i++) {
-				SetObjectName(stageReader.ReadRSDKString()); // Object name
-				//free(stageReader.ReadRSDKString());
-			}
-
-			// Read palette
-			TileSprite->PaletteSize = 0x100;
-			int pp = 0;
-			for (int i = 0; i < 8; i++) {
-				// IApp::Print(0, "yup: %X", pp);
-				int ii = 0;
-				int bitmap = stageReader.ReadUInt16();
-
-				int size = 0;
-				for (int col = 0; col < 16; col++) {
-					if ((bitmap & (1 << col)) != 0) {
-						size += 0x10;
-					}
-				}
-				// IApp::Print(0, "size: %X", size);
-				for (int col = 0; col < 16; col++) {
-					if ((bitmap & (1 << col)) != 0) {
-						for (int d = 0; d < 16; d++) {
-							uint8_t R = stageReader.ReadByte();
-							uint8_t G = stageReader.ReadByte();
-							uint8_t B = stageReader.ReadByte();
-
-							if (i == 3) {
-								TileSprite->SetPalette(ii + 0x80, R << 16 | G << 8 | B);
-							}
-							if (i >= 3) {
-								TileSprite->SetPaletteAlt(pp - 0x40, R << 16 | G << 8 | B);
-							}
-
-							pp++;
-							ii++;
-						}
-					}
-				}
-			}
-			TileSprite->UpdatePalette();
-
-			/*
-			FILE* f;
-			f = fopen(IFILE("Stages/HCZ/ManiaPalette.bin"), "wb");
-			fwrite(TileSprite->Palette + 128, 4, 128, f);
-			fwrite(TileSprite->PaletteAlt + 128, 4, 128, f);
-			fwrite(TileSprite->PaletteAlt, 4, 96, f);
-			fclose(f);
-			//*/
-
-			// Read WAV channel's max concurrent play
-			int wavs_count = stageReader.ReadByte();
-			for (int i = 0; i < wavs_count; i++) {
-				free(stageReader.ReadRSDKString()); // WAV name
-				stageReader.ReadByte(); // Max Concurrent Play
-				//App->Print(0, "WAV: '%s' (max: %d)", wav_name, max_concurrent_play);
-			}
-
-			IResources::Close(StageBin);
-		}
-		else {
-			App->Print(2, "StageConfig at '%s' could not be read.", Str_StageBin);
-			exit(1);
-		}
-	}
-	else {
-		if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000) {
-			TileSprite->PaletteSize = 0x80;
-		}
-		TileSprite->SplitPalette();
-		TileSprite->UpdatePalette();
-
-		if (AnimTileSprite) {
-			if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
-				AnimTileSprite->PaletteSize = 0x80;
-			AnimTileSprite->SplitPalette();
-			AnimTileSprite->UpdatePalette();
-		}
-
-		ItemsSprite->SplitPalette();
-		ObjectsSprite->SplitPalette();
-		ExplosionSprite->SplitPalette();
-
-		ItemsSprite->UpdatePalette();
-		ObjectsSprite->UpdatePalette();
-		ExplosionSprite->UpdatePalette();
-	}
-
 	// Loading SceneBin
 	IResource* SceneBin = IResources::Load(Str_SceneBin); // Stages/MSZ/Scene2.bin
 	if (SceneBin) {
@@ -1881,6 +1755,19 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			free(Tilesss);
 		}
 
+		/*
+		enum {
+			OBJ_PLAYER = 9,
+			OBJ_RING = 13,
+			OBJ_MONITOR = 14,
+			OBJ_SPRING = 18,
+			OBJ_STARPOLE = 19,
+			OBJ_SPIKES = 21,
+			OBJ_PLANESWITCHER = 22,
+			OBJ_SPECIALRING = 33,
+		};
+		//*/
+
 		enum {
 			OBJ_SPRING = 0x2802B89EU, //
 			OBJ_STARPOST = 0xC8B337E6U, //
@@ -1894,18 +1781,18 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		};
 
 		enum {
-			ATTRIBUTE_UINT8,
-			ATTRIBUTE_UINT16,
-			ATTRIBUTE_UINT32,
-			ATTRIBUTE_INT8,
-			ATTRIBUTE_INT16,
-			ATTRIBUTE_INT32,
-			ATTRIBUTE_VAR,
-			ATTRIBUTE_BOOL,
-			ATTRIBUTE_STRING,
-			ATTRIBUTE_POSITION,
-			ATTRIBUTE_UNKNOWN,
-			ATTRIBUTE_COLOR,
+			ARG_UINT8,
+			ARG_UINT16,
+			ARG_UINT32,
+			ARG_INT8,
+			ARG_INT16,
+			ARG_INT32,
+			ARG_ENUM,
+			ARG_BOOL,
+			ARG_STRING,
+			ARG_POSITION,
+			ARG_UNKNOWN,
+			ARG_COLOR,
 		};
 
 		PlaneSwitchers = (PlaneSwitch*)malloc(113 * sizeof(PlaneSwitch));
@@ -1924,120 +1811,248 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ObjectHashes[hash] = ObjectNames(i);
 			}
 
-
-			for (int i = 0; i < GetObjectNamesSize(); i++) {
-				string hash = MD5I(string(GetObjectName(i))); //Create a hash for the name
-				ObjectHashes[hash] = GetObjectName(i); //set the name to be assosiated with said hash
-			}
-
 			Data->objectDefinitionCount = reader.ReadByte();
 			for (int i = 0; i < Data->objectDefinitionCount; i++) {
 				char str[16];
 				char hashString[33];
 				sprintf(hashString, "%s", "");
 
-				//read the Object's Hash
 				for (int n = 0; n < 16; n++) {
 					str[n] = reader.ReadByte();
 					sprintf(hashString, "%s%02x", hashString, (unsigned char)str[n]);
 				}
 
-				//Get our object name
 				const char* name = ObjectHashes[hashString];
+				// uint32_t objHash = crc32((char*)name, strlen(name));
 				uint32_t objHash = crc32((char*)str, 16);
 
-				//Allocate our types
-				int AttributeCount = reader.ReadByte();
-				int AttributeTypes[0x10];
-				AttributeValue attributes[0x10];
+				int ArgumentCount = reader.ReadByte();
+				int* ArgumentTypes = (int*)calloc(ArgumentCount, sizeof(int));
 
-				for (int i = 0; i < 0x10; i++)
-				{
-					AttributeTypes[i] = 0xFF;
-					CreateAttributeValue(&attributes[i]);
-				}
-
-				//Load Attribue Names
-				//Skip 'filter' (it's handled weirdly)
-				for (int n = 1; n < AttributeCount; ++n) {
-					//read our attribute hash into our array
-					for (int n2 = 0; n2 < 16; n2++) {
-						attributes[n].namehash[n2] = reader.ReadByte();
+				ArgumentTypes[0] = 9;
+				for (int n = 1; n < ArgumentCount; n++) {
+					char str2[17];
+					for (int n = 0; n < 16; n++) {
+						str2[n] = reader.ReadByte();
 					}
+					str2[16] = 0;
 
-					//Read what type this attribute is
-					int AttributeType = reader.ReadByte();
-					AttributeTypes[n] = AttributeType;
+					int ArgType = reader.ReadByte();
+					ArgumentTypes[n] = ArgType;
 				}
 
 				int EntityCount = reader.ReadUInt16();
 
-				//Load all Entities
-				for (int n = 0; n < EntityCount; ++n) {
-					//Spawn in our entity
-					Object* obj = GetNewObjectFromCRC32(objHash);
+				App->Print(2, "Object Hash: %08X %s (%s) Count: %d", objHash, hashString, ObjectHashes[hashString], EntityCount);
 
-					if (obj == NULL) obj = new BlankObject();
-
-					obj->SlotID = reader.ReadUInt16(); //SlotID
-
-					unsigned short X_low = reader.ReadUInt16();
-					short X_high = reader.ReadInt16();
-					unsigned short Y_low = reader.ReadUInt16();
-					short Y_high = reader.ReadInt16();
-
-					obj->X = X_high + ((float)X_low / 0x10000);
-					obj->Y = Y_high + ((float)Y_low / 0x10000);
-
-					//if we have more than one attribute
-					if (AttributeCount > 1) {
-						//for each attribute
-						for (int a = 1; a < AttributeCount; a++) {
-							//read based on type
-							switch (AttributeTypes[a]) {
-							case ATTRIBUTE_INT8:
-								attributes[a].value_int8 = (char)reader.ReadByte();
-							case ATTRIBUTE_UINT8:
-								attributes[a].value_uint8 = (unsigned char)reader.ReadByte();
-								break;
-							case ATTRIBUTE_INT16:
-								attributes[a].value_int16 = (short)reader.ReadInt16();
-							case ATTRIBUTE_UINT16:
-								attributes[a].value_uint16 = (unsigned short)reader.ReadUInt16();
-								break;
-							case ATTRIBUTE_VAR:
-								attributes[a].value_var = (unsigned int)reader.ReadUInt32();
-							case ATTRIBUTE_BOOL:
-								attributes[a].value_bool = reader.ReadUInt32() != 0;
-							case ATTRIBUTE_COLOR:
-								attributes[a].value_colour.b = reader.ReadByte();
-								attributes[a].value_colour.g = reader.ReadByte();
-								attributes[a].value_colour.r = reader.ReadByte();
-								attributes[a].value_colour.a = reader.ReadByte();
-							case ATTRIBUTE_INT32:
-								attributes[a].value_int32 = (int)reader.ReadInt32();
-							case ATTRIBUTE_UINT32:
-								attributes[a].value_uint32 = (unsigned int)reader.ReadUInt32();
-								break;
-							case ATTRIBUTE_STRING:
-								attributes[a].value_string = reader.ReadRSDKUnicodeString();
-								break;
-							case ATTRIBUTE_POSITION:
-								short pos_X_high = reader.ReadInt16();
-								unsigned short pos_X_low = reader.ReadInt16();
-								short pos_Y_high = reader.ReadInt16();
-								unsigned short pos_Y_low = reader.ReadInt16();
-
-								//remind me to make it better
-								attributes[a].value_position.X = pos_X_high + ((float)pos_X_low / 0x10000);
-								attributes[a].value_position.Y = pos_Y_high + ((float)pos_Y_low / 0x10000);
-								break;
-							}
-							string hash = attributes[a].namehash;
-							obj->attributes.emplace(hash, attributes[a]);
-						}
+				if (objHash == OBJ_SPRING || objHash == 0xFD8527A9U) {
+					const char* ArgTypes[12] = { "Uint8", "Uint16", "Uint32", "Int8", "Int16", "Int32", "enum", "bool", "string", "position", "unknown", "color" };
+					for (int n = 0; n < ArgumentCount; n++) {
+						App->Print(0, "Argument %d type: %s", n, ArgTypes[ArgumentTypes[n]]);
 					}
 				}
+				if (objHash == OBJ_PLANESWITCHER)
+					PlaneSwitchCount = 0;
+
+				for (int n = 0; n < EntityCount; n++) {
+					reader.ReadUInt16();
+
+					unsigned int X1 = reader.ReadUInt16();
+					unsigned int X2 = reader.ReadUInt16();
+					unsigned int Y1 = reader.ReadUInt16();
+					unsigned int Y2 = reader.ReadUInt16();
+
+					int* args = (int*)calloc(sizeof(int), ArgumentCount);
+					if (ArgumentCount > 1) {
+						for (int a = 1; a < ArgumentCount; a++) {
+							int value = 0;
+							int UTF16_Count;
+							switch (ArgumentTypes[a]) {
+							case ARG_INT8:
+							case ARG_UINT8:
+								value = (unsigned char)reader.ReadByte();
+								break;
+							case ARG_INT16:
+							case ARG_UINT16:
+								value = (unsigned short)reader.ReadUInt16();
+								break;
+							case ARG_ENUM:
+							case ARG_BOOL:
+							case ARG_COLOR:
+							case ARG_INT32:
+							case ARG_UINT32:
+								value = (unsigned int)reader.ReadUInt32();
+								break;
+							case ARG_STRING:
+								UTF16_Count = reader.ReadUInt16();
+								for (int wc = 0; wc < UTF16_Count; wc++) {
+									reader.ReadUInt16();
+								}
+								break;
+							case ARG_POSITION:
+								value = (unsigned int)reader.ReadUInt32();
+								value |= reader.ReadUInt32() >> 16;
+								break;
+							}
+							args[a - 1] = value;
+						}
+					}
+
+					switch (objHash) {
+					case OBJ_PLANESWITCHER:
+						PlaneSwitchers[PlaneSwitchCount].X = X2 + (X1 >> 16);
+						PlaneSwitchers[PlaneSwitchCount].Y = Y2 + (Y1 >> 16);
+
+						PlaneSwitchers[PlaneSwitchCount].Flags = args[0];
+						PlaneSwitchers[PlaneSwitchCount].Size = args[1];
+						PlaneSwitchers[PlaneSwitchCount].Angle = args[2];
+						PlaneSwitchers[PlaneSwitchCount].OnPath = args[3] == 1;
+						PlaneSwitchCount++;
+						break;
+					case OBJ_PLAYER:
+					{
+						if (args[0] == CharacterFlag) {
+							PlayerStartX = X2 + (X1 >> 16);
+							PlayerStartY = Y2 + (Y1 >> 16) - 4;
+						}
+						break;
+					}
+					case OBJ_SPRING:
+					{
+						int ID = 0x07;
+						int X = X2;
+						int Y = Y2;
+						int SubType = 0x00;
+						if ((args[0] & 0x1) == 0)
+							SubType |= 0x02;
+
+						int ttty = args[0] >> 1 & 0x3;
+						bool FLIPX = (args[1] >> 0) & 1;
+						bool FLIPY = (args[1] >> 1) & 1;
+						bool PRIORITY = false;
+
+						if (ttty == 0) {
+							if (FLIPY) {
+								SubType |= 0x20;
+							} else {
+								SubType |= 0x0;
+                            }
+						} else if (ttty == 1) {
+							SubType |= 0x10;
+						} else if (ttty == 2) {
+							if (!FLIPY) {
+								SubType |= 0x30;
+							} else {
+								SubType |= 0x40;
+                            }
+						}
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_SPECIALRING:
+					{
+						int ID = 0x85;
+						int X = X2;
+						int Y = Y2;
+						int SubType = args[0];
+						bool FLIPX = false;
+						bool FLIPY = false;
+						bool PRIORITY = false;
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_SPIKES:
+					{
+						int ID = 0x08;
+						int X = X2;
+						int Y = Y2;
+						int SubType = 0x00;
+						bool FLIPX = false;
+						bool FLIPY = false;
+						bool PRIORITY = false;
+
+						if (args[1] == 1)
+							SubType |= 0x02;
+						if (args[0] == 2) {
+							SubType |= 0x40;
+							FLIPX = true;
+						}
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_STARPOST:
+					{
+						int ID = Obj_StarPost;
+						int X = X2;
+						int Y = Y2;
+						int SubType = args[0];
+
+						bool FLIPX = false;
+						bool FLIPY = false;
+						bool PRIORITY = false;
+
+						ADD_OBJECT();
+						break;
+					}
+					case OBJ_RING:
+					{
+						ObjectProp op;
+						op.X = X2;
+						op.Y = Y2;
+						op.ID = 0xFF;
+						op.LoadFlag = true;
+
+                        RingPropCount++;
+						RingProps.push_back(op);
+						break;
+					}
+					case OBJ_MONITOR:
+						objHash = 0xBDE7E33AU;
+					default:
+						Object* obj = GetNewObjectFromCRC32(objHash);
+						if (obj) {
+							if (objHash != 0xC4B304CCU &&
+								objHash != 0xBDE7E33AU) {
+								IApp::Print(1, "Unimplemented object: %s", name);
+								break;
+							}
+
+							obj->X = X2;
+							obj->Y = Y2;
+							obj->G = G;
+							obj->App = App;
+							obj->Scene = this;
+							obj->InitialX = X2;
+							obj->InitialY = Y2;
+							obj->FlipX = false;
+							obj->FlipY = false;
+							obj->ID = 0;
+							//while (!SpriteMapIDs[ID])
+								//ID--;
+							//obj->Sprite = SpriteMapIDs[ID];
+
+							if (objHash == 0xBDE7E33AU) {
+								obj->Sprite = ItemsSprite;
+							}
+
+							obj->Attributes = (int*)calloc(ArgumentCount, sizeof(int));
+							memcpy(obj->Attributes, args, ArgumentCount * sizeof(int));
+
+							obj->DrawCollisions = App->viewObjectCollision;
+
+							ObjectCount++;
+							Objects.push_back(obj);
+						}
+						break;
+					}
+
+					free(args);
+				}
+
+				free(ArgumentTypes);
 			}
 		}
 		// ImpostorEngine2-temp-type Loading
@@ -2106,7 +2121,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                     ObjectProps.push_back(op);
 
 					Object* obj = GetNewObjectFromID(ID);
-					if (obj == NULL) obj = new BlankObject();
 					if (obj) {
 						obj->G = G;
 						obj->App = App;
@@ -2227,6 +2241,15 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				int ObjCount = reader.ReadUInt16();
 				App->Print(2, "Object Hash: %08X (%s) Count: %d AttributeCount: %d", objHash, name, ObjCount, AttributeCount);
+
+				if (objHash == OBJ_SPRING || objHash == 0xFD8527A9U || objHash == 0xB3C47F67U) {
+					const char* ArgTypes[12] = { "Uint8", "Uint16", "Uint32", "Int8", "Int16", "Int32", "enum", "bool", "string", "position", "unknown", "color" };
+					for (int n = 0; n < AttributeCount; n++) {
+						App->Print(0, "Argument %d type: %s", n, ArgTypes[AttributeTypes[n]]);
+					}
+				}
+				if (objHash == OBJ_PLANESWITCHER)
+					PlaneSwitchCount = 0;
 
 				for (int n = 0; n < ObjCount; n++) {
 					unsigned int X = reader.ReadUInt16();
@@ -2365,7 +2388,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						objHash = 0xB3C47F67U;
 					default:
 						Object * obj = GetNewObjectFromCRC32(objHash);
-						if (obj == NULL) obj = new BlankObject();
 						if (obj) {
 							if (objHash != 0xA5066DF4U &&
 								objHash != 0xB3C47F67U) {
@@ -2387,6 +2409,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							if (objHash == 0xB3C47F67U) {
 								obj->Sprite = ItemsSprite;
 							}
+
+							obj->Attributes = (int*)calloc(AttributeCount, sizeof(int));
+							memcpy(obj->Attributes, args, AttributeCount * sizeof(int));
 
 							obj->DrawCollisions = App->viewObjectCollision;
 
@@ -2493,6 +2518,103 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
+
+	// Loading StageConfig
+	if (Str_StageBin) {
+		App->Print(0, "Loading StageConfig...");
+		IResource* StageBin = IResources::Load(Str_StageBin); // Stages/MSZ/StageConfig.bin
+		if (StageBin) {
+			IStreamer stageReader(StageBin);
+			free(stageReader.ReadByte4()); // Magic CFG0
+			stageReader.ReadByte(); // UseGameObjects
+
+			// Read objects names
+			int object_count = stageReader.ReadByte();
+			for (int i = 0; i < object_count; i++) {
+				free(stageReader.ReadRSDKString()); // Object name
+			}
+
+			// Read palette
+			TileSprite->PaletteSize = 0x100;
+			int pp = 0;
+			for (int i = 0; i < 8; i++) {
+				// IApp::Print(0, "yup: %X", pp);
+				int ii = 0;
+				int bitmap = stageReader.ReadUInt16();
+
+				int size = 0;
+				for (int col = 0; col < 16; col++) {
+					if ((bitmap & (1 << col)) != 0) {
+						size += 0x10;
+					}
+				}
+				// IApp::Print(0, "size: %X", size);
+				for (int col = 0; col < 16; col++) {
+					if ((bitmap & (1 << col)) != 0) {
+						for (int d = 0; d < 16; d++) {
+							uint8_t R = stageReader.ReadByte();
+							uint8_t G = stageReader.ReadByte();
+							uint8_t B = stageReader.ReadByte();
+
+							if (i == 3) {
+								TileSprite->SetPalette(ii + 0x80, R << 16 | G << 8 | B);
+							}
+							if (i >= 3) {
+								TileSprite->SetPaletteAlt(pp - 0x40, R << 16 | G << 8 | B);
+							}
+
+							pp++;
+							ii++;
+						}
+					}
+				}
+			}
+			TileSprite->UpdatePalette();
+
+			/*
+			FILE* f;
+			f = fopen(IFILE("Stages/HCZ/ManiaPalette.bin"), "wb");
+			fwrite(TileSprite->Palette + 128, 4, 128, f);
+			fwrite(TileSprite->PaletteAlt + 128, 4, 128, f);
+			fwrite(TileSprite->PaletteAlt, 4, 96, f);
+			fclose(f);
+			//*/
+
+			// Read WAV channel's max concurrent play
+			int wavs_count = stageReader.ReadByte();
+			for (int i = 0; i < wavs_count; i++) {
+				free(stageReader.ReadRSDKString()); // WAV name
+				stageReader.ReadByte(); // Max Concurrent Play
+				//App->Print(0, "WAV: '%s' (max: %d)", wav_name, max_concurrent_play);
+			}
+
+			IResources::Close(StageBin);
+		} else {
+			App->Print(2, "StageConfig at '%s' could not be read.", Str_StageBin);
+			exit(1);
+		}
+	} else {
+		if ((TileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000) {
+			TileSprite->PaletteSize = 0x80;
+        }
+		TileSprite->SplitPalette();
+		TileSprite->UpdatePalette();
+
+		if (AnimTileSprite) {
+			if ((AnimTileSprite->GetPalette(0x81) & 0xFFFFFF) == 0x000000)
+				AnimTileSprite->PaletteSize = 0x80;
+			AnimTileSprite->SplitPalette();
+			AnimTileSprite->UpdatePalette();
+		}
+
+		ItemsSprite->SplitPalette();
+		ObjectsSprite->SplitPalette();
+		ExplosionSprite->SplitPalette();
+
+		ItemsSprite->UpdatePalette();
+		ObjectsSprite->UpdatePalette();
+		ExplosionSprite->UpdatePalette();
+	}
 
 	startTime = SDL_GetTicks();
 }
@@ -3119,7 +3241,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 }
 
 PUBLIC void LevelScene::AddActiveRing(int x, int y, int xs, int ys, int mag) {
-	Ring* ring = (Ring*)GetNewObjectFromID(0);
+	Ring* ring = new Ring();
 	ring->X = x;
 	ring->Y = y;
 	ring->MyX = x << 8;
@@ -3797,7 +3919,7 @@ PUBLIC void LevelScene::Update() {
 
 					switch (objId) {
 					case 0x00: // Ring
-						ring = (Ring*)GetNewObjectFromID(0);
+						ring = new Ring();
 						ring->X = Player->DisplayX;
 						ring->Y = Player->DisplayY;
 						ring->MyX = Player->DisplayX << 8;
@@ -3885,7 +4007,7 @@ PUBLIC void LevelScene::Update() {
 
 						switch (objId) {
 						case 0x00:
-							ring = (Ring*)GetNewObjectFromID(0);
+							ring = new Ring();
 							ring->X = Player->DisplayX;
 							ring->Y = Player->DisplayY;
 							ring->MyX = Player->DisplayX << 8;
