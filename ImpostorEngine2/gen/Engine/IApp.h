@@ -38,6 +38,7 @@ public:
     bool Running = false;
     int WIDTH = 424;
     int HEIGHT = 240;
+    int SCALE = 1;
     const bool DEBUG = true;
     const bool DEV = true;
     bool viewObjectCollision = false;

@@ -24,7 +24,7 @@ void Monitor::Create() {
     CanFall = false;
     GhostY = 0.0;
     CleanupInactiveObject = true;
-    if (Attributes) {
+    /*if (Attributes) {
         if (Scene->ManiaLevel) {
             switch (Attributes[0]) {
                 case 0:
@@ -66,7 +66,7 @@ void Monitor::Create() {
         else {
             SubType = Attributes[0];
         }
-    }
+    }*/
 
     SubTypeFrame = 0;
     switch (SubType) {
