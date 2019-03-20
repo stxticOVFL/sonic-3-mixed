@@ -909,6 +909,26 @@ const char* ObjectNames(int n) {
 	return ObjectNameList[n];
 }
 
+std::vector<const char*> ObjectNamesList;
+
+void SetObjectName(const char* name) {
+	ObjectNamesList.push_back(name);
+}
+
+const char* GetObjectName(int n) {
+	return ObjectNamesList[n];
+}
+
+void clearObjectNames()
+{
+	ObjectNamesList.clear();
+}
+
+int GetObjectNamesSize()
+{
+	return ObjectNamesList.size();
+}
+
 static uint32_t crc32_t[256] = {
 	0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
 	0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,

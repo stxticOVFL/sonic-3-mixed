@@ -96,9 +96,9 @@ PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 
 	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
 	// Sound::Audio->LoopPoint[0] = 131859;
-	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Menu.ogg")) {
-		Sound::SoundBank[0] = new ISound("Music/Menu.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
+	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Data Select.ogg")) {
+		Sound::SoundBank[0] = new ISound("Music/Data Select.ogg", true);
+		Sound::Audio->LoopPoint[0] = 40308;
 	}
 }
 
@@ -381,9 +381,9 @@ PUBLIC void Scene_DataSelect::Update() {
 				case 4:
 					App->NextScene = new Level_ICZ(App, G, 1);
 					break;
-				case 5:
-					App->NextScene = new Level_LBZ(App, G, 1);
-					break;
+				//case 5:
+					//App->NextScene = new Level_LBZ(App, G, 1);
+					//break;
 				case 6:
 					App->NextScene = new Level_MHZ(App, G, 1);
 					break;
