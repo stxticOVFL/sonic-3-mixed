@@ -295,6 +295,12 @@ PUBLIC void Scene_MainMenu::Update() {
 				}
 			}
 		}
+
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA_PRESSED])
+		{
+			App->NextScene = new Scene_LevelSelect(App, G);
+			CONFIRM_PRESSED = true;
+		}
 	}
 
 	if (CONFIRM_PRESSED) {
@@ -302,8 +308,6 @@ PUBLIC void Scene_MainMenu::Update() {
 		if (selected / 2 != 0 || subselected > -1) {
 			FadeIn = false;
 			FadeTimerMax = 30;
-			//opened = false;
-			//openTimer = 20;
 		}
 		else {
 			openTimer = 15;
