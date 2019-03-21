@@ -1,0 +1,8 @@
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\SonicRetro.KensSharp.Properties.Resources.resources
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\Common.csproj.GenerateResource.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\SonicRetro.KensSharp.Common.pdb

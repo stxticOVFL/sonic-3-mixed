@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SOZ_RapelWire.tsx" />
+  <object name="SOZ_RapelWire" gid="1" width="24" height="66">
+    <properties>
+      <property name="Jump Count" type="int" />
+      <property name="Swing Count" type="int" />
+    </properties>
+  </object>
+</template>

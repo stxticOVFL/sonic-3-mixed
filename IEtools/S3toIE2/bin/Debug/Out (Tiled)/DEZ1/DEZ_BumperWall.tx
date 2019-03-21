@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DEZ_BumperWall.tsx" />
+  <object name="DEZ_BumperWall" gid="1" width="24" height="64">
+    <properties>
+      <property name="Height" type="int" />
+      <property name="Behavior" type="int" />
+    </properties>
+  </object>
+</template>

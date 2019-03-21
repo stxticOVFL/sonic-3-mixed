@@ -1,0 +1,40 @@
+RELATY Background,80
+CONSTY Background,00
+PARARESET Background
+PARA Background,10,A4,0,69,0
+PARA Background,20,B0,0,69,0
+PARA Background,38,BC,0,69,0
+PARA Background,58,C8,0,69,0
+PARA Background,28,BC,0,69,0
+PARA Background,40,B0,0,69,0
+PARA Background,38,A4,0,69,0
+PARA Background,18,98,0,69,0
+PARA Background,18,8C,0,69,0
+PARA Background,90,80,0,69,0
+PARA Background,48,8C,0,69,0
+PARA Background,10,98,0,69,0
+PARA Background,18,A4,0,69,0
+PARA Background,20,B0,0,69,0
+PARA Background,38,BC,0,69,0
+PARA Background,58,C8,0,69,0
+PARA Background,28,BC,0,69,0
+PARA Background,40,B0,0,69,0
+PARA Background,38,A4,0,69,0
+PARA Background,18,98,0,69,0
+PARA Background,18,8C,0,69,0
+PARA Background,90,80,0,69,0
+PARA Background,48,8C,0,69,0
+PARA Background,10,98,0,69,0
+PARA Background,7FFF,A4,0,69,0
+CROP Background,0,0,32,80
+
+COPY FG Low,Airship Low
+COPY FG High,Airship High
+MOVETOFRONT Airship Low
+MOVETOFRONT Airship High
+
+CROP FG Low,0,0,0x4C8,0xA0
+CROP FG High,0,0,0x4C8,0xA0
+
+CROP Airship Low,0x3D8,0xA0,0x28,0x8
+CROP Airship High,0x3D8,0xA0,0x28,0x8

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="BreakableWall.tsx" />
+  <object name="BreakableWall" gid="1" width="32" height="80">
+    <properties>
+      <property name="Sprite" type="int" />
+      <property name="Behavior" type="int" />
+    </properties>
+  </object>
+</template>

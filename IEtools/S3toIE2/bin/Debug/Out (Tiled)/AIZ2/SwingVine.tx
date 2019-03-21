@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SwingVine.tsx" />
+  <object name="SwingVine" gid="1" width="22" height="11">
+    <properties>
+      <property name="Length" type="int" />
+      <property name="Offset" type="int" />
+    </properties>
+  </object>
+</template>

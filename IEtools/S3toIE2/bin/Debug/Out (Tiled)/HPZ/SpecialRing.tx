@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SpecialRing.tsx" />
+  <object name="SpecialRing" gid="1" width="64" height="64">
+    <properties>
+      <property name="Ring ID" type="int" />
+      <property name="HPZ Warp" type="bool" />
+    </properties>
+  </object>
+</template>

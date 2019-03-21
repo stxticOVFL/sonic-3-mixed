@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DEZ_TwirlTunnel.tsx" />
+  <object name="DEZ_TwirlTunnel" gid="1" width="16" height="14">
+    <properties>
+      <property name="Direction" type="int" />
+      <property name="Length" type="int" />
+    </properties>
+  </object>
+</template>

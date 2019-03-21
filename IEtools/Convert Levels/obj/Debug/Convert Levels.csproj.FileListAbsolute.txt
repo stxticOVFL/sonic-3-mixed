@@ -1,0 +1,31 @@
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\AniPLCs.txt
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\Convert Levels.exe.config
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\Convert Levels.exe
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\Convert Levels.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\S3toIE2.exe
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\RSDKv5.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonLVLAPI.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\INIFileParser.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\zlib.net.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SharpDX.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\S3toIE2.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\S3toIE2.exe.config
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\RSDKv5.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonLVLAPI.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonicRetro.KensSharp.Kosinski.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\SonicRetro.KensSharp.Nemesis.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\bin\Debug\INIFileParser.xml
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\obj\Debug\Convert Levels.csprojResolveAssemblyReference.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\obj\Debug\Convert Levels.csproj.CoreCompileInputs.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\obj\Debug\Convert Levels.csproj.CopyComplete
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\obj\Debug\Convert Levels.exe
+C:\Users\Justin\Dropbox\ImpostorEditor2\Convert Levels\obj\Debug\Convert Levels.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\AniPLCs.txt
+C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\Convert Levels.exe.config
+C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\Convert Levels.exe
+C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\Convert Levels.pdb

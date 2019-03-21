@@ -1,0 +1,8 @@
+RELATY Background,10
+CONSTY Background,00
+PARARESET Background
+PARA Background,D0,1A,0,69,0
+PARA Background,18,24,0,69,0
+PARA Background,08,20,0,69,0
+PARA Background,08,2B,0,69,0
+PARA Background,7FFF,26,0,69,0

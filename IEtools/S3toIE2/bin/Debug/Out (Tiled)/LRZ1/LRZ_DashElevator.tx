@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_DashElevator.tsx" />
+  <object name="LRZ_DashElevator" gid="1" width="64" height="24">
+    <properties>
+      <property name="Distance" type="int" />
+      <property name="Offset" type="bool" />
+    </properties>
+  </object>
+</template>

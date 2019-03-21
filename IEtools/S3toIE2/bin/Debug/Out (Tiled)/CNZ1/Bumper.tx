@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Bumper.tsx" />
+  <object name="Bumper" gid="1" width="28" height="28">
+    <properties>
+      <property name="Offset" type="int" />
+      <property name="Reverse" type="bool" />
+    </properties>
+  </object>
+</template>

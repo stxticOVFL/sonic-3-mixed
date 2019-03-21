@@ -1,0 +1,17 @@
+COPY Background,Boss Area Foreground
+
+RELATY Background,30
+CONSTY Background,00
+PARARESET Background
+PARA Background,80,08,0,69,0
+PARA Background,30,20,0,69,0
+PARA Background,60,40,0,69,0
+PARA Background,C0,70,0,69,0
+PARA Background,7FFF,80,0,69,0
+CROP Background,0,0,32,32
+
+RELATY Boss Area Foreground,100
+CONSTY Boss Area Foreground,00
+PARARESET Boss Area Foreground
+PARA Boss Area Foreground,7FFF,100,0,69,0
+CROP Boss Area Foreground,32,0,40,72

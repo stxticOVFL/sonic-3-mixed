@@ -1,0 +1,37 @@
+RELATY Background,40
+CONSTY Background,00
+PARARESET Background
+PARA Background,08,60,00,69,0
+PARA Background,08,50,00,69,0
+PARA Background,90,20,00,69,0
+PARA Background,10,30,00,69,0
+PARA Background,08,60,00,69,0
+PARA Background,30,80,00,69,0
+PARA Background,18,70,00,69,0
+PARA Background,08,60,00,69,0
+PARA Background,08,50,00,69,0
+PARA Background,A8,40,00,69,0
+PARA Background,30,80,00,69,0
+PARA Background,18,70,00,69,0
+PARA Background,08,60,00,69,0
+PARA Background,08,50,00,69,0
+PARA Background,A8,40,00,69,0
+PARA Background,30,80,00,69,0
+PARA Background,18,70,00,69,0
+PARA Background,08,60,00,69,0
+PARA Background,08,50,00,69,0
+PARA Background,B0,20,00,69,0
+PARA Background,10,30,00,69,0
+PARA Background,08,60,00,69,0
+PARA Background,7FFF,80,00,69,0
+
+COPY Background,Moving Wall
+
+CROP Background,0,0,32,64
+
+RELATY Moving Wall,100
+CONSTY Moving Wall,00
+PARARESET Moving Wall
+MOVETOFRONT Moving Wall
+PARA Moving Wall,7FFF,100,00,69,0
+CROP Moving Wall,32,16,32,32

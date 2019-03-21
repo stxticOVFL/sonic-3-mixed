@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DEZ_Staircase.tsx" />
+  <object name="DEZ_Staircase" gid="1" width="32" height="32">
+    <properties>
+      <property name="Automatic" type="bool" />
+      <property name="Behavior" type="int" />
+      <property name="Direction" type="int" />
+    </properties>
+  </object>
+</template>

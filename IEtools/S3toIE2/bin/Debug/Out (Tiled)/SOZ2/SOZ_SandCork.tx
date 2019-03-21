@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SOZ_SandCork.tsx" />
+  <object name="SOZ_SandCork" gid="1" width="24" height="16">
+    <properties>
+      <property name="Height" type="int" />
+      <property name="Sand Type" type="int" />
+    </properties>
+  </object>
+</template>

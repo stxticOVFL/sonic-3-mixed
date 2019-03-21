@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LoweringGrapple.tsx" />
+  <object name="LoweringGrapple" gid="1" width="16" height="48">
+    <properties>
+      <property name="Count" type="int" />
+      <property name="Reverse" type="bool" />
+    </properties>
+  </object>
+</template>

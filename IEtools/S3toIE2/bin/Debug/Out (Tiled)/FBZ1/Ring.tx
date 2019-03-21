@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Ring.tsx" />
+  <object name="Ring" gid="1" width="16" height="14">
+    <properties>
+      <property name="Count" type="int" />
+    </properties>
+  </object>
+</template>

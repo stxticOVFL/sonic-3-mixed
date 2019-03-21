@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_OrbitingSpikeBallVertical.tsx" />
+  <object name="LRZ_OrbitingSpikeBallVertical" gid="1" width="32" height="32">
+    <properties>
+      <property name="Offset" type="int" />
+      <property name="Reverse" type="bool" />
+    </properties>
+  </object>
+</template>

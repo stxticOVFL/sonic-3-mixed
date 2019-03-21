@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SSZ_HPZTeleporter.tsx" />
+  <object name="SSZ_HPZTeleporter" gid="1" width="48" height="32">
+    <properties>
+      <property name="Distance" type="int" />
+      <property name="Reveal From" type="bool" />
+    </properties>
+  </object>
+</template>

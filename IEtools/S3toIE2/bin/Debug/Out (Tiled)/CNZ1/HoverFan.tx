@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="HoverFan.tsx" />
+  <object name="HoverFan" gid="1" width="32" height="23">
+    <properties>
+      <property name="Range" type="int" />
+      <property name="Count" type="int" />
+      <property name="Behavior" type="int" />
+    </properties>
+  </object>
+</template>

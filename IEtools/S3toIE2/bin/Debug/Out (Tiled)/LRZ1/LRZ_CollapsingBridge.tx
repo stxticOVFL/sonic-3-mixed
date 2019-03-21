@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_CollapsingBridge.tsx" />
+  <object name="LRZ_CollapsingBridge" gid="1" width="128" height="64">
+    <properties>
+      <property name="Delay" type="int" />
+    </properties>
+  </object>
+</template>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Balloon.tsx" />
+  <object name="Balloon" gid="1" width="28" height="64">
+    <properties>
+      <property name="Color" type="int" />
+      <property name="Bubble" type="bool" />
+    </properties>
+  </object>
+</template>

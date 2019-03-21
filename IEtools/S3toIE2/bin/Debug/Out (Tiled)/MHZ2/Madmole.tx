@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Madmole.tsx" />
+  <object name="Madmole" gid="1" width="31" height="41">
+    <properties />
+  </object>
+</template>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_SpikeBall.tsx" />
+  <object name="LRZ_SpikeBall" gid="1" width="64" height="63">
+    <properties>
+      <property name="Release" type="int" />
+      <property name="Floor Check" type="bool" />
+    </properties>
+  </object>
+</template>

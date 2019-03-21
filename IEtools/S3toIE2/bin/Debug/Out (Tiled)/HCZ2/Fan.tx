@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Fan.tsx" />
+  <object name="Fan" gid="1" width="32" height="24">
+    <properties>
+      <property name="Range" type="int" />
+      <property name="Bubbles" type="bool" />
+      <property name="Behavior" type="int" />
+    </properties>
+  </object>
+</template>

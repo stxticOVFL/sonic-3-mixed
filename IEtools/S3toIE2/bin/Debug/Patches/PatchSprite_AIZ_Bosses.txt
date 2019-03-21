@@ -1,0 +1,61 @@
+OUTFOLDER AIZ
+FILENAME Boss
+PALETTE Levels\AIZ\Palettes\End BossPATCH.bin
+# Bosses
+REQUEST Levels\AIZ\Nemesis Art\Miniboss.bin,0x41A,NEM
+REQUEST Levels\AIZ\Nemesis Art\Miniboss Small.bin,0x474,NEM
+REQUEST Levels\AIZ\Nemesis Art\Miniboss Fire.bin,0x482,NEM
+REQUEST General\Sprites\Enemy Misc\Explosion.bin,0x4D2,NEM
+REQUEST Levels\AIZ\Nemesis Art\BG Tree.bin,0x800,NEM
+REQUEST Levels\AIZ\KosinskiM Art\End Boss.bin,0x1000,KOSM
+REQUEST Levels\AIZ\Tiles\Act 2 Bombership 2.bin,0x2000,NEM
+
+# REQUEST Levels\AIZ\KosinskiM Art\Intro Plane.bin,0,KOSM
+# REQUEST Levels\AIZ\KosinskiM Art\Intro Emeralds.bin,,KOSM
+
+SPRITE Levels\AIZ\Misc Object Data\Map - Miniboss.asm,,0x41A,0
+SPRITE Levels\AIZ\Misc Object Data\Map - Miniboss Small.asm,,0x474,1
+SPRITE Levels\AIZ\Misc Object Data\Map - Miniboss Flame.asm,,0x482,0
+SPRITE Levels\AIZ\Misc Object Data\Map - Act 2 Background Tree.asm,,0x800,0
+SPRITE Levels\AIZ\Misc Object Data\Map - Act 2 Bomb Explosion.asm,,0x2000,0
+SPRITE Levels\AIZ\Misc Object Data\Map - Act 2 Boss Small.asm,,0x2000,0
+SPRITE Levels\AIZ\Misc Object Data\Map - Act 2 Ship Propeller.asm,,0x2000,0
+SPRITE Levels\AIZ\Misc Object Data\Map - End Boss.asm,,0x1000,1
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Act 2 Background Tree
+ANIMATION Main,Act 2 Background Tree;ALL
+
+NEWSPRITE Airship
+ANIMATION Bomb,Act 2 Bomb Explosion;0
+ANIMATION Explosion 1,Act 2 Bomb Explosion[1;5]
+FRAME ALL,Duration,5
+ANIMATION Explosion 2,Act 2 Bomb Explosion[6;11]
+FRAME ALL,Duration,5
+ANIMATION Propeller,Act 2 Ship Propeller;ALL
+FRAME ALL,Duration,3
+
+NEWSPRITE End Boss
+ANIMATION Main,End Boss;ALL
+ANIMATION Smol,Act 2 Boss Small;ALL
+
+NEWSPRITE Miniboss
+ANIMATION Miniboss Main,Miniboss[0;11]
+FRAME 1,CenterY,24
+FRAME 2,CenterY,24
+FRAME 6,CenterX,-40
+FRAME 6,CenterY,0
+ANIMATION Flame,Miniboss Flame;ALL
+ANIMATION Small,Miniboss Small;ALL
+ANIMATION Pieces,Miniboss[14;17]
+FRAME 0,CenterX,-32
+FRAME 0,CenterY,-24
+FRAME 1,CenterX,0
+FRAME 1,CenterY,-24
+FRAME 2,CenterX,-32
+FRAME 2,CenterY,8
+FRAME 3,CenterX,0
+FRAME 3,CenterY,-8
+FRAME ALL,Duration,0
+ANIMATION Bomb,Miniboss[12;13]

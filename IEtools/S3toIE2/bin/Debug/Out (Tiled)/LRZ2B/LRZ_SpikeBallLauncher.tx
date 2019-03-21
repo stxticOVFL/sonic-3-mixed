@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_SpikeBallLauncher.tsx" />
+  <object name="LRZ_SpikeBallLauncher" gid="1" width="32" height="8">
+    <properties>
+      <property name="Speed" type="int" />
+    </properties>
+  </object>
+</template>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="BreakableWaterRisingFloor.tsx" />
+  <object name="BreakableWaterRisingFloor" gid="1" width="64" height="64">
+    <properties />
+  </object>
+</template>

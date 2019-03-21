@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="CollapsingBridge.tsx" />
+  <object name="CollapsingBridge" gid="1" width="160" height="72">
+    <properties>
+      <property name="Sprite" type="int" />
+      <property name="Behavior" type="int" />
+      <property name="Delay" type="int" />
+    </properties>
+  </object>
+</template>

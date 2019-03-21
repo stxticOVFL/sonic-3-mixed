@@ -1,0 +1,135 @@
+OUTFOLDER MGZ
+FILENAME Objects
+PALETTE Levels\MGZ\Palettes\Main.bin
+# Act 1
+REQUEST Levels\MGZ\Tiles\Primary.bin,0,KOSM
+REQUEST Levels\MGZ\Tiles\Act 1 Secondary.bin,-1,KOSM
+REQUEST Levels\MGZ\Nemesis Art\Misc Art 1.bin,0x35F,NEM
+REQUEST Levels\MGZ\Nemesis Art\Misc Art 2.bin,0x3FF,NEM
+
+REQUEST General\Sprites\Bubbles Badnik\Bubbles Badnik.bin,0x500,UNC
+REQUEST General\Sprites\Spiker\Spiker.bin,0x600,KOSM
+REQUEST General\Sprites\Mantis\Mantis.bin,0x700,KOSM
+
+REQUEST Levels\MGZ\KosinskiM Art\Miniboss.bin,0x880,KOSM
+REQUEST Levels\MGZ\Nemesis Art\Spire.bin,0x900,NEM
+REQUEST Levels\MGZ\KosinskiM Art\End Boss.bin,0x980,KOSM
+REQUEST Levels\MGZ\KosinskiM Art\End Boss Debris.bin,0xA9F,KOSM
+
+REQUEST Levels\MGZ\Nemesis Art\Direction Signs.bin,0xB00,NEM
+
+SPRITE Levels\MGZ\Misc Object Data\Map - Breakable Wall.asm,,0x1,2,0,0
+SPRITE Levels\MGZ\Misc Object Data\Map - Collapsing Bridge.asm,,0x1,2,0,6
+SPRITE Levels\MGZ\Misc Object Data\Map - Dash Trigger.asm,,0x35F,1
+SPRITE Levels\MGZ\Misc Object Data\Map - Floating Platform.asm,,0x1,2
+SPRITE Levels\MGZ\Misc Object Data\Map - Head Trigger.asm,,0x3FF,1
+SPRITE Levels\MGZ\Misc Object Data\Map - Moving Spike Platform.asm,,0x1,2
+SPRITE Levels\MGZ\Misc Object Data\Map - Pulley.asm,,0x35F,1
+SPRITE Levels\MGZ\Misc Object Data\Map - Smashing Pillar.asm,,0x1,2
+SPRITE Levels\MGZ\Misc Object Data\Map - Swinging Platform.asm,,0x35F,2
+SPRITE Levels\MGZ\Misc Object Data\Map - Swinging Spike Ball.asm,,0x35F,1
+SPRITE Levels\MGZ\Misc Object Data\Map - Top Platform.asm,,0x35F,1,0,1
+SPRITE Levels\MGZ\Misc Object Data\Map - Top Platform.asm,Top Platform Launcher,0x3FF,2,2,2
+SPRITE Levels\MGZ\Misc Object Data\Map - Trigger Platform.asm,,0x1,2
+
+SPRITE Levels\MGZ\Misc Object Data\Map - Miniboss.asm,,0x880,1
+SPRITE Levels\MGZ\Misc Object Data\Map - Miniboss Spires.asm,,0x900,2
+SPRITE Levels\MGZ\Misc Object Data\Map - End Boss.asm,,0x980,1
+SPRITE Levels\MGZ\Misc Object Data\Map - End Boss Debris.asm,,0xA9F,2
+
+SPRITE Levels\Misc\Map - Still Sprites.asm,Non Animated Sprites,0xB00,2,11,14
+# SPRITE Levels\Misc\Map - Animated Still Sprites.asm,Animated Sprites,0x1,3,0,8,,false
+
+SPRITE General\Sprites\Bubbles Badnik\Map - Bubbles Badnik.asm,,0x500,1,0,3333,General\Sprites\Bubbles Badnik\DPLC - Bubbles Badnik.asm,false
+SPRITE General\Sprites\Spiker\Map - Spiker.asm,,0x600,1
+SPRITE General\Sprites\Mantis\Map - Mantis.asm,,0x700,1
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Breakable Wall
+ANIMATION Breakable Wall,Breakable Wall;ALL
+NEWSPRITE Collapsing Bridge
+ANIMATION Collapsing Bridge,Collapsing Bridge{0;3;6}
+NEWSPRITE Dash Trigger
+ANIMATION Dash Trigger,Dash Trigger;ALL
+NEWSPRITE Floating Platform
+ANIMATION Floating Platform,Floating Platform;ALL
+NEWSPRITE Head Trigger
+ANIMATION Head Trigger,Head Trigger;ALL
+NEWSPRITE Moving Spike Platform
+ANIMATION Moving Spike Platform,Moving Spike Platform;ALL
+NEWSPRITE Pulley
+ANIMATION Pulley,Pulley;ALL
+NEWSPRITE Smashing Pillar
+ANIMATION Smashing Pillar,Smashing Pillar;ALL
+NEWSPRITE Swinging Platform
+ANIMATION Swinging Platform,Swinging Platform;ALL
+NEWSPRITE Swinging Spike Ball
+ANIMATION Swinging Spike Ball,Swinging Spike Ball;ALL
+NEWSPRITE Top Platform
+ANIMATION Platform,Top Platform;ALL
+ANIMATION Launcher,Top Platform Launcher;ALL
+NEWSPRITE Trigger Platform
+ANIMATION Trigger Platform,Trigger Platform;ALL
+
+NEWSPRITE Miniboss
+ANIMATION Main,Miniboss[0;2]
+SPEED 0x100
+FRAME ALL,Duration,0x100
+ANIMATION Pieces,Miniboss[3;6]
+# Each move over 28px
+FRAME 0,CenterX,-40
+FRAME 2,CenterX,16
+ANIMATION Spires,Miniboss Spires;ALL
+
+NEWSPRITE End Boss
+ANIMATION End Boss,End Boss[0;45]
+FRAME 1,CenterX,-36
+FRAME 1,CenterY,0
+# ANIMATION Main,End Boss[0;1]
+ANIMATION Pieces,End Boss[46;48]
+
+ANIMATION Debris,End Boss Debris;ALL
+NEWSPRITE Non Animated Sprites
+ANIMATION Signs,Non Animated Sprites;ALL
+NEWSPRITE Bubbles Badnik
+ANIMATION Bubbles Moving,Bubbles Badnik[0;2]
+ANIMATION Spiking,Bubbles Badnik[3;4]
+NEWSPRITE Spiker
+ANIMATION Spiker Idle,Spiker[0;2]|Spiker;1|Spiker;0
+FRAME 0,Duration,0
+FRAME 1,Duration,1
+FRAME 2,Duration,2
+FRAME 3,Duration,1
+FRAME 4,Duration,6
+ANIMATION Shooter,Spiker;3|Spiker;3|Spiker;4|Spiker;3
+FRAME ALL,CenterX,8
+FRAME ALL,CenterY,8
+FRAME 0,Duration,2
+FRAME 1,Duration,10
+FRAME 2,Duration,8
+FRAME 3,Duration,0x40
+ANIMATION Shot,Spiker[5;6]
+FRAME ALL,Duration,2
+NEWSPRITE Mantis
+ANIMATION Mantis,Mantis[0;3]
+ANIMATION Antennae,Mantis[4;5]
+
+# Breakable Wall
+# Collapsing Bridge
+# Dash Trigger
+# Floating Platform
+# Head Trigger
+# Moving Spike Platform
+# Pulley
+# Smashing Pillar
+# Swinging Platform
+# Swinging Spike Ball
+# Top Platform/Top Platform Launcher
+# Trigger Platform
+# Miniboss/Miniboss Spires
+# End Boss/End Boss Debris
+# Non Animated Sprites
+# Bubbles Badnik
+# Spiker
+# Mantis

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="RotatingBarrel.tsx" />
+  <object name="RotatingBarrel" gid="1" width="64" height="64">
+    <properties>
+      <property name="Movement" type="int" />
+      <property name="Speed" type="int" />
+    </properties>
+  </object>
+</template>

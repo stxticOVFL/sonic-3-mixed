@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DEZ_ConveyorPad.tsx" />
+  <object name="DEZ_ConveyorPad" gid="1" width="128" height="32">
+    <properties>
+      <property name="Distance" type="int" />
+      <property name="Direction" type="int" />
+    </properties>
+  </object>
+</template>

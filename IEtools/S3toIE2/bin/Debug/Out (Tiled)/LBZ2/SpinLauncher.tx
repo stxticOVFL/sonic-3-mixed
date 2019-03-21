@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SpinLauncher.tsx" />
+  <object name="SpinLauncher" gid="1" width="64" height="48">
+    <properties />
+  </object>
+</template>

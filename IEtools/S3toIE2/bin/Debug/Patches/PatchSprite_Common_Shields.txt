@@ -1,0 +1,38 @@
+OUTFOLDER GlobalS3K
+FILENAME ShieldsOld
+PALETTE Levels\CNZ\Palettes\Main.bin
+# Common   
+REQUEST General\Sprites\Shields\Lightning Shield.bin,0x0,UNC
+REQUEST General\Sprites\Shields\Sparks.bin,0x82,UNC
+REQUEST General\Sprites\Shields\Bubble Shield.bin,0x1000,UNC
+REQUEST General\Sprites\Shields\Fire Shield.bin,0x2000,UNC
+REQUEST General\Sprites\Shields\Insta-Shield.bin,0x3000,UNC
+REQUEST General\Sprites\Shields\Invincibility.bin,0x4000,UNC
+REQUEST General\Sprites\Shields\Super Sonic and Knuckles Stars.bin,0x5000,UNC
+
+SPRITE General\Sprites\Shields\Map - Lightning Shield.asm,Lightning Shield,0x0,0,0,999,General\Sprites\Shields\DPLC - Lightning Shield.asm,true
+SPRITE General\Sprites\Shields\Map - Bubble Shield.asm,Bubble Shield,0x1000,0,0,999,General\Sprites\Shields\DPLC - Bubble Shield.asm,true
+SPRITE General\Sprites\Shields\Map - Fire Shield.asm,Fire Shield,0x2000,0,0,999,General\Sprites\Shields\DPLC - Fire Shield.asm,true
+SPRITE General\Sprites\Shields\Map - Insta-Shield.asm,Insta-Shield,0x3000,0,0,999,General\Sprites\Shields\DPLC - Insta-Shield.asm,true
+SPRITE General\Sprites\Shields\Map - Invincibility.asm,Invincibility,0x4000,0
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE ShieldsOld
+ANIMATION Blue Shield,Bubble Shield{0;9;0;9;0;9;1;0xA;1;0xA;1;0xA;2;9;2;9;2;9;3;0xA;3;0xA;3;0xA;4;9;4;9;4;9;5;0xA;5;0xA;5;0xA;6;9;6;9;6;9;7;0xA;7;0xA;7;0xA;8;9;8;9;8;9}
+FRAME ALL,Duration,2
+ANIMATION Bubble Shield,Bubble Shield{0;9;0;9;0;9;1;0xA;1;0xA;1;0xA;2;9;2;9;2;9;3;0xA;3;0xA;3;0xA;4;9;4;9;4;9;5;0xA;5;0xA;5;0xA;6;9;6;9;6;9;7;0xA;7;0xA;7;0xA;8;9;8;9;8;9}
+FRAME ALL,Duration,2
+ANIMATION Fire Shield,Fire Shield{0;0xF;1;0x10;2;0x11;3;0x12;4;0x13;5;0x14;6;0x15;7;0x16;8;0x17}
+FRAME ALL,Duration,2
+ANIMATION Lightning Shield,Lightning Shield{0;0;1;1;2;2;3;3;4;4;5;5;6;6;7;7;8;8;9;0xA;0xB;0x16;0x16;0x15;0x15;0x14;0x14;0x13;0x13;0x12;0x12;0x11;0x11;0x10;0x10;0xF;0xF;0xE;0xE;9;0xA;0xB}
+FRAME ALL,Duration,2
+ANIMATION Bubble Attack D,Bubble Shield{9;0xB;0xB;0xB}
+FRAME ALL,Duration,6
+ANIMATION Bubble Attack U,Bubble Shield{0xC;0xC;0xB}
+FRAME ALL,Duration,6
+ANIMATION Fire Attack,Fire Shield{9;0xA;0xB;0xC;0xD;0xE;9;0xA;0xB;0xC;0xD;0xE}
+FRAME ALL,Duration,2
+ANIMATION Lightning Spark,Lightning Shield{0xC;0xD;0x17;0xC;0xD;0x17;0xC;0xD;0x17;0xC;0xD;0x17;0xC;0xD;0x17;0xC;0xD;0x17;0xC;0xD}
+FRAME ALL,Duration,1
+#

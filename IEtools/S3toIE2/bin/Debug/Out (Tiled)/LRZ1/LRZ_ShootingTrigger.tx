@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_ShootingTrigger.tsx" />
+  <object name="LRZ_ShootingTrigger" gid="1" width="24" height="24">
+    <properties>
+      <property name="Trigger ID" type="int" />
+      <property name="Delay" type="int" />
+    </properties>
+  </object>
+</template>

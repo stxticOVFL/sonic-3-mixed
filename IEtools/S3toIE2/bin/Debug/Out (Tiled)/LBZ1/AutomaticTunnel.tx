@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="AutomaticTunnel.tsx" />
+  <object name="AutomaticTunnel" gid="1" width="16" height="14">
+    <properties>
+      <property name="Path ID" type="int" />
+      <property name="Reverse" type="bool" />
+      <property name="Launch" type="bool" />
+    </properties>
+  </object>
+</template>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="MegaChomper.tsx" />
+  <object name="MegaChomper" gid="1" width="23" height="15">
+    <properties />
+  </object>
+</template>

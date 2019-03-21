@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Button.tsx" />
+  <object name="Button" gid="1" width="32" height="16">
+    <properties>
+      <property name="Trigger ID" type="int" />
+      <property name="Trigger type" type="int" />
+      <property name="Permanent" type="bool" />
+      <property name="Collision" type="int" />
+    </properties>
+  </object>
+</template>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="RollEnforcer.tsx" />
+  <object name="RollEnforcer" gid="1" width="16" height="64">
+    <properties>
+      <property name="Size" type="int" />
+      <property name="Direction" type="int" />
+      <property name="No spin lock" type="bool" />
+      <property name="Ground only" type="bool" />
+      <property name="Snap to wall" type="bool" />
+      <property name="Lock controls" type="bool" />
+    </properties>
+  </object>
+</template>

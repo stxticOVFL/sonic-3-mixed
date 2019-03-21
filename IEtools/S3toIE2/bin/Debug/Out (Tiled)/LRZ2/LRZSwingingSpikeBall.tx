@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZSwingingSpikeBall.tsx" />
+  <object name="LRZSwingingSpikeBall" gid="1" width="32" height="32">
+    <properties>
+      <property name="Count" type="int" />
+      <property name="Speed Up" type="bool" />
+      <property name="Reverse" type="bool" />
+    </properties>
+  </object>
+</template>

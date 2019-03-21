@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="MGZSwingingPlatform.tsx" />
+  <object name="MGZSwingingPlatform" gid="1" width="48" height="24">
+    <properties>
+      <property name="Offset" type="int" />
+      <property name="Reverse" type="bool" />
+      <property name="Pivot" type="bool" />
+    </properties>
+  </object>
+</template>

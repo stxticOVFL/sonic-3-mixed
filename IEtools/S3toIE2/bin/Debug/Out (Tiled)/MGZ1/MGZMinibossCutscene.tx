@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="MGZMinibossCutscene.tsx" />
+  <object name="MGZMinibossCutscene" gid="1" width="80" height="46">
+    <properties />
+  </object>
+</template>

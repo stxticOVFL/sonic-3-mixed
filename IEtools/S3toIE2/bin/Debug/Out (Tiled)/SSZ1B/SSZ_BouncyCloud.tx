@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SSZ_BouncyCloud.tsx" />
+  <object name="SSZ_BouncyCloud" gid="1" width="64" height="30">
+    <properties />
+  </object>
+</template>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SpriteMasker.tsx" />
+  <object name="SpriteMasker" gid="1" width="1" height="1">
+    <properties>
+      <property name="Height" type="int" />
+      <property name="Depth" type="int" />
+    </properties>
+  </object>
+</template>

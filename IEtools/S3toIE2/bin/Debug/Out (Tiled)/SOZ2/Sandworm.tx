@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Sandworm.tsx" />
+  <object name="Sandworm" gid="1" width="16" height="22">
+    <properties />
+  </object>
+</template>

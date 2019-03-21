@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Flybot767.tsx" />
+  <object name="Flybot767" gid="1" width="39" height="13">
+    <properties />
+  </object>
+</template>

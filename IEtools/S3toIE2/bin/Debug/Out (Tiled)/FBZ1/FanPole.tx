@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="FanPole.tsx" />
+  <object name="FanPole" gid="1" width="16" height="14">
+    <properties>
+      <property name="Length" type="int" />
+    </properties>
+  </object>
+</template>

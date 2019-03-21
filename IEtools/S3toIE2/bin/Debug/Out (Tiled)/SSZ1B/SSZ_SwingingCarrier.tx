@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SSZ_SwingingCarrier.tsx" />
+  <object name="SSZ_SwingingCarrier" gid="1" width="48" height="24">
+    <properties>
+      <property name="Count" type="int" />
+      <property name="Loop" type="bool" />
+      <property name="Reverse" type="bool" />
+    </properties>
+  </object>
+</template>
