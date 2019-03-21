@@ -8,7 +8,10 @@ var MagnetizedTo:int;
 var ShouldRingFall:bool;
 
 event Ring() : CONSTRUCTER {
-	BinIndex = LevelScene.LoadSpriteBin("Global/Ring.bin");
+    if (SaveGame.CurrentMode == 0)
+        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/Ring.bin");
+    else
+	    BinIndex = LevelScene.LoadSpriteBin("Global/Ring.bin");
 }
 
 event Create() {    
@@ -18,7 +21,7 @@ event Create() {
 	
 	MyX = 0;
 	MyY = 0;
-	CurrentAnimation = Sprite.FindAnimation("Ring Normal");
+	CurrentAnimation = Sprite.FindAnimation("Normal Ring");
 	CurrentFrame = 0;
 	MagnetizedTo = -1;
 	ShouldRingFall = true;

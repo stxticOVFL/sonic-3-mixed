@@ -21,6 +21,7 @@ public:
     int MagnetizedTo;
     bool ShouldRingFall;
     
+    CONSTRUCTER Ring();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

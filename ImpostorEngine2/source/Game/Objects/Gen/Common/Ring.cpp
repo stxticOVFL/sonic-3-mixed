@@ -5,14 +5,19 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Ring::Ring() {
+    if (SaveGame::CurrentMode == 0) BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/Ring.bin");
+    else BinIndex = LevelScene::LoadSpriteBin("Global/Ring.bin");
+}
+
 void Ring::Create() {
     Object::Create();
+    Active = true;
     Timer = 0xFF;
-	Active = true;
     CleanupInactiveObject = true;
     MyX = 0;
     MyY = 0;
-    CurrentAnimation = Scene->ItemsSprite->FindAnimation("Ring Normal");
+    CurrentAnimation = Sprite->FindAnimation("Normal Ring");
     CurrentFrame = 0;
     MagnetizedTo = -1;
     ShouldRingFall = true;
