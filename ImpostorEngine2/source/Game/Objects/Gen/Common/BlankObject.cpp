@@ -10,7 +10,7 @@ void BlankObject::Create() {
     Active = true;
     AttributeValue* AttributeVal;
     AttributeVal = GetAttribute("zoneName");
-    App->Print(0, AttributeVal->value_string);
+    if (AttributeVal) App->Print(0, AttributeVal->value_string);
 }
 
 void BlankObject::Update() {
