@@ -15,7 +15,7 @@ void Spring::Create() {
     H = 16;
     Active = true;
     Priority = false;
-	Frame = 0;
+    Frame = 0;
     Diagonal = 0;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");

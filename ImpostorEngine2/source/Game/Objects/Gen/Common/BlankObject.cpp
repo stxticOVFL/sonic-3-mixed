@@ -9,8 +9,8 @@ void BlankObject::Create() {
     Object::Create();
     Active = true;
     AttributeValue* AttributeVal;
-    AttributeVal = GetAttribute("zoneName");
-    App->Print(0, "Object attribute = %s", AttributeVal->value_string);
+    AttributeVal = GetAttribute("filter");
+    App->Print(0, "Object filter = %d", AttributeVal->value_uint8);
 }
 
 void BlankObject::Update() {

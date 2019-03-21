@@ -572,7 +572,6 @@ PUBLIC VIRTUAL void LevelScene::CreateAttributeValue(AttributeValue* Attribute) 
 	Attribute->value_uint32 = 0;
 	Attribute->value_uint8 = 0;
 	Attribute->value_var = 0;
-    
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadData() {
