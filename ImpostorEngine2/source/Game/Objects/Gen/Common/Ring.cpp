@@ -8,6 +8,7 @@ typedef IMath Math;
 void Ring::Create() {
     Object::Create();
     Timer = 0xFF;
+	Active = true;
     CleanupInactiveObject = true;
     MyX = 0;
     MyY = 0;
