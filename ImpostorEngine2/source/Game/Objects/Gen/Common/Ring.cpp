@@ -20,7 +20,7 @@ void Ring::Create() {
     CurrentAnimation = Sprite->FindAnimation("Normal Ring");
     CurrentFrame = 0;
     MagnetizedTo = -1;
-    ShouldRingFall = true;
+    ShouldRingFall = false;
 }
 
 void Ring::Update() {
