@@ -5,6 +5,10 @@ var Size:int;
 var Vertical:int;
 var In:bool;
 
+//event Spikes() : CONSTRUCTER {
+//	BinIndex = LevelScene.LoadSpriteBin("Global/Spikes.bin");
+//}
+
 event Create() {
     Active = true;
     Priority = false;

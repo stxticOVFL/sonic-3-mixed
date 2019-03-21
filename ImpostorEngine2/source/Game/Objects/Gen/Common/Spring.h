@@ -23,6 +23,7 @@ public:
     int Twirl;
     bool KillTransverseSpeed;
     
+    CONSTRUCTER Spring();
     void Create();
     void Update();
     void OnAnimationFinish();

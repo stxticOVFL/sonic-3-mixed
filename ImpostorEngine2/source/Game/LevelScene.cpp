@@ -2052,8 +2052,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								attributes[a].value_position.Y = pos_Y_high + ((float)pos_Y_low / 0x10000);
 								break;
 							}
-							string hash = attributes[a].namehash;
-							if (obj) obj->attributes.emplace(hash, attributes[a]);
+							if (obj) {
+								obj->attributes.emplace(attributes[a].namehash, attributes[a]);
+							}
 						}
 					}
 
@@ -2064,11 +2065,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->Scene = this;
 
 						if (obj->BinIndex == 0xFFFFFFFF) {
-							//while (!SpriteMapIDs[ID]) {
-							//	ID--;
-							//}
-
-							//obj->Sprite = SpriteMapIDs[ID];
+							App->Print(1, "Object '%s' Sprite Not found!", name);
 						}
 						else {
 							obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);

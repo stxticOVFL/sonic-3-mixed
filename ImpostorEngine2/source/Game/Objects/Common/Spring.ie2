@@ -8,6 +8,10 @@ var SpringPower:int;
 var Twirl:int;
 var KillTransverseSpeed:bool;
 
+event Spring() : CONSTRUCTER {
+	BinIndex = LevelScene.LoadSpriteBin("Global/Springs.bin");
+}
+
 event Create() {
     W = 32;
     H = 16;

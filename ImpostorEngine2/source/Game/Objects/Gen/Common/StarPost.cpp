@@ -5,6 +5,11 @@
 
 typedef IMath Math;
 
+CONSTRUCTER StarPost::StarPost()
+{
+	//BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin");
+}
+
 void StarPost::Create() {
     Object::Create();
     Active = true;
