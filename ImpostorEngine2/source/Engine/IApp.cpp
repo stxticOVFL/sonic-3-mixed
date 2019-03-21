@@ -461,6 +461,10 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
 		return;
 #endif
 
+    if (string == nullptr) {
+        return;
+    }
+
     va_list args;
     va_start(args, string);
     char str[4000];
