@@ -5671,6 +5671,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 					baseY = (iy << 4) - TileBaseY + layer.TileOffsetY[fx];
 
 					tile = layer.Tiles[fx + fy * layer.Width];
+                    
+                    bool ColFlipX = ((tile >> 10) & 1) == 1;
+                    bool ColFlipY = ((tile >> 11) & 1) == 1;
+                    bool SolidTopA = ((tile >> 12) & 1) == 1;
+                    bool SolidLrbA = ((tile >> 13) & 1) == 1;
+                    bool SolidTopB = ((tile >> 14) & 1) == 1;
+                    bool SolidLrbB = ((tile >> 15) & 1) == 1;
 
 					int colTypeA = ((tile >> 12) & 3);
 					int colTypeB = ((tile >> 14) & 3);
@@ -5680,19 +5687,18 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 					if (tile != BlankTile) {
 						anID = Data->isAnims[tile] & 0xFF;
-						if (anID != 0xFF)
+						if (anID != 0xFF) {
 							G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
-						else
+						} else {
 							G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, fullFlip);
+                        }
 
 						if (ViewTileCollision) {
-							flipX = ((fullFlip >> 0) & 1);
-							flipY = ((fullFlip >> 1) & 1);
-
 							for (int c = 0; c < 16; c++) {
 								int eex = c;
-								if (flipX)
+								if (ColFlipX) {
 									eex = 15 - c;
+                                }
 
 								int h1 = Data->tiles1[tile].Collision[c];
 								int h2 = Data->tiles2[tile].Collision[c];
@@ -5708,25 +5714,22 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 								if (Player->Layer == 0 && (colTypeA & 1)) {
 									//uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
-									uint32_t col = colTypeA == 3 ? 0xFFFFFF : colTypeA == 2 ? 0xFF0000 : 0xFFFF00;
+                                    uint32_t col = (SolidTopA && SolidLrbA) ? 0xFFFFFF : (SolidLrbA && !SolidTopA) ? 0xFF0000 : 0xFFFF00;
 
 									if (Data->tiles1[tile].HasCollision[c]) {
-										if (Data->tiles1[tile].IsCeiling ^ flipY) {
+										if (Data->tiles1[tile].IsCeiling ^ ColFlipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
 										}
 									}
-								}
-								else if (Player->Layer == 1 && (colTypeB & 1)) {
+								} else if (Player->Layer == 1 && (colTypeB & 1)) {
 									if (Data->tiles2[tile].HasCollision[c]) {
-										uint32_t col = colTypeA == 3 ? 0xFFFFFF : colTypeA == 2 ? 0xFF0000 : 0xFFFF00;
+										uint32_t col = (SolidTopB && SolidLrbB) ? 0xFFFFFF : (SolidLrbB && !SolidTopB) ? 0xFF0000 : 0xFFFF00;
 
-										if (Data->tiles2[tile].IsCeiling ^ flipY) {
+										if (Data->tiles2[tile].IsCeiling ^ ColFlipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
 										}
 									}
