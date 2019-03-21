@@ -1172,7 +1172,7 @@ PUBLIC void Level_AIZ::HandleCamera() {
 						IPlayer* Player = Players[p];
 						Player->EZX -= 0x200;
 					}
-                    for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
+                    for (vector<Object*>::iterator it = TempObjects.begin(); it != TempObjects.end(); ++it) {
                         (*it)->X -= 0x200;
                     }
 

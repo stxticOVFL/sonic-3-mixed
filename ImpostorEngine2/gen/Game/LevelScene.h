@@ -141,7 +141,8 @@ public:
     char 	ZoneLetters[3];
     int         DEBUG_MOUSE_X = -1;
     int         DEBUG_MOUSE_Y = -1;
-    vector<Object*> Explosions;
+    std::vector<Object*> TempObjects;
+    std::vector<Object*> TempObjectTiles;
     struct ObjectProp {
     uint16_t X = 0x00;
     int16_t Y = 0x00;

@@ -279,10 +279,12 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
     if (other == this) return;
 
     if (!LinkedSprite) {
-        if (Palette)
+        if (Palette) {
             free(Palette);
-        if (PaletteAlt)
+        }
+        if (PaletteAlt) {
             free(PaletteAlt);
+        }
     }
     Palette = other->Palette;
     PaletteAlt = other->PaletteAlt;
@@ -587,6 +589,17 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
     if ((fdsz & 0x80) == 0) {
         IApp::Print(2, "Could not make sprite using '%s' without a palette!", Filename.c_str());
         return;
+    }
+    
+    if (!LinkedSprite) {
+        if (Palette) {
+            free(Palette);
+            Palette = NULL;
+        }
+        if (PaletteAlt) {
+            free(PaletteAlt);
+            PaletteAlt = NULL;
+        }
     }
 
     Palette = (uint32_t*)calloc(256, sizeof(uint32_t));

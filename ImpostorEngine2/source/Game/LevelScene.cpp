@@ -139,7 +139,8 @@ public:
 	int         DEBUG_MOUSE_X = -1;
 	int         DEBUG_MOUSE_Y = -1;
 
-	vector<Object*> Explosions;
+	std::vector<Object*> TempObjects;
+    std::vector<Object*> TempObjectTiles;
 
 	struct ObjectProp {
 		uint16_t X = 0x00;
@@ -1792,7 +1793,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Data->layers[i].ScrollIndexCount = cnt;
 			}
 
-			Data->layers[i].ScrollIndexes = (ScrollingIndex*)calloc(cnt, sizeof(ScrollingIndex));
+			Data->layers[i].ScrollIndexes = new ScrollingIndex[cnt];
 
 			if (Height > 0) { // Just in case
 				int sc = 0;
@@ -1824,9 +1825,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Data->layers[i].Height = Height;
 			unsigned char* Tilesss = reader.ReadCompressed();
 
-			Data->layers[i].Tiles = (short*)malloc(Width * Height * sizeof(short));
-			Data->layers[i].TilesBackup = (short*)malloc(Width * Height * sizeof(short));
-			Data->layers[i].TileOffsetY = (short*)calloc(sizeof(short), Width);
+			Data->layers[i].Tiles = new short[Width * Height];
+			Data->layers[i].TilesBackup = new short[Width * Height];
+			Data->layers[i].TileOffsetY = (short*)calloc(sizeof(short), Width); // Leaks
 
 			IStreamer creader(Tilesss);
 			for (int y = 0; y < Height; y++) {
@@ -2947,8 +2948,22 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	for (int o = 0; o < RingPropCount; o++) {
 		RingProps.at(o).ID = 0xFF;
 	}
-
-	Explosions.clear();
+    
+	for (size_t i = 0; i < TempObjects.size(); i++) {
+        if (TempObjects.at(i) != NULL) {
+            delete TempObjects.at(i);
+            TempObjects.at(i) = NULL;
+        }
+	}
+	TempObjects.clear();
+    
+	for (size_t i = 0; i < TempObjectTiles.size(); i++) {
+        if (TempObjectTiles.at(i) != NULL) {
+            delete TempObjectTiles.at(i);
+            TempObjectTiles.at(i) = NULL;
+        }
+	}
+    TempObjectTiles.clear();
 
 	UpdateDiscord();
 }
@@ -3373,7 +3388,7 @@ PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool 
 	dropdashdust->VisualLayer = vl;
 	dropdashdust->X = x;
 	dropdashdust->Y = y;
-	Explosions.push_back(dropdashdust);
+	TempObjects.push_back(dropdashdust);
 
 	return dropdashdust;
 }
@@ -3391,7 +3406,7 @@ PUBLIC void LevelScene::AddScoreGhost(int frame, int x, int y) {
 	dropdashdust->X = x;
 	dropdashdust->Y = y;
 	dropdashdust->SubY = y - 32;
-	Explosions.push_back(dropdashdust);
+	TempObjects.push_back(dropdashdust);
 }
 
 PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY, bool flipX, bool flipY, int hold) {
@@ -3406,7 +3421,7 @@ PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY
 	tile->Active = true;
 	tile->X = x + offX;
 	tile->Y = y + offY;
-	Explosions.push_back(tile);
+	TempObjectTiles.push_back(tile);
 }
 
 PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed) {
@@ -3424,7 +3439,7 @@ PUBLIC void LevelScene::AddFallingTile(int til, int x, int y, int offX, int offY
 	tile->Y = y + offY;
 	tile->XSpeed = xspeed;
 	tile->YSpeed = yspeed;
-	Explosions.push_back(tile);
+	TempObjectTiles.push_back(tile);
 }
 
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left, int top, int w, int h, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int hold) {
@@ -3448,9 +3463,10 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left,
 	tile->OffY = offY;
 	tile->XSpeed = xspeed;
 	tile->YSpeed = yspeed;
-	if (LastObjectUpdated)
+	if (LastObjectUpdated) {
 		tile->VisualLayer = LastObjectUpdated->VisualLayer;
-	Explosions.push_back(tile);
+    }
+	TempObjectTiles.push_back(tile);
 }
 
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int left, int top, int w, int h, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed, int grv) {
@@ -3485,9 +3501,10 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int anima
 	tile->SubY = (y) << 16;
 	tile->XSpeed = xspeed;
 	tile->YSpeed = yspeed;
-	if (LastObjectUpdated)
+	if (LastObjectUpdated) {
 		tile->VisualLayer = LastObjectUpdated->VisualLayer;
-	Explosions.push_back(tile);
+    }
+	TempObjectTiles.push_back(tile);
 }
 
 PUBLIC void LevelScene::AddAnimal(int x, int y, bool flipX, bool flipY, int xspeed, int yspeed, bool escaping) {
@@ -3536,7 +3553,7 @@ PUBLIC void LevelScene::AddAnimal(int x, int y, bool flipX, bool flipY, int xspe
 	flicky->XSpeed = animalSpeeds[animalType * 2 + 0];
 	flicky->YSpeed = -0x400;
 	flicky->JumpSpeed = animalSpeeds[animalType * 2 + 1];
-	Explosions.push_back(flicky);
+	TempObjects.push_back(flicky);
 }
 
 PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY) {
@@ -4380,16 +4397,19 @@ PUBLIC void LevelScene::Update() {
 				}
 			}
 		}
-
-		for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
-			if ((*it)->Active)
-				(*it)->Update();
-			if (!(*it)->Active) {
-				//Object* j = (*it);
-				//if (j)
-					//delete j;
-				Explosions.erase(it, it);
-			}
+        
+		for (vector<Object*>::iterator it = TempObjects.begin(); it != TempObjects.end(); ++it) {
+            Object* tempObject = (*it);
+            if (tempObject != NULL && tempObject->Active) {
+                tempObject->Update();
+            }
+		}
+        
+		for (vector<Object*>::iterator it = TempObjectTiles.begin(); it != TempObjectTiles.end(); ++it) {
+            Object* tempTileObject = (*it);
+            if (tempTileObject != NULL && tempTileObject->Active) {
+                tempTileObject->Update();
+            }
 		}
 
 		RingAnimationFrame += 0x80;
@@ -4889,6 +4909,9 @@ PUBLIC void LevelScene::CleanupObjects() {
 	std::vector<Object*> RefreshObjectsBreakable;
 	RefreshObjectsBreakable.reserve(300);
 	int NewObjectBreakableCount = 0;
+    
+    std::vector<Object*> RefreshTempObjects;
+    RefreshTempObjects.reserve(TempObjects.size());
 
 	std::vector<Object*> UnrefreshedObjects = Objects;
 	int OldObjectCount = ObjectCount;
@@ -4905,6 +4928,9 @@ PUBLIC void LevelScene::CleanupObjects() {
 
 	std::vector<Object*> UnrefreshedObjectsBreakable = ObjectsBreakable;
 	int OldObjectBreakableCount = ObjectBreakableCount;
+    
+    std::vector<Object*> UnrefreshedTempObjects = TempObjects;
+    size_t UnrefreshedTempObjectsCount = TempObjects.size();
 
 	for (int i = 0; i < ObjectCount; i++) {
 		if (Objects.at(i) == nullptr) {
@@ -4912,8 +4938,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 				NewerObjectNewCount--;
 			}
 			continue;
-		}
-		else if (!Objects.at(i)->Active && Objects.at(i)->CleanupInactiveObject) {
+		} else if (!Objects.at(i)->Active && Objects.at(i)->CleanupInactiveObject) {
 			if (i >= ObjectCount + ObjectNewCount) {
 				NewerObjectNewCount--;
 			}
@@ -4926,8 +4951,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectSolidCount; i++) {
 		if (ObjectsSolid.at(i) == nullptr) {
 			continue;
-		}
-		else if (!ObjectsSolid.at(i)->Active && ObjectsSolid.at(i)->CleanupInactiveObject) {
+		} else if (!ObjectsSolid.at(i)->Active && ObjectsSolid.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsSolid.push_back(ObjectsSolid.at(i));
@@ -4936,8 +4960,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectSpringCount; i++) {
 		if (ObjectsSpring.at(i) == nullptr) {
 			continue;
-		}
-		else if (!ObjectsSpring.at(i)->Active && ObjectsSpring.at(i)->CleanupInactiveObject) {
+		} else if (!ObjectsSpring.at(i)->Active && ObjectsSpring.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsSpring.push_back(ObjectsSpring.at(i));
@@ -4946,8 +4969,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectEnemiesCount; i++) {
 		if (ObjectsEnemies.at(i) == nullptr) {
 			continue;
-		}
-		else if (!ObjectsEnemies.at(i)->Active && ObjectsEnemies.at(i)->CleanupInactiveObject) {
+		} else if (!ObjectsEnemies.at(i)->Active && ObjectsEnemies.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsEnemies.push_back(ObjectsEnemies.at(i));
@@ -4956,11 +4978,19 @@ PUBLIC void LevelScene::CleanupObjects() {
 	for (int i = 0; i < ObjectBreakableCount; i++) {
 		if (ObjectsBreakable.at(i) == nullptr) {
 			continue;
-		}
-		else if (!ObjectsBreakable.at(i)->Active && ObjectsBreakable.at(i)->CleanupInactiveObject) {
+		} else if (!ObjectsBreakable.at(i)->Active && ObjectsBreakable.at(i)->CleanupInactiveObject) {
 			continue;
 		}
 		RefreshObjectsBreakable.push_back(ObjectsBreakable.at(i));
+	}
+    
+	for (size_t i = 0; i < TempObjects.size(); i++) {
+		if (TempObjects.at(i) == nullptr) {
+			continue;
+		} else if (!TempObjects.at(i)->Active) {
+			continue;
+		}
+		RefreshTempObjects.push_back(TempObjects.at(i));
 	}
 
 	RefreshObjects.shrink_to_fit();
@@ -4983,8 +5013,11 @@ PUBLIC void LevelScene::CleanupObjects() {
 	RefreshObjectsBreakable.shrink_to_fit();
 	ObjectsBreakable = RefreshObjectsBreakable;
 	ObjectBreakableCount = RefreshObjectsBreakable.size();
+    
+	RefreshTempObjects.shrink_to_fit();
+	TempObjects = RefreshTempObjects;
 
-	// For some reason, Deleteing the objects is only fine on Debug builds.
+	// For some reason, Deleting the objects is only fine on Debug builds.
 	// This could be because Release might memory manage it automatically.
 	// Not sure as of right now. So we'll only delete the UnrefreshedObjects and
 	// none of the others for non-debug for now.
@@ -5046,12 +5079,23 @@ PUBLIC void LevelScene::CleanupObjects() {
 			UnrefreshedObjectsBreakable.at(i) = nullptr;
 		}
 	}
+    
+	for (size_t i = 0; i < UnrefreshedTempObjectsCount; i++) {
+		if (UnrefreshedTempObjects.at(i) == nullptr) {
+			continue;
+		}
+		if (!UnrefreshedTempObjects.at(i)->Active) {
+			delete UnrefreshedTempObjects.at(i);
+			UnrefreshedTempObjects.at(i) = nullptr;
+		}
+	}
 
 	UnrefreshedObjects.clear();
 	UnrefreshedObjectsSolid.clear();
 	UnrefreshedObjectsSpring.clear();
 	UnrefreshedObjectsEnemies.clear();
 	UnrefreshedObjectsBreakable.clear();
+    UnrefreshedTempObjects.clear();
 }
 
 PUBLIC void LevelScene::RenderAnimatedSprites(int layer) {
@@ -5809,10 +5853,21 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		}
 
 		// Rendering temporary sprites
-		for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
-			if ((*it)->Active)
-				if (l == Data->cameraLayer + (*it)->VisualLayer)
+		for (vector<Object*>::iterator it = TempObjects.begin(); it != TempObjects.end(); ++it) {
+			if ((*it)->Active) {
+				if (l == Data->cameraLayer + (*it)->VisualLayer) {
 					(*it)->Render(CameraX, CameraY);
+                }
+            }
+		}
+        
+		// Rendering temporary tile sprites
+		for (vector<Object*>::iterator it = TempObjectTiles.begin(); it != TempObjectTiles.end(); ++it) {
+			if ((*it)->Active) {
+				if (l == Data->cameraLayer + (*it)->VisualLayer) {
+					(*it)->Render(CameraX, CameraY);
+                }
+            }
 		}
 
 		G->DoDeform = DeformPlayer;
@@ -6222,8 +6277,9 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 
 	for (int i = 0; i < Data->layerCount; i++) {
 		free(Data->layers[i].Info);
-		free(Data->layers[i].Tiles);
-		free(Data->layers[i].ScrollIndexes);
+		delete[] Data->layers[i].Tiles;
+        delete[] Data->layers[i].TilesBackup;
+		delete[] Data->layers[i].ScrollIndexes;
 	}
 	delete Data;
 
@@ -6280,6 +6336,22 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	SpriteMapIDs.clear();
     SpriteBinMap.clear();
     SpriteBinMapIDs.clear();
+    
+	for (size_t i = 0; i < TempObjects.size(); i++) {
+        if (TempObjects.at(i) != NULL) {
+            delete TempObjects.at(i);
+            TempObjects.at(i) = NULL;
+        }
+	}
+	TempObjects.clear();
+    
+	for (size_t i = 0; i < TempObjectTiles.size(); i++) {
+        if (TempObjectTiles.at(i) != NULL) {
+            delete TempObjectTiles.at(i);
+            TempObjectTiles.at(i) = NULL;
+        }
+	}
+    TempObjectTiles.clear();
 
 	CLEANUP(TileSprite);
 	CLEANUP(GiantRingModel);
