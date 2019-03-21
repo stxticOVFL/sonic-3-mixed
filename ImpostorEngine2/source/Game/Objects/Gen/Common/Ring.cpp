@@ -5,9 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Ring::Ring() {
-    if (SaveGame::CurrentMode == 0) BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/Ring.bin");
-    else BinIndex = LevelScene::LoadSpriteBin("Global/Ring.bin");
+Ring::Ring() {
+	if (SaveGame::CurrentMode == 0) {
+		Sprite = LevelScene::LoadSpriteFromBin("GlobalS3K/Ring.bin");
+	} else {
+		Sprite = LevelScene::LoadSpriteFromBin("Global/Ring.bin");
+	}
 }
 
 void Ring::Create() {
