@@ -1961,8 +1961,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				//le crash
 				for (int n = 1; n < AttributeCount; n++)
 				{
-					//AttributeTypes[i] = 0xFF;
-					//CreateAttributeValue(&attributes[i]);
+					AttributeTypes[n] = 0xFF;
+					CreateAttributeValue(&attributes[n]);
 				}
 
 				//Load Attribue Names
