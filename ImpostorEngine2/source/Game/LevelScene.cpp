@@ -1640,8 +1640,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		unsigned char* TileData = tileReader.ReadCompressed();
 		IResources::Close(TileConfig);
 
-		Data->tiles1 = (TileCfg*)malloc(0x400 * sizeof(TileCfg));
-		Data->tiles2 = (TileCfg*)malloc(0x400 * sizeof(TileCfg));
+		Data->tiles1 = new TileCfg[0x400];
+		Data->tiles2 = new TileCfg[0x400];
 
 		// Amount of bytes per Tile Definition
 		int maxDataBytes = 0x26;
@@ -1715,30 +1715,29 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		Data->layerCount = reader.ReadByte();
 		for (int i = 0; i < Data->layerCount; i++) {
 			reader.ReadByte(); // Ignored Byte
-			std::string Name = reader.ReadRSDKString();
 
-			//std::memset(Data->layers[i].Name, 0, 50);
-			strcpy(Data->layers[i].Name, Name.c_str());
-
+			Data->layers[i].Name = reader.ReadRSDKString();
 			Data->layers[i].IsScrollingVertical = reader.ReadByte() == 1 ? true : false;
 			Data->layers[i].Flags = reader.ReadByte();
-			if (Data->layers[i].Flags & 0x10)
+			if (Data->layers[i].Flags & 0x10) {
 				Data->layers[i].Visible = false;
+            }
 
-			Data->layers[i].Deform = (int8_t*)calloc(1, App->HEIGHT);
+            Data->layers[i].Deform = (int8_t*)calloc(1, App->HEIGHT);
 
-			int   Width = (int)reader.ReadUInt16();
-			int   Height = (int)reader.ReadUInt16();
+			int Width = (int)reader.ReadUInt16();
+			int Height = (int)reader.ReadUInt16();
 
 			Data->layers[i].RelativeY = reader.ReadUInt16();
 			Data->layers[i].ConstantY = (short)reader.ReadUInt16();
 
 			Data->layers[i].InfoCount = (int)reader.ReadUInt16();
 
-			if (Data->layers[i].InfoCount)
-				Data->layers[i].Info = (ScrollingInfo*)malloc(Data->layers[i].InfoCount * sizeof(ScrollingInfo));
+			if (Data->layers[i].InfoCount) {
+				Data->layers[i].Info = new ScrollingInfo[Data->layers[i].InfoCount];
+            }
 
-			App->Print(3, "Layer %d (%s): Width (%d) Height (%d) Infos (%d) Vertical Scrolling (%d) UnknownFlags (%d) %s", i, Data->layers[i].Name, Width, Height, Data->layers[i].InfoCount, Data->layers[i].IsScrollingVertical, Data->layers[i].Flags, i == Data->cameraLayer ? " IS CAMERA LAYER" : "");
+			App->Print(3, "Layer %d (%s): Width (%d) Height (%d) Infos (%d) Vertical Scrolling (%d) UnknownFlags (%d) %s", i, Data->layers[i].Name.c_str(), Width, Height, Data->layers[i].InfoCount, Data->layers[i].IsScrollingVertical, Data->layers[i].Flags, i == Data->cameraLayer ? " IS CAMERA LAYER" : "");
 
 			for (int g = 0; g < Data->layers[i].InfoCount; g++) {
 				Data->layers[i].Info[g].RelativeX = reader.ReadUInt16(); // actually is Scrolling Multiplier X
@@ -1792,7 +1791,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				cnt++;
 				Data->layers[i].ScrollIndexCount = cnt;
 			}
-
+            
 			Data->layers[i].ScrollIndexes = new ScrollingIndex[cnt];
 
 			if (Height > 0) { // Just in case
@@ -1825,9 +1824,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Data->layers[i].Height = Height;
 			unsigned char* Tilesss = reader.ReadCompressed();
 
-			Data->layers[i].Tiles = new short[Width * Height];
-			Data->layers[i].TilesBackup = new short[Width * Height];
-			Data->layers[i].TileOffsetY = (short*)calloc(sizeof(short), Width); // Leaks
+			Data->layers[i].Tiles = new short[Width * Height * sizeof(short)];
+			Data->layers[i].TilesBackup = new short[Width * Height * sizeof(short)];
+			Data->layers[i].TileOffsetY = (short*)calloc(sizeof(short), Width);
+
 
 			IStreamer creader(Tilesss);
 			for (int y = 0; y < Height; y++) {
@@ -6276,11 +6276,16 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	Sound::SoundBank[0] = NULL;
 
 	for (int i = 0; i < Data->layerCount; i++) {
-		free(Data->layers[i].Info);
+        free(Data->layers[i].Deform);
+		delete[] Data->layers[i].Info;
 		delete[] Data->layers[i].Tiles;
         delete[] Data->layers[i].TilesBackup;
+        free(Data->layers[i].TileOffsetY);
 		delete[] Data->layers[i].ScrollIndexes;
 	}
+    delete[] Data->tiles1;
+    delete[] Data->tiles2;
+    free(Data->isAnims);
 	delete Data;
 
 	bool ClearedKnuxSprite = false;
