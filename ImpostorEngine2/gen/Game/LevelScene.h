@@ -249,6 +249,7 @@ public:
     void Update();
     virtual void HandleCamera();
     void AddSelfToRegistry(Object* obj, const char* where);
+    virtual void CreateAttributeValue(AttributeValue * Attribute);
     void CleanupObjects();
     void RenderAnimatedSprites(int layer);
     void RenderRings();

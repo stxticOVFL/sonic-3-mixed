@@ -922,14 +922,14 @@ const char* ObjectNames(int n) {
 	return ObjectNameList[n];
 }
 
-std::vector<const char*> ObjectNamesList;
+std::vector<std::string> ObjectNamesList;
 
-void SetObjectName(const char* name) {
+void SetObjectName(std::string name) {
 	ObjectNamesList.push_back(name);
 }
 
 const char* GetObjectName(int n) {
-	return ObjectNamesList[n];
+	return ObjectNamesList[n].c_str();
 }
 
 void clearObjectNames()

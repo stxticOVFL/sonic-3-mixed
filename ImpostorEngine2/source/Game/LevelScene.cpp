@@ -1764,7 +1764,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			// Read WAV channel's max concurrent play
 			int wavs_count = stageReader.ReadByte();
 			for (int i = 0; i < wavs_count; i++) {
-				free(stageReader.ReadRSDKString()); // WAV name
+				stageReader.ReadRSDKString(); // WAV name
 				stageReader.ReadByte(); // Max Concurrent Play
 				//App->Print(0, "WAV: '%s' (max: %d)", wav_name, max_concurrent_play);
 			}

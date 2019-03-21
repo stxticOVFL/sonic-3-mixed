@@ -40,6 +40,7 @@ public:
     char* ReadLine();
     char* ReadString();
     std::string ReadRSDKString();
+    char* ReadRSDKUnicodeString();
     void WriteByte(unsigned char data);
     void WriteBytes(unsigned char* data, int n);
     void WriteUInt16(unsigned short data);

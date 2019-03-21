@@ -452,7 +452,7 @@ public:
 
 	std::map<std::string, AttributeValue> attributes;
 	AttributeValue fuckYou;
-	int		attributeCount = 0;
+	int	attributeCount = 0;
 
 	//Unused, but may be useful to store
 	unsigned short SlotID;

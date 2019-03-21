@@ -8,7 +8,7 @@
 const char* ObjectNames(int n);
 uint32_t crc32(char* c, uint32_t len);
 
-void SetObjectName(const char* name);
+void SetObjectName(std::string name);
 const char* GetObjectName(int n);
 int GetObjectNamesSize();
 void clearObjectNames();
