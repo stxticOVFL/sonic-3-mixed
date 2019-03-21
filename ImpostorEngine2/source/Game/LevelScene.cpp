@@ -1931,6 +1931,11 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ObjectHashes[hash] = GetObjectName(i); //set the name to be assosiated with said hash
 			}
 
+			//Clear objects
+			Objects.clear();
+			ObjectCount = 0;
+			ObjectNewCount = 0;
+
 			Data->objectDefinitionCount = reader.ReadByte();
 			for (int i = 0; i < Data->objectDefinitionCount; i++) {
 				char str[16];
@@ -1945,6 +1950,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				//Get our object name
 				const char* name = ObjectHashes[hashString];
+				App->Print(0, name);
 				uint32_t objHash = crc32((char*)str, 16);
 
 				//Allocate our types
@@ -1952,10 +1958,11 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				int* AttributeTypes = (int*)calloc(AttributeCount, sizeof(AttributeValue));
 				AttributeValue* attributes = (AttributeValue*)calloc(AttributeCount, sizeof(AttributeValue));
 
+				//le crash
 				for (int n = 1; n < AttributeCount; n++)
 				{
-					AttributeTypes[i] = 0xFF;
-					CreateAttributeValue(&attributes[i]);
+					//AttributeTypes[i] = 0xFF;
+					//CreateAttributeValue(&attributes[i]);
 				}
 
 				//Load Attribue Names
@@ -2002,6 +2009,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							switch (AttributeTypes[a]) {
 							case ATTRIBUTE_INT8:
 								attributes[a].value_int8 = (char)reader.ReadByte();
+								break;
 							case ATTRIBUTE_UINT8:
 								attributes[a].value_uint8 = (unsigned char)reader.ReadByte();
 								break;
@@ -2012,15 +2020,19 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								break;
 							case ATTRIBUTE_VAR:
 								attributes[a].value_var = (unsigned int)reader.ReadUInt32();
+								break;
 							case ATTRIBUTE_BOOL:
 								attributes[a].value_bool = reader.ReadUInt32() != 0;
+								break;
 							case ATTRIBUTE_COLOR:
 								attributes[a].value_colour.b = reader.ReadByte();
 								attributes[a].value_colour.g = reader.ReadByte();
 								attributes[a].value_colour.r = reader.ReadByte();
 								attributes[a].value_colour.a = reader.ReadByte();
+								break;
 							case ATTRIBUTE_INT32:
 								attributes[a].value_int32 = (int)reader.ReadInt32();
+								break;
 							case ATTRIBUTE_UINT32:
 								attributes[a].value_uint32 = (unsigned int)reader.ReadUInt32();
 								break;
@@ -2051,13 +2063,14 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						//Add our object to the scene
 						Objects.push_back(obj);
 						ObjectCount++;
-						ObjectNewCount++;
+						//ObjectNewCount++;
 					}
 				}
 
+				//Figure this out it crash :(
 				if (AttributeCount > 1) {
-					free(AttributeTypes);
-					free(attributes);
+					//free(AttributeTypes);
+					//free(attributes);
 				}
 			}
 		}
