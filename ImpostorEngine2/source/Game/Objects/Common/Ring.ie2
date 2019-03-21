@@ -7,7 +7,12 @@ var CurrentFrame:int;
 var MagnetizedTo:int;
 var ShouldRingFall:bool;
 
-event Create() {
+event Ring() : CONSTRUCTER {
+	BinIndex = LevelScene.LoadSpriteBin("Global/Ring.bin");
+}
+
+event Create() {    
+	Active = true;
     Timer = 0xFF;
     CleanupInactiveObject = true;
 	

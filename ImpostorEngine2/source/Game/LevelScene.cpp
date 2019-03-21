@@ -1997,6 +1997,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 					if (obj)
 					{
+						obj->InitialX = X_high + ((float)X_low / 0x10000);
+						obj->InitialY = Y_high + ((float)Y_low / 0x10000);
 						obj->X = X_high + ((float)X_low / 0x10000);
 						obj->Y = Y_high + ((float)Y_low / 0x10000);
 					}
@@ -2057,7 +2059,22 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 					if (obj)
 					{
+						obj->G = G;
+						obj->App = App;
 						obj->Scene = this;
+
+						if (obj->BinIndex == 0xFFFFFFFF) {
+							//while (!SpriteMapIDs[ID]) {
+							//	ID--;
+							//}
+
+							//obj->Sprite = SpriteMapIDs[ID];
+						}
+						else {
+							obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
+						}
+
+						obj->DrawCollisions = App->viewObjectCollision;
 
 						//Dunno what do to with filter so fuck it for now
 						obj->attributeCount = AttributeCount - 1;

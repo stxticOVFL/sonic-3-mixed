@@ -451,6 +451,7 @@ public:
     void *Parent = NULL;
 
 	std::map<std::string, AttributeValue> attributes;
+	AttributeValue fuckYou;
 	int		attributeCount = 0;
 
 	//Unused, but may be useful to store
@@ -565,7 +566,6 @@ public:
 
 	virtual AttributeValue* GetAttribute(char* name)
 	{
-		AttributeValue av;
 		if (attributeCount > 1)
 		{
 			MD5 md5 = MD5(name);
@@ -587,22 +587,21 @@ public:
 			AddAttribute("attribute");
 		}
 	AttribNULL:
-		av.value_bool = false;
-		av.value_colour.r = 255;
-		av.value_colour.g = 255;
-		av.value_colour.b = 255;
-		av.value_int16 = 0;
-		av.value_int32 = 0;
-		av.value_int8 = 0;
-		av.value_position.X = 0;
-		av.value_position.Y = 0;
-		av.value_string = "String";
-		av.value_uint16 = 0;
-		av.value_uint32 = 0;
-		av.value_uint8 = 0;
-		av.value_var = 0;
-		//return &av;
-		return NULL; //Make a default
+		fuckYou.value_bool = false;
+		fuckYou.value_colour.r = 255;
+		fuckYou.value_colour.g = 255;
+		fuckYou.value_colour.b = 255;
+		fuckYou.value_int16 = 0;
+		fuckYou.value_int32 = 0;
+		fuckYou.value_int8 = 0;
+		fuckYou.value_position.X = 0;
+		fuckYou.value_position.Y = 0;
+		fuckYou.value_string = "String";
+		fuckYou.value_uint16 = 0;
+		fuckYou.value_uint32 = 0;
+		fuckYou.value_uint8 = 0;
+		fuckYou.value_var = 0;
+		return &fuckYou; //Make a default
 	}
 	virtual void AddAttribute(char* name)
 	{
