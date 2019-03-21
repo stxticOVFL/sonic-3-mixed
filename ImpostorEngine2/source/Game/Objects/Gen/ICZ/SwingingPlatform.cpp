@@ -5,6 +5,9 @@
 
 typedef IMath Math;
 
+CONSTRUCTER SwingingPlatform::SwingingPlatform() {
+}
+
 void SwingingPlatform::Create() {
     Object::Create();
     CurrentAnimation = Sprite->FindAnimation("Swinging Platform");

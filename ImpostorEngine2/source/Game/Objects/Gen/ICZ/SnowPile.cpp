@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER SnowPile::SnowPile() {
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Snowpile.bin");
+}
+
 void SnowPile::Create() {
     Object::Create();
     Active = true;
@@ -23,7 +27,7 @@ void SnowPile::Render(int CamX, int CamY) {
         G->SetDrawAlpha(0xFF);
     }
 
-    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
 
 int SnowPile::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

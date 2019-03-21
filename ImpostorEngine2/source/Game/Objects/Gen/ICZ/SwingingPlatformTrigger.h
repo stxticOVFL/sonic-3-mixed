@@ -18,6 +18,7 @@ public:
     IPlayer* Player;
     Object* SwingPlatform;
     
+    CONSTRUCTER SwingingPlatformTrigger();
     void Create();
     void Update();
 };

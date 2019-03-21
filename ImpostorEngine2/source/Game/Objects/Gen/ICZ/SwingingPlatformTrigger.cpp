@@ -5,6 +5,9 @@
 
 typedef IMath Math;
 
+CONSTRUCTER SwingingPlatformTrigger::SwingingPlatformTrigger() {
+}
+
 void SwingingPlatformTrigger::Create() {
     Object::Create();
     W = 8;

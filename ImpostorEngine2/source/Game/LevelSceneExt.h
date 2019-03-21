@@ -24,7 +24,7 @@ struct ScrollingIndex {
     int* TileBuffers = NULL;
 };
 struct Layer {
-    char Name[50];
+    std::string Name;
     bool Visible = true;
 
     bool IsScrollingVertical = false;

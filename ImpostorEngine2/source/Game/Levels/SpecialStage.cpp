@@ -117,7 +117,7 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
 
     Globe = new ISprite("Special/Globe.gif", App);
 	ISprite::Animation an;
-	an.Name = NULL;
+	an.Name = "";
 	an.FrameCount = 1;
 	an.Frames = (ISprite::AnimFrame*)calloc(1, sizeof(ISprite::AnimFrame));
 	ISprite::AnimFrame ts_af;
@@ -183,7 +183,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	if (!MobileButtonsSprite) {
 		MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
 		ISprite::Animation an;
-		an.Name = NULL;
+		an.Name = "";
 		an.FrameCount = 8;
 		an.Frames = (ISprite::AnimFrame*)calloc(8, sizeof(ISprite::AnimFrame));
 		for (int i = 0; i < 8; i++) {

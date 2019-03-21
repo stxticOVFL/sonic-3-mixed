@@ -16,6 +16,7 @@ class SnowPile: public Object {
 public:    
     
     
+    CONSTRUCTER SnowPile();
     void Create();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);

@@ -66,7 +66,7 @@ int copymake[4 * 16] = {
     0x178, 0x30, 24, 24,
 };
 
-#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; obj->Create(); Objects[ObjectCount++] = obj; }
+#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectPropCount++; ObjectProps.push_back(op); Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; while (!SpriteMapIDs.at(ID)) ID--; obj->Sprite = SpriteMapIDs.at(ID); obj->SubType = SubType; obj->Create(); ObjectCount++; Objects.push_back(obj); }
 
 PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 2;
@@ -266,21 +266,22 @@ PUBLIC void Level_HCZ::GoToNextAct() {
 PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x39] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x3A] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x51] = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x2F) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x33) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x36) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x38) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x39) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x3A) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x51) = SpriteMap["HCZ"];
 
-	SpriteMapIDs[0x67] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x6C] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x6D] = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x67) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x6C) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x6D) = SpriteMap["HCZ"];
 
-	SpriteMapIDs[0x40F] = SpriteMap["HCZ Enemies"];
-	SpriteMapIDs[0x93] = SpriteMap["HCZ Enemies"];
-	SpriteMapIDs[0x99] = SpriteMap["HCZ Boss"];
+	SpriteMapIDs.at(0x93) = SpriteMap["HCZ Enemies"];
+	SpriteMapIDs.at(0x99) = SpriteMap["HCZ Boss"];
+    
+    SpriteMapIDs.at(0x40F) = SpriteMap["HCZ Enemies"];
 }
 
 PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {

@@ -372,20 +372,20 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-    SpriteMapIDs[0x04] = AIZObjectsSprite;
-    SpriteMapIDs[0x05] = AIZObjectsSprite;
-    SpriteMapIDs[0x06] = AIZObjectsSprite;
-    SpriteMapIDs[0x09] = AIZObjectsSprite;
-    SpriteMapIDs[0x0A] = AIZObjectsSprite;
-    SpriteMapIDs[0x0C] = AIZObjectsSprite;
-    SpriteMapIDs[0x0D] = AIZObjectsSprite;
-    SpriteMapIDs[0x0F] = AIZObjectsSprite;
-    //SpriteMapIDs[0x24] = EditorSprite;
-	SpriteMapIDs[0x2F] = AIZObjectsSprite;
-    SpriteMapIDs[0x35] = AIZObjectsSprite;
-	SpriteMapIDs[0x51] = AIZObjectsSprite;
-    SpriteMapIDs[0x8C] = AIZObjectsSprite;
-    SpriteMapIDs[0x90] = AIZBossSprite;
+    SpriteMapIDs.at(0x04) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x05) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x06) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x09) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0A) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0C) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0D) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0F) = AIZObjectsSprite;
+    //SpriteMapIDs.at(0x24) = EditorSprite;
+	SpriteMapIDs.at(0x2F) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x35) = AIZObjectsSprite;
+	SpriteMapIDs.at(0x51) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x8C) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x90) = AIZBossSprite;
 }
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
@@ -847,7 +847,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                 TileSpriteBackup = TileSprite;
 
                 ISprite::Animation an;
-                an.Name = NULL;
+                an.Name = "";
                 an.FrameCount = 0x400;
                 an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
                 for (int i = 0; i < 0x400; i++) {
@@ -1172,7 +1172,7 @@ PUBLIC void Level_AIZ::HandleCamera() {
 						IPlayer* Player = Players[p];
 						Player->EZX -= 0x200;
 					}
-                    for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
+                    for (vector<Object*>::iterator it = TempObjects.begin(); it != TempObjects.end(); ++it) {
                         (*it)->X -= 0x200;
                     }
 

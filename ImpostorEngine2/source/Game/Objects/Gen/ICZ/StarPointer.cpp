@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER StarPointer::StarPointer() {
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Star Pointer.bin");
+}
+
 void StarPointer::Create() {
     Enemy::Create();
     Active = true;
@@ -46,12 +50,12 @@ void StarPointer::Update() {
 }
 
 void StarPointer::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, IE_NOFLIP);
     if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0x80);
     }
 
+    G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 

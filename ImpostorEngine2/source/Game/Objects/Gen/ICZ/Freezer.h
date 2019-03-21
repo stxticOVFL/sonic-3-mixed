@@ -27,6 +27,7 @@ public:
     int StoredY[7];
     int StoredFrame[7];
     
+    CONSTRUCTER Freezer();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

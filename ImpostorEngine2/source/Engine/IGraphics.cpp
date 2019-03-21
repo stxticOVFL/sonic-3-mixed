@@ -402,6 +402,7 @@ PUBLIC VIRTUAL void IGraphics::SetDrawAlpha(int a) {
 	else
 		SetPixelFunction = &IGraphics::SetPixelAlpha;
 }
+
 PUBLIC VIRTUAL void IGraphics::SetDrawFunc(int a) {
 	switch (a) {
 		case 1:
@@ -666,14 +667,19 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteNormal(ISprite* sprite, int SrcX, int S
 }
 
 PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip) {
-	if (!sprite) return;
+	if (!sprite) {
+		return;
+	}
+
 	if (animation < 0 || animation >= (int)sprite->Animations.size()) {
 		IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
 		assert(animation >= 0 && animation < (int)sprite->Animations.size());
+		return;
 	}
 	if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
 		IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
 		assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
+		return;
 	}
 
 	if (sprite == NULL)
@@ -686,14 +692,19 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int fr
 }
 
 PUBLIC VIRTUAL void IGraphics::DrawSpriteSized(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip, int width, int height) {
-	if (!sprite) return;
+	if (!sprite) {
+		return;
+	}
+
 	if (animation < 0 || animation >= (int)sprite->Animations.size()) {
 		IApp::Print(2, "Animation %d does not exist in sprite %s!", animation, sprite->Filename);
 		assert(animation >= 0 && animation < (int)sprite->Animations.size());
+		return;
 	}
 	if (frame < 0 || frame >= sprite->Animations[animation].FrameCount) {
 		IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
 		assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
+		return;
 	}
 
 	if (sprite == NULL)

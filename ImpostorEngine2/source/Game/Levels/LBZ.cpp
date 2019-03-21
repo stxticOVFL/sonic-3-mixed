@@ -66,24 +66,24 @@ PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
 PUBLIC void Level_LBZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-	SpriteMapIDs[0x01] = ItemsSprite;
-    SpriteMapIDs[0x04] = LBZObjectsSprite;
-    SpriteMapIDs[0x05] = LBZObjectsSprite;
-    SpriteMapIDs[0x06] = LBZObjectsSprite;
-	SpriteMapIDs[0x07] = ObjectsSprite;
-	SpriteMapIDs[0x08] = ObjectsSprite;
-    SpriteMapIDs[0x09] = LBZObjectsSprite;
-    SpriteMapIDs[0x0A] = LBZObjectsSprite;
-    SpriteMapIDs[0x0C] = LBZObjectsSprite;
-    SpriteMapIDs[0x0D] = LBZObjectsSprite;
-    SpriteMapIDs[0x0F] = LBZObjectsSprite;
-	SpriteMapIDs[0x2F] = LBZObjectsSprite;
-	//SpriteMapIDs[0x33] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = ObjectsSprite;
-    SpriteMapIDs[0x35] = LBZObjectsSprite;
+	SpriteMapIDs.at(0x01) = ItemsSprite;
+    SpriteMapIDs.at(0x04) = LBZObjectsSprite;
+    SpriteMapIDs.at(0x05) = LBZObjectsSprite;
+    SpriteMapIDs.at(0x06) = LBZObjectsSprite;
+	SpriteMapIDs.at(0x07) = ObjectsSprite;
+	SpriteMapIDs.at(0x08) = ObjectsSprite;
+    SpriteMapIDs.at(0x09) = LBZObjectsSprite;
+    SpriteMapIDs.at(0x0A) = LBZObjectsSprite;
+    SpriteMapIDs.at(0x0C) = LBZObjectsSprite;
+    SpriteMapIDs.at(0x0D) = LBZObjectsSprite;
+    SpriteMapIDs.at(0x0F) = LBZObjectsSprite;
+	SpriteMapIDs.at(0x2F) = LBZObjectsSprite;
+	//SpriteMapIDs.at(0x33) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x34) = ObjectsSprite;
+    SpriteMapIDs.at(0x35) = LBZObjectsSprite;
 
-	SpriteMapIDs[0x51] = LBZObjectsSprite;
-    SpriteMapIDs[0x8C] = LBZObjectsSprite;
+	SpriteMapIDs.at(0x51) = LBZObjectsSprite;
+    SpriteMapIDs.at(0x8C) = LBZObjectsSprite;
 }
 
 PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {

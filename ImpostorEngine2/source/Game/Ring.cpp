@@ -165,7 +165,7 @@ PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
             ringsparkle->Sprite = Scene->ItemsSprite;
             ringsparkle->X = X + rx[i];
             ringsparkle->Y = Y + ry[i];
-            Scene->Explosions.push_back(ringsparkle);
+            Scene->TempObjects.push_back(ringsparkle);
         }
     } else {
         Explosion* ringsparkle;
@@ -178,7 +178,7 @@ PUBLIC int Ring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         ringsparkle->Sprite = Scene->ItemsSprite;
         ringsparkle->X = X;
         ringsparkle->Y = Y;
-        Scene->Explosions.push_back(ringsparkle);
+        Scene->TempObjects.push_back(ringsparkle);
     }
 
     Active = false;
