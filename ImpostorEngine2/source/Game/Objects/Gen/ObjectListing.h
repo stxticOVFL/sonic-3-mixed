@@ -41,7 +41,7 @@
 #include "HCZ/HCZConveyorSpike.h"			// D719B2D
 #include "HCZ/Block.h"			// 58F95E1C
 #include "CNZ/Balloon.h"			// 65BE2A3A
-#include "CNZ/LightBulb.h"			// 2DA0397D
+#include "CNZ/CNZLightBulb.h"			// A17F0176
 #include "CNZ/HoverFan.h"			// 7C977754
 #include "CNZ/VacuumTube.h"			// 177568D6
 #include "CNZ/Bumper.h"			// 9DD277AF
@@ -165,7 +165,7 @@ enum {
     Obj_HCZConveyorSpike = 0x03F,
     Obj_Block = 0x040,
     Obj_Balloon = 0x041,
-    Obj_LightBulb = 0x045,
+    Obj_CNZLightBulb = 0x045,
     Obj_HoverFan = 0x046,
     Obj_VacuumTube = 0x048,
     Obj_Bumper = 0x04A,

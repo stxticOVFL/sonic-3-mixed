@@ -1,7 +1,7 @@
-#ifndef LIGHTBULB_H
-#define LIGHTBULB_H
+#ifndef CNZLIGHTBULB_H
+#define CNZLIGHTBULB_H
 
-class LightBulb;
+class CNZLightBulb;
 
 #include <Utils/Standard.h>
 
@@ -12,7 +12,7 @@ class LightBulb;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class LightBulb: public Object {
+class CNZLightBulb: public Object {
 public:    
     
     bool Broken;
@@ -22,4 +22,4 @@ public:
     void Render(int CamX, int CamY);
 };
 
-#endif /* LIGHTBULB_H */
+#endif /* CNZLIGHTBULB_H */

@@ -1,11 +1,11 @@
 // Object ID: 0x45
-// Object Name: LightBulb.cpp
+// Object Name: CNZLightBulb.cpp
 
-#include "LightBulb.h"
+#include "CNZLightBulb.h"
 
 typedef IMath Math;
 
-void LightBulb::Create() {
+void CNZLightBulb::Create() {
     Object::Create();
     this->Active = true;
     this->Priority = false;
@@ -14,7 +14,7 @@ void LightBulb::Create() {
     this->CurrentAnimation = Sprite->FindAnimation("Light Bulb");
 }
 
-void LightBulb::Update() {
+void CNZLightBulb::Update() {
     if (Y > Scene->WaterLevel) {
         Broken = true;
     }
@@ -22,7 +22,7 @@ void LightBulb::Update() {
     Object::Update();
 }
 
-void LightBulb::Render(int CamX, int CamY) {
+void CNZLightBulb::Render(int CamX, int CamY) {
     G->DrawSprite(this->Sprite, CurrentAnimation, Frame >> 8, this->X - CamX, this->Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
     if (App->viewObjectCollision) {
         G->SetDrawAlpha(0x80);

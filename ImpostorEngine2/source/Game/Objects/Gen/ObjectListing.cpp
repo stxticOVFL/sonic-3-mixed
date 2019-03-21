@@ -123,7 +123,7 @@ Object* GetNewObjectFromID(int ID) {
             return new Balloon();
             break;
         case 0x45U:
-            return new LightBulb();
+            return new CNZLightBulb();
             break;
         case 0x46U:
             return new HoverFan();
@@ -494,8 +494,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x65BE2A3AU:
             return new Balloon();
             break;
-        case 0x2DA0397DU:
-            return new LightBulb();
+        case 0xA17F0176U:
+            return new CNZLightBulb();
             break;
         case 0x7C977754U:
             return new HoverFan();
