@@ -62,7 +62,7 @@ gd_GIF* gd_open_gif(IResource* fd) {//const char *fname) {
 	fd->Read(sigver, 3); // readed(fd, sigver, 3);;
 	if (memcmp(sigver, "89a", 3) != 0) {
 		fprintf(stderr, "invalid version\n");
-		goto fail;
+		//goto fail;
 	}
 	/* Width x Height */
 	width = read_num(fd);

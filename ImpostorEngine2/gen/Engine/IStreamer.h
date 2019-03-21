@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class IResource;
 
@@ -38,7 +39,7 @@ public:
     signed int     ReadInt32BE();
     char* ReadLine();
     char* ReadString();
-    char* ReadRSDKString();
+    std::string ReadRSDKString();
     void WriteByte(unsigned char data);
     void WriteBytes(unsigned char* data, int n);
     void WriteUInt16(unsigned short data);

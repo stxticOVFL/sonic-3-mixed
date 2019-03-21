@@ -8,6 +8,7 @@
 
 class IApp;
 class IGraphics;
+class IAchievement;
 
 #include <Utils/Standard.h>
 #include <Engine/IApp.h>

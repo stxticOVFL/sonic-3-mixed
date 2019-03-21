@@ -44,25 +44,25 @@ PUBLIC void Level_FBZ::RestartStage(bool doActTransition, bool drawBackground) {
 PUBLIC void Level_FBZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-	SpriteMapIDs[0x01] = ItemsSprite;
-	SpriteMapIDs[0x07] = ObjectsSprite;
-	SpriteMapIDs[0x08] = ObjectsSprite;
-    SpriteMapIDs[0x0D] = SpriteMap["MGZ"];
-    SpriteMapIDs[0x0F] = SpriteMap["MGZ"];
-	SpriteMapIDs[0x2F] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x34] = ObjectsSprite;
-	SpriteMapIDs[0x36] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x38] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x39] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x3A] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x51] = SpriteMap["MGZ"];
+	SpriteMapIDs.at(0x01) = ItemsSprite;
+	SpriteMapIDs.at(0x07) = ObjectsSprite;
+	SpriteMapIDs.at(0x08) = ObjectsSprite;
+    SpriteMapIDs.at(0x0D) = SpriteMap["MGZ"];
+    SpriteMapIDs.at(0x0F) = SpriteMap["MGZ"];
+	SpriteMapIDs.at(0x2F) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x34) = ObjectsSprite;
+	SpriteMapIDs.at(0x36) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x38) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x39) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x3A) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x51) = SpriteMap["MGZ"];
 
-	SpriteMapIDs[0x67] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x6C] = SpriteMap["HCZ"];
-	SpriteMapIDs[0x6D] = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x67) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x6C) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(0x6D) = SpriteMap["HCZ"];
 
-	SpriteMapIDs[0x93] = SpriteMap["HCZ Enemies"];
-	SpriteMapIDs[0x99] = SpriteMap["HCZ Boss"];
+	SpriteMapIDs.at(0x93) = SpriteMap["HCZ Enemies"];
+	SpriteMapIDs.at(0x99) = SpriteMap["HCZ Boss"];
 }
 
 PUBLIC void Level_FBZ::LoadZoneSpecificSprites() {

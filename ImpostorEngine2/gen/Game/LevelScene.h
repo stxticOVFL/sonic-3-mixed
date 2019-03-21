@@ -24,7 +24,6 @@ class ISprite;
 class ISprite;
 class ISprite;
 class ISprite;
-class ISprite;
 class IModel;
 class ISound;
 
@@ -60,6 +59,8 @@ public:
     int32_t     CameraDeltaY = 0;
     int         CameraAutoScrollX = 0;
     int         CameraAutoScrollY = 0;
+    size_t      ScreenXWrapValue = -1;
+    size_t      ScreenYWrapValue = -1;
     int         Frame = 0;
     int         Timer = 0;
     int         Score = 0;
@@ -129,8 +130,9 @@ public:
     int         ObjectPathSwitcherCount = 0;
     int16_t*    DebugObjectIDList;
     int32_t     DebugObjectIDCount = 0;
-    unordered_map<string, ISprite*> SpriteMap;
-    ISprite**   SpriteMapIDs;
+    std::unordered_map<std::string, ISprite*> SpriteMap;
+    std::vector<ISprite *> SpriteMapIDs;
+    static std::unordered_map<std::string, size_t> SpriteBinMap;
     static std::vector<ISprite *> SpriteBinMapIDs;
     int         ZoneID = 0;
     int         Act = 1;
@@ -139,7 +141,8 @@ public:
     char 	ZoneLetters[3];
     int         DEBUG_MOUSE_X = -1;
     int         DEBUG_MOUSE_Y = -1;
-    vector<Object*> Explosions;
+    std::vector<Object*> TempObjects;
+    std::vector<Object*> TempObjectTiles;
     struct ObjectProp {
     uint16_t X = 0x00;
     int16_t Y = 0x00;
@@ -219,6 +222,8 @@ public:
     void SaveState();
     void LoadState();
     static size_t LoadSpriteBin(const char* Filename);
+    static ISprite* LoadSpriteFromBin(const char* Filename);
+    static ISprite* GetSpriteFromBinIndex(size_t index);
     virtual void LoadData();
     virtual void Init();
     static int LoadStatic(void* data);
@@ -272,6 +277,9 @@ public:
     virtual void RenderEverything();
     virtual void Render();
     virtual void Cleanup();
+protected:
+    static size_t ResetSpriteBin(const char* Filename);
+    static bool FindSpriteBin(std::string filename);
 };
 
 #endif /* LEVELSCENE_H */

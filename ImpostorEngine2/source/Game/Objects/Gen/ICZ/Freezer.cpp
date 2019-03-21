@@ -5,6 +5,9 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Freezer::Freezer() {
+}
+
 void Freezer::Create() {
     Object::Create();
     W = 32;

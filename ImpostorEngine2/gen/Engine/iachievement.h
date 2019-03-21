@@ -10,12 +10,13 @@
 
 class IApp;
 class IGraphics;
+class IAchievement;
 
 #include <Utils/Standard.h>
 #include <Engine/IApp.h>
 #include <Engine/IGraphics.h>
 
-#define TOTAL_ACHIEVEMENT_COUNT (0x40)
+constexpr auto TOTAL_ACHIEVEMENT_COUNT = (0x40);
 
 class IAchievement {
 public:

@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER SegmentedColumnStub::SegmentedColumnStub() {
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Wall and Column.bin");
+}
+
 void SegmentedColumnStub::Create() {
     Object::Create();
     W = 64;
@@ -24,6 +28,7 @@ int SegmentedColumnStub::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Da
 }
 
 void SegmentedColumnStub::Break() {
+    BinIndex = LevelScene::LoadSpriteBin("ICZ/Ice Cube.bin");
     CurrentAnimation = Sprite->FindAnimation("Ice Cube");
     Scene->AddMovingSprite(Sprite, X + 12, Y + 4, CurrentAnimation + 1, 0 + (4 & 3), false, false, 0x1C0, -0x1C0, 0xA0);
     Scene->AddMovingSprite(Sprite, X - 12, Y + 4, CurrentAnimation + 1, 0 + (3 & 3), false, false, -0x1B0, -0x1C0, 0xA0);
@@ -32,7 +37,9 @@ void SegmentedColumnStub::Break() {
 }
 
 void SegmentedColumnStub::Render(int CamX, int CamY) {
-    if (!Visible) return;
+    if (!Visible) {
+        return;
+    }
 
     if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
@@ -48,7 +55,9 @@ int SegmentedColumnStub::OnBreakVertical(int PlayerID, int HitFrom) {
 }
 
 int SegmentedColumnStub::OnBreakHorizontal(int PlayerID, int HitFrom) {
-    if ((HitFrom & (int)(CollideSide::SIDES)) == 0) return 0;
+    if ((HitFrom & (int)(CollideSide::SIDES)) == 0) {
+        return 0;
+    }
 
     if (Scene->Players[PlayerID]->XSpeed > 0x12) {
         BreakableByRoll = CollideSide::NONE;

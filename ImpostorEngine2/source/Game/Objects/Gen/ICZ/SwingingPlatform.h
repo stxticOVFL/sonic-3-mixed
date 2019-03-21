@@ -22,6 +22,7 @@ public:
     int Pivot;
     IPlayer* Player;
     
+    CONSTRUCTER SwingingPlatform();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

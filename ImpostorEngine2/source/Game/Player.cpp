@@ -923,7 +923,7 @@ void IPlayer::Update() {
 				watersplash->Sprite = Scene->WaterSprite;
 				watersplash->X = EZX;
 				watersplash->Y = Scene->WaterLevel;
-				Scene->Explosions.push_back(watersplash);
+				Scene->TempObjects.push_back(watersplash);
 				Sound::Play(Sound::SFX_SPLASH);
 
 				Scene->WaterEnteredCounter++;
@@ -948,7 +948,7 @@ void IPlayer::Update() {
 				watersplash->Sprite = Scene->WaterSprite;
 				watersplash->X = EZX;
 				watersplash->Y = Scene->WaterLevel;
-				Scene->Explosions.push_back(watersplash);
+				Scene->TempObjects.push_back(watersplash);
 				Sound::Play(Sound::SFX_SPLASH);
 
 				Scene->WaterEnteredCounter++;
@@ -2152,7 +2152,7 @@ void IPlayer::Update() {
 							dropdashdust->Sprite = Scene->ExplosionSprite;
 							dropdashdust->X = EZX;
 							dropdashdust->Y = EZY + H / 2;
-							Scene->Explosions.push_back(dropdashdust);
+							Scene->TempObjects.push_back(dropdashdust);
 
 							CameraLockTimer = 8;
 
@@ -2721,7 +2721,7 @@ void IPlayer::Update() {
 			countdown->Sprite = Scene->WaterSprite;
 			countdown->X = EZX - Scene->CameraX + 20;
 			countdown->Y = EZY - Scene->CameraY - 20;
-			Scene->Explosions.push_back(countdown);
+			Scene->TempObjects.push_back(countdown);
 		}
 	}
 	else {
@@ -4227,7 +4227,7 @@ void IPlayer::HandleMonitors() {
 					ringsparkle->Sprite = Scene->ItemsSprite;
 					ringsparkle->X = obj.X + rx[i];
 					ringsparkle->Y = obj.Y + ry[i];
-					Scene->Explosions.push_back(ringsparkle);
+					Scene->TempObjects.push_back(ringsparkle);
 				}
 			}
 			else {
@@ -4241,7 +4241,7 @@ void IPlayer::HandleMonitors() {
 				ringsparkle->Sprite = Scene->ItemsSprite;
 				ringsparkle->X = obj.X;
 				ringsparkle->Y = obj.Y;
-				Scene->Explosions.push_back(ringsparkle);
+				Scene->TempObjects.push_back(ringsparkle);
 			}
 		}
 	}

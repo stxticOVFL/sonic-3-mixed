@@ -1,3 +1,7 @@
+event SegmentedColumnStub() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("ICZ/Wall and Column.bin"); //TODO give seperate bin/animation
+}
+
 event Create() {
     W = 64;
     H = 32;
@@ -15,6 +19,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 }
 
 event Break() {
+    BinIndex = LevelScene.LoadSpriteBin("ICZ/Ice Cube.bin");
     CurrentAnimation = Sprite.FindAnimation("Ice Cube");
     Scene.AddMovingSprite(Sprite, X + 12, Y + 4, CurrentAnimation + 1, 0 + (4 & 3), false, false,  0x1C0, -0x1C0, 0xA0);
     Scene.AddMovingSprite(Sprite, X - 12, Y + 4, CurrentAnimation + 1, 0 + (3 & 3), false, false, -0x1B0, -0x1C0, 0xA0);
@@ -23,7 +28,9 @@ event Break() {
 }
 
 event Render(CamX:int, CamY:int) {
-    if (!Visible) return;
+    if (!Visible) { 
+        return;
+    }
 
 	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
@@ -36,16 +43,19 @@ event Render(CamX:int, CamY:int) {
 event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     return OnBreakHorizontal(PlayerID, HitFrom);
 }
+
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
-    if ((HitFrom & (int)(CollideSide.SIDES)) == 0) return 0;
-    if (Scene.Players[PlayerID].XSpeed > 0x12)
-	{	
-	BreakableByRoll = CollideSide.NONE;
-    Sound.Play(Sound.SFX_COLLAPSE);
-    Solid = false;
-    Visible = false;
-    Break();
-    return 1;	
+    if ((HitFrom & (int)(CollideSide.SIDES)) == 0) { 
+        return 0;
+    }
+    
+    if (Scene.Players[PlayerID].XSpeed > 0x12) {	
+        BreakableByRoll = CollideSide.NONE;
+        Sound.Play(Sound.SFX_COLLAPSE);
+        Solid = false;
+        Visible = false;
+        Break();
+        return 1;
 	}
 	return 0;
 }
