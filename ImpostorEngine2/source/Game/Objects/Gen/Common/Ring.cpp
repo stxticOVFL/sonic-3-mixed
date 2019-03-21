@@ -11,7 +11,7 @@ void Ring::Create() {
     CleanupInactiveObject = true;
     MyX = 0;
     MyY = 0;
-    CurrentAnimation = Sprite->FindAnimation("Ring Normal");
+    CurrentAnimation = Scene->ItemsSprite->FindAnimation("Ring Normal");
     CurrentFrame = 0;
     MagnetizedTo = -1;
     ShouldRingFall = true;

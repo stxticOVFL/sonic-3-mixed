@@ -2057,6 +2057,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 					if (obj)
 					{
+						obj->Scene = this;
+
 						//Dunno what do to with filter so fuck it for now
 						obj->attributeCount = AttributeCount - 1;
 
