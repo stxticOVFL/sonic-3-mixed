@@ -322,12 +322,25 @@ MD5& MD5::finalize() {
 //////////////////////////////
 
 // return hex representation of digest as string
+std::string MD5::getdigest() const {
+	if (!finalized)
+		return "";
+
+	char buf[17];
+	for (int i = 0; i < 16; i++)
+		buf[i] = digest[i];
+	buf[16] = 0;
+
+	return std::string(buf);
+}
+
+// return hex representation of digest as string
 std::string MD5::hexdigest() const {
 	if (!finalized)
 		return "";
 
 	char buf[33];
-	for (int i = 0; i<16; i++)
+	for (int i = 0; i < 16; i++)
 		sprintf(buf + i * 2, "%02x", digest[i]);
 	buf[32] = 0;
 

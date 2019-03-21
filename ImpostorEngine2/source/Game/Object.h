@@ -566,11 +566,11 @@ public:
 
 	virtual AttributeValue* GetAttribute(char* name)
 	{
-		if (attributeCount > 1)
+		if (attributeCount >= 1)
 		{
 			MD5 md5 = MD5(name);
 
-			string hash = md5.hexdigest();
+			std::string hash = md5.getdigest();
 			if (attributes.find(hash) == attributes.end())
 			{
 				//Not Found :(

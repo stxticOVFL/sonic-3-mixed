@@ -2053,7 +2053,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 								break;
 							}
 							if (obj) {
-								obj->attributes.emplace(attributes[a].namehash, attributes[a]);
+								std::string hashyboi = std::string(attributes[a].namehash);
+								if (hashyboi.size() > 16) hashyboi.erase(16);
+								obj->attributes.emplace(hashyboi, attributes[a]);
 							}
 						}
 					}
