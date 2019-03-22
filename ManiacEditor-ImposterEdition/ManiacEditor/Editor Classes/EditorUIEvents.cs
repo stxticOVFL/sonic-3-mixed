@@ -543,11 +543,53 @@ a valid Data Directory.",
 			Editor.UpdateEditLayerActions();
 		}
 
-		#endregion
+        public void ObjectEditorToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            AttributeEditorForm dlg = new AttributeEditorForm();
+            string nam = Editor.EditorPath.SceneFile_Source.Replace(Path.GetExtension(Editor.EditorPath.SceneFile_Source), "");
+            Editor.EditorPath.SceneFile_Source = nam + ".bin.bak";
+            Save_Click(this, e); //save our file
+            Editor.EditorPath.SceneFile_Source = nam + ".bin";
+            RSDKv5.Scene scn = new Scene(Editor.EditorPath.SceneFile_Source);
+            dlg.Scene = scn;
+            dlg.Setup();
 
-		#region View Tab Buttons
+            dlg.ShowDialog();
 
-		public void statsToolStripMenuItem_Click(object sender, RoutedEventArgs e)
+            scn = dlg.Scene;
+            //Update the Attrib Maps
+            for (int i = 0; i < scn.Objects.Count; i++)
+            {
+                for (int ii = 0; ii < scn.Objects[i].Entities.Count; ii++)
+                {
+                    scn.Objects[i].Entities[ii].attributesMap.Clear();
+                    for (int a = 0; a < scn.Objects[i].Attributes.Count; a++)
+                    {
+                        if (scn.Objects[i].Entities[ii].Attributes.Count <= a) //add blanks
+                        {
+                            scn.Objects[i].Entities[ii].Attributes.Add(new RSDKv5.AttributeValue());
+                        }
+
+                        scn.Objects[i].Entities[ii].Attributes[a].Type = scn.Objects[i].Attributes[a].Type;
+
+                        if (scn.Objects[i].Attributes[a].Name.Name == null)
+                        {
+                            scn.Objects[i].Attributes[a].Name.Name = scn.Objects[i].Attributes[a].Name.HashString();
+                        }
+
+                        scn.Objects[i].Entities[ii].attributesMap.Add(scn.Objects[i].Attributes[a].Name.Name, scn.Objects[i].Entities[ii].Attributes[a]);
+                    }
+                }
+            }
+            scn.Write(Editor.EditorPath.SceneFile_Source);
+            //Gonna wanna refresh ere chiefs
+        }
+
+        #endregion
+
+        #region View Tab Buttons
+
+        public void statsToolStripMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			Editor.DebugStatsVisibleOnPanel = !Editor.DebugStatsVisibleOnPanel;
 			Editor.showStatsToolStripMenuItem.IsChecked = Editor.DebugStatsVisibleOnPanel;
