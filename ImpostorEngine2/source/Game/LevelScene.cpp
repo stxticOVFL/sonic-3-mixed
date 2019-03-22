@@ -2036,6 +2036,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				//Get our object name
 				const char* name = ObjectHashes[hashString];
+				if (name == NULL) name = "Unimplemented Object";
 				App->Print(0, name);
 				uint32_t objHash = crc32((char*)str, 16);
 

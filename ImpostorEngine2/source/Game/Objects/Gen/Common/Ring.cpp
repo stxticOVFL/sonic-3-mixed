@@ -8,7 +8,8 @@ typedef IMath Math;
 CONSTRUCTER Ring::Ring() {
     if (SaveGame::CurrentMode == 0) {
         Sprite = LevelScene::LoadSpriteFromBin("GlobalS3K/Ring.bin");
-    } else {
+    }
+    else {
         Sprite = LevelScene::LoadSpriteFromBin("Global/Ring.bin");
     }
     ShouldRingFall = false;
