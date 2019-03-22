@@ -38,6 +38,7 @@ public:
     int SubTypeFrame;
     int PlayerAggressor;
     IPlayer* Player;
+    int MonitorType;
     
     void Create();
     void UpdateSubType();

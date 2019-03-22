@@ -22,7 +22,7 @@ public:
     int StarTimer;
     Object* Stars[4];
     
-	CONSTRUCTER StarPost();
+    CONSTRUCTER StarPost();
     void Create();
     void Update();
     int OnLeaveScreen();
