@@ -24,52 +24,9 @@ void Monitor::Create() {
     CanFall = false;
     GhostY = 0.0;
     CleanupInactiveObject = true;
-    /*if (Attributes) {
-        if (Scene->ManiaLevel) {
-            switch (Attributes[0]) {
-                case 0:
-                SubType = ItemTypes::TYPE_RINGS;
-                break;
-                case 1:
-                SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
-                break;
-                case 2:
-                SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
-                break;
-                case 3:
-                SubType = ItemTypes::TYPE_SHIELD_FIRE;
-                break;
-                case 4:
-                SubType = ItemTypes::TYPE_SHIELD_LIGHTNING;
-                break;
-                case 5:
-                SubType = ItemTypes::TYPE_INVINCIBILITY;
-                break;
-                case 6:
-                SubType = ItemTypes::TYPE_SPEED_SHOES;
-                break;
-                case 7:
-                SubType = ItemTypes::TYPE_1UP;
-                break;
-                case 10:
-                SubType = ItemTypes::TYPE_ROBOTNIK;
-                break;
-                case 11:
-                SubType = ItemTypes::TYPE_HYPER_RING;
-                break;
-                case 14:
-                SubType = ItemTypes::TYPE_SUPER;
-                break;
-            }
-
-        }
-        else {
-            SubType = Attributes[0];
-        }
-    }*/
-
+    MonitorType = SubType;
     SubTypeFrame = 0;
-    switch (SubType) {
+    switch (MonitorType) {
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
         break;
@@ -115,7 +72,7 @@ void Monitor::Create() {
 }
 
 void Monitor::UpdateSubType() {
-    switch (SubType) {
+    switch (MonitorType) {
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
         break;
@@ -193,7 +150,7 @@ void Monitor::Update() {
     else if (!CanFall) Priority = false;
 
     if (Timer == 32) {
-        switch (SubType) {
+        switch (MonitorType) {
             case ItemTypes::TYPE_STATIC:
             Scene->Players[PlayerAggressor]->Hurt(X, false);
             break;

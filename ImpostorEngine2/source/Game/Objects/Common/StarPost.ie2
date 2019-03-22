@@ -8,6 +8,11 @@ var ShowStars:bool;
 var StarTimer:int;
 var Stars:Object[4];
 
+event StarPost() : CONSTRUCTER {
+	BinIndex = LevelScene.LoadSpriteBin("Global/StarPost.bin");
+}
+
+
 event Create() {
     Active = true;
     Priority = false;

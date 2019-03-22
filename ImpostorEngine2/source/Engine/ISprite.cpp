@@ -281,10 +281,10 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            delete[] Palette;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            delete[] PaletteAlt;
         }
     }
     Palette = other->Palette;
@@ -473,17 +473,18 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
 
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            delete[] Palette;
             Palette = NULL;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            delete[] PaletteAlt;
             PaletteAlt = NULL;
         }
     }
     
-    Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
-    PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
+
+    Palette = new uint32_t[256];
+    PaletteAlt = new uint32_t[256];
 
     assert(Palette != NULL);
     assert(PaletteAlt != NULL);
@@ -594,17 +595,17 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
     
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            delete[] Palette;
             Palette = NULL;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            delete[] PaletteAlt;
             PaletteAlt = NULL;
         }
     }
 
-    Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
-    PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
+    Palette = new uint32_t[256];
+    PaletteAlt = new uint32_t[256];
 
     assert(Palette != NULL);
     assert(PaletteAlt != NULL);
@@ -744,10 +745,10 @@ PUBLIC void ISprite::Cleanup() {
 
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            delete[] Palette;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            delete[] PaletteAlt;
         }
     }
 

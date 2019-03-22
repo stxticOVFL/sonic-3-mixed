@@ -60,6 +60,7 @@
     <ClCompile Include="..\source\Game\Levels\SpecialStage.cpp" />
     <ClCompile Include="..\source\Game\Levels\SSZ.cpp" />
     <ClCompile Include="..\source\Game\Levels\TDZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\TSZ.cpp" />
     <ClCompile Include="..\source\Game\MovingSprite.cpp" />
     <ClCompile Include="..\source\Game\Object.cpp" />
     <ClCompile Include="..\source\Game\ObjectNames.cpp" />

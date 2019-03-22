@@ -1682,7 +1682,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			memcpy(Data->tiles2[i].Config, TileData + n + 0x21, 0x05);
 		}
 
-		free(TileData);
+		delete[] TileData;
 	} else {
 		App->Print(2, "TileConfig at '%s' could not be read.", Str_TileConfigBin);
 		exit(1);
@@ -1944,7 +1944,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Data->layers[i].ScrollIndexes[sc].Size = s - s_start;
 				//App->Print(0, " - ScrollIndex %d: Index %d Size %d", sc, Data->layers[i].ScrollIndexes[sc].Index, Data->layers[i].ScrollIndexes[sc].Size);
 			}
-			free(ScrollIndexes);
+			delete[] ScrollIndexes;
 
 			Data->layers[i].Width = Width;
 			Data->layers[i].Height = Height;
@@ -1965,7 +1965,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			PatchLayer(i);
 
 			memcpy(Data->layers[i].TilesBackup, Data->layers[i].Tiles, Width * Height * sizeof(short));
-			free(Tilesss);
+			delete[] Tilesss;
 		}
 
 		enum {
@@ -2036,6 +2036,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				//Get our object name
 				const char* name = ObjectHashes[hashString];
+				if (name == NULL) name = "Unimplemented Object";
 				App->Print(0, name);
 				uint32_t objHash = crc32((char*)str, 16);
 
@@ -2146,7 +2147,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						}
 					}
 
-					if (obj)
+					if (obj && objHash != OBJ_PLANESWITCHER)
 					{
 						obj->G = G;
 						obj->App = App;
@@ -2163,10 +2164,26 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						//Dunno what do to with filter so fuck it for now
 						obj->attributeCount = AttributeCount - 1;
 
+						//done for backwards compatibility, returns 0 on error so we good
+						obj->SubType = obj->GetAttribute("Subtype")->value_uint8;
+
+						//load our filter attrib, and if nothing return 0
+						obj->Filter = obj->GetAttribute("Filter")->value_uint8;
+
 						//Add our object to the scene
 						Objects.push_back(obj);
 						ObjectCount++;
 						//ObjectNewCount++;
+					}
+					else if (obj && objHash == OBJ_PLANESWITCHER)
+					{
+						PlaneSwitchers[PlaneSwitchCount].X = obj->X;
+						PlaneSwitchers[PlaneSwitchCount].Y = obj->Y;
+						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->value_int32;
+						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->value_int32;
+						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath")->value_bool;
+						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->value_int32;
+						PlaneSwitchCount++;
 					}
 				}
 
@@ -5671,6 +5688,13 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 					baseY = (iy << 4) - TileBaseY + layer.TileOffsetY[fx];
 
 					tile = layer.Tiles[fx + fy * layer.Width];
+                    
+                    bool ColFlipX = ((tile >> 10) & 1) == 1;
+                    bool ColFlipY = ((tile >> 11) & 1) == 1;
+                    bool SolidTopA = ((tile >> 12) & 1) == 1;
+                    bool SolidLrbA = ((tile >> 13) & 1) == 1;
+                    bool SolidTopB = ((tile >> 14) & 1) == 1;
+                    bool SolidLrbB = ((tile >> 15) & 1) == 1;
 
 					int colTypeA = ((tile >> 12) & 3);
 					int colTypeB = ((tile >> 14) & 3);
@@ -5680,19 +5704,18 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 					if (tile != BlankTile) {
 						anID = Data->isAnims[tile] & 0xFF;
-						if (anID != 0xFF)
+						if (anID != 0xFF) {
 							G->DrawSprite(AnimTileSprite, Data->isAnims[tile] >> 8, Data->animatedTileFrames[anID], baseX + 8, baseY + 8, 0, fullFlip);
-						else
+						} else {
 							G->DrawSprite(TileSprite, 0, tile, baseX + 8, baseY + 8, 0, fullFlip);
+                        }
 
 						if (ViewTileCollision) {
-							flipX = ((fullFlip >> 0) & 1);
-							flipY = ((fullFlip >> 1) & 1);
-
 							for (int c = 0; c < 16; c++) {
 								int eex = c;
-								if (flipX)
+								if (ColFlipX) {
 									eex = 15 - c;
+                                }
 
 								int h1 = Data->tiles1[tile].Collision[c];
 								int h2 = Data->tiles2[tile].Collision[c];
@@ -5708,25 +5731,22 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 								if (Player->Layer == 0 && (colTypeA & 1)) {
 									//uint32_t col = colTypeB == 3 ? 0 : colTypeB == 2 ? 0xFFFF00 : 0xFFFFFF;
-									uint32_t col = colTypeA == 3 ? 0xFFFFFF : colTypeA == 2 ? 0xFF0000 : 0xFFFF00;
+                                    uint32_t col = (SolidTopA && SolidLrbA) ? 0xFFFFFF : (SolidLrbA && !SolidTopA) ? 0xFF0000 : 0xFFFF00;
 
 									if (Data->tiles1[tile].HasCollision[c]) {
-										if (Data->tiles1[tile].IsCeiling ^ flipY) {
+										if (Data->tiles1[tile].IsCeiling ^ ColFlipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h1, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h1, 1, 16 - h1, col);
 										}
 									}
-								}
-								else if (Player->Layer == 1 && (colTypeB & 1)) {
+								} else if (Player->Layer == 1 && (colTypeB & 1)) {
 									if (Data->tiles2[tile].HasCollision[c]) {
-										uint32_t col = colTypeA == 3 ? 0xFFFFFF : colTypeA == 2 ? 0xFF0000 : 0xFFFF00;
+										uint32_t col = (SolidTopB && SolidLrbB) ? 0xFFFFFF : (SolidLrbB && !SolidTopB) ? 0xFF0000 : 0xFFFF00;
 
-										if (Data->tiles2[tile].IsCeiling ^ flipY) {
+										if (Data->tiles2[tile].IsCeiling ^ ColFlipY) {
 											G->DrawRectangle(baseX + eex, baseY, 1, 16 - h2, col);
-										}
-										else {
+										} else {
 											G->DrawRectangle(baseX + eex, baseY + h2, 1, 16 - h2, col);
 										}
 									}
