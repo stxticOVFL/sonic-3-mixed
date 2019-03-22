@@ -9546,8 +9546,15 @@ namespace SonicRetro.SonLVL.GUI
 							if (blk.Solid1 == Solidity.AllSolid) { SolidCollisionBOther = true; SolidCollisionBTop = true; }
 
 							bool HighP = false;
-							if (LevelData.Blocks[blk.Block].Tiles[0, 0].Priority && LevelData.Blocks[blk.Block].Tiles[0, 1].Priority && LevelData.Blocks[blk.Block].Tiles[1, 0].Priority && LevelData.Blocks[blk.Block].Tiles[1, 1].Priority)
-							{ HighP = true; }
+							try
+							{
+								if (LevelData.Blocks[blk.Block].Tiles[0, 0].Priority && LevelData.Blocks[blk.Block].Tiles[0, 1].Priority && LevelData.Blocks[blk.Block].Tiles[1, 0].Priority && LevelData.Blocks[blk.Block].Tiles[1, 1].Priority)
+								{ HighP = true; }
+							}
+							catch(Exception ex)
+							{
+
+							}
 
 							Tile = (ushort)SetBit(10, FlipX, Tile);
 							Tile = (ushort)SetBit(11, FlipY, Tile);
@@ -9609,8 +9616,15 @@ namespace SonicRetro.SonLVL.GUI
 								if (blk.Solid1 == Solidity.AllSolid) { SolidCollisionBOther = true; SolidCollisionBTop = true; }
 
 								bool HighP = false;
-								if (LevelData.Blocks[blk.Block].Tiles[0, 0].Priority && LevelData.Blocks[blk.Block].Tiles[0, 1].Priority && LevelData.Blocks[blk.Block].Tiles[1, 0].Priority && LevelData.Blocks[blk.Block].Tiles[1, 1].Priority)
-								{ HighP = true; }
+								try
+								{
+									if (LevelData.Blocks[blk.Block].Tiles[0, 0].Priority && LevelData.Blocks[blk.Block].Tiles[0, 1].Priority && LevelData.Blocks[blk.Block].Tiles[1, 0].Priority && LevelData.Blocks[blk.Block].Tiles[1, 1].Priority)
+									{ HighP = true; }
+								}
+								catch (Exception ex)
+								{
+
+								}
 
 								Tile = (ushort)SetBit(10, FlipX, Tile);
 								Tile = (ushort)SetBit(11, FlipY, Tile);
@@ -9690,8 +9704,15 @@ namespace SonicRetro.SonLVL.GUI
 								if (blk.Solid1 == Solidity.AllSolid) { SolidCollisionBOther = true; SolidCollisionBTop = true; }
 
 								bool HighP = false;
-								if (LevelData.Blocks[blk.Block].Tiles[0, 0].Priority && LevelData.Blocks[blk.Block].Tiles[0, 1].Priority && LevelData.Blocks[blk.Block].Tiles[1, 0].Priority && LevelData.Blocks[blk.Block].Tiles[1, 1].Priority)
-								{ HighP = true; }
+								try
+								{
+									if (LevelData.Blocks[blk.Block].Tiles[0, 0].Priority && LevelData.Blocks[blk.Block].Tiles[0, 1].Priority && LevelData.Blocks[blk.Block].Tiles[1, 0].Priority && LevelData.Blocks[blk.Block].Tiles[1, 1].Priority)
+									{ HighP = true; }
+								}
+								catch (Exception ex)
+								{
+
+								}
 
 								Tile = (ushort)SetBit(10, FlipX, Tile);
 								Tile = (ushort)SetBit(11, FlipY, Tile);
