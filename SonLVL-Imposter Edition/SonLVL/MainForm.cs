@@ -9734,6 +9734,10 @@ namespace SonicRetro.SonLVL.GUI
 					{
 						name = "Special Ring";
 					}
+					if (name == "Path Swapper")
+					{
+						name = "PlaneSwitch";
+					}
 					ObjectNames.Add(name.Replace(" ", ""));
 				}
 
@@ -9742,7 +9746,7 @@ namespace SonicRetro.SonLVL.GUI
 					RSDKv5.SceneObject obj = new RSDKv5.SceneObject();
 					obj.Name = new RSDKv5.NameIdentifier(ObjectNames[i]);
 
-					if (obj.Name.Name != "PathSwapper")
+					if (obj.Name.Name != "PlaneSwitch")
 					{
 						RSDKv5.AttributeInfo attributeInfof = new RSDKv5.AttributeInfo();
 						attributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
@@ -9867,6 +9871,10 @@ namespace SonicRetro.SonLVL.GUI
 				SceneData.Objects.Add(Playerobj);
 
 				RSDKv5.StageConfig stageConfig = new RSDKv5.StageConfig();
+
+				ObjectNames.Add("BlankObject");
+				ObjectNames.Add("PlayerSpawn");
+				ObjectNames.Add("Ring");
 
 				stageConfig.ObjectsNames.Add("BlankObject");
 				stageConfig.ObjectsNames.Add("PlayerSpawn");

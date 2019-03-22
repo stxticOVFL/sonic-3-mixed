@@ -1,5 +1,5 @@
 Monitor
-PathSwapper
+PlaneSwitch
 TreeRideControl
 CollapsingPlatform
 BreakableRock
@@ -27,3 +27,6 @@ Rhinobot
 MonkeyDude
 Catakiller,Jr.
 MinibossCutscene
+BlankObject
+PlayerSpawn
+Ring
