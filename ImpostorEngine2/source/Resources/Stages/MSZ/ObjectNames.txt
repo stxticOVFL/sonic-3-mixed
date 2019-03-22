@@ -1,35 +1,29 @@
 Monitor
-Path Swapper
-Collapsing Platform
-Breakable Rock
-Sliding Vine
+PathSwapper
+TreeRideControl
+CollapsingPlatform
+BreakableRock
+SlidingVine
 Spring
 Spikes
-Swinging Vine
-Breakable Wall
-Twisted Ramp
-Auto Spin
-Invisible Solid Block
-Disappearing Floor
-Cork Floor
-Flipping Bridge
-Collapsing Log Bridge
-Falling Log
-Spiked Log
-Decorative Sprite
-Animated Decorative Sprite
-Drawbridge
-Button
-Star Post
-Floating Platform
+ForegroundTree
+ZiplinePeg
+SwingingVine
+TwistedRamp
+AutoSpin
+InvisibleSolidBlock
+CorkFloor
+FallingLog
+StarPost
+ForegroundPlant
+FloatingPlatform
 Bubbler
-Invisible Hurt Block (top)
-Invisible Hurt Block (sides)
-Hidden Monitor
-Cutscene Button
-Special Stage Ring
+InvisibleHurtBlock(top)
+InvisibleHurtBlock(sides)
+HiddenMonitor
+SpecialStageRing
 Tulipon
 Rhinobot
-Monkey Dude
-Catakiller, Jr.
-Boss
+MonkeyDude
+Catakiller,Jr.
+MinibossCutscene

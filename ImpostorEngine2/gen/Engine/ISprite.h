@@ -36,6 +36,7 @@ public:
     int Y;
     int W;
     int H;
+    int Extra;
     int OffX;
     int OffY;
     int SheetNumber;
