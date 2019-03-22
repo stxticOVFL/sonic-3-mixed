@@ -215,4 +215,9 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
+#############
+## Etc
+#############
+
+.vs/
 Dependencies/
