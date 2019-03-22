@@ -6,7 +6,12 @@
 typedef IMath Math;
 
 CONSTRUCTER Spring::Spring() {
-    BinIndex = LevelScene::LoadSpriteBin("Global/Springs.bin");
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/Springs.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/Springs.bin");
+    }
 }
 
 void Spring::Create() {

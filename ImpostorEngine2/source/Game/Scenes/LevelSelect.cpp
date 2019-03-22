@@ -22,6 +22,7 @@ public:
 #include <Game/Levels/SSZ.h>
 #include <Game/Levels/DEZ.h>
 #include <Game/Levels/TDZ.h>
+#include <Game/Levels/TSZ.h>
 
 #include <Game/Levels/SpecialStage.h>
 
@@ -213,7 +214,7 @@ PUBLIC void Scene_LevelSelect::Update() {
 							break;
 						default:
 							//BENT LETTUCE BABY
-							SaveGame::CurrentEmeralds = 0x0000;
+							/*SaveGame::CurrentEmeralds = 0x0000;
 							ls = new LevelScene(App, G);
 							Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
 							Sound::Audio->LoopPoint[0] = 179390 / 4;
@@ -229,7 +230,9 @@ PUBLIC void Scene_LevelSelect::Update() {
 							ls->VisualAct = 2;
 							sprintf(ls->LevelName, "BENT LETTUCE");
 							sprintf(ls->LevelNameDiscord, "Bent Lettuce Zone");
-							App->NextScene = ls;
+							App->NextScene = ls;*/
+                            
+                            App->NextScene = new Level_TSZ(App, G, (selected % 2) + 1);
 							break;
 						}
 						//handle SPECIALS
@@ -449,42 +452,66 @@ PUBLIC void Scene_LevelSelect::Render() {
 
 	for (int i = 0; i < 16; i++) {
 		Uint32 col = 0x999999;
-		if (HaveSpecial[i])
+		if (HaveSpecial[i]) {
 			col = 0xFFFFFF;
+		}
 		sprintf(poop, "%d", i + 1);
 		G->DrawTextShadow(180 + ((i / 8)) * 30, 4 + 122 + (i / 8 == 0 ? i : i - 8) * 9, poop, selected == i + 26 ? 0xFFFF00 : col);
 	}
-
-	if (character == 0)
-		sprintf(poop, "%s", "Sonic");
-	else if (character == 1)
-		sprintf(poop, "%s", "Tails");
-	else if (character == 2)
-		sprintf(poop, "%s", "Knuckles");
-	else if (character == 3)
-		sprintf(poop, "%s", "Mighty");
-	else if (character == 4)
-		sprintf(poop, "%s", "Ray");
-
-	if (partner == 0)
-		sprintf(poopbuddy, "%s", "Sonic");
-	else if (partner == 1)
-		sprintf(poopbuddy, "%s", "Tails");
-	else if (partner == 2)
-		sprintf(poopbuddy, "%s", "Knuckles");
-	else if (partner == 3)
-		sprintf(poopbuddy, "%s", "Mighty");
-	else if (partner == 4)
-		sprintf(poopbuddy, "%s", "Ray");
-	else
-		sprintf(poopbuddy, "%s", "Alone");
-
-	if (mode == 0)
-		sprintf(poopmode, "%s", "Classic");
-	else if (mode == 1)
-		sprintf(poopmode, "%s", "Mixed");
-	else
-		sprintf(poopmode, "%s", "Locked On");
+    
+    switch (character) {
+        case 0:
+            sprintf(poop, "%s", "Sonic");
+            break;
+        case 1:
+            sprintf(poop, "%s", "Tails");
+            break;
+        case 2:
+            sprintf(poop, "%s", "Knuckles");
+            break;
+        case 3:
+            sprintf(poop, "%s", "Mighty");
+            break;
+        case 4:
+            sprintf(poop, "%s", "Ray");
+            break;
+        default:
+            sprintf(poop, "%s", "Sonic");
+            break;
+    }
+    
+    switch (partner) {
+        case 0:
+            sprintf(poopbuddy, "%s", "Sonic");
+            break;
+        case 1:
+            sprintf(poopbuddy, "%s", "Tails");
+            break;
+        case 2:
+            sprintf(poopbuddy, "%s", "Knuckles");
+            break;
+        case 3:
+            sprintf(poopbuddy, "%s", "Mighty");
+            break;
+        case 4:
+            sprintf(poopbuddy, "%s", "Ray");
+            break;
+        default:
+            sprintf(poopbuddy, "%s", "Alone");
+            break;
+    }
+    
+    switch (mode) {
+        case 0:
+            sprintf(poopmode, "%s", "Classic");
+            break;
+        case 1:
+            sprintf(poopmode, "%s", "Mixed");
+            break;
+        default:
+            sprintf(poopmode, "%s", "Locked On");
+            break;
+    }
 
     G->DrawTextShadow(App->WIDTH - 4 - strlen(poop) * 8, App->HEIGHT - 4 - 16, poop, 0xFFFFFF);
     G->DrawTextShadow(App->WIDTH - 4 - strlen(poopbuddy) * 8, App->HEIGHT - 4 - 8, poopbuddy, 0xFFFFFF);

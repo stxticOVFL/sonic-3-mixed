@@ -323,15 +323,15 @@ PUBLIC unsigned char* IStreamer::ReadCompressed() {
     unsigned int compressed_size = ReadUInt32() - 4; // 0x47 = 71 - 4 = 67
     unsigned int uncompressed_size = ReadUInt32BE(); // 0x200 = 512
 
-    unsigned char* out = (unsigned char*)malloc(uncompressed_size);
+    unsigned char* out = new unsigned char[uncompressed_size];
 
     if (res) {
-        unsigned char* in = (unsigned char*)malloc(compressed_size);
+		unsigned char* in = new unsigned char[compressed_size];
         res->Read(in, 1 * compressed_size);
 
         Decompress(out, uncompressed_size, in, compressed_size);
 
-        free(in);
+        delete[] in;
     }
     else {
         Decompress(out, uncompressed_size, ptr, compressed_size);

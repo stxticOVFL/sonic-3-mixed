@@ -1682,7 +1682,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			memcpy(Data->tiles2[i].Config, TileData + n + 0x21, 0x05);
 		}
 
-		free(TileData);
+		delete[] TileData;
 	} else {
 		App->Print(2, "TileConfig at '%s' could not be read.", Str_TileConfigBin);
 		exit(1);
@@ -1944,7 +1944,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Data->layers[i].ScrollIndexes[sc].Size = s - s_start;
 				//App->Print(0, " - ScrollIndex %d: Index %d Size %d", sc, Data->layers[i].ScrollIndexes[sc].Index, Data->layers[i].ScrollIndexes[sc].Size);
 			}
-			free(ScrollIndexes);
+			delete[] ScrollIndexes;
 
 			Data->layers[i].Width = Width;
 			Data->layers[i].Height = Height;
@@ -1965,7 +1965,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			PatchLayer(i);
 
 			memcpy(Data->layers[i].TilesBackup, Data->layers[i].Tiles, Width * Height * sizeof(short));
-			free(Tilesss);
+			delete[] Tilesss;
 		}
 
 		enum {

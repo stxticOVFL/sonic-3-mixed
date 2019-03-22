@@ -5,12 +5,13 @@
 
 typedef IMath Math;
 
-Ring::Ring() {
-	if (SaveGame::CurrentMode == 0) {
-		Sprite = LevelScene::LoadSpriteFromBin("GlobalS3K/Ring.bin");
-	} else {
-		Sprite = LevelScene::LoadSpriteFromBin("Global/Ring.bin");
-	}
+CONSTRUCTER Ring::Ring() {
+    if (SaveGame::CurrentMode == 0) {
+        Sprite = LevelScene::LoadSpriteFromBin("GlobalS3K/Ring.bin");
+    } else {
+        Sprite = LevelScene::LoadSpriteFromBin("Global/Ring.bin");
+    }
+    ShouldRingFall = false;
 }
 
 void Ring::Create() {
@@ -23,7 +24,6 @@ void Ring::Create() {
     CurrentAnimation = Sprite->FindAnimation("Normal Ring");
     CurrentFrame = 0;
     MagnetizedTo = -1;
-    ShouldRingFall = false;
 }
 
 void Ring::Update() {
