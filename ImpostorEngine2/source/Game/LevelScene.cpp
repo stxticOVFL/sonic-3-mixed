@@ -2146,7 +2146,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						}
 					}
 
-					if (obj)
+					if (obj && objHash != OBJ_PLANESWITCHER)
 					{
 						obj->G = G;
 						obj->App = App;
@@ -2163,10 +2163,26 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						//Dunno what do to with filter so fuck it for now
 						obj->attributeCount = AttributeCount - 1;
 
+						//done for backwards compatibility, returns 0 on error so we good
+						obj->SubType = obj->GetAttribute("Subtype")->value_uint8;
+
+						//load our filter attrib, and if nothing return 0
+						obj->Filter = obj->GetAttribute("Filter")->value_uint8;
+
 						//Add our object to the scene
 						Objects.push_back(obj);
 						ObjectCount++;
 						//ObjectNewCount++;
+					}
+					else if (obj && objHash == OBJ_PLANESWITCHER)
+					{
+						PlaneSwitchers[PlaneSwitchCount].X = obj->X;
+						PlaneSwitchers[PlaneSwitchCount].Y = obj->Y;
+						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->value_int32;
+						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->value_int32;
+						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath")->value_bool;
+						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->value_int32;
+						PlaneSwitchCount++;
 					}
 				}
 

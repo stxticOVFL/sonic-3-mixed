@@ -220,10 +220,10 @@ PUBLIC void Scene_LevelSelect::Update() {
 							Sound::Audio->LoopPoint[0] = 179390 / 4;
 							ls->Str_StageBin = "Stages/MSZ/StageConfig.bin";
 							ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
-							ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
+							ls->Str_SceneBin = "Stages/MSZ/Scene1.bin";
 							ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
-							ls->PlayerStartX = 160;
-							ls->PlayerStartY = 1328;
+							ls->PlayerStartX = 0x13A0;
+							ls->PlayerStartY = 0x041A;
 							SaveGame::CurrentMode = 1; //Force it to mixed mode
 							App->Print(0, "Poop! %d", SaveGame::CurrentMode);
 							ls->ZoneID = 1;
