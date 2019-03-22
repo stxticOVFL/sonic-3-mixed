@@ -21,7 +21,7 @@ Bubbler
 InvisibleHurtBlock(top)
 InvisibleHurtBlock(sides)
 HiddenMonitor
-SpecialStageRing
+SpecialRing
 Tulipon
 Rhinobot
 MonkeyDude
