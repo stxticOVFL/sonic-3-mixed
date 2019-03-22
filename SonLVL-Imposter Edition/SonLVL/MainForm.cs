@@ -9727,6 +9727,52 @@ namespace SonicRetro.SonLVL.GUI
 				SceneData.Objects.Clear();
 				List<string> ObjectNames = new List<string>();
 
+				ObjectNames.Add("BlankObject");
+				ObjectNames.Add("PlayerSpawn");
+				ObjectNames.Add("Ring");
+
+				RSDKv5.SceneObject Blankobj = new RSDKv5.SceneObject();
+				Blankobj.Name = new RSDKv5.NameIdentifier("BlankObject");
+
+				RSDKv5.AttributeInfo BlankobjattributeInfo = new RSDKv5.AttributeInfo();
+				BlankobjattributeInfo.Name = new RSDKv5.NameIdentifier("Subtype");
+				BlankobjattributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
+
+				RSDKv5.AttributeInfo BlankobjattributeInfof = new RSDKv5.AttributeInfo();
+				BlankobjattributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
+				BlankobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
+
+				Blankobj.Attributes.Add(BlankobjattributeInfof);
+				Blankobj.Attributes.Add(BlankobjattributeInfo);
+
+				RSDKv5.SceneObject Ringobj = new RSDKv5.SceneObject();
+				Ringobj.Name = new RSDKv5.NameIdentifier("Ring");
+
+				RSDKv5.AttributeInfo RingobjattributeInfo = new RSDKv5.AttributeInfo();
+				RingobjattributeInfo.Name = new RSDKv5.NameIdentifier("Subtype");
+				RingobjattributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
+
+				RSDKv5.AttributeInfo RingobjattributeInfof = new RSDKv5.AttributeInfo();
+				RingobjattributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
+				RingobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
+
+				Ringobj.Attributes.Add(RingobjattributeInfof);
+				Ringobj.Attributes.Add(RingobjattributeInfo);
+
+				RSDKv5.SceneObject Playerobj = new RSDKv5.SceneObject();
+				Playerobj.Name = new RSDKv5.NameIdentifier("PlayerSpawn");
+
+				RSDKv5.AttributeInfo PlayerobjattributeInfo = new RSDKv5.AttributeInfo();
+				PlayerobjattributeInfo.Name = new RSDKv5.NameIdentifier("Subtype");
+				PlayerobjattributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
+
+				RSDKv5.AttributeInfo PlayerobjattributeInfof = new RSDKv5.AttributeInfo();
+				PlayerobjattributeInfof.Name = new RSDKv5.NameIdentifier("Subtype");
+				PlayerobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
+
+				Playerobj.Attributes.Add(PlayerobjattributeInfof);
+				Playerobj.Attributes.Add(PlayerobjattributeInfo);
+
 				foreach (System.Collections.Generic.KeyValuePair<byte, ObjectDefinition> i in LevelData.ObjTypes)
 				{
 					string name = LevelData.ObjTypes[i.Key].Name;
@@ -9785,53 +9831,19 @@ namespace SonicRetro.SonLVL.GUI
 					SceneData.Objects.Add(obj);
 				}
 
-				RSDKv5.SceneObject Blankobj = new RSDKv5.SceneObject();
-				Blankobj.Name = new RSDKv5.NameIdentifier("BlankObject");
-
-				RSDKv5.AttributeInfo BlankobjattributeInfo = new RSDKv5.AttributeInfo();
-				BlankobjattributeInfo.Name = new RSDKv5.NameIdentifier("Subtype");
-				BlankobjattributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
-
-				RSDKv5.AttributeInfo BlankobjattributeInfof = new RSDKv5.AttributeInfo();
-				BlankobjattributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
-				BlankobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
-
-				Blankobj.Attributes.Add(BlankobjattributeInfof);
-				Blankobj.Attributes.Add(BlankobjattributeInfo);
-
-				RSDKv5.SceneObject Ringobj = new RSDKv5.SceneObject();
-				Ringobj.Name = new RSDKv5.NameIdentifier("Ring");
-
-				RSDKv5.AttributeInfo RingobjattributeInfo = new RSDKv5.AttributeInfo();
-				RingobjattributeInfo.Name = new RSDKv5.NameIdentifier("Subtype");
-				RingobjattributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
-
-				RSDKv5.AttributeInfo RingobjattributeInfof = new RSDKv5.AttributeInfo();
-				RingobjattributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
-				RingobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
-
-				Ringobj.Attributes.Add(RingobjattributeInfof);
-				Ringobj.Attributes.Add(RingobjattributeInfo);
-
-				RSDKv5.SceneObject Playerobj = new RSDKv5.SceneObject();
-				Playerobj.Name = new RSDKv5.NameIdentifier("PlayerSpawn");
-
-				RSDKv5.AttributeInfo PlayerobjattributeInfo = new RSDKv5.AttributeInfo();
-				PlayerobjattributeInfo.Name = new RSDKv5.NameIdentifier("Subtype");
-				PlayerobjattributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
-
-				RSDKv5.AttributeInfo PlayerobjattributeInfof = new RSDKv5.AttributeInfo();
-				PlayerobjattributeInfof.Name = new RSDKv5.NameIdentifier("Subtype");
-				PlayerobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
-
-				Playerobj.Attributes.Add(PlayerobjattributeInfof);
-				Playerobj.Attributes.Add(PlayerobjattributeInfo);
-
 				ushort SlotID = 0;
 
 				for (int i = 0; i < LevelData.Objects.Count; i++)
 				{
-					int ObjID = LevelData.ObjTypes.Values.ToList().IndexOf(LevelData.ObjTypes[LevelData.Objects[i].ID]);
+					int ObjID = 0;
+					try
+					{
+						LevelData.ObjTypes.Values.ToList().IndexOf(LevelData.ObjTypes[LevelData.Objects[i].ID]);
+					}
+					catch(Exception ex)
+					{
+						//fuck!
+					}
 					RSDKv5.SceneEntity ent = new RSDKv5.SceneEntity(SceneData.Objects[ObjID], SlotID++);
 					ent.Position.X.High = (short)LevelData.Objects[i].X;
 					ent.Position.Y.High = (short)LevelData.Objects[i].Y;
@@ -9871,10 +9883,6 @@ namespace SonicRetro.SonLVL.GUI
 				SceneData.Objects.Add(Playerobj);
 
 				RSDKv5.StageConfig stageConfig = new RSDKv5.StageConfig();
-
-				ObjectNames.Add("BlankObject");
-				ObjectNames.Add("PlayerSpawn");
-				ObjectNames.Add("Ring");
 
 				stageConfig.ObjectsNames.Add("BlankObject");
 				stageConfig.ObjectsNames.Add("PlayerSpawn");
