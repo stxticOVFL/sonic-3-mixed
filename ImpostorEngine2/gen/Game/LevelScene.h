@@ -9,6 +9,21 @@
 #define CONSTRUCTER
 
 class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
+class ISprite;
 class IModel;
 class ISound;
 
@@ -209,6 +224,7 @@ public:
     static size_t LoadSpriteBin(const char* Filename);
     static ISprite* LoadSpriteFromBin(const char* Filename);
     static ISprite* GetSpriteFromBinIndex(size_t index);
+    virtual void CreateAttributeValue(AttributeValue* Attribute);
     virtual void LoadData();
     virtual void Init();
     static int LoadStatic(void* data);
@@ -249,7 +265,6 @@ public:
     void Update();
     virtual void HandleCamera();
     void AddSelfToRegistry(Object* obj, const char* where);
-    virtual void CreateAttributeValue(AttributeValue * Attribute);
     void CleanupObjects();
     void RenderAnimatedSprites(int layer);
     void RenderRings();

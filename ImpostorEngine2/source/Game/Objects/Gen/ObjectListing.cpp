@@ -324,45 +324,48 @@ Object* GetNewObjectFromID(int ID) {
             return new PlatformOutliner();
             break;
         case 0x409U:
-            return new WarpStars();
+            return new PlayerSpawn();
             break;
         case 0x40AU:
-            return new EggCapsuleButton();
+            return new WarpStars();
             break;
         case 0x40BU:
-            return new Signpost();
+            return new EggCapsuleButton();
             break;
         case 0x40CU:
-            return new TensionBridgeChild();
+            return new Signpost();
             break;
         case 0x40DU:
-            return new ViewCollisionToggler();
+            return new TensionBridgeChild();
             break;
         case 0x40EU:
-            return new Motobug();
+            return new ViewCollisionToggler();
             break;
         case 0x40FU:
-            return new MotobugSmoke();
+            return new Motobug();
             break;
         case 0x410U:
-            return new BlastoidShot();
+            return new MotobugSmoke();
             break;
         case 0x411U:
-            return new TurboSpikerSpike();
+            return new BlastoidShot();
             break;
         case 0x412U:
-            return new SegmentedColumnStub();
+            return new TurboSpikerSpike();
             break;
         case 0x413U:
-            return new StarPointerOrbs();
+            return new SegmentedColumnStub();
             break;
         case 0x414U:
-            return new SwingingPlatformTrigger();
+            return new StarPointerOrbs();
             break;
         case 0x415U:
-            return new ReliefEye();
+            return new SwingingPlatformTrigger();
             break;
         case 0x416U:
+            return new ReliefEye();
+            break;
+        case 0x417U:
             return new Platform();
             break;
 
@@ -694,6 +697,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x5DFC3336U:
             return new PlatformOutliner();
+            break;
+        case 0xEACB9471U:
+            return new PlayerSpawn();
             break;
         case 0x7E49DBD3U:
             return new WarpStars();
