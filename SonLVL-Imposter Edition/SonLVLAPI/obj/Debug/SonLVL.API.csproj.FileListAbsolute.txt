@@ -1,0 +1,87 @@
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Comper.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Kosinski+.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\bin\Debug\SZDDComp.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BlockControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BugReportDialog.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.FileSelector.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.KeyboardPanel.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.IDControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.SubTypeControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.Properties.Resources.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileList.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonLVL.API.csproj.GenerateResource.Cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonLVL.API.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-master\SonLVLAPI\obj\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Comper.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Kosinski+.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\bin\Debug\SZDDComp.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BlockControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BugReportDialog.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.FileSelector.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.KeyboardPanel.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.IDControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.SubTypeControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.Properties.Resources.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileList.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonLVL.API.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonLVL.API.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonLVL.API.csproj.CopyComplete
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-src\SonLVLAPI\obj\Debug\SonLVL.API.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Comper.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Kosinski+.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\bin\Debug\SZDDComp.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonLVL.API.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BlockControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BugReportDialog.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.FileSelector.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.KeyboardPanel.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.IDControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.SubTypeControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.Properties.Resources.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileList.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileControl.resources
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonLVL.API.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonLVL.API.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonLVL.API.csproj.CopyComplete
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Sonic Hacking Stuff\SonLVL-Ducky Edition\SonLVLAPI\obj\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\bin\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\bin\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonLVL.API.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BlockControl.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.BugReportDialog.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.FileSelector.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.KeyboardPanel.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.IDControl.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.SubTypeControl.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.Properties.Resources.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileList.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonicRetro.SonLVL.API.TileControl.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonLVL.API.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonLVL.API.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonLVL.API.csproj.CopyComplete
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\SonLVL-Imposter Edition\SonLVLAPI\obj\Debug\SonLVLAPI.pdb
