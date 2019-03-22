@@ -2166,6 +2166,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						//done for backwards compatibility, returns 0 on error so we good
 						obj->SubType = obj->GetAttribute("Subtype")->value_uint8;
 
+						//load our filter attrib, and if nothing return 0
+						obj->Filter = obj->GetAttribute("Filter")->value_uint8;
+
 						//Add our object to the scene
 						Objects.push_back(obj);
 						ObjectCount++;

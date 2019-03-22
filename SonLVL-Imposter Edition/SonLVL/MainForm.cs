@@ -9858,7 +9858,7 @@ namespace SonicRetro.SonLVL.GUI
 					ent.Position.Y.High = (short)LevelData.StartPositions[i].Y;
 
 					ent.Attributes[0].ValueUInt8 = 0xFF;
-					ent.Attributes[1].ValueUInt8 = 7;
+					ent.Attributes[1].ValueUInt8 = 0xFF;
 					Playerobj.Entities.Add(ent);
 				}
 

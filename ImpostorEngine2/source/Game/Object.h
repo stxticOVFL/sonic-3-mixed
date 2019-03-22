@@ -467,6 +467,7 @@ public:
     int16_t& Y = *((int16_t*)&SubY + 1);
     uint16_t ID = 0x0;
     uint8_t  SubType = 0x0;
+    uint8_t  Filter = 0xFF;
     bool     FlipX = false;
     bool     FlipY = false;
     bool     DoDeform = false;
