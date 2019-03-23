@@ -2012,8 +2012,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 
 			for (int i = 0; i < GetObjectNamesSize(); i++) {
-				string hash = MD5I(string(GetObjectName(i))); //Create a hash for the name
-				ObjectHashes[hash] = GetObjectName(i); //set the name to be assosiated with said hash
+				string hash = MD5I(string(GetObjectName(i))); // Create a hash for the name
+				ObjectHashes[hash] = GetObjectName(i); // Set the name to be associated with said hash
 			}
 
 			int AttributeTypes[0x40];
@@ -2072,10 +2072,14 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					//Spawn in our entity
 					Object* obj = GetNewObjectFromCRC32(objHash);
 
-					if (obj == NULL) obj = new BlankObject();
+					if (obj == NULL) {
+                        obj = new BlankObject();
+                    }
 
 					unsigned short SlotID = reader.ReadUInt16(); //SlotID
-					if (obj) obj->SlotID = SlotID;
+					if (obj) { 
+                        obj->SlotID = SlotID;
+                    }
 
 					unsigned short X_low = reader.ReadUInt16();
 					short X_high = reader.ReadInt16();
@@ -2147,36 +2151,42 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						}
 					}
 
-					if (obj && objHash != OBJ_PLANESWITCHER)
-					{
+					if (obj && (objHash != OBJ_RING && objHash != OBJ_PLANESWITCHER)) {
 						obj->G = G;
 						obj->App = App;
 						obj->Scene = this;
 
 						if (obj->BinIndex == 0xFFFFFFFF) {
 							App->Print(1, "Object '%s' Sprite Not found!", name);
-						}
-						else {
+						} else {
 							obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
 						}
 						obj->DrawCollisions = App->viewObjectCollision;
 
-						//Dunno what do to with filter so fuck it for now
+						// Dunno what do to with filter so fuck it for now
 						obj->ObjectAttributeCount = AttributeCount - 1;
 
-						//done for backwards compatibility, returns 0 on error so we good
+						// Done for backwards compatibility, Returns 0 on error.
 						obj->SubType = obj->GetAttribute("Subtype")->value_uint8;
 
-						//load our filter attrib, and if nothing return 0
+						// Load our filter attribute, And if nothing return 0.
 						obj->Filter = obj->GetAttribute("Filter")->value_uint8;
 
-						//Add our object to the scene
+						// Add our object to the scene
 						Objects.push_back(obj);
 						ObjectCount++;
 						//ObjectNewCount++;
-					}
-					else if (obj && objHash == OBJ_PLANESWITCHER)
-					{
+					} else if (obj && objHash == OBJ_RING) {
+                        ObjectProp op;
+                        op.X = obj->X;
+                        op.Y = obj->Y;
+                        op.ID = 0xFF;
+                        op.LoadFlag = true;
+
+                        RingPropCount++;
+                        RingProps.push_back(op);
+                        delete obj;
+					} else if (obj && objHash == OBJ_PLANESWITCHER) {
 						PlaneSwitchers[PlaneSwitchCount].X = obj->X;
 						PlaneSwitchers[PlaneSwitchCount].Y = obj->Y;
 						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->value_int32;
