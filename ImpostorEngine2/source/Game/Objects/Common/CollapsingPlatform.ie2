@@ -6,8 +6,6 @@ var Separation:int;
 var Sections:int;
 var Vsect:int;
 var Outliner:Object;
-var Act1BinIndex:int;
-var Act2BinIndex:int;
 
 event CollapsingPlatform() : CONSTRUCTER {
     if (LevelScene.IsZoneCurrently("AIZ")) {

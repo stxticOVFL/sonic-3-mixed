@@ -505,6 +505,9 @@ public:
     uint32_t DrawNoCollisionsColor = 0xCC53D1; // Violet?
     
     size_t   BinIndex = 0xFFFFFFFF;
+    size_t   Act1BinIndex = 0xFFFFFFFF;
+    size_t   Act2BinIndex = 0xFFFFFFFF;
+    size_t   Act3BinIndex = 0xFFFFFFFF;
 
     bool     AutoAnimate = false;
     int      CurrentAnimation = -1;
