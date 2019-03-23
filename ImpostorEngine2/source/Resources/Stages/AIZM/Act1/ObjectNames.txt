@@ -26,7 +26,7 @@ InvisibleHurtBlock(sides)
 HiddenMonitor
 SpecialRing
 Tulipon
-Rhinobot
+RhinoBot
 MonkeyDude
 Catakiller,Jr.
 MinibossCutscene

@@ -521,7 +521,7 @@ PUBLIC void Level_TSZ::Subupdate() {
                     water = 0;
                 }
                 else {
-                    memset(Data->Layers[1].Deform, 0, water);
+					memset(Data->Layers[1].Deform, 0, water);
                 }
 
                 int8_t TSZ1_WaterDeformDelta[64] = {

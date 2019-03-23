@@ -10,6 +10,10 @@ var frame_arm:int;
 var Children:Object;
 var HasCoconut:bool;
 
+event MonkeyDude() : CONSTRUCTER {
+	//BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
+}
+
 event Create() {
     Active = true;
     Priority = false;
