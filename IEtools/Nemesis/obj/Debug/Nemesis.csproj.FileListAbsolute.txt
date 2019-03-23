@@ -1,0 +1,11 @@
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\bin\Debug\SonicRetro.KensSharp.Nemesis.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\Nemesis.csprojResolveAssemblyReference.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\SonicRetro.KensSharp.Properties.Resources.resources
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\Nemesis.csproj.GenerateResource.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\Nemesis.csproj.CoreCompileInputs.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\Nemesis.csproj.CopyComplete
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\SonicRetro.KensSharp.Nemesis.pdb

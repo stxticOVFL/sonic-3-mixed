@@ -28,6 +28,7 @@ public:
     int Amplitude;
     Object* Outliner;
     
+    CONSTRUCTER FloatingPlatform();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

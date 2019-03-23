@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Freezer.tsx" />
+  <object name="Freezer" gid="1" width="30" height="24">
+    <properties />
+  </object>
+</template>

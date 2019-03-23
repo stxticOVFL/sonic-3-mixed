@@ -1,0 +1,67 @@
+OUTFOLDER GlobalS3K
+FILENAME Objects
+PALETTE Levels\CNZ\Palettes\Main.bin
+# Common 
+REQUEST General\Sprites\Level Misc\SpikesSprings.bin,0,NEM
+REQUEST General\Sprites\Level Misc\Diagonal Spring.bin,-1,NEM
+REQUEST General\Sprites\Enemy Misc\Enemy points.bin,-1,NEM
+REQUEST General\Sprites\Signpost\Stub.bin,-1,NEM
+REQUEST General\Sprites\Signpost\End Signs.bin,0x800,UNC
+REQUEST General\Sprites\Buttons\Gray Button.bin,0x880,NEM
+REQUEST General\Sprites\Robotnik\Egg Capsule.bin,0x900,NEM
+
+SPRITE General\Sprites\Level Misc\Map - Spikes.asm,Spikes 1,0x8,0,0,0
+SPRITE General\Sprites\Level Misc\Map - Spikes.asm,Spikes 2,0x0,0,4,4
+SPRITE General\Sprites\Level Misc\Map - Spring.asm,Spring 1,0x10,0,0,2
+SPRITE General\Sprites\Level Misc\Map - Spring.asm,Spring 2,0x20,0,3,5
+SPRITE General\Sprites\Level Misc\Map - Spring.asm,Spring 3,0x30,0,7,9
+SPRITE General\Sprites\Level Misc\Map - Spring.asm,Spring 4,0x10,0,0xB,0xD
+SPRITE General\Sprites\Level Misc\Map - Spring.asm,Spring 5,0x20,0,0xE,0x10
+SPRITE General\Sprites\Level Misc\Map - Spring.asm,Spring 6,0x30,0,0x11,0x13
+SPRITE General\Sprites\Enemy Misc\Map - Enemy points.asm,ScoreBonus,0x4C,0
+SPRITE General\Sprites\Starpost\Map - Starpost.asm,Starpost 1,0x54,0
+SPRITE General\Sprites\Starpost\Map - Starpost Stars.asm,Starpost Stars 1,0x54,0
+# SPRITE General\Sprites\Starpost\Map - Starpost.asm,Starpost 2,0x54,0
+SPRITE General\Sprites\Signpost\Map - Signpost Stub.asm,,0x68,0
+SPRITE General\Sprites\Signpost\Map - End Signs.asm,,0x800,0
+# ,General\Sprites\Signpost\DPLC - End Signs.asm,false
+SPRITE General\Sprites\Buttons\Map - Button.asm,Button,0x880,0
+SPRITE General\Sprites\Robotnik\Map - Egg Capsule.asm,EggPrison,0x900,0
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Springs
+ANIMATION Yellow V,Spring 4[0;2]
+ANIMATION Red V,Spring 1[0;2]
+ANIMATION Yellow H,Spring 5[0;2]
+ANIMATION Red H,Spring 2[0;2]
+ANIMATION Yellow D,Spring 6[0;2]
+ANIMATION Red D,Spring 3[0;2]
+
+NEWSPRITE Spikes
+ANIMATION Spikes V,Spikes 1;0
+ANIMATION Spikes H,Spikes 2;0
+
+NEWSPRITE StarPost
+ANIMATION Post,Starpost 1{1;0}
+FRAME 0,CenterY,-16
+FRAME 1,CenterY,-32
+ANIMATION Bulb Unused,Starpost 1{2}
+ANIMATION Bulb Used,Starpost 1{2;3}
+FRAME [0;1],Duration,4
+ANIMATION Stars 1,Starpost Stars 1[0;2]
+ANIMATION Stars 2,Starpost Stars 1[0;2]
+ANIMATION Stars 3,Starpost Stars 1[0;2]
+
+NEWSPRITE ScoreBonus
+ANIMATION Scores,ScoreBonus{0;1;2;3;3;3;3;3;3;3;3;3;3;3;3;5;4;6}
+
+NEWSPRITE Gray Button
+ANIMATION Button,Button{0;1;2}
+
+NEWSPRITE EggPrison
+ANIMATION Capsule,EggPrison{0;1}
+ANIMATION Button,EggPrison{5;0xC}
+ANIMATION Pieces,EggPrison{2;3;4}
+ANIMATION Propeller,EggPrison[6;9]
+FRAME ALL,Duration,1

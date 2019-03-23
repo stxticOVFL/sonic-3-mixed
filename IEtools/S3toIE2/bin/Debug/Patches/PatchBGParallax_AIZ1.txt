@@ -1,0 +1,63 @@
+RELATY Background,80
+CONSTY Background,00
+PARARESET Background
+PARA Background,D0,38,80,69,0
+PARA Background,20,13,80,69,0
+PARA Background,30,0F,55,69,0
+PARA Background,30,0C,55,69,0
+PARA Background,10,08,40,69,0
+PARA Background,10,05,20,69,0
+PARA Background,10,01,00,69,0
+PARA Background,01,03,00,69,0
+PARA Background,01,04,00,69,0
+PARA Background,01,04,00,69,0
+PARA Background,01,05,00,69,0
+PARA Background,01,05,00,69,0
+PARA Background,01,06,00,69,0
+PARA Background,01,06,00,69,0
+PARA Background,01,07,00,69,0
+PARA Background,01,07,00,69,0
+PARA Background,01,07,00,69,0
+PARA Background,01,08,00,69,0
+PARA Background,01,08,00,69,0
+PARA Background,01,09,00,69,0
+PARA Background,0F,31,00,69,0
+PARA Background,06,38,00,69,0
+PARA Background,0E,3F,00,69,0
+PARA Background,50,46,00,69,0
+PARA Background,20,3F,00,69,0
+PARA Background,7FFF,38,00,69,0
+
+COPY Background,Background (Forest)
+COPY Background,Fire Overlay
+RENAME Background,Background (Sky & Sea)
+
+CROP Background (Sky & Sea),0,0,32,32
+
+CROP Background (Forest),0,0,240,56
+DELTILES Background (Forest),0,0,32,32
+
+CROP Fire Overlay,256,0,32,48
+RELATY Fire Overlay,00
+CONSTY Fire Overlay,00
+VISIBLE Fire Overlay,0
+MOVETOFRONT Fire Overlay
+PARARESET Fire Overlay
+PARA Fire Overlay,7FFF,00,00,69,0
+
+# COPY FG Low,Outer Tree (Low)
+# COPY FG High,Outer Tree (High)
+#
+# CROP Outer Tree (Low),0,0,16,32
+# RELATY Outer Tree (Low),100
+# CONSTY Outer Tree (Low),00
+# MOVETOFRONT Outer Tree (Low)
+# PARARESET Outer Tree (Low)
+# PARA Outer Tree (Low),7FFF,100,00,69,0
+#
+# CROP Outer Tree (High),0,0,16,32
+# RELATY Outer Tree (High),100
+# CONSTY Outer Tree (High),00
+# MOVETOFRONT Outer Tree (High)
+# PARARESET Outer Tree (High)
+# PARA Outer Tree (High),7FFF,100,00,69,0

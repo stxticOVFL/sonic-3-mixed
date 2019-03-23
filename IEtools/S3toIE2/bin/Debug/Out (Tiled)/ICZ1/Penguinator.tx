@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Penguinator.tsx" />
+  <object name="Penguinator" gid="1" width="22" height="32">
+    <properties />
+  </object>
+</template>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Rock.tsx" />
+  <object name="Rock" gid="1" width="48" height="79">
+    <properties>
+      <property name="Sprite" type="int" />
+      <property name="Behavior" type="int" />
+    </properties>
+  </object>
+</template>

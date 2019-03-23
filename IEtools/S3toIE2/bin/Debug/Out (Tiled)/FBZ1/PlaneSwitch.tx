@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="PlaneSwitch.tsx" />
+  <object name="PlaneSwitch" gid="1" width="16" height="64">
+    <properties>
+      <property name="Priority only" type="bool" />
+      <property name="Size" type="int" />
+      <property name="Direction" type="int" />
+      <property name="Right/Down Path" type="int" />
+      <property name="Left/Up Path" type="int" />
+      <property name="Right/Down Priority" type="int" />
+      <property name="Left/Up Priority" type="int" />
+      <property name="Ground only" type="bool" />
+    </properties>
+  </object>
+</template>

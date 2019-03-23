@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_SolidRock.tsx" />
+  <object name="LRZ_SolidRock" gid="1" width="48" height="32">
+    <properties>
+      <property name="Trigger ID" type="int" />
+      <property name="Trigger type" type="int" />
+      <property name="Movement" type="int" />
+    </properties>
+  </object>
+</template>

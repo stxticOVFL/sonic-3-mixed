@@ -13,6 +13,7 @@ public:
 #endif
 
 #include <Engine/IStreamer.h>
+#include <Engine/Diagnostics/Memory.h>
 
 PUBLIC IStreamer::IStreamer(void* pt) {
     this->ptr = (unsigned char*)pt;
@@ -81,7 +82,7 @@ PUBLIC unsigned char  IStreamer::ReadByte() {
 
 PUBLIC unsigned char* IStreamer::ReadByte4() {
     if (res) {
-        unsigned char* data = (unsigned char*)malloc(5);
+        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadByte4", 4);
         res->Read(data, 1 * 4);
 		data[4] = '\0';
         return data;
@@ -96,12 +97,12 @@ PUBLIC unsigned char* IStreamer::ReadByte4() {
 
 PUBLIC unsigned char* IStreamer::ReadBytes(int n) {
     if (res) {
-        unsigned char* data = (unsigned char*)malloc(n + 1);
+        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
         res->Read(data, 1 * n);
 		data[n] = '\0';
         return data;
     }
-    unsigned char* data = (unsigned char*)malloc(n + 1);
+    unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
     memcpy(data, ptr, n);
 	data[n] = '\0';
     ptr += n;
@@ -174,7 +175,7 @@ PUBLIC char* IStreamer::ReadLine() {
 
     uint64_t sz = Distance() - start;
 
-    // char* data = (char*)malloc(sz);
+    // char* data = (char*)Memory::TrackedMalloc("IStreamer::ReadLine", sz);
     Skip(-sz);
 
     return (char*)ReadBytes(sz);
@@ -186,7 +187,7 @@ PUBLIC char* IStreamer::ReadString() {
 
     uint64_t sz = Distance() - start;
 
-    // char* data = (char*)malloc(sz);
+    // char* data = (char*)Memory::TrackedMalloc("IStreamer::ReadString", sz);
     Skip(-sz);
 
     return (char*)ReadBytes(sz);
@@ -353,10 +354,10 @@ PUBLIC unsigned char* IStreamer::ReadCompressed() {
     if (res) {
 		unsigned char* in = new unsigned char[compressed_size + 1];
 		in[compressed_size] = '\0';
-
         res->Read(in, 1 * compressed_size);
 
         Decompress(out, uncompressed_size, in, compressed_size);
+
 
         delete[] in;
     } else {

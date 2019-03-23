@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Spring.tsx" />
+  <object name="Spring" gid="1" width="32" height="16">
+    <properties>
+      <property name="Twirl" type="bool" />
+      <property name="Color" type="int" />
+      <property name="Layer" type="int" />
+      <property name="Direction" type="int" />
+      <property name="Kill Transverse Speed" type="bool" />
+    </properties>
+  </object>
+</template>

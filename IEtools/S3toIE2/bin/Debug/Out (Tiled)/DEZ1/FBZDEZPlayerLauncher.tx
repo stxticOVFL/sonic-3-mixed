@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="FBZDEZPlayerLauncher.tsx" />
+  <object name="FBZDEZPlayerLauncher" gid="1" width="32" height="15">
+    <properties />
+  </object>
+</template>

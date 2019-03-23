@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZ_ChainedPlatforms.tsx" />
+  <object name="LRZ_ChainedPlatforms" gid="1" width="48" height="48">
+    <properties>
+      <property name="Path ID" type="int" />
+      <property name="Target" type="bool" />
+    </properties>
+  </object>
+</template>

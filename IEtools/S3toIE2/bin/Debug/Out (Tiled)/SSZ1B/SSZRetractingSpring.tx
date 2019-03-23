@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SSZRetractingSpring.tsx" />
+  <object name="SSZRetractingSpring" gid="1" width="48" height="32">
+    <properties />
+  </object>
+</template>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SSZFloatingPlatform.tsx" />
+  <object name="SSZFloatingPlatform" gid="1" width="32" height="32">
+    <properties>
+      <property name="Delay" type="int" />
+      <property name="Count" type="int" />
+      <property name="Offset" type="int" />
+      <property name="Floor" type="bool" />
+    </properties>
+  </object>
+</template>

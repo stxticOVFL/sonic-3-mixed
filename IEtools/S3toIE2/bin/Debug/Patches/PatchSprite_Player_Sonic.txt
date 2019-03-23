@@ -1,0 +1,255 @@
+OUTFOLDER ..\Player\S3
+FILENAME Sonic
+INITIALH 1024
+# PALETTE Levels\CNZ\Palettes\Main.bin
+
+REQUEST General\Sprites\Sonic\Art\Sonic.bin,0x0,UNC
+REQUEST General\Sprites\Sonic\Art\Sonic Extra.bin,0x1000,UNC
+
+REQUEST General\Sprites\Sonic\Art\Sonic.bin,0x4000,UNC
+REQUEST General\Sprites\Sonic\Art\Sonic Extra.bin,0x5000,UNC
+
+SPRITE General\Sprites\Sonic\Map - Sonic.asm,Sonic,0x0,0,0x01,0xDA,General\Sprites\Sonic\DPLC - Sonic.asm,true,0x4000
+SPRITE General\Sprites\Sonic\Map - Sonic.asm,Sonic Extra,0x1000,0,0xDB,0xF1,General\Sprites\Sonic\DPLC - Sonic.asm,true,0x5000
+
+SPRITE General\Sprites\Sonic\Map - Sonic.asm,Super Sonic,0x0,0,0xFC,0x1D4,General\Sprites\Sonic\DPLC - Sonic.asm,true
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Sonic
+ANIMATION Idle,Sonic;0xB9
+ANIMATION Bored 1,Sonic;0xB9|Sonic;0xBA|Sonic;0xBB|Sonic;0xBB|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xBC|Sonic;0xBC|Sonic;0xBD|Sonic;0xBD|Sonic;0xAD|Sonic;0xAD|Sonic;0xAD|Sonic;0xAD|Sonic;0xAD|Sonic;0xAD|Sonic;0xAE|Sonic;0xAE|Sonic;0xAE|Sonic;0xAE|Sonic;0xAE|Sonic;0xAE|Sonic;0xAE|Sonic;0xD8|Sonic;0xD8|Sonic;0xD8|Sonic;0xD8|Sonic;0xD8|Sonic;0xD8|Sonic;0xAE|Sonic;0xAE
+LOOPINDEX 4
+FRAME [0;56],Duration,6
+ANIMATION Bored 2,Sonic[0xB9;0xC1]
+FRAME [0;8],Duration,6
+ANIMATION Look Up,Sonic;0xB9|Sonic;0xC2|Sonic;0xC3|Sonic;0xC3|Sonic;0xC3|Sonic;0xC2
+FRAME [0;5],Duration,3
+ANIMATION Crouch,Sonic;0xB9|Sonic;0x9A|Sonic;0x9B|Sonic;0x9B|Sonic;0x9B|Sonic;0x9A
+FRAME [0;5],Duration,3
+ANIMATION Walk,Sonic[0;7]
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Air Walk,Sonic[0;7]
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Jog,Sonic[0;7]
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Run,Sonic[0x20;0x23]
+SPEED 256
+FRAME [0;3],Duration,256
+ANIMATION Dash,Sonic[0x20;0x23]
+SPEED 256
+FRAME [0;3],Duration,256
+ANIMATION Jump,Sonic;0x95|Sonic;0x96|Sonic;0x95|Sonic;0x97|Sonic;0x95|Sonic;0x98|Sonic;0x95|Sonic;0x99
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Spring Twirl,Sonic[0x30;0x3B]
+FRAME [0;0xB],Duration,5
+ANIMATION Spring Diagonal,Sonic;0x8D
+ANIMATION Skid,Sonic[0x9C;0x9E]
+FRAME [0;2],Duration,4
+ANIMATION Skid Turn,Sonic;0x9F
+ANIMATION Spindash,Sonic;0x85|Sonic;0x86|Sonic;0x85|Sonic;0x87|Sonic;0x85|Sonic;0x88|Sonic;0x85|Sonic;0x89|Sonic;0x85|Sonic;0x8A
+FRAME [0;9],Duration,1
+ANIMATION Dropdash,Sonic;0x95
+FRAME ALL,Duration,1
+ANIMATION Push,Sonic[0xB5;0xB8]
+FRAME [0;3],Duration,32
+ANIMATION Hurt,Sonic;0xD0
+ANIMATION Die,Sonic;0xA6
+ANIMATION Drown,Sonic;0xA8
+ANIMATION Balance 1,Sonic[0xA3;0xA5]
+FRAME [0;2],Duration,8
+ANIMATION Balance 2,Sonic[0xA0;0xA2]
+FRAME [0;2],Duration,6
+ANIMATION Spring CS,Sonic[0x30;0x3B]
+FRAME [0;0xB],Duration,5
+ANIMATION Stand CS,Sonic[0x3C;0x47]
+FRAME [0;0xB],Duration,4
+ANIMATION Fan,Sonic[0xC7;0xCE]
+FRAME [0;7],Duration,8
+ANIMATION Victory,Sonic;0xAF|Sonic;0xB1|Sonic;0xB1|Sonic;0xB1|Sonic;0xB1|Sonic;0xB1|Sonic;0xB1|Sonic;0xB0|Sonic;0xB1|Sonic;0xB2|Sonic;0xB1
+LOOPINDEX 1
+FRAME [0;10],Duration,8
+ANIMATION Outta Here,Sonic;0x95|Sonic;0x96|Sonic;0x95|Sonic;0x97|Sonic;0x95|Sonic;0x98|Sonic;0x95|Sonic;0x99
+FRAME [0;7],Duration,1
+ANIMATION Hang,Sonic[0x8F;0x91]
+FRAME [0;2],Duration,9
+ANIMATION Hang Move,Sonic[0x7F;0x84]
+FRAME [0;5],Duration,4
+ANIMATION Pole Swing V,Sonic[0x62;0x67]
+FRAME [0;5],Duration,9
+FRAME 0,CenterY,-4
+FRAME 1,CenterY,-4
+FRAME 2,CenterY,-36
+FRAME 3,CenterY,-44
+FRAME 4,CenterY,-27
+FRAME 5,CenterY,-26
+ANIMATION Pole Swing H,Sonic[0x5B;0x60]
+FRAME [0;5],Duration,9
+FRAME 0,CenterX,-4
+FRAME 1,CenterX,-4
+FRAME 2,CenterX,-36
+FRAME 3,CenterX,-44
+FRAME 4,CenterX,-27
+FRAME 5,CenterX,-26
+ANIMATION Shaft Swing,Sonic[0x5B;0x60]
+FRAME [0;5],Duration,9
+FRAME 0,CenterX,-4
+FRAME 1,CenterX,-4
+FRAME 2,CenterX,-36
+FRAME 3,CenterX,-44
+FRAME 4,CenterX,-27
+FRAME 5,CenterX,-26
+ANIMATION Turntable,Sonic[0x54;0x5A]|Sonic;0x59
+FRAME [0;7],Duration,1
+ANIMATION Twister,Sonic[0x54;0x5A]|Sonic;0x59
+FRAME [0;7],Duration,1
+ANIMATION Spiral Run,Sonic[0x54;0x5A]
+ANIMATION Stick,Sonic;0x92
+ANIMATION Pulley Hold,Sonic;0x8E
+ANIMATION Shimmy Idle,Sonic;0x94
+ANIMATION Shimmy Move,Sonic;0x93|Sonic;0x94
+FRAME [0;1],Duration,9
+ANIMATION Bubble,Sonic[0x69;0x76]
+ANIMATION Breathe,Sonic;0xAB
+ANIMATION Ride,Sonic;0xAB
+ANIMATION Cling,Sonic[0xA9;0xAA]
+FRAME [0;1],CenterX,-4
+FRAME [0;1],Duration,2
+ANIMATION Bungee,Sonic;0xAB
+ANIMATION TwistRun,Sonic;0x48|Sonic;0x53|Sonic;0x52|Sonic;0x51|Sonic;0x52|Sonic;0x51|Sonic;0x52|Sonic;0x51|Sonic;0x52|Sonic;0x51|Sonic;0x53|Sonic;0x48
+FRAME [0;11],Duration,9
+ANIMATION Flume,Sonic[0xCF;0xD0]
+FRAME [0;1],Duration,10
+ANIMATION Transform,Sonic;0xD1|Sonic;0xD2|Sonic;0xD3|Sonic;0xD4|Sonic;0xD5|Sonic;0xD4|Sonic;0xD5|Sonic;0xD4|Sonic;0xD5|Sonic;0xD4|Sonic;0xD5
+FRAME 0,Duration,6
+FRAME 1,Duration,6
+FRAME [2;10],Duration,3
+ANIMATION Fly,Sonic;0xAB
+ANIMATION Fly Tired,Sonic;0xAB
+ANIMATION Fly Lift,Sonic;0xAB
+ANIMATION Fly Lift Tired,Sonic;0xAB
+ANIMATION Swim,Sonic;0xAB
+ANIMATION Swim Tired,Sonic;0xAB
+
+NEWSPRITE Super Sonic
+ANIMATION Idle,Super Sonic;0xB9
+ANIMATION Bored 1,Super Sonic;0xB9|Super Sonic;0xBA|Super Sonic;0xBB|Super Sonic;0xBB|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xBC|Super Sonic;0xBC|Super Sonic;0xBD|Super Sonic;0xBD|Super Sonic;0xAD|Super Sonic;0xAD|Super Sonic;0xAD|Super Sonic;0xAD|Super Sonic;0xAD|Super Sonic;0xAD|Super Sonic;0xAE|Super Sonic;0xAE|Super Sonic;0xAE|Super Sonic;0xAE|Super Sonic;0xAE|Super Sonic;0xAE|Super Sonic;0xAE|Super Sonic;0xD8|Super Sonic;0xD8|Super Sonic;0xD8|Super Sonic;0xD8|Super Sonic;0xD8|Super Sonic;0xD8|Super Sonic;0xAE|Super Sonic;0xAE
+LOOPINDEX 4
+FRAME [0;56],Duration,6
+ANIMATION Bored 2,Super Sonic[0xB9;0xC1]
+FRAME [0;8],Duration,6
+ANIMATION Look Up,Super Sonic;0xB9|Super Sonic;0xC2|Super Sonic;0xC3|Super Sonic;0xC3|Super Sonic;0xC3|Super Sonic;0xC2
+FRAME [0;5],Duration,3
+ANIMATION Crouch,Super Sonic;0xB9|Super Sonic;0x9A|Super Sonic;0x9B|Super Sonic;0x9B|Super Sonic;0x9B|Super Sonic;0x9A
+FRAME [0;5],Duration,3
+ANIMATION Walk,Super Sonic[0;7]
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Air Walk,Super Sonic[0;7]
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Jog,Super Sonic[0;7]
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Run,Super Sonic[0x20;0x23]
+SPEED 256
+FRAME [0;3],Duration,256
+ANIMATION Dash,Super Sonic[0x20;0x23]
+SPEED 256
+FRAME [0;3],Duration,256
+ANIMATION Jump,Super Sonic;0x95|Super Sonic;0x96|Super Sonic;0x95|Super Sonic;0x97|Super Sonic;0x95|Super Sonic;0x98|Super Sonic;0x95|Super Sonic;0x99
+SPEED 256
+FRAME [0;7],Duration,256
+ANIMATION Spring Twirl,Super Sonic[0x30;0x3B]
+FRAME [0;0xB],Duration,5
+ANIMATION Spring Diagonal,Super Sonic;0x8D
+ANIMATION Skid,Super Sonic[0x9C;0x9E]
+FRAME [0;2],Duration,4
+ANIMATION Skid Turn,Super Sonic;0x9F
+ANIMATION Spindash,Super Sonic;0x85|Super Sonic;0x86|Super Sonic;0x85|Super Sonic;0x87|Super Sonic;0x85|Super Sonic;0x88|Super Sonic;0x85|Super Sonic;0x89|Super Sonic;0x85|Super Sonic;0x8A
+FRAME [0;9],Duration,1
+ANIMATION Dropdash,Super Sonic;0x95|Super Sonic;0x96|Super Sonic;0x95|Super Sonic;0x97|Super Sonic;0x95|Super Sonic;0x98|Super Sonic;0x95|Super Sonic;0x99
+FRAME [0;7],Duration,1
+ANIMATION Push,Super Sonic[0xB5;0xB8]
+FRAME [0;3],Duration,32
+ANIMATION Hurt,Super Sonic;0xD0
+ANIMATION Die,Super Sonic;0xA6
+ANIMATION Drown,Super Sonic;0xA8
+ANIMATION Balance 1,Super Sonic[0xA3;0xA5]
+FRAME [0;2],Duration,8
+ANIMATION Balance 2,Super Sonic[0xA0;0xA2]
+FRAME [0;2],Duration,6
+ANIMATION Spring CS,Super Sonic[0x30;0x3B]
+FRAME [0;0xB],Duration,5
+ANIMATION Stand CS,Super Sonic[0x3C;0x47]
+FRAME [0;0xB],Duration,4
+ANIMATION Fan,Super Sonic[0xC7;0xCE]
+FRAME [0;7],Duration,8
+ANIMATION Victory,Super Sonic;0xAF|Super Sonic;0xB1|Super Sonic;0xB1|Super Sonic;0xB1|Super Sonic;0xB1|Super Sonic;0xB1|Super Sonic;0xB1|Super Sonic;0xB0|Super Sonic;0xB1|Super Sonic;0xB2|Super Sonic;0xB1
+LOOPINDEX 1
+FRAME [0;10],Duration,8
+ANIMATION Outta Here,Super Sonic;0x95|Super Sonic;0x96|Super Sonic;0x95|Super Sonic;0x97|Super Sonic;0x95|Super Sonic;0x98|Super Sonic;0x95|Super Sonic;0x99
+FRAME [0;7],Duration,1
+ANIMATION Hang,Super Sonic[0x8F;0x91]
+FRAME [0;2],Duration,9
+ANIMATION Hang Move,Super Sonic[0x7F;0x84]
+FRAME [0;5],Duration,4
+ANIMATION Pole Swing V,Super Sonic[0x62;0x67]
+FRAME [0;5],Duration,9
+FRAME 0,CenterY,-4
+FRAME 1,CenterY,-4
+FRAME 2,CenterY,-36
+FRAME 3,CenterY,-44
+FRAME 4,CenterY,-27
+FRAME 5,CenterY,-26
+ANIMATION Pole Swing H,Super Sonic[0x5B;0x60]
+FRAME [0;5],Duration,9
+FRAME 0,CenterX,-4
+FRAME 1,CenterX,-4
+FRAME 2,CenterX,-36
+FRAME 3,CenterX,-44
+FRAME 4,CenterX,-27
+FRAME 5,CenterX,-26
+ANIMATION Shaft Swing,Super Sonic[0x5B;0x60]
+FRAME [0;5],Duration,9
+FRAME 0,CenterX,-4
+FRAME 1,CenterX,-4
+FRAME 2,CenterX,-36
+FRAME 3,CenterX,-44
+FRAME 4,CenterX,-27
+FRAME 5,CenterX,-26
+ANIMATION Turntable,Super Sonic[0x54;0x5A]|Super Sonic;0x59
+FRAME [0;7],Duration,1
+ANIMATION Twister,Super Sonic[0x54;0x5A]|Super Sonic;0x59
+FRAME [0;7],Duration,1
+ANIMATION Spiral Run,Super Sonic[0x54;0x5A]
+ANIMATION Stick,Super Sonic;0x92
+ANIMATION Pulley Hold,Super Sonic;0x8E
+ANIMATION Shimmy Idle,Super Sonic;0x94
+ANIMATION Shimmy Move,Super Sonic;0x93|Super Sonic;0x94
+FRAME [0;1],Duration,9
+ANIMATION Bubble,Super Sonic[0x69;0x76]
+ANIMATION Breathe,Super Sonic;0xAB
+ANIMATION Ride,Super Sonic;0xAB
+ANIMATION Cling,Super Sonic[0xA9;0xAA]
+FRAME [0;1],CenterX,-4
+FRAME [0;1],Duration,2
+ANIMATION Bungee,Super Sonic;0xAB
+ANIMATION TwistRun,Super Sonic;0x48|Super Sonic;0x53|Super Sonic;0x52|Super Sonic;0x51|Super Sonic;0x52|Super Sonic;0x51|Super Sonic;0x52|Super Sonic;0x51|Super Sonic;0x52|Super Sonic;0x51|Super Sonic;0x53|Super Sonic;0x48
+FRAME [0;11],Duration,9
+ANIMATION Flume,Super Sonic[0xCF;0xD0]
+FRAME [0;1],Duration,10
+ANIMATION Transform,Super Sonic;0xD1|Super Sonic;0xD2|Super Sonic;0xD3|Super Sonic;0xD4|Super Sonic;0xD5|Super Sonic;0xD4|Super Sonic;0xD5|Super Sonic;0xD4|Super Sonic;0xD5|Super Sonic;0xD4|Super Sonic;0xD5
+FRAME 0,Duration,6
+FRAME 1,Duration,6
+FRAME [2;10],Duration,3
+ANIMATION Fly,Super Sonic;0xAB
+ANIMATION Fly Tired,Super Sonic;0xAB
+ANIMATION Fly Lift,Super Sonic;0xAB
+ANIMATION Fly Lift Tired,Super Sonic;0xAB
+ANIMATION Swim,Super Sonic;0xAB
+ANIMATION Swim Tired,Super Sonic;0xAB

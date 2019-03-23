@@ -1,0 +1,53 @@
+OUTFOLDER GlobalS3K
+FILENAME Explosions
+PALETTE Levels\CNZ\Palettes\Main.bin
+# Common
+REQUEST General\Sprites\Dash Dust\Dash Dust.bin,0,UNC
+REQUEST General\Sprites\Boss Explosion\Boss Explosion.bin,0x200,NEM
+REQUEST General\Sprites\Enemy Misc\Explosion.bin,0x300,NEM
+REQUEST General\Sprites\Enemy Misc\Badnik Explosion.bin,0x400,KOSM
+REQUEST General\Sprites\Dash Dust\Dash Dust.bin,0x4000,UNC
+
+SPRITE General\Sprites\Dash Dust\Map - Dash Dust.asm,Spin Dash,0x0,0,0xA,0x10,General\Sprites\Dash Dust\DPLC - Dash Dust.asm,true
+SPRITE General\Sprites\Dash Dust\Map - Dash Dust.asm,Dust Puff,0xAA,0,0x11,0x14
+
+SPRITE General\Sprites\Boss Explosion\Map - Boss Explosion.asm,Boss,0x200,0
+
+SPRITE General\Sprites\Enemy Misc\Map - Explosion.asm,Item Box,0x300,0
+SPRITE General\Sprites\Enemy Misc\Map - Explosion.asm,Enemy,0x400,0
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Dust
+ANIMATION Dust Puff,Dust Puff[0;3]
+FRAME [0;3],Duration,4
+ANIMATION Spin Dash,Spin Dash[0;6]
+FRAME [0;2],CenterY,-16
+FRAME [3;6],CenterY,-24
+FRAME [0;6],Duration,2
+ANIMATION Drop Dash,Spin Dash[0;6]
+FRAME [0;2],CenterY,-16
+FRAME [3;6],CenterY,-24
+FRAME [0;6],Duration,2
+
+NEWSPRITE Explosions
+ANIMATION Item Box,Item Box[0;4]
+FRAME 0,Duration,3
+FRAME [1;4],Duration,8
+ANIMATION Enemy,Enemy[0;4]
+FRAME 0,Duration,3
+FRAME [1;4],Duration,8
+ANIMATION Boss,Boss[0;5]
+FRAME 0,Duration,2
+FRAME 1,Duration,2
+FRAME 2,Duration,3
+FRAME 3,Duration,4
+FRAME 4,Duration,5
+FRAME 5,Duration,6
+ANIMATION Boss Puff,Boss[0;5]
+FRAME 0,Duration,2
+FRAME 1,Duration,2
+FRAME 2,Duration,3
+FRAME 3,Duration,4
+FRAME 4,Duration,5
+FRAME 5,Duration,6

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DisappearingPlatform.tsx" />
+  <object name="DisappearingPlatform" gid="1" width="32" height="32">
+    <properties>
+      <property name="On Period" type="int" />
+      <property name="Period" type="int" />
+      <property name="Offset" type="int" />
+    </properties>
+  </object>
+</template>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Spikes.tsx" />
+  <object name="Spikes" gid="1" width="31" height="32">
+    <properties>
+      <property name="Movement" type="int" />
+      <property name="Count" type="int" />
+      <property name="Direction" type="int" />
+    </properties>
+  </object>
+</template>

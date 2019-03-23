@@ -254,6 +254,7 @@ class LevelScene : public IScene {
 #include <Game/Levels/SpecialStage.h>
 
 #include <Game/SaveGame.h>
+#include <Engine/Diagnostics/Memory.h>
 
 #define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectPropCount++; ObjectProps.push_back(op); Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs.at(ID)) ID--; obj->Sprite = SpriteMapIDs.at(ID); obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
 const char* ObjectName[347];
@@ -267,6 +268,8 @@ char LevelScene::ZoneLetters[3];
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
+
+	Memory::ClearTrackedMemory();
 
 	//Create Achievements Here (may change later lol)
 	App->Achievements->CreateAchievement("Ring Hog");
@@ -310,7 +313,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	ObjectsPathSwitcher.reserve(300);
     ObjectsPathSwitcher.assign(300, NULL);
 
-	DebugObjectIDList = (int16_t*)calloc(0xFF, sizeof(int16_t));
+	DebugObjectIDList = (int16_t*)Memory::TrackedCalloc("LevelScene::DebugObjectIDList", 0xFF, sizeof(int16_t));
 	for (int i = 0; i < 0xFF; i++) {
 		DebugObjectIDList[i] = 0;
 	}
@@ -333,17 +336,17 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	ObjectProps.reserve(0x400);
 	RingProps.reserve(0x400);
-    
-	AnimatedSprite0Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
-	AnimatedSprite1Props = (ObjectProp*)calloc(0x100, sizeof(ObjectProp));
 
-	SavedPalette = (uint32_t*)calloc(0x100, sizeof(uint32_t));
+	AnimatedSprite0Props = (ObjectProp*)Memory::TrackedCalloc("LevelScene::AnimatedSprite0Props", 0x100, sizeof(ObjectProp));
+	AnimatedSprite1Props = (ObjectProp*)Memory::TrackedCalloc("LevelScene::AnimatedSprite1Props", 0x100, sizeof(ObjectProp));
 
-	SoundBank = (ISound**)calloc(0x100, sizeof(ISound*));
+	SavedPalette = (uint32_t*)Memory::TrackedCalloc("LevelScene::SavedPalette", 0x100, sizeof(uint32_t));
+
+	SoundBank = (ISound**)Memory::TrackedCalloc("LevelScene::SoundBank", 0x100, sizeof(ISound*));
 
 	SpriteMapIDs.reserve(0x600);
     SpriteMapIDs.assign(0x600, NULL);
-    
+
     SpriteBinMapIDs.reserve(0x600);
     SpriteBinMapIDs.assign(0x600, NULL);
 
@@ -360,7 +363,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	ISprite::Animation an;
 	an.Name = NULL;
 	an.FrameCount = 8;
-	an.Frames = (ISprite::AnimFrame*)calloc(8, sizeof(ISprite::AnimFrame));
+	an.Frames = (ISprite::AnimFrame*)Memory::TrackedCalloc("LevelScene::MobileButtonsSprite::AnimFrame", 8, sizeof(ISprite::AnimFrame));
 	for (int i = 0; i < 8; i++) {
 		ISprite::AnimFrame ts_af;
 		ts_af.X = i * 64;
@@ -452,7 +455,7 @@ PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
-    
+
 }
 
 ISprite* GlobalDisplaySpriteS3K = NULL;
@@ -491,7 +494,7 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     if (IApp::GlobalApp == NULL) {
         return 0xFFFFFFFF;
     }
-    
+
     if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
         size_t BinIndex = SpriteBinMap.find(std::string(Filename))->second;
         // If BinIndex is bigger then SpriteBinMapIDs.size(), Then a clear happened,
@@ -506,7 +509,7 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
         SpriteBinMapIDs.push_back(BinSprite);
         SpriteBinMapIDs.shrink_to_fit();
         size_t BinIndex = SpriteBinMapIDs.size() - 1;
-        
+
         if (!FindSpriteBin(std::string(Filename))) {
             std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
             SpriteBinMap.insert(pair);
@@ -523,14 +526,14 @@ PROTECTED STATIC size_t LevelScene::ResetSpriteBin(const char* Filename) {
     SpriteBinMapIDs.push_back(BinSprite);
     SpriteBinMapIDs.shrink_to_fit();
     size_t BinIndex = SpriteBinMapIDs.size() - 1;
-    
+
     if (!FindSpriteBin(std::string(Filename))) {
         std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
         SpriteBinMap.insert(pair);
     } else {
         SpriteBinMap.erase(SpriteBinMap.find(std::string(Filename)));
         std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
-        SpriteBinMap.insert(pair);   
+        SpriteBinMap.insert(pair);
     }
     return BinIndex;
 };
@@ -551,7 +554,7 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
         SpriteBinMapIDs.push_back(BinSprite);
         SpriteBinMapIDs.shrink_to_fit();
         size_t BinIndex = SpriteBinMapIDs.size() - 1;
-        
+
         if (!FindSpriteBin(std::string(Filename))) {
             std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
             SpriteBinMap.insert(pair);
@@ -636,7 +639,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			ISprite::Animation an;
 			an.Name = "";
 			an.FrameCount = 8;
-			an.Frames = (ISprite::AnimFrame*)calloc(8, sizeof(ISprite::AnimFrame));
+			an.Frames = new ISprite::AnimFrame[an.FrameCount];
 			for (int i = 0; i < 8; i++) {
 				ISprite::AnimFrame ts_af;
 				ts_af.X = i * 64;
@@ -1637,7 +1640,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	ISprite::Animation an;
 	an.Name = "";
 	an.FrameCount = 0x400;
-	an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
+	an.Frames = new ISprite::AnimFrame[an.FrameCount];
 	if (TileSprite->Width > 16) {
 		for (int i = 0; i < 0x400; i++) {
 			ISprite::AnimFrame ts_af;
@@ -1668,7 +1671,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	IResource* TileConfig = IResources::Load(Str_TileConfigBin); // Stages/MSZ/TileConfig.bin
 	if (TileConfig) {
 		IStreamer tileReader(TileConfig);
-		free(tileReader.ReadByte4()); // Magic Word
+		Memory::Free(tileReader.ReadByte4()); // Magic Word
 
 		unsigned char* TileData = tileReader.ReadCompressed();
 		IResources::Close(TileConfig);
@@ -1696,7 +1699,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Data->tiles2[i].IsCeiling = TileData[n + 0x20];
 			memcpy(Data->tiles2[i].Config, TileData + n + 0x21, 0x05);
 		}
-
 		delete[] TileData;
 	} else {
 		App->Print(2, "TileConfig at '%s' could not be read.", Str_TileConfigBin);
@@ -1847,7 +1849,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			reader.ReadUInt32(); // Loop Point
 			reader.ReadUInt32(); // Background Color
 		} else {
-			free(reader.ReadBytes(16));
+			Memory::Free(reader.ReadBytes(16));
 			reader.ReadRSDKString();
 			Data->CameraLayer = reader.ReadByte(); // UnknownByte2
 		}
@@ -1864,7 +1866,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Data->Layers[i].Visible = false;
             }
 
-            Data->Layers[i].Deform = (int8_t*)calloc(1, App->HEIGHT);
+            Data->Layers[i].Deform = (int8_t*)Memory::TrackedCalloc("LevelScene::Data->Layers[i].Deform", 1, App->HEIGHT);
 
 			int Width = (int)reader.ReadUInt16();
 			int Height = (int)reader.ReadUInt16();
@@ -1967,7 +1969,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 			Data->Layers[i].Tiles = new short[Width * Height * sizeof(short)];
 			Data->Layers[i].TilesBackup = new short[Width * Height * sizeof(short)];
-			Data->Layers[i].TileOffsetY = (short*)calloc(sizeof(short), Width);
+			Data->Layers[i].TileOffsetY = (short*)Memory::TrackedCalloc("LevelScene::Data->Layers[i].TileOffsetY", sizeof(short), Width);
 
 
 			IStreamer creader(Tilesss);
@@ -2010,9 +2012,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			ATTRIBUTE_COLOR,
 		};
 
-		PlaneSwitchers = (PlaneSwitch*)malloc(113 * sizeof(PlaneSwitch));
+		PlaneSwitchers = (PlaneSwitch*)Memory::TrackedMalloc("LevelScene::PlaneSwitchers", 113 * sizeof(PlaneSwitch));
 
-		Data->IsAnims = (short*)malloc(0x400 * sizeof(short));
+		Data->IsAnims = (short*)Memory::TrackedMalloc("LevelScene::Data->IsAnims", 0x400 * sizeof(short));
 		std::memset(Data->IsAnims, 0xFF, 0x400 * sizeof(short));
 
 		// Mania-type Object Loading
@@ -2313,7 +2315,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                         } else if (obj->BinIndex < SpriteBinMapIDs.size()) {
                             obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
                         }
-                        
+
 						obj->DrawCollisions = App->viewObjectCollision;
 
 						obj->SubType = SubType;
@@ -2357,12 +2359,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 			Data->animatedTilesCount = reader.ReadUInt16();
 
-			Data->animatedTileFrames = (int*)calloc(Data->animatedTilesCount, sizeof(int));
+			Data->animatedTileFrames = (int*)Memory::TrackedCalloc("Data->animatedTileFrames", Data->animatedTilesCount, sizeof(int));
 
-			Data->animatedTileDurations = (int**)calloc(Data->animatedTilesCount, sizeof(int*));
+			Data->animatedTileDurations = (int**)Memory::TrackedCalloc("Data->animatedTileDurations", Data->animatedTilesCount, sizeof(int*));
 			for (int o = 0; o < Data->animatedTilesCount; o++) {
 				int framecount = reader.ReadUInt16();
-				Data->animatedTileDurations[o] = (int*)calloc(framecount + 2, sizeof(int));
+				Data->animatedTileDurations[o] = (int*)Memory::TrackedCalloc("Data->animatedTileDurations[o]", framecount + 2, sizeof(int));
 				Data->animatedTileDurations[o][0] = framecount;
 
 				int sum = 0;
@@ -2384,7 +2386,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ISprite::Animation an;
 				an.Name = "";
 				an.FrameCount = framecount;
-				an.Frames = (ISprite::AnimFrame*)malloc(framecount * sizeof(ISprite::AnimFrame));
+				an.Frames = new ISprite::AnimFrame[an.FrameCount];
 				for (int i = 0; i < framecount; i++) {
 					ISprite::AnimFrame ts_af;
 					ts_af.X = i << 4;
@@ -2407,7 +2409,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				std::string name = reader.ReadRSDKString();
 
 				int AttributeCount = reader.ReadByte();
-				int* AttributeTypes = (int*)calloc(AttributeCount, sizeof(int));
+				int* AttributeTypes = (int*)Memory::TrackedCalloc("temp AttributeTypes", AttributeCount, sizeof(int));
 				for (int n = 0; n < AttributeCount; n++) {
 					AttributeTypes[n] = reader.ReadByte();
 				}
@@ -2423,7 +2425,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					bool Priority = reader.ReadByte();
 					bool Unused = reader.ReadByte();
 
-					int* args = (int*)calloc(sizeof(int), AttributeCount);
+					int* args = (int*)Memory::TrackedCalloc("temp args", sizeof(int), AttributeCount);
 					for (int a = 0; a < AttributeCount; a++) {
 						args[a] = reader.ReadUInt32();
 						if (objHash == 0xB3C47F67U) {
@@ -2583,10 +2585,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						break;
 					}
 
-					free(args);
+					Memory::Free(args);
 				}
 
-				free(AttributeTypes);
+				Memory::Free(AttributeTypes);
 			}
 		}
 
@@ -2909,7 +2911,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	}
 	Objects.erase(Objects.begin() + ObjectCount, Objects.begin() + (ObjectCount + ObjectNewCount));
 	Objects.shrink_to_fit();
-    
+
 
 	ObjectNewCount = 0;
 
@@ -2924,7 +2926,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	for (int o = 0; o < RingPropCount; o++) {
 		RingProps.at(o).ID = 0xFF;
 	}
-    
+
 	for (size_t i = 0; i < TempObjects.size(); i++) {
         if (TempObjects.at(i) != NULL) {
             delete TempObjects.at(i);
@@ -2932,7 +2934,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
         }
 	}
 	TempObjects.clear();
-    
+
 	for (size_t i = 0; i < TempObjectTiles.size(); i++) {
         if (TempObjectTiles.at(i) != NULL) {
             delete TempObjectTiles.at(i);
@@ -2970,7 +2972,7 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 	} else if (SaveGame::CurrentMode == 2) {
 		ModeName = "Locked On";
 	}
-    
+
 	Discord_UpdatePresence(ModeName, levelname, imgkey, true);
 }
 
@@ -4294,13 +4296,12 @@ PUBLIC void LevelScene::Update() {
 			if (obj != NULL) {
 				if (obj->Active) {
 					LastObjectUpdated = obj;
-                    
+
                     //int32_t NoNegativeCamY = CameraY + App->HEIGHT / 2;
 
 					bool OnScreen = false;
 
-					if (Data->Layers[Data->CameraLayer].IsScrollingVertical) {     
-                         
+					if (Data->Layers[Data->CameraLayer].IsScrollingVertical) {
                          // Reverse Engineered code from Sonic 3 & Knuckles, Ported to our form.
                          /*
                          // Original Version
@@ -4308,40 +4309,40 @@ PUBLIC void LevelScene::Update() {
                                   -1 < (obj->X - CameraX) + obj->W &&
                                   ((obj->X - CameraX) - obj->W) < 0x140 &&
                                   ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < ((obj->H * 2) + 0xe0));
-                                  
+
                          // Split up version.
                          OnScreen |= (
                                 (-1 < ((obj->X - CameraX) + obj->W)) &&
                                 (((obj->X - CameraX) - obj->W) < 0x140) &&
                                 ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) &&
                                 (((obj->Y - CameraY) - obj->H & ScreenYWrapValue) < 0xe0));
-              
-                         // If this was true in the original, It'd skip the part where the 
+
+                         // If this was true in the original, It'd skip the part where the
                          // flag for being visible was modified.
                          OnScreen |= (
                                 (((obj->X - CameraX) + obj->W) < 0) ||
                                 (0x13f < ((obj->X - CameraX) - obj->W)) ||
                                 obj->H * 2 + 0xe0 <= ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
-                                
+
                          // Modified version to work the reverse of the one above.
                          OnScreen |= (
                                 (((obj->X - CameraX) + obj->W) >= 0) ||
                                 (0x13f >= ((obj->X - CameraX) - obj->W)) ||
                                 obj->H * 2 + 0xe0 > ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
-                               
+
                          OnScreen |= (
                                 (-1 < ((obj->X - 0x80) + obj->W)) &&
                                 (((obj->X - 0x80) - obj->W) < 0x140) &&
                                 (-1 < ((obj->Y - 0x80) + obj->H)) &&
                                 (((obj->Y - 0x80) - obj->H) < 0xe0));
                         */
-                        
+
                         if (obj->VisW > obj->W || obj->VisH > obj->H) {
                             OnScreen |= (
                                   -1 < (obj->X - CameraX) + obj->VisW &&
                                   ((obj->X - CameraX) - obj->VisW) < 0x140 &&
                                   ((obj->Y - CameraY) + obj->VisH & ScreenYWrapValue) < ((obj->VisH * 2) + 0xe0));
-                                
+
                             /*
                             OnScreen |= (
                                 obj->X + obj->VisW / 2 >= CameraX - 0x80 &&
@@ -4349,7 +4350,7 @@ PUBLIC void LevelScene::Update() {
                                 obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 0x80 &&
                                 (obj->Y - obj->VisH / 2) % (Data->Layers[Data->CameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
                             */
-                        } else {   
+                        } else {
                             int16_t Calc = (obj->Y - CameraY) + obj->H & ScreenYWrapValue;
 							if ((obj->Y - CameraY) + obj->H > ScreenYWrapValue) {
 								Calc = (((obj->Y - CameraY) + obj->H) + ScreenYWrapValue) & ScreenYWrapValue;
@@ -4358,11 +4359,11 @@ PUBLIC void LevelScene::Update() {
                                   -1 < (obj->X - CameraX) + obj->W &&
                                   ((obj->X - CameraX) - obj->W) < 0x140 &&
                                   (Calc < (obj->H * 2) + 0xe0));
-                                  
+
                             if (obj->PrintDebuggingInfo) {
                                 App->Print(0, "%04X, %04X", Calc, (obj->H * 2) + 0xe0);
                             }
-                                
+
                             /*
                             OnScreen |= (
                                 obj->X + obj->W / 2 >= CameraX - 0x80 &&
@@ -4459,14 +4460,14 @@ PUBLIC void LevelScene::Update() {
 				}
 			}
 		}
-        
+
 		for (vector<Object*>::iterator it = TempObjects.begin(); it != TempObjects.end(); ++it) {
             Object* tempObject = (*it);
             if (tempObject != NULL && tempObject->Active) {
                 tempObject->Update();
             }
 		}
-        
+
 		for (vector<Object*>::iterator it = TempObjectTiles.begin(); it != TempObjectTiles.end(); ++it) {
             Object* tempTileObject = (*it);
             if (tempTileObject != NULL && tempTileObject->Active) {
@@ -4754,7 +4755,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 	if (Data->Layers[Data->CameraLayer].IsScrollingVertical) {
 		d1 = 0xFFFFF;
     }
-    
+
 	if (CameraMaxX > d0) {
 		CameraMaxX = d0;
     }
@@ -4863,7 +4864,7 @@ PUBLIC VIRTUAL void LevelScene::HandleCamera() {
 		if (ZoneID == 5 && Act == 1 && Player->EZX < 0x3880) {
 			Max = 0x90;
 		}
-        
+
 		if (IMath::abs(OffsetX) > 8) {
 			OffsetX -= 8 * IMath::sign(OffsetX);
 		} else {
@@ -4971,7 +4972,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 	std::vector<Object*> RefreshObjectsBreakable;
 	RefreshObjectsBreakable.reserve(300);
 	int NewObjectBreakableCount = 0;
-    
+
     std::vector<Object*> RefreshTempObjects;
     RefreshTempObjects.reserve(TempObjects.size());
 
@@ -4990,7 +4991,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 
 	std::vector<Object*> UnrefreshedObjectsBreakable = ObjectsBreakable;
 	int OldObjectBreakableCount = ObjectBreakableCount;
-    
+
     std::vector<Object*> UnrefreshedTempObjects = TempObjects;
     size_t UnrefreshedTempObjectsCount = TempObjects.size();
 
@@ -5045,7 +5046,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 		}
 		RefreshObjectsBreakable.push_back(ObjectsBreakable.at(i));
 	}
-    
+
 	for (size_t i = 0; i < TempObjects.size(); i++) {
 		if (TempObjects.at(i) == nullptr) {
 			continue;
@@ -5075,7 +5076,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 	RefreshObjectsBreakable.shrink_to_fit();
 	ObjectsBreakable = RefreshObjectsBreakable;
 	ObjectBreakableCount = RefreshObjectsBreakable.size();
-    
+
 	RefreshTempObjects.shrink_to_fit();
 	TempObjects = RefreshTempObjects;
 
@@ -5141,7 +5142,7 @@ PUBLIC void LevelScene::CleanupObjects() {
 			UnrefreshedObjectsBreakable.at(i) = nullptr;
 		}
 	}
-    
+
 	for (size_t i = 0; i < UnrefreshedTempObjectsCount; i++) {
 		if (UnrefreshedTempObjects.at(i) == nullptr) {
 			continue;
@@ -5455,8 +5456,8 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	int anim_off;
 
 	for (int i = 0; i < 9; i++)
-		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 18) % 18]); 
-	
+		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 18) % 18]);
+
 	//White Tint
 	G->SetDrawAlpha((int)((60 - pauseAnimTimer) * 2) < 0 ? 0 : (int)((60 - pauseAnimTimer) * 2)); //theres probably an easier way, dont care
 	for (int i = 0; i < 45; i++) {
@@ -5530,7 +5531,7 @@ PUBLIC void LevelScene::RenderResults() {
 	anim_total = (int)(G->easeOutQuad(IMath::clampDoubleDown(resultsTimer, 0.7, 1.0) / 0.3) * -App->WIDTH) + App->WIDTH;
 
 	ISprite* GlobalDisplaySprite = this->GlobalDisplaySprite;
-	
+
 	//NOTE: the S3 sheet doesn't have a title card number thing
 
 	//if (GlobalDisplaySpriteS3K) {
@@ -5928,7 +5929,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
                 }
             }
 		}
-        
+
 		// Rendering temporary tile sprites
 		for (vector<Object*>::iterator it = TempObjectTiles.begin(); it != TempObjectTiles.end(); ++it) {
 			if ((*it)->Active) {
@@ -6122,7 +6123,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		sprintf(pooerp, "%04X %04X", CameraX, CameraY);
 		G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
 		Y += 8;
-        
+
 		sprintf(pooerp, "%04X %04X", Player->CameraX, Player->CameraY);
 		G->DrawTextShadow(X - CameraX + 37 - 1, Y - CameraY - 1, pooerp, 0xFFFFFF);
 		Y += 8;
@@ -6287,7 +6288,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 PUBLIC VIRTUAL void LevelScene::Render() {
 	if (App->NextScene) return;
-	
+
 	int tCamY = CameraY;
 	if (Data) {
 		if (CameraX < 0)
@@ -6323,13 +6324,13 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 	else
 		G->SetFilter(G->GetFilter() & ~IE_FILTER_FADEABLE);
 
-	if (!G->HaveClone) {	
+	if (!G->HaveClone) {
 		//G->SetFilter(G->GetFilter() | PauseFinished);
 		RenderEverything();
 		//G->SetFilter(G->GetFilter() & ~PauseFinished);
 	}
 	else {
-		G->DrawClone();	
+		G->DrawClone();
 	}
 
 	CameraY = tCamY;
@@ -6354,18 +6355,25 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	delete Sound::SoundBank[0];
 	Sound::SoundBank[0] = NULL;
 
+	for (int o = 0; o < Data->animatedTilesCount; o++) {
+		Memory::Free(Data->animatedTileDurations[o]);
+	}
+	Memory::Free(Data->animatedTileDurations);
+	Memory::Free(Data->animatedTileFrames);
+
 	for (int i = 0; i < Data->layerCount; i++) {
-        free(Data->Layers[i].Deform);
+        Memory::Free(Data->Layers[i].Deform);
 		delete[] Data->Layers[i].Info;
 		delete[] Data->Layers[i].Tiles;
         delete[] Data->Layers[i].TilesBackup;
-        free(Data->Layers[i].TileOffsetY);
+        Memory::Free(Data->Layers[i].TileOffsetY);
 		delete[] Data->Layers[i].ScrollIndexes;
 	}
     delete[] Data->tiles1;
     delete[] Data->tiles2;
-    free(Data->IsAnims);
+    Memory::Free(Data->IsAnims);
 	delete Data;
+	Data = NULL;
 
 	bool ClearedKnuxSprite = false;
 
@@ -6391,11 +6399,16 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 		delete Objects.at(i);
 	}
 	ObjectCount = 0;
-    
+
 	for (size_t i = 0; i < 0x400; i++) {
-        CLEANUP(SpriteMapIDs.at(i));
+		// I guess we can't run cleanup unless it the original pointer, otherwise it becomes messy
+		// ex: cleans up sprite at SpriteMapIDs.at(7) and sets SpriteMapIDs.at(7) to NULL,
+		//     but SpriteMapIDs.at(8) is still where that sprite pointed to and isn't NULL, error is caused when invoking the undefined memory
+		
+		// tl;dr: only cleanup arrays if each element in it is guaranteed to be unique
+        // CLEANUP(SpriteMapIDs.at(i));
 	}
-    
+
 	for (size_t i = 0; i < SpriteBinMapIDs.size(); i++) {
         CLEANUP(SpriteBinMapIDs.at(i));
 	}
@@ -6411,16 +6424,16 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	ObjectsEnemies.clear();
 	ObjectsBreakable.clear();
 	ObjectsPathSwitcher.clear();
-	free(DebugObjectIDList);
+	Memory::Free(DebugObjectIDList);
 	ObjectProps.clear();
 	RingProps.clear();
-	free(AnimatedSprite0Props);
-	free(AnimatedSprite1Props);
-	free(SoundBank);
+	Memory::Free(AnimatedSprite0Props);
+	Memory::Free(AnimatedSprite1Props);
+	Memory::Free(SoundBank);
 	SpriteMapIDs.clear();
     SpriteBinMap.clear();
     SpriteBinMapIDs.clear();
-    
+
 	for (size_t i = 0; i < TempObjects.size(); i++) {
         if (TempObjects.at(i) != NULL) {
             delete TempObjects.at(i);
@@ -6428,7 +6441,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
         }
 	}
 	TempObjects.clear();
-    
+
 	for (size_t i = 0; i < TempObjectTiles.size(); i++) {
         if (TempObjectTiles.at(i) != NULL) {
             delete TempObjectTiles.at(i);
@@ -6438,18 +6451,26 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
     TempObjectTiles.clear();
 
 	CLEANUP(TileSprite);
+	CLEANUP(AnimTileSprite);
 	CLEANUP(GiantRingModel);
 	CLEANUP(PauseSprite);
 	CLEANUP(GlobalDisplaySprite);
+	CLEANUP(GlobalDisplaySpriteS3K);
 	CLEANUP(MobileButtonsSprite);
+	CLEANUP(SuperButtonsSprite);
+	CLEANUP(EditorSprite);
 	CLEANUP(AnimalsSprite);
+	CLEANUP(ItemsSprite);
+	CLEANUP(ObjectsSprite);
 	CLEANUP(Objects2Sprite);
 	CLEANUP(Objects3Sprite);
 	CLEANUP(RobotnikSprite);
 	CLEANUP(ExplosionSprite);
 	CLEANUP(WaterSprite);
 
-	free(PlaneSwitchers);
+	Memory::Free(PlaneSwitchers);
+
+	Memory::PrintLeak();
 
 	//*/
 }

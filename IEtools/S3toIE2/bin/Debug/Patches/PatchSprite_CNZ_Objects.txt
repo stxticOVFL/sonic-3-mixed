@@ -1,0 +1,148 @@
+OUTFOLDER CNZ
+FILENAME Objects
+PALETTE Levels\CNZ\Palettes\Main.bin
+# Both Acts
+REQUEST Levels\CNZ\Tiles\Primary.bin,0,KOSM
+REQUEST Levels\CNZ\Nemesis Art\Misc Art.bin,0x351,NEM
+REQUEST Levels\CNZ\Nemesis Art\Platform.bin,0x430,NEM
+REQUEST Levels\CNZ\Nemesis Art\Miniboss.bin,0x500,NEM
+REQUEST Levels\CNZ\Nemesis Art\End Boss.bin,0x600,NEM
+
+REQUEST General\Sprites\Clamer\Clamer.bin,0x800,UNC
+REQUEST General\Sprites\Batbot\Batbot.bin,0x900,KOSM
+REQUEST General\Sprites\Sparkle\Sparkle.bin,0xA00,KOSM
+REQUEST General\Sprites\CNZ Cannon\CNZ Cannon.bin,0xB00,UNC
+
+REQUEST Levels\CNZ\Nemesis Art\Misc Art.bin,0xDDD,NEM
+REQUEST Levels\CNZ\KosinskiM Art\Balloon.bin,0x1000,KOSM
+
+REQUEST General\Sprites\CNZ Cannon\CNZ Cannon.bin,0x4374,UNC
+
+SPRITE Levels\CNZ\Misc Object Data\Map - (&SOZ) Breakable Wall.asm,Breakable Wall,0x420,2
+SPRITE Levels\CNZ\Misc Object Data\Map - Balloon.asm,,0x351,0
+SPRITE Levels\CNZ\Misc Object Data\Map - Balloon.asm,Balloon 2,0xDDD,0
+SPRITE Levels\CNZ\Misc Object Data\Map - Button.asm,,0x41A,2
+SPRITE Levels\CNZ\Misc Object Data\Map - Cork Floor.asm,,0x430,2,0,0
+SPRITE Levels\CNZ\Misc Object Data\Map - Cylinder.asm,,0x38E,2
+SPRITE Levels\CNZ\Misc Object Data\Map - Door Horizontal.asm,,0x416,2
+SPRITE Levels\CNZ\Misc Object Data\Map - End Boss.asm,,0x600,1
+SPRITE Levels\CNZ\Misc Object Data\Map - Light Bulb.asm,,0x404,2
+SPRITE Levels\CNZ\Misc Object Data\Map - Miniboss.asm,Miniboss 1,0x500,1,0,6
+SPRITE Levels\CNZ\Misc Object Data\Map - Miniboss.asm,Miniboss 2,0x500,1,7,9
+SPRITE Levels\CNZ\Misc Object Data\Map - Miniboss.asm,Miniboss 3,0x500,1,10,16
+SPRITE Levels\CNZ\Misc Object Data\Map - Miniboss.asm,Miniboss 4,0x500,1,17,20
+SPRITE Levels\CNZ\Misc Object Data\Map - Rising Platform.asm,,0x3BE,2
+SPRITE Levels\CNZ\Misc Object Data\Map - Trap Door.asm,,0x3F0,2
+
+SPRITE General\Sprites\CNZ Cannon\Map - CNZ Cannon.asm,Cannon,0x374,2,0,8,General\Sprites\CNZ Cannon\DPLC - CNZ Cannon.asm,true,0x4374
+SPRITE General\Sprites\CNZ Cannon\Map - CNZ Cannon.asm,Cannon Ball,0x374,2,0,0
+SPRITE General\Sprites\CNZ Cannon\Map - CNZ Cannon.asm,Cannon Base,0x374,2,9,9
+SPRITE General\Sprites\Level Misc\Map - Bumper.asm,,0x364,2
+
+SPRITE General\Sprites\Clamer\Map - Clamer.asm,,0x800,1,0,99999,General\Sprites\Clamer\DPLC - Clamer.asm,false
+SPRITE General\Sprites\Batbot\Map - Batbot.asm,,0x900,1
+SPRITE Levels\CNZ\Misc Object Data\Map - Blastoid.asm,Sparkle,0xA00,1
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Breakable Wall
+ANIMATION Breakable Wall,Breakable Wall{0;2;4}
+
+NEWSPRITE Balloon
+ANIMATION Default,Balloon[0;2]
+FRAME ALL,Duration,8
+ANIMATION Blue,Balloon[5;7]
+FRAME ALL,Duration,8
+ANIMATION Yellow,Balloon[10;12]
+FRAME ALL,Duration,8
+ANIMATION Black,Balloon[15;17]
+FRAME ALL,Duration,8
+ANIMATION Red,Balloon 2[20;22]
+FRAME ALL,Duration,8
+
+ANIMATION Default (Popped),Balloon[3;4]
+FRAME ALL,Duration,3
+ANIMATION Blue (Popped),Balloon[8;9]
+FRAME ALL,Duration,3
+ANIMATION Yellow (Popped),Balloon[13;14]
+FRAME ALL,Duration,3
+ANIMATION Black (Popped),Balloon[18;19]
+FRAME ALL,Duration,3
+ANIMATION Red (Popped),Balloon 2[23;24]
+FRAME ALL,Duration,3
+
+NEWSPRITE Button
+ANIMATION Button,Button;ALL
+
+NEWSPRITE Cork Floor
+ANIMATION Cork Floor,Cork Floor;ALL
+
+NEWSPRITE Cylinder
+ANIMATION Cylinder,Cylinder;ALL
+
+NEWSPRITE Door Horizontal
+ANIMATION Door Horizontal,Door Horizontal;ALL
+
+NEWSPRITE End Boss
+ANIMATION End Boss Main,End Boss;0
+ANIMATION Bulb,End Boss{1;8;2}
+ANIMATION Bulb Lit,End Boss{3;3;3}
+ANIMATION Ball,End Boss{4;5}
+ANIMATION Lightning,End Boss{6;7}
+FRAME ALL,Duration,2
+ANIMATION Pieces,End Boss[8;11]
+FRAME 2,CenterX,-40
+FRAME 3,CenterX,0
+
+NEWSPRITE Light Bulb
+ANIMATION Light Bulb,Light Bulb;ALL
+
+NEWSPRITE Miniboss
+ANIMATION Miniboss Body,Miniboss 1;ALL
+ANIMATION Spinning Top,Miniboss 2;ALL
+ANIMATION Lightning,Miniboss 3;ALL
+ANIMATION Pieces,Miniboss 4;ALL
+FRAME 0,CenterX,-32
+FRAME 1,CenterX,0
+FRAME 2,CenterY,0
+
+NEWSPRITE Rising Platform
+ANIMATION Rising Platform,Rising Platform;ALL
+
+NEWSPRITE Trap Door
+ANIMATION Trap Door,Trap Door;ALL
+
+NEWSPRITE Cannon
+ANIMATION Cannon,Cannon;ALL
+
+NEWSPRITE Cannon Ball
+ANIMATION Cannon Ball,Cannon Ball;ALL
+FRAME ALL,CenterX,-40
+FRAME ALL,CenterY,-24
+
+NEWSPRITE Cannon Base
+ANIMATION Cannon Base,Cannon Base;ALL
+
+NEWSPRITE Bumper
+ANIMATION Bumper,Bumper;ALL
+FRAME 0,Duration,0
+
+NEWSPRITE Clamer
+ANIMATION Clamer Blinking,Clamer{0;1;2;3;2;1;0}
+FRAME ALL,Duration,2
+FRAME 0,Duration,0
+ANIMATION Shooting,Clamer{5;6;7;8;6;5}
+ANIMATION Shot,Clamer;9
+
+NEWSPRITE Batbot
+ANIMATION Batbot Body,Batbot[0;2]
+ANIMATION Eyes,Batbot[5;6]
+ANIMATION Bulb,Batbot[3;4]
+FRAME ALL,CenterY,8
+
+NEWSPRITE Sparkle
+ANIMATION Sparkle Body,Sparkle[0;1]
+ANIMATION Lightning,Sparkle[2;5]
+FRAME ALL,Duration,2
+ANIMATION Spark,Sparkle[6;7]
+FRAME ALL,Duration,2

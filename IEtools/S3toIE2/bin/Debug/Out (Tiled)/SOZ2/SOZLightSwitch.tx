@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SOZLightSwitch.tsx" />
+  <object name="SOZLightSwitch" gid="1" width="48" height="32">
+    <properties>
+      <property name="Count" type="int" />
+      <property name="Floor Check" type="bool" />
+    </properties>
+  </object>
+</template>

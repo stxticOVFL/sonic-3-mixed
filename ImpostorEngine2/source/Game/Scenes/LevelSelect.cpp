@@ -37,7 +37,7 @@ public:
 
 #include <Game/Scenes/LevelSelect.h>
 
-int character = 0;
+int character = 0; 
 int partner = 0xFF;
 int mode = 0;
 
@@ -136,7 +136,7 @@ bool HaveSpecial[16]{
 PUBLIC void Scene_LevelSelect::Update() {
     if (FadeTimer == -1 && FadeTimerMax > 1)
         FadeTimer = FadeTimerMax;
-    if (FadeTimer > 0) {
+    if (FadeTimer > 0) {   
         FadeTimer--;
         if (!FadeIn)
             G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));

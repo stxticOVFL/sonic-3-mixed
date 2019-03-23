@@ -1,0 +1,932 @@
+﻿Offs_AniPLC:
+		dc.w AniPLC_AIZ1-Offs_AniPLC
+		dc.w AniPLC_AIZ2-Offs_AniPLC
+		dc.w AniPLC_HCZ1-Offs_AniPLC
+		dc.w AniPLC_HCZ2-Offs_AniPLC
+		dc.w AniPLC_MGZ-Offs_AniPLC
+		dc.w AniPLC_MGZ-Offs_AniPLC
+		dc.w AniPLC_CNZ-Offs_AniPLC
+		dc.w AniPLC_CNZ-Offs_AniPLC
+		dc.w AniPLC_ICZ-Offs_AniPLC
+		dc.w AniPLC_ICZ-Offs_AniPLC
+		dc.w AniPLC_LBZ1-Offs_AniPLC
+		dc.w AniPLC_LBZ2-Offs_AniPLC
+		dc.w AniPLC_MHZ-Offs_AniPLC
+		dc.w AniPLC_MHZ-Offs_AniPLC
+		dc.w AniPLC_FBZ1-Offs_AniPLC
+		dc.w AniPLC_FBZ2-Offs_AniPLC
+		dc.w AniPLC_SOZ-Offs_AniPLC
+		dc.w AniPLC_SOZ-Offs_AniPLC
+		dc.w AniPLC_LRZ1-Offs_AniPLC
+		dc.w AniPLC_LRZ2-Offs_AniPLC
+		dc.w AniPLC_HPZ1-Offs_AniPLC
+		dc.w AniPLC_HPZ2-Offs_AniPLC
+		dc.w AniPLC_SSZ1-Offs_AniPLC
+		dc.w AniPLC_SSZ2-Offs_AniPLC
+		dc.w AniPLC_DEZ-Offs_AniPLC
+		dc.w AniPLC_DEZ-Offs_AniPLC
+		dc.w AniPLC_TDZ-Offs_AniPLC
+		dc.w AniPLC_TDZ-Offs_AniPLC
+		dc.w AniPLC_ALZ-Offs_AniPLC
+		dc.w AniPLC_ALZ-Offs_AniPLC
+		dc.w AniPLC_ALZ-Offs_AniPLC
+		dc.w AniPLC_ALZ-Offs_AniPLC
+		dc.w AniPLC_ALZ-Offs_AniPLC
+		dc.w AniPLC_ALZ-Offs_AniPLC
+		dc.w AniPLC_BPZ-Offs_AniPLC
+		dc.w AniPLC_BPZ-Offs_AniPLC
+		dc.w AniPLC_DPZ-Offs_AniPLC
+		dc.w AniPLC_DPZ-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_Pachinko-Offs_AniPLC
+		dc.w AniPLC_Pachinko-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+		dc.w AniPLC_NULL-Offs_AniPLC
+
+AniPLC_AIZ1:
+	dc.w  -1, $69, $2E6,  9, $C
+	dc.b $3C,$4F
+	dc.b $30,  5
+	dc.b $18,  5
+	dc.b  $C,  5
+	dc.b   0,$4F
+	dc.b  $C,  3
+	dc.b $18,  3
+	dc.b $24,  1
+	dc.b $30,  1
+	even
+
+	dc.w  -1, $69, $2F2,  8, $C
+	dc.b $18,  5
+	dc.b $24,  5
+	dc.b $30,  5
+	dc.b $3C,$27
+	dc.b   0,  5
+	dc.b  $C,  5
+	dc.b $18,  5
+	dc.b $24,  5
+	even
+
+	dc.w  -1, $69, $2FE,  8,  6
+	dc.b   0,  7
+	dc.b   6,  3
+	dc.b  $C,  3
+	dc.b $12,  3
+	dc.b $18,  7
+	dc.b $12,  3
+	dc.b  $C,  3
+	dc.b   6,  3
+	even
+AniPLC_AIZ2:
+	dc.w   3, $69,  $B3,  4,$17
+	dc.b   0
+	dc.b $17
+	dc.b $2E
+	dc.b $45
+	even
+
+	dc.w  -1, $69,  $CA,  9, $C
+	dc.b $3C,$4F
+	dc.b $30,  5
+	dc.b $18,  5
+	dc.b  $C,  5
+	dc.b   0,$4F
+	dc.b  $C,  3
+	dc.b $18,  3
+	dc.b $24,  1
+	dc.b $30,  1
+	even
+
+	dc.w  -1, $69,  $D6,  8, $C
+	dc.b $18,  5
+	dc.b $24,  5
+	dc.b $30,  5
+	dc.b $3C,$27
+	dc.b   0,  5
+	dc.b  $C,  5
+	dc.b $18,  5
+	dc.b $24,  5
+	even
+
+	dc.w   3, $69,  $E2,  4,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	even
+
+	dc.w   3, $69,  $E6,  4,$18
+	dc.b   0
+	dc.b $18
+	dc.b $30
+	dc.b $48
+	even
+
+AniPLC_HCZ1:
+	dc.w  -1, $69, $30C,  3,$24
+	dc.b   0,  2
+	dc.b $24,  1
+	dc.b $48,  2
+	even
+
+	dc.w  -1, $69, $115,$10,  6
+	dc.b   0,  4
+	dc.b   6,  3
+	dc.b  $C,  2
+	dc.b $12,  1
+	dc.b $18,  0
+	dc.b $1E,  1
+	dc.b $24,  2
+	dc.b $2A,  3
+	dc.b $30,  4
+	dc.b $2A,  3
+	dc.b $24,  2
+	dc.b $1E,  1
+	dc.b $18,  0
+	dc.b $12,  1
+	dc.b  $C,  2
+	dc.b   6,  3
+	even
+AniPLC_HCZ2:
+	dc.w   3, $69, $25E,  4,$15
+	dc.b   0
+	dc.b $15
+	dc.b $2A
+	dc.b $3F
+	even
+
+	dc.w  -1, $69, $115,$10,  6
+	dc.b   0,  4
+	dc.b   6,  3
+	dc.b  $C,  2
+	dc.b $12,  1
+	dc.b $18,  0
+	dc.b $1E,  1
+	dc.b $24,  2
+	dc.b $2A,  3
+	dc.b $30,  4
+	dc.b $2A,  3
+	dc.b $24,  2
+	dc.b $1E,  1
+	dc.b $18,  0
+	dc.b $12,  1
+	dc.b  $C,  2
+	dc.b   6,  3
+	even
+
+AniPLC_MGZ:
+	dc.w   9, $69, $222,  6,$30
+	dc.b   0
+	dc.b $30
+	dc.b $60
+	dc.b $90
+	dc.b $C0
+	dc.b $F0
+	even
+
+	dc.w  -1, $69, $252,  4,  1
+	dc.b   0,  7
+	dc.b   1, $E
+	dc.b   2,  7
+	dc.b   1, $E
+	even
+
+AniPLC_CNZ:
+	dc.w   3, $69, $2B2,$10,  9
+	dc.b   0
+	dc.b $12
+	dc.b $24
+	dc.b $36
+	dc.b $48
+	dc.b $5A
+	dc.b $6C
+	dc.b $7E
+	dc.b   9
+	dc.b $1B
+	dc.b $2D
+	dc.b $3F
+	dc.b $51
+	dc.b $63
+	dc.b $75
+	dc.b $87
+	even
+
+	dc.w   3, $69, $2BB,$10,  9
+	dc.b   9
+	dc.b $1B
+	dc.b $2D
+	dc.b $3F
+	dc.b $51
+	dc.b $63
+	dc.b $75
+	dc.b $87
+	dc.b   0
+	dc.b $12
+	dc.b $24
+	dc.b $36
+	dc.b $48
+	dc.b $5A
+	dc.b $6C
+	dc.b $7E
+	even
+
+	dc.w   3, $69, $2C4,$10,$10
+	dc.b   0
+	dc.b $10
+	dc.b $20
+	dc.b $30
+	dc.b $40
+	dc.b $50
+	dc.b $60
+	dc.b $70
+	dc.b $80
+	dc.b $90
+	dc.b $A0
+	dc.b $B0
+	dc.b $C0
+	dc.b $D0
+	dc.b $E0
+	dc.b $F0
+	even
+
+	dc.w   3, $69, $2D4,  8,$20
+	dc.b   0
+	dc.b $20
+	dc.b $40
+	dc.b $60
+	dc.b $80
+	dc.b $A0
+	dc.b $C0
+	dc.b $E0
+	even
+
+	dc.w   3, $69, $2F4,  8,$10
+	dc.b   0
+	dc.b $10
+	dc.b $20
+	dc.b $30
+	dc.b $40
+	dc.b $50
+	dc.b $60
+	dc.b $70
+	even
+
+	dc.w   3, $69, $304,  6,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	even
+
+	dc.w   1, $69, $328,  4,$14
+	dc.b   0
+	dc.b $14
+	dc.b $28
+	dc.b $3C
+	even
+
+AniPLC_ICZ:
+	dc.w   3, $69, $11E,  8,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	dc.b $10
+	dc.b $14
+	dc.b $18
+	dc.b $1C
+	even
+
+AniPLC_LBZ1:
+	dc.w   2, $69, $365,  4,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b $18
+	even
+
+	dc.w   7, $69, $170,  4,  5
+	dc.b   0
+	dc.b   5
+	dc.b  $A
+	dc.b  $F
+	even
+
+	dc.w   7, $69, $175,  6,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	dc.b $10
+	dc.b $14
+	even
+AniPLC_LBZ2:
+	dc.w   7, $69, $170,  4,  5
+	dc.b   0
+	dc.b   5
+	dc.b  $A
+	dc.b  $F
+	even
+
+	dc.w   7, $69, $175,  6,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	dc.b $10
+	dc.b $14
+	even
+
+AniPLC_MHZ:
+	dc.w  -1, $69,  $25,$14,  4
+	dc.b   0,$18
+	dc.b   4,  0
+	dc.b   0,  0
+	dc.b   4,  0
+	dc.b   8,  0
+	dc.b   4,  0
+	dc.b   8,  0
+	dc.b  $C,  0
+	dc.b   8,  0
+	dc.b  $C,  0
+	dc.b   8,  0
+	dc.b  $C,  0
+	dc.b $10,  0
+	dc.b  $C,  0
+	dc.b $10,  0
+	dc.b $14,  0
+	dc.b $10,  0
+	dc.b $14,$31
+	dc.b   0,  0
+	dc.b $14,  0
+	even
+
+	dc.w  -1, $69,  $19, $C,  4
+	dc.b   0,$1D
+	dc.b   4,  0
+	dc.b   0,  0
+	dc.b   4,  0
+	dc.b   0,  0
+	dc.b   4,  0
+	dc.b   0,  0
+	dc.b   4,  1
+	dc.b   8,$1D
+	dc.b  $C,  4
+	dc.b $10,  4
+	dc.b $14,  4
+	even
+
+	dc.w  -1, $69,  $5D,  8,  8
+	dc.b   0,  4
+	dc.b   8,  4
+	dc.b $10,  6
+	dc.b   8,  4
+	dc.b   0,  4
+	dc.b $18,  4
+	dc.b $20,  6
+	dc.b $18,  4
+	even
+
+	dc.w  -1, $69,  $1D,  8,  8
+	dc.b $10,  6
+	dc.b   8,  4
+	dc.b   0,  4
+	dc.b $18,  4
+	dc.b $20,  6
+	dc.b $18,  4
+	dc.b   0,  4
+	dc.b   8,  4
+	even
+
+AniPLC_FBZ1:
+	dc.w $3F, $69, $210,  2,$20
+	dc.b   0
+	dc.b   0
+	even
+
+	dc.w   7, $69, $230,  6,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	even
+
+	dc.w   1, $69, $238,  8,$10
+	dc.b   0
+	dc.b $10
+	dc.b $20
+	dc.b $30
+	dc.b $40
+	dc.b $50
+	dc.b $60
+	dc.b $70
+	even
+
+	dc.w   7, $69, $200,  2,  8
+	dc.b   0
+	dc.b   8
+	even
+
+	dc.w   7, $69, $208,  6,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	even
+AniPLC_FBZ2:
+	dc.w   1, $69, $210,  8,$20
+	dc.b   0
+	dc.b $20
+	dc.b $40
+	dc.b $60
+	dc.b $80
+	dc.b $A0
+	dc.b $C0
+	dc.b $E0
+	even
+
+	dc.w   7, $69, $230,  6,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	even
+
+	dc.w   1, $69, $238,  8,$10
+	dc.b   0
+	dc.b $10
+	dc.b $20
+	dc.b $30
+	dc.b $40
+	dc.b $50
+	dc.b $60
+	dc.b $70
+	even
+
+	dc.w   7, $69, $200,  2,  8
+	dc.b   0
+	dc.b   8
+	even
+
+	dc.w   7, $69, $208,  6,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	even
+
+AniPLC_SOZ:
+
+AniPLC_LRZ1:
+	dc.w   5, $69, $354,  4,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	even
+
+	dc.w   5, $69, $350,  4,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	even
+AniPLC_LRZ2:
+	dc.w  -1, $69, $358,  3,  6
+	dc.b   0,  2
+	dc.b   6,  2
+	dc.b  $C,  1
+	even
+
+	dc.w   1, $69, $350,  8,  8
+	dc.b   0
+	dc.b $38
+	dc.b $30
+	dc.b $28
+	dc.b $20
+	dc.b $18
+	dc.b $10
+	dc.b   8
+	even
+
+AniPLC_HPZ1:
+	dc.w   2, $69, $2D0,  8,  3
+	dc.b   0
+	dc.b   3
+	dc.b   6
+	dc.b   9
+	dc.b  $C
+	dc.b  $F
+	dc.b $12
+	dc.b $15
+	even
+
+	dc.w   3, $69, $2D3,  6,  2
+	dc.b   0
+	dc.b   2
+	dc.b   4
+	dc.b   6
+	dc.b   8
+	dc.b  $A
+	even
+
+	dc.w   2, $69, $2D5,  8,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	dc.b $10
+	dc.b $14
+	dc.b $18
+	dc.b $1C
+	even
+
+	dc.w   3, $69, $2D9,  6,  3
+	dc.b   0
+	dc.b   3
+	dc.b   6
+	dc.b   9
+	dc.b  $C
+	dc.b  $F
+	even
+AniPLC_HPZ2:
+	dc.w   2, $69, $2D0,  8,  3
+	dc.b   0
+	dc.b   3
+	dc.b   6
+	dc.b   9
+	dc.b  $C
+	dc.b  $F
+	dc.b $12
+	dc.b $15
+	even
+
+	dc.w   3, $69, $2D3,  6,  2
+	dc.b   0
+	dc.b   2
+	dc.b   4
+	dc.b   6
+	dc.b   8
+	dc.b  $A
+	even
+
+	dc.w   2, $69, $2D5,  8,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	dc.b $10
+	dc.b $14
+	dc.b $18
+	dc.b $1C
+	even
+
+	dc.w   3, $69, $2D9,  6,  3
+	dc.b   0
+	dc.b   3
+	dc.b   6
+	dc.b   9
+	dc.b  $C
+	dc.b  $F
+	even
+
+AniPLC_SSZ1:
+	dc.w   7, $69, $1F3,  4,$24
+	dc.b   0
+	dc.b $24
+	dc.b $48
+	dc.b $6C
+	even
+
+	dc.w   7, $69, $217,  4,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b $18
+	even
+
+	dc.w   2, $69, $1D9,  4,  9
+	dc.b   0
+	dc.b   9
+	dc.b $12
+	dc.b $1B
+	even
+
+	dc.w   2, $69, $1E2,  4,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	even
+
+	dc.w   2, $69, $1E6,  4, $D
+	dc.b   0
+	dc.b  $D
+	dc.b $1A
+	dc.b $27
+	even
+AniPLC_SSZ2:
+	dc.w   7, $69, $1F3,  4,$24
+	dc.b   0
+	dc.b $24
+	dc.b $48
+	dc.b $6C
+	even
+
+	dc.w   7, $69, $217,  4,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b $18
+	even
+
+	dc.w   2, $69, $1D9,  4,  9
+	dc.b   0
+	dc.b   9
+	dc.b $12
+	dc.b $1B
+	even
+
+	dc.w   2, $69, $1E2,  4,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	even
+
+	dc.w   2, $69, $1E6,  4, $D
+	dc.b   0
+	dc.b  $D
+	dc.b $1A
+	dc.b $27
+	even
+
+AniPLC_DEZ:
+	dc.w   0, $69,  $E4,  2,  2
+	dc.b   0
+	dc.b   2
+	even
+
+	dc.w   1, $69, $1F4,  6,$1E
+	dc.b   0
+	dc.b $1E
+	dc.b $3C
+	dc.b   0
+	dc.b $1E
+	dc.b $3C
+	even
+
+	dc.w   3, $69,  $EC,  8,  4
+	dc.b   0
+	dc.b   4
+	dc.b   8
+	dc.b  $C
+	dc.b $10
+	dc.b $14
+	dc.b $18
+	dc.b $1C
+	even
+
+	dc.w  -1, $69,  $5F,  4,  6
+	dc.b   0,  9
+	dc.b   6,  4
+	dc.b  $C,  9
+	dc.b   6,  4
+	even
+
+	dc.w   4, $69,  $4B,  4,  2
+	dc.b   0
+	dc.b   2
+	dc.b   4
+	dc.b   2
+	even
+
+	dc.w   4, $69,  $6B,  6,  3
+	dc.b   0
+	dc.b   3
+	dc.b   6
+	dc.b   0
+	dc.b   3
+	dc.b   6
+	even
+
+	dc.w   1, $69,  $28,  2,  8
+	dc.b   0
+	dc.b   8
+	even
+
+	dc.w   0, $69, $26D,$84,  5
+	dc.b   0
+	dc.b $2D
+	dc.b   0
+	dc.b $2D
+	dc.b   0
+	dc.b $2D
+	dc.b   0
+	dc.b $2D
+	dc.b   0
+	dc.b $2D
+	dc.b   0
+	dc.b $2D
+	dc.b   5
+	dc.b $2D
+	dc.b   5
+	dc.b $2D
+	dc.b   5
+	dc.b $2D
+	dc.b   5
+	dc.b $2D
+	dc.b   5
+	dc.b $2D
+	dc.b   5
+	dc.b $2D
+	dc.b  $A
+	dc.b $2D
+	dc.b  $A
+	dc.b $2D
+	dc.b  $A
+	dc.b $2D
+	dc.b  $A
+	dc.b $2D
+	dc.b  $A
+	dc.b $2D
+	dc.b  $A
+	dc.b $2D
+	dc.b  $F
+	dc.b $2D
+	dc.b  $F
+	dc.b $2D
+	dc.b  $F
+	dc.b $2D
+	dc.b  $F
+	dc.b $2D
+	dc.b  $F
+	dc.b $2D
+	dc.b  $F
+	dc.b $2D
+	dc.b $14
+	dc.b $2D
+	dc.b $14
+	dc.b $2D
+	dc.b $14
+	dc.b $2D
+	dc.b $14
+	dc.b $2D
+	dc.b $14
+	dc.b $2D
+	dc.b $14
+	dc.b $2D
+	dc.b $19
+	dc.b $2D
+	dc.b $19
+	dc.b $2D
+	dc.b $19
+	dc.b $2D
+	dc.b $19
+	dc.b $2D
+	dc.b $19
+	dc.b $2D
+	dc.b $19
+	dc.b $2D
+	dc.b $1E
+	dc.b $2D
+	dc.b $1E
+	dc.b $2D
+	dc.b $1E
+	dc.b $2D
+	dc.b $1E
+	dc.b $2D
+	dc.b $1E
+	dc.b $2D
+	dc.b $1E
+	dc.b $2D
+	dc.b $23
+	dc.b $2D
+	dc.b $23
+	dc.b $2D
+	dc.b $23
+	dc.b $2D
+	dc.b $23
+	dc.b $2D
+	dc.b $23
+	dc.b $2D
+	dc.b $23
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	dc.b $28
+	dc.b $2D
+	even
+
+AniPLC_TDZ:
+
+AniPLC_ALZ:
+	dc.w   9, $69, $238,  3,$10
+	dc.b   0
+	dc.b $10
+	dc.b $20
+	even
+
+AniPLC_BPZ:
+	dc.w   7, $69, $118,  6,  7
+	dc.b   0
+	dc.b   7
+	dc.b  $E
+	dc.b $15
+	dc.b $1C
+	dc.b $23
+	even
+
+	dc.w   5, $69, $11F, $A,  8
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b $18
+	dc.b $20
+	dc.b   0
+	dc.b   8
+	dc.b $10
+	dc.b $18
+	dc.b $20
+	even
+
+	dc.w   2, $69, $127,  2,  3
+	dc.b   0
+	dc.b   3
+	even
+
+	dc.w   4, $69, $12A,  2,  1
+	dc.b   0
+	dc.b   1
+	even
+
+AniPLC_DPZ:
+	dc.w  $B, $69, $147,  5, $C
+	dc.b   0
+	dc.b  $C
+	dc.b $18
+	dc.b $24
+	dc.b $30
+	even
+
+AniPLC_Pachinko:
+	dc.w   0, $69, $125,  8,$26
+	dc.b $26
+	dc.b   0
+	dc.b $4C
+	dc.b   0
+	dc.b $72
+	dc.b   0
+	dc.b $98
+	dc.b   0
+	even
+
+AniPLC_NULL:

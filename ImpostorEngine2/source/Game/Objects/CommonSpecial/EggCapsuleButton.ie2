@@ -1,14 +1,6 @@
 var Down:int;
 var Pressed:int;
 
-event EggCapsuleButton() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
-        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/EggPrison.bin");
-    } else {
-	    BinIndex = LevelScene.LoadSpriteBin("Global/EggPrison.bin");
-    }
-}
-
 event Create() {
     Active = true;
     Priority = false;
@@ -25,6 +17,7 @@ event Create() {
 
     SwingCounter = 0;
 }
+
 event Update() {
     if (!Pressed)
         this.Down = Scene.Players[0].Ground && Scene.Players[0].LastObject == this;
@@ -40,6 +33,7 @@ event Update() {
 
     Y = InitialY + 7 * Down;
 }
+
 event Render(CamX:int, CamY:int) {
     G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - 7 * Down - CamY, 0, IE_NOFLIP);
 }

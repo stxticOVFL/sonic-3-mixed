@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="RideGrapple.tsx" />
+  <object name="RideGrapple" gid="1" width="16" height="32">
+    <properties>
+      <property name="Path ID" type="int" />
+      <property name="Launch" type="bool" />
+    </properties>
+  </object>
+</template>

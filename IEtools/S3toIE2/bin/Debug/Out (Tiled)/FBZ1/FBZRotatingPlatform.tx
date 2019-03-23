@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="FBZRotatingPlatform.tsx" />
+  <object name="FBZRotatingPlatform" gid="1" width="24" height="24">
+    <properties>
+      <property name="Single" type="bool" />
+      <property name="Count" type="int" />
+      <property name="Spike Ball" type="int" />
+    </properties>
+  </object>
+</template>

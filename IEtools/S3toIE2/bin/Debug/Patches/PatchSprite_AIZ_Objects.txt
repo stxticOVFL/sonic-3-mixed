@@ -1,0 +1,187 @@
+# Find: outZoneID = "(.*)"
+# Repl: OUTFOLDER $1
+# Find: requests\.Add\(new PLCRequest\(where \+ @"(.*)", ([0-9A-Fx-]+),? ?(CompressionType\..*)?\)\);
+# Repl: REQUEST Levels\AIZ\$1,$2,$3
+# Find: requests\.Add\(new PLCRequest\(root \+ @"(.*)", ([0-9A-Fx-]+),? ?(CompressionType\..*)?\)\);
+# Repl: REQUEST $1,$2,$3
+# Find: requests\.Add\(new PLCRequest\(@"(.*)", ([0-9A-Fx-]+),? ?(CompressionType\..*)?\)\);
+# Repl: REQUEST $1,$2,$3
+# Find: requests\.Add\(new PLCRequest\(@"(.*)", ([0-9A-Fx-]+),? ?(CompressionType\..*)?\)\);
+# Repl: REQUEST $1,$2,$3
+# Find: paleetteLeeel = where \+ @"(.*)";
+# Repl: PALETTE $1
+# Find: sprites\.Add\(LoadSprite\(where \+ @"([0-9\(\)&A-z- \\\.]*)", ([0-9A-Fx-]+), ([0-9A-Fx-]+)\)\);
+# Repl: SPRITE $1,,$2,$3
+# Find: sprites\.Add\(LoadSprite\(where \+ @"([0-9\(\)&A-z- \\\.]*)", ([0-9A-Fx-]+), ([0-9A-Fx-]+), "([0-9\(\)&A-z- \\\.]*)", (true|false), ([0-9A-Fx-]+), ([0-9A-Fx-]+)\)\);
+# Repl: SPRITE $1,,$2,$3,$6,$7,$4,$5
+
+OUTFOLDER AIZ
+FILENAME Objects
+PALETTE Levels\AIZ\Palettes\Main.bin
+# Act 1  
+REQUEST Levels\AIZ\Tiles\Act 1 Primary.bin,0,KOSM
+REQUEST Levels\AIZ\Nemesis Art\Zip Vine.bin,0x324,NEM
+REQUEST Levels\AIZ\Nemesis Art\Misc Art 1.bin,0x333,NEM
+REQUEST Levels\AIZ\Nemesis Art\Falling Log.bin,0x3CF,NEM
+REQUEST Levels\AIZ\Nemesis Art\Cork Floor 1.bin,0x3F7,NEM
+REQUEST Levels\AIZ\Nemesis Art\Swing Vine.bin,0x41B,NEM
+REQUEST General\Sprites\Bubbles\Bubbles.bin,0x45C,NEM
+REQUEST General\Sprites\Rhino\Rhino.bin,0x800,UNC
+REQUEST General\Sprites\Monkey Dude\Monkey Dude.bin,-1,KOSM
+REQUEST General\Sprites\Tulipon\Tulipon.bin,-1,KOSM
+REQUEST General\Sprites\Caterkiller Jr\Caterkiller Jr.bin,-1,KOSM
+# Act 2
+REQUEST Levels\AIZ\Tiles\Act 2 Primary.bin,0x2000,KOSM
+# REQUEST Levels\AIZ\Tiles\Act 2 Secondary.bin,-1,KOSM
+REQUEST Levels\AIZ\Nemesis Art\Misc Art 2.bin,0x22E9,NEM
+REQUEST Levels\AIZ\Nemesis Art\Swing Vine.bin,0x241B,NEM
+REQUEST Levels\AIZ\Nemesis Art\Cork Floor 2.bin,0x2440,NEM
+REQUEST General\Sprites\Buttons\Gray Button.bin,0x2456,NEM
+REQUEST General\Sprites\Bubbles\Bubbles.bin,0x245C,NEM
+
+SPRITE Levels\AIZ\Misc Object Data\Map - (&MHZ) Ride Vine.asm,Ride Vine,0x41B,0
+SPRITE Levels\AIZ\Misc Object Data\Map - Act 1 Tree.asm,,1,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Act 1 Zipline Peg.asm,,0x324,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Collapsing Platform.asm,,1,2,0,0,,false
+SPRITE Levels\AIZ\Misc Object Data\Map - Collapsing Platform 2.asm,,0x2001,2,0,0,,false
+SPRITE Levels\AIZ\Misc Object Data\Map - Cork Floor.asm,,1,2,0,0,,false
+SPRITE Levels\AIZ\Misc Object Data\Map - Cork Floor 2.asm,,0x2001,2,0,0,,false
+SPRITE Levels\AIZ\Misc Object Data\Map - Falling Log.asm,Falling Log (Act 1),0x3CF,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Falling Log Splash.asm,Falling Log Splash (Act 1),0x3CF,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Falling Log 2.asm,Falling Log (Act 2),0x22E9,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Falling Log Splash 2.asm,Falling Log Splash (Act 2),0x22E9,3
+SPRITE Levels\AIZ\Misc Object Data\Map - Floating Platform.asm,,0x3F7,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Floating Platform.asm,Floating Platform 2,0x2440,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Foreground Plant.asm,,0x333,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Rock.asm,,0x333,1,0,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Rock.asm,Rock Bits,0x333,1,3,6
+SPRITE Levels\AIZ\Misc Object Data\Map - Rock 2.asm,,0x22E9,2,0,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Rock 2.asm,Rock Bits 2,0x22E9,2,3,6
+
+SPRITE Levels\AIZ\Misc Object Data\Map - Breakable Wall.asm,,0x2001,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Disappearing Floor.asm,,0x2001,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Disappearing Floor Water.asm,,0x22E9,3
+SPRITE Levels\AIZ\Misc Object Data\Map - Draw Bridge Fire.asm,,0x22E9,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Collapsing Log Bridge.asm,,0x22E9,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Drawbridge.asm,,0x22E9,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Flipping Bridge.asm,,0x22E9,2
+SPRITE Levels\AIZ\Misc Object Data\Map - Spiked Log.asm,,0x22E9,2
+
+SPRITE Levels\Misc\Map - Still Sprites.asm,Non Animated Sprites,0x22E9,2,0,2
+SPRITE Levels\Misc\Map - Still Sprites.asm,Non Animated Sprites 2,0x2001,2,3,3
+SPRITE Levels\Misc\Map - Still Sprites.asm,Non Animated Sprites 3,0x2001,3,4,4
+SPRITE Levels\Misc\Map - Animated Still Sprites.asm,Animated Sprites,0x22E9,3,0,8,,false
+
+SPRITE General\Sprites\Rhino\Map - RhinoBot.asm,,0x800,1,0,3,General\Sprites\Rhino\DPLC - RhinoBot.asm,false
+SPRITE General\Sprites\Rhino\Map - RhinoBot.asm,RhinoBot Dust,0x800,0,4,7,General\Sprites\Rhino\DPLC - RhinoBot.asm,false
+SPRITE General\Sprites\Tulipon\Map - Tulipon.asm,,0x86C,1
+SPRITE General\Sprites\Monkey Dude\Map - Monkey Dude.asm,,0x855,1
+SPRITE General\Sprites\Caterkiller Jr\Map - Caterkiller Jr.asm,,0x88A,1
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Act 1 Tree
+ANIMATION Act 1 Tree,Act 1 Tree;ALL
+
+NEWSPRITE Act 1 Zipline Peg
+ANIMATION Act 1 Zipline Peg,Act 1 Zipline Peg;ALL
+
+NEWSPRITE Animated Sprites
+ANIMATION Animated Sprites,Animated Sprites;ALL
+
+NEWSPRITE Breakable Wall
+ANIMATION Breakable Wall,Breakable Wall;ALL
+
+NEWSPRITE Caterkiller Jr
+ANIMATION Caterkiller Jr,Caterkiller Jr;ALL
+
+NEWSPRITE Collapsing Log Bridge
+ANIMATION Collapsing Log Bridge,Collapsing Log Bridge;ALL
+
+NEWSPRITE Collapsing Platform
+ANIMATION Collapsing Platform,Collapsing Platform;ALL
+
+NEWSPRITE Collapsing Platform 2
+ANIMATION Collapsing Platform 2,Collapsing Platform 2;ALL
+
+NEWSPRITE Cork Floor
+ANIMATION Cork Floor,Cork Floor;ALL
+
+NEWSPRITE Cork Floor 2
+ANIMATION Cork Floor 2,Cork Floor 2;ALL
+
+NEWSPRITE Disappearing Floor
+ANIMATION Disappearing Floor,Disappearing Floor;ALL
+
+NEWSPRITE Disappearing Floor Water
+ANIMATION Disappearing Floor Water,Disappearing Floor Water;ALL
+
+NEWSPRITE Drawbridge
+ANIMATION Drawbridge,Drawbridge;ALL
+
+NEWSPRITE Draw Bridge Fire
+ANIMATION Draw Bridge Fire,Draw Bridge Fire;ALL
+
+NEWSPRITE Falling Log (Act 1)
+ANIMATION Falling Log (Act 1),Falling Log (Act 1);ALL
+
+NEWSPRITE Falling Log (Act 2)
+ANIMATION Falling Log (Act 2),Falling Log (Act 2);ALL
+
+NEWSPRITE Falling Log Splash (Act 1)
+ANIMATION Falling Log Splash (Act 1),Falling Log Splash (Act 1);ALL
+
+NEWSPRITE Falling Log Splash (Act 2)
+ANIMATION Falling Log Splash (Act 2),Falling Log Splash (Act 2);ALL
+
+NEWSPRITE Flipping Bridge
+ANIMATION Flipping Bridge,Flipping Bridge;ALL
+
+NEWSPRITE Floating Platform
+ANIMATION Floating Platform,Floating Platform;ALL
+
+NEWSPRITE Floating Platform 2
+ANIMATION Floating Platform 2,Floating Platform 2;ALL
+
+NEWSPRITE Foreground Plant
+ANIMATION Foreground Plant,Foreground Plant;ALL
+
+NEWSPRITE Monkey Dude
+ANIMATION Monkey Dude,Monkey Dude;ALL
+
+NEWSPRITE Non Animated Sprites
+ANIMATION Non Animated Sprites,Non Animated Sprites;ALL|Non Animated Sprites 2;ALL|Non Animated Sprites 3;ALL
+
+NEWSPRITE RhinoBot
+ANIMATION RhinoBot,RhinoBot;ALL
+
+NEWSPRITE RhinoBot Dust
+ANIMATION RhinoBot Dust,RhinoBot Dust;ALL
+FRAME ALL,CenterX,10
+FRAME 0,CenterY,8
+FRAME 3,CenterY,8
+FRAME 1,CenterY,0
+FRAME 2,CenterY,0
+
+NEWSPRITE Ride Vine
+ANIMATION Ride Vine,Ride Vine;ALL
+
+NEWSPRITE Rock
+ANIMATION Rock,Rock;ALL
+
+NEWSPRITE Rock Bits
+ANIMATION Rock Bits,Rock Bits;ALL
+FRAME ALL,Duration,3
+
+NEWSPRITE Rock 2
+ANIMATION Rock 2,Rock 2;ALL
+
+NEWSPRITE Rock Bits 2
+ANIMATION Rock Bits 2,Rock Bits 2;ALL
+FRAME ALL,Duration,3
+
+NEWSPRITE Spiked Log
+ANIMATION Spiked Log,Spiked Log;ALL
+
+NEWSPRITE Tulipon
+ANIMATION Tulipon,Tulipon;ALL

@@ -1,0 +1,63 @@
+OUTFOLDER GlobalS3K
+FILENAME Items
+PALETTE Levels\CNZ\Palettes\Main.bin
+# Common
+REQUEST General\Sprites\Monitors\Monitors.bin,0x4C4,NEM
+REQUEST General\Sprites\Enemy Misc\Enemy points.bin,0x5E4,NEM
+REQUEST General\Sprites\Ring\Ring.bin,0x6BC,NEM
+REQUEST General\Sprites\HUD Icon\Sonic life icon.bin,0x7D4,NEM
+
+REQUEST General\Sprites\HUD Icon\Sonic life icon.bin,0x2000,NEM
+REQUEST General\Sprites\HUD Icon\Tails life icon.bin,0x2010,NEM
+REQUEST General\Sprites\HUD Icon\Knuckles life icon.bin,0x2020,NEM
+REQUEST General\Sprites\HUD Icon\Mighty life icon.bin,0x2030,NEM
+REQUEST General\Sprites\HUD Icon\Ray life icon.bin,0x2040,NEM
+
+SPRITE General\Sprites\Monitors\Map - Monitor.asm,,0x4C4,0
+SPRITE General\Sprites\Ring\Map - Ring.asm,,0x6BC,1
+SPRITE General\Sprites\HUD Icon\Map - HUD.asm,,0x7D4,0
+
+SPRITE General\Sprites\HUD Icon\Map - HUD Custom Lives.asm,Life Icons,0x2000,0,0,4
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE ItemBox
+ANIMATION Normal,Monitor;0x0
+ANIMATION Broken,Monitor;0xB
+ANIMATION Powerups,Monitor;0x4|Monitor;0x4|Monitor;0x8|Monitor;0x6|Monitor;0x7|Monitor;0x9|Monitor;0x5|Life Icons;0|Life Icons;1|Life Icons;2|Life Icons;3|Life Icons;4|Monitor;0x3|Monitor;0x4|Monitor;0x4|Monitor;0x4|Monitor;0xA
+FRAME [0;16],Left,8
+FRAME [0;16],Top,3
+FRAME [0;16],Width,16
+FRAME [0;16],Height,16
+FRAME [0;16],CenterX,-8
+FRAME [0;16],CenterY,-8
+FRAME [7;11],Left,0
+FRAME [7;11],Top,0
+ANIMATION Scanlines,Monitor;0x0
+FRAME 0,Left,8
+FRAME 0,Top,3
+FRAME 0,Width,16
+FRAME 0,Height,16
+FRAME 0,CenterX,-8
+FRAME 0,CenterY,-8
+ANIMATION Snow,Monitor[0;1]
+FRAME [0;1],Left,8
+FRAME [0;1],Top,3
+FRAME [0;1],Width,16
+FRAME [0;1],Height,16
+FRAME [0;1],CenterX,-8
+FRAME [0;1],CenterY,-8
+ANIMATION Item Disappear,Monitor;0
+ANIMATION Debris,Monitor;0
+
+NEWSPRITE Ring
+ANIMATION Normal Ring,Ring[0;3]
+FRAME [0;3],Duration,8
+ANIMATION Hyper Ring,Ring[0;3]
+FRAME [0;3],Duration,8
+ANIMATION Sparkle 1,Ring[4;7]
+FRAME [0;4],Duration,6
+ANIMATION Sparkle 2,Ring[4;7]
+FRAME [0;4],Duration,6
+ANIMATION Sparkle 3,Ring[4;7]
+FRAME [0;4],Duration,6

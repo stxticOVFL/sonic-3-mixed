@@ -1,0 +1,25 @@
+COPY Background,Background (Inside)
+RENAME Background,Background (Outside)
+
+RELATY Background (Outside),00
+CONSTY Background (Outside),00
+PARARESET Background (Outside)
+PARA Background (Outside),5A,10,0,69,0
+PARA Background (Outside),26,20,0,69,0
+PARA Background (Outside),30,00,0,69,0
+PARA Background (Outside),7FFF,C0,0,69,0
+CROP Background (Outside),0,0,32,16
+
+RELATY Background (Inside),00
+CONSTY Background (Inside),00
+PARARESET Background (Inside)
+PARA Background (Inside),1A0,80,0,69,0
+PARA Background (Inside),040,70,0,69,0
+PARA Background (Inside),020,60,0,69,0
+PARA Background (Inside),018,50,0,69,0
+PARA Background (Inside),040,40,0,69,0
+PARA Background (Inside),008,50,0,69,0
+PARA Background (Inside),008,60,0,69,0
+PARA Background (Inside),018,70,0,69,0
+PARA Background (Inside),7FFF,80,0,69,0
+CROP Background (Inside),0,16,32,32

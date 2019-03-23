@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="CupElevator.tsx" />
+  <object name="CupElevator" gid="1" width="64" height="32">
+    <properties>
+      <property name="Distance" type="int" />
+      <property name="Direction" type="int" />
+      <property name="Sonic only" type="bool" />
+      <property name="Launch" type="bool" />
+    </properties>
+  </object>
+</template>

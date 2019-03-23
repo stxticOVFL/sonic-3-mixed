@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="MHZ_MushroomCap.tsx" />
+  <object name="MHZ_MushroomCap" gid="1" width="64" height="26">
+    <properties>
+      <property name="Coloration" type="int" />
+      <property name="Plane Priority" type="int" />
+      <property name="Sprite Priority" type="int" />
+    </properties>
+  </object>
+</template>

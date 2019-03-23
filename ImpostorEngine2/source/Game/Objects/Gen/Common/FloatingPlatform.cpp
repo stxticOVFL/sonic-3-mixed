@@ -5,6 +5,32 @@
 
 typedef IMath Math;
 
+CONSTRUCTER FloatingPlatform::FloatingPlatform() {
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        Act1BinIndex = LevelScene::LoadSpriteBin("AIZ/Floating Platform.bin");
+        Act2BinIndex = LevelScene::LoadSpriteBin("AIZ/Floating Platform 2.bin");
+        BinIndex = Act1BinIndex;
+    }
+    else if (LevelScene::IsZoneCurrently("HCZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("HCZ/Platform.bin");
+    }
+    else if (LevelScene::IsZoneCurrently("MGZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("MGZ/Floating Platform.bin");
+    }
+    else if (LevelScene::IsZoneCurrently("CNZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("CNZ/Rising Platform.bin");
+    }
+    else if (LevelScene::IsZoneCurrently("ICZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("ICZ/Platforms.bin");
+    }
+    else if (LevelScene::IsZoneCurrently("LBZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("LBZ/Floating Platform.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Floating Platform.bin");
+    }
+}
+
 void FloatingPlatform::Create() {
     Object::Create();
     Active = true;
@@ -57,16 +83,51 @@ void FloatingPlatform::Create() {
 
     switch (Scene->ZoneID) {
         case 1:
-        CurrentAnimation = 19;
-        if (Scene->Act == 2) CurrentAnimation = 20;
+        if (Scene->Act == 1) {
+            BinIndex = Act1BinIndex;
+            CurrentAnimation = Sprite->FindAnimation("Floating Platform");
+            Sprite->LinkPalette(Scene->TileSprite);
+        }
+        else if (Scene->Act == 2) {
+            BinIndex = Act2BinIndex;
+            Sprite = LevelScene::GetSpriteFromBinIndex(BinIndex);
+            Sprite->LinkPalette(Scene->TileSprite);
+            CurrentAnimation = Sprite->FindAnimation("Floating Platform 2");
+        }
 
         Frame = 0;
         break;
         case 2:
-        CurrentAnimation = 14;
+        CurrentAnimation = Sprite->FindAnimation("Main");
+        break;
+        case 3:
+        CurrentAnimation = Sprite->FindAnimation("Floating Platform");
+        break;
+        case 4:
+        CurrentAnimation = Sprite->FindAnimation("Rising Platform");
+        break;
+        case 5:
+        CurrentAnimation = Sprite->FindAnimation("Platforms");
+        Sprite->LinkPalette(Scene->TileSprite);
         break;
         case 6:
-        CurrentAnimation = 14;
+        CurrentAnimation = Sprite->FindAnimation("Floating Platform");
+        break;
+        case 7:
+        break;
+        case 8:
+        break;
+        case 9:
+        break;
+        case 10:
+        break;
+        case 11:
+        break;
+        case 12:
+        break;
+        case 13:
+        break;
+        case 14:
         break;
     }
 
@@ -226,7 +287,7 @@ void FloatingPlatform::Render(int CamX, int CamY) {
         G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, nX - CamX, nY - CamY, 0, IE_NOFLIP);
     }
     else if (Scene->ZoneID == 3) {
-        G->DrawSprite(Sprite, 2, 0, nX - CamX, nY - 2 - CamY, 0, IE_NOFLIP);
+        G->DrawSprite(Sprite, CurrentAnimation, 0, nX - CamX, nY - 2 - CamY, 0, IE_NOFLIP);
     }
     else {
         G->DrawRectangle(nX - CamX - W / 2, nY - CamY - H / 2, W, H, 0xFF0000);

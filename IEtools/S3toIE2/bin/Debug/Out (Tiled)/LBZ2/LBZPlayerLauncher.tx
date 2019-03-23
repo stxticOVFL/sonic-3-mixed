@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LBZPlayerLauncher.tsx" />
+  <object name="LBZPlayerLauncher" gid="1" width="58" height="16">
+    <properties>
+      <property name="Force" type="int" />
+    </properties>
+  </object>
+</template>

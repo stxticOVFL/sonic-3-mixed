@@ -1,0 +1,57 @@
+OUTFOLDER HCZ
+FILENAME Objects
+PALETTE Levels\HCZ\Palettes\1.bin
+# Act 1
+# REQUEST Levels\HCZ\Tiles\Primary.bin,0,KOSM
+# REQUEST Levels\HCZ\Tiles\Act 1 Secondary.bin,-1,KOSM
+# REQUEST Levels\HCZ\Nemesis Art\Misc Art 1.bin,0x400,NEM
+# REQUEST Levels\HCZ\Nemesis Art\Misc Art 2.bin,-1,NEM
+# REQUEST Levels\HCZ\KosinskiM Art\Snowdust.bin,0x600,KOSM
+#
+# REQUEST Levels\HCZ\Nemesis Art\Intro Sprites.bin,0x800,NEM
+#
+# REQUEST Levels\HCZ\Nemesis Art\Miniboss.bin,0x880,NEM
+# REQUEST Levels\HCZ\Nemesis Art\End Boss.bin,0x980,NEM
+#
+# REQUEST Levels\HCZ\Tiles\Primary.bin,0x1000,KOSM
+# REQUEST Levels\HCZ\Tiles\Act 2 Secondary.bin,-1,KOSM
+#
+# REQUEST General\Sprites\Penguinator\Penguinator.bin,0x1400,UNC
+# REQUEST General\Sprites\Star Pointer\Star Pointer.bin,0x1480,KOSM
+#
+# SPRITE Levels\HCZ\Misc Object Data\Map - Collapsing Bridge.asm,Collapsing Bridge 1,0x1,2,0,0
+# SPRITE Levels\HCZ\Misc Object Data\Map - Collapsing Bridge.asm,Collapsing Bridge 2,0x1,2,3,3
+# SPRITE Levels\HCZ\Misc Object Data\Map - Cork Floor.asm,,0x1001,2,0,9
+# SPRITE Levels\HCZ\Misc Object Data\Map - Cork Floor.asm,Cork Floor 2,0x400,2,10,10
+# SPRITE Levels\HCZ\Misc Object Data\Map - HCZ Tension Bridge.asm,Tension Bridge,0x400,2
+#
+# SPRITE Levels\HCZ\Misc Object Data\Map - Platforms.asm,Platforms,0x400,2,0,5
+# SPRITE Levels\HCZ\Misc Object Data\Map - Platforms.asm,Platforms 2,0x400,1,6,7
+# SPRITE Levels\HCZ\Misc Object Data\Map - Platforms.asm,Ring,0x400,2,8,8
+# SPRITE Levels\HCZ\Misc Object Data\Map - Platforms.asm,Platforms 3,0x400,2,9,25
+# SPRITE Levels\HCZ\Misc Object Data\Map - Platforms.asm,Teleporter,0x800,1,26,27
+# SPRITE Levels\HCZ\Misc Object Data\Map - Platforms.asm,Platforms 4,0x4A0,2,30,34
+#
+# SPRITE Levels\HCZ\Misc Object Data\Map - Miniboss.asm,Miniboss,0x880,1
+# SPRITE Levels\HCZ\Misc Object Data\Map - End Boss.asm,End Boss,0x980,1
+#
+# SPRITE Levels\HCZ\Misc Object Data\Map - Snowdust.asm,Snowdust,0x600,0
+#
+# SPRITE Levels\HCZ\Misc Object Data\Map - Wall and Column.asm,,0x1,2,2,0xA
+#
+# # SPRITE Levels\Misc\Map - Still Sprites.asm,Non Animated Sprites,0x1,2,0,2
+# # SPRITE Levels\Misc\Map - Animated Still Sprites.asm,Animated Sprites,0x1,3,0,8,,false
+#
+# SPRITE General\Sprites\Penguinator\Map - Penguinator.asm,,0x1400,1,0,3333,General\Sprites\Penguinator\DPLC - Penguinator.asm,false
+# SPRITE General\Sprites\Star Pointer\Map - Star Pointer.asm,,0x1480,1
+#
+# CUSTOMSPRITETOGGLE false
+#
+# # NEWSPRITE RhinoBot Dust
+# # ANIMATION RhinoBot Dust,Cork Floor;ALL
+# # FRAME ALL,CenterX,10
+# # FRAME 0,CenterY,8
+# # FRAME 3,CenterY,8
+# # FRAME 1,CenterY,0
+# # FRAME 2,CenterY,0
+#

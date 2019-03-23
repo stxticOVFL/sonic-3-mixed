@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LBZBoss1.tsx" />
+  <object name="LBZBoss1" gid="1" width="60" height="35">
+    <properties />
+  </object>
+</template>

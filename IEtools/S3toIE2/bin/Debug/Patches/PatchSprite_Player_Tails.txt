@@ -1,0 +1,257 @@
+OUTFOLDER ..\Player\S3
+FILENAME Tails
+# PALETTE Levels\CNZ\Palettes\Main.bin
+
+REQUEST General\Sprites\Tails\Art\Tails.bin,0x0,UNC
+REQUEST General\Sprites\Tails\Art\Tails Extra.bin,0x1000,UNC
+
+REQUEST General\Sprites\Tails\Art\Tails.bin,0x4000,UNC
+REQUEST General\Sprites\Tails\Art\Tails Extra.bin,0x5000,UNC
+
+REQUEST General\Sprites\Tails\Art\Tails tails.bin,0x6000,UNC
+
+SPRITE General\Sprites\Tails\Map - Tails.asm,Tails,0x0,0,0x00,0xDA,General\Sprites\Tails\DPLC - Tails.asm,true,0x4000
+SPRITE General\Sprites\Tails\Map - Tails.asm,Tails Extra,0x1000,0,0xDB,0xF1,General\Sprites\Tails\DPLC - Tails.asm,true,0x5000
+
+SPRITE General\Sprites\Tails\Map - Tails tails.asm,TailSprite,0x6000,0,0x00,0xFFFFF,General\Sprites\Tails\DPLC - Tails tails.asm,true
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Tails
+ANIMATION Idle,Tails;0xAD
+ANIMATION Bored 1,Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAF|Tails;0xAE|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAF|Tails;0xAE|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB2|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB2
+FRAME ALL,Duration,8
+LOOPINDEX 31
+ANIMATION Bored 2,Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAF|Tails;0xAE|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAF|Tails;0xAE|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB2|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB2
+FRAME ALL,Duration,8
+LOOPINDEX 31
+ANIMATION Look Up,Tails;0xAD|Tails;0xB0|Tails;0xB0|Tails;0xB0|Tails;0xB0|Tails;0xB0
+FRAME [0;5],Duration,3
+ANIMATION Crouch,Tails;0xAD|Tails;0x99|Tails;0x99|Tails;0x99|Tails;0x99|Tails;0x99
+FRAME [0;5],Duration,3
+ANIMATION Walk,Tails;7|Tails;8|Tails;1|Tails;2|Tails;3|Tails;4|Tails;5|Tails;6
+SPEED 256
+FRAME ALL,Duration,256
+ANIMATION Air Walk,Tails;7|Tails;8|Tails;1|Tails;2|Tails;3|Tails;4|Tails;5|Tails;6
+SPEED 256
+FRAME ALL,Duration,256
+ANIMATION Jog,Tails;7|Tails;8|Tails;1|Tails;2|Tails;3|Tails;4|Tails;5|Tails;6
+SPEED 256
+FRAME ALL,Duration,256
+ANIMATION Run,Tails;0x21|Tails;0x22|Tails;0x23|Tails;0x24
+SPEED 256
+FRAME ALL,Duration,256
+ANIMATION Dash,Tails;0x21|Tails;0x22|Tails;0x23|Tails;0x24
+SPEED 256
+FRAME ALL,Duration,256
+ANIMATION Jump,Tails;0x96|Tails;0x97|Tails;0x98
+SPEED 256
+FRAME ALL,Duration,256
+ANIMATION Spring Twirl,Tails[0x31;0x3C]
+FRAME ALL,Duration,5
+ANIMATION Spring Diagonal,Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C
+FRAME ALL,Duration,4
+ANIMATION Skid,Tails;0x8E|Tails;0x8F|Tails;0x8E|Tails;0x8F
+FRAME ALL,Duration,4
+ANIMATION Skid Turn,Tails;0x8F
+ANIMATION Spindash,Tails;0x86|Tails;0x87|Tails;0x88
+FRAME ALL,Duration,1
+ANIMATION Dropdash,Tails;0x96|Tails;0x97|Tails;0x98
+FRAME ALL,Duration,1
+ANIMATION Push,Tails;0xA9|Tails;0xAA|Tails;0xAB|Tails;0xAC
+FRAME [0;3],Duration,32
+ANIMATION Hurt,Tails;0x8A
+ANIMATION Die,Tails;0x9C
+ANIMATION Drown,Tails;0x9C
+ANIMATION Balance 1,Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9B
+FRAME ALL,Duration,10
+ANIMATION Balance 2,Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9B
+FRAME ALL,Duration,10
+ANIMATION Spring CS,Tails[0x31;0x3C]
+FRAME ALL,Duration,5
+ANIMATION Stand CS,Tails[0x3D;0x48]
+FRAME ALL,Duration,5
+ANIMATION Fan,Tails;0xB5|Tails;0xB6|Tails;0xB7|Tails;0xB8|Tails;0xB9|Tails;0xBA|Tails;0xBB|Tails;0xBC
+FRAME ALL,Duration,10
+ANIMATION Victory,Tails;0xA5|Tails;0xA6
+FRAME ALL,Duration,0xF
+LOOPINDEX 1
+ANIMATION Outta Here,Tails;0x95|Tails;0x96|Tails;0x95|Tails;0x97|Tails;0x95|Tails;0x98|Tails;0x95|Tails;0x99
+FRAME [0;7],Duration,1
+ANIMATION Hang,Tails[0x90;0x92]
+FRAME ALL,Duration,9
+ANIMATION Hang Move,Tails[0x80;0x85]
+FRAME [0;5],Duration,4
+ANIMATION Pole Swing V,Tails[0x63;0x68]
+FRAME [0;5],Duration,9
+FRAME 0,CenterY,-4
+FRAME 1,CenterY,-4
+FRAME 2,CenterY,-36
+FRAME 3,CenterY,-44
+FRAME 4,CenterY,-27
+FRAME 5,CenterY,-17
+ANIMATION Pole Swing H,Tails[0x5C;0x61]
+FRAME [0;5],Duration,9
+FRAME 0,CenterX,-4
+FRAME 1,CenterX,-4
+FRAME 2,CenterX,-36
+FRAME 3,CenterX,-44
+FRAME 4,CenterX,-27
+FRAME 5,CenterX,-17
+ANIMATION Shaft Swing,Tails[0x5C;0x61]
+FRAME [0;5],Duration,9
+FRAME 0,CenterX,-4
+FRAME 1,CenterX,-4
+FRAME 2,CenterX,-36
+FRAME 3,CenterX,-44
+FRAME 4,CenterX,-27
+FRAME 5,CenterX,-17
+ANIMATION Turntable,Tails[0x55;0x5B]|Tails;0x5A
+FRAME [0;7],Duration,1
+ANIMATION Twister,Tails[0x55;0x5B]|Tails;0x5A
+FRAME [0;7],Duration,1
+ANIMATION Spiral Run,Tails[0x55;0x5B]
+ANIMATION Stick,Tails;0x8D
+FRAME ALL,Duration,1
+ANIMATION Pulley Hold,Tails;0x8D
+FRAME ALL,Duration,1
+ANIMATION Shimmy Idle,Tails;0x95
+ANIMATION Shimmy Move,Tails;0x94|Tails;0x95
+FRAME [0;1],Duration,9
+ANIMATION Bubble,Tails[0x69;0x76]
+ANIMATION Breathe,Tails;0x9F|Tails;0x9F|Tails;3|Tails;4
+FRAME ALL,Duration,0xB
+ANIMATION Ride,Tails;0xAB
+ANIMATION Cling,Tails;0x9D|Tails;0x9E
+FRAME [0;1],CenterX,-4
+ANIMATION Bungee,Tails;0xAB
+ANIMATION TwistRun,Tails;0x48|Tails;0x53|Tails;0x52|Tails;0x51|Tails;0x52|Tails;0x51|Tails;0x52|Tails;0x51|Tails;0x52|Tails;0x51|Tails;0x53|Tails;0x48
+FRAME [0;11],Duration,9
+ANIMATION Flume,Tails;0xCB|Tails;0xCC
+FRAME ALL,Duration,10
+ANIMATION Transform,Tails;0xD1|Tails;0xD2|Tails;0xD3|Tails;0xD4|Tails;0xD5|Tails;0xD4|Tails;0xD5|Tails;0xD4|Tails;0xD5|Tails;0xD4|Tails;0xD5
+FRAME 0,Duration,6
+FRAME 1,Duration,6
+FRAME [2;10],Duration,3
+ANIMATION Fly,Tails;0xA0
+FRAME ALL,Duration,0x1F
+ANIMATION Fly Tired,Tails;0xA3|Tails;0xA4
+FRAME ALL,Duration,0xB
+ANIMATION Fly Lift,Tails;0xA2
+FRAME ALL,Duration,0x1F
+ANIMATION Fly Lift Tired,Tails;0xA3|Tails;0xA4
+FRAME ALL,Duration,0xB
+ANIMATION Swim,Tails;0xBD|Tails;0xBE|Tails;0xBF|Tails;0xC0|Tails;0xC1
+FRAME ALL,Duration,7
+ANIMATION Swim Tired,Tails;0xC2|Tails;0xCD|Tails;0xCE
+FRAME ALL,Duration,0xB
+ANIMATION Swim Lift,Tails;0xA2
+FRAME ALL,Duration,0x1F
+
+NEWSPRITE TailSprite
+ANIMATION Tails 0,TailSprite[0x22;0x26]
+FRAME ALL,Duration,8
+ANIMATION Tails 1,TailSprite[0x1;0x4]
+FRAME ALL,Duration,4
+ANIMATION Tails 2,TailSprite[0x1;0x4]
+FRAME ALL,Duration,4
+ANIMATION Tails 3,TailSprite[0x1;0x4]
+FRAME ALL,Duration,4
+ANIMATION Tails 4,TailSprite[0x1;0x4]
+FRAME ALL,Duration,4
+ANIMATION Tails 5,TailSprite[0x1;0x4]
+FRAME ALL,Duration,4
+ANIMATION Tails 6,TailSprite[0x22;0x26]
+FRAME ALL,Duration,8
+ANIMATION Tails Heli,TailSprite[0x27;0x28]
+FRAME ALL,Duration,2
+
+# ANIMATION AniTails00_Walk,Tails;7|Tails;8|Tails;1|Tails;2|Tails;3|Tails;4|Tails;5|Tails;6
+# ANIMATION AniTails01_Run,Tails;0x21|Tails;0x22|Tails;0x23|Tails;0x24
+# ANIMATION AniTails02_Roll,Tails;0x96|Tails;0x97|Tails;0x98
+# FRAME ALL,Duration,1
+# ANIMATION AniTails03_Roll,Tails;0x96|Tails;0x97|Tails;0x98
+# FRAME ALL,Duration,0
+# ANIMATION AniTails04_Pushing,Tails;0xA9|Tails;0xAA|Tails;0xAB|Tails;0xAC
+# FRAME ALL,Duration,1
+# ANIMATION  AniTails05_Bored,Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAF|Tails;0xAE|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAF|Tails;0xAE|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xAD|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB1|Tails;0xB2|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB3|Tails;0xB4|Tails;0xB2
+# FRAME ALL,Duration,7
+# # LOOPINDEX E|Tails;0x1C
+# ANIMATION AniTails06_Balance,Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9A|Tails;0x9B|Tails;0x9B|Tails;0x9A|Tails;0x9B
+# FRAME ALL,Duration,9
+# ANIMATION AniTails07_LookUp,Tails;0xB0
+# FRAME ALL,Duration,0x3F
+# ANIMATION AniTails08_Crouch,Tails;0x99
+# FRAME ALL,Duration,0x3F
+# ANIMATION AniTails09_Spindash,Tails;0x86|Tails;0x87|Tails;0x88
+# FRAME ALL,Duration,0
+# ANIMATION AniTails0A_MonkeyBars,Tails;0x82
+# FRAME ALL,Duration,0x3F
+# ANIMATION AniTails0B_Pulley,Tails;0x8D
+# FRAME ALL,Duration,0xF
+# ANIMATION AniTails0C,Tails;0xA4|Tails;0x9B
+# FRAME ALL,Duration,9
+# ANIMATION AniTails0D_Skid,Tails;0x8E|Tails;0x8F|Tails;0x8E|Tails;0x8F
+# FRAME ALL,Duration,3
+# # LOOPINDEX D|Tails;0
+# ANIMATION AniTails0E,Tails;0xB5
+# FRAME ALL,Duration,9
+# ANIMATION AniTails0F_Fan,Tails;0xB5|Tails;0xB6|Tails;0xB7|Tails;0xB8|Tails;0xB9|Tails;0xBA|Tails;0xBB|Tails;0xBC
+# FRAME ALL,Duration,9
+# ANIMATION AniTails10_SpringDiagonal,Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C|Tails;0x8B|Tails;0x8C
+# FRAME ALL,Duration,3
+# # LOOPINDEX D|Tails;0
+# ANIMATION AniTails11_Cling,Tails;0x9D|Tails;0x9E
+# FRAME ALL,Duration,1
+# ANIMATION AniTails12,Tails;1|Tails;2|Tails;3
+# FRAME ALL,Duration,0xF
+# # LOOPINDEX E|Tails;1
+# ANIMATION AniTails13_Victory,Tails;0xA5|Tails;0xA6
+# FRAME ALL,Duration,0xF
+# # LOOPINDEX E|Tails;1
+# ANIMATION AniTails14_Hang,Tails;0x91
+# FRAME ALL,Duration,0x13
+# ANIMATION AniTails15_Breathe,Tails;0x9F|Tails;0x9F|Tails;3|Tails;4
+# FRAME ALL,Duration,0xB
+# # LOOPINDEX D|Tails;0
+# ANIMATION AniTails16_Dead,Tails;0x9C
+# FRAME ALL,Duration,0x20
+# ANIMATION AniTails17,Tails;0x9C
+# FRAME ALL,Duration,0x2F
+# ANIMATION AniTails18,Tails;0x9C
+# FRAME ALL,Duration,3
+# ANIMATION AniTails19_Flume,Tails;0xCB|Tails;0xCC
+# FRAME ALL,Duration,9
+# ANIMATION AniTails1A_Hurt,Tails;0x8A
+# FRAME ALL,Duration,0x40
+# ANIMATION AniTails1B,Tails;0x89|Tails;0x8A
+# FRAME ALL,Duration,9
+# ANIMATION AniTails1C,Tails;0
+# FRAME ALL,Duration,0x77
+# ANIMATION AniTails1D,Tails;1|Tails;2|Tails;3|Tails;4|Tails;5|Tails;6|Tails;7|Tails;8
+# FRAME ALL,Duration,3
+# ANIMATION AniTails1E,Tails;1|Tails;2|Tails;3|Tails;4|Tails;5|Tails;6|Tails;7|Tails;8
+# FRAME ALL,Duration,3
+# ANIMATION AniTails1F,Tails;0xC3|Tails;0xC4
+# ANIMATION AniTails20_Fly,Tails;0xA0
+# FRAME ALL,Duration,0x1F
+# ANIMATION AniTails21,Tails;0xA0
+# FRAME ALL,Duration,0x1F
+# ANIMATION AniTails22_FlyLift,Tails;0xA2
+# FRAME ALL,Duration,0x1F
+# ANIMATION AniTails23_FlyLiftUp,Tails;0xA1
+# FRAME ALL,Duration,0x1F
+# ANIMATION AniTails24_FlyTired,Tails;0xA3|Tails;0xA4
+# FRAME ALL,Duration,0xB
+# ANIMATION AniTails25_Swim,Tails;0xBD|Tails;0xBE|Tails;0xBF|Tails;0xC0|Tails;0xC1
+# FRAME ALL,Duration,7
+# ANIMATION AniTails26,Tails;0xBD|Tails;0xBE|Tails;0xBF|Tails;0xC0|Tails;0xC1
+# FRAME ALL,Duration,3
+# ANIMATION AniTails27_FlyTired,Tails;0xCF|Tails;0xD0
+# FRAME ALL,Duration,4
+# ANIMATION AniTails28_SwimTired,Tails;0xC2|Tails;0xCD|Tails;0xCE
+# FRAME ALL,Duration,0xB
+# #ANIMATION AniTails29,Tails;0xEB|Tails;0xEB|Tails;0xEC|Tails;0xED|Tails;0xEC|Tails;0xED|Tails;0xEC|Tails;0xED|Tails;0xEC|Tails;0xED|Tails;0xEC|Tails;0xED
+# #FRAME ALL,Duration,2
+# # LOOPINDEX D|Tails;0
+#

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DDZ_Asteroid.tsx" />
+  <object name="DDZ_Asteroid" gid="1" width="32" height="32">
+    <properties>
+      <property name="Scroll Rate" type="int" />
+      <property name="Sprite" type="int" />
+    </properties>
+  </object>
+</template>

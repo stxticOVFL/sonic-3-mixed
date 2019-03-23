@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Sparkle.tsx" />
+  <object name="Sparkle" gid="1" width="21" height="24">
+    <properties />
+  </object>
+</template>

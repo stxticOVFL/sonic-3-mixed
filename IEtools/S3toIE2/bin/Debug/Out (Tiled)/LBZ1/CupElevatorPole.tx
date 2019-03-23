@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="CupElevatorPole.tsx" />
+  <object name="CupElevatorPole" gid="1" width="16" height="96">
+    <properties>
+      <property name="Height" type="int" />
+      <property name="Sonic only" type="bool" />
+    </properties>
+  </object>
+</template>

@@ -353,6 +353,7 @@ PUBLIC void IApp::Run() {
         // If there's a new scene to go to
         if (NextScene != NULL) {
 			unsigned long now = SDL_GetTicks();
+			Scene->Cleanup();
             delete Scene;
             Scene = NextScene;
             NextScene = NULL;
@@ -446,6 +447,10 @@ PUBLIC void IApp::Run() {
 }
 
 PUBLIC void IApp::Cleanup() {
+	if (Scene) {
+		Scene->Cleanup();
+		delete Scene;
+	}
 	delete Achievements;
     Input->Cleanup(); delete Input;
     Audio->Cleanup(); delete Audio;

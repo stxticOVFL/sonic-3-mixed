@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="PipePlug.tsx" />
+  <object name="PipePlug" gid="1" width="32" height="64">
+    <properties>
+      <property name="Path ID" type="int" />
+      <property name="Reverse" type="bool" />
+      <property name="Launch" type="bool" />
+      <property name="Water Pipe" type="bool" />
+    </properties>
+  </object>
+</template>

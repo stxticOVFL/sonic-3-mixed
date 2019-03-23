@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="SOZ_Door.tsx" />
+  <object name="SOZ_Door" gid="1" width="24" height="128">
+    <properties>
+      <property name="Trigger ID" type="int" />
+      <property name="Direction" type="int" />
+    </properties>
+  </object>
+</template>

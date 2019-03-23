@@ -70,6 +70,7 @@ void CollapsingPlatform::Create() {
         W = 0x30;
         H = 0x2C;
         CurrentAnimation = Sprite->FindAnimation("Collapsing Bridge 1");
+        Sprite->LinkPalette(Scene->TileSprite);
         break;
         case 6:
         break;

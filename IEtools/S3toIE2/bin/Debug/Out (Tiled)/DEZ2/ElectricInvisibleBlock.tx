@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="ElectricInvisibleBlock.tsx" />
+  <object name="ElectricInvisibleBlock" gid="1" width="31" height="27">
+    <properties>
+      <property name="Width" type="int" />
+      <property name="Height" type="int" />
+    </properties>
+  </object>
+</template>

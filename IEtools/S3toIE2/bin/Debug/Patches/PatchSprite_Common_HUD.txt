@@ -1,0 +1,70 @@
+OUTFOLDER GlobalS3K
+FILENAME Display
+PALETTE Levels\CNZ\Palettes\Main.bin
+
+REQUEST General\Sprites\Ring\Ring.bin,0x0,NEM
+REQUEST General\Sprites\Results\Results General.bin,-1,KOSM
+REQUEST General\Sprites\HUD Icon\Sonic life icon.bin,0x1000,NEM
+REQUEST General\Sprites\HUD Icon\Tails life icon.bin,0x1010,NEM
+REQUEST General\Sprites\HUD Icon\Knuckles life icon.bin,0x1020,NEM
+REQUEST General\Sprites\HUD Icon\Mighty life icon.bin,0x1030,NEM
+REQUEST General\Sprites\HUD Icon\Ray life icon.bin,0x1040,NEM
+REQUEST General\Sprites\Results\Results SONIC.bin,0x2000,KOSM
+REQUEST General\Sprites\Results\Results TAILS.bin,0x2100,KOSM
+REQUEST General\Sprites\Results\Results KNUCKLES.bin,0x2200,KOSM
+REQUEST General\Sprites\Results\Results General.bin,0x3000,KOSM
+REQUEST General\Sprites\Game Over\Game Over.bin,0x3800,NEM
+REQUEST General\Sprites\Title Card\Title Card Number 1.bin,0x4000,KOSM
+REQUEST General\Sprites\Title Card\Title Card Number 2.bin,0x4010,KOSM
+
+REQUEST General\Sprites\Game Over\QuotesDigit.bin,0x5000,UNC
+REQUEST General\Sprites\HUD Icon\Lives Digits.bin,0x5100,UNC
+# 
+SPRITE General\Sprites\HUD Icon\Map - HUD Custom.asm,HUD,0xE,0
+SPRITE General\Sprites\HUD Icon\Map - HUD Custom.asm,HUD Red,0x2F00,1
+SPRITE General\Sprites\HUD Icon\Map - HUD Custom Lives.asm,Life Icons,0x1000,0,0,4
+SPRITE General\Sprites\HUD Icon\Map - HUD Custom Lives.asm,SONIC,0x2000,0,5,5
+SPRITE General\Sprites\HUD Icon\Map - HUD Custom Lives.asm,TAILS,0x2100,0,5,5
+SPRITE General\Sprites\HUD Icon\Map - HUD Custom Lives.asm,KNUCKLES,0x2200,0,5,5
+SPRITE General\Sprites\Results\Map - Got Through.asm,GOT THROUGH,0x3000,0
+SPRITE General\Sprites\Game Over\Map - Game Over.asm,GAME OVER,0x3800,0
+SPRITE General\Sprites\Title Card\Map - Title Card.asm,Act1,0x4000,0
+SPRITE General\Sprites\Title Card\Map - Title Card.asm,Act2,0x4010,0
+
+SPRITE General\Sprites\Game Over\Map - QuotesDigit.asm,Quots,0x5000,0
+SPRITE General\Sprites\Game Over\Map - SmallDigit.asm,Life Numbers,0x5100,0
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE HUD
+ANIMATION HUD Elements,HUD{0;1}|HUD Red;1|HUD;2|HUD Red;2|HUD;3|HUD;3|HUD;3|HUD;4|HUD;5|HUD;5|HUD;5|Quots;0|HUD;5|HUD;5|HUD;5|HUD;5|HUD;5|HUD;5|HUD;5
+FRAME 12,CenterY,3
+ANIMATION Numbers,HUD[6;0x15]
+FRAME ALL,CenterX,-3
+ANIMATION Life Icons,Life Icons;ALL
+ANIMATION Player Name,SONIC;ALL|TAILS;ALL|KNUCKLES;ALL|SONIC;ALL|TAILS;ALL
+FRAME ALL,CenterY,0
+FRAME 0,Width,71
+FRAME 0,CenterX,-87
+FRAME 1,Width,63
+FRAME 1,CenterX,-79
+FRAME 2,Width,116
+FRAME 2,CenterX,-132
+FRAME 3,Width,71
+FRAME 3,CenterX,-87
+FRAME 4,Width,63
+FRAME 4,CenterX,-79
+ANIMATION Got Through,GOT THROUGH{0;1;0;1}
+FRAME 0,CenterX,0
+ANIMATION Act,Act1;0|Act2;0|Act2;0
+ANIMATION Game Over,GAME OVER{0;1}
+ANIMATION Time Over,GAME OVER{2;3}
+ANIMATION Competition,HUD{0}
+ANIMATION Hyper Numbers,HUD{0}
+ANIMATION Life Numbers,Life Numbers;ALL
+FRAME ALL,CenterX,-8
+FRAME ALL,CenterY,-8
+# ANIMATION TA End Icons,HUD{0}
+# ANIMATION TA Replay Clap,HUD{0}
+# ANIMATION Stock Icons,HUD{0}
+# ANIMATION Locked-on Leader,HUD{0}

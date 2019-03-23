@@ -1,0 +1,15 @@
+RELATY Background,30
+CONSTY Background,00
+PARARESET Background
+PARA Background,7FFF,80,00,69,0
+
+COPY Background,Background (Outside)
+RENAME Background,Background (Inside)
+
+CROP Background (Inside),0,0,32,96
+CROP Background (Outside),32,0,32,16
+
+RELATY Background (Outside),00
+CONSTY Background (Outside),00
+
+# Chunk at 1A80,0080: Player goes behind it when they shouldnt.

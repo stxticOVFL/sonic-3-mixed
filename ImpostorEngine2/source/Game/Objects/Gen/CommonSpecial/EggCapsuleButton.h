@@ -18,7 +18,6 @@ public:
     int Down;
     int Pressed;
     
-    CONSTRUCTER EggCapsuleButton();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

@@ -103,7 +103,7 @@ PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 }
 
 PUBLIC void Scene_DataSelect::Init() {
-	if (!App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
+	if (Sound::SoundBank[0] && !App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
 		App->Audio->ClearMusic();
 		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
 	}

@@ -1,0 +1,38 @@
+OUTFOLDER GlobalS3K
+FILENAME Robotnik
+PALETTE Levels\AIZ\Palettes\Water.bin
+# Common
+REQUEST General\Sprites\Robotnik\Ship.bin,0,NEM
+REQUEST General\Sprites\Robotnik\FBZ Robotnik Stand.bin,0x200,NEM
+REQUEST General\Sprites\Robotnik\FBZ Robotnik Run.bin,0x300,NEM
+REQUEST General\Sprites\Robotnik\FBZ Robotnik Head.bin,0x400,NEM
+REQUEST General\Sprites\Robotnik\Robotnik Ship Crane.bin,0x500,KOSM
+
+SPRITE General\Sprites\Robotnik\Map - Robotnik Ship.asm,Ship,0x0,0
+# SPRITE General\Sprites\Robotnik\Map - Egg Robo Stand.asm,Stand,0x200,0
+# SPRITE General\Sprites\Robotnik\Map - Egg Robo Run.asm,Run,0x300,0
+# SPRITE General\Sprites\Robotnik\Map - Egg Robo Head.asm,Head,0x400,0
+SPRITE General\Sprites\Robotnik\Map - Robotnik Ship Crane.asm,Crane,0x500,0
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE EggMobile
+ANIMATION Eggman Idle,Ship[0;1]
+FRAME [0;1],Duration,6
+ANIMATION Eggman Laugh,Ship[0;1]
+FRAME [0;1],Duration,6
+ANIMATION Eggman Hit,Ship;2
+ANIMATION Eggman Toasted,Ship;3
+ANIMATION Seat,Ship;4
+ANIMATION Uncovered Mobile,Ship;0xA
+ANIMATION Covered Mobile,Ship;5
+ANIMATION Uncovered Mobile Top,Ship;9
+ANIMATION Covered Mobile Top,Ship;8
+
+NEWSPRITE Crane
+ANIMATION Head (Low),Crane{1;3}
+ANIMATION Head (High),Crane{0;2}
+ANIMATION Chain,Crane;4
+ANIMATION Ball,Crane;0x12
+ANIMATION Electric Tentacles (HPZ),Crane[0x13;0x1A]
+ANIMATION Electric Tentacles Activated,Crane[0x1B;0x1C]

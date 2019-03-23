@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DisappearingFloor.tsx" />
+  <object name="DisappearingFloor" gid="1" width="64" height="48">
+    <properties>
+      <property name="Period" type="int" />
+      <property name="Offset" type="int" />
+    </properties>
+  </object>
+</template>

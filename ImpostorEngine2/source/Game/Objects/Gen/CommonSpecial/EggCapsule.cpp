@@ -23,7 +23,7 @@ void EggCapsule::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     W = 64;
     H = 64;
-    CurrentAnimation = 16;
+    CurrentAnimation = Sprite->FindAnimation("Capsule");
     Broken = false;
     if (Flying) {
         MaxAccel = 0xC0;

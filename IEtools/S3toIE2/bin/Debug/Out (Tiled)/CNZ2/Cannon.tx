@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Cannon.tsx" />
+  <object name="Cannon" gid="1" width="32" height="56">
+    <properties />
+  </object>
+</template>

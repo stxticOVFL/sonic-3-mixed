@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LBZEggmanFlee.tsx" />
+  <object name="LBZEggmanFlee" gid="1" width="54" height="45">
+    <properties />
+  </object>
+</template>

@@ -1,0 +1,151 @@
+OUTFOLDER LBZ
+FILENAME Objects
+PALETTE Levels\LBZ\Palettes\1.bin
+# Act 1
+REQUEST Levels\LBZ\Tiles\Primary.bin,0,KOSM
+REQUEST Levels\LBZ\Tiles\Act 1 Secondary.bin,-1,KOSM
+REQUEST Levels\LBZ\Nemesis Art\Misc Art.bin,0x3C3,NEM
+REQUEST Levels\LBZ\Nemesis Art\Tube Transport.bin,0x455,NEM
+REQUEST Levels\LBZ\Nemesis Art\Knuckles Bomb.bin,0x4D6,NEM
+REQUEST General\Sprites\Robotnik\Ship.bin,0x52E,NEM
+
+REQUEST Levels\LBZ\Tiles\Primary.bin,0x1000,KOSM
+REQUEST Levels\LBZ\Nemesis Art\Act 2 Misc Art.bin,0x12EA,NEM
+
+REQUEST Levels\LBZ\KosinskiM Art\Miniboss.bin,0x2000,KOSM
+REQUEST Levels\LBZ\KosinskiM Art\Miniboss Box.bin,0x2100,KOSM
+
+REQUEST Levels\LBZ\KosinskiM Art\End Boss.bin,0x2200,KOSM
+REQUEST Levels\LBZ\KosinskiM Art\Final Boss 2.bin,0x2400,KOSM
+
+SPRITE Levels\LBZ\Misc Object Data\Map - Breakable Wall.asm,,0x12EA,0,0,0
+SPRITE Levels\LBZ\Misc Object Data\Map - Collapsing Bridge.asm,,0x1,2,0,0
+SPRITE Levels\LBZ\Misc Object Data\Map - Collapsing Ledge.asm,,0x1,2,0,0
+SPRITE Levels\LBZ\Misc Object Data\Map - Cork Floor.asm,,0x1,2,0,0
+SPRITE Levels\LBZ\Misc Object Data\Map - Cup Elevator.asm,,0x40D,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Exploding Trigger.asm,,0x433,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Flame Thrower.asm,,0x3AC,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Exploding Trigger.asm,,0x433,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Gate Laser.asm,,0x12EA,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Knuckles Bomb.asm,,0x4D6,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Knuckles Pillar.asm,,0x5A0,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Lowering Grapple.asm,,0x2EA,2,0,0
+SPRITE Levels\LBZ\Misc Object Data\Map - Moving Platform.asm,Floating Platform,0x3C3,2
+SPRITE Levels\LBZ\Misc Object Data\Map - PipePlug.asm,,0x12E6,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Player Launcher.asm,,0x3C3,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Ride Grapple.asm,,0x433,1
+SPRITE Levels\LBZ\Misc Object Data\Map - Smashing Spikes.asm,,0x455,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Spin Launcher.asm,,0x12EA,2
+SPRITE Levels\LBZ\Misc Object Data\Map - Trigger Bridge.asm,,0x3C3,2,7,7
+SPRITE Levels\LBZ\Misc Object Data\Map - Tube Elevator.asm,,0x455,1
+SPRITE Levels\LBZ\Misc Object Data\Map - (&LRZ) Tunnel Exhaust.asm,Tunnel Exhaust,0x12EA,1,1,1
+
+SPRITE Levels\LBZ\Misc Object Data\Map - Miniboss.asm,,0x2000,1
+SPRITE Levels\LBZ\Misc Object Data\Map - Miniboss Box.asm,,0x2100,2
+SPRITE Levels\LBZ\Misc Object Data\Map - End Boss.asm,,0x2200,1
+SPRITE Levels\LBZ\Misc Object Data\Map - Final Boss 1.asm,,0x2200,1
+SPRITE Levels\LBZ\Misc Object Data\Map - Final Boss 2.asm,,0x2400,1
+#
+SPRITE Levels\Misc\Map - Still Sprites.asm,NAS 1,0x40D,2,20,20
+SPRITE Levels\Misc\Map - Still Sprites.asm,NAS 2,0x433,1,21,21
+# SPRITE Levels\Misc\Map - Animated Still Sprites.asm,Animated Sprites,0x1,3,0,8,,false
+
+# SPRITE General\Sprites\Penguinator\Map - Penguinator.asm,,0x1400,1,0,3333,General\Sprites\Penguinator\DPLC - Penguinator.asm,false
+# SPRITE General\Sprites\Star Pointer\Map - Star Pointer.asm,,0x1480,1
+
+CUSTOMSPRITETOGGLE true
+
+NEWSPRITE Tunnel Exhaust
+ANIMATION Tunnel Exhaust,Tunnel Exhaust;ALL
+
+NEWSPRITE Breakable Wall
+ANIMATION Breakable Wall,Breakable Wall;ALL
+
+NEWSPRITE Collapsing Bridge
+ANIMATION Collapsing Bridge,Collapsing Bridge;ALL
+
+NEWSPRITE Collapsing Ledge
+ANIMATION Collapsing Ledge,Collapsing Ledge;ALL
+
+NEWSPRITE Cork Floor
+ANIMATION Cork Floor,Cork Floor;ALL
+
+NEWSPRITE Cup Elevator
+ANIMATION Cup Elevator,Cup Elevator;ALL
+
+NEWSPRITE Exploding Trigger
+ANIMATION Exploding Trigger,Exploding Trigger;ALL
+
+NEWSPRITE Flame Thrower
+ANIMATION Flame Thrower Body,Flame Thrower;0
+ANIMATION Flame Thrower Flame,Flame Thrower{1;2;3;4;5;3;4;6;7;8}
+FRAME ALL,Duration,4
+
+NEWSPRITE Exploding Trigger
+ANIMATION Exploding Trigger,Exploding Trigger;ALL
+
+NEWSPRITE Gate Laser
+ANIMATION Gate Laser,Gate Laser;ALL
+
+NEWSPRITE Knuckles Bomb
+ANIMATION Knuckles Bomb,Knuckles Bomb;ALL
+
+NEWSPRITE Knuckles Pillar
+ANIMATION Knuckles Pillar,Knuckles Pillar;ALL
+
+NEWSPRITE Lowering Grapple
+ANIMATION Lowering Grapple,Lowering Grapple;ALL
+
+NEWSPRITE Floating Platform
+ANIMATION Floating Platform,Floating Platform;ALL
+
+NEWSPRITE PipePlug
+ANIMATION Plug,PipePlug;7
+ANIMATION Plug Pieces,PipePlug[0;6]
+
+NEWSPRITE Player Launcher
+ANIMATION Player Launcher,Player Launcher;ALL
+
+NEWSPRITE Ride Grapple
+ANIMATION Ride Grapple,Ride Grapple;ALL
+
+NEWSPRITE Smashing Spikes
+ANIMATION Smashing Spikes,Smashing Spikes;ALL
+
+NEWSPRITE Spin Launcher
+ANIMATION Spin Launcher,Spin Launcher;ALL
+
+NEWSPRITE Trigger Bridge
+ANIMATION Trigger Bridge,Trigger Bridge;ALL
+
+NEWSPRITE Tube Elevator
+ANIMATION Tube Elevator,Tube Elevator;ALL
+
+NEWSPRITE Miniboss
+ANIMATION Miniboss,Miniboss;ALL
+ANIMATION Miniboss Box,Miniboss Box;ALL
+
+NEWSPRITE End Boss
+ANIMATION End Boss,End Boss;ALL
+
+NEWSPRITE Final Boss
+ANIMATION FB Body,Final Boss 2[0;3]|Final Boss 2;0xC
+ANIMATION Pieces,Final Boss 2[0xD;0x11]
+FRAME 0,CenterX,-40
+FRAME 0,CenterY,-40
+FRAME 1,CenterX,-8
+FRAME 1,CenterY,-40
+FRAME 2,CenterX,24
+FRAME 2,CenterY,-16
+FRAME 3,CenterX,-40
+FRAME 3,CenterY,0
+FRAME 4,CenterX,-8
+FRAME 4,CenterY,0
+ANIMATION Left Hand,Final Boss 2{7;4;5;6;5;4}
+FRAME ALL,Duration,10
+ANIMATION Right Hand,Final Boss 2{0xB;8;9;10;9;8}
+FRAME ALL,Duration,10
+
+
+NEWSPRITE Non Animated Sprites
+ANIMATION Non Animated Sprites,NAS 1;ALL|NAS 2;ALL

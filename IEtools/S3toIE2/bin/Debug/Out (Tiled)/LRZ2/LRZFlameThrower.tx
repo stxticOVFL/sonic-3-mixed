@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="LRZFlameThrower.tsx" />
+  <object name="LRZFlameThrower" gid="1" width="48" height="32">
+    <properties>
+      <property name="Delay" type="int" />
+      <property name="Direction" type="int" />
+    </properties>
+  </object>
+</template>

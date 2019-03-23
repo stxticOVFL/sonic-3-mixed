@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="Butterdroid.tsx" />
+  <object name="Butterdroid" gid="1" width="24" height="23">
+    <properties />
+  </object>
+</template>

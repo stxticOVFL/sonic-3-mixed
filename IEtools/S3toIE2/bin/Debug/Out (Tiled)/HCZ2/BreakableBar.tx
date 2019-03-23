@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="BreakableBar.tsx" />
+  <object name="BreakableBar" gid="1" width="7" height="64">
+    <properties>
+      <property name="Length" type="int" />
+      <property name="Direction" type="int" />
+      <property name="Delay" type="int" />
+      <property name="Permanent" type="bool" />
+    </properties>
+  </object>
+</template>

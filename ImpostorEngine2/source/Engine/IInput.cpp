@@ -47,6 +47,7 @@ public:
 #endif
 
 #include <Engine/IInput.h>
+#include <Engine/Diagnostics/Memory.h>
 
 enum {
 	NX_KEY_A = 0,
@@ -77,7 +78,7 @@ PUBLIC IInput::IInput(IApp* app) {
     App = app;
 
     for (int i = 0; i < 4; i++)
-        Controllers[i] = (uint8_t*)calloc(1, 18);
+        Controllers[i] = (uint8_t*)Memory::TrackedCalloc("IInput::Controllers[i]", 1, 18);
 
     for (int i = 0; i < 4; i++)
         ControllerType[i] = ControllerType::None;
@@ -92,7 +93,7 @@ PUBLIC IInput::IInput(IApp* app) {
 	}
 
     for (int i = 0; i < 4; i++)
-        ControllerMaps[i] = (int*)calloc(2, 18);
+        ControllerMaps[i] = (int*)Memory::TrackedCalloc("IInput::Controllers[i]", 2, 18);
 
     struct tempStruct {
         const char* key;
@@ -152,7 +153,7 @@ PUBLIC IInput::IInput(IApp* app) {
 
 PUBLIC void IInput::Cleanup() {
     for (int i = 0; i < 4; i++)
-        free(Controllers[i]);
+        Memory::Free(Controllers[i]);
 }
 
 PUBLIC void IInput::Poll() {

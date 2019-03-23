@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DEZ_TunnelJunction.tsx" />
+  <object name="DEZ_TunnelJunction" gid="1" width="16" height="14">
+    <properties>
+      <property name="Exit Up" type="bool" />
+      <property name="Exit Down" type="bool" />
+      <property name="Exit Left" type="bool" />
+      <property name="Exit Right" type="bool" />
+    </properties>
+  </object>
+</template>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="ScrewDoor.tsx" />
+  <object name="ScrewDoor" gid="1" width="16" height="72">
+    <properties>
+      <property name="Trigger ID" type="int" />
+      <property name="Direction" type="int" />
+      <property name="Reverse" type="bool" />
+    </properties>
+  </object>
+</template>

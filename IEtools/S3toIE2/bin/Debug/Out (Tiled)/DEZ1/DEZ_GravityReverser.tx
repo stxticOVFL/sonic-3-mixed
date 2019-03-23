@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="DEZ_GravityReverser.tsx" />
+  <object name="DEZ_GravityReverser" gid="1" width="16" height="64">
+    <properties>
+      <property name="Left Gravity" type="int" />
+      <property name="Right Gravity" type="int" />
+    </properties>
+  </object>
+</template>

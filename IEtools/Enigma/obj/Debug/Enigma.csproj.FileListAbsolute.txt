@@ -1,0 +1,11 @@
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\bin\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\bin\Debug\SonicRetro.KensSharp.Enigma.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\Enigma.csprojResolveAssemblyReference.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\SonicRetro.KensSharp.Properties.Resources.resources
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\Enigma.csproj.GenerateResource.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\Enigma.csproj.CoreCompileInputs.cache
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\Enigma.csproj.CopyComplete
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\SonicRetro.KensSharp.Enigma.pdb

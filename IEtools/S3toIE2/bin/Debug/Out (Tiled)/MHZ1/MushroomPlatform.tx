@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <tileset firstgid="1" source="MushroomPlatform.tsx" />
+  <object name="MushroomPlatform" gid="1" width="72" height="56">
+    <properties>
+      <property name="Collapsing" type="bool" />
+    </properties>
+  </object>
+</template>
