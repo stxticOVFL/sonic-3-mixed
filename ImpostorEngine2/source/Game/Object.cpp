@@ -92,7 +92,7 @@ void Object::AnimationProgress(int16_t animationData[]) {
 			AnimationFrame = 0;
 			//App->Print(0, "Object: dataAnimationFrame in AnimationProgress is: %d", dataAnimationFrame);
 			switch (dataAnimationFrame) {
-				// Each switch repersents a case of a function from a base address of 0x084430, (0x084434, 0x084438, 0x08443c)
+				// Each switch represents a case of a function from a base address of 0x084430, (0x084434, 0x084438, 0x08443c)
 				// All of which are 4 bytes apart. 
 				// Of course we don't use these addresses but it's a recreation on how the ASM worked.
 				case -4:  // FC - AnimateRaw_Restart

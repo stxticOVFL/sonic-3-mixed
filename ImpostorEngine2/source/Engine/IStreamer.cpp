@@ -30,7 +30,14 @@ PUBLIC IStreamer::IStreamer(IResource* r) {
 
 PUBLIC IStreamer::~IStreamer() {
 	if (ExternalAllocation) {
-
+        if (ptr != nullptr) {
+            delete[] ptr;
+            ptr = nullptr;
+        }
+        if (ptr_start != nullptr) {
+            delete[] ptr_start;
+            ptr_start = nullptr;
+        }
 	}
 }
 
