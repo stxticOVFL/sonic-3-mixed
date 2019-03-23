@@ -701,18 +701,28 @@ PUBLIC int ISprite::FindAnimation(const char* animname) {
 		}
 	}
 
+    App->Print(2, "Couldn't find animation %s in Sprite %s!", animname, Filename.c_str());
     return -1;
 }
 
 PUBLIC int ISprite::FindAnimation(const char* animname, const bool dir) {
-    if (dir) return FindAnimation(animname);
+#ifndef NDEBUG
+	assert(this != nullptr);
+#endif
+
+    if (dir) { 
+        return FindAnimation(animname);
+    }
     std::vector<Animation> Reversed = Animations;
     std::reverse(Reversed.begin(), Reversed.end());
 
-    for (int a = 0; a < AnimCount; a++)
-        if (Reversed[a].Name[0] == animname[0] && !strcmp(Reversed[a].Name.c_str(), animname))
+    for (int a = 0; a < AnimCount; a++) {
+        if (Reversed[a].Name[0] == animname[0] && !strcmp(Reversed[a].Name.c_str(), animname)) {
             return a;
-
+        }
+    }
+    
+    App->Print(2, "Couldn't find animation %s in Sprite %s!", animname, Filename.c_str());
     return -1;
 }
 

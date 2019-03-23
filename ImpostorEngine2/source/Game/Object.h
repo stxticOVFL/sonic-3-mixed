@@ -414,10 +414,12 @@ struct colour {
 	uint8_t b;
 	uint8_t a;
 };
+
 struct position {
 	float X;
 	float Y;
 };
+
 struct AttributeValue {
 	char namehash[16];
 	uint8_t value_uint8;
@@ -450,9 +452,9 @@ public:
     
     void *Parent = NULL;
 
-	std::map<std::string, AttributeValue> attributes;
-	AttributeValue fuckYou;
-	int	attributeCount = 0;
+	std::map<std::string, AttributeValue> ObjectAttributes;
+	AttributeValue ObjectAttribute;
+	int	ObjectAttributeCount = 0;
 
 	//Unused, but may be useful to store
 	unsigned short SlotID;
@@ -569,12 +571,12 @@ public:
 
 	virtual AttributeValue* GetAttribute(char* name)
 	{
-		if (attributeCount >= 1)
+		if (ObjectAttributeCount >= 1)
 		{
 			MD5 md5 = MD5(name);
 
 			std::string hash = md5.getdigest();
-			if (attributes.find(hash) == attributes.end())
+			if (ObjectAttributes.find(hash) == ObjectAttributes.end())
 			{
 				//Not Found :(
 				goto AttribNULL;
@@ -582,7 +584,7 @@ public:
 			else
 			{
 				//yay we found it!
-				return &attributes[hash];
+				return &ObjectAttributes[hash];
 			}
 		}
 		else
@@ -590,21 +592,21 @@ public:
 			AddAttribute("attribute");
 		}
 	AttribNULL:
-		fuckYou.value_bool = false;
-		fuckYou.value_colour.r = 255;
-		fuckYou.value_colour.g = 255;
-		fuckYou.value_colour.b = 255;
-		fuckYou.value_int16 = 0;
-		fuckYou.value_int32 = 0;
-		fuckYou.value_int8 = 0;
-		fuckYou.value_position.X = 0;
-		fuckYou.value_position.Y = 0;
-		fuckYou.value_string = "String";
-		fuckYou.value_uint16 = 0;
-		fuckYou.value_uint32 = 0;
-		fuckYou.value_uint8 = 0;
-		fuckYou.value_var = 0;
-		return &fuckYou; //Make a default
+		ObjectAttribute.value_bool = false;
+		ObjectAttribute.value_colour.r = 255;
+		ObjectAttribute.value_colour.g = 255;
+		ObjectAttribute.value_colour.b = 255;
+		ObjectAttribute.value_int16 = 0;
+		ObjectAttribute.value_int32 = 0;
+		ObjectAttribute.value_int8 = 0;
+		ObjectAttribute.value_position.X = 0;
+		ObjectAttribute.value_position.Y = 0;
+		ObjectAttribute.value_string = "String";
+		ObjectAttribute.value_uint16 = 0;
+		ObjectAttribute.value_uint32 = 0;
+		ObjectAttribute.value_uint8 = 0;
+		ObjectAttribute.value_var = 0;
+		return &ObjectAttribute; //Make a default
 	}
 	virtual void AddAttribute(char* name)
 	{
@@ -627,7 +629,7 @@ public:
 		MD5 md5 = MD5(name);
 
 		string hash = md5.hexdigest();
-		attributes.emplace(hash, av);
+		ObjectAttributes.emplace(hash, av);
 	}
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)

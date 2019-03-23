@@ -606,7 +606,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			GlobalDisplaySprite->LoadAnimation("Global/HUD.bin");
 			GlobalDisplaySprite->LoadAnimation("Global/TitleCard.bin");
 			GlobalDisplaySprite->LoadAnimation("Global/PlaneSwitch.bin");
-			GlobalDisplaySprite->LoadAnimation("Global/TicMark.bin");
 		}
 		if (!GlobalDisplaySpriteS3K) {
 			GlobalDisplaySpriteS3K = new ISprite("GlobalS3K/HUD.bin", App);
@@ -2143,7 +2142,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 							if (obj) {
 								std::string hashyboi = std::string(attributes[a].namehash);
 								if (hashyboi.size() > 16) hashyboi.erase(16);
-								obj->attributes.emplace(hashyboi, attributes[a]);
+								obj->ObjectAttributes.emplace(hashyboi, attributes[a]);
 							}
 						}
 					}
@@ -2163,7 +2162,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->DrawCollisions = App->viewObjectCollision;
 
 						//Dunno what do to with filter so fuck it for now
-						obj->attributeCount = AttributeCount - 1;
+						obj->ObjectAttributeCount = AttributeCount - 1;
 
 						//done for backwards compatibility, returns 0 on error so we good
 						obj->SubType = obj->GetAttribute("Subtype")->value_uint8;
