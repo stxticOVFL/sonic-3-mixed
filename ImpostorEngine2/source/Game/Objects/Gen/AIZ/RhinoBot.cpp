@@ -1,11 +1,11 @@
 // Object ID: 0x8D
-// Object Name: Rhinobot.cpp
+// Object Name: RhinoBot.cpp
 
-#include "Rhinobot.h"
+#include "RhinoBot.h"
 
 typedef IMath Math;
 
-void Rhinobot::Create() {
+void RhinoBot::Create() {
     Enemy::Create();
     Active = true;
     Priority = false;
@@ -22,7 +22,7 @@ void Rhinobot::Create() {
     CleanupInactiveObject = true;
 }
 
-void Rhinobot::Update() {
+void RhinoBot::Update() {
     int DisX = 0;
     int DisY = 0;
     if (!isHeldDebugObject) {
@@ -137,7 +137,7 @@ void Rhinobot::Update() {
     Object::Update();
 }
 
-void Rhinobot::Render(int CamX, int CamY) {
+void RhinoBot::Render(int CamX, int CamY) {
     int Flip = 1;
     if (FlipX) Flip = -1;
 
@@ -146,20 +146,22 @@ void Rhinobot::Render(int CamX, int CamY) {
     }
 
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
-    if (Frame == 2) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+    if (Frame == 2) {
+        G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+    }
 
-    if (Timer != -1) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    if (Timer != -1) {
+        G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    }
 
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         if (Frame == 2) {
-            G->SetDrawAlpha(0x80);
             G->DrawRectangle(X - (W / 2) - CamX + Flip * 14, Y - (H / 2) - CamY + 1, W, H, DrawCollisionsColor);
-            G->SetDrawAlpha(0xFF);
         }
-
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        else {
+            G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        }
         G->SetDrawAlpha(0xFF);
     }
 
