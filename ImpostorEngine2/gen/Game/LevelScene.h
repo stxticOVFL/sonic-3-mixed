@@ -253,7 +253,9 @@ public:
     void AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life, int hold);
     void AddAnimal(int x, int y, bool flipX, bool flipY, int xspeed, int yspeed, bool escaping);
     Object* AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY);
+    Object* AddNewObject(char* ObjName, int X, int Y);
     void AddNewDebugObjectID(int16_t ID);
+	virtual void SpawnPlayer(int ID, bool Sidekick);
     virtual void EarlyUpdate();
     virtual void Subupdate();
     virtual void DoResults();

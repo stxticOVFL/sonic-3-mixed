@@ -3532,8 +3532,87 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 	return obj;
 }
 
+PUBLIC Object* LevelScene::AddNewObject(char* ObjName, int X, int Y) {
+	ObjectNewCount++;
+
+	MD5 md5 = MD5(ObjName);
+
+	std::string hash = md5.getdigest();
+
+	char hashdata[16];
+
+	for (int i = 0; i < 16; i++)
+	{
+		hashdata[i] = hash[i];
+	}
+
+	uint32_t objHash = crc32((char*)hashdata, 16);
+
+	Object* obj = GetNewObjectFromCRC32(objHash);
+	if (obj) {
+		obj->G = G;
+		obj->App = App;
+		obj->Scene = this;
+		obj->InitialX = X;
+		obj->InitialY = Y;
+		//TO-DO: Assign Sprite
+		/*
+		if (obj->BinIndex == 0xFFFFFFFF) {
+			while (!SpriteMapIDs.at(ID)) {
+				ID--;
+			}
+
+			obj->Sprite = SpriteMapIDs.at(ID);
+		}
+		else {
+			obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
+		}*/
+
+		obj->SubType = obj->GetAttribute("Subtype")->value_uint8;
+		obj->Create();
+		obj->DrawCollisions = App->viewObjectCollision;
+		ObjectCount++;
+		Objects.push_back(obj);
+	}
+	return obj;
+}
+
 PUBLIC void LevelScene::AddNewDebugObjectID(int16_t ID) {
 	DebugObjectIDList[DebugObjectIDCount++] = ID;
+}
+
+PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick)
+{
+	if (ID == 0)
+	{
+		Player = new IPlayer();
+		Player->G = G;
+		Player->App = App;
+		Player->Scene = this;
+		Player->Character = (CharacterType)(SaveGame::CurrentCharacterFlag & 0xF);
+		Player->PlayerID = 0;
+		Player->Sidekick = Sidekick;
+		Player->Shield = (ShieldType)(SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield < 5 ? (uint8_t)SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield : 0);
+		Player->Thremixed = SaveGame::CurrentMode > 0;
+		Player->Create();
+		Player->Lives = SaveGame::GetLives();
+
+		Players[ID] = Player;
+	}
+	else
+	{
+		Players[ID] = new IPlayer();
+		Players[ID]->G = G;
+		Players[ID]->App = App;
+		Players[ID]->Scene = this;
+		Players[ID]->Sidekick = Sidekick;
+		Players[ID]->Character = (CharacterType)SaveGame::CurrentPartnerFlag;
+		Players[ID]->PlayerID = 1;
+		Players[ID]->Thremixed = SaveGame::CurrentMode > 0;
+		Players[ID]->Create();
+
+		LevelScene::PlayerCount = ID;
+	}
 }
 
 PUBLIC VIRTUAL void LevelScene::EarlyUpdate() {
