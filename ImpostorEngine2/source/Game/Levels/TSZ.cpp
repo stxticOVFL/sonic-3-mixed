@@ -250,7 +250,7 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         Str_AnimatedSprites = "Stages/AIZ2/Animated Tiles.gif";
     }
 
-    sprintf(LevelName, "ANGEL ISLAND");
+    sprintf(LevelName, "TEST ZONE");
     sprintf(LevelNameDiscord, "Angel Island (Mania Testing)");
 
     if (Act == 0) {

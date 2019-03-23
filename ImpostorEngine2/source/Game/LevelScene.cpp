@@ -2017,6 +2017,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ObjectHashes[hash] = GetObjectName(i); //set the name to be assosiated with said hash
 			}
 
+			int AttributeTypes[0x40];
+			AttributeValue attributes[0x40];
+
 			//Clear objects
 			Objects.clear();
 			ObjectCount = 0;
@@ -2042,8 +2045,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				//Allocate our types
 				int AttributeCount = reader.ReadByte();
-				int* AttributeTypes = (int*)calloc(AttributeCount, sizeof(AttributeValue));
-				AttributeValue* attributes = (AttributeValue*)calloc(AttributeCount, sizeof(AttributeValue));
 
 				//le crash
 				for (int n = 1; n < AttributeCount; n++)
@@ -2193,6 +2194,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					//free(attributes);
 				}
 			}
+
+			//delete[] AttributeTypes;
+			//delete[] attributes;
 		}
 		// ImpostorEngine2-temp-type Loading
 		else if ((mag >> 24) == 'U') {

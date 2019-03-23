@@ -337,6 +337,25 @@ PUBLIC void Scene_MainMenu::Update() {
 		}
 	}
 
+	//TEMP, Tally the total score
+	if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED])
+	{
+		//Big ass value
+		unsigned long long TotalScore = 0;
+
+		for (int i = 0; i < 36; i++)
+		{
+			if (SaveGame::Savefiles[i].State > 0)
+			{
+				TotalScore += SaveGame::Savefiles[i].Score;
+			}
+		}
+
+		//lu more like
+		//loser
+		App->Print(0, "Total Score = %lu", TotalScore);
+	}
+
 	if (FrameCircle & 1) return;
 
 	// Palette rotating
