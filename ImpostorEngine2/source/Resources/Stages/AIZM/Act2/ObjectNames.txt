@@ -32,7 +32,7 @@ HiddenMonitor
 CutsceneButton
 SpecialRing
 Tulipon
-Rhinobot
+RhinoBot
 MonkeyDude
 Catakiller,Jr.
 Boss

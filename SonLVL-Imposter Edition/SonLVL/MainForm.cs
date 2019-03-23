@@ -9923,8 +9923,16 @@ namespace SonicRetro.SonLVL.GUI
 					ent.Position.Y.High = (short)LevelData.StartPositions[i].Y;
 
 					ent.Attributes[0].ValueUInt8 = 0xFF;
-					ent.Attributes[1].ValueUInt8 = 0xFF;
-					ent.Attributes[2].ValueUInt8 = 0;
+					if (i == 0)
+					{
+						ent.Attributes[1].ValueUInt8 = 0b00011011;
+					}
+					else if (i == 1)
+					{
+						ent.Attributes[1].ValueUInt8 = 0b00000100;
+					}
+					else ent.Attributes[1].ValueUInt8 = 0xFF;
+                    ent.Attributes[2].ValueUInt8 = 0;
 					ent.Attributes[3].ValueUInt8 = 0;
 					Playerobj.Entities.Add(ent);
 				}
