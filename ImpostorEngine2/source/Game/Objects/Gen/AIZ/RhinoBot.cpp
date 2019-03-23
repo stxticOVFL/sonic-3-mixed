@@ -1,11 +1,11 @@
 // Object ID: 0x8D
-// Object Name: RhinoBot.cpp
+// Object Name: Rhinobot.cpp
 
-#include "RhinoBot.h"
+#include "Rhinobot.h"
 
 typedef IMath Math;
 
-void RhinoBot::Create() {
+void Rhinobot::Create() {
     Enemy::Create();
     Active = true;
     Priority = false;
@@ -22,7 +22,7 @@ void RhinoBot::Create() {
     CleanupInactiveObject = true;
 }
 
-void RhinoBot::Update() {
+void Rhinobot::Update() {
     int DisX = 0;
     int DisY = 0;
     if (!isHeldDebugObject) {
@@ -137,7 +137,7 @@ void RhinoBot::Update() {
     Object::Update();
 }
 
-void RhinoBot::Render(int CamX, int CamY) {
+void Rhinobot::Render(int CamX, int CamY) {
     int Flip = 1;
     if (FlipX) Flip = -1;
 

@@ -225,6 +225,8 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 
     IApp::Print(0, "Starting AIZ (Mania Testing)... %d", ACT);
 
+	SaveGame::CurrentMode = 1;
+
     uint64_t startTime = SDL_GetTicks();
 	PlayMusic(ACT < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (ACT < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);
 

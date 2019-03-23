@@ -2045,7 +2045,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				//Allocate our types
 				int AttributeCount = reader.ReadByte();
 
-				//le crash
+				//clear out the attributes we'll use
 				for (int n = 1; n < AttributeCount; n++)
 				{
 					AttributeTypes[n] = 0xFF;
@@ -2171,6 +2171,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 						// Load our filter attribute, And if nothing return 0.
 						obj->Filter = obj->GetAttribute("Filter")->value_uint8;
+
+						// Done for backwards compatibility, Returns false on error.
+						obj->FlipX = obj->GetAttribute("FlipX")->value_bool;
+						obj->FlipY = obj->GetAttribute("FlipY")->value_bool;
 
 						// Add our object to the scene
 						Objects.push_back(obj);
@@ -5928,20 +5932,31 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 
 	G->DoDeform = false;
 
-	if (ZoneID == 2) {
-		G->DrawModeOverlay = true;
+	G->DrawModeOverlay = true;
+	switch (ZoneID)
+	{
+	case 1:
+	case 4:
+	case 5:
+		G->SetDrawAlpha(0x40);
+		break;
+	case 2:
+	case 6:
 		G->SetDrawAlpha(0x80);
-		if (WaterLevel - CameraY >= -16 &&
-			WaterLevel - CameraY < App->HEIGHT + 16) {
-			for (int x = CameraX; x <= CameraX + App->WIDTH + 32; x += 32) {
-				G->DrawSprite(WaterSprite, 0, WaterAnimationFrame >> 8,
-					(x & 0xFFFFFE0) - CameraX, WaterLevel - CameraY, 0, IE_NOFLIP);
-			}
-		}
-		G->DrawModeOverlay = false;
-		G->SetDrawAlpha(0xFF);
+		break;
+	default:
+		G->SetDrawAlpha(0x00);
+		break;
 	}
-
+	if (WaterLevel - CameraY >= -16 &&
+		WaterLevel - CameraY < App->HEIGHT + 16) {
+		for (int x = CameraX; x <= CameraX + App->WIDTH + 32; x += 32) {
+			G->DrawSprite(WaterSprite, 0, WaterAnimationFrame >> 8,
+				(x & 0xFFFFFE0) - CameraX, WaterLevel - CameraY, 0, IE_NOFLIP);
+		}
+	}
+	G->DrawModeOverlay = false;
+	G->SetDrawAlpha(0xFF);
 	RenderHUD();
 
 	if (!ViewPlayerUpdateStats && !maxLayer) {
