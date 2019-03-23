@@ -658,7 +658,7 @@ public:
     int Swing_UpAndDown();
     
 #ifndef NDEBUG
-    void* __CRTDECL operator new(size_t const size) {
+    void* operator new(size_t const size) {
         for (;;) {
             if (void* const block = Memory::TrackedMalloc("Object", size)) {
                 return block;
@@ -672,7 +672,7 @@ public:
         }
     }
     
-    void* __CRTDECL operator new(size_t const size, std::nothrow_t const&) noexcept {
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept {
         try {
             return operator new(size);
         } catch (...) {
@@ -680,7 +680,7 @@ public:
         }
     }
     
-    void __CRTDECL operator delete(void* const block) noexcept {
+    void operator delete(void* const block) noexcept {
         Memory::Free(block);
     }
 #endif
@@ -713,7 +713,7 @@ public:
     virtual Enemy* GetEnemyParent();
     
 #ifndef NDEBUG
-    void* __CRTDECL operator new(size_t const size) {
+    void* operator new(size_t const size) {
         for (;;) {
             if (void* const block = Memory::TrackedMalloc("Enemy", size)) {
                 return block;
@@ -734,7 +734,7 @@ public:
     virtual void Create();
 
 #ifndef NDEBUG
-    void* __CRTDECL operator new(size_t const size) {
+    void* operator new(size_t const size) {
         for (;;) {
             if (void* const block = Memory::TrackedMalloc("Solid", size)) {
                 return block;
