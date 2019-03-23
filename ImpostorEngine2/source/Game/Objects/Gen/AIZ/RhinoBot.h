@@ -18,6 +18,9 @@ public:
     int SubX;
     int Speed;
     int Acceleration;
+    int DustBinIndex;
+    int CurrentDustAnimation;
+    ISprite* DustSprite;
     
     CONSTRUCTER RhinoBot();
     void Create();

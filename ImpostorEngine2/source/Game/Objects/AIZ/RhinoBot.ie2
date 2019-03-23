@@ -5,11 +5,19 @@ subclass Enemy;
 var SubX:int;
 var Speed:int;
 var Acceleration:int;
+var DustBinIndex:int;
+var CurrentDustAnimation:int;
+var DustSprite:ISprite;
 
 event RhinoBot() : CONSTRUCTER {
-	BinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot.bin");
+    if (LevelScene.IsZoneCurrently("AIZ")) {
+        BinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot.bin");
+        DustBinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot Dust.bin");
+    } else {
+        BinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot.bin");
+        DustBinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot Dust.bin");
+    }
 }
-
 
 event Create() {
     Active = true;
@@ -26,8 +34,44 @@ event Create() {
     Acceleration = -0x10;
 
     HitCount = 1;
-
-    CurrentAnimation = 24;
+    
+    DustSprite = LevelScene.GetSpriteFromBinIndex(DustBinIndex);
+    
+    CurrentAnimation = Sprite.FindAnimation("RhinoBot");
+    CurrentDustAnimation = DustSprite.FindAnimation("RhinoBot Dust");
+    
+    switch (Scene.ZoneID) {
+        case 1: // AIZ
+            Sprite.LinkPalette(Scene.TileSprite);
+            DustSprite.LinkPalette(Scene.TileSprite);
+            break;
+        case 2: // HCZ
+            break;
+        case 3: // MGZ
+            break;
+        case 4: // CNZ
+            break;
+        case 5: // ICZ
+            break;
+        case 6: // LBZ
+            break;
+        case 7: // MHZ
+            break;
+        case 8: // LBZ
+            break;
+        case 9: // SOZ
+            break;
+        case 10: // LRZ
+            break;
+        case 11: // HPZ
+            break;
+        case 12: // SSZ
+            break;
+        case 13: // DEZ
+            break;
+        case 14: // DDZ
+            break;
+    }
     
     CleanupInactiveObject = true;
 }
@@ -162,10 +206,10 @@ event Render(CamX:int, CamY:int) {
 
     G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
     if (Frame == 2) {
-        G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+        G.DrawSprite(DustSprite, CurrentDustAnimation, ((Scene.Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
     }
     if (Timer != -1) {
-        G.DrawSprite(Sprite, CurrentAnimation + 1, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+        G.DrawSprite(DustSprite, CurrentDustAnimation, ((Scene.Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
     }
 
     if (DrawCollisions) {

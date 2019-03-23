@@ -6,6 +6,12 @@
 typedef IMath Math;
 
 CONSTRUCTER MonkeyDude::MonkeyDude() {
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Monkey Dude.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Monkey Dude.bin");
+    }
 }
 
 void MonkeyDude::Create() {
@@ -16,14 +22,20 @@ void MonkeyDude::Create() {
     H = 32;
     VisW = 64;
     VisH = 64;
-    CurrentAnimation = 22;
+    CurrentAnimation = Sprite->FindAnimation("MonkeyBro");
     CleanupInactiveObject = true;
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        Sprite->LinkPalette(Scene->TileSprite);
+    }
+
     Children = Scene->AddNewObject(Obj_MonkeyDudeCoconut, 0, 0, 0, false, false);
     Children->Sprite = Sprite;
     Children->CurrentAnimation = CurrentAnimation;
     HasCoconut = true;
     Flip = 1;
-    if (FlipX) Flip = -1;
+    if (FlipX) {
+        Flip = -1;
+    }
 
     SubX = 0;
     Frame = 0;

@@ -11,7 +11,11 @@ var Children:Object;
 var HasCoconut:bool;
 
 event MonkeyDude() : CONSTRUCTER {
-	//BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
+    if (LevelScene.IsZoneCurrently("AIZ")) {
+        BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
+    } else {
+        BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
+    }
 }
 
 event Create() {
@@ -23,8 +27,12 @@ event Create() {
     VisW = 64;
     VisH = 64;
 
-    CurrentAnimation = 22;
+    CurrentAnimation = Sprite.FindAnimation("MonkeyBro");
     CleanupInactiveObject = true;
+    
+    if (LevelScene.IsZoneCurrently("AIZ")) {
+        Sprite.LinkPalette(Scene.TileSprite);
+    }
 
     Children = Scene.AddNewObject(Obj_MonkeyDudeCoconut, 0, 0, 0, false, false);
     Children.Sprite = Sprite;
@@ -33,8 +41,9 @@ event Create() {
     HasCoconut = true;
 
     Flip = 1;
-    if (FlipX)
+    if (FlipX) {
         Flip = -1;
+    }
 
     SubX = 0;
 

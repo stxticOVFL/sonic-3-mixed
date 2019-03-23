@@ -611,6 +611,7 @@ public:
 		ObjectAttribute.ValVariable = 0;
 		return &ObjectAttribute; //Make a default
 	}
+    
 	virtual void AddAttribute(char* name)
 	{
 		AttributeValue av;
@@ -634,14 +635,17 @@ public:
 		string hash = md5.hexdigest();
 		ObjectAttributes.emplace(hash, av);
 	}
+    
     void ChangeAnimation(int animationID, int startFrame, bool overrideanyways) {
         if (CurrentAnimation != animationID || overrideanyways)
             Frame = startFrame * 0x100;
         CurrentAnimation = animationID;
     };
+    
     void ChangeAnimation(int animationID, int startFrame) {
         ChangeAnimation(animationID, startFrame, false);
     };
+    
     void ChangeAnimation(int animationID) {
         ChangeAnimation(animationID, 0);
     };
