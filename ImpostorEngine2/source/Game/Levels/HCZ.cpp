@@ -846,6 +846,8 @@ PUBLIC void Level_HCZ::HandleCamera() {
             CameraMaxX = 0x3680 - offX;
 
             CameraMaxY = 0x638 - offY;
+			if (CameraMinY > CameraMaxY)
+				CameraMinY = CameraMaxY;
         }
     }
     else if (Act == 2) {

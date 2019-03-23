@@ -440,6 +440,10 @@ PUBLIC void IApp::Run() {
 }
 
 PUBLIC void IApp::Cleanup() {
+	if (Scene) {
+		Scene->Cleanup();
+		delete Scene;
+	}
 	delete Achievements;
     Input->Cleanup(); delete Input;
     Audio->Cleanup(); delete Audio;

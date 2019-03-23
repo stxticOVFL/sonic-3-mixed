@@ -1,11 +1,9 @@
-//Fuck this object - Ducky
-//btw the signpost doesn't show the right side and idk how to work that :)
-
-var SpinSpeed:int;
 var Rot:int;
+var Speed:int;
+var Accel:int;
+var StopSpinning:bool;
 var Falling:bool;
 
-//ok fuck this I'm cheating
 var StartResults:bool;
 
 event Create() {
@@ -15,75 +13,83 @@ event Create() {
     Priority = true;
 
     CurrentAnimation = int(Scene.Players[0].Character);
-    
+
     CleanupInactiveObject = true;
 
     XSpeed = 0;
     YSpeed = 0;
     Frame = 0x00;
 
-    SpinSpeed = 0x400;
     Rot = 0;
+    Speed = 0;
+    Accel = 0;
+    StopSpinning = false;
 
     Falling = true;
-	StartResults = false;
-	
+    StartResults = false;
+
     Timer = -1;
 }
 
 event Update() {
-    SpinSpeed = SpinSpeed <= 0x400 ? 0x400 : SpinSpeed - 0x20;
-	if (!isHeldDebugObject)
-	{
-		    if (Falling)
-        Gravity = 0xC;
-    else
-        Scene.Player.UnderwaterTimer = 1800;
+    if (!isHeldDebugObject) {
+        if (Falling)
+			Gravity = 0xC;
+		else
+			Scene.Player.UnderwaterTimer = 1800;
 
-	if (X + 24 >= Scene.CameraX + App.WIDTH || X - 24 <= Scene.CameraX) {
-		if (Falling) {		
-			XSpeed = -XSpeed;
+		if (X + 24 >= Scene.CameraX + App.WIDTH || X - 24 <= Scene.CameraX) {
+			if (Falling) {
+				XSpeed = -XSpeed;
+			}
 		}
-	}
 
-    for (var i:int = -16; i <= 8; i++) {
-        if (Scene.CollisionAt(X, Y + 24 + i) || Y + 24 + i >= Scene.CameraY + App.HEIGHT) {
-            if (Falling) {
-				XSpeed = 0;
-				YSpeed = 0;
-                Falling = false;
-                Timer = 0x48;
-				Gravity = 0;
+		for (var i:int = -16; i <= 8; i++) {
+			if (Scene.CollisionAt(X, Y + 24 + i) || Y + 24 + i >= Scene.CameraY + App.HEIGHT) {
+				if (Falling) {
+					XSpeed = 0;
+					YSpeed = 0;
+					Falling = false;
+					Gravity = 0;
 
-				Y += i;
-				break;
-            }
-        }
+
+					Speed = 0;
+					Timer = 60 * 3; // 3 seconds
+					Accel = ((2 * 0x1000000) + (Rot & 0xFF0000)) / (Timer * Timer); // 2 full spins when it lands
+					StopSpinning = true;
+
+					Y += i;
+					break;
+				}
+			}
+		}
+
+		if (StopSpinning) {
+			if (Timer > 0) {
+				Speed = Accel * Timer;
+				Rot = Speed * Timer;
+				Timer--;
+				if (Timer == 0)
+					StartResults = true;
+			}
+		}
+		else {
+			Speed = (2 * 0x1000000) / -60;  // same amount of full spins when it's not landing
+			Rot += Speed;
+			Rot &= 0xFFFFFF;
+		}
+		// After 72 frames, or really just when the sign stops spinning
+		if (StartResults) {
+			XSpeed = 0;
+			YSpeed = 0;
+
+			// Fade out level music
+			App.Audio.RemoveMusic(Sound.SoundBank[0xFD]);
+			Scene.DoResults();
+			Timer = -1;
+			StartResults = false;
+		}
     }
-
-    Rot += SpinSpeed;
-
-    if (Timer > 0)
-        Timer--;
-
-	if (((Rot >> 8) & 0xFF) == 0x80 && Timer == 0) {
-		StartResults = true;
-		Timer = -1;
-	}
-
-    // After 72 frames, or really just when the sign stops spinning
-    if (StartResults) {
-        SpinSpeed = 0;
-		XSpeed = 0;
-		YSpeed = 0;
-				
-        // Fade out level music
-        App.Audio.RemoveMusic(Sound.SoundBank[0xFD]);
-        Scene.DoResults();
-        Timer = -1;
-		StartResults = false;
-    }
-	}
 }
 
 event Render(CamX:int, CamY:int) {
@@ -95,8 +101,8 @@ event Render(CamX:int, CamY:int) {
 
     G.DrawSprite(Sprite, 6, 2, X - CamX, Y - CamY, 0, IE_NOFLIP);
 
-    c = Math.cosHex(Rot >> 8);
-    s = Math.sinHex(Rot >> 8);
+    c = Math.cosHex((Rot >> 16) + 0x80);
+    s = Math.sinHex((Rot >> 16) + 0x80);
 
     // Side
     x =  (24 * c >> 16) + (-4 * s >> 16);
@@ -133,12 +139,12 @@ event Render(CamX:int, CamY:int) {
         X - CamX + x + 24,
         Y - CamY + 22 + Sprite.Animations[5].Frames[Frame >> 8].OffY,
         0, IE_NOFLIP, w - x, 30);
-		
-			if (App.viewObjectCollision) {
-		G.SetDrawAlpha(0x80);
-		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
-		G.SetDrawAlpha(0xFF);
-	}
+
+    if (App.viewObjectCollision) {
+        G.SetDrawAlpha(0x80);
+        G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G.SetDrawAlpha(0xFF);
+    }
 }
 
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
@@ -150,10 +156,9 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         return 0;
 
     if (Falling) {
-		YSpeed = -0x200;
-		XSpeed = Scene.Players[PlayerID].XSpeed;
-		Scene.Score+=100;
-	}
-	SpinSpeed = 0x800;
+        YSpeed = -0x200;
+        XSpeed = Scene.Players[PlayerID].XSpeed;
+        Scene.Score+=100;
+    }
     return 1;
 }

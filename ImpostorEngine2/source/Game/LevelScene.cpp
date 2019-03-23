@@ -268,6 +268,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
 
+	Memory::ClearTrackedMemory();
+
 	//Create Achievements Here (may change later lol)
 	App->Achievements->CreateAchievement("Ring Hog");
 
@@ -604,7 +606,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			ISprite::Animation an;
 			an.Name = "";
 			an.FrameCount = 8;
-			an.Frames = (ISprite::AnimFrame*)Memory::TrackedCalloc("LevelScene::MobileButtonsSprite::AnimFrame", 8, sizeof(ISprite::AnimFrame));
+			an.Frames = new ISprite::AnimFrame[an.FrameCount];
 			for (int i = 0; i < 8; i++) {
 				ISprite::AnimFrame ts_af;
 				ts_af.X = i * 64;
@@ -1605,7 +1607,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	ISprite::Animation an;
 	an.Name = "";
 	an.FrameCount = 0x400;
-	an.Frames = (ISprite::AnimFrame*)Memory::TrackedMalloc("LevelScene::TileSprite::AnimFrame", 0x400 * sizeof(ISprite::AnimFrame));
+	an.Frames = new ISprite::AnimFrame[an.FrameCount];
 	if (TileSprite->Width > 16) {
 		for (int i = 0; i < 0x400; i++) {
 			ISprite::AnimFrame ts_af;
@@ -2299,7 +2301,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ISprite::Animation an;
 				an.Name = "";
 				an.FrameCount = framecount;
-				an.Frames = (ISprite::AnimFrame*)Memory::TrackedMalloc("LevelScene::AnimTileSprite", framecount * sizeof(ISprite::AnimFrame));
+				an.Frames = new ISprite::AnimFrame[an.FrameCount];
 				for (int i = 0; i < framecount; i++) {
 					ISprite::AnimFrame ts_af;
 					ts_af.X = i << 4;
@@ -6276,6 +6278,12 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	delete Sound::SoundBank[0];
 	Sound::SoundBank[0] = NULL;
 
+	for (int o = 0; o < Data->animatedTilesCount; o++) {
+		Memory::Free(Data->animatedTileDurations[o]);
+	}
+	Memory::Free(Data->animatedTileDurations);
+	Memory::Free(Data->animatedTileFrames);
+
 	for (int i = 0; i < Data->layerCount; i++) {
         Memory::Free(Data->layers[i].Deform);
 		delete[] Data->layers[i].Info;
@@ -6287,7 +6295,9 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
     delete[] Data->tiles1;
     delete[] Data->tiles2;
     Memory::Free(Data->isAnims);
+
 	delete Data;
+	Data = NULL;
 
 	bool ClearedKnuxSprite = false;
 
@@ -6365,11 +6375,17 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
     TempObjectTiles.clear();
 
 	CLEANUP(TileSprite);
+	CLEANUP(AnimTileSprite);
 	CLEANUP(GiantRingModel);
 	CLEANUP(PauseSprite);
 	CLEANUP(GlobalDisplaySprite);
+	CLEANUP(GlobalDisplaySpriteS3K);
 	CLEANUP(MobileButtonsSprite);
+	CLEANUP(SuperButtonsSprite);
+	CLEANUP(EditorSprite);
 	CLEANUP(AnimalsSprite);
+	CLEANUP(ItemsSprite);
+	CLEANUP(ObjectsSprite);
 	CLEANUP(Objects2Sprite);
 	CLEANUP(Objects3Sprite);
 	CLEANUP(RobotnikSprite);

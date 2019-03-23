@@ -16,15 +16,16 @@ void Signpost::Create() {
     XSpeed = 0;
     YSpeed = 0;
     Frame = 0x00;
-    SpinSpeed = 0x400;
     Rot = 0;
+    Speed = 0;
+    Accel = 0;
+    StopSpinning = false;
     Falling = true;
     StartResults = false;
     Timer = -1;
 }
 
 void Signpost::Update() {
-    SpinSpeed = SpinSpeed <= 0x400 ? 0x400 : SpinSpeed - 0x20;
     if (!isHeldDebugObject) {
         if (Falling) Gravity = 0xC;
         else Scene->Player->UnderwaterTimer = 1800;
@@ -42,8 +43,11 @@ void Signpost::Update() {
                     XSpeed = 0;
                     YSpeed = 0;
                     Falling = false;
-                    Timer = 0x48;
                     Gravity = 0;
+                    Speed = 0;
+                    Timer = 60 * 3;
+                    Accel = ((2 * 0x1000000) + (Rot & 0xFF0000)) / (Timer * Timer);
+                    StopSpinning = true;
                     Y += i;
                     break;
                 }
@@ -51,16 +55,22 @@ void Signpost::Update() {
             }
 
         }
-        Rot += SpinSpeed;
-        if (Timer > 0) Timer--;
+        if (StopSpinning) {
+            if (Timer > 0) {
+                Speed = Accel * Timer;
+                Rot = Speed * Timer;
+                Timer--;
+                if (Timer == 0) StartResults = true;
 
-        if (((Rot >> 8) & 0xFF) == 0x80 && Timer == 0) {
-            StartResults = true;
-            Timer = -1;
+            }
+
         }
-
+        else {
+            Speed = (2 * 0x1000000) / -60;
+            Rot += Speed;
+            Rot &= 0xFFFFFF;
+        }
         if (StartResults) {
-            SpinSpeed = 0;
             XSpeed = 0;
             YSpeed = 0;
             App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
@@ -81,8 +91,8 @@ void Signpost::Render(int CamX, int CamY) {
     int w = 0;
     Sprite = Scene->Objects2Sprite;
     G->DrawSprite(Sprite, 6, 2, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    c = Math::cosHex(Rot >> 8);
-    s = Math::sinHex(Rot >> 8);
+    c = Math::cosHex((Rot >> 16) + 0x80);
+    s = Math::sinHex((Rot >> 16) + 0x80);
     x = (24 * c >> 16) + (-4 * s >> 16);
     w = (24 * c >> 16) + (4 * s >> 16);
     if (w - x > 0) G->DrawSpriteSized(Sprite, 6, 1, X - CamX + x + 4, Y - CamY + 22 + Sprite->Animations[6].Frames[1].OffY, 0, IE_NOFLIP, w - x, 30);
@@ -120,7 +130,6 @@ int Signpost::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Score += 100;
     }
 
-    SpinSpeed = 0x800;
     return 1;
 }
 
