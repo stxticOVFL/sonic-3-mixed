@@ -211,6 +211,9 @@ public:
     bool ViewPlayerUpdateStats = false;
     bool ViewTileInfo = false;
     bool ViewTileCollision = false;
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 
     LevelScene(IApp* app, IGraphics* g);
     virtual void PlayMusic(const char* path, int loop);

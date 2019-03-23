@@ -232,6 +232,10 @@ class LevelScene : public IScene {
         bool ViewPlayerUpdateStats = false;
         bool ViewTileInfo = false;
         bool ViewTileCollision = false;
+        
+        void* operator new(size_t const size) noexcept;
+        void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+        void operator delete(void* const block) noexcept;
 };
 #endif
 
@@ -427,19 +431,15 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 }
 
 PUBLIC STATIC bool LevelScene::IsZoneCurrently(const char* CheckZoneLetters) {
-    char *NewCheckZoneLetters = new char[4];
-    char *NewZoneLetters = new char[4];
+    char NewCheckZoneLetters[4];
+    char NewZoneLetters[4];
     NewCheckZoneLetters[3] = '\0';
     NewZoneLetters[3] = '\0';
     
     sprintf(NewCheckZoneLetters, CheckZoneLetters);
     sprintf(NewZoneLetters, ZoneLetters);
-    
-    bool result = !strcmp(NewZoneLetters, NewCheckZoneLetters);
-    
-    delete[] NewCheckZoneLetters;
-    delete[] NewZoneLetters;
-    return result;
+
+    return !strcmp(NewZoneLetters, NewCheckZoneLetters);
 }
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
@@ -6477,4 +6477,30 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	IScene::Cleanup();
 
 	//*/
+}
+
+void* LevelScene::operator new(size_t const size) {
+    for (;;) {
+        if (void* const block = Memory::TrackedMalloc("LevelScene", size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
+void* LevelScene::operator new(size_t const size, std::nothrow_t const&) noexcept {
+    try {
+        return operator new(size);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+void LevelScene::operator delete(void* const block) noexcept {
+    Memory::Free(block);
 }

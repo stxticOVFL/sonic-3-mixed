@@ -20,6 +20,9 @@ public:
     IResource* res = NULL;
     long distance = 0;
     bool ExternalAllocation = false;
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 
     IStreamer(void* pt);
     IStreamer(unsigned char* pt);

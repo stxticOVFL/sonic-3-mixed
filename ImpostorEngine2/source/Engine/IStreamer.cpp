@@ -9,6 +9,10 @@ public:
     IResource* res = NULL;
     long distance = 0;
 	bool ExternalAllocation = false;
+    
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 };
 #endif
 
@@ -378,4 +382,30 @@ PUBLIC unsigned long  IStreamer::Distance() {
 
 PUBLIC IStreamer IStreamer::GetCompressedStream() {
     return IStreamer(ReadCompressed());
+}
+
+void* IStreamer::operator new(size_t const size) {
+    for (;;) {
+        if (void* const block = Memory::TrackedMalloc("IStreamer", size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
+void* IStreamer::operator new(size_t const size, std::nothrow_t const&) noexcept {
+    try {
+        return operator new(size);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+void IStreamer::operator delete(void* const block) noexcept {
+    Memory::Free(block);
 }

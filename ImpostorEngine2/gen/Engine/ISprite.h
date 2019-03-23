@@ -59,7 +59,10 @@ public:
     IGraphics* G = NULL;
     std::string Filename;
     ISprite* LinkedSprite = NULL;
-    bool Print = false; //
+    bool Print = false;
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 
     ISprite(const char* filename, IApp* app);
     ISprite(const char* filename, IApp* app, bool IsPrinting);

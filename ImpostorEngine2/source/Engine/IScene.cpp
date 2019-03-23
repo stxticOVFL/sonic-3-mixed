@@ -8,10 +8,10 @@ public:
     IApp* App = NULL;
     IGraphics* G = NULL;
 
-    int         FadeTimer = -1;
-    int         FadeTimerMax = 1;
-    int         FadeMax = 0xFF;
-    bool        FadeIn = false; //
+    int FadeTimer = -1;
+    int FadeTimerMax = 1;
+    int FadeMax = 0xFF;
+    bool FadeIn = false;
 };
 #endif
 

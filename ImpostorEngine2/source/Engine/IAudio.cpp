@@ -48,6 +48,9 @@ public:
 	float				MusicVolume = 1.0f;
 	float				SoundFXVolume = 1.0f;
 
+	void* operator new(size_t const size) noexcept;
+	void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+	void operator delete(void* const block) noexcept;
 };
 #endif
 
@@ -117,6 +120,7 @@ PUBLIC IAudio::IAudio(IApp* app) {
 PUBLIC void IAudio::SetSound(int channel, uint8_t* buffer, int length) {
     SetSoundAt(channel, buffer, length, buffer, length);
 }
+
 PUBLIC void IAudio::SetSoundAt(int channel, uint8_t* bufferAt, int lengthAt, uint8_t* buffer, int length) {
     SDL_LockAudioDevice(Device);
 
@@ -136,6 +140,7 @@ PUBLIC void IAudio::SetSoundAt(int channel, uint8_t* bufferAt, int lengthAt, uin
 PUBLIC void IAudio::PushMusic(ISound* music, bool loop, uint32_t lp) {
     PushMusicAt(music, 0.0, loop, lp);
 }
+
 PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp) {
 	if (!music || music->LoadFailed) {
 		return;
@@ -170,6 +175,7 @@ PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp
 
     SDL_UnlockAudioDevice(Device);
 }
+
 PUBLIC void IAudio::RemoveMusic(ISound* music) {
     SDL_LockAudioDevice(Device);
     for (int i = 0; i < (int)MusicStack.size(); i++) {
@@ -180,9 +186,11 @@ PUBLIC void IAudio::RemoveMusic(ISound* music) {
     }
     SDL_UnlockAudioDevice(Device);
 }
+
 PUBLIC bool IAudio::IsPlayingMusic() {
     return MusicStack.size() > 0;
 }
+
 PUBLIC bool IAudio::IsPlayingMusic(ISound* music) {
     for (int i = 0; i < (int)MusicStack.size(); i++) {
         if (MusicStack[i]->Audio == music) {
@@ -191,6 +199,7 @@ PUBLIC bool IAudio::IsPlayingMusic(ISound* music) {
     }
     return false;
 }
+
 PUBLIC void IAudio::ClearMusic() {
     SDL_LockAudioDevice(Device);
     for (int i = 0; i < (int)MusicStack.size(); i++) {
@@ -199,6 +208,7 @@ PUBLIC void IAudio::ClearMusic() {
     MusicStack.clear();
     SDL_UnlockAudioDevice(Device);
 }
+
 PUBLIC void IAudio::FadeMusic(double seconds) {
     SDL_LockAudioDevice(Device);
     if (MusicStack.size() > 0) {
@@ -222,17 +232,20 @@ PUBLIC void IAudio::AudioUnpause(int channel) {
     Paused[channel] = false;
     SDL_UnlockAudioDevice(Device);
 }
+
 PUBLIC void IAudio::AudioPause(int channel) {
     SDL_LockAudioDevice(Device);
     Paused[channel] = true;
     SDL_UnlockAudioDevice(Device);
 }
+
 PUBLIC void IAudio::AudioUnpauseAll() {
     SDL_LockAudioDevice(Device);
     for (int i = 0; i < 256; i++)
         Paused[i] = false;
     SDL_UnlockAudioDevice(Device);
 }
+
 PUBLIC void IAudio::AudioPauseAll() {
     SDL_LockAudioDevice(Device);
     for (int i = 0; i < 256; i++)
@@ -361,4 +374,30 @@ PUBLIC STATIC void IAudio::AudioCallback(void* data, uint8_t* stream, int len) {
 PUBLIC void IAudio::Cleanup() {
     SDL_PauseAudioDevice(Device, 1);
     SDL_CloseAudioDevice(Device);
+}
+
+void* IAudio::operator new(size_t const size) {
+	for (;;) {
+		if (void* const block = Memory::TrackedMalloc("IAudio", size)) {
+			return block;
+		}
+		if (_callnewh(size) == 0) {
+			static const std::bad_alloc nomem;
+			_RAISE(nomem);
+		}
+
+		// The new handler was successful; try to allocate again...
+	}
+}
+
+void* IAudio::operator new(size_t const size, std::nothrow_t const&) noexcept {
+	try {
+		return operator new(size);
+	} catch (...) {
+		return nullptr;
+	}
+}
+
+void IAudio::operator delete(void* const block) noexcept {
+	Memory::Free(block);
 }

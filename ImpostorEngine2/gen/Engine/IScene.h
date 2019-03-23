@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class IApp;
 class IGraphics;
@@ -18,10 +19,10 @@ class IScene {
 public:
     IApp* App = NULL;
     IGraphics* G = NULL;
-    int         FadeTimer = -1;
-    int         FadeTimerMax = 1;
-    int         FadeMax = 0xFF;
-    bool        FadeIn = false; //
+    int FadeTimer = -1;
+    int FadeTimerMax = 1;
+    int FadeMax = 0xFF;
+    bool FadeIn = false;
 
     virtual void OnEvent(Uint32 event);
     virtual void Init();

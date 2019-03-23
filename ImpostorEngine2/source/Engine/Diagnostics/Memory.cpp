@@ -78,47 +78,56 @@ void __CRTDECL operator delete[](void* block, size_t) noexcept {
 
 PUBLIC STATIC void* Memory::Malloc(size_t size) {
     void* mem = malloc(size);
+#ifndef NDEBUG
     if (mem) {
         TrackedMemory.push_back(mem);
         TrackedSizes.push_back(size);
         TrackedMemoryNames.push_back(NULL);
     }
+#endif
     return mem;
 }
 
 PUBLIC STATIC void* Memory::Calloc(size_t count, size_t size) {
     void* mem = calloc(count, size);
+#ifndef NDEBUG
     if (mem) {
         TrackedMemory.push_back(mem);
         TrackedSizes.push_back(count * size);
         TrackedMemoryNames.push_back(NULL);
     }
+#endif
     return mem;
 }
 
 PUBLIC STATIC void* Memory::TrackedMalloc(const char* identifier, size_t size) {
     void* mem = malloc(size);
+#ifndef NDEBUG
     if (mem) {
         TrackedMemory.push_back(mem);
         TrackedSizes.push_back(size);
         TrackedMemoryNames.push_back(identifier);
     }
+#endif
     return mem;
 }
 
 PUBLIC STATIC void* Memory::TrackedCalloc(const char* identifier, size_t count, size_t size) {
     void* mem = calloc(count, size);
+#ifndef NDEBUG
     if (mem) {
         TrackedMemory.push_back(mem);
         TrackedSizes.push_back(count * size);
         TrackedMemoryNames.push_back(identifier);
     }
+#endif
     return mem;
 }
 
 PUBLIC STATIC void Memory::Free(void* mem) {
     free(mem);
 
+#ifndef NDEBUG
     for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
         if (TrackedMemory[i] == mem) {
             TrackedMemoryNames.erase(TrackedMemoryNames.begin() + i);
@@ -127,6 +136,7 @@ PUBLIC STATIC void Memory::Free(void* mem) {
             break;
         }
     }
+#endif
 }
 
 PUBLIC STATIC void Memory::TrackMemory(const char* identifier, void *mem, size_t count, size_t size) {

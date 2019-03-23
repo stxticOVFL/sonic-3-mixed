@@ -49,7 +49,11 @@ public:
     std::string Filename;
     ISprite* LinkedSprite = NULL;
 
-    bool Print = false; //
+    bool Print = false;
+    
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 };
 #endif
 
@@ -795,4 +799,30 @@ PRIVATE bool ISprite::strEndsWith(const char* str, const char* suffix) {
     }
 
     return 0 == strncmp( str + str_len - suffix_len, suffix, suffix_len );
+}
+
+void* ISprite::operator new(size_t const size) {
+    for (;;) {
+        if (void* const block = Memory::TrackedMalloc("ISprite", size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
+void* ISprite::operator new(size_t const size, std::nothrow_t const&) noexcept {
+    try {
+        return operator new(size);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+void ISprite::operator delete(void* const block) noexcept {
+    Memory::Free(block);
 }
