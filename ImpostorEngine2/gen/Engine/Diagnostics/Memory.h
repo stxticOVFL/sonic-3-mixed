@@ -19,14 +19,14 @@ private:
 
 
 public:
-    static void*  Malloc(size_t size);
-    static void*  Calloc(size_t count, size_t size);
-    static void*  TrackedMalloc(const char* identifier, size_t size);
-    static void*  TrackedCalloc(const char* identifier, size_t count, size_t size);
-    static void   Free(void* mem);
-    static void   ClearTrackedMemory();
+    static void* Malloc(size_t size);
+    static void* Calloc(size_t count, size_t size);
+    static void* TrackedMalloc(const char* identifier, size_t size);
+    static void* TrackedCalloc(const char* identifier, size_t count, size_t size);
+    static void Free(void* mem);
+    static void ClearTrackedMemory();
     static size_t CheckLeak();
-    static void   PrintLeak();
+    static void PrintLeak();
 };
 
 #endif /* MEMORY_H */

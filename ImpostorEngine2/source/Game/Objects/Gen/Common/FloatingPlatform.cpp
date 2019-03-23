@@ -237,8 +237,8 @@ void FloatingPlatform::Update() {
     if (!Scene->maxLayer && !isHeldDebugObject) {
         int32_t AnimCount = Sprite->AnimCount;
         if (Scene->ZoneID == 3) {
-            Outliner->W = Sprite->Animations[2].Frames[0].W;
-            Outliner->H = Sprite->Animations[2].Frames[0].H;
+            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[0].W;
+            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[0].H;
         }
         else if (Scene->ZoneID == 2) {
             int32_t FrameCount = Sprite->Animations[CurrentAnimation % AnimCount].FrameCount;

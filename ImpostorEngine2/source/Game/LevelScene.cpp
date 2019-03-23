@@ -1849,7 +1849,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			reader.ReadUInt32(); // Loop Point
 			reader.ReadUInt32(); // Background Color
 		} else {
-			Memory::Free(reader.ReadBytes(16));
+			delete[] reader.ReadBytes(16);
 			reader.ReadRSDKString();
 			Data->CameraLayer = reader.ReadByte(); // UnknownByte2
 		}

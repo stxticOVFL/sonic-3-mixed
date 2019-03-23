@@ -498,7 +498,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     for (int i = 0; i < PaletteSize; i++) {
         uint8_t* color = stream.ReadBytes(3);
         Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
-        Memory::Free(color);
+        delete[] color;
 
         Palette[i] |= 0xFF000000;
         #if ANDROID
@@ -619,7 +619,7 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
     for (int i = 0; i < PaletteSize; i++) {
         uint8_t* color = stream.ReadBytes(3);
         Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
-        Memory::Free(color);
+        delete[] color;
 
         Palette[i] |= 0xFF000000;
         #if ANDROID

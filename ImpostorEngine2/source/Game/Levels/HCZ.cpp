@@ -128,7 +128,7 @@ PUBLIC void Level_HCZ::Init() {
         IResource* StageBin = IResources::Load("Stages/HCZ/Palette.bin");
         if (StageBin) {
             IStreamer reader(StageBin);
-			Memory::Free(reader.ReadBytes(128 * 4));
+			delete[] reader.ReadBytes(128 * 4);
 
             uint8_t* n = reader.ReadBytes(128 * 4);
             memcpy(TileSprite->PaletteAlt + 128, n, 128 * 4);
@@ -137,7 +137,7 @@ PUBLIC void Level_HCZ::Init() {
             memcpy(SpriteMap["HCZ Boss"]->PaletteAlt + 128, n, 128 * 4);
             if (Act == 1)
                 memcpy(WaterLine->PaletteAlt + 128, n, 128 * 4);
-            Memory::Free(n);
+            delete[] n;
 
             n = reader.ReadBytes(96 * 4);
             memcpy(SpriteMap["HCZ"]->PaletteAlt, n, 96 * 4);
@@ -148,7 +148,7 @@ PUBLIC void Level_HCZ::Init() {
             for (int p = 0; p < 3; p++)
                 if (Player->Sprites[p])
                     memcpy(Player->Sprites[p]->PaletteAlt, n, 96 * 4);
-			Memory::Free(n);
+			delete[] n;
 
             TileSprite->SetPaletteAlt(0, 0xFF00FF);
 

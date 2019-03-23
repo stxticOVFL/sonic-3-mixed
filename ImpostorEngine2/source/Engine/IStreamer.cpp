@@ -82,12 +82,12 @@ PUBLIC unsigned char  IStreamer::ReadByte() {
 
 PUBLIC unsigned char* IStreamer::ReadByte4() {
     if (res) {
-        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadByte4", 4);
+        unsigned char* data = new unsigned char[5];;
         res->Read(data, 1 * 4);
 		data[4] = '\0';
         return data;
     }
-	unsigned char* data = (unsigned char*)malloc(5);
+	unsigned char* data = new unsigned char[5];
 	memcpy(data, ptr, 4);
 	data[4] = '\0';
     ptr += 4;
@@ -97,12 +97,12 @@ PUBLIC unsigned char* IStreamer::ReadByte4() {
 
 PUBLIC unsigned char* IStreamer::ReadBytes(int n) {
     if (res) {
-        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
+        unsigned char* data = new unsigned char[n + 1];
         res->Read(data, 1 * n);
 		data[n] = '\0';
         return data;
     }
-    unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
+    unsigned char* data = new unsigned char[n + 1];
     memcpy(data, ptr, n);
 	data[n] = '\0';
     ptr += n;

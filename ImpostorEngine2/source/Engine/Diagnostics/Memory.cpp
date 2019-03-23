@@ -17,7 +17,7 @@ vector<void*> Memory::TrackedMemory;
 vector<size_t> Memory::TrackedSizes;
 vector<const char*> Memory::TrackedMemoryNames;
 
-PUBLIC STATIC void*  Memory::Malloc(size_t size) {
+PUBLIC STATIC void* Memory::Malloc(size_t size) {
     void* mem = malloc(size);
     if (mem) {
         TrackedMemory.push_back(mem);
@@ -26,7 +26,8 @@ PUBLIC STATIC void*  Memory::Malloc(size_t size) {
     }
     return mem;
 }
-PUBLIC STATIC void*  Memory::Calloc(size_t count, size_t size) {
+
+PUBLIC STATIC void* Memory::Calloc(size_t count, size_t size) {
     void* mem = calloc(count, size);
     if (mem) {
         TrackedMemory.push_back(mem);
@@ -35,7 +36,8 @@ PUBLIC STATIC void*  Memory::Calloc(size_t count, size_t size) {
     }
     return mem;
 }
-PUBLIC STATIC void*  Memory::TrackedMalloc(const char* identifier, size_t size) {
+
+PUBLIC STATIC void* Memory::TrackedMalloc(const char* identifier, size_t size) {
     void* mem = malloc(size);
     if (mem) {
         TrackedMemory.push_back(mem);
@@ -44,7 +46,8 @@ PUBLIC STATIC void*  Memory::TrackedMalloc(const char* identifier, size_t size) 
     }
     return mem;
 }
-PUBLIC STATIC void*  Memory::TrackedCalloc(const char* identifier, size_t count, size_t size) {
+
+PUBLIC STATIC void* Memory::TrackedCalloc(const char* identifier, size_t count, size_t size) {
     void* mem = calloc(count, size);
     if (mem) {
         TrackedMemory.push_back(mem);
@@ -53,7 +56,8 @@ PUBLIC STATIC void*  Memory::TrackedCalloc(const char* identifier, size_t count,
     }
     return mem;
 }
-PUBLIC STATIC void   Memory::Free(void* mem) {
+
+PUBLIC STATIC void Memory::Free(void* mem) {
     free(mem);
 
     for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
@@ -66,11 +70,12 @@ PUBLIC STATIC void   Memory::Free(void* mem) {
     }
 }
 
-PUBLIC STATIC void   Memory::ClearTrackedMemory() {
+PUBLIC STATIC void Memory::ClearTrackedMemory() {
 	TrackedMemoryNames.clear();
     TrackedMemory.clear();
     TrackedSizes.clear();
 }
+
 PUBLIC STATIC size_t Memory::CheckLeak() {
     size_t total = 0;
     for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
@@ -78,7 +83,8 @@ PUBLIC STATIC size_t Memory::CheckLeak() {
     }
     return total;
 }
-PUBLIC STATIC void   Memory::PrintLeak() {
+
+PUBLIC STATIC void Memory::PrintLeak() {
     size_t total = 0;
     IApp::Print(0, "Printing unfreed memory...");
     for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
