@@ -1,6 +1,7 @@
 #if INTERFACE
 
 #include <Utils/Standard.h>
+#include <stdlib.h>
 
 class Memory {
 private:
@@ -16,6 +17,64 @@ private:
 vector<void*> Memory::TrackedMemory;
 vector<size_t> Memory::TrackedSizes;
 vector<const char*> Memory::TrackedMemoryNames;
+
+ 
+// These are the VC operators, Rewritten to use this system.
+/*
+void* __CRTDECL operator new(size_t const size) {
+    for (;;) {
+        if (void* const block = Memory::Malloc(size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
+void* __CRTDECL operator new(size_t const size, std::nothrow_t const&) noexcept {
+    try {
+        return operator new(size);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+void* __CRTDECL operator new[](size_t const size) {
+	return operator new(size);
+}
+
+void* __CRTDECL operator new[](size_t const size, std::nothrow_t const& x) noexcept {
+    return operator new(size, x);
+}
+
+void __CRTDECL operator delete(void* const block) noexcept {
+    Memory::Free(block);
+}
+
+void __CRTDECL operator delete(void* block, std::nothrow_t const&) noexcept {
+    operator delete(block);
+}
+
+void __CRTDECL operator delete(void* block, size_t) noexcept {
+    operator delete(block);
+}
+
+void __CRTDECL operator delete[](void* block) noexcept {
+    operator delete(block);
+}
+
+void __CRTDECL operator delete[](void* block, std::nothrow_t const&) noexcept {
+    operator delete[](block);
+}
+
+void __CRTDECL operator delete[](void* block, size_t) noexcept {
+    operator delete[](block);
+}
+*/
 
 PUBLIC STATIC void* Memory::Malloc(size_t size) {
     void* mem = malloc(size);

@@ -10,6 +10,7 @@
 
 
 #include <Utils/Standard.h>
+#include <stdlib.h>
 
 class Memory {
 private:
@@ -24,6 +25,7 @@ public:
     static void* TrackedMalloc(const char* identifier, size_t size);
     static void* TrackedCalloc(const char* identifier, size_t count, size_t size);
     static void Free(void* mem);
+    static void TrackMemory(const char* identifier, void *mem, size_t count, size_t size);
     static void ClearTrackedMemory();
     static size_t CheckLeak();
     static void PrintLeak();

@@ -137,7 +137,9 @@ PUBLIC void IAudio::PushMusic(ISound* music, bool loop, uint32_t lp) {
     PushMusicAt(music, 0.0, loop, lp);
 }
 PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp) {
-    if (music->LoadFailed) return;
+	if (!music || music->LoadFailed) {
+		return;
+	}
 
     SDL_LockAudioDevice(Device);
 

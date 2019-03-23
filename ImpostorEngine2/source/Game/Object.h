@@ -9,6 +9,7 @@
 
 #include <map>
 #include <Game/ObjectNames.h>
+#include <Engine/Diagnostics/Memory.h>
 
 class LevelScene;
 class IPlayer;
@@ -655,6 +656,34 @@ public:
 	int16_t DelayedAnimationProgress(int16_t animationData[]);
 	int16_t DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
     int Swing_UpAndDown();
+    
+#ifndef NDEBUG
+    void* __CRTDECL operator new(size_t const size) {
+        for (;;) {
+            if (void* const block = Memory::TrackedMalloc("Object", size)) {
+                return block;
+            }
+            if (_callnewh(size) == 0) {
+                static const std::bad_alloc nomem;
+                _RAISE(nomem);
+            }
+
+            // The new handler was successful; try to allocate again...
+        }
+    }
+    
+    void* __CRTDECL operator new(size_t const size, std::nothrow_t const&) noexcept {
+        try {
+            return operator new(size);
+        } catch (...) {
+            return nullptr;
+        }
+    }
+    
+    void __CRTDECL operator delete(void* const block) noexcept {
+        Memory::Free(block);
+    }
+#endif
 };
 
 class Enemy : public Object {
@@ -682,11 +711,43 @@ public:
     virtual int  OnDeath();
     virtual int  OnHit();
     virtual Enemy* GetEnemyParent();
+    
+#ifndef NDEBUG
+    void* __CRTDECL operator new(size_t const size) {
+        for (;;) {
+            if (void* const block = Memory::TrackedMalloc("Enemy", size)) {
+                return block;
+            }
+            if (_callnewh(size) == 0) {
+                static const std::bad_alloc nomem;
+                _RAISE(nomem);
+            }
+
+            // The new handler was successful; try to allocate again...
+        }
+    }
+#endif
 };
 
 class Solid : public Object {
 public:
     virtual void Create();
+
+#ifndef NDEBUG
+    void* __CRTDECL operator new(size_t const size) {
+        for (;;) {
+            if (void* const block = Memory::TrackedMalloc("Solid", size)) {
+                return block;
+            }
+            if (_callnewh(size) == 0) {
+                static const std::bad_alloc nomem;
+                _RAISE(nomem);
+            }
+
+            // The new handler was successful; try to allocate again...
+        }
+    }
+#endif
 };
 
 #include <Game/SaveGame.h>
