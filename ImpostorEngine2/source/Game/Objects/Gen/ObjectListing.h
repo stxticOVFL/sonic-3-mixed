@@ -67,7 +67,7 @@
 #include "CommonSpecial/CutsceneKnuckles.h"			// 2822B56D
 #include "Common/SpecialRing.h"			// ABC2C658
 #include "AIZ/Bloominator.h"			// 9B85E709
-#include "AIZ/Rhinobot.h"			// 100EEC66
+#include "AIZ/RhinoBot.h"			// 4374E9C7
 #include "AIZ/MonkeyDude.h"			// B7C95057
 #include "AIZ/CaterkillerJr.h"			// 3F487ED4
 #include "AIZ/AIZMinibossCutscene.h"			// BE856454
@@ -193,7 +193,7 @@ enum {
     Obj_CutsceneKnuckles = 0x082,
     Obj_SpecialRing = 0x085,
     Obj_Bloominator = 0x08C,
-    Obj_Rhinobot = 0x08D,
+    Obj_RhinoBot = 0x08D,
     Obj_MonkeyDude = 0x08E,
     Obj_CaterkillerJr = 0x08F,
     Obj_AIZMinibossCutscene = 0x090,

@@ -2173,8 +2173,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->Filter = obj->GetAttribute("Filter")->ValUint8;
 
 						// Done for backwards compatibility, Returns false on error.
-						obj->FlipX = obj->GetAttribute("FlipX")->value_bool;
-						obj->FlipY = obj->GetAttribute("FlipY")->value_bool;
+						obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
+						obj->FlipY = obj->GetAttribute("FlipY")->ValBool;
 
 						// Add our object to the scene
 						Objects.push_back(obj);
