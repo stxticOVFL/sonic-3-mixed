@@ -4,6 +4,14 @@ var Flying:bool;
 var Broken:bool;
 var Button:Object;
 
+event EggCapsule() : CONSTRUCTER {
+    if (SaveGame.CurrentMode == 0) {
+        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/EggPrison.bin");
+    } else {
+	    BinIndex = LevelScene.LoadSpriteBin("Global/EggPrison.bin");
+    }
+}
+
 event Create() {
     Active = true;
     Priority = true;

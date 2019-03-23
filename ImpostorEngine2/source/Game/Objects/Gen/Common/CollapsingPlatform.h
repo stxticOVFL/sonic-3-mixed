@@ -22,6 +22,7 @@ public:
     int Vsect;
     Object* Outliner;
     
+    CONSTRUCTER CollapsingPlatform();
     void Create();
     void Update();
     void Break();

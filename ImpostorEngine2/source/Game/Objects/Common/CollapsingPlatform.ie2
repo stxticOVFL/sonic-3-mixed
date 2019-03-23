@@ -7,6 +7,18 @@ var Sections:int;
 var Vsect:int;
 var Outliner:Object;
 
+event CollapsingPlatform() : CONSTRUCTER {
+	/*
+	//Error Prevention
+	 BinIndex = LevelScene.LoadSpriteBin("AIZ/Collapsing Platform.bin");
+	switch(Scene.ZoneID)
+	{
+	case 1:
+	        BinIndex = LevelScene.LoadSpriteBin("AIZ/Collapsing Platform.bin");
+	break;
+	}*/
+}
+
 event Create() {
     Active = true;
     Priority = false;

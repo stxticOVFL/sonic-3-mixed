@@ -230,27 +230,29 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     uint64_t startTime = SDL_GetTicks();
 	PlayMusic(ACT < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (ACT < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);
 
-    if (Act == 0) {
-        Str_StageBin = "Stages/AIZM/StageConfig.bin";
-        Str_TileConfigBin = "Stages/AIZM/TileConfig.bin";
-        Str_SceneBin = "Stages/AIZM/Scene1.bin";
-        Str_TileSprite = "Stages/AIZM/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/AIZ1/Animated Tiles.gif";
+	if (Act == 0) {
+		Str_StageBin = "Stages/AIZM/Act1/StageConfig.bin";
+		Str_TileConfigBin = "Stages/AIZM/Act1/TileConfig.bin";
+		Str_SceneBin = "Stages/AIZM/Act1/Scene1.bin";
+		Str_TileSprite = "Stages/AIZM/Act1/16x16Tiles.gif";
+		//Str_AnimatedSprites = "Stages/AIZ1/Act1/Animated Tiles.gif";
 
-        VisualAct = 1;
-    } else if (Act == 1) {
-        Str_StageBin = "Stages/AIZM/StageConfig.bin";
-        Str_TileConfigBin = "Stages/AIZM/TileConfig.bin";
-        Str_SceneBin = "Stages/AIZM/Scene1.bin";
-        Str_TileSprite = "Stages/AIZM/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/AIZ1/Animated Tiles.gif";
-    } else if (Act == 2) {
-        Str_StageBin = "Stages/AIZM/StageConfig.bin";
-        Str_TileConfigBin = "Stages/AIZM/TileConfig.bin";
-        Str_SceneBin = "Stages/AIZM/Scene2.bin";
-        Str_TileSprite = "Stages/AIZM/16x16Tiles1.gif";
-        Str_AnimatedSprites = "Stages/AIZ2/Animated Tiles.gif";
-    }
+		VisualAct = 1;
+	}
+	else if (Act == 1) {
+		Str_StageBin = "Stages/AIZM/Act1/StageConfig.bin";
+		Str_TileConfigBin = "Stages/AIZM/Act1/TileConfig.bin";
+		Str_SceneBin = "Stages/AIZM/Act1/Scene1.bin";
+		Str_TileSprite = "Stages/AIZM/Act1/16x16Tiles.gif";
+		//Str_AnimatedSprites = "Stages/AIZ1/Act1/Animated Tiles.gif";
+	}
+	else if (Act == 2) {
+		Str_StageBin = "Stages/AIZM/Act2/StageConfig.bin";
+		Str_TileConfigBin = "Stages/AIZM/Act2/TileConfig.bin";
+		Str_SceneBin = "Stages/AIZM/Act2/Scene2.bin";
+		Str_TileSprite = "Stages/AIZM/Act2/16x16Tiles.gif";
+		//Str_AnimatedSprites = "Stages/AIZ2/Act2/Animated Tiles.gif";
+	}
 
     sprintf(LevelName, "TEST ZONE");
     sprintf(LevelNameDiscord, "Angel Island (Mania Testing)");

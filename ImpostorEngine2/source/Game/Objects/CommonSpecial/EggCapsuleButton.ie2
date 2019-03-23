@@ -1,6 +1,14 @@
 var Down:int;
 var Pressed:int;
 
+event EggCapsuleButton() : CONSTRUCTER {
+    if (SaveGame.CurrentMode == 0) {
+        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/EggPrison.bin");
+    } else {
+	    BinIndex = LevelScene.LoadSpriteBin("Global/EggPrison.bin");
+    }
+}
+
 event Create() {
     Active = true;
     Priority = false;

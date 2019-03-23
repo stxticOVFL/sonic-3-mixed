@@ -5,6 +5,15 @@
 
 typedef IMath Math;
 
+CONSTRUCTER EggCapsuleButton::EggCapsuleButton() {
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/EggPrison.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/EggPrison.bin");
+    }
+}
+
 void EggCapsuleButton::Create() {
     Object::Create();
     Active = true;

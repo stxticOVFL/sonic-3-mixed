@@ -5,6 +5,15 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Signpost::Signpost() {
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("Global/SignPost.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/SignPost.bin");
+    }
+}
+
 void Signpost::Create() {
     Object::Create();
     W = 48;

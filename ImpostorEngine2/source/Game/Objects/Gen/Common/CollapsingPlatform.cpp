@@ -5,6 +5,9 @@
 
 typedef IMath Math;
 
+CONSTRUCTER CollapsingPlatform::CollapsingPlatform() {
+}
+
 void CollapsingPlatform::Create() {
     Object::Create();
     Active = true;
