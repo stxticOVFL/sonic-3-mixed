@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 
 #include <Engine/IScene.h>
@@ -18,6 +19,7 @@ public:
     void Init();
     void Update();
     void Render();
+    void Cleanup();
 };
 
 #endif /* SCENE_LEVELSELECT_H */

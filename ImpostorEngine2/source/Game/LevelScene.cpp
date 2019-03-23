@@ -3745,6 +3745,7 @@ PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 	KnuxSprite[4] = NULL;
 	PauseSprite = NULL;
 	GlobalDisplaySprite = NULL;
+	GlobalDisplaySpriteS3K = NULL;
 	MobileButtonsSprite = NULL;
 	EditorSprite = NULL;
 	ItemsSprite = NULL;
@@ -6355,9 +6356,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 
 	App->Audio->ClearMusic();
-	Sound::SoundBank[0]->Cleanup();
-	delete Sound::SoundBank[0];
-	Sound::SoundBank[0] = NULL;
+	CLEANUP(Sound::SoundBank[0]);
 
 	for (int o = 0; o < Data->animatedTilesCount; o++) {
 		Memory::Free(Data->animatedTileDurations[o]);
@@ -6472,9 +6471,10 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	CLEANUP(ExplosionSprite);
 	CLEANUP(WaterSprite);
 
+	Memory::Free(SavedPalette);
 	Memory::Free(PlaneSwitchers);
 
-	Memory::PrintLeak();
+	IScene::Cleanup();
 
 	//*/
 }

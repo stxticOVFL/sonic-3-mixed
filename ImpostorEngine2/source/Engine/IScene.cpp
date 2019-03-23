@@ -16,6 +16,7 @@ public:
 #endif
 
 #include <Engine/IScene.h>
+#include <Engine/Diagnostics/Memory.h>
 
 PUBLIC VIRTUAL void IScene::OnEvent(Uint32 event) {
 
@@ -31,7 +32,7 @@ PUBLIC VIRTUAL void IScene::Render() {
 
 }
 PUBLIC VIRTUAL void IScene::Cleanup() {
-
+	Memory::PrintLeak();
 }
 PUBLIC VIRTUAL bool IScene::ExecuteCommand(char* cmd) {
     return false;

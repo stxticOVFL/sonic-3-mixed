@@ -93,7 +93,7 @@ PUBLIC IInput::IInput(IApp* app) {
 	}
 
     for (int i = 0; i < 4; i++)
-        ControllerMaps[i] = (int*)Memory::TrackedCalloc("IInput::Controllers[i]", 2, 18);
+        ControllerMaps[i] = (int*)Memory::TrackedCalloc("IInput::ControllerMaps[i]", 2, 18);
 
     struct tempStruct {
         const char* key;
@@ -154,6 +154,9 @@ PUBLIC IInput::IInput(IApp* app) {
 PUBLIC void IInput::Cleanup() {
     for (int i = 0; i < 4; i++)
         Memory::Free(Controllers[i]);
+
+	for (int i = 0; i < 4; i++)
+		Memory::Free(ControllerMaps[i]);
 }
 
 PUBLIC void IInput::Poll() {

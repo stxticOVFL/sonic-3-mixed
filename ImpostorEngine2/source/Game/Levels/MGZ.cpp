@@ -23,7 +23,6 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	ZoneID = 3;
 	VisualAct = Act = act;
 	sprintf(ZoneLetters, "MGZ");
-	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 21609) : 0, SaveGame::CurrentMode);
 
 	if (Act == 1) {
 		//Sound::SoundBank[0] = new ISound("Music/MGZ1.ogg", true);
@@ -52,6 +51,8 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 }
 
 PUBLIC void Level_MGZ::Init() {
+	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0 : 193952) : 0, SaveGame::CurrentMode);
+
 	LevelScene::Init();
 }
 
@@ -88,6 +89,7 @@ PUBLIC void Level_MGZ::GoToNextAct() {
 
 		TransferCommonLevelData(NextAct);
 		NextAct->MGZObjectsSprite = MGZObjectsSprite;
+		MGZObjectsSprite = NULL;
 		// Enable Title Card with no fade-in
 		NextAct->LevelCardTimer = 0.0;
 		NextAct->FadeTimer = 0;
@@ -183,6 +185,14 @@ PUBLIC void Level_MGZ::EarlyUpdate() {
 }
 PUBLIC void Level_MGZ::Subupdate() {
 	LevelScene::Subupdate();
+}
+
+
+PUBLIC void Level_MGZ::Cleanup() {
+	#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+
+	CLEANUP(MGZObjectsSprite);
+	LevelScene::Cleanup();
 }
 
 PUBLIC void Level_MGZ::HandleCamera() {

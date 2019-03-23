@@ -219,14 +219,14 @@ PUBLIC void IApp::Run() {
 
     Print(0, "Starting scene");
     if (!Scene) {
-        Scene = new Scene_MainMenu(this, G);
+        //Scene = new Scene_MainMenu(this, G);
 		// Scene = new Scene_DataSelect(this, G);
         // Scene = new Scene_LevelSelect(this, G);
         // Scene = new Level_SpecialStage(this, G);
         // Scene = new Level_AIZ(this, G, 2);
         // Scene = new Level_ICZ(this, G, 1);
         // Scene = new Level_HCZ(this, G, 1);
-        // Scene = new Level_MGZ(this, G, 1);
+        Scene = new Level_MGZ(this, G, 1);
         // Scene = new LevelScene(this, G);
 
 		// SaveGame::CurrentEmeralds = 0xFFFF;
@@ -347,7 +347,8 @@ PUBLIC void IApp::Run() {
 
         // Then render it
         MetricRenderTime = SDL_GetTicks();
-        Scene->Render();
+		if (NextScene == NULL)
+			Scene->Render();
         MetricRenderTime = SDL_GetTicks() - MetricRenderTime;
 
         // If there's a new scene to go to
