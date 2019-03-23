@@ -427,7 +427,7 @@ struct AttributeValue {
 	uint32_t ValUint32;
 	int8_t ValInt8;
 	int16_t ValInt16;
-	int32_t ValInt3;
+	int32_t ValInt32;
 	char* ValString;
 	int32_t ValVariable;
 	bool ValBool;
@@ -600,7 +600,7 @@ public:
 		ObjectAttribute.ValColor.g = 255;
 		ObjectAttribute.ValColor.b = 255;
 		ObjectAttribute.ValInt16 = 0;
-		ObjectAttribute.ValInt3 = 0;
+		ObjectAttribute.ValInt32 = 0;
 		ObjectAttribute.ValInt8 = 0;
 		ObjectAttribute.ValPosition.X = 0;
 		ObjectAttribute.ValPosition.Y = 0;
@@ -620,7 +620,7 @@ public:
 		av.ValColor.g = 255;
 		av.ValColor.b = 255;
 		av.ValInt16 = 0;
-		av.ValInt3 = 0;
+		av.ValInt32 = 0;
 		av.ValInt8 = 0;
 		av.ValPosition.X = 0;
 		av.ValPosition.Y = 0;
