@@ -444,9 +444,9 @@ class Object;
 
 class Object {
 public:
-    IApp* App;
-    IGraphics* G;
-    LevelScene* Scene;
+    IApp* App = NULL;
+    IGraphics* G = NULL;
+    LevelScene* Scene = NULL;
 
     ISprite* Sprite = NULL;
     

@@ -5,6 +5,20 @@
 
 typedef IMath Math;
 
+CONSTRUCTER CollapsingPlatform::CollapsingPlatform() {
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        Act1BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform.bin");
+        Act2BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform 2.bin");
+        BinIndex = Act1BinIndex;
+    }
+    else if (LevelScene::IsZoneCurrently("ICZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("ICZ/Collapsing Bridge 1.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform.bin");
+    }
+}
+
 void CollapsingPlatform::Create() {
     Object::Create();
     Active = true;
@@ -27,30 +41,52 @@ void CollapsingPlatform::Create() {
         case 1:
         W = 0x30;
         H = 0x20;
-        if (Scene->Act == 2) H = 0x18;
+        if (Scene->Act == 2) {
+            H = 0x18;
+        }
 
-        CurrentAnimation = 6;
-        if (Scene->Act == 2) CurrentAnimation = 7;
-
+        if (Scene->Act == 2) {
+            BinIndex = Act2BinIndex;
+            Sprite = LevelScene::GetSpriteFromBinIndex(BinIndex);
+            Sprite->LinkPalette(Scene->TileSprite);
+            CurrentAnimation = Sprite->FindAnimation("Collapsing Platform 2");
+        }
+        else if (Scene->Act == 1) {
+            BinIndex = Act1BinIndex;
+            CurrentAnimation = Sprite->FindAnimation("Collapsing Platform");
+        }
+        else {
+            CurrentAnimation = 0;
+        }
         Frame = 0;
         break;
         case 2:
+        break;
         case 3:
+        break;
         case 4:
+        break;
         case 5:
         W = 0x30;
         H = 0x2C;
-        CurrentAnimation = 0;
+        CurrentAnimation = Sprite->FindAnimation("Collapsing Bridge 1");
         break;
         case 6:
         break;
         case 7:
+        break;
         case 8:
+        break;
         case 9:
+        break;
         case 10:
+        break;
         case 11:
+        break;
         case 12:
+        break;
         case 13:
+        break;
         case 14:
         break;
     }
@@ -153,11 +189,13 @@ void CollapsingPlatform::Render(int CamX, int CamY) {
         return;
     }
 
-    if (Scene->ZoneID == 1) {
-        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
-    }
-    else if (CurrentAnimation >= 0) {
-        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
+    if (CurrentAnimation >= 0) {
+        if (Scene->ZoneID == 1) {
+            G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
+        }
+        else {
+            G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
+        }
     }
     else {
         G->DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);

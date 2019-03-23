@@ -17,221 +17,221 @@
 #include <Game/Explosion.h>
 
 class LevelScene : public IScene {
-public:
-	SceneData*  Data = NULL;
-	ISprite*    TileSprite = NULL;
-	ISprite*    AnimTileSprite = NULL;
-	int         FGLayer = 0;
+    public:
+        SceneData* Data = NULL;
+        ISprite* TileSprite = NULL;
+        ISprite* AnimTileSprite = NULL;
+        int FGLayer = 0;
 
-	int         RingAnimationFrame = 0;
-	int         WaterAnimationFrame = 0;
+        int RingAnimationFrame = 0;
+        int WaterAnimationFrame = 0;
 
-	int32_t     CameraX = 0;
-	int32_t     CameraY = 0;
-	int32_t     CameraMinX = 0;
-	int32_t     CameraMinY = 0;
-	int32_t     CameraMaxX = 0xFFFF;
-	int32_t     CameraMaxY = 0xFFFF;
-	int32_t     CameraDeltaX = 0;
-	int32_t     CameraDeltaY = 0;
-	int         CameraAutoScrollX = 0;
-	int         CameraAutoScrollY = 0;
-    size_t      ScreenXWrapValue = -1;
-    size_t      ScreenYWrapValue = -1;
-	int         Frame = 0;
-	int         Timer = 0;
-	int         Score = 0;
+        int32_t CameraX = 0;
+        int32_t CameraY = 0;
+        int32_t CameraMinX = 0;
+        int32_t CameraMinY = 0;
+        int32_t CameraMaxX = 0xFFFF;
+        int32_t CameraMaxY = 0xFFFF;
+        int32_t CameraDeltaX = 0;
+        int32_t CameraDeltaY = 0;
+        int CameraAutoScrollX = 0;
+        int CameraAutoScrollY = 0;
+        size_t ScreenXWrapValue = -1;
+        size_t ScreenYWrapValue = -1;
+        int Frame = 0;
+        int Timer = 0;
+        int Score = 0;
 
-	int         WaterLevel = 0xFFFF;
-	int         VisualWaterLevel = 0xFFFF;
+        int WaterLevel = 0xFFFF;
+        int VisualWaterLevel = 0xFFFF;
 
-	int         PauseAnim[8];
-	int         PauseSelectedMenuItem = 0;
-	bool        Paused = false;
-	bool        PauseFinished = false;
-	int			paltimer = 0;
-	int			palframe = 0;
+        int PauseAnim[8];
+        int PauseSelectedMenuItem = 0;
+        bool Paused = false;
+        bool PauseFinished = false;
+        int paltimer = 0;
+        int palframe = 0;
 
-	ISprite*    PauseSprite = NULL;
-	ISprite*    GlobalDisplaySprite = NULL;
-	ISprite*    MobileButtonsSprite = NULL;
-	ISprite*    SuperButtonsSprite = NULL;
-	ISprite*    EditorSprite = NULL;
-	ISprite*    ItemsSprite = NULL;
-	ISprite*    AnimalsSprite = NULL;
-	ISprite*    ObjectsSprite = NULL;
-	ISprite*    Objects2Sprite = NULL;
-	ISprite*    Objects3Sprite = NULL;
-	ISprite*    RobotnikSprite = NULL;
-	ISprite*    ExplosionSprite = NULL;
-	ISprite*    WaterSprite = NULL;
-	ISprite*    KnuxSprite[6];
+        ISprite* PauseSprite = NULL;
+        ISprite* GlobalDisplaySprite = NULL;
+        ISprite* MobileButtonsSprite = NULL;
+        ISprite* SuperButtonsSprite = NULL;
+        ISprite* EditorSprite = NULL;
+        ISprite* ItemsSprite = NULL;
+        ISprite* AnimalsSprite = NULL;
+        ISprite* ObjectsSprite = NULL;
+        ISprite* Objects2Sprite = NULL;
+        ISprite* Objects3Sprite = NULL;
+        ISprite* RobotnikSprite = NULL;
+        ISprite* ExplosionSprite = NULL;
+        ISprite* WaterSprite = NULL;
+        ISprite* KnuxSprite[6];
 
-	IPlayer*    Player = NULL;
-	IPlayer*    Players[7];
-	IPlayer*    PlayerBuffer[2];
-	int         PlayerCount = 1;
-	PlaneSwitch*PlaneSwitchers = NULL;
-	int         PlaneSwitchCount = 0;
+        IPlayer* Player = NULL;
+        IPlayer* Players[7];
+        IPlayer* PlayerBuffer[2];
+        int PlayerCount = 1;
+        PlaneSwitch*PlaneSwitchers = NULL;
+        int PlaneSwitchCount = 0;
 
-	int         PlayerStartX = -1;
-	int         PlayerStartY = -1;
+        int PlayerStartX = -1;
+        int PlayerStartY = -1;
 
-	int         RoutineNumber = 0;
-	int         LevelTriggerFlag = 0;
+        int RoutineNumber = 0;
+        int LevelTriggerFlag = 0;
 
-	int         FadeAction = 0;
-	enum        FadeActionType {
-		FADEIN = 1,
-		RESTART = 2,
-		EXIT = 3,
-		DIED = 4,
-		TO_BONUS_STAGE1 = 5,
-		TO_BONUS_STAGE2 = 6,
-		TO_SPECIAL_STAGE = 7,
-		NEXT_ZONE = 8,
-		CUSTOM_FADE_ACTION = 9,
-	};
+        int FadeAction = 0;
+        enum FadeActionType {
+            FADEIN = 1,
+            RESTART = 2,
+            EXIT = 3,
+            DIED = 4,
+            TO_BONUS_STAGE1 = 5,
+            TO_BONUS_STAGE2 = 6,
+            TO_SPECIAL_STAGE = 7,
+            NEXT_ZONE = 8,
+            CUSTOM_FADE_ACTION = 9,
+        };
 
-	//For RPC
-	char* ModeName;
+        //For RPC
+        char* ModeName;
 
-	int         maxLayer = 1;
-	bool        Thremixed = false;
-	bool        DeformObjects = false;
-	bool        DeformPlayer = false;
+        int maxLayer = 1;
+        bool Thremixed = false;
+        bool DeformObjects = false;
+        bool DeformPlayer = false;
 
-	//Object**    Objects;
-	std::vector<Object*> Objects;
-	int         ObjectCount = 0;
-	int         ObjectNewCount = 0;
+        //Object** Objects;
+        std::vector<Object*> Objects;
+        int ObjectCount = 0;
+        int ObjectNewCount = 0;
 
-	std::vector<Object*> ObjectsSolid;
-	int         ObjectSolidCount = 0;
+        std::vector<Object*> ObjectsSolid;
+        int ObjectSolidCount = 0;
 
-	std::vector<Object*> ObjectsSpring;
-	int         ObjectSpringCount = 0;
+        std::vector<Object*> ObjectsSpring;
+        int ObjectSpringCount = 0;
 
-	std::vector<Enemy*> ObjectsEnemies;
-	int         ObjectEnemiesCount = 0;
+        std::vector<Enemy*> ObjectsEnemies;
+        int ObjectEnemiesCount = 0;
 
-	std::vector<Object*> ObjectsBreakable;
-	int         ObjectBreakableCount = 0;
+        std::vector<Object*> ObjectsBreakable;
+        int ObjectBreakableCount = 0;
 
-	std::vector<Object*> ObjectsPathSwitcher;
-	int         ObjectPathSwitcherCount = 0;
+        std::vector<Object*> ObjectsPathSwitcher;
+        int ObjectPathSwitcherCount = 0;
 
-	int16_t*    DebugObjectIDList;
-	int32_t     DebugObjectIDCount = 0;
+        int16_t* DebugObjectIDList;
+        int32_t DebugObjectIDCount = 0;
 
-	std::unordered_map<std::string, ISprite*> SpriteMap;
-	std::vector<ISprite *> SpriteMapIDs;
+        std::unordered_map<std::string, ISprite*> SpriteMap;
+        std::vector<ISprite *> SpriteMapIDs;
 
-    static std::unordered_map<std::string, size_t> SpriteBinMap;
-    static std::vector<ISprite *> SpriteBinMapIDs;
+        static std::unordered_map<std::string, size_t> SpriteBinMap;
+        static std::vector<ISprite *> SpriteBinMapIDs;
 
-	int         ZoneID = 0;
-	int         Act = 1;
-	int         VisualAct = 1;
-	bool        CanWaterRun = true;
-	char		ZoneLetters[3];
+        int ZoneID = 0;
+        int Act = 1;
+        int VisualAct = 1;
+        bool CanWaterRun = true;
+        static char ZoneLetters[3];
 
-	int         DEBUG_MOUSE_X = -1;
-	int         DEBUG_MOUSE_Y = -1;
+        int DEBUG_MOUSE_X = -1;
+        int DEBUG_MOUSE_Y = -1;
 
-	std::vector<Object*> TempObjects;
-    std::vector<Object*> TempObjectTiles;
+        std::vector<Object*> TempObjects;
+        std::vector<Object*> TempObjectTiles;
 
-	struct ObjectProp {
-		uint16_t X = 0x00;
-		int16_t Y = 0x00;
-		uint8_t ID = 0x00;
-		uint8_t SubType = 0x00;
-		bool LoadFlag = false;
-		bool FlipX = false;
-		bool FlipY = false;
-	};
+        struct ObjectProp {
+            uint16_t X = 0x00;
+            int16_t Y = 0x00;
+            uint8_t ID = 0x00;
+            uint8_t SubType = 0x00;
+            bool LoadFlag = false;
+            bool FlipX = false;
+            bool FlipY = false;
+        };
 
-	std::vector<ObjectProp> ObjectProps;
-	int         ObjectPropCount = 0;
+        std::vector<ObjectProp> ObjectProps;
+        int ObjectPropCount = 0;
 
-	std::vector<ObjectProp> RingProps;
-	int         RingPropCount = 0;
+        std::vector<ObjectProp> RingProps;
+        int RingPropCount = 0;
 
-	ObjectProp* AnimatedSprite0Props = NULL;
-	int         AnimatedSprite0PropCount = 0;
+        ObjectProp* AnimatedSprite0Props = NULL;
+        int AnimatedSprite0PropCount = 0;
 
-	ObjectProp* AnimatedSprite1Props = NULL;
-	int         AnimatedSprite1PropCount = 0;
+        ObjectProp* AnimatedSprite1Props = NULL;
+        int AnimatedSprite1PropCount = 0;
 
-	double      LevelCardTimer = 0.0;
-	bool        LevelCardHide = false;
+        double LevelCardTimer = 0.0;
+        bool LevelCardHide = false;
 
-	char        LevelName[20];
-	char        LevelNameDiscord[30];
-	bool        SKAlone = false;
+        char LevelName[20];
+        char LevelNameDiscord[30];
+        bool SKAlone = false;
 
-	bool        HUDVisible = true;
-	int         HUDAnim = 0x00;
-	bool        ControlsVisible = true;
-	int         ControlsAnim = 0x00;
+        bool HUDVisible = true;
+        int HUDAnim = 0x00;
+        bool ControlsVisible = true;
+        int ControlsAnim = 0x00;
 
-	bool        ManiaLevel = false;
-	bool        SonicKnucklesLevel = false;
+        bool ManiaLevel = false;
+        bool SonicKnucklesLevel = false;
 
-	const char* Str_TileConfigBin = NULL;
-	const char* Str_SceneBin = NULL;
-	const char* Str_TileSprite = NULL;
-	const char* Str_StageBin = NULL;
-	const char* Str_AnimatedSprites = NULL;
-	const char* Str_ObjectsList = NULL;
-	const char* Str_RingsList = NULL;
+        const char* Str_TileConfigBin = NULL;
+        const char* Str_SceneBin = NULL;
+        const char* Str_TileSprite = NULL;
+        const char* Str_StageBin = NULL;
+        const char* Str_AnimatedSprites = NULL;
+        const char* Str_ObjectsList = NULL;
+        const char* Str_RingsList = NULL;
 
-	uint8_t     CharacterFlag = 0;
+        uint8_t CharacterFlag = 0;
 
-	int         BackgroundRepeatTileX = 0;
-	int         BackgroundRepeatTileWidth = 0;
+        int BackgroundRepeatTileX = 0;
+        int BackgroundRepeatTileWidth = 0;
 
-	IModel*     GiantRingModel = NULL;
+        IModel* GiantRingModel = NULL;
 
-	int         Checkpoint = -1;
-	int         SavedPositionX = -1;
-	int         SavedPositionY = -1;
-	uint32_t*   SavedPalette = NULL;
+        int Checkpoint = -1;
+        int SavedPositionX = -1;
+        int SavedPositionY = -1;
+        uint32_t*  SavedPalette = NULL;
 
-	int         WaterEnteredCounter = 0;
+        int WaterEnteredCounter = 0;
 
-	ISound**    SoundBank = NULL;
+        ISound** SoundBank = NULL;
 
-	uint8_t*    PerspectiveMap;
+        uint8_t* PerspectiveMap;
 
-	int         ShakeTimer = 0;
+        int ShakeTimer = 0;
 
-	bool        ResetTimer = true;
-	bool        StopTimer = false;
-	bool        ShowResults = false;
-	bool        DoneSpinning = false;
-	int         ResultsTimer = 0;
-	int         TimerTotal = 0;
-	int         TotalToAdd = 0;
+        bool ResetTimer = true;
+        bool StopTimer = false;
+        bool ShowResults = false;
+        bool DoneSpinning = false;
+        int ResultsTimer = 0;
+        int TimerTotal = 0;
+        int TotalToAdd = 0;
 
-	int         SpecialSpawnPositionX = -1;
-	int         SpecialSpawnPositionY = -1;
+        int SpecialSpawnPositionX = -1;
+        int SpecialSpawnPositionY = -1;
 
-	bool        CollisionCheckForClimbable = false;
-	bool        CollisionCheckForAlternate = false;
-	bool        CollisionCheckForAlternate2 = false;
+        bool CollisionCheckForClimbable = false;
+        bool CollisionCheckForAlternate = false;
+        bool CollisionCheckForAlternate2 = false;
 
-	uint32_t    BackgroundColor = 0x000000;
-	bool        SepThread = false;
-	uint16_t    Signal[8]; //
+        uint32_t BackgroundColor = 0x000000;
+        bool SepThread = false;
+        uint16_t Signal[8]; //
 
-	bool ViewPalettes = false;
-	bool ViewPathswitchers = false;
-	bool ViewPlayerStats = false;
-	bool ViewPlayerUpdateStats = false;
-	bool ViewTileInfo = false;
-	bool ViewTileCollision = false;
+        bool ViewPalettes = false;
+        bool ViewPathswitchers = false;
+        bool ViewPlayerStats = false;
+        bool ViewPlayerUpdateStats = false;
+        bool ViewTileInfo = false;
+        bool ViewTileCollision = false;
 };
 #endif
 
@@ -262,6 +262,7 @@ int BlankTile = 0;
 
 std::unordered_map<std::string, size_t> LevelScene::SpriteBinMap;
 std::vector<ISprite *> LevelScene::SpriteBinMapIDs;
+char LevelScene::ZoneLetters[3];
 
 PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
@@ -422,6 +423,21 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 	PlayMusic(MusicPath, loop, vol);
 }
 
+PUBLIC STATIC bool LevelScene::IsZoneCurrently(const char* CheckZoneLetters) {
+    char *NewCheckZoneLetters = new char[4];
+    char *NewZoneLetters = new char[4];
+    NewCheckZoneLetters[3] = '\0';
+    NewZoneLetters[3] = '\0';
+    
+    sprintf(NewCheckZoneLetters, CheckZoneLetters);
+    sprintf(NewZoneLetters, ZoneLetters);
+    
+    bool result = !strcmp(NewZoneLetters, NewCheckZoneLetters);
+    
+    delete[] NewCheckZoneLetters;
+    delete[] NewZoneLetters;
+    return result;
+}
 
 PUBLIC VIRTUAL void LevelScene::AssignSpriteMapIDs() {
     SpriteMapIDs.at(0x00) = ItemsSprite;
@@ -3595,10 +3611,8 @@ PUBLIC void LevelScene::AddNewDebugObjectID(int16_t ID) {
 	DebugObjectIDList[DebugObjectIDCount++] = ID;
 }
 
-PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick)
-{
-	if (ID == 0)
-	{
+PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick) {
+	if (ID == 0) {
 		Player = new IPlayer();
 		Player->G = G;
 		Player->App = App;
@@ -3612,9 +3626,7 @@ PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick)
 		Player->Lives = SaveGame::GetLives();
 
 		Players[ID] = Player;
-	}
-	else
-	{
+	} else {
 		Players[ID] = new IPlayer();
 		Players[ID]->G = G;
 		Players[ID]->App = App;
@@ -5884,6 +5896,9 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 			if (obj->Active && obj->OnScreen) {
 				if (l == Data->CameraLayer + obj->VisualLayer) {
 					obj->DrawCollisions = App->viewObjectCollision;
+                    if ((obj->BinIndex >= 0 && obj->BinIndex < SpriteBinMapIDs.size()) && SpriteBinMapIDs.at(obj->BinIndex) != obj->Sprite) {
+                        obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
+                    }
 					obj->Render(CameraX, CameraY);
 				}
 			}

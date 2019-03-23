@@ -6,6 +6,20 @@ var Separation:int;
 var Sections:int;
 var Vsect:int;
 var Outliner:Object;
+var Act1BinIndex:int;
+var Act2BinIndex:int;
+
+event CollapsingPlatform() : CONSTRUCTER {
+    if (LevelScene.IsZoneCurrently("AIZ")) {
+        Act1BinIndex = LevelScene.LoadSpriteBin("AIZ/Collapsing Platform.bin");
+        Act2BinIndex = LevelScene.LoadSpriteBin("AIZ/Collapsing Platform 2.bin");
+        BinIndex = Act1BinIndex;
+    } else if (LevelScene.IsZoneCurrently("ICZ")) {
+        BinIndex = LevelScene.LoadSpriteBin("ICZ/Collapsing Bridge 1.bin");
+    } else {
+        BinIndex = LevelScene.LoadSpriteBin("AIZ/Collapsing Platform.bin");
+    }
+}
 
 event Create() {
     Active = true;
@@ -35,54 +49,54 @@ event Create() {
         case 1: // AIZ
             W = 0x30;
             H = 0x20;
-            if (Scene.Act == 2)
+            if (Scene.Act == 2) {
                 H = 0x18;
+            }
 
-            CurrentAnimation = 6;
-            if (Scene.Act == 2)
-                CurrentAnimation = 7;
+            if (Scene.Act == 2) {
+                BinIndex = Act2BinIndex;
+                Sprite = LevelScene.GetSpriteFromBinIndex(BinIndex);
+                Sprite.LinkPalette(Scene.TileSprite);
+                CurrentAnimation = Sprite.FindAnimation("Collapsing Platform 2");
+            } else if (Scene.Act == 1) {
+                BinIndex = Act1BinIndex;
+                CurrentAnimation = Sprite.FindAnimation("Collapsing Platform");
+            } else {
+                CurrentAnimation = 0;
+            }
 
             Frame = 0;
             break;
         case 2: // HCZ
+            break;
         case 3: // MGZ
+            break;
         case 4: // CNZ
+            break;
         case 5: // ICZ
             W = 0x30;
             H = 0x2C;
-            CurrentAnimation = 0;
+            CurrentAnimation = Sprite.FindAnimation("Collapsing Bridge 1");
             break;
         case 6: // LBZ
             break;
         case 7: // MHZ
+            break;
         case 8: // LBZ
+            break;
         case 9: // SOZ
+            break;
         case 10: // LRZ
+            break;
         case 11: // HPZ
+            break;
         case 12: // SSZ
+            break;
         case 13: // DEZ
+            break;
         case 14: // DDZ
             break;
     }
-    /*
-    switch (Scene.ZoneID) {
-        case 1: // AIZ
-        case 2: // HCZ
-        case 3: // MGZ
-        case 4: // CNZ
-        case 5: // ICZ
-        case 6: // LBZ
-        case 7: // MHZ
-        case 8: // LBZ
-        case 9: // SOZ
-        case 10: // LRZ
-        case 11: // HPZ
-        case 12: // SSZ
-        case 13: // DEZ
-        case 14: // DDZ
-            break;
-    }
-    //*/
 
     VisW = W;
     VisH = H * 2 + 16;
@@ -180,10 +194,12 @@ event Render(CamX:int, CamY:int) {
         return;
     }
     
-    if (Scene.ZoneID == 1) {
-        G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
-    } else if (CurrentAnimation >= 0) {
-        G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
+    if (CurrentAnimation >= 0) {
+        if (Scene.ZoneID == 1) {
+            G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
+        } else {
+            G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX);
+        }
     } else {
         G.DrawRectangle(X - W / 2 - CamX, Y - H / 2 - CamY, W, H, 0xFF0000);
     }

@@ -35,6 +35,7 @@ event Create() {
     Down = false;
     Pressed = false;
 }
+
 event Update() {
     this.Down = Scene.Players[0].Ground && Scene.Players[0].LastObject == this;
 
@@ -49,6 +50,7 @@ event Update() {
 
     Y = StartY + 4 + 4 * Down;
 }
+
 event Render(CamX:int, CamY:int) {
     if (Scene.ZoneID != 2) 
         G.DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
@@ -60,7 +62,7 @@ event Render(CamX:int, CamY:int) {
     // if (!this.Down)
     //     G.DrawRectangle(X - CamX -  7, Y - CamY - 0, 14, 8, 0x6C6C90);
 	
-			if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
