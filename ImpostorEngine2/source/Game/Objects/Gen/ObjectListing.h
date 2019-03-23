@@ -107,6 +107,7 @@
 #include "CNZ/BatbrightParts.h"			// D5ADBFDB
 #include "Common/BlankObject.h"			// 8D487F51
 #include "Common/BubbleAir.h"			// 11DAFFC3
+#include "Common/PlaneSwitcher.h"			// 7573BB38
 #include "Common/PlatformOutliner.h"			// 5DFC3336
 #include "Common/PlayerSpawn.h"			// EACB9471
 #include "Common/WarpStars.h"			// 7E49DBD3
@@ -232,22 +233,23 @@ enum {
     Obj_BatbrightParts = 0x405,
     Obj_BlankObject = 0x406,
     Obj_BubbleAir = 0x407,
-    Obj_PlatformOutliner = 0x408,
-    Obj_PlayerSpawn = 0x409,
-    Obj_WarpStars = 0x40A,
-    Obj_EggCapsuleButton = 0x40B,
-    Obj_Signpost = 0x40C,
-    Obj_TensionBridgeChild = 0x40D,
-    Obj_ViewCollisionToggler = 0x40E,
-    Obj_Motobug = 0x40F,
-    Obj_MotobugSmoke = 0x410,
-    Obj_BlastoidShot = 0x411,
-    Obj_TurboSpikerSpike = 0x412,
-    Obj_SegmentedColumnStub = 0x413,
-    Obj_StarPointerOrbs = 0x414,
-    Obj_SwingingPlatformTrigger = 0x415,
-    Obj_ReliefEye = 0x416,
-    Obj_Platform = 0x417,
+    Obj_PlaneSwitcher = 0x408,
+    Obj_PlatformOutliner = 0x409,
+    Obj_PlayerSpawn = 0x40A,
+    Obj_WarpStars = 0x40B,
+    Obj_EggCapsuleButton = 0x40C,
+    Obj_Signpost = 0x40D,
+    Obj_TensionBridgeChild = 0x40E,
+    Obj_ViewCollisionToggler = 0x40F,
+    Obj_Motobug = 0x410,
+    Obj_MotobugSmoke = 0x411,
+    Obj_BlastoidShot = 0x412,
+    Obj_TurboSpikerSpike = 0x413,
+    Obj_SegmentedColumnStub = 0x414,
+    Obj_StarPointerOrbs = 0x415,
+    Obj_SwingingPlatformTrigger = 0x416,
+    Obj_ReliefEye = 0x417,
+    Obj_Platform = 0x418,
 };
 
 Object* GetNewObjectFromID(int ID);

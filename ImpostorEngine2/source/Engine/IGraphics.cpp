@@ -835,7 +835,7 @@ PUBLIC VIRTUAL void IGraphics::DrawText(int x, int y, const char* string, unsign
 PUBLIC VIRTUAL void IGraphics::DrawTextShadow(int x, int y, const char* string, unsigned int pixel) {
 	DrawText(x + 1, y + 1, string, 0);
 	DrawText(x, y, string, pixel);
-}
+	}
 
 PUBLIC VIRTUAL void IGraphics::DrawLine(int x0, int y0, int x1, int y1, uint32_t col) {
 	int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;

@@ -1,7 +1,7 @@
-#ifndef PLAYERSPAWN_H
-#define PLAYERSPAWN_H
+#ifndef PLANESWITCHER_H
+#define PLANESWITCHER_H
 
-class PlayerSpawn;
+class PlaneSwitcher;
 
 #include <Utils/Standard.h>
 
@@ -12,10 +12,10 @@ class PlayerSpawn;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class PlayerSpawn: public Object {
+class PlaneSwitcher: public Object {
 public:    
     
     
 };
 
-#endif /* PLAYERSPAWN_H */
+#endif /* PLANESWITCHER_H */

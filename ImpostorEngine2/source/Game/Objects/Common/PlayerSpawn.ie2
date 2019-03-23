@@ -1,4 +1,4 @@
-var Player:IPlayer;
+/*var Player:IPlayer;
 var Players:IPlayer[7];
 
 event Create() {
