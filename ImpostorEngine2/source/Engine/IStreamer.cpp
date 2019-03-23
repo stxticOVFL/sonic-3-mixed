@@ -173,6 +173,7 @@ PUBLIC std::string IStreamer::ReadRSDKString() {
         unsigned char count = ReadByte();
 		char *readData = new char[count + 1];
 		res->Read(readData, 1 * count);
+        readData[count] = '\0';
         std::string data(readData);
 		delete readData;
         return data;
@@ -181,6 +182,7 @@ PUBLIC std::string IStreamer::ReadRSDKString() {
     ptr++;
 	char *newData = new char[count + 1];
     memcpy(newData, ptr, count);
+    newData[count] = '\0';
 	std::string data(newData);
 	delete newData;
     ptr += count;
