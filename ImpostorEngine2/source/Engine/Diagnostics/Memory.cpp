@@ -70,6 +70,14 @@ PUBLIC STATIC void Memory::Free(void* mem) {
     }
 }
 
+PUBLIC STATIC void Memory::TrackMemory(const char* identifier, void *mem, size_t count, size_t size) {
+    if (mem) {
+        TrackedMemory.push_back(mem);
+        TrackedSizes.push_back(count * size);
+        TrackedMemoryNames.push_back(identifier);
+    }
+}
+
 PUBLIC STATIC void Memory::ClearTrackedMemory() {
 	TrackedMemoryNames.clear();
     TrackedMemory.clear();

@@ -242,8 +242,8 @@ event Update() {
     if (!Scene.maxLayer && !isHeldDebugObject) {
         var AnimCount:int32_t = Sprite.AnimCount;
         if (Scene.ZoneID == 3) {
-            Outliner.W = Sprite.Animations[2].Frames[0].W;
-            Outliner.H = Sprite.Animations[2].Frames[0].H;
+            Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[0].W;
+            Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[0].H;
         } else if (Scene.ZoneID == 2) {
 			var FrameCount:int32_t = Sprite.Animations[CurrentAnimation % AnimCount].FrameCount;
             var CaculatedFrame:int32_t = Frame >> 8;
