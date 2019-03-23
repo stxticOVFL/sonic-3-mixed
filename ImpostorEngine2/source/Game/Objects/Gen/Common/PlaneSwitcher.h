@@ -15,7 +15,14 @@ class PlaneSwitcher;
 class PlaneSwitcher: public Object {
 public:    
     
+    int Angle;
+    int Flags;
+    bool OnPath;
+    int Size;
     
+    void Create();
+    void Render(int CamX, int CamY);
+    int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
 #endif /* PLANESWITCHER_H */

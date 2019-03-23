@@ -582,7 +582,7 @@ PUBLIC VIRTUAL void LevelScene::CreateAttributeValue(AttributeValue* Attribute) 
 	Attribute->ValColor.g = 255;
 	Attribute->ValColor.b = 255;
 	Attribute->ValInt16 = 0;
-	Attribute->ValInt3 = 0;
+	Attribute->ValInt32 = 0;
 	Attribute->ValInt8 = 0;
 	Attribute->ValPosition.X = 0;
 	Attribute->ValPosition.Y = 0;
@@ -2140,7 +2140,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                                     Attributes[a].ValColor.a = reader.ReadByte();
                                     break;
                                 case ATTRIBUTE_INT32:
-                                    Attributes[a].ValInt3 = (int)reader.ReadInt32();
+                                    Attributes[a].ValInt32 = (int)reader.ReadInt32();
                                     break;
                                 case ATTRIBUTE_UINT32:
                                     Attributes[a].ValUint32 = (unsigned int)reader.ReadUInt32();
@@ -2169,7 +2169,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						}
 					}
 
-					if (obj && (ObjHash != OBJ_RING && ObjHash != OBJ_PLANESWITCHER)) {
+					if (obj && (ObjHash != OBJ_RING /*&& ObjHash != OBJ_PLANESWITCHER*/)) {
 						obj->G = G;
 						obj->App = App;
 						obj->Scene = this;
@@ -2208,13 +2208,14 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                         RingPropCount++;
                         RingProps.push_back(op);
                         delete obj;
-					} else if (obj && ObjHash == OBJ_PLANESWITCHER) {
+					} if (obj && ObjHash == OBJ_PLANESWITCHER) {
 						PlaneSwitchers[PlaneSwitchCount].X = obj->X;
 						PlaneSwitchers[PlaneSwitchCount].Y = obj->Y;
-						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->ValInt3;
-						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->ValInt3;
+						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->ValUint32;
 						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath")->ValBool;
-						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValInt3;
+						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValUint32;
+						if (PlaneSwitchers[PlaneSwitchCount].Size <= 0) PlaneSwitchers[PlaneSwitchCount].Size = 1;
 						PlaneSwitchCount++;
 					}
 				}
@@ -3600,7 +3601,10 @@ PUBLIC Object* LevelScene::AddNewObject(char* ObjName, int X, int Y) {
 			obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
 		}*/
 
+		obj->Filter = obj->GetAttribute("Filter")->ValUint8;
 		obj->SubType = obj->GetAttribute("Subtype")->ValUint8;
+		obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
+		obj->FlipY = obj->GetAttribute("FlipY")->ValBool;
 		obj->Create();
 		obj->DrawCollisions = App->viewObjectCollision;
 		ObjectCount++;
