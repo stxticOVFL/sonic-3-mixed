@@ -471,3 +471,10 @@ PUBLIC void Scene_LevelSelect::Render() {
     G->DrawTextShadow(App->WIDTH - 4 - strlen(poopbuddy) * 8, App->HEIGHT - 4 - 8, poopbuddy, 0xFFFFFF);
 	G->DrawTextShadow(App->WIDTH - 4 - strlen(poopmode) * 8, App->HEIGHT - 4 - 24, poopmode, 0xFFFFFF);
 }
+
+PUBLIC void Scene_LevelSelect::Cleanup() {
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+
+	App->Audio->ClearMusic();
+	CLEANUP(Sound::SoundBank[0]);
+}

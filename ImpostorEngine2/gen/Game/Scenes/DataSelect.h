@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class ISprite;
 class ISprite;
@@ -39,6 +40,7 @@ public:
     void Init();
     void Update();
     void Render();
+    void Cleanup();
 };
 
 #endif /* SCENE_DATASELECT_H */

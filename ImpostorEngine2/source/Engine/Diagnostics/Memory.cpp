@@ -67,6 +67,7 @@ PUBLIC STATIC void   Memory::Free(void* mem) {
 }
 
 PUBLIC STATIC void   Memory::ClearTrackedMemory() {
+	TrackedMemoryNames.clear();
     TrackedMemory.clear();
     TrackedSizes.clear();
 }

@@ -19,6 +19,7 @@ public:
 
 #include <Game/Levels/HCZ.h>
 #include <Game/Levels/MGZ.h>
+#include <Engine/Diagnostics/Memory.h>
 
 int DrainTimer = 0;
 int HCZ_WaterTunnels[126] = {
@@ -72,7 +73,6 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 2;
     VisualAct = Act = act;
 	sprintf(ZoneLetters, "HCZ");
-	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 407013) : (act == 1 ? 942525 : 0), SaveGame::CurrentMode, SaveGame::CurrentMode == 0 ? (act == 1 ? 0xA0 : 0xE0) : 0xFF);
 
     if (Act == 1) {
 		//Sound::SoundBank[0] = new ISound("Music/HCZ1.ogg", true);
@@ -119,6 +119,8 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 }
 
 PUBLIC void Level_HCZ::Init() {
+	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0 : 407013) : (Act == 1 ? 942525 : 0), SaveGame::CurrentMode, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0xA0 : 0xE0) : 0xFF);
+
     LevelScene::Init();
 
     bool Thremixed = false;
@@ -126,7 +128,7 @@ PUBLIC void Level_HCZ::Init() {
         IResource* StageBin = IResources::Load("Stages/HCZ/Palette.bin");
         if (StageBin) {
             IStreamer reader(StageBin);
-            free(reader.ReadBytes(128 * 4));
+			Memory::Free(reader.ReadBytes(128 * 4));
 
             uint8_t* n = reader.ReadBytes(128 * 4);
             memcpy(TileSprite->PaletteAlt + 128, n, 128 * 4);
@@ -135,7 +137,7 @@ PUBLIC void Level_HCZ::Init() {
             memcpy(SpriteMap["HCZ Boss"]->PaletteAlt + 128, n, 128 * 4);
             if (Act == 1)
                 memcpy(WaterLine->PaletteAlt + 128, n, 128 * 4);
-            free(n);
+            Memory::Free(n);
 
             n = reader.ReadBytes(96 * 4);
             memcpy(SpriteMap["HCZ"]->PaletteAlt, n, 96 * 4);
@@ -146,7 +148,7 @@ PUBLIC void Level_HCZ::Init() {
             for (int p = 0; p < 3; p++)
                 if (Player->Sprites[p])
                     memcpy(Player->Sprites[p]->PaletteAlt, n, 96 * 4);
-            free(n);
+			Memory::Free(n);
 
             TileSprite->SetPaletteAlt(0, 0xFF00FF);
 

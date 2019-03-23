@@ -321,6 +321,12 @@ PUBLIC void Scene_DataSelect::Update() {
 				NextScene->MenuSprite = MenuSprite;
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
 				NextScene->TextSprite = TextSprite;
+
+				// Make these NULL so they don't get accidentally cleaned up later
+				MenuSprite = NULL;
+				SuperButtonsSprite = NULL;
+				TextSprite = NULL;
+
 				App->NextScene = NextScene;
 			}
 			else {
@@ -853,4 +859,18 @@ PUBLIC void Scene_DataSelect::Render() {
 		G->DrawTextSprite(TextSprite, 6, 'A', drawX + 16, App->HEIGHT - 12, "ACCEPT");
 		drawX += 16 + G->MeasureTextSprite(TextSprite, 6, 'A', "ACCEPT") + 24;
 	}
+}
+
+PUBLIC void Scene_DataSelect::Cleanup() {
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+
+	// Do not clear music so we can keep it through menus
+	// App->Audio->ClearMusic();
+	// CLEANUP(Sound::SoundBank[0]);
+
+	CLEANUP(MenuSprite);
+	CLEANUP(SaveIconsSprite);
+	CLEANUP(SaveSelectSprite);
+	CLEANUP(SuperButtonsSprite);
+	CLEANUP(TextSprite);
 }

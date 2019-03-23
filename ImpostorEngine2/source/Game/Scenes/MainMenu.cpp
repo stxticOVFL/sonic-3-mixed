@@ -43,6 +43,7 @@ public:
 #include <Game/Scenes/MainMenu.h>
 #include <ctime>
 #include <algorithm>
+#include <Engine/Diagnostics/Memory.h>
 
 int FrameCircle = 0;
 int FrameZigzag = 0;
@@ -88,6 +89,8 @@ int paletteToCycle[18] = {
 PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
+
+	Memory::ClearTrackedMemory();
 
 	Sound::Audio = App->Audio;
 	Sound::Init();
@@ -177,6 +180,11 @@ PUBLIC void Scene_MainMenu::Update() {
 				NextScene->SuperButtonsSprite = SuperButtonsSprite;
 				NextScene->TextSprite = TextSprite;
 
+				// Make these NULL so they don't get accidentally cleaned up later
+				MenuSprite = NULL;
+				SuperButtonsSprite = NULL;
+				TextSprite = NULL;
+
 				App->NextScene = NextScene;
 			}
 			else if (selected == 2) {
@@ -186,6 +194,11 @@ PUBLIC void Scene_MainMenu::Update() {
 				NextScene->TextSprite = TextSprite;
 				std::copy(std::begin(paletteindexes), std::end(paletteindexes), std::begin(NextScene->paletteindexes));
 				std::copy(std::begin(paletteToCycle), std::end(paletteToCycle), std::begin(NextScene->paletteToCycle));
+
+				// Make these NULL so they don't get accidentally cleaned up later
+				MenuSprite = NULL;
+				SuperButtonsSprite = NULL;
+				TextSprite = NULL;
 
 				App->NextScene = NextScene;
 			}
@@ -563,4 +576,17 @@ PUBLIC void Scene_MainMenu::Render() {
 		G->DrawTextSprite(TextSprite, 6, 'A', drawX + 16, App->HEIGHT - 12, "ACCEPT");
 		drawX += 16 + G->MeasureTextSprite(TextSprite, 6, 'A', "ACCEPT") + 24;
 	}
+}
+
+PUBLIC void Scene_MainMenu::Cleanup() {
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+
+	// Do not clear music so we can keep it through menus
+	// App->Audio->ClearMusic();
+	// CLEANUP(Sound::SoundBank[0]);
+
+	CLEANUP(MenuSprite);
+	CLEANUP(SphereSprite);
+	CLEANUP(SuperButtonsSprite);
+	CLEANUP(TextSprite);
 }

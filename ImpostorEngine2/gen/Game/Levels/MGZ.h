@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class ISprite;
 
@@ -28,6 +29,7 @@ public:
     void RenderEverything();
     void EarlyUpdate();
     void Subupdate();
+    void Cleanup();
     void HandleCamera();
 };
 

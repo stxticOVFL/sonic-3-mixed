@@ -35,6 +35,7 @@ public:
     void Init();
     void Update();
     void Render();
+    void Cleanup();
 };
 
 #endif /* SCENE_MAINMENU_H */
