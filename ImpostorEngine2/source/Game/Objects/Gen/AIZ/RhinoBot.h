@@ -19,6 +19,7 @@ public:
     int Speed;
     int Acceleration;
     
+    CONSTRUCTER RhinoBot();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

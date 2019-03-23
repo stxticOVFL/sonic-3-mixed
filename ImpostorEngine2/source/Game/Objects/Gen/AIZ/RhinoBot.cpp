@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER RhinoBot::RhinoBot() {
+    BinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot.bin");
+}
+
 void RhinoBot::Create() {
     Enemy::Create();
     Active = true;

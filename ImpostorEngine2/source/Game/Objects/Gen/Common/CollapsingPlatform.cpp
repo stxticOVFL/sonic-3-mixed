@@ -6,6 +6,7 @@
 typedef IMath Math;
 
 CONSTRUCTER CollapsingPlatform::CollapsingPlatform() {
+<<<<<<< HEAD
     if (LevelScene::IsZoneCurrently("AIZ")) {
         Act1BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform.bin");
         Act2BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform 2.bin");
@@ -17,6 +18,8 @@ CONSTRUCTER CollapsingPlatform::CollapsingPlatform() {
     else {
         BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform.bin");
     }
+=======
+>>>>>>> 60d24d640234509a63b3990c43ce8306b6fddab3
 }
 
 void CollapsingPlatform::Create() {

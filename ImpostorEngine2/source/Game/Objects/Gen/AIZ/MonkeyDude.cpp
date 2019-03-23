@@ -5,6 +5,9 @@
 
 typedef IMath Math;
 
+CONSTRUCTER MonkeyDude::MonkeyDude() {
+}
+
 void MonkeyDude::Create() {
     Enemy::Create();
     Active = true;

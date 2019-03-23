@@ -9818,14 +9818,7 @@ namespace SonicRetro.SonLVL.GUI
 				foreach (System.Collections.Generic.KeyValuePair<byte, ObjectDefinition> i in LevelData.ObjTypes)
 				{
 					string name = LevelData.ObjTypes[i.Key].Name;
-					if (name == "Special Stage Ring" || name == "Big Ring")
-					{
-						name = "Special Ring";
-					}
-					if (name == "Path Swapper")
-					{
-						name = "PlaneSwitch";
-					}
+					name = FixNames(name);
 					ObjectNames.Add(name.Replace(" ", ""));
 				}
 
@@ -10029,6 +10022,26 @@ namespace SonicRetro.SonLVL.GUI
 			}
 		}
 
+		public string FixNames(string OriginalName)
+		{
+			if (OriginalName == "Special Stage Ring" || OriginalName == "Big Ring")
+			{
+				OriginalName = "Special Ring";
+			}
+			if (OriginalName == "Path Swapper")
+			{
+				OriginalName = "PlaneSwitch";
+			}
+			if (OriginalName == "Rhinobot")
+			{
+				OriginalName = "RhinoBot";
+			}
+			if (OriginalName == "TwistedRamp")
+			{
+				OriginalName = "CorkFloor";
+			}
+			return OriginalName;
+		}
 		private void removeDuplicateBlocksToolStripButton_Click(object sender, EventArgs e)
 		{
 			if (MessageBox.Show(this, "This action may break other levels that share part of the same block set.\n\nAre you sure you want to remove all duplicate blocks?", "SonLVL", MessageBoxButtons.OKCancel) != DialogResult.OK)

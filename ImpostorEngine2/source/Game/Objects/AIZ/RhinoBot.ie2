@@ -6,6 +6,11 @@ var SubX:int;
 var Speed:int;
 var Acceleration:int;
 
+event RhinoBot() : CONSTRUCTER {
+	BinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot.bin");
+}
+
+
 event Create() {
     Active = true;
     Priority = false;

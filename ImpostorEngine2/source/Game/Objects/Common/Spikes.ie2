@@ -5,9 +5,13 @@ var Size:int;
 var Vertical:int;
 var In:bool;
 
-//event Spikes() : CONSTRUCTER {
-//	BinIndex = LevelScene.LoadSpriteBin("Global/Spikes.bin");
-//}
+event Spikes() : CONSTRUCTER {
+    /*if (SaveGame.CurrentMode == 0) {
+        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/Spikes.bin");
+    } else {
+	    BinIndex = LevelScene.LoadSpriteBin("Global/Spikes.bin");
+    }*/
+}
 
 event Create() {
     Active = true;

@@ -6,7 +6,12 @@
 typedef IMath Math;
 
 CONSTRUCTER StarPost::StarPost() {
-    BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin");
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/StarPost.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin");
+    }
 }
 
 void StarPost::Create() {

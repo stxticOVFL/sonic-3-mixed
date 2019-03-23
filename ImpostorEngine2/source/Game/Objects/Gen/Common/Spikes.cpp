@@ -5,6 +5,9 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Spikes::Spikes() {
+}
+
 void Spikes::Create() {
     Object::Create();
     Active = true;
