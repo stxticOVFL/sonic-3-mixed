@@ -256,7 +256,7 @@ public:
     Object* AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY);
     Object* AddNewObject(char* ObjName, int X, int Y);
     void AddNewDebugObjectID(int16_t ID);
-    virtual void SpawnPlayer(int ID, bool Sidekick);
+    virtual void SpawnPlayer(int ID, bool Sidekick, bool Main, int X, int Y);
     virtual void EarlyUpdate();
     virtual void Subupdate();
     virtual void DoResults();
