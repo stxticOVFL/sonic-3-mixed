@@ -763,6 +763,10 @@
     <Compile Include="Interfaces\UserControls\VScrollBar.xaml.cs">
       <DependentUpon>VScrollBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\WinForm UI\AttributeEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Interfaces\WinForm UI\AttributeEditorForm.Designer.cs" />
     <Compile Include="Interfaces\WPF UI\Editor Tools\CheatCodeManager.xaml.cs">
       <DependentUpon>CheatCodeManager.xaml</DependentUpon>
     </Compile>
@@ -1457,6 +1461,7 @@
     <EmbeddedResource Include="Interfaces\UserControls\GraphicsModel.resx">
       <DependentUpon>GraphicsModel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\WinForm UI\AttributeEditorForm.resx" />
     <EmbeddedResource Include="Interfaces\WinForm UI\SoundLooper.resx">
       <DependentUpon>SoundLooper.cs</DependentUpon>
     </EmbeddedResource>

@@ -171,6 +171,8 @@
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <MenuItem x:Name="flipHorizontalIndvidualToolStripMenuItem" Header="Flip Horizontal Individual" Click="FlipHorizontalIndividualToolStripMenuItem_Click"/>
                     <MenuItem x:Name="flipVerticalIndvidualToolStripMenuItem" Header="Flip Vertical Individual" Click="FlipVerticalIndividualToolStripMenuItem_Click"/>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    <MenuItem x:Name="ObjectEditorToolStripMenuItem" IsEnabled="True" Header="Object Editor" Click="ObjectEditorToolStripMenuItem_Click"/>
                 </MenuItem>
                 <MenuItem x:Name="viewToolStripMenuItem" Header="View" Margin="0,2,0,0" >
                     <MenuItem x:Name="showEntitySelectionBoxesToolStripMenuItem" Header="Show Entity Selection Boxes" Click="ShowEntitySelectionBoxesToolStripMenuItem_Click"/>

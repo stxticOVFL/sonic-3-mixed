@@ -1,0 +1,39 @@
+/*var Player:IPlayer;
+var Players:IPlayer[7];
+
+event Create() {
+    //startTime = SDL_GetTicks();
+    if (!LevelScene.Player) {
+        //Player = new IPlayer();
+        Player.G = G;
+        Player.App = App;
+        Player.Scene = this;
+        //Player.Character = (CharacterType)(SaveGame.CurrentCharacterFlag & 0xF);
+        Player.PlayerID = 0;
+        //Player.Shield = (ShieldType)(SaveGame.Savefiles[SaveGame.CurrentSaveFile].Shield < 5 ? (uint8_t)SaveGame.Savefiles[SaveGame.CurrentSaveFile].Shield : 0);
+        Player.Thremixed = SaveGame.CurrentMode > 0;
+        Player.Create();
+        Player.Lives = SaveGame.GetLives();
+
+        Players[0] = Player;
+
+        LevelScene.PlayerCount = 1;
+
+        if (SaveGame.CurrentPartnerFlag != 0xFF) {
+            //Players[1] = new IPlayer();
+            Players[1].G = G;
+            Players[1].App = App;
+            Players[1].Scene = this;
+            Players[1].Sidekick = true;
+            //Players[1].Character = (CharacterType)SaveGame.CurrentPartnerFlag;
+            Players[1].PlayerID = 1;
+            Players[1].Thremixed = SaveGame.CurrentMode > 0;
+            Players[1].Create();
+
+            LevelScene.PlayerCount = 2;
+        }
+        memcpy(LevelScene.Players, Players, sizeof(Players));
+        //IApp.Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
+    }
+    Active = false;
+}

@@ -1591,7 +1591,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			//uncomment if ever bored*/
 
 			IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Player Creation", (SDL_GetTicks() - startTime) / 1000.0);
-			startTime = SDL_GetTicks();
+			startTime = SDL_GetTicks();//*/
 		}
 
 		Data = new SceneData();

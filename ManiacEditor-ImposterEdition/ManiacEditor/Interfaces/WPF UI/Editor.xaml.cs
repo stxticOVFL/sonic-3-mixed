@@ -2250,10 +2250,12 @@ namespace ManiacEditor
 		public void PasteToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.PasteToolStripMenuItem_Click(sender, e); }
 		public void FlipVerticalToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.FlipVerticalToolStripMenuItem_Click(sender, e); }
 		public void FlipVerticalIndividualToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.FlipVerticalIndividualToolStripMenuItem_Click(sender, e); }
-		#endregion
 
-		#region View Tab Buttons
-		public void statsToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.statsToolStripMenuItem_Click(sender, e); }
+        public void ObjectEditorToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.ObjectEditorToolStripMenuItem_Click(sender, e); }
+        #endregion
+
+        #region View Tab Buttons
+        public void statsToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.statsToolStripMenuItem_Click(sender, e); }
 		private void PointerTooltipToggleToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.PointerTooltipToggleToolStripMenuItem_Click(sender, e); }
 		private void ResetZoomLevelToolstripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.ResetZoomLevelToolstripMenuItem_Click(sender, e); }
 		private void useLargeTextToolStripMenuItem_Click(object sender, RoutedEventArgs e) { UIEvents.useLargeTextToolStripMenuItem_Click(sender, e); }

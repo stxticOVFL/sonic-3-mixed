@@ -9498,8 +9498,6 @@ namespace SonicRetro.SonLVL.GUI
 				int FGLow = 3;
 				int FGHigh = 4;
 
-				//SceneData.Layers.Add(new RSDKv5.SceneLayer("FG Low", (ushort)(LevelData.FGWidth * 8), (ushort)(LevelData.FGHeight * 8)));
-
 				SceneData.Layers[layer].Resize((ushort)(LevelData.BGWidth * 8), (ushort)(LevelData.BGHeight * 8));
 
 				SceneData.Layers[layer].Tiles = new ushort[SceneData.Layers[layer].Height][];
@@ -9507,8 +9505,6 @@ namespace SonicRetro.SonLVL.GUI
 				{
 					SceneData.Layers[layer].Tiles[i] = new ushort[SceneData.Layers[layer].Width];
 				}
-				//FGHigh = layer;
-				//layer++;
 
 				//Stamps!
 				for (int c = 0; c < LevelData.Chunks.Count; c++)
@@ -9663,8 +9659,6 @@ namespace SonicRetro.SonLVL.GUI
 				{
 					SceneData.Layers[FGHigh].Tiles[i] = new ushort[SceneData.Layers[FGHigh].Width];
 				}
-				//FGHigh = layer;
-				//layer++;
 
 				//Where the (Foreground) black magic happens!
 				for (int h = 0; h < LevelData.FGHeight; h++)
@@ -9859,7 +9853,7 @@ namespace SonicRetro.SonLVL.GUI
 					int ObjID = 0;
 					try
 					{
-						LevelData.ObjTypes.Values.ToList().IndexOf(LevelData.ObjTypes[LevelData.Objects[i].ID]);
+						ObjID = LevelData.ObjTypes.Values.ToList().IndexOf(LevelData.ObjTypes[LevelData.Objects[i].ID]) + 3;
 					}
 					catch(Exception ex)
 					{
@@ -9935,8 +9929,6 @@ namespace SonicRetro.SonLVL.GUI
 						{
 							Tileconfig.CollisionPath1[i].Collision[c] = SwapNybble((byte)(cd - 1));
 						}
-						Tileconfig.CollisionPath1[i].momentum = 0x40;
-						Tileconfig.CollisionPath1[i].physics = 0x80;
 					}
 
 					Tileconfig.CollisionPath2[i].slopeAngle = LevelData.Angles[LevelData.ColInds2[i]];
@@ -9957,8 +9949,6 @@ namespace SonicRetro.SonLVL.GUI
 						{
 							Tileconfig.CollisionPath2[i].Collision[c] = SwapNybble((byte)(cd - 1));
 						}
-						Tileconfig.CollisionPath2[i].momentum = 0x40;
-						Tileconfig.CollisionPath2[i].physics = 0x80;
 					}
 				}
 

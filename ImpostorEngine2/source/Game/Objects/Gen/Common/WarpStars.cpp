@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER WarpStars::WarpStars() {
+    BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin");
+}
+
 void WarpStars::Create() {
     Object::Create();
     Active = true;
