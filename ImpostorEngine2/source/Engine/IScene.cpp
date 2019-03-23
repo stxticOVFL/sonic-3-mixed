@@ -38,5 +38,5 @@ PUBLIC VIRTUAL bool IScene::ExecuteCommand(char* cmd) {
 }
 
 PUBLIC VIRTUAL IScene::~IScene() {
-    Cleanup();
+    
 }
