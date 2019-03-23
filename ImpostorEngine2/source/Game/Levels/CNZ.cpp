@@ -530,29 +530,29 @@ PUBLIC void Level_CNZ::EarlyUpdate() {
     if (Act == 1) {
         // During the boss fight
         if (false) {
-            Data->layers[1].Flags |= 0 | 2 | 4;
-            Data->layers[1].OffsetX = 0x3180;
-            Data->layers[1].OffsetY -= 4;
-            if (Data->layers[1].OffsetY < 0x40)
-                Data->layers[1].OffsetY += 0x100;
-            Data->layers[3].OffsetY -= 4;
-            if (Data->layers[3].OffsetY < -0x500)
-                Data->layers[3].OffsetY += 0x100;
+            Data->Layers[1].Flags |= 0 | 2 | 4;
+            Data->Layers[1].OffsetX = 0x3180;
+            Data->Layers[1].OffsetY -= 4;
+            if (Data->Layers[1].OffsetY < 0x40)
+                Data->Layers[1].OffsetY += 0x100;
+            Data->Layers[3].OffsetY -= 4;
+            if (Data->Layers[3].OffsetY < -0x500)
+                Data->Layers[3].OffsetY += 0x100;
 
             CameraMinY = 0x1C0;
 
             CameraMinX = 0x31E0;
             CameraMaxX = 0x33A0 - App->WIDTH;
         } else {
-            Data->layers[1].Visible = false;
+            Data->Layers[1].Visible = false;
         }
     } else if (Act == 2) {
         // Layer Flags:
         // 0x1: Collidable
         // 0x2: Don't Repeat X
         // 0x3: Don't Repeat Y
-        Data->layers[1].Flags |= 0 | 2 | 4;
-        Data->layers[1].OffsetX = 0x3480;
+        Data->Layers[1].Flags |= 0 | 2 | 4;
+        Data->Layers[1].OffsetX = 0x3480;
     }
     if (Frame % 4 == 0) {
         TileSprite->SetPalette(0x39, AnPal_PalCNZ_1[(Frame / 4 * 3) % 48]);

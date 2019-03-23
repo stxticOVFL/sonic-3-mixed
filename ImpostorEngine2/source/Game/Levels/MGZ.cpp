@@ -61,8 +61,8 @@ PUBLIC void Level_MGZ::RestartStage(bool doActTransition, bool drawBackground) {
 
 	LevelScene::RestartStage(doActTransition, drawBackground);
 
-	// Data->layers[1].IsScrollingVertical = true;
-	// Data->layers[2].IsScrollingVertical = true;
+	// Data->Layers[1].IsScrollingVertical = true;
+	// Data->Layers[2].IsScrollingVertical = true;
 
 	if (Act == 1) {
 		if (Checkpoint == -1)
@@ -195,14 +195,14 @@ PUBLIC void Level_MGZ::HandleCamera() {
 	// 0x3: Don't Repeat Y
 
 	if (Act == 1) {
-		Data->layers[1].IsScrollingVertical = true;
-		Data->layers[2].IsScrollingVertical = true;
+		Data->Layers[1].IsScrollingVertical = true;
+		Data->Layers[2].IsScrollingVertical = true;
 	}
 	else if (Act == 2) {
-		Data->layers[1].Flags |= 1 | 0 | 4;
-		Data->layers[1].OffsetX = 0x3480;
+		Data->Layers[1].Flags |= 1 | 0 | 4;
+		Data->Layers[1].OffsetX = 0x3480;
 		if (RoutineNumber == 0) {
-			Data->layers[1].OffsetY = 0x0B00;
+			Data->Layers[1].OffsetY = 0x0B00;
 
 			if (Player->EZX >= 0x36C0 &&
 				Player->EZY >= 0xAD0) {
@@ -225,15 +225,15 @@ PUBLIC void Level_MGZ::HandleCamera() {
 				RoutineNumber = 2;
 			}
 		}
-		Data->layers[1].OffsetY = 0x0B00 - (FloorY >> 16);
+		Data->Layers[1].OffsetY = 0x0B00 - (FloorY >> 16);
 
 		if (Player->EZX >= 0x3000 &&
 			Player->EZY >= 0x0680 &&
 			Player->EZX < 0x3660 &&
 			Player->EZY < 0x07F0) {
-			Data->layers[0].RelativeY = 0x0100;
-			Data->layers[0].OffsetX = 0x3580;
-			Data->layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
+			Data->Layers[0].RelativeY = 0x0100;
+			Data->Layers[0].OffsetX = 0x3580;
+			Data->Layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
 
 			BackgroundColor = TileSprite->GetPalette(0x3A);
 		}
@@ -241,22 +241,22 @@ PUBLIC void Level_MGZ::HandleCamera() {
 			Player->EZY >= 0x07F0 &&
 			Player->EZX < 0x3E80 &&
 			Player->EZY < 0x0C00) {
-			Data->layers[0].RelativeY = 0x0100;
-			Data->layers[0].OffsetX = 0x3580;
-			Data->layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
+			Data->Layers[0].RelativeY = 0x0100;
+			Data->Layers[0].OffsetX = 0x3580;
+			Data->Layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
 
 			BackgroundColor = TileSprite->GetPalette(0x3A);
 		}
 		else if (Player->EZX > 0x3920 && Player->EZY < 0x7E8) {
-			Data->layers[0].RelativeY = 0x0030;
-			Data->layers[0].OffsetX = 0;
-			Data->layers[0].OffsetY = -0x00F0;
+			Data->Layers[0].RelativeY = 0x0030;
+			Data->Layers[0].OffsetX = 0;
+			Data->Layers[0].OffsetY = -0x00F0;
 
 			BackgroundColor = TileSprite->GetPalette(0x31);
 		}
 		else {
-			Data->layers[0].RelativeY = 0x0030;
-			Data->layers[0].OffsetY = 0;
+			Data->Layers[0].RelativeY = 0x0030;
+			Data->Layers[0].OffsetY = 0;
 			BackgroundColor = TileSprite->GetPalette(0x3A);
 		}
 	}

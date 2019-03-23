@@ -408,31 +408,31 @@ namespace ThremixedIDS {
 	};
 };
 
-struct colour {
+struct AttributeColor {
 	uint8_t r;
 	uint8_t g;
 	uint8_t b;
 	uint8_t a;
 };
 
-struct position {
+struct AttributePosition {
 	float X;
 	float Y;
 };
 
 struct AttributeValue {
-	char namehash[16];
-	uint8_t value_uint8;
-	uint16_t value_uint16;
-	uint32_t value_uint32;
-	int8_t value_int8;
-	int16_t value_int16;
-	int32_t value_int32;
-	char* value_string;
-	int32_t value_var;
-	bool value_bool;
-	colour value_colour;
-	position value_position;
+	char NameHash[16];
+	uint8_t ValUint8;
+	uint16_t ValUint16;
+	uint32_t ValUint32;
+	int8_t ValInt8;
+	int16_t ValInt16;
+	int32_t ValInt3;
+	char* ValString;
+	int32_t ValVariable;
+	bool ValBool;
+	AttributeColor ValColor;
+	AttributePosition ValPosition;
 };
 
 bool operator==(const CollideSide& left, const int& right);
@@ -592,39 +592,39 @@ public:
 			AddAttribute("attribute");
 		}
 	AttribNULL:
-		ObjectAttribute.value_bool = false;
-		ObjectAttribute.value_colour.r = 255;
-		ObjectAttribute.value_colour.g = 255;
-		ObjectAttribute.value_colour.b = 255;
-		ObjectAttribute.value_int16 = 0;
-		ObjectAttribute.value_int32 = 0;
-		ObjectAttribute.value_int8 = 0;
-		ObjectAttribute.value_position.X = 0;
-		ObjectAttribute.value_position.Y = 0;
-		ObjectAttribute.value_string = "String";
-		ObjectAttribute.value_uint16 = 0;
-		ObjectAttribute.value_uint32 = 0;
-		ObjectAttribute.value_uint8 = 0;
-		ObjectAttribute.value_var = 0;
+		ObjectAttribute.ValBool = false;
+		ObjectAttribute.ValColor.r = 255;
+		ObjectAttribute.ValColor.g = 255;
+		ObjectAttribute.ValColor.b = 255;
+		ObjectAttribute.ValInt16 = 0;
+		ObjectAttribute.ValInt3 = 0;
+		ObjectAttribute.ValInt8 = 0;
+		ObjectAttribute.ValPosition.X = 0;
+		ObjectAttribute.ValPosition.Y = 0;
+		ObjectAttribute.ValString = "String";
+		ObjectAttribute.ValUint16 = 0;
+		ObjectAttribute.ValUint32 = 0;
+		ObjectAttribute.ValUint8 = 0;
+		ObjectAttribute.ValVariable = 0;
 		return &ObjectAttribute; //Make a default
 	}
 	virtual void AddAttribute(char* name)
 	{
 		AttributeValue av;
-		av.value_bool = false;
-		av.value_colour.r = 255;
-		av.value_colour.g = 255;
-		av.value_colour.b = 255;
-		av.value_int16 = 0;
-		av.value_int32 = 0;
-		av.value_int8 = 0;
-		av.value_position.X = 0;
-		av.value_position.Y = 0;
-		av.value_string = "String";
-		av.value_uint16 = 0;
-		av.value_uint32 = 0;
-		av.value_uint8 = 0;
-		av.value_var = 0;
+		av.ValBool = false;
+		av.ValColor.r = 255;
+		av.ValColor.g = 255;
+		av.ValColor.b = 255;
+		av.ValInt16 = 0;
+		av.ValInt3 = 0;
+		av.ValInt8 = 0;
+		av.ValPosition.X = 0;
+		av.ValPosition.Y = 0;
+		av.ValString = "String";
+		av.ValUint16 = 0;
+		av.ValUint32 = 0;
+		av.ValUint8 = 0;
+		av.ValVariable = 0;
 
 		MD5 md5 = MD5(name);
 

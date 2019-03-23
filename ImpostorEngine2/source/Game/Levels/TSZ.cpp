@@ -307,7 +307,7 @@ PUBLIC void Level_TSZ::RestartStage(bool doActTransition, bool drawBackground) {
         TSZ_FireLayerBackup = NULL;
         TSZ_CutsceneActTimer = 60;
 
-        Data->layers[4].OffsetY = 0;
+        Data->Layers[4].OffsetY = 0;
     } else {
         VisualWaterLevel = 0x528;
         WaterLevel = 0x528;
@@ -517,7 +517,7 @@ PUBLIC void Level_TSZ::Subupdate() {
                     water = 0;
                 }
                 else {
-                    memset(Data->layers[1].Deform, 0, water);
+                    memset(Data->Layers[1].Deform, 0, water);
                 }
 
                 int8_t TSZ1_WaterDeformDelta[64] = {
@@ -527,14 +527,14 @@ PUBLIC void Level_TSZ::Subupdate() {
                 	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
                 };
                 for (int i = water; i < App->HEIGHT; i++) {
-                    Data->layers[1].Deform[i] = TSZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                    Data->Layers[1].Deform[i] = TSZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
             }
             else {
-                memset(Data->layers[1].Deform, 0, App->HEIGHT);
+                memset(Data->Layers[1].Deform, 0, App->HEIGHT);
             }
-            memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
-            memcpy(Data->layers[3].Deform, Data->layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[2].Deform, Data->Layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[3].Deform, Data->Layers[1].Deform, App->HEIGHT);
         }
 
         if (TSZ_TreeRevealRow < 32) {
@@ -544,14 +544,14 @@ PUBLIC void Level_TSZ::Subupdate() {
                 if (TSZ_TreeRevealArray[ind]) {
                     x = (i & 0xF) + 0x2C8;
                     y = (i >> 04) + 0x028;
-                    pos = x + Data->layers[2].Width * y;
+                    pos = x + Data->Layers[2].Width * y;
                     x = (i & 0xF);
                     y = (i >> 04);
-                    Data->layers[2].Tiles[pos] = Data->layers[2].Tiles[x + Data->layers[2].Width * y];
-                    Data->layers[3].Tiles[pos] = Data->layers[3].Tiles[x + Data->layers[2].Width * y];
+                    Data->Layers[2].Tiles[pos] = Data->Layers[2].Tiles[x + Data->Layers[2].Width * y];
+                    Data->Layers[3].Tiles[pos] = Data->Layers[3].Tiles[x + Data->Layers[2].Width * y];
                 }
-                // Data->layers[5].Tiles[i] *= !TSZ_TreeRevealArray[ind];
-                // Data->layers[6].Tiles[i] *= !TSZ_TreeRevealArray[ind];
+                // Data->Layers[5].Tiles[i] *= !TSZ_TreeRevealArray[ind];
+                // Data->Layers[6].Tiles[i] *= !TSZ_TreeRevealArray[ind];
             }
         }
 
@@ -585,39 +585,39 @@ PUBLIC void Level_TSZ::Subupdate() {
                 AddExplosion(5, false, IMath::randRange(CameraX, CameraX + App->WIDTH), IMath::randRange(CameraY, CameraY + App->HEIGHT));
             }
 
-			if (!Data->layers[4].NoBuffer) {
-				Data->layers[4].NoBuffer = true;
+			if (!Data->Layers[4].NoBuffer) {
+				Data->Layers[4].NoBuffer = true;
 			}
 
-            if (Data->layers[4].OffsetY <= -0x68) {
+            if (Data->Layers[4].OffsetY <= -0x68) {
                 int d0 = TSZ_FireRiseValue + 0x2800;
                 if (d0 > 0xA0000)
                     d0 = 0xA0000;
                 TSZ_FireRiseValue = d0;
 
-                if (Data->layers[4].OffsetY > -0x200)
-                    Data->layers[4].OffsetY -= TSZ_FireRiseValue >> 17;
+                if (Data->Layers[4].OffsetY > -0x200)
+                    Data->Layers[4].OffsetY -= TSZ_FireRiseValue >> 17;
 
-                if (Data->layers[4].OffsetY < -0x180) {
-                    Data->layers[4].OffsetY += 0x40;
+                if (Data->Layers[4].OffsetY < -0x180) {
+                    Data->Layers[4].OffsetY += 0x40;
 
                     TSZ_Timerrrr--;
                 }
             }
             else {
                 TSZ_FireRiseValue2 += (-0x680000 - TSZ_FireRiseValue2) >> 5;
-                Data->layers[4].OffsetY = TSZ_FireRiseValue2 >> 16;
+                Data->Layers[4].OffsetY = TSZ_FireRiseValue2 >> 16;
             }
 
             if (TSZ_Timerrrr == 0) {
                 TSZ_FireLayerBackup = new Layer;
-                memcpy(TSZ_FireLayerBackup, &Data->layers[4], sizeof(Layer));
+                memcpy(TSZ_FireLayerBackup, &Data->Layers[4], sizeof(Layer));
 
                 GoToNextAct();
                 TSZ_Timerrrr = -1;
             }
 
-            Data->layers[4].OffsetX = (Frame * 6) & 0x60;
+            Data->Layers[4].OffsetX = (Frame * 6) & 0x60;
 
             short firetileoffsets[16] = {
                 0x100, 0xFF, 0xFE, 0xFB,
@@ -627,7 +627,7 @@ PUBLIC void Level_TSZ::Subupdate() {
             };
 
             for (int i = 0; i < 20; i++) {
-                Data->layers[4].TileOffsetY[i] = (firetileoffsets[(Frame / 4 + i * 2) & 0xF] - 0x100);
+                Data->Layers[4].TileOffsetY[i] = (firetileoffsets[(Frame / 4 + i * 2) & 0xF] - 0x100);
             }
         }
     }
@@ -651,15 +651,15 @@ PUBLIC void Level_TSZ::Subupdate() {
             };
             if (wantUnderwaterFireEffect) {
                 for (int i = 0; i < App->HEIGHT; i++) {
-                   Data->layers[0].Deform[i] = TSZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                   Data->Layers[0].Deform[i] = TSZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
                 }
             } else {
                 for (int i = 0; i < App->HEIGHT; i++) {
-                   Data->layers[0].Deform[i] = TSZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                   Data->Layers[0].Deform[i] = TSZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
                 }  
             }
 
-            memset(Data->layers[1].Deform, 0, water);
+            memset(Data->Layers[1].Deform, 0, water);
 
             int8_t TSZ2_FGDeformDelta[64] = {
                 0,    0,    1,    1,    0,    0,    0,    0,    1,    0,    0,    0,    0,    1,    0,    0,
@@ -668,7 +668,7 @@ PUBLIC void Level_TSZ::Subupdate() {
         	    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    0,    0,    1,    1,    0,    0
             };
             for (int i = 0; i < water; i++) {
-               Data->layers[1].Deform[i] = TSZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+               Data->Layers[1].Deform[i] = TSZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
 
             int8_t TSZ1_WaterDeformDelta[64] = {
@@ -678,28 +678,28 @@ PUBLIC void Level_TSZ::Subupdate() {
             	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
             };
             for (int i = water; i < App->HEIGHT; i++) {
-                Data->layers[1].Deform[i] = TSZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                Data->Layers[1].Deform[i] = TSZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
             
             // Also apply the effect to the BG.
             if (!wantUnderwaterFireEffect) {
                 for (int i = water; i < App->HEIGHT; i++) {
-                    Data->layers[0].Deform[i] = TSZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                    Data->Layers[0].Deform[i] = TSZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
             }
 
-            memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[2].Deform, Data->Layers[1].Deform, App->HEIGHT);
         }
 
-        Data->layers[3].Flags = 0 | 2 | 4;
-        Data->layers[4].Flags = 0 | 2 | 4;
+        Data->Layers[3].Flags = 0 | 2 | 4;
+        Data->Layers[4].Flags = 0 | 2 | 4;
 
-        Data->layers[3].RelativeY = 0x00;
-        Data->layers[3].Info[0].RelativeX = 0x00;
-        Data->layers[4].RelativeY = 0x00;
-        Data->layers[4].Info[0].RelativeX = 0x00;
+        Data->Layers[3].RelativeY = 0x00;
+        Data->Layers[3].Info[0].RelativeX = 0x00;
+        Data->Layers[4].RelativeY = 0x00;
+        Data->Layers[4].Info[0].RelativeX = 0x00;
 
-        Data->layers[3].Visible = Data->layers[4].Visible = false;
+        Data->Layers[3].Visible = Data->Layers[4].Visible = false;
 
         if (VisualAct == 1) {
             if (RoutineNumber == -2) {
@@ -707,17 +707,17 @@ PUBLIC void Level_TSZ::Subupdate() {
                     if (TSZ_FireLayerBackup != NULL) {
                         int ind = Data->layerCount;
                         TSZ_FireInd = ind;
-                        memcpy(&Data->layers[ind], TSZ_FireLayerBackup, sizeof(Layer));
+                        memcpy(&Data->Layers[ind], TSZ_FireLayerBackup, sizeof(Layer));
                         Data->layerCount++;
                         TSZ_FireLayerBackup = NULL;
 
                         // Alter tiles
-                        Data->layers[ind].Flags = 0 | 0 | 4;
+                        Data->Layers[ind].Flags = 0 | 0 | 4;
                         for (int i = 16; i < 40; i += 4) {
-                            memcpy(Data->layers[ind].Tiles + (32 * i), TSZ2_BF_ChunkBackup, sizeof(short) * 32 * 4);
+                            memcpy(Data->Layers[ind].Tiles + (32 * i), TSZ2_BF_ChunkBackup, sizeof(short) * 32 * 4);
                         }
-                        memcpy(Data->layers[ind].Tiles + (32 * 40), TSZ2_BF_ChunkBackup, sizeof(short) * 0x100);
-                        memset(Data->layers[ind].Tiles + (32 * 0), 0, sizeof(short) * 0x200);
+                        memcpy(Data->Layers[ind].Tiles + (32 * 40), TSZ2_BF_ChunkBackup, sizeof(short) * 0x100);
+                        memset(Data->Layers[ind].Tiles + (32 * 0), 0, sizeof(short) * 0x200);
 
                         TileSprite->SetPalette(0x31, 0xEE4400);
                         TileSprite->SetPalette(0x32, 0xEE6600);
@@ -735,10 +735,10 @@ PUBLIC void Level_TSZ::Subupdate() {
                     CameraMaxX = 0x10;
                     TSZ_CutsceneActTimer--;
 
-                    Data->layers[TSZ_FireInd].OffsetX = (Frame * 6) & 0x60;
-                    Data->layers[TSZ_FireInd].OffsetY -= TSZ_FireRiseValue >> 17;
-                    if (Data->layers[TSZ_FireInd].OffsetY < -0x300) {
-                        Data->layers[TSZ_FireInd].OffsetY = -0x300;
+                    Data->Layers[TSZ_FireInd].OffsetX = (Frame * 6) & 0x60;
+                    Data->Layers[TSZ_FireInd].OffsetY -= TSZ_FireRiseValue >> 17;
+                    if (Data->Layers[TSZ_FireInd].OffsetY < -0x300) {
+                        Data->Layers[TSZ_FireInd].OffsetY = -0x300;
                         TSZ_CutsceneActTimer = 0;
                     }
                     else {
@@ -776,8 +776,8 @@ PUBLIC void Level_TSZ::Subupdate() {
         else {
             int d0 = TSZ_ShipTimer >> 16;
 
-            Data->layers[3].OffsetX = Data->layers[4].OffsetX = 0x3D80 - d0;
-            Data->layers[3].Visible = Data->layers[4].Visible = true;
+            Data->Layers[3].OffsetX = Data->Layers[4].OffsetX = 0x3D80 - d0;
+            Data->Layers[3].Visible = Data->Layers[4].Visible = true;
 
             if (d0 < 0x3CDC) {
                 // do boss small and tree
@@ -814,10 +814,10 @@ PUBLIC void Level_TSZ::Subupdate() {
                 else if (d0 < 0x3D5C) {
                     // go up
                     d0 -= 0x3D5C;
-                    Data->layers[3].OffsetY = Data->layers[4].OffsetY += d0 / 32;
+                    Data->Layers[3].OffsetY = Data->Layers[4].OffsetY += d0 / 32;
                 }
                 else {
-                    Data->layers[3].OffsetY = Data->layers[4].OffsetY = -0x40 + TSZBattleShip_BobbingMotion[d0 >> 2 & 0xF];
+                    Data->Layers[3].OffsetY = Data->Layers[4].OffsetY = -0x40 + TSZBattleShip_BobbingMotion[d0 >> 2 & 0xF];
                 }
                 if (RoutineNumber == 4) {
                     int val = 40;
@@ -854,9 +854,9 @@ PUBLIC void Level_TSZ::Subupdate() {
 
             // Clear out waterfall
             if (LevelTriggerFlag >> 0 & 1) {
-                if (Data->layers[1].Tiles[0x270 + 0x3B * Data->layers[1].Width] != 0x0000) {
+                if (Data->Layers[1].Tiles[0x270 + 0x3B * Data->Layers[1].Width] != 0x0000) {
                     for (int i = 0x3B; i < 0x53; i++) {
-                        memset(&Data->layers[1].Tiles[0x270 + i * Data->layers[1].Width], 0x00, 8 * sizeof(short));
+                        memset(&Data->Layers[1].Tiles[0x270 + i * Data->Layers[1].Width], 0x00, 8 * sizeof(short));
                     }
                 }
             }
@@ -969,17 +969,17 @@ PUBLIC void Level_TSZ::HandleCamera() {
         if (SuperSonicMoving) {
             if (CameraX < 0x1400 && !OnBeach) {
                 BackgroundRepeatTileWidth = 32;
-                Data->layers[1].Visible = false;
-                Data->layers[2].Visible = false;
+                Data->Layers[1].Visible = false;
+                Data->Layers[2].Visible = false;
                 // Intro sequence camera stuff
             }
             else if (CameraX >= 0x1400 && !OnBeach) {
                 CameraX = 0x000;
                 //Player->EZX -= 0x800;
                 BackgroundRepeatTileWidth = 0;
-                Data->layers[1].Visible = true;
-                Data->layers[2].Visible = true;
-                Data->layers[0].ScrollIndexes[0].Size = 0x7FFF;
+                Data->Layers[1].Visible = true;
+                Data->Layers[2].Visible = true;
+                Data->Layers[0].ScrollIndexes[0].Size = 0x7FFF;
                 OnBeach = true;
             }
 
@@ -1098,11 +1098,11 @@ PUBLIC void Level_TSZ::HandleCamera() {
             }
 
             if (CameraX >= 0x3D00) {
-                Data->layers[0].OffsetY = 0xA8;
-                Data->layers[0].UseDeltaCameraX = true;
+                Data->Layers[0].OffsetY = 0xA8;
+                Data->Layers[0].UseDeltaCameraX = true;
             }
             else {
-                Data->layers[0].OffsetY = 0;
+                Data->Layers[0].OffsetY = 0;
             }
 
             int ToS3X = CameraX + App->WIDTH / 2 - 0xA0;

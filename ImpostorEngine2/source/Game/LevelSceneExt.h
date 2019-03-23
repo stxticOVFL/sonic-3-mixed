@@ -68,7 +68,7 @@ struct PlaneSwitch {
 
 struct SceneData {
     short     layerCount;
-    Layer     layers[10];
+    Layer     Layers[10];
     TileCfg*  tiles1;
     TileCfg*  tiles2;
     ISprite*  tileTex;
@@ -76,12 +76,12 @@ struct SceneData {
     int*      animatedTileFrames;
     int       animatedTilesCount = 0;
     int**     animatedTileDurations = NULL;
-    short*    isAnims;
+    short*    IsAnims;
 
-    short            objectDefinitionCount;
+    short            ObjectDefinitionCount;
     ObjectDefinition objectDefinitions[0xFF];
 
-    int       cameraLayer;
+    int       CameraLayer;
 };
 
 #endif /* LEVELSCENEEXT_H */

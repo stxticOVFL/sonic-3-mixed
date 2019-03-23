@@ -297,21 +297,21 @@ PUBLIC void Level_ICZ::GoToNextAct() {
 PUBLIC void Level_ICZ::EarlyUpdate() {
     if (Act == 1) {
         // Background (Inside)
-        Data->layers[0].Visible = false;
-        Data->layers[0].RelativeY = 0x80;
+        Data->Layers[0].Visible = false;
+        Data->Layers[0].RelativeY = 0x80;
         // Snowpile
-        Data->layers[1].Visible = false;
-        Data->layers[1].Flags = 0 | 2 | 4;
+        Data->Layers[1].Visible = false;
+        Data->Layers[1].Flags = 0 | 2 | 4;
         // Background (Outside)
-        Data->layers[2].RelativeY = 0x1;
-        Data->layers[2].UseDeltaCameraY = true;
+        Data->Layers[2].RelativeY = 0x1;
+        Data->Layers[2].UseDeltaCameraY = true;
         // FG Low/High
-        Data->layers[3].IsScrollingVertical = true;
-        Data->layers[4].IsScrollingVertical = true;
+        Data->Layers[3].IsScrollingVertical = true;
+        Data->Layers[4].IsScrollingVertical = true;
 
         if (Player->EZX < 0x3960) {
-            Data->layers[0].Visible = false;
-            Data->layers[2].Visible = true;
+            Data->Layers[0].Visible = false;
+            Data->Layers[2].Visible = true;
 
             if (TileSprite->GetPalette(0x31) != 0xEEEEEE) {
                 TileSprite->SetPalette(0x31, 0xEEEEEE);
@@ -333,8 +333,8 @@ PUBLIC void Level_ICZ::EarlyUpdate() {
             }
         }
         else {
-            Data->layers[0].Visible = true;
-            Data->layers[2].Visible = false;
+            Data->Layers[0].Visible = true;
+            Data->Layers[2].Visible = false;
 
             if (TileSprite->GetPalette(0x31) != 0x00CCEE) {
                 TileSprite->SetPalette(0x31, 0x00CCEE);

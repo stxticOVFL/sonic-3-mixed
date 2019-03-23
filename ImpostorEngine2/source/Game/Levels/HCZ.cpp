@@ -369,7 +369,7 @@ PUBLIC void Level_HCZ::RenderAboveForeground() {
             for (int i = 0; i < sizeof(copymake) / sizeof(int); i += 4) {
                 for (int x = copymake[i]; x < copymake[i] + 8; x++) {
                     for (int y = copymake[i + 1]; y < copymake[i + 1] + 8; y++) {
-                        int tile = Data->layers[4].Tiles[x + y * Data->layers[4].Width];
+                        int tile = Data->Layers[4].Tiles[x + y * Data->Layers[4].Width];
                         int flipX = ((tile >> 10) & 1);
                         int flipY = ((tile >> 11) & 1);
                         tile = tile & 0x3FF;
@@ -565,8 +565,8 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
             }
         }
 
-        Data->layers[3].OffsetX = WallX >> 16;
-        Data->layers[3].OffsetY = WallY;
+        Data->Layers[3].OffsetX = WallX >> 16;
+        Data->Layers[3].OffsetY = WallY;
 
         // Boss water and camera management
         if (Player->Action != ActionType::Dead) {
@@ -738,8 +738,8 @@ PUBLIC void Level_HCZ::Subupdate() {
 
     // Wall shit (part 2)
     if (Act == 2) {
-        Data->layers[3].Visible = true;
-        Data->layers[3].Flags = 0 | 2 | 4;
+        Data->Layers[3].Visible = true;
+        Data->Layers[3].Flags = 0 | 2 | 4;
 
         for (int p = 0; p < PlayerCount; p++) {
             IPlayer* Player = Players[p];
