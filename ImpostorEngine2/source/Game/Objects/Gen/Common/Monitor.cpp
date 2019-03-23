@@ -252,7 +252,9 @@ void Monitor::Render(int CamX, int CamY) {
         else {
             G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
-        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) return;
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) {
+            return;
+        }
 
         G->DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
     }
@@ -263,13 +265,17 @@ void Monitor::Render(int CamX, int CamY) {
         else {
             G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
-        if (CurrentAnimation == 4 && (Scene->Frame % 6 >= 4)) return;
+        if (CurrentAnimation == 4 && (Scene->Frame % 6 >= 4)) {
+            return;
+        }
 
-        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) return;
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) {
+            return;
+        }
 
         G->DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
     }
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

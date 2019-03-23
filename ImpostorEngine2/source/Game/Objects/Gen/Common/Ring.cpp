@@ -66,18 +66,21 @@ void Ring::Update() {
             Timer--;
         }
 
-        if (CurrentFrame / 0x100 >= Sprite->Animations[CurrentAnimation].FrameCount - 1) {
-            CurrentFrame = Sprite->Animations[CurrentAnimation].FrameToLoop * 0x100;
-        }
+        if (CurrentAnimation < Sprite->Animations.size()) {
+            if (CurrentFrame / 0x100 >= Sprite->Animations[CurrentAnimation].FrameCount - 1) {
+                CurrentFrame = Sprite->Animations[CurrentAnimation].FrameToLoop * 0x100;
+            }
 
-        if (Sprite->Animations[CurrentAnimation].AnimationSpeed == 4) {
-            CurrentFrame += 0x100;
-        }
-        else if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) {
-            CurrentFrame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
-        }
-        else if (Sprite->Animations[CurrentAnimation].Frames[CurrentFrame / 0x100].Duration != 0) {
-            CurrentFrame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[CurrentFrame / 0x100].Duration;
+            if (Sprite->Animations[CurrentAnimation].AnimationSpeed == 4) {
+                CurrentFrame += 0x100;
+            }
+            else if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) {
+                CurrentFrame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
+            }
+            else if (Sprite->Animations[CurrentAnimation].Frames[CurrentFrame / 0x100].Duration != 0) {
+                CurrentFrame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[CurrentFrame / 0x100].Duration;
+            }
+
         }
 
     }
@@ -136,16 +139,24 @@ void Ring::Update() {
         Y = MyY >> 8;
     }
 
-    if (Timer == 0) Active = false;
+    if (Timer == 0) {
+        Active = false;
+    }
 
     Object::Update();
 }
 
 void Ring::Render(int CamX, int CamY) {
-    if (ShouldRingFall && Timer < 64 && ((Timer >> 1) & 1) == 0) return;
+    if (ShouldRingFall && Timer < 64 && ((Timer >> 1) & 1) == 0) {
+        return;
+    }
+
+    if (CurrentAnimation <= -1) {
+        return;
+    }
 
     G->DrawSprite(Sprite, CurrentAnimation, CurrentFrame >> 8, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawNoCollisionsColor);
         G->SetDrawAlpha(0xFF);

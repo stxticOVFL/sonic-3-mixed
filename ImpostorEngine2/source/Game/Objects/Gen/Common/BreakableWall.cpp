@@ -85,7 +85,7 @@ void BreakableWall::DrawAIZ(int CamX, int CamY) {
     if (Scene->ZoneID != 1) return;
 
     G->DrawSprite(Sprite, CurrentAnimation, SubType & 0xF, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);
@@ -120,7 +120,7 @@ void BreakableWall::DrawHCZ(int CamX, int CamY) {
         G->DrawSprite(Scene->TileSprite, 0, 0x91, 8 + X - CamX + (-16), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
         G->DrawSprite(Scene->TileSprite, 0, 0x92, 8 + X - CamX + (0), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
     }
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);
@@ -149,7 +149,7 @@ void BreakableWall::DrawMGZ(int CamX, int CamY) {
     G->DrawSprite(Scene->TileSprite, 0, 0x45, 8 + X - CamX - 16 + (0), 8 + Y + h - CamY + (-16), 0, IE_NOFLIP);
     G->DrawSprite(Scene->TileSprite, 0, 0x45, 8 + X - CamX + 00 + (0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
     G->DrawSprite(Scene->TileSprite, 0, 0x44, 8 + X - CamX + 16 + (0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);
@@ -239,7 +239,9 @@ void BreakableWall::Render(int CamX, int CamY) {
     DrawAIZ(CamX, CamY);
     DrawHCZ(CamX, CamY);
     DrawMGZ(CamX, CamY);
-    if (Scene->ZoneID >= 4 && CurrentAnimation >= 0) G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    if (Scene->ZoneID >= 4 && CurrentAnimation >= 0) {
+        G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
 
     }
 

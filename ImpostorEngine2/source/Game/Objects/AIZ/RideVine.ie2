@@ -76,8 +76,7 @@ event Update() {
             BaseY += 2;
             VisualLayer = 1;
             Oscello = (Oscello + 0x100) & 0xFFFF;
-        }
-        else {
+        } else {
             if (Fireable) {
                 BaseX += 8;
 
@@ -114,8 +113,7 @@ event Update() {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 if (!Spinning) {
                     Oscello = 0;
                 }
@@ -124,8 +122,7 @@ event Update() {
             }
         }
         Amp = -8;
-    }
-    else {
+    } else {
         Amp = -4;
         Oscello = (Oscello + 0x200) & 0xFFFF;
     }
@@ -138,12 +135,14 @@ event Update() {
         nY = BaseY >> 8;
     }
     Rotation = Math.sinHex(Oscello >> 8) * Amp;
-    if (Spinning)
+    if (Spinning) {
         Rotation = (Oscello << 9);
+    }
 
     framedAngle = Rotation;
-    if (Spinning)
+    if (Spinning) {
         framedAngle = 0;
+    }
 
 
     if (ClassicStyle) {
@@ -154,8 +153,7 @@ event Update() {
             Rotation = Rotation + framedAngle;
             frame = ((Rotation >> 16) + 4 * Math.sign(Rotation)) / 8;
         }
-    }
-    else {
+    } else {
         frame = Rotation / 0x10000;
         for (var i:int = 0; i < RopeLength; i++) {
             nX += Math.sinHex(frame) / 0x1000;
@@ -165,10 +163,12 @@ event Update() {
         }
     }
 
-    if (Math.abs(X - nX) > 0)
+    if (Math.abs(X - nX) > 0) {
         LastX = X;
-    if (Math.abs(Y - nY) > 0)
+    }
+    if (Math.abs(Y - nY) > 0) {
         LastY = Y;
+    }
 
     X = nX;
     Y = nY;
@@ -207,8 +207,7 @@ event Update() {
                 PlayersControlled &= (1 << i) ^ 0xFF;
 
                 Timer = 60;
-            }
-            else {
+            } else {
                 Scene.Players[i].EZX = X;
                 Scene.Players[i].EZY = Y - 3 + Scene.Players[i].H / 2;
                 Scene.Players[i].XSpeed = 0;
@@ -230,8 +229,9 @@ event Update() {
         }
     }
 
-    if (Timer > 0)
+    if (Timer > 0) {
         Timer--;
+    }
 }
 
 event Render(CamX:int, CamY:int) {
@@ -247,28 +247,22 @@ event Render(CamX:int, CamY:int) {
 
     // Base
     if (OnFire) {
-        if (DrawCollisions) {
-            G.DrawRectangle(X - CamX, Y - CamY, W / 2, H / 2, DrawCollisionsColor);
-        } else {
-            G.DrawSprite(Sprite, 2, (Scene.Frame >> 2) & 3, BaseX - CamX, nY - CamY, 0, IE_NOFLIP); // TODO: Draw fire non anim\
-        }
+        G.DrawSprite(Sprite, 2, (Scene.Frame >> 2) & 3, BaseX - CamX, nY - CamY, 0, IE_NOFLIP); // TODO: Draw fire non anim\
     } else {
-        if (DrawCollisions) {
-            G.DrawRectangle(X - CamX, Y - CamY, W / 2, H / 2, DrawCollisionsColor);
-        } else {
-            G.DrawSprite(Sprite, CurrentAnimation, 0x21, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
-        }
+        G.DrawSprite(Sprite, CurrentAnimation, 0x21, BaseX - CamX, nY - CamY, 0, IE_NOFLIP);
     }
 
     Rotation = Math.sinHex(Oscello >> 8) * Amp;
-    if (Spinning)
+    if (Spinning) {
         Rotation = (Oscello << 9);
+    }
 
     if (ClassicStyle) {
         if (Rotation < 0) {
             framedAngle = Rotation;
-            if (Spinning)
+            if (Spinning) {
                 framedAngle = 0;
+            }
             Frame = ((Rotation >> 16) - 4) / 8;
             G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
 
@@ -277,13 +271,13 @@ event Render(CamX:int, CamY:int) {
                 nY += Math.cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) - 4) / 8;
-                    G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
-                
+                G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
             }
         } else {
             framedAngle = Rotation;
-            if (Spinning)
+            if (Spinning) {
                 framedAngle = 0;
+            }
             Frame = ((Rotation >> 16) + 4) / 8;
             G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
 
@@ -292,14 +286,14 @@ event Render(CamX:int, CamY:int) {
                 nY += Math.cosHex((Frame & 0x1F) * 8) >> 12;
                 Rotation = Rotation + framedAngle;
                 Frame = ((Rotation >> 16) + 4) / 8;
-                    G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
-                
+                G.DrawSprite(Sprite, CurrentAnimation, Frame & 0x1F, nX - CamX, nY - CamY, 0, IE_NOFLIP);
             }
         }
     } else {
         framedAngle = Rotation;
-        if (Spinning)
+        if (Spinning) {
             framedAngle = 0;
+        }
 
         Frame = Rotation / 0x10000;
         G.DrawSprite(Sprite, CurrentAnimation, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
@@ -309,30 +303,18 @@ event Render(CamX:int, CamY:int) {
             nY += Math.cosHex(Frame) / 0x1000;
             Rotation = Rotation + framedAngle;
             Frame = Rotation / 0x10000;
-            if (DrawCollisions) {
-                G.DrawRectangle(nX - CamX, nY - CamY, W / 2, H / 2, DrawCollisionsColor);
-            } else {
-                G.DrawSprite(Sprite, CurrentAnimation, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
-            }
+            G.DrawSprite(Sprite, CurrentAnimation, (Frame / 8) & 0x1F, nX - CamX, nY - CamY, Frame - ((Frame / 8) * 8), IE_NOFLIP);
         }
     }
 
     // Handle
     if (!Spinning) {
-        if (DrawCollisions) {
-            G.DrawRectangle(X - CamX, Y - CamY, W / 2, H / 2, DrawCollisionsColor);
-        } else {
-            G.DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, 0, IE_NOFLIP);
-        }
+        G.DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, 0, IE_NOFLIP);
     } else {
-        if (DrawCollisions) {
-            G.DrawRectangle(X - CamX, Y - CamY, W / 2, H / 2, DrawCollisionsColor);
-        } else {
-            G.DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, Rotation / 0x10000, IE_NOFLIP);
-        }
+        G.DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, Rotation / 0x10000, IE_NOFLIP);
     }
 	
-				if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);

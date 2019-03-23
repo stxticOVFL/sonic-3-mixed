@@ -47,23 +47,18 @@ uint8_t InvisibleSpikes::GetSubTypeMax() {
 
 void InvisibleSpikes::Render(int CamX, int CamY) {
     if (!Scene->maxLayer) {
-        if (DrawCollisions) {
+        int32_t x0 = ((X + 32 / -2) + 8) - CamX;
+        int32_t y0 = ((Y + 32 / -2) + 8) - CamY;
+        int32_t x1 = ((X + 32 / 2) - 8) - CamX;
+        int32_t y1 = ((Y + 32 / 2) - 8) - CamY;
+        G->DrawSprite(Scene->ItemsSprite, 2, 12, x0, y0, 0, 0);
+        G->DrawSprite(Scene->ItemsSprite, 2, 12, x0, y1, 0, 0);
+        G->DrawSprite(Scene->ItemsSprite, 2, 12, x1, y0, 0, 0);
+        G->DrawSprite(Scene->ItemsSprite, 2, 12, x1, y1, 0, 0);
+        if (isHeldDebugObject) {
             G->DrawRectangle(X - CamX - 16, Y - 16 - CamY, W, H, 0x555654);
         }
-        else {
-            int32_t x0 = ((X + 32 / -2) + 8) - CamX;
-            int32_t y0 = ((Y + 32 / -2) + 8) - CamY;
-            int32_t x1 = ((X + 32 / 2) - 8) - CamX;
-            int32_t y1 = ((Y + 32 / 2) - 8) - CamY;
-            G->DrawSprite(Scene->ItemsSprite, 2, 12, x0, y0, 0, 0);
-            G->DrawSprite(Scene->ItemsSprite, 2, 12, x0, y1, 0, 0);
-            G->DrawSprite(Scene->ItemsSprite, 2, 12, x1, y0, 0, 0);
-            G->DrawSprite(Scene->ItemsSprite, 2, 12, x1, y1, 0, 0);
-            if (isHeldDebugObject) {
-                G->DrawRectangle(X - CamX - 16, Y - 16 - CamY, W, H, 0x555654);
-            }
 
-        }
     }
 
     }

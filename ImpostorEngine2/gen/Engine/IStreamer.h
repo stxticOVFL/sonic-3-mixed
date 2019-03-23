@@ -19,9 +19,12 @@ public:
     unsigned char* ptr_start;
     IResource* res = NULL;
     long distance = 0;
+    bool ExternalAllocation = false;
 
     IStreamer(void* pt);
+    IStreamer(unsigned char* pt);
     IStreamer(IResource* r);
+    ~IStreamer();
     float ReadFloat();
     size_t Seek(int64_t offset);
     size_t Skip(int64_t offset);
@@ -53,7 +56,7 @@ public:
     void WriteInt32BE(signed int data);
     void WriteString(char* string);
     void WriteRSDKString(char* string);
-    unsigned long  Decompress(void* dst, int dstLen, void* src, int srcLen);
+    unsigned long Decompress(void* dst, int dstLen, void* src, int srcLen);
     unsigned char* ReadCompressed();
     unsigned long  Distance();
     IStreamer GetCompressedStream();

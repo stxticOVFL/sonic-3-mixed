@@ -77,14 +77,20 @@ void Spikes::Update() {
 
 void Spikes::Render(int CamX, int CamY) {
     int flag = IE_NOFLIP;
-    if (Rotation == 0xC0) flag = IE_FLIPX;
+    if (Rotation == 0xC0) {
+        flag = IE_FLIPX;
+    }
 
     for (int i = 0; i < Size; i++)
 {
-        if (Vertical) G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - (Size - 1) * 16 + i * 32, Rotation, flag);
-        else G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX - (Size - 1) * 16 + i * 32, Y - CamY, Rotation, flag);
+        if (Vertical) {
+            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - (Size - 1) * 16 + i * 32, Rotation, flag);
+        }
+        else {
+            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX - (Size - 1) * 16 + i * 32, Y - CamY, Rotation, flag);
+        }
     }
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);
@@ -104,7 +110,9 @@ int Spikes::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Players[PlayerID]->EZY += 6;
     }
     else if ((Rotation == 90 && HitFrom == CollideSide::LEFT) || (Rotation == 270 && HitFrom == CollideSide::RIGHT)) {
-        if (Scene->Players[PlayerID]->EZY + 20 - 4 - 4 <= Y - 16) return 0;
+        if (Scene->Players[PlayerID]->EZY + 20 - 4 - 4 <= Y - 16) {
+            return 0;
+        }
 
         Scene->Players[PlayerID]->Hurt(X, true);
     }

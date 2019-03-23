@@ -81,17 +81,19 @@ event Update() {
 }
 event Render(CamX:int, CamY:int) {
     var flag:int = IE_NOFLIP;
-    if (Rotation == 0xC0)
+    if (Rotation == 0xC0) {
         flag = IE_FLIPX;
+    }
 
     for (var i:int = 0; i < Size; i++) {
-        if (Vertical)
+        if (Vertical) {
             G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - (Size - 1) * 16 + i * 32, Rotation, flag);
-        else
+        } else {
             G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX - (Size - 1) * 16 + i * 32, Y - CamY, Rotation, flag);
+        }
     }
 	
-		if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
@@ -101,17 +103,15 @@ event Render(CamX:int, CamY:int) {
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (HitFrom == CollideSide.TOP && Rotation == 0 && Scene.Players[PlayerID].YSpeed >= 0) {
         Scene.Players[PlayerID].Hurt(X, true);
-    }
-    else if (HitFrom == CollideSide.BOTTOM && Rotation == 180 && Scene.Players[PlayerID].YSpeed <= 0 && !In && ((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2)) {
+    } else if (HitFrom == CollideSide.BOTTOM && Rotation == 180 && Scene.Players[PlayerID].YSpeed <= 0 && !In && ((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2)) {
         Scene.Players[PlayerID].Hurt(X, true);
-    }
-    else if (HitFrom == CollideSide.BOTTOM && Rotation == 180 && Scene.Players[PlayerID].YSpeed <= 0 && In && !((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2)) {
+    } else if (HitFrom == CollideSide.BOTTOM && Rotation == 180 && Scene.Players[PlayerID].YSpeed <= 0 && In && !((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2)) {
         Scene.Players[PlayerID].Hurt(X, true);
         Scene.Players[PlayerID].EZY += 6;
-    }
-    else if ((Rotation == 90 && HitFrom == CollideSide.LEFT) || (Rotation == 270 && HitFrom == CollideSide.RIGHT)) {
-        if (Scene.Players[PlayerID].EZY + 20 - 4 - 4 <= Y - 16)
+    } else if ((Rotation == 90 && HitFrom == CollideSide.LEFT) || (Rotation == 270 && HitFrom == CollideSide.RIGHT)) {
+        if (Scene.Players[PlayerID].EZY + 20 - 4 - 4 <= Y - 16) {
             return 0;
+        }
 
         Scene.Players[PlayerID].Hurt(X, true);
     }

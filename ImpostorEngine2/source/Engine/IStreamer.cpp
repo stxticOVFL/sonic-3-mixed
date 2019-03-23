@@ -8,6 +8,7 @@ public:
     unsigned char* ptr_start;
     IResource* res = NULL;
     long distance = 0;
+	bool ExternalAllocation = false;
 };
 #endif
 
@@ -18,8 +19,19 @@ PUBLIC IStreamer::IStreamer(void* pt) {
     ptr_start = (unsigned char*)pt;
 }
 
+PUBLIC IStreamer::IStreamer(unsigned char* pt) {
+	this->ptr = pt;
+	ptr_start = pt;
+}
+
 PUBLIC IStreamer::IStreamer(IResource* r) {
     res = r;
+}
+
+PUBLIC IStreamer::~IStreamer() {
+	if (ExternalAllocation) {
+
+	}
 }
 
 PUBLIC float IStreamer::ReadFloat() {
@@ -62,11 +74,14 @@ PUBLIC unsigned char  IStreamer::ReadByte() {
 
 PUBLIC unsigned char* IStreamer::ReadByte4() {
     if (res) {
-        unsigned char* data = (unsigned char*)malloc(4);
+        unsigned char* data = (unsigned char*)malloc(5);
         res->Read(data, 1 * 4);
+		data[4] = '\0';
         return data;
     }
-    unsigned char* data = ptr;
+	unsigned char* data = (unsigned char*)malloc(5);
+	memcpy(data, ptr, 4);
+	data[4] = '\0';
     ptr += 4;
     distance += 4;
     return data;
@@ -74,12 +89,14 @@ PUBLIC unsigned char* IStreamer::ReadByte4() {
 
 PUBLIC unsigned char* IStreamer::ReadBytes(int n) {
     if (res) {
-        unsigned char* data = (unsigned char*)malloc(n);
+        unsigned char* data = (unsigned char*)malloc(n + 1);
         res->Read(data, 1 * n);
+		data[n] = '\0';
         return data;
     }
-    unsigned char* data = (unsigned char*)malloc(n);
+    unsigned char* data = (unsigned char*)malloc(n + 1);
     memcpy(data, ptr, n);
+	data[n] = '\0';
     ptr += n;
     distance += n;
     return data;
@@ -287,12 +304,12 @@ PUBLIC void IStreamer::WriteRSDKString(char* string) {
     WriteByte(0);
 }
 
-PUBLIC unsigned long  IStreamer::Decompress(void* dst, int dstLen, void* src, int srcLen) {
+PUBLIC unsigned long IStreamer::Decompress(void* dst, int dstLen, void* src, int srcLen) {
     z_stream strm  = {0};
     strm.total_in  = strm.avail_in  = srcLen;
     strm.total_out = strm.avail_out = dstLen;
-    strm.next_in   = (Bytef *) src;
-    strm.next_out  = (Bytef *) dst;
+    strm.next_in   = (Bytef *)src;
+    strm.next_out  = (Bytef *)dst;
 
     strm.zalloc = Z_NULL;
     strm.zfree  = Z_NULL;
@@ -306,13 +323,11 @@ PUBLIC unsigned long  IStreamer::Decompress(void* dst, int dstLen, void* src, in
         err = inflate(&strm, Z_FINISH);
         if (err == Z_STREAM_END) {
             ret = strm.total_out;
-        }
-        else {
+        } else {
              inflateEnd(&strm);
              return err;
         }
-    }
-    else {
+    } else {
         inflateEnd(&strm);
         return err;
     }
@@ -325,17 +340,19 @@ PUBLIC unsigned char* IStreamer::ReadCompressed() {
     unsigned int compressed_size = ReadUInt32() - 4; // 0x47 = 71 - 4 = 67
     unsigned int uncompressed_size = ReadUInt32BE(); // 0x200 = 512
 
-    unsigned char* out = new unsigned char[uncompressed_size];
+    unsigned char* out = new unsigned char[uncompressed_size + 1];
+	out[uncompressed_size] = '\0';
 
     if (res) {
-		unsigned char* in = new unsigned char[compressed_size];
+		unsigned char* in = new unsigned char[compressed_size + 1];
+		in[compressed_size] = '\0';
+
         res->Read(in, 1 * compressed_size);
 
         Decompress(out, uncompressed_size, in, compressed_size);
 
         delete[] in;
-    }
-    else {
+    } else {
         Decompress(out, uncompressed_size, ptr, compressed_size);
 
         ptr += compressed_size;
