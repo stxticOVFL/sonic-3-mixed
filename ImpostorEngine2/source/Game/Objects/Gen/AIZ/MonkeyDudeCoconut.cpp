@@ -6,7 +6,6 @@
 typedef IMath Math;
 
 CONSTRUCTER MonkeyDudeCoconut::MonkeyDudeCoconut() {
-    BinIndex = LevelScene::LoadSpriteBin("AIZ/Monkey Dude.bin");
 }
 
 void MonkeyDudeCoconut::Create() {

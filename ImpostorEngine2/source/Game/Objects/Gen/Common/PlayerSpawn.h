@@ -15,8 +15,8 @@ class PlayerSpawn;
 class PlayerSpawn: public Object {
 public:    
     
-    int SpawnPlayer;
-    int SpawnPlayerID;
+    uint8_t SpawnPlayerID;
+    int SpawnPlayerIndex;
     bool SpawnAsSidekick;
     
     void Create();

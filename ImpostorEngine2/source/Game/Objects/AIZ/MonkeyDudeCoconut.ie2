@@ -1,7 +1,7 @@
 subclass Enemy;
 
 event MonkeyDudeCoconut() : CONSTRUCTER {
-	BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
+	//BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
 }
 
 

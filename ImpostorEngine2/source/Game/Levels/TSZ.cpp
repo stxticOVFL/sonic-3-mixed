@@ -265,7 +265,7 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     }
     else if (Act == 1) {
         PlayerStartX = 0x13E0;
-        PlayerStartY = 0x041A;
+		PlayerStartY = 0x041A;
 
         // PlayerStartX = 0x3000;
         // PlayerStartY = 0x034C;

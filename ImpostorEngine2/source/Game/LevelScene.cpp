@@ -3611,8 +3611,9 @@ PUBLIC void LevelScene::AddNewDebugObjectID(int16_t ID) {
 	DebugObjectIDList[DebugObjectIDCount++] = ID;
 }
 
-PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick) {
-	if (ID == 0) {
+PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick, bool Main, int X, int Y) {
+	if (Main)
+	{
 		Player = new IPlayer();
 		Player->G = G;
 		Player->App = App;
@@ -3622,11 +3623,17 @@ PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick) {
 		Player->Sidekick = Sidekick;
 		Player->Shield = (ShieldType)(SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield < 5 ? (uint8_t)SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield : 0);
 		Player->Thremixed = SaveGame::CurrentMode > 0;
-		Player->Create();
 		Player->Lives = SaveGame::GetLives();
+		Player->X = X;
+		Player->Y = Y;
+		Player->ControlLocked = false;
+		Player->ObjectControlled = 0x00;
+		Player->Create();
 
 		Players[ID] = Player;
-	} else {
+	}
+	else
+	{
 		Players[ID] = new IPlayer();
 		Players[ID]->G = G;
 		Players[ID]->App = App;
@@ -3635,6 +3642,10 @@ PUBLIC VIRTUAL void LevelScene::SpawnPlayer(int ID, bool Sidekick) {
 		Players[ID]->Character = (CharacterType)SaveGame::CurrentPartnerFlag;
 		Players[ID]->PlayerID = 1;
 		Players[ID]->Thremixed = SaveGame::CurrentMode > 0;
+		Players[ID]->X = X;
+		Players[ID]->Y = Y;
+		Players[ID]->ControlLocked = false;
+		Players[ID]->ObjectControlled = 0x00;
 		Players[ID]->Create();
 
 		LevelScene::PlayerCount = ID;

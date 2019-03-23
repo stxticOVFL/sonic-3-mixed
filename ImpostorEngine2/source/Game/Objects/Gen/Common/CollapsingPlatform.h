@@ -21,8 +21,6 @@ public:
     int Sections;
     int Vsect;
     Object* Outliner;
-    int Act1BinIndex;
-    int Act2BinIndex;
     
     CONSTRUCTER CollapsingPlatform();
     void Create();
