@@ -1,7 +1,7 @@
 #ifndef RHINOBOT_H
 #define RHINOBOT_H
 
-class RhinoBot;
+class Rhinobot;
 
 #include <Utils/Standard.h>
 
@@ -12,7 +12,7 @@ class RhinoBot;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class RhinoBot: public Enemy {
+class Rhinobot: public Enemy {
 public:    
     
     int SubX;

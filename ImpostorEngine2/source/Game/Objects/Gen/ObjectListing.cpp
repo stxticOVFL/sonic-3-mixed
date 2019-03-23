@@ -201,7 +201,7 @@ Object* GetNewObjectFromID(int ID) {
             return new Bloominator();
             break;
         case 0x8DU:
-            return new RhinoBot();
+            return new Rhinobot();
             break;
         case 0x8EU:
             return new MonkeyDude();
@@ -578,8 +578,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x9B85E709U:
             return new Bloominator();
             break;
-        case 0x4374E9C7U:
-            return new RhinoBot();
+        case 0x100EEC66U:
+            return new Rhinobot();
             break;
         case 0xB7C95057U:
             return new MonkeyDude();

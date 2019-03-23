@@ -9757,8 +9757,17 @@ namespace SonicRetro.SonLVL.GUI
 				BlankobjattributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
 				BlankobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
 
+				RSDKv5.AttributeInfo BlankobjattributeInfoFX = new RSDKv5.AttributeInfo();
+				BlankobjattributeInfoFX.Name = new RSDKv5.NameIdentifier("FlipX");
+				BlankobjattributeInfoFX.Type = RSDKv5.AttributeTypes.BOOL;
+				RSDKv5.AttributeInfo BlankobjattributeInfoFY = new RSDKv5.AttributeInfo();
+				BlankobjattributeInfoFY.Name = new RSDKv5.NameIdentifier("FlipY");
+				BlankobjattributeInfoFY.Type = RSDKv5.AttributeTypes.BOOL;
+
 				Blankobj.Attributes.Add(BlankobjattributeInfof);
 				Blankobj.Attributes.Add(BlankobjattributeInfo);
+				Blankobj.Attributes.Add(BlankobjattributeInfoFX);
+				Blankobj.Attributes.Add(BlankobjattributeInfoFY);
 
 				RSDKv5.SceneObject Ringobj = new RSDKv5.SceneObject();
 				Ringobj.Name = new RSDKv5.NameIdentifier("Ring");
@@ -9771,8 +9780,17 @@ namespace SonicRetro.SonLVL.GUI
 				RingobjattributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
 				RingobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
 
+				RSDKv5.AttributeInfo RingobjattributeInfoFX = new RSDKv5.AttributeInfo();
+				RingobjattributeInfoFX.Name = new RSDKv5.NameIdentifier("FlipX");
+				RingobjattributeInfoFX.Type = RSDKv5.AttributeTypes.BOOL;
+				RSDKv5.AttributeInfo RingobjattributeInfoFY = new RSDKv5.AttributeInfo();
+				RingobjattributeInfoFY.Name = new RSDKv5.NameIdentifier("FlipY");
+				RingobjattributeInfoFY.Type = RSDKv5.AttributeTypes.BOOL;
+
 				Ringobj.Attributes.Add(RingobjattributeInfof);
 				Ringobj.Attributes.Add(RingobjattributeInfo);
+				Ringobj.Attributes.Add(RingobjattributeInfoFX);
+				Ringobj.Attributes.Add(RingobjattributeInfoFY);
 
 				RSDKv5.SceneObject Playerobj = new RSDKv5.SceneObject();
 				Playerobj.Name = new RSDKv5.NameIdentifier("PlayerSpawn");
@@ -9782,11 +9800,20 @@ namespace SonicRetro.SonLVL.GUI
 				PlayerobjattributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
 
 				RSDKv5.AttributeInfo PlayerobjattributeInfof = new RSDKv5.AttributeInfo();
-				PlayerobjattributeInfof.Name = new RSDKv5.NameIdentifier("Subtype");
+				PlayerobjattributeInfof.Name = new RSDKv5.NameIdentifier("Filter");
 				PlayerobjattributeInfof.Type = RSDKv5.AttributeTypes.UINT8;
+
+				RSDKv5.AttributeInfo PlayerobjattributeInfoFX = new RSDKv5.AttributeInfo();
+				PlayerobjattributeInfoFX.Name = new RSDKv5.NameIdentifier("FlipX");
+				PlayerobjattributeInfoFX.Type = RSDKv5.AttributeTypes.BOOL;
+				RSDKv5.AttributeInfo PlayerobjattributeInfoFY = new RSDKv5.AttributeInfo();
+				PlayerobjattributeInfoFY.Name = new RSDKv5.NameIdentifier("FlipY");
+				PlayerobjattributeInfoFY.Type = RSDKv5.AttributeTypes.BOOL;
 
 				Playerobj.Attributes.Add(PlayerobjattributeInfof);
 				Playerobj.Attributes.Add(PlayerobjattributeInfo);
+				Playerobj.Attributes.Add(PlayerobjattributeInfoFX);
+				Playerobj.Attributes.Add(PlayerobjattributeInfoFY);
 
 				foreach (System.Collections.Generic.KeyValuePair<byte, ObjectDefinition> i in LevelData.ObjTypes)
 				{
@@ -9817,8 +9844,18 @@ namespace SonicRetro.SonLVL.GUI
 						attributeInfo.Name = new RSDKv5.NameIdentifier("Subtype");
 						attributeInfo.Type = RSDKv5.AttributeTypes.UINT8;
 
+						RSDKv5.AttributeInfo attributeInfoFX = new RSDKv5.AttributeInfo();
+						attributeInfoFX.Name = new RSDKv5.NameIdentifier("FlipX");
+						attributeInfoFX.Type = RSDKv5.AttributeTypes.BOOL;
+
+						RSDKv5.AttributeInfo attributeInfoFY = new RSDKv5.AttributeInfo();
+						attributeInfoFY.Name = new RSDKv5.NameIdentifier("FlipY");
+						attributeInfoFY.Type = RSDKv5.AttributeTypes.BOOL;
+
 						obj.Attributes.Add(attributeInfof);
 						obj.Attributes.Add(attributeInfo);
+						obj.Attributes.Add(attributeInfoFX);
+						obj.Attributes.Add(attributeInfoFY);
 					}
 					else
 					{
@@ -9867,6 +9904,8 @@ namespace SonicRetro.SonLVL.GUI
 					{
 						ent.Attributes[0].ValueUInt8 = 0xFF;
 						ent.Attributes[1].ValueUInt8 = LevelData.Objects[i].SubType;
+						ent.Attributes[2].ValueBool = LevelData.Objects[i].XFlip;
+						ent.Attributes[3].ValueBool = LevelData.Objects[i].YFlip;
 					}
 					SceneData.Objects[ObjID].Entities.Add(ent);
 				}
@@ -9879,6 +9918,8 @@ namespace SonicRetro.SonLVL.GUI
 
 					ent.Attributes[0].ValueUInt8 = 0xFF;
 					ent.Attributes[1].ValueUInt8 = 0;
+					ent.Attributes[2].ValueUInt8 = 0;
+					ent.Attributes[3].ValueUInt8 = 0;
 					Ringobj.Entities.Add(ent);
 				}
 
@@ -9890,6 +9931,8 @@ namespace SonicRetro.SonLVL.GUI
 
 					ent.Attributes[0].ValueUInt8 = 0xFF;
 					ent.Attributes[1].ValueUInt8 = 0xFF;
+					ent.Attributes[2].ValueUInt8 = 0;
+					ent.Attributes[3].ValueUInt8 = 0;
 					Playerobj.Entities.Add(ent);
 				}
 
