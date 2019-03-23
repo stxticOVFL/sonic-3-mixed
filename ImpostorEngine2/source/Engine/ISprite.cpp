@@ -13,7 +13,7 @@ public:
     int PaletteSize = 0;
     int Paletted = 0;
     int TransparentColorIndex = 0;
-    
+
     IApp* App = NULL;
 
     struct AnimFrame {
@@ -60,6 +60,7 @@ public:
 #include "Utils/gifdec.h"
 #include <algorithm>
 #include <fstream>
+#include <Engine/Diagnostics/Memory.h>
 
 static std::unordered_map<const char*, gd_GIF*> GifMap;
 
@@ -121,7 +122,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
 				break;
 			}
 		}
-		default: 
+		default:
 			outfile.clear();
 			outfile.append(checkedFilename);
 	}
@@ -161,7 +162,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinti
 				break;
 			}
 		}
-		default: 
+		default:
 			outfile.clear();
 			outfile.append(checkedFilename);
 	}
@@ -174,7 +175,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinti
 }
 
 PUBLIC ISprite::~ISprite() {
-    Cleanup();
+   
 }
 
 PUBLIC void ISprite::SetTransparentColorIndex(int i) {
@@ -280,10 +281,12 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            Memory::Free(Palette);
+			Palette = NULL;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            Memory::Free(PaletteAlt);
+			PaletteAlt = NULL;
         }
     }
     Palette = other->Palette;
@@ -453,7 +456,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
         fflush(stdin);
         exit(0);
     }
-    
+
     TextureID = 0;
     PaletteID = 0;
     PaletteAltID = 0;
@@ -472,17 +475,17 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
 
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            Memory::Free(Palette);
             Palette = NULL;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            Memory::Free(PaletteAlt);
             PaletteAlt = NULL;
         }
     }
-    
-    Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
-    PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
+
+    Palette = (uint32_t*)Memory::TrackedCalloc("ISprite::Palette", 256, sizeof(uint32_t));
+    PaletteAlt = (uint32_t*)Memory::TrackedCalloc("ISprite::PaletteAlt", 256, sizeof(uint32_t));
 
     assert(Palette != NULL);
     assert(PaletteAlt != NULL);
@@ -495,7 +498,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     for (int i = 0; i < PaletteSize; i++) {
         uint8_t* color = stream.ReadBytes(3);
         Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
-        free(color);
+        Memory::Free(color);
 
         Palette[i] |= 0xFF000000;
         #if ANDROID
@@ -513,14 +516,14 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     }
 
     SetTransparentColorIndex(TransparentColorIndex);
-    
-    
+
+
     if (Data != NULL) {
-        free(Data);
+        Memory::Free(Data);
         Data = NULL;
     }
 
-    Data = (uint8_t*)malloc(Width * Height);
+    Data = (uint8_t*)Memory::TrackedMalloc("ISprite::Data", Width * Height);
 
     res = IResources::Load(Filename.c_str(), true);
 
@@ -528,14 +531,14 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     if (FindGIF(Filename.c_str()) && GifMap.find(Filename.c_str())->second != NULL) {
         gif = GifMap.find(Filename.c_str())->second;
         GifMap.find(Filename.c_str())->second = gd_copy_gif(gif);
-        
+
         gif->fd = res;
         gd_get_frame(gif);
 
         gd_render_frame(gif, Data);
     } else {
         gif = gd_open_gif(res);
-        
+
 		if (gif != NULL) {
 			if (!FindGIF(Filename.c_str())) {
 				std::pair<const char *, gd_GIF *> pair(Filename.c_str(), gd_copy_gif(gif));
@@ -547,7 +550,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
 			gd_render_frame(gif, Data);
 		}
     }
-    
+
 	if (gif != NULL) {
 		gd_close_gif(gif);
 	}
@@ -555,7 +558,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     IResources::Close(res);
 
     Paletted = 1;
-    
+
     G->MakeTexture(this);
     UpdatePalette();
 }
@@ -574,7 +577,7 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
         fflush(stdin);
         exit(0);
     }
-    
+
     TextureID = 0;
     PaletteID = 0;
     PaletteAltID = 0;
@@ -590,20 +593,20 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
         IApp::Print(2, "Could not make sprite using '%s' without a palette!", Filename.c_str());
         return;
     }
-    
+
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            Memory::Free(Palette);
             Palette = NULL;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            Memory::Free(PaletteAlt);
             PaletteAlt = NULL;
         }
     }
 
-    Palette = (uint32_t*)calloc(256, sizeof(uint32_t));
-    PaletteAlt = (uint32_t*)calloc(256, sizeof(uint32_t));
+    Palette = (uint32_t*)Memory::TrackedCalloc("ISprite::Palette", 256, sizeof(uint32_t));
+    PaletteAlt = (uint32_t*)Memory::TrackedCalloc("ISprite::PaletteAlt", 256, sizeof(uint32_t));
 
     assert(Palette != NULL);
     assert(PaletteAlt != NULL);
@@ -616,7 +619,7 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
     for (int i = 0; i < PaletteSize; i++) {
         uint8_t* color = stream.ReadBytes(3);
         Palette[i] = color[0] << 16 | color[1] << 8 | color[2];
-        free(color);
+        Memory::Free(color);
 
         Palette[i] |= 0xFF000000;
         #if ANDROID
@@ -634,13 +637,13 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
     }
 
     SetTransparentColorIndex(TransparentColorIndex);
-    
+
     if (Data != NULL) {
-        free(Data);
+        Memory::Free(Data);
         Data = NULL;
     }
-    
-    Data = (uint8_t*)malloc(Width * Height);
+
+    Data = (uint8_t*)Memory::TrackedMalloc("ISprite::Data", Width * Height);
 
     res = IResources::Load(Filename.c_str(), true);
 
@@ -648,14 +651,14 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
     if (FindGIF(Filename.c_str()) && GifMap.find(Filename.c_str())->second != NULL) {
         gif = GifMap.find(Filename.c_str())->second;
         GifMap.find(Filename.c_str())->second = gd_copy_gif(gif);
-        
+
         gif->fd = res;
         gd_get_frame(gif);
 
         gd_render_frame(gif, Data);
     } else {
         gif = gd_open_gif(res);
-        
+
 		if (gif != NULL) {
 			if (!FindGIF(Filename.c_str())) {
 				std::pair<const char *, gd_GIF *> pair(Filename.c_str(), gd_copy_gif(gif));
@@ -667,7 +670,7 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
 			gd_render_frame(gif, Data);
 		}
     }
-    
+
 	if (gif != NULL) {
 		gd_close_gif(gif);
 	}
@@ -675,7 +678,7 @@ PUBLIC void ISprite::LoadSprite(std::string filename) {
     IResources::Close(res);
 
     Paletted = 1;
-    
+
     G->MakeTexture(this);
     UpdatePalette();
 }
@@ -729,12 +732,12 @@ PUBLIC void ISprite::Cleanup() {
         }
     }
 	Animations.clear();
-    
+
     if (Data) {
-        free(Data);
+        Memory::Free(Data);
         Data = NULL;
     }
-    
+
     if (FindGIF(Filename.c_str())) {
         auto it = GifMap.find(Filename.c_str());
         gd_close_gif(it->second);
@@ -743,10 +746,12 @@ PUBLIC void ISprite::Cleanup() {
 
     if (!LinkedSprite) {
         if (Palette) {
-            free(Palette);
+            Memory::Free(Palette);
+			Palette = NULL;
         }
         if (PaletteAlt) {
-            free(PaletteAlt);
+            Memory::Free(PaletteAlt);
+			PaletteAlt = NULL;
         }
     }
 

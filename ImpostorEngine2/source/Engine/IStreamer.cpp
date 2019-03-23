@@ -12,6 +12,7 @@ public:
 #endif
 
 #include <Engine/IStreamer.h>
+#include <Engine/Diagnostics/Memory.h>
 
 PUBLIC IStreamer::IStreamer(void* pt) {
     this->ptr = (unsigned char*)pt;
@@ -62,7 +63,7 @@ PUBLIC unsigned char  IStreamer::ReadByte() {
 
 PUBLIC unsigned char* IStreamer::ReadByte4() {
     if (res) {
-        unsigned char* data = (unsigned char*)malloc(4);
+        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadByte4", 4);
         res->Read(data, 1 * 4);
         return data;
     }
@@ -74,11 +75,11 @@ PUBLIC unsigned char* IStreamer::ReadByte4() {
 
 PUBLIC unsigned char* IStreamer::ReadBytes(int n) {
     if (res) {
-        unsigned char* data = (unsigned char*)malloc(n);
+        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
         res->Read(data, 1 * n);
         return data;
     }
-    unsigned char* data = (unsigned char*)malloc(n);
+    unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
     memcpy(data, ptr, n);
     ptr += n;
     distance += n;
@@ -150,7 +151,7 @@ PUBLIC char* IStreamer::ReadLine() {
 
     uint64_t sz = Distance() - start;
 
-    // char* data = (char*)malloc(sz);
+    // char* data = (char*)Memory::TrackedMalloc("IStreamer::ReadLine", sz);
     Skip(-sz);
 
     return (char*)ReadBytes(sz);
@@ -162,7 +163,7 @@ PUBLIC char* IStreamer::ReadString() {
 
     uint64_t sz = Distance() - start;
 
-    // char* data = (char*)malloc(sz);
+    // char* data = (char*)Memory::TrackedMalloc("IStreamer::ReadString", sz);
     Skip(-sz);
 
     return (char*)ReadBytes(sz);
@@ -300,15 +301,15 @@ PUBLIC unsigned char* IStreamer::ReadCompressed() {
     unsigned int compressed_size = ReadUInt32() - 4; // 0x47 = 71 - 4 = 67
     unsigned int uncompressed_size = ReadUInt32BE(); // 0x200 = 512
 
-    unsigned char* out = (unsigned char*)malloc(uncompressed_size);
+    unsigned char* out = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadCompressed::out", uncompressed_size);
 
     if (res) {
-        unsigned char* in = (unsigned char*)malloc(compressed_size);
+        unsigned char* in = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadCompressed::in", compressed_size);
         res->Read(in, 1 * compressed_size);
 
         Decompress(out, uncompressed_size, in, compressed_size);
 
-        free(in);
+        Memory::Free(in);
     }
     else {
         Decompress(out, uncompressed_size, ptr, compressed_size);

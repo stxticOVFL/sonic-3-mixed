@@ -346,6 +346,7 @@ PUBLIC void IApp::Run() {
         // If there's a new scene to go to
         if (NextScene != NULL) {
 			unsigned long now = SDL_GetTicks();
+			Scene->Cleanup();
             delete Scene;
             Scene = NextScene;
             NextScene = NULL;

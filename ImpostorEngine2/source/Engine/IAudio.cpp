@@ -54,6 +54,8 @@ public:
 #include <Engine/IAudio.h>
 #include <Engine/ISound.h>
 
+#include <Engine/Diagnostics/Memory.h>
+
 #define AUDIO_FORMAT AUDIO_S16
 
 // #define AUDIO_FREQUENCY 22050
@@ -69,13 +71,13 @@ SDL_AudioSpec IAudio::DeviceFormat;
 PUBLIC IAudio::IAudio(IApp* app) {
     App = app;
 
-	Loop = (bool*)calloc(1, 256 * sizeof(bool));
-	Paused = (bool*)calloc(1, 256 * sizeof(bool));
-	Buffer = (uint8_t**)calloc(1, 256 * sizeof(uint8_t*));
-	Length = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
-	BufferStart = (uint8_t**)calloc(1, 256 * sizeof(uint8_t*));
-	LengthStart = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
-	LoopPoint = (uint32_t*)calloc(1, 256 * sizeof(uint32_t));
+	Loop = (bool*)Memory::TrackedCalloc("IAudio::Loop", 1, 256 * sizeof(bool));
+	Paused = (bool*)Memory::TrackedCalloc("IAudio::Paused", 1, 256 * sizeof(bool));
+	Buffer = (uint8_t**)Memory::TrackedCalloc("IAudio::Buffer", 1, 256 * sizeof(uint8_t*));
+	Length = (uint32_t*)Memory::TrackedCalloc("IAudio::Length", 1, 256 * sizeof(uint32_t));
+	BufferStart = (uint8_t**)Memory::TrackedCalloc("IAudio::BufferStart", 1, 256 * sizeof(uint8_t*));
+	LengthStart = (uint32_t*)Memory::TrackedCalloc("IAudio::LengthStart", 1, 256 * sizeof(uint32_t));
+	LoopPoint = (uint32_t*)Memory::TrackedCalloc("IAudio::LoopPoint", 1, 256 * sizeof(uint32_t));
 
 	memset(Loop, 0, 256 * sizeof(bool));
 	memset(Paused, 0, 256 * sizeof(bool));

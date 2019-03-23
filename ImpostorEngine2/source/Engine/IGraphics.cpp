@@ -57,6 +57,7 @@ public:
 #include <Engine/IResources.h>
 #include <Engine/IGraphics.h>
 #include <Engine/IMath.h>
+#include <Engine/Diagnostics/Memory.h>
 
 unsigned char Font8x8_basic[128][8];
 void (IGraphics::*SetPixelFunction)(int, int, uint32_t);
@@ -131,11 +132,11 @@ PUBLIC VIRTUAL void IGraphics::DeleteBufferID(int buffID) {
 }
 
 PUBLIC VIRTUAL void IGraphics::BeginSpriteListBuffer() {
-    
+
 }
 
 PUBLIC VIRTUAL void IGraphics::AddToSpriteListBuffer(ISprite* sprite, int X, int Y, int W, int H, int OffX, int OffY, int Flip) {
-    
+
 }
 
 PUBLIC VIRTUAL int IGraphics::FinishSpriteListBuffer() {
@@ -380,7 +381,7 @@ PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint
 	// pixel = (this->*SetFilterFunction[1])(pixel);
 	// pixel = (this->*SetFilterFunction[2])(pixel);
 	pixel = (this->*SetFilterFunction[3])(pixel);
-	
+
 	SetPixelTrue(surface, x, y, pixel);
 }
 
@@ -896,7 +897,7 @@ PUBLIC VIRTUAL void IGraphics::DrawModelOn2D(IModel* model, int x, int y, double
 	IMatrix3 transform = rotateX.Multiply(rotateY).Multiply(rotateZ);
 
 	int size = App->WIDTH * App->HEIGHT;
-	double* zBuffer = (double*)malloc(size * sizeof(double));
+	double* zBuffer = (double*)Memory::TrackedMalloc("IGraphics::DrawModelOn2D::zBuffer", size * sizeof(double));
 	for (int q = 0; q < size; q++) {
 		zBuffer[q] = -9999999999.9f;
 	}
@@ -1036,7 +1037,7 @@ PUBLIC VIRTUAL void IGraphics::DrawModelOn2D(IModel* model, int x, int y, double
 		}
 	}
 
-	free(zBuffer);
+	Memory::Free(zBuffer);
 }
 
 PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, int frame, int x, int y, int z, double scale, int rx, int ry, int rz) {
@@ -1202,7 +1203,7 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, in
 		}
 	}
 
-	free(zBuffer);
+	Memory::Free(zBuffer);
 }
 
 PUBLIC uint32_t IGraphics::ColorBlend(uint32_t color1, uint32_t color2, double percent) {
