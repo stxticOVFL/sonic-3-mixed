@@ -17,10 +17,10 @@ void PlaneSwitcher::Create() {
     OnPath = AttributeHolder->ValBool;
     AttributeHolder = GetAttribute("Size");
     Size = AttributeHolder->ValUint32;
-    if (Size <= 0) Size = 16;
+    if (Size <= 0) Size = 1;
 
-    W = Size;
-    H = Size;
+    W = Size * 16;
+    H = Size * 16;
 }
 
 void PlaneSwitcher::Render(int CamX, int CamY) {
