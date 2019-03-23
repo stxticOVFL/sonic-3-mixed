@@ -123,6 +123,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Monitor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\PlatformOutliner.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\PlayerSpawn.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Ridge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Ring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\RollEnforcer.cpp" />
