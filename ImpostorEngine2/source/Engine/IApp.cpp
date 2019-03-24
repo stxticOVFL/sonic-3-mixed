@@ -138,7 +138,7 @@ PUBLIC IApp::IApp() {
             desH = 640;
             isSharp = 0;
         #elif ANDROID
-            desW = WIDTH * 3;	
+            desW = WIDTH * 3;
             desH = HEIGHT * 3;
             isSharp = 0;
         #else
@@ -205,21 +205,21 @@ PUBLIC void IApp::Run() {
     unsigned long frameTimeMillis;
     unsigned long beginFrameBatch;
     int benchmarkFrameCount = 0;
-    
+
     IApp::GlobalApp = this;
 
 	SaveGame::Init();
 
     Print(0, "Starting scene");
     if (!Scene) {
-        //Scene = new Scene_MainMenu(this, G);
+        Scene = new Scene_MainMenu(this, G);
 		// Scene = new Scene_DataSelect(this, G);
         // Scene = new Scene_LevelSelect(this, G);
         // Scene = new Level_SpecialStage(this, G);
         // Scene = new Level_AIZ(this, G, 2);
         // Scene = new Level_ICZ(this, G, 1);
         // Scene = new Level_HCZ(this, G, 1);
-        Scene = new Level_MGZ(this, G, 1);
+        // Scene = new Level_MGZ(this, G, 1);
         // Scene = new LevelScene(this, G);
 
 		// SaveGame::CurrentEmeralds = 0xFFFF;
@@ -233,7 +233,7 @@ PUBLIC void IApp::Run() {
 		ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
 		ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
 		ls->PlayerStartX = 160;
-		ls->PlayerStartY = 1328; 
+		ls->PlayerStartY = 1328;
 		ls->Thremixed = true;
 		ls->ZoneID = 1;
 		ls->VisualAct = 1;
@@ -241,7 +241,7 @@ PUBLIC void IApp::Run() {
 		sprintf(ls->LevelName, "MIRAGE SALOON");
 		sprintf(ls->LevelNameDiscord, "Mirage Saloon");
 		Scene = ls;
-		//*/           
+		//*/
 
         Scene->Init();
     }
