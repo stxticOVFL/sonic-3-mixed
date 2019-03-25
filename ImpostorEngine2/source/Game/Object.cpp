@@ -63,6 +63,9 @@ uint8_t Object::GetSubTypeMax() {
 void Object::Animate() {
     if (!AutoAnimate) return;
     if (!Sprite) return;
+	if (CurrentAnimation < 0) return;
+
+	SDL_assert(CurrentAnimation < Sprite->Animations.size());
 
     if (AnimationFrame == -2)
         AnimationFrame = Sprite->Animations[CurrentAnimation].Frames[Frame].Duration;

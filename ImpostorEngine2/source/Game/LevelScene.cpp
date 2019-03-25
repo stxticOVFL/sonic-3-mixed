@@ -1622,6 +1622,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 	startTime = SDL_GetTicks();
 
 	TileSprite = new ISprite(Str_TileSprite, App);
+	TileSprite->SetTransparentColorIndex(0x30);
 
 	if (Str_AnimatedSprites) {
 		AnimTileSprite = new ISprite(Str_AnimatedSprites, App);

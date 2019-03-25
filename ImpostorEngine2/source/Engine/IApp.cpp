@@ -141,7 +141,7 @@ PUBLIC IApp::IApp() {
             isSharp = 0;
 			scale = 1;
         #elif ANDROID
-            desW = WIDTH * 3;	
+            desW = WIDTH * 3;
             desH = HEIGHT * 3;
             isSharp = 0;
 			scale = 1;
@@ -212,7 +212,7 @@ PUBLIC void IApp::Run() {
     unsigned long frameTimeMillis;
     unsigned long beginFrameBatch;
     int benchmarkFrameCount = 0;
-    
+
     IApp::GlobalApp = this;
 
 	SaveGame::Init();
@@ -240,7 +240,7 @@ PUBLIC void IApp::Run() {
 		ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
 		ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
 		ls->PlayerStartX = 160;
-		ls->PlayerStartY = 1328; 
+		ls->PlayerStartY = 1328;
 		ls->Thremixed = true;
 		ls->ZoneID = 1;
 		ls->VisualAct = 1;
@@ -248,7 +248,7 @@ PUBLIC void IApp::Run() {
 		sprintf(ls->LevelName, "MIRAGE SALOON");
 		sprintf(ls->LevelNameDiscord, "Mirage Saloon");
 		Scene = ls;
-		//*/           
+		//*/
 
         Scene->Init();
     }
