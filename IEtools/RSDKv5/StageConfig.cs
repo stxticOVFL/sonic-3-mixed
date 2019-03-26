@@ -1,19 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 
 namespace RSDKv5
 {
     public class StageConfig : CommonConfig
     {
-        bool UseGameObjects;
+        /// <summary>
+        /// the path to this file
+        /// </summary>
+        public string FilePath;
+
+        /// <summary>
+        /// whether or not we use the global objects in this stage
+        /// </summary>
+        public bool LoadGlobalObjects;
 
         public StageConfig(string filename) : this(new Reader(filename))
         {
+            FilePath = filename;
+        }
 
+        public StageConfig()
+        {
+            for (int i = 0; i < Palettes.Length; i++)
+            {
+                Palettes[i] = new Palette();
+            }
         }
 
         public StageConfig(Stream stream) : this(new Reader(stream))
@@ -21,11 +32,11 @@ namespace RSDKv5
 
         }
 
-        internal StageConfig(Reader reader)
+        public StageConfig(Reader reader)
         {
             base.ReadMagic(reader);
 
-            UseGameObjects = reader.ReadBoolean();
+            LoadGlobalObjects = reader.ReadBoolean();
 
             base.ReadCommonConfig(reader);
         }
@@ -42,11 +53,12 @@ namespace RSDKv5
                 this.Write(writer);
         }
 
-        internal void Write(Writer writer)
+        public void Write(Writer writer)
         {
             base.WriteMagic(writer);
 
-            writer.Write(UseGameObjects);
+            writer.Write(LoadGlobalObjects);
+            base.WriteCommonConfig(writer);
 
         }
     }

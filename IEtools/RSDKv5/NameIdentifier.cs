@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace RSDKv5
 {
+    [Serializable]
     public class NameIdentifier
     {
-        public readonly byte[] Hash;
-        public readonly String Name = null;
+        /// <summary>
+        /// the MD5 hash of the name in bytes
+        /// </summary>
+        private byte[] Hash;
+        /// <summary>
+        /// the name in plain text
+        /// </summary>
+        public String Name = null;
 
         public NameIdentifier(string name)
         {

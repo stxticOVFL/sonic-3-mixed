@@ -1,13 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28621.142
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpostorEditor2", "ImpostorEditor2\ImpostorEditor2.csproj", "{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CF5496F8-002B-408F-9B3D-67C88F610283} = {CF5496F8-002B-408F-9B3D-67C88F610283}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSDKv5", "RSDKv5\RSDKv5.csproj", "{CF5496F8-002B-408F-9B3D-67C88F610283}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nemesis", "Nemesis\Nemesis.csproj", "{CF04DFA4-606B-48E6-B43A-4948C98E8740}"
@@ -32,14 +27,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Debug|x86.Build.0 = Debug|Any CPU
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Release|x86.ActiveCfg = Debug|Any CPU
-		{9F7F9A0C-3DF2-47F2-98A4-C42C9D74B937}.Release|x86.Build.0 = Debug|Any CPU
 		{CF5496F8-002B-408F-9B3D-67C88F610283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF5496F8-002B-408F-9B3D-67C88F610283}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF5496F8-002B-408F-9B3D-67C88F610283}.Debug|x86.ActiveCfg = Debug|Any CPU

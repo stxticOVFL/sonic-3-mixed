@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-
-namespace RSDKv5
+﻿namespace RSDKv5
 {
     public class PaletteColor
     {
 
-        public byte R, G, B;
+        /// <summary>
+        /// Colour Red Value
+        /// </summary>
+        public byte R;
+        /// <summary>
+        /// Colour Green Value
+        /// </summary>
+        public byte G;
+        /// <summary>
+        /// Colour Blue Value
+        /// </summary>
+        public byte B;
 
         public PaletteColor(byte R = 0, byte G = 0, byte B = 0)
         {

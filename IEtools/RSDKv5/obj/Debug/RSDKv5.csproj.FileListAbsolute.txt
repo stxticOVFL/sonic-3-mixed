@@ -1,24 +1,62 @@
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\RSDKv5.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\RSDKv5.pdb
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\INIFileParser.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SharpDX.Direct3D9.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SharpDX.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\zlib.net.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\INIFileParser.xml
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\obj\Debug\RSDKv5.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\obj\Debug\RSDKv5.pdb
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\obj\Debug\RSDKv5.csproj.CoreCompileInputs.cache
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SharpDX.Desktop.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SharpDX.Mathematics.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\obj\Debug\RSDKv5.csproj.CopyComplete
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\obj\Debug\RSDKv5.csprojResolveAssemblyReference.cache
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Common.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Common.pdb
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonLVLAPI.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Enigma.dll
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonLVLAPI.pdb
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Kosinski.pdb
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Nemesis.pdb
-C:\Users\Justin\Dropbox\ImpostorEditor2\RSDKv5\bin\Debug\SonicRetro.KensSharp.Enigma.pdb
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\RSDKv5.dll.config
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\RSDKv5.dll
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\RSDKv5.pdb
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\INIFileParser.dll
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\SharpDX.dll
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\zlib.net.dll
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\INIFileParser.xml
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\SharpDX.pdb
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\SharpDX.Direct3D9.pdb
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\bin\Debug\SharpDX.Direct3D9.xml
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\obj\Debug\RSDKv5.csprojAssemblyReference.cache
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\obj\Debug\RSDKv5.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\obj\Debug\RSDKv5.csproj.CopyComplete
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\obj\Debug\RSDKv5.dll
+C:\Users\owner\Documents\GitHub\RSDK-Reverse\RSDKv5\obj\Debug\RSDKv5.pdb
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\RSDKv5.dll.config
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\RSDKv5.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\RSDKv5.pdb
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\INIFileParser.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\MonoGame.Extended.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\MonoGame.Framework.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\MonoGame.UI.Forms.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\Newtonsoft.Json.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\zlib.net.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.MediaFoundation.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.XAudio2.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.DXGI.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.Direct3D11.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.Direct2D1.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.XInput.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\INIFileParser.xml
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\MonoGame.Extended.pdb
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\MonoGame.Extended.xml
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\MonoGame.Framework.xml
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\Newtonsoft.Json.xml
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.pdb
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.Direct3D9.pdb
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\bin\Debug\SharpDX.Direct3D9.xml
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\obj\Debug\RSDKv5.csprojAssemblyReference.cache
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\obj\Debug\RSDKv5.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\obj\Debug\RSDKv5.csproj.CopyComplete
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\obj\Debug\RSDKv5.dll
+C:\Users\owner\Documents\GitHub\ManiacEditor\RSDKv5\obj\Debug\RSDKv5.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\RSDKv5.dll.config
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\RSDKv5.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\RSDKv5.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\INIFileParser.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\SharpDX.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\zlib.net.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\INIFileParser.xml
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\SharpDX.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\SharpDX.Direct3D9.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\bin\Debug\SharpDX.Direct3D9.xml
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\obj\Debug\RSDKv5.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\obj\Debug\RSDKv5.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\obj\Debug\RSDKv5.csproj.CopyComplete
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\obj\Debug\RSDKv5.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\RSDKv5\obj\Debug\RSDKv5.pdb

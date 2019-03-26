@@ -1,82 +1,134 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using IniParser;
-using IniParser.Model;
 using System.IO;
-
+using System.Security.Cryptography;
+//using IniParser.Model;
 
 namespace RSDKv5
 {
     public class Objects
     {
-        static List<ObjectInfo> objects = new List<ObjectInfo>();
-        static Dictionary<string, ObjectInfo> hashToObject = new Dictionary<string, ObjectInfo>();
+        public static Dictionary<string, string> ObjectNames = new Dictionary<string, string>();
+        public static Dictionary<string, string> AttributeNames = new Dictionary<string, string>();
 
-        public static void InitObjects(Stream stream)
+        public static void InitObjectNames(StreamReader reader, bool closeReader = true)
         {
-            var parser = new IniParser.StreamIniDataParser();
-            IniData data = parser.ReadData(new StreamReader(stream));
-            foreach (var section in data.Sections)
+            MD5 md5hash = MD5.Create();
+            ObjectNames.Clear();
+            while (!reader.EndOfStream)
             {
-                List<AttributeInfo> attributes = new List<AttributeInfo>();
-                foreach (var key in section.Keys)
+                try
                 {
-                    AttributeTypes type;
-                    switch (key.Value)
+                    string input = reader.ReadLine();
+                    string hash = GetMd5HashString(input);
+                    if (!ObjectNames.ContainsKey(hash))
                     {
-                        case "UINT8":
-                            type = AttributeTypes.UINT8;
-                            break;
-                        case "UINT16":
-                            type = AttributeTypes.UINT16;
-                            break;
-                        case "UINT32":
-                            type = AttributeTypes.UINT32;
-                            break;
-                        case "INT8":
-                            type = AttributeTypes.INT8;
-                            break;
-                        case "INT16":
-                            type = AttributeTypes.INT16;
-                            break;
-                        case "INT32":
-                            type = AttributeTypes.INT32;
-                            break;
-                        case "VAR":
-                            type = AttributeTypes.VAR;
-                            break;
-                        case "BOOL":
-                            type = AttributeTypes.BOOL;
-                            break;
-                        case "STRING":
-                            type = AttributeTypes.STRING;
-                            break;
-                        case "POSITION":
-                            type = AttributeTypes.POSITION;
-                            break;
-                        case "COLOR":
-                            type = AttributeTypes.COLOR;
-                            break;
-                        default:
-                            // Unknown attribute
-                            continue;
+                        ObjectNames.Add(hash, input);
                     }
-
-                    attributes.Add(new AttributeInfo(new NameIdentifier(key.KeyName), type));
                 }
-                objects.Add(new ObjectInfo(new NameIdentifier(section.SectionName), attributes));
+                catch (Exception ex)
+                {
+                    //oop
+                }
             }
-            hashToObject = objects.ToDictionary(x => x.Name.HashString());
+            if (closeReader) reader.Close();
         }
 
-        public static ObjectInfo GetObjectInfo(NameIdentifier name)
+        public static void InitAttributeNames(StreamReader reader, bool closeReader = true)
         {
-            ObjectInfo res = null;
-            hashToObject.TryGetValue(name.HashString(), out res);
+            MD5 md5hash = MD5.Create();
+            AttributeNames.Clear();
+            while (!reader.EndOfStream)
+            {
+                try
+                {
+                    string input = reader.ReadLine();
+                    string hash = GetMd5HashString(input);
+                    if (!AttributeNames.ContainsKey(hash))
+                    {
+                        AttributeNames.Add(hash, input);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //oop
+                }
+            }
+            if (closeReader) reader.Close();
+        }
+
+        public static string GetObjectName(NameIdentifier name)
+        {
+            string res = name.HashString();
+            ObjectNames.TryGetValue(name.HashString(), out res);
+            if (res == null)
+            {
+                res = name.HashString();
+            }
             return res;
+        }
+
+        public static string GetAttributeName(NameIdentifier name)
+        {
+            string res = name.HashString();
+            AttributeNames.TryGetValue(name.HashString(), out res);
+            if (res == null)
+            {
+                res = name.HashString();
+            }
+            return res;
+        }
+
+        public static void AddObjectName(string input)
+        {
+            MD5 md5hash = MD5.Create();
+            string hash = GetMd5HashString(input);
+
+            if (!ObjectNames.ContainsKey(hash))
+            {
+                ObjectNames.Add(hash, input);
+            }
+            else
+            {
+                ObjectNames[hash] = input;
+            }
+        }
+
+        public static void AddAttributeName(string input)
+        {
+            MD5 md5hash = MD5.Create();
+            string hash = GetMd5HashString(input);
+
+            if (!AttributeNames.ContainsKey(hash))
+            {
+                AttributeNames.Add(hash, input);
+            }
+            else
+            {
+                AttributeNames[hash] = input;
+            }
+        }
+
+        public static string GetMd5HashString(string input)
+        {
+            MD5 md5Hash = MD5.Create();
+            // Convert the input string to a byte array and compute the hash.
+            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            // Create a new Stringbuilder to collect the bytes
+            // and create a string.
+            StringBuilder sBuilder = new StringBuilder();
+
+            // Loop through each byte of the hashed data 
+            // and format each one as a hexadecimal string.
+            for (int i = 0; i < data.Length; i++)
+            {
+                sBuilder.Append(data[i].ToString("x2"));
+            }
+
+            // Return the hexadecimal string.
+            return sBuilder.ToString();
         }
     }
 }

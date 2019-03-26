@@ -177,7 +177,7 @@ namespace S3toIE2 {
         }
 
         public static void ConvertTiledToIE2(string tmxFilename) {
-            XmlDocument doc = new XmlDocument();
+            /*XmlDocument doc = new XmlDocument();
             doc.Load(tmxFilename);
 
             string filePath = Path.Combine(Path.GetDirectoryName(tmxFilename), "IE2 Conversion");
@@ -274,10 +274,10 @@ namespace S3toIE2 {
                     }
 
                     RSDKv5.SceneLayer layer = new RSDKv5.SceneLayer(name, (ushort)width, (ushort)height);
-                    layer.IsScrollingVertical = (byte)(infiniteVScoll ? 1 : 0);
+                    layer.Behaviour = (byte)(infiniteVScoll ? 1 : 0);
                     layer.RelativeY = (ushort)relativeY;
                     layer.ConstantY = (ushort)constantY;
-                    layer.UnknownByte2 = (byte)flags;
+                    layer.DrawingOrder = (byte)flags;
 
                     // Tiles (In Chunks)
                     /*
@@ -308,9 +308,9 @@ namespace S3toIE2 {
                             }
                         }
                     }
-                    //*/
-                    // Tiles (As Objects)
-                    foreach (XmlNode nodeTile in node.ChildNodes) {
+                    //
+            // Tiles (As Objects)
+            foreach (XmlNode nodeTile in node.ChildNodes) {
                         if (node.Name != "object")
                             continue;
                         
@@ -475,7 +475,7 @@ namespace S3toIE2 {
 
                 scene.Write(fileStream);
             }
-            Console.WriteLine("Successfully converted for ImpostorEngine2!");
+            Console.WriteLine("Successfully converted for ImpostorEngine2!");*/
         }
 
         public static void ConvertSonLVLObjDefToTiled(string zone, int act, string outFolderName, string iniName, bool andknux, int zoneID) {
@@ -748,8 +748,7 @@ namespace S3toIE2 {
 
             File.Copy(Globals.OUT + RSDKfolderID + "\\16x16Tiles.gif", "Out (Tiled)/" + RSDKfolderID + "\\16x16Tiles.gif", true);
 
-            using (FileStream fileStream = new FileStream(Globals.OUT + RSDKfolderID + "\\Scene.bin", FileMode.Open)) {
-                RSDKv5.Scene scene = new RSDKv5.Scene(fileStream);
+                RSDKv5.Scene scene = new RSDKv5.Scene(Globals.OUT + RSDKfolderID + "\\Scene.bin");
 
                 int maxW = 0;
                 int maxH = 0;
@@ -833,22 +832,22 @@ namespace S3toIE2 {
                             writer.WriteStartElement("property");
                             writer.WriteAttributeString("name", "Infinitely Vertical");
                             writer.WriteAttributeString("type", "bool");
-                            writer.WriteAttributeString("value", layer.IsScrollingVertical.ToString());
+                            writer.WriteAttributeString("value", layer.Behaviour.ToString());
                             writer.WriteEndElement();
                             writer.WriteStartElement("property");
                             writer.WriteAttributeString("name", "Flags");
                             writer.WriteAttributeString("type", "int");
-                            writer.WriteAttributeString("value", layer.UnknownByte2.ToString());
+                            writer.WriteAttributeString("value", layer.DrawingOrder.ToString());
                             writer.WriteEndElement();
                             writer.WriteStartElement("property");
                             writer.WriteAttributeString("name", "Relative Y");
                             writer.WriteAttributeString("type", "int");
-                            writer.WriteAttributeString("value", layer.RelativeY.ToString());
+                            writer.WriteAttributeString("value", layer.RelativeSpeed.ToString());
                             writer.WriteEndElement();
                             writer.WriteStartElement("property");
                             writer.WriteAttributeString("name", "Constant Y");
                             writer.WriteAttributeString("type", "int");
-                            writer.WriteAttributeString("value", layer.ConstantY.ToString());
+                            writer.WriteAttributeString("value", layer.ConstantSpeed.ToString());
                             writer.WriteEndElement();
 
                             writer.WriteStartElement("property");
@@ -970,22 +969,22 @@ namespace S3toIE2 {
                                             writer.WriteStartElement("property");
                                             writer.WriteAttributeString("name", "Deform");
                                             writer.WriteAttributeString("type", "bool");
-                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].HeatWaveEnabled.ToString());
+                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].Behaviour.ToString());
                                             writer.WriteEndElement();
                                             writer.WriteStartElement("property");
                                             writer.WriteAttributeString("name", "Flags");
                                             writer.WriteAttributeString("type", "int");
-                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].UnknownByte2.ToString());
+                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].DrawOrder.ToString());
                                             writer.WriteEndElement();
                                             writer.WriteStartElement("property");
                                             writer.WriteAttributeString("name", "Relative X");
                                             writer.WriteAttributeString("type", "int");
-                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].RelativeX.ToString());
+                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].RelativeSpeed.ToString());
                                             writer.WriteEndElement();
                                             writer.WriteStartElement("property");
                                             writer.WriteAttributeString("name", "Constant X");
                                             writer.WriteAttributeString("type", "int");
-                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].ConstantX.ToString());
+                                            writer.WriteAttributeString("value", layer.ScrollingInfo[lastval].ConstantSpeed.ToString());
                                             writer.WriteEndElement();
                                         }
                                         writer.WriteEndElement();
@@ -1009,8 +1008,8 @@ namespace S3toIE2 {
                     writer.WriteStartElement("objectgroup");
                     writer.WriteAttributeString("id", (id).ToString());
                     writer.WriteAttributeString("name", "Objects");
-                    for (int o = 0; o < scene.ObjectEntries.Count; o++) {
-                        int ID = scene.ObjectEntries[o].ID;
+                    /*for (int o = 0; o < scene.Objects.Count; o++) {
+                        int ID = scene.Objects[o].ID;
                         uint GID = (uint)ID + 1024 + 1;
 
                         if (scene.ObjectEntries[o].XFlip) GID |= 0x80000000;
@@ -1047,7 +1046,7 @@ namespace S3toIE2 {
                         }
 
                         writer.WriteEndElement();
-                    }
+                    }*/
                     writer.WriteEndElement();
                     id++;
 
@@ -1055,7 +1054,7 @@ namespace S3toIE2 {
                     writer.WriteEndDocument();
                     writer.Flush();
                 }
-            }
+            
         }
 
         public static void ConvertLevel(string zone, int act, string outFolderName, string iniName, bool andknux) {
@@ -1114,7 +1113,7 @@ namespace S3toIE2 {
             /// Step 4.
             ///
 
-            GenerateSceneBin(iniLevel, outFolderName, TilePriorityConfig, SplitLayerTiles, TilesAnimedList, AnimTiles, zoneID, act, tileData, animTileData, blocksData, iniName);
+            GenerateSceneBinRSDK(iniLevel, outFolderName, TilePriorityConfig, SplitLayerTiles, TilesAnimedList, AnimTiles, zoneID, act, tileData, animTileData, blocksData, iniName);
         }
 
         public static void GenerateTiles(
@@ -1460,25 +1459,28 @@ namespace S3toIE2 {
             }
         }
 
-        public static void GenerateSceneBin(
-            IniGroup iniLevel,
-            string outFolderName,
-            int[] TilePriorityConfig,
-            Dictionary<int, int> SplitLayerTiles,
-            Dictionary<int, int> TilesAnimedList,
-            List<AnimatedTiles> AnimTiles,
-            int ZoneID,
-            int Act,
-            byte[] tileData,
-            byte[] animTileData,
-            byte[] blocksData, string iniName) {
+        public static void GenerateSceneBinRSDK(
+    IniGroup iniLevel,
+    string outFolderName,
+    int[] TilePriorityConfig,
+    Dictionary<int, int> SplitLayerTiles,
+    Dictionary<int, int> TilesAnimedList,
+    List<AnimatedTiles> AnimTiles,
+    int ZoneID,
+    int Act,
+    byte[] tileData,
+    byte[] animTileData,
+    byte[] blocksData, string iniName)
+        {
 
             List<int> rem = new List<int>();
-            foreach (AnimatedTiles a in AnimTiles) {
+            foreach (AnimatedTiles a in AnimTiles)
+            {
                 if (a.OnlyVisual) rem.Add(AnimTiles.IndexOf(a));
             }
             rem.Reverse();
-            foreach (int a in rem) {
+            foreach (int a in rem)
+            {
                 AnimTiles.RemoveAt(a);
             }
 
@@ -1498,11 +1500,14 @@ namespace S3toIE2 {
             int backgroundHeight = (layoutData[6] << 8) + layoutData[7];
 
             bool patchChunks = true;
-            if (patchChunks) {
-                if (ZoneID == 0 && Act == 1) {
+            if (patchChunks)
+            {
+                if (ZoneID == 0 && Act == 1)
+                {
                     int us = 0x2A;
                     us = us * 128;
-                    for (int i = us; i < us + 128; i += 2) {
+                    for (int i = us; i < us + 128; i += 2)
+                    {
                         int word = (chunkData[i] << 8) + chunkData[i + 1];
                         if ((word >> 14 & 0x3) == 1)
                             word |= 3 << 14;
@@ -1513,7 +1518,8 @@ namespace S3toIE2 {
                     }
                     us = 0x2B;
                     us = us * 128;
-                    for (int i = us; i < us + 128; i += 2) {
+                    for (int i = us; i < us + 128; i += 2)
+                    {
                         int word = (chunkData[i] << 8) + chunkData[i + 1];
                         if ((word >> 14 & 0x3) == 1)
                             word |= 3 << 14;
@@ -1525,24 +1531,28 @@ namespace S3toIE2 {
                 }
             }
 
-            using (FileStream fileStream = new FileStream(Globals.OUT + outFolderName + "\\SceneRS.bin", FileMode.OpenOrCreate)) {
+            using (FileStream fileStream = new FileStream(Globals.OUT + outFolderName + "\\SceneRS.bin", FileMode.OpenOrCreate))
+            {
                 RSDKv5.Scene scene = new RSDKv5.Scene();
                 // scene.MAGIC = new byte[] { (byte)'U', (byte)'C', (byte)'D', (byte)'\0' };
-                scene.EditorMetadata.LevelName = outFolderName;
+                scene.EditorMetadata.BinName = outFolderName;
 
                 RSDKv5.SceneLayer background = new RSDKv5.SceneLayer("Background", (ushort)(backgroundWidth * 8), (ushort)(backgroundHeight * 8));
-                background.IsScrollingVertical = 0;
-                background.RelativeY = 0x0100;
-                background.ConstantY = 0x0000;
+                background.Behaviour = 0;
+                background.RelativeSpeed = 0x0100;
+                background.ConstantSpeed = 0x0000;
                 background.ResetParallax();
                 background.AddParallax(0x7FFF, 0x20, 0x00, 0x69, false);
-                for (int x = 0; x < backgroundWidth; x++) {
-                    for (int y = 0; y < backgroundHeight; y++) {
+                for (int x = 0; x < backgroundWidth; x++)
+                {
+                    for (int y = 0; y < backgroundHeight; y++)
+                    {
                         int us = layoutData[(layoutData[10 + y * 4] << 8) + layoutData[11 + y * 4] - 0x8000 + x];
                         int sx = x * 8;
                         int sy = y * 8;
                         us = us * 128;
-                        for (int i = us; i < us + 128; i += 2) {
+                        for (int i = us; i < us + 128; i += 2)
+                        {
                             int word = (chunkData[i] << 8) + chunkData[i + 1];
                             int rel = i - us;
                             int nx = sx + (rel / 2) % 8;
@@ -1554,30 +1564,36 @@ namespace S3toIE2 {
                 scene.Layers.Add(background);
 
                 RSDKv5.SceneLayer foreground1 = new RSDKv5.SceneLayer("FG Low", (ushort)(foregroundWidth * 8), (ushort)(foregroundHeight * 8));
-                foreground1.UnknownByte2 = 0x01;
-                foreground1.IsScrollingVertical = 0;
-                foreground1.RelativeY = 0x0100;
-                foreground1.ConstantY = 0x0000;
+                foreground1.DrawingOrder = 0x01;
+                foreground1.Behaviour = 0;
+                foreground1.RelativeSpeed = 0x0100;
+                foreground1.ConstantSpeed = 0x0000;
                 foreground1.ResetParallax();
                 foreground1.AddParallax(0x7FFF, 0x100, 0x00, 0x69, false);
-                for (int x = 0; x < foregroundWidth; x++) {
-                    for (int y = 0; y < foregroundHeight; y++) {
+                for (int x = 0; x < foregroundWidth; x++)
+                {
+                    for (int y = 0; y < foregroundHeight; y++)
+                    {
                         int us = layoutData[(layoutData[8 + y * 4] << 8) + layoutData[9 + y * 4] - 0x8000 + x];
                         int sx = x * 8;
                         int sy = y * 8;
                         us = us * 128;
-                        for (int i = us; i < us + 128; i += 2) {
+                        for (int i = us; i < us + 128; i += 2)
+                        {
                             int word = (chunkData[i] << 8) + chunkData[i + 1];
                             int rel = i - us;
                             int nx = sx + (rel / 2) % 8;
                             int ny = sy + (rel / 2) / 8;
-                            if (TilePriorityConfig[word & 0x3FF] == 0x0) {
+                            if (TilePriorityConfig[word & 0x3FF] == 0x0)
+                            {
                                 foreground1.Tiles[ny][nx] = (ushort)word;
                             }
-                            else if (SplitLayerTiles.ContainsKey((word & 0x3FF) | 0x0000)) {
+                            else if (SplitLayerTiles.ContainsKey((word & 0x3FF) | 0x0000))
+                            {
                                 foreground1.Tiles[ny][nx] = (ushort)((word & 0xFC00) | SplitLayerTiles[(word & 0x3FF) | 0x0000]);
                             }
-                            else {
+                            else
+                            {
                                 foreground1.Tiles[ny][nx] = 0x0000;
                             }
                         }
@@ -1586,40 +1602,48 @@ namespace S3toIE2 {
                 scene.Layers.Add(foreground1);
 
                 RSDKv5.SceneLayer foreground2 = new RSDKv5.SceneLayer("FG High", (ushort)(foregroundWidth * 8), (ushort)(foregroundHeight * 8));
-                foreground2.UnknownByte2 = 0x01;
-                foreground2.IsScrollingVertical = 0;
-                foreground2.RelativeY = 0x0100;
-                foreground2.ConstantY = 0x0000;
+                foreground2.DrawingOrder = 0x01;
+                foreground2.Behaviour = 0;
+                foreground2.RelativeSpeed = 0x0100;
+                foreground2.ConstantSpeed = 0x0000;
                 foreground2.ResetParallax();
                 foreground2.AddParallax(0x7FFF, 0x100, 0x00, 0x69, false);
-                for (int x = 0; x < foregroundWidth; x++) {
-                    for (int y = 0; y < foregroundHeight; y++) {
+                for (int x = 0; x < foregroundWidth; x++)
+                {
+                    for (int y = 0; y < foregroundHeight; y++)
+                    {
                         int us = layoutData[(layoutData[8 + y * 4] << 8) + layoutData[9 + y * 4] - 0x8000 + x];
                         int sx = x * 8;
                         int sy = y * 8;
                         us = us * 128;
-                        for (int i = us; i < us + 128; i += 2) {
+                        for (int i = us; i < us + 128; i += 2)
+                        {
                             int word = (chunkData[i] << 8) + chunkData[i + 1];
                             int rel = i - us;
                             int nx = sx + (rel / 2) % 8;
                             int ny = sy + (rel / 2) / 8;
-                            if (TilePriorityConfig[word & 0x3FF] == 0xF) {
+                            if (TilePriorityConfig[word & 0x3FF] == 0xF)
+                            {
                                 foreground2.Tiles[ny][nx] = (ushort)word;
                             }
-                            else if (SplitLayerTiles.ContainsKey((word & 0x3FF) | 0xF000)) {
+                            else if (SplitLayerTiles.ContainsKey((word & 0x3FF) | 0xF000))
+                            {
                                 foreground2.Tiles[ny][nx] = (ushort)((word & 0xFC00) | SplitLayerTiles[(word & 0x3FF) | 0xF000]);
                             }
-                            else {
+                            else
+                            {
                                 foreground2.Tiles[ny][nx] = 0x0000;
                             }
                         }
                     }
                 }
                 scene.Layers.Add(foreground2);
-                
-                if (File.Exists("Patches/PatchBGParallax_" + outFolderName + ".txt")) {
+
+                if (File.Exists("Patches/PatchBGParallax_" + outFolderName + ".txt"))
+                {
                     Dictionary<string, int> labels = new Dictionary<string, int>();
-                    for (int i = 0; i < scene.Layers.Count; i++) {
+                    for (int i = 0; i < scene.Layers.Count; i++)
+                    {
                         labels[scene.Layers[i].Name] = i;
                     }
 
@@ -1628,24 +1652,28 @@ namespace S3toIE2 {
 
                     Console.WriteLine("'PatchBGParallax_" + outFolderName + ".txt' found!");
                     string[] fileLines = File.ReadAllLines("Patches/PatchBGParallax_" + outFolderName + ".txt");
-                    
-                    foreach (string line in fileLines) {
+
+                    foreach (string line in fileLines)
+                    {
                         if (line == "") continue;
                         if (line[0] == '#') continue;
-                        
-                        if (line.StartsWith("RELATY")) {
+
+                        if (line.StartsWith("RELATY"))
+                        {
                             pattern = @"RELATY (.+),([A-Fa-f0-9]+)$";
                             args = Regex.Match(line, pattern);
 
-                            scene.Layers[labels[args.Groups[1].Value]].RelativeY = Convert.ToUInt16(args.Groups[2].Value, 16);
+                            scene.Layers[labels[args.Groups[1].Value]].RelativeSpeed = Convert.ToInt16(args.Groups[2].Value, 16);
                         }
-                        else if (line.StartsWith("CONSTY")) {
+                        else if (line.StartsWith("CONSTY"))
+                        {
                             pattern = @"CONSTY (.+),([A-Fa-f0-9]+)";
                             args = Regex.Match(line, pattern);
 
-                            scene.Layers[labels[args.Groups[1].Value]].ConstantY = Convert.ToUInt16(args.Groups[2].Value, 16);
+                            scene.Layers[labels[args.Groups[1].Value]].ConstantSpeed = Convert.ToInt16(args.Groups[2].Value, 16);
                         }
-                        else if (line.StartsWith("COPY")) {
+                        else if (line.StartsWith("COPY"))
+                        {
                             pattern = @"COPY (.+),(.+)";
                             args = Regex.Match(line, pattern);
 
@@ -1654,14 +1682,16 @@ namespace S3toIE2 {
 
                             int src = labels[args.Groups[1].Value];
 
-                            for (int i = src + 1; i < scene.Layers.Count; i++) {
+                            for (int i = src + 1; i < scene.Layers.Count; i++)
+                            {
                                 labels[scene.Layers[i].Name]++;
                             }
 
                             scene.Layers.Insert(src + 1, copy);
                             labels[args.Groups[2].Value] = src + 1;
                         }
-                        else if (line.StartsWith("RENAME")) {
+                        else if (line.StartsWith("RENAME"))
+                        {
                             pattern = @"RENAME (.+),(.+)";
                             args = Regex.Match(line, pattern);
 
@@ -1669,19 +1699,22 @@ namespace S3toIE2 {
 
                             scene.Layers[labels[args.Groups[1].Value]].Name = args.Groups[2].Value;
                         }
-                        else if (line.StartsWith("VISIBLE")) {
+                        else if (line.StartsWith("VISIBLE"))
+                        {
                             pattern = @"VISIBLE (.+),([A-Fa-f0-9]+)";
                             args = Regex.Match(line, pattern);
 
                             // scene.Layers[labels[args.Groups[1].Value]].Name = args.Groups[2].Value;
                         }
-                        else if (line.StartsWith("PARARESET")) {
+                        else if (line.StartsWith("PARARESET"))
+                        {
                             pattern = @"PARARESET (.+)";
                             args = Regex.Match(line, pattern);
 
                             scene.Layers[labels[args.Groups[1].Value]].ResetParallax();
                         }
-                        else if (line.StartsWith("PARA")) {
+                        else if (line.StartsWith("PARA"))
+                        {
                             pattern = @"PARA (.+),([A-Fa-f0-9]+),([A-Fa-f0-9]+),([A-Fa-f0-9]+),([A-Fa-f0-9]+),([A-Fa-f0-9]+)";
                             args = Regex.Match(line, pattern);
 
@@ -1692,7 +1725,8 @@ namespace S3toIE2 {
                                 Convert.ToUInt16(args.Groups[5].Value, 16),
                                 Convert.ToUInt16(args.Groups[6].Value, 16) == 1);
                         }
-                        else if (line.StartsWith("CROP")) {
+                        else if (line.StartsWith("CROP"))
+                        {
                             pattern = @"CROP (.+),([A-Fa-fx0-9]+),([A-Fa-fx0-9]+),([A-Fa-fx0-9]+),([A-Fa-fx0-9]+)";
                             args = Regex.Match(line, pattern);
 
@@ -1702,17 +1736,19 @@ namespace S3toIE2 {
                                 ParseInt(args.Groups[4].Value),
                                 ParseInt(args.Groups[5].Value));
                         }
-                        else if (line.StartsWith("DELTILES")) {
+                        else if (line.StartsWith("DELTILES"))
+                        {
                             pattern = @"DELTILES (.+),([A-Fa-fx0-9]+),([A-Fa-fx0-9]+),([A-Fa-fx0-9]+),([A-Fa-fx0-9]+)";
                             args = Regex.Match(line, pattern);
-                            
+
                             scene.Layers[labels[args.Groups[1].Value]].Remove(
                                 ParseInt(args.Groups[2].Value),
                                 ParseInt(args.Groups[3].Value),
                                 ParseInt(args.Groups[4].Value),
                                 ParseInt(args.Groups[5].Value));
                         }
-                        else if (line.StartsWith("MOVE ")) {
+                        else if (line.StartsWith("MOVE "))
+                        {
                             pattern = @"MOVE (.+),([A-Fa-fx0-9]+),([A-Fa-fx0-9]+)";
                             args = Regex.Match(line, pattern);
 
@@ -1720,7 +1756,8 @@ namespace S3toIE2 {
                                 ParseInt(args.Groups[2].Value),
                                 ParseInt(args.Groups[3].Value));
                         }
-                        else if (line.StartsWith("MOVETOFRONT ")) {
+                        else if (line.StartsWith("MOVETOFRONT "))
+                        {
                             pattern = @"MOVETOFRONT (.+)";
                             args = Regex.Match(line, pattern);
 
@@ -1728,17 +1765,21 @@ namespace S3toIE2 {
                             scene.Layers.RemoveAt(labels[args.Groups[1].Value]);
                             scene.Layers.Add(layer);
 
-                            for (int i = 0; i < scene.Layers.Count; i++) {
+                            for (int i = 0; i < scene.Layers.Count; i++)
+                            {
                                 labels[scene.Layers[i].Name] = i;
                             }
                         }
                     }
                 }
-                
+
                 ushort SlotID = 0;
 
-                RSDKv5.SceneObject playerObjects = new RSDKv5.SceneObject("Player", new List<RSDKv5.AttributeInfo>());
+                RSDKv5.SceneObject playerObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("PlayerSpawn"), new List<RSDKv5.AttributeInfo>());
                 playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("subtype", RSDKv5.AttributeTypes.UINT8));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("flipX", RSDKv5.AttributeTypes.BOOL));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("flipY", RSDKv5.AttributeTypes.BOOL));
                 playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("characterID", RSDKv5.AttributeTypes.VAR));
 
                 // Write Start Positions
@@ -1768,17 +1809,19 @@ namespace S3toIE2 {
                 byte[] ringData = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["rings"])[0].Filename);
                 int ringDataCount = ringData.Length / 4 - 1;
 
-                RSDKv5.SceneObject ringObjects = new RSDKv5.SceneObject("Ring", new List<RSDKv5.AttributeInfo>());
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo("type", RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo("planeFilter", RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo("moveType", RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo("amplitude", RSDKv5.AttributeTypes.POSITION));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo("speed", RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo("angle", RSDKv5.AttributeTypes.INT32));
+                RSDKv5.SceneObject ringObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("Ring"), new List<RSDKv5.AttributeInfo>());
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("filter"), RSDKv5.AttributeTypes.UINT8));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("type"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("planeFilter"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("moveType"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("amplitude"), RSDKv5.AttributeTypes.POSITION));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("speed"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("angle"), RSDKv5.AttributeTypes.INT32));
 
-                using (MemoryStream ringStream = new MemoryStream(ringData)) {
-                    for (int i = 0; i < ringDataCount; i++) {
+                using (MemoryStream ringStream = new MemoryStream(ringData))
+                {
+                    for (int i = 0; i < ringDataCount; i++)
+                    {
                         short x = (short)BigEndian.Read2(ringStream);
                         short y = (short)BigEndian.Read2(ringStream);
 
@@ -1826,49 +1869,60 @@ namespace S3toIE2 {
                 INIObjDefs = new Dictionary<string, ObjectData>();
                 Dictionary<string, ObjectData> obj;
 
-                if (File.Exists(Path.Combine(filepath, filename))) {
+                if (File.Exists(Path.Combine(filepath, filename)))
+                {
                     obj = IniSerializer.Deserialize<Dictionary<string, ObjectData>>(Path.Combine(filepath, filename));
-                    foreach (KeyValuePair<string, ObjectData> group in obj) {
+                    foreach (KeyValuePair<string, ObjectData> group in obj)
+                    {
                         group.Value.Init();
                         INIObjDefs[group.Key] = group.Value;
                     }
                 }
 
                 obj = IniSerializer.Deserialize<Dictionary<string, ObjectData>>(Path.Combine(filepath, "Common/Main.ini")); // Global.ini
-                foreach (KeyValuePair<string, ObjectData> group in obj) {
+                foreach (KeyValuePair<string, ObjectData> group in obj)
+                {
                     group.Value.Init();
                     INIObjDefs[group.Key] = group.Value;
                 }
 
                 obj = IniSerializer.Deserialize<Dictionary<string, ObjectData>>(Path.Combine(filepath, "Common/Global.ini")); // Global.ini
-                foreach (KeyValuePair<string, ObjectData> group in obj) {
+                foreach (KeyValuePair<string, ObjectData> group in obj)
+                {
                     group.Value.Init();
                     INIObjDefs[group.Key] = group.Value;
                 }
 
-                if (File.Exists(Path.Combine(filepath, lvlIDs[ZoneID] + "\\Main.ini"))) {
+                if (File.Exists(Path.Combine(filepath, lvlIDs[ZoneID] + "\\Main.ini")))
+                {
                     obj = IniSerializer.Deserialize<Dictionary<string, ObjectData>>(Path.Combine(filepath, lvlIDs[ZoneID] + "\\Main.ini")); // ZONE/Main.ini
-                    foreach (KeyValuePair<string, ObjectData> group in obj) {
+                    foreach (KeyValuePair<string, ObjectData> group in obj)
+                    {
                         group.Value.Init();
                         INIObjDefs[group.Key] = group.Value;
                     }
                 }
 
-                if (File.Exists(Path.Combine(filepath, lvlIDs[ZoneID] + "\\S3.ini"))) {
+                if (File.Exists(Path.Combine(filepath, lvlIDs[ZoneID] + "\\S3.ini")))
+                {
                     obj = IniSerializer.Deserialize<Dictionary<string, ObjectData>>(Path.Combine(filepath, lvlIDs[ZoneID] + "\\S3.ini")); // ZONE/S3.ini
-                    foreach (KeyValuePair<string, ObjectData> group in obj) {
+                    foreach (KeyValuePair<string, ObjectData> group in obj)
+                    {
                         group.Value.Init();
                         INIObjDefs[group.Key] = group.Value;
                     }
                 }
 
                 List<KeyValuePair<byte, ObjectDefinition>> objdefs = new List<KeyValuePair<byte, ObjectDefinition>>();
-                foreach (KeyValuePair<string, ObjectData> group in INIObjDefs) {
+                foreach (KeyValuePair<string, ObjectData> group in INIObjDefs)
+                {
                     if (group.Value.ArtCompression == CompressionType.Invalid)
                         group.Value.ArtCompression = CompressionType.Nemesis;
-                    if (byte.TryParse(group.Key, System.Globalization.NumberStyles.HexNumber, System.Globalization.NumberFormatInfo.InvariantInfo, out byte ID)) {
+                    if (byte.TryParse(group.Key, System.Globalization.NumberStyles.HexNumber, System.Globalization.NumberFormatInfo.InvariantInfo, out byte ID))
+                    {
                         ObjectDefinition def = null;
-                        if (group.Value.CodeFile != null) {
+                        if (group.Value.CodeFile != null)
+                        {
                             string fulltypename = group.Value.CodeType;
                             string dllfile = Path.Combine("dllcache", fulltypename + ".dll");
                             DateTime modDate = DateTime.MinValue;
@@ -1877,15 +1931,18 @@ namespace S3toIE2 {
                             string fp = Path.Combine(filepath, group.Value.CodeFile.Replace('/', Path.DirectorySeparatorChar));
                             // Console.WriteLine("Loading ObjectDefinition type " + fulltypename + " from \"" + fp + "\"...");
 
-                            if (modDate >= File.GetLastWriteTime(fp) & modDate > File.GetLastWriteTime(Application.ExecutablePath)) {
+                            if (modDate >= File.GetLastWriteTime(fp) & modDate > File.GetLastWriteTime(Application.ExecutablePath))
+                            {
                                 // Console.WriteLine("Loading type from cached assembly \"" + dllfile + "\"...");
                                 def = (ObjectDefinition)Activator.CreateInstance(System.Reflection.Assembly.LoadFile(Path.Combine(filepath, dllfile)).GetType(fulltypename));
                             }
-                            else {
+                            else
+                            {
                                 Console.WriteLine("Compiling code file...");
                                 string ext = Path.GetExtension(fp);
                                 CodeDomProvider pr = null;
-                                switch (ext.ToLowerInvariant()) {
+                                switch (ext.ToLowerInvariant())
+                                {
                                     case ".cs":
                                         pr = new Microsoft.CSharp.CSharpCodeProvider();
                                         break;
@@ -1894,28 +1951,32 @@ namespace S3toIE2 {
                                         break;
                                 }
 
-                                if (pr != null) {
+                                if (pr != null)
+                                {
                                     CompilerParameters para = new CompilerParameters(new string[] {
                                     "System.dll",
                                     "System.Core.dll",
                                     "System.Drawing.dll",
                                     System.Reflection.Assembly.GetAssembly(typeof(Block)).Location,
                                     System.Reflection.Assembly.GetExecutingAssembly().Location,
-                                }) {
+                                })
+                                    {
                                         GenerateExecutable = false,
                                         GenerateInMemory = false,
                                         IncludeDebugInformation = true,
                                         OutputAssembly = Path.Combine(Environment.CurrentDirectory, dllfile),
                                     };
                                     CompilerResults res = pr.CompileAssemblyFromFile(para, fp);
-                                    if (res.Errors.HasErrors) {
+                                    if (res.Errors.HasErrors)
+                                    {
                                         Console.WriteLine("Compile failed.", "Errors:");
                                         foreach (CompilerError item in res.Errors)
                                             Console.WriteLine(item.ToString());
                                         Console.WriteLine(string.Empty);
                                         def = new DefaultObjectDefinition();
                                     }
-                                    else {
+                                    else
+                                    {
                                         Console.WriteLine("Compile succeeded.");
                                         def = (ObjectDefinition)Activator.CreateInstance(res.CompiledAssembly.GetType(fulltypename));
                                     }
@@ -1935,18 +1996,20 @@ namespace S3toIE2 {
                 }
 
                 Environment.CurrentDirectory = ogDirectory;
-                
+
                 List<KeyValuePair<int, string>> Objects = new List<KeyValuePair<int, string>>();
                 List<int> IDs = new List<int>();
 
-                var settings = new XmlWriterSettings() {
+                var settings = new XmlWriterSettings()
+                {
                     Indent = true,
                     IndentChars = "  "
                 };
 
                 int[] ObjectIDtoObjectDefinitionIndexMap = new int[256];
 
-                foreach (KeyValuePair<byte, ObjectDefinition> def in objdefs) {
+                foreach (KeyValuePair<byte, ObjectDefinition> def in objdefs)
+                {
                     string ObjectName = S3Objects[def.Key];
                     if (andknuxobjects)
                         ObjectName = SKObjects[def.Key];
@@ -1957,12 +2020,16 @@ namespace S3toIE2 {
 
                     IDs.Add(def.Key);
 
-                    RSDKv5.SceneObject objDefinition = new RSDKv5.SceneObject(ObjectName, new List<RSDKv5.AttributeInfo>());
+                    RSDKv5.SceneObject objDefinition = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier(ObjectName), new List<RSDKv5.AttributeInfo>());
                     objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
-                    foreach (PropertySpec n in def.Value.CustomProperties) {
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("subtype", RSDKv5.AttributeTypes.UINT8));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flipX", RSDKv5.AttributeTypes.BOOL));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flipY", RSDKv5.AttributeTypes.BOOL));
+                    foreach (PropertySpec n in def.Value.CustomProperties)
+                    {
                         if (n.Type == typeof(bool))
                             objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower(), RSDKv5.AttributeTypes.BOOL));
-                        else 
+                        else
                             objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower(), RSDKv5.AttributeTypes.INT32));
                     }
 
@@ -1972,7 +2039,8 @@ namespace S3toIE2 {
                 byte[] objectData = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["objects"])[0].Filename);
                 int objectDataCount = objectData.Length / 6 - 1;
 
-                for (int o = 0; o < objectDataCount && false; o++) {
+                for (int o = 0; o < objectDataCount && false; o++)
+                {
                     int x = objectData[o * 6 + 0] << 8 | objectData[o * 6 + 1];
                     int y = objectData[o * 6 + 2] << 8 | objectData[o * 6 + 3];
                     int ID = objectData[o * 6 + 4];
@@ -1986,15 +2054,8 @@ namespace S3toIE2 {
                     byte[] objectDataData = new byte[6];
                     Array.Copy(objectData, o * 6, objectDataData, 0, 6);
 
-                    RSDKv5.Scene.IObjectEntry entry = new RSDKv5.Scene.IObjectEntry();
-                    entry.X = (ushort)x;
-                    entry.Y = (ushort)y;
-                    entry.XFlip = FlipX;
-                    entry.YFlip = FlipY;
-                    entry.SubType = (byte)SubType;
-                    entry.ID = (ushort)ID;
-
-                    if (IDs.Contains(ID)) {
+                    if (IDs.Contains(ID))
+                    {
                         int idid = IDs.IndexOf(ID);
 
                         RSDKv5.SceneObject def = scene.Objects[ObjectIDtoObjectDefinitionIndexMap[ID]];
@@ -2004,18 +2065,27 @@ namespace S3toIE2 {
                         objEntity.Position.X.High = (short)x;
                         objEntity.Position.Y.High = (short)y;
                         objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.UINT8)); // filter
-                        objEntity.Attributes[0].ValueUInt8 = 0;
+                        objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.UINT8)); // subtype
+                        objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.BOOL)); // flipX
+                        objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.BOOL)); // flipY
+                        objEntity.Attributes[0].ValueUInt8 = 0xFF;
+                        objEntity.Attributes[1].ValueUInt8 = (byte)SubType;
+                        objEntity.Attributes[2].ValueBool = FlipX;
+                        objEntity.Attributes[3].ValueBool = FlipY;
                         def.Entities.Add(objEntity);
 
                         int i = 1;
-                        bool none = true;
-                        foreach (PropertySpec n in objdefs[idid].Value.CustomProperties) {
+                        /*bool none = true;
+                        foreach (PropertySpec n in objdefs[idid].Value.CustomProperties)
+                        {
                             RSDKv5.AttributeValue av;
-                            if (n.Type == typeof(bool)) {
+                            if (n.Type == typeof(bool))
+                            {
                                 av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.BOOL);
                                 av.ValueBool = (bool)n.GetValue(entry);
                             }
-                            else if (n.Type == typeof(string)) {
+                            else if (n.Type == typeof(string))
+                            {
                                 int value = 1;
                                 string vvvvv = (string)n.GetValue(entry);
                                 av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
@@ -2023,7 +2093,8 @@ namespace S3toIE2 {
                                     value = 0;
                                 av.ValueInt32 = value;
                             }
-                            else {
+                            else
+                            {
                                 av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
                                 Console.WriteLine("ID: " + ID + "    val: " + n.GetValue(entry));
                                 av.ValueInt32 = Convert.ToInt32(n.GetValue(entry));
@@ -2033,14 +2104,15 @@ namespace S3toIE2 {
                             objEntity.Attributes.Add(av);
                             i++;
                         }
-                        if (none) {
+                        if (none)
+                        {
                             RSDKv5.AttributeValue av;
                             av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
                             av.ValueInt32 = (int)SubType;
 
                             objEntity.Attributes.Add(av);
                             i++;
-                        }
+                        }*/
                     }
 
                 }
@@ -2048,11 +2120,13 @@ namespace S3toIE2 {
 
 
 
-                
+
                 scene.Write(fileStream);
 
-                using (FileStream fileStreamStageConfig = new FileStream(Globals.OUT + outFolderName + "\\StageConfig.bin", FileMode.OpenOrCreate)) {
-                    using (RSDKv5.Writer writer = new RSDKv5.Writer(fileStreamStageConfig)) {
+                using (FileStream fileStreamStageConfig = new FileStream(Globals.OUT + outFolderName + "\\StageConfig.bin", FileMode.OpenOrCreate))
+                {
+                    using (RSDKv5.Writer writer = new RSDKv5.Writer(fileStreamStageConfig))
+                    {
                         fileStreamStageConfig.WriteByte((byte)'C');
                         fileStreamStageConfig.WriteByte((byte)'F');
                         fileStreamStageConfig.WriteByte((byte)'G');
@@ -2061,18 +2135,23 @@ namespace S3toIE2 {
                         fileStreamStageConfig.WriteByte(1); // UseGameObjects
 
                         fileStreamStageConfig.WriteByte((byte)scene.Objects.Count);
-                        for (int i = 0; i < scene.Objects.Count; i++) {
+                        for (int i = 0; i < scene.Objects.Count; i++)
+                        {
                             writer.WriteRSDKString(scene.Objects[i].Name.Name);
                         }
 
                         // Palette Tables
-                        for (int i = 0; i < 8; i++) {
+                        for (int i = 0; i < 8; i++)
+                        {
                             // Palette Positions
                             ushort Positions = 0b0000000000000000;
                             writer.Write(Positions);
-                            for (int col = 0; col < 16; col++) {
-                                if ((Positions & (1 << col)) != 0) {
-                                    for (int d = 0; d < 16; d++) {
+                            for (int col = 0; col < 16; col++)
+                            {
+                                if ((Positions & (1 << col)) != 0)
+                                {
+                                    for (int d = 0; d < 16; d++)
+                                    {
                                         int R = 0;
                                         int G = 0;
                                         int B = 0;
@@ -2086,7 +2165,8 @@ namespace S3toIE2 {
 
                         int WAVCount = 0;
                         fileStreamStageConfig.WriteByte((byte)WAVCount);
-                        for (int i = 0; i < WAVCount; i++) {
+                        for (int i = 0; i < WAVCount; i++)
+                        {
                             writer.WriteRSDKString("SoundEffectName.wav");
                             fileStreamStageConfig.WriteByte((byte)0); // MaxConcurrentPlay
                         }

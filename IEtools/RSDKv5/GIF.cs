@@ -1,37 +1,99 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Threading.Tasks;
+using System.Drawing.Imaging;
+using System.IO;
 using SharpDX.Direct3D9;
 using SystemColor = System.Drawing.Color;
-using System.IO;
 
 namespace RSDKv5
 {
     public class GIF : IDisposable
     {
-        Bitmap bitmap;
+        Bitmap _bitmap;
+        string _bitmapFilename;
 
-        public int W = 16;
-        
-        Dictionary<Tuple<Rectangle, bool, bool>, Bitmap> bitmapCache = new Dictionary<Tuple<Rectangle, bool, bool>, Bitmap>();
-        Dictionary<Tuple<Rectangle, bool, bool>, Texture> texturesCache = new Dictionary<Tuple<Rectangle, bool, bool>, Texture>();
+        Dictionary<Tuple<Rectangle, bool, bool>, Bitmap> _bitmapCache = new Dictionary<Tuple<Rectangle, bool, bool>, Bitmap>();
+        Dictionary<Tuple<Rectangle, bool, bool>, Texture> _texturesCache = new Dictionary<Tuple<Rectangle, bool, bool>, Texture>();
 
-        public GIF(string filename)
+        public GIF(string filename, string encoreColors = null)
         {
-            bitmap = new Bitmap(filename);
-            // TODO: Proper transparent (palette index 0)
-            bitmap.MakeTransparent(SystemColor.FromArgb(0xff00ff));
 
-            W = bitmap.Width;
+            if (!File.Exists(filename))
+            {
+                throw new FileNotFoundException("The GIF file was not found.", filename);
+            }
+            _bitmap = new Bitmap(filename);
+
+            if (encoreColors != null)
+            {
+                loadEncoreColors(encoreColors);
+            }
+
+
+            if (_bitmap.Palette != null && _bitmap.Palette.Entries.Length > 0)
+            {
+                _bitmap.MakeTransparent(_bitmap.Palette.Entries[0]);
+            }
+            else
+            {
+                _bitmap.MakeTransparent(SystemColor.FromArgb(0xff00ff));
+            }
+
+            // stash the filename too, so we can reload later
+            _bitmapFilename = filename;
+
+            // TODO: Proper transparent (palette index 0)
+            _bitmap.MakeTransparent(SystemColor.FromArgb(0xff00ff));
+        }
+
+        private void loadEncoreColors(string encoreColors = null)
+        {
+            Bitmap _bitmapEditMemory;
+            _bitmapEditMemory = _bitmap.Clone(new Rectangle(0, 0, _bitmap.Width, _bitmap.Height), PixelFormat.Format8bppIndexed);
+            //Debug.Print(_bitmapEditMemory.Palette.Entries.Length.ToString() + "(1)");
+
+            //Encore Palettes (WIP Potentially Improvable)
+            Color[] readableColors = new Color[256];
+            bool loadSpecialColors = false;
+            if (encoreColors != null && File.Exists(encoreColors))
+            {
+                using (var stream = File.OpenRead(encoreColors))
+                {
+                    for (int y = 0; y < 255; ++y)
+                    {
+                        readableColors[y].R = (byte)stream.ReadByte();
+                        readableColors[y].G = (byte)stream.ReadByte();
+                        readableColors[y].B = (byte)stream.ReadByte();
+                    }
+                }
+                loadSpecialColors = true;
+            }
+
+            if (loadSpecialColors == true)
+            {
+                ColorPalette pal = _bitmapEditMemory.Palette;
+                //Debug.Print(_bitmapEditMemory.Palette.Entries.Length.ToString() + "(2)");
+                for (int y = 0; y < 255; ++y)
+                {
+                    //if (readableColors[y].R != 255 && readableColors[y].G != 0 && readableColors[y].B != 255)
+                    //{
+                        pal.Entries[y] = SystemColor.FromArgb(readableColors[y].R, readableColors[y].G, readableColors[y].B);
+                    //}
+                }
+                _bitmapEditMemory.Palette = pal;
+            }
+            _bitmap = _bitmapEditMemory;
         }
 
         public GIF(Bitmap bitmap)
         {
-            this.bitmap = new Bitmap(bitmap);
-            W = bitmap.Width;
+            this._bitmap = new Bitmap(bitmap);
+        }
+
+        public GIF(Image image)
+        {
+            this._bitmap = new Bitmap(image);
         }
 
         private Bitmap CropImage(Bitmap source, Rectangle section)
@@ -39,11 +101,12 @@ namespace RSDKv5
             // An empty bitmap which will hold the cropped image
             Bitmap bmp = new Bitmap(section.Width, section.Height);
 
-            Graphics g = Graphics.FromImage(bmp);
-            
-            // Draw the given area (section) of the source image
-            // at location 0,0 on the empty bitmap (bmp)
-            g.DrawImage(source, 0, 0, section, GraphicsUnit.Pixel);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                // Draw the given area (section) of the source image
+                // at location 0,0 on the empty bitmap (bmp)
+                g.DrawImage(source, 0, 0, section, GraphicsUnit.Pixel);
+            }
 
             return bmp;
         }
@@ -51,9 +114,9 @@ namespace RSDKv5
         public Bitmap GetBitmap(Rectangle section, bool flipX = false, bool flipY = false)
         {
             Bitmap bmp;
-            if (bitmapCache.TryGetValue(new Tuple<Rectangle, bool, bool>(section, flipX, flipY), out bmp)) return bmp;
+            if (_bitmapCache.TryGetValue(new Tuple<Rectangle, bool, bool>(section, flipX, flipY), out bmp)) return bmp;
 
-            bmp = CropImage(bitmap, section);
+            bmp = CropImage(_bitmap, section);
             if (flipX)
             {
                 bmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
@@ -63,15 +126,20 @@ namespace RSDKv5
                 bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
             }
 
-            bitmapCache[new Tuple<Rectangle, bool, bool>(section, flipX, flipY)] = bmp;
+            _bitmapCache[new Tuple<Rectangle, bool, bool>(section, flipX, flipY)] = bmp;
             return bmp;
+        }
+
+        public Bitmap ToBitmap()
+        {
+            return _bitmap;
         }
 
         // TOREMOVE
         public Texture GetTexture(Device device, Rectangle section, bool flipX = false, bool flipY = false)
         {
             Texture texture;
-            if (texturesCache.TryGetValue(new Tuple<Rectangle, bool, bool>(section, flipX, flipY), out texture)) return texture;
+            if (_texturesCache.TryGetValue(new Tuple<Rectangle, bool, bool>(section, flipX, flipY), out texture)) return texture;
 
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -80,26 +148,61 @@ namespace RSDKv5
                 texture = Texture.FromStream(device, memoryStream);
             }
 
-            texturesCache[new Tuple<Rectangle, bool, bool>(section, flipX, flipY)] = texture;
+            _texturesCache[new Tuple<Rectangle, bool, bool>(section, flipX, flipY)] = texture;
             return texture;
         }
 
         public void Dispose()
         {
-            bitmap.Dispose();
-            texturesCache = null;
+            ReleaseResources();
         }
 
         public void DisposeTextures()
         {
-            foreach (Texture texture in texturesCache.Values)
-                texture.Dispose();
-            texturesCache = new Dictionary<Tuple<Rectangle, bool, bool>, Texture>();
+            if (null == _texturesCache) return;
+            foreach (Texture texture in _texturesCache.Values)
+                texture?.Dispose();
+            _texturesCache.Clear();
+        }
+
+        public void Reload(string encoreColors = null)
+        {
+            if (!File.Exists(_bitmapFilename))
+            {
+                throw new FileNotFoundException(string.Format("Could not find the file {0}", _bitmapFilename),
+                                                _bitmapFilename);
+            }
+            ReleaseResources();
+            _bitmap = new Bitmap(_bitmapFilename);
+
+            if (encoreColors != null)
+            {
+                loadEncoreColors(encoreColors);
+            }
+
+            if (_bitmap.Palette != null && _bitmap.Palette.Entries.Length > 0)
+            {
+                _bitmap.MakeTransparent(_bitmap.Palette.Entries[0]);
+            }
+            else
+            {
+                _bitmap.MakeTransparent(SystemColor.FromArgb(0xff00ff));
+            }
+
+        }
+
+        private void ReleaseResources()
+        {
+            _bitmap.Dispose();
+            DisposeTextures();
+            foreach (Bitmap b in _bitmapCache.Values)
+                b?.Dispose();
+            _bitmapCache.Clear();
         }
 
         public GIF Clone()
         {
-            return new GIF(bitmap);
+            return new GIF(_bitmapFilename);
         }
     }
 }

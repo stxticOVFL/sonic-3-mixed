@@ -30,3 +30,34 @@ C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\obj\Debug\S3toIE2.HitboxEditor.r
 C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\obj\Debug\S3toIE2.PromptDialog.resources
 C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\obj\Debug\S3toIE2.SpritesheetList.resources
 C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\AniPLCs.txt
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.AnimationEditor.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.Properties.Resources.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.exe
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\AniPLCs.txt
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\S3toIE2.exe.config
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\S3toIE2.exe
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\S3toIE2.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\RSDKv5.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonLVLAPI.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\zlib.net.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SharpDX.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Enigma.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Kosinski.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Nemesis.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\RSDKv5.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\RSDKv5.dll.config
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SonLVLAPI.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SharpDX.Direct3D9.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SharpDX.Direct3D9.xml
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SharpDX.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csproj.CopyComplete
