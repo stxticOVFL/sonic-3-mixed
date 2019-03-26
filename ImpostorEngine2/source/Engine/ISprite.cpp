@@ -451,9 +451,6 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
         Filename = checkedFilename;
     }
 
-
-    IResource* res = IResources::Load(checkedFilename.c_str(), true);
-
     TextureID = 0;
     PaletteID = 0;
     PaletteAltID = 0;

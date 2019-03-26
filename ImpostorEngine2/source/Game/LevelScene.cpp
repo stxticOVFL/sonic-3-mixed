@@ -6329,7 +6329,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 		// I guess we can't run cleanup unless it the original pointer, otherwise it becomes messy
 		// ex: cleans up sprite at SpriteMapIDs.at(7) and sets SpriteMapIDs.at(7) to NULL,
 		//     but SpriteMapIDs.at(8) is still where that sprite pointed to and isn't NULL, error is caused when invoking the undefined memory
-		
+
 		// tl;dr: only cleanup arrays if each element in it is guaranteed to be unique
         // CLEANUP(SpriteMapIDs.at(i));
 	}
