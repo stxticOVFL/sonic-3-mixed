@@ -286,10 +286,10 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 
     if (!LinkedSprite) {
         if (Palette) {
-            delete[] Palette;
+            Memory::Free(Palette);
         }
         if (PaletteAlt) {
-            delete[] PaletteAlt;
+            Memory::Free(PaletteAlt);
         }
     }
     Palette = other->Palette;
@@ -465,11 +465,11 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
 
     if (!LinkedSprite) {
         if (Palette) {
-            delete[] Palette;
+            Memory::Free(Palette);
             Palette = NULL;
         }
         if (PaletteAlt) {
-            delete[] PaletteAlt;
+            Memory::Free(PaletteAlt);
             PaletteAlt = NULL;
         }
     }
@@ -571,10 +571,10 @@ PUBLIC void ISprite::Cleanup() {
 
     if (!LinkedSprite) {
         if (Palette) {
-            delete[] Palette;
+            Memory::Free(Palette);
         }
         if (PaletteAlt) {
-            delete[] PaletteAlt;
+            Memory::Free(PaletteAlt);
         }
     }
 

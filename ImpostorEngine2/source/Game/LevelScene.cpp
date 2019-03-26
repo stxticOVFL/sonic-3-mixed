@@ -6411,7 +6411,11 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 		//     but SpriteMapIDs.at(8) is still where that sprite pointed to and isn't NULL, error is caused when invoking the undefined memory
 
 		// tl;dr: only cleanup arrays if each element in it is guaranteed to be unique
-        // CLEANUP(SpriteMapIDs.at(i));
+		
+		/*if (SpriteMapIDs.at(i) == nullptr) {
+			continue;
+		}
+        CLEANUP(SpriteMapIDs.at(i));*/
 	}
 
 	for (size_t i = 0; i < SpriteBinMapIDs.size(); i++) {
