@@ -61,3 +61,34 @@ C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\Sharp
 C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SharpDX.Direct3D9.xml
 C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\SharpDX.pdb
 C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csproj.CopyComplete
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\AniPLCs.txt
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\S3toIE2.exe.config
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\S3toIE2.exe
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\S3toIE2.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\RSDKv5.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonLVLAPI.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\zlib.net.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SharpDX.dll
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Enigma.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Kosinski.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonicRetro.KensSharp.Nemesis.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\RSDKv5.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\RSDKv5.dll.config
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SonLVLAPI.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SharpDX.Direct3D9.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SharpDX.Direct3D9.xml
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\SharpDX.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csprojAssemblyReference.cache
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.AnimationEditor.resources
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.Properties.Resources.resources
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csproj.GenerateResource.cache
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csproj.CoreCompileInputs.cache
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.csproj.CopyComplete
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.exe
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\obj\Debug\S3toIE2.pdb

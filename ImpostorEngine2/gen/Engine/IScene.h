@@ -24,13 +24,13 @@ public:
     int FadeMax = 0xFF;
     bool FadeIn = false;
 
+    virtual ~IScene();
     virtual void OnEvent(Uint32 event);
     virtual void Init();
     virtual void Update();
     virtual void Render();
     virtual void Cleanup();
     virtual bool ExecuteCommand(char* cmd);
-    virtual ~IScene();
 };
 
 #endif /* ISCENE_H */

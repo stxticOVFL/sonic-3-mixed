@@ -482,7 +482,7 @@ namespace S3toIE2 {
             // string filepath, string filename, string RSDKfolderID
             // @"C:\Users\Justin\skdisasm-master\SonLVL INI Files\", @"AIZ\1.ini", "AIZ1"
 
-            string filepath = @"C:\Users\Justin\skdisasm-master\SonLVL INI Files\";
+            string filepath = @"C:\Users\theclashingfritz\Documents\skdisasm\SonLVL INI Files\";
             string filename = zone + "\\" + act + ".ini";
             string RSDKfolderID = outFolderName;
 
@@ -1071,7 +1071,7 @@ namespace S3toIE2 {
 
             string LEVELROOT = Globals.ROOT + @"Levels\" + zone + "\\";
 
-            Globals.OUT = @"C:\Users\Justin\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\";
+            Globals.OUT = @"C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\ImpostorEngine2\source\Resources\MStages\";
 
             IniDictionary iniDictionary = IniFile.Load(Globals.ROOT + @"SonLVL INI Files\SonLVL.ini");
             IniGroup iniLevel = iniDictionary[(andknux ? @"Sonic & Knuckles\" : @"Sonic 3\") + iniName];
