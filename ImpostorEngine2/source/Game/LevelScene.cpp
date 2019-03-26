@@ -268,7 +268,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
 
-	Memory::ClearTrackedMemory();
+	// Memory::ClearTrackedMemory();
 
 	//Create Achievements Here (may change later lol)
 	App->Achievements->CreateAchievement("Ring Hog");
@@ -342,12 +342,6 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	SavedPalette = (uint32_t*)Memory::TrackedCalloc("LevelScene::SavedPalette", 0x100, sizeof(uint32_t));
 
 	SoundBank = (ISound**)Memory::TrackedCalloc("LevelScene::SoundBank", 0x100, sizeof(ISound*));
-
-	SpriteMapIDs.reserve(0x600);
-    SpriteMapIDs.assign(0x600, NULL);
-
-    SpriteBinMapIDs.reserve(0x600);
-    SpriteBinMapIDs.assign(0x600, NULL);
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Memory Allocation", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
@@ -2711,6 +2705,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 }
 
 PUBLIC VIRTUAL void LevelScene::Init() {
+	SpriteMapIDs.reserve(0x600);
+	SpriteMapIDs.assign(0x600, NULL);
+
+	SpriteBinMapIDs.reserve(0x600);
+	SpriteBinMapIDs.assign(0x600, NULL);
+
 	LoadData();
 	App->Print(0, "%d", SaveGame::CurrentEmeralds);
 
@@ -3694,6 +3694,7 @@ PUBLIC VIRTUAL void LevelScene::TransferCommonLevelData(LevelScene* NextAct) {
 	RobotnikSprite = NULL;
 	ExplosionSprite = NULL;
 	WaterSprite = NULL;
+	GiantRingModel = NULL;
 
 	// #PauseSprite#
 	// #GlobalDisplaySprite#
@@ -6273,7 +6274,7 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 }
 
 PUBLIC VIRTUAL void LevelScene::Cleanup() {
-#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+#define CLEANUP(name) if (name) { printf("%s\n", #name); name->Cleanup(); delete name; name = NULL; }
 
 	App->Audio->ClearMusic();
 	CLEANUP(Sound::SoundBank[0]);
@@ -6336,6 +6337,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	for (size_t i = 0; i < SpriteBinMapIDs.size(); i++) {
         CLEANUP(SpriteBinMapIDs.at(i));
 	}
+	SpriteBinMapIDs.clear();
 
 	for (int i = 0; i < DebugObjectIDCount; i++) {
 		DebugObjectIDList[i] = 0;
@@ -6356,7 +6358,6 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	Memory::Free(SoundBank);
 	SpriteMapIDs.clear();
     SpriteBinMap.clear();
-    SpriteBinMapIDs.clear();
 
 	for (size_t i = 0; i < TempObjects.size(); i++) {
         if (TempObjects.at(i) != NULL) {

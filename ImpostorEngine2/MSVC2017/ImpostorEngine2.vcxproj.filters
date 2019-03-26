@@ -61,6 +61,9 @@
     <Filter Include="Source Files\Engine\Diagnostics">
       <UniqueIdentifier>{9bc2fd23-a7ee-4f9a-8b25-a651bbf504d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\ImageFormats">
+      <UniqueIdentifier>{c1ee2982-67b4-4694-95b7-ecbf8d744805}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\Game\Levels\AIZ.cpp">
@@ -590,6 +593,9 @@
     </ClCompile>
     <ClCompile Include="..\source\Engine\Diagnostics\Memory.cpp">
       <Filter>Source Files\Engine\Diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\ImageFormats\GIF.cpp">
+      <Filter>Source Files\Engine\ImageFormats</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

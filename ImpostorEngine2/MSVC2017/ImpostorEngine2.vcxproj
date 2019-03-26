@@ -27,6 +27,7 @@
     <ClCompile Include="..\source\Engine\IGraphics.cpp" />
     <ClCompile Include="..\source\Engine\IINI.cpp" />
     <ClCompile Include="..\source\Engine\IInput.cpp" />
+    <ClCompile Include="..\source\Engine\ImageFormats\GIF.cpp" />
     <ClCompile Include="..\source\Engine\IMath.cpp" />
     <ClCompile Include="..\source\Engine\IModel.cpp" />
     <ClCompile Include="..\source\Engine\IResource.cpp" />

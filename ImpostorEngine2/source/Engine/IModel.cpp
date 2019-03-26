@@ -88,6 +88,6 @@ PUBLIC bool IModel::HasColors() {
 
 PUBLIC void IModel::Cleanup() {
     // Does nothing
-    G->DeleteBufferID(BufferID_V);
-    G->DeleteBufferID(BufferID_N);
+    if (G) G->DeleteBufferID(BufferID_V);
+    if (G) G->DeleteBufferID(BufferID_N);
 }

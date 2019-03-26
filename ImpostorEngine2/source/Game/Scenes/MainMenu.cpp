@@ -90,7 +90,7 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
 
-	Memory::ClearTrackedMemory();
+	// Memory::ClearTrackedMemory();
 
 	Sound::Audio = App->Audio;
 	Sound::Init();
@@ -528,7 +528,7 @@ PUBLIC void Scene_MainMenu::Render() {
 		G->DrawSprite(MenuSprite, 2, triframe, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
-	
+
 
 	/*
 	if (selected == 0) {
