@@ -227,10 +227,10 @@ namespace ManiacEditor
 
             var ruleMapCount = _layer.ScrollIndexes.Count();
             int i = 0;
-            while (i < ruleMapCount)
+            /*while (i < ruleMapCount)
             {
                 var currentValue = _layer.ScrollIndexes[i];
-                var currentRule = _layer.ScrollingInfo[currentValue];
+                var currentRule = z_layer.ScrollingInfo[currentValue];
                 var currentCount = 0;
                 var start = i;
                 while (   i < ruleMapCount 
@@ -241,7 +241,7 @@ namespace ManiacEditor
                 }
 
                 tempList.First(hlr => hlr.Id == currentValue).AddMapping(start, currentCount);
-            }
+            }*/
 
             return tempList;
         }

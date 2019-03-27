@@ -5618,6 +5618,9 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 	int index, TileBaseX, TileBaseY;
 	// int EndTileBaseX, EndTileBaseY;
 
+	//Lazy but works
+	TileSprite->SetTransparentColorIndex(0);
+
 	for (int l = 0; l < Data->layerCount; l++) {
 		y = 0;
 

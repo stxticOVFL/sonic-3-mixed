@@ -2823,8 +2823,8 @@ namespace ManiacEditor
 				EditLayerToggleButton tsb = new EditLayerToggleButton()
 				{
 					Text = el.Name,
-					Name = "Edit" + el.Name.Replace(" ", "")
-				};
+					Name = "Edit" + el.Name.Replace(" ", "").Replace("&", "").Replace("(", "_").Replace(")", "")
+                };
 				LayerToolbar.Items.Add(tsb);
 				tsb.TextForeground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(Color.LawnGreen.A, Color.LawnGreen.R, Color.LawnGreen.G, Color.LawnGreen.B));
 				tsb.RightClick += AdHocLayerEdit_RightClick;
@@ -2844,8 +2844,8 @@ namespace ManiacEditor
 				EditLayerToggleButton tsb = new EditLayerToggleButton()
 				{
 					Text = el.Name,
-					Name = "Show" + el.Name.Replace(" ", "")
-				};
+                    Name = "Show" + el.Name.Replace(" ", "").Replace("&", "").Replace("(", "_").Replace(")", "")
+                };
 				//toolStrip1.Items.Add(tsb);
 				LayerToolbar.Items.Insert(LayerToolbar.Items.IndexOf(extraViewLayersSeperator), tsb);
 				tsb.TextForeground = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, Color.FromArgb(0x33AD35).R, Color.FromArgb(0x33AD35).G, Color.FromArgb(0x33AD35).B));

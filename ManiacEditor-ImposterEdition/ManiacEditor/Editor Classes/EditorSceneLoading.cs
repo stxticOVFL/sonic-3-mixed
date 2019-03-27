@@ -301,8 +301,8 @@ namespace ManiacEditor
 		public void LoadFromFiles()
 		{
 			bool LoadFailed = false;
-			try
-			{
+			//try
+			//{
 				Instance.LevelID = Instance.EditorPath.CurrentLevelID;
 				Instance.EditorScene = new EditorScene(Instance.EditorPath.GetScenePathFromFile(Instance.EditorPath.SceneFilePath), Instance.GraphicsModel.GraphicPanel, Instance);
 
@@ -338,13 +338,13 @@ namespace ManiacEditor
 				}
 
 				Instance.EditorPath.GetStageConfig(Instance.EditorPath.CurrentZone, Instance.EditorPath.Browsed);
-			}
-			catch (Exception ex)
-			{
-				LoadFailed = true;
-				MessageBox.Show("Load failed. Error: " + ex.ToString());
-				return;
-			}
+			//}
+			//catch (Exception ex)
+			//{
+			//	LoadFailed = true;
+			//	MessageBox.Show("Load failed. Error: " + ex.ToString());
+			//	return;
+			//}
 
 
 			if (!LoadFailed) AfterLoad();

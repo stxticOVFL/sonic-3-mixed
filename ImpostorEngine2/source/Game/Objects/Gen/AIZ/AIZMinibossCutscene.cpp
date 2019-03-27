@@ -67,8 +67,8 @@ void AIZMinibossCutscene::Create() {
     HurtPalette[i++] = 0x8888AA;
     HurtPalette[i++] = 0xAAAAAA;
     HurtPalette[i++] = 0x444400;
-    Sprite->SetPalette(0x10, 16, MainPalette);
-    Sprite->UpdatePalette();
+    //Sprite->SetPalette(0x10, 16, MainPalette);
+    //Sprite->UpdatePalette();
     if (Cutscene) {
         Scene->AddNewObject(Obj_TreeBark, 0, 0x2F78, 0x318, false, false);
         SmallX = 0;

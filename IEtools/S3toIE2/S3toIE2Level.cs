@@ -1822,11 +1822,11 @@ namespace S3toIE2 {
                 ushort SlotID = 0;
 
                 RSDKv5.SceneObject playerObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("PlayerSpawn"), new List<RSDKv5.AttributeInfo>());
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("subtype", RSDKv5.AttributeTypes.UINT8));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("flipX", RSDKv5.AttributeTypes.BOOL));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("flipY", RSDKv5.AttributeTypes.BOOL));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("characterID", RSDKv5.AttributeTypes.VAR));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("FlipX", RSDKv5.AttributeTypes.BOOL));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("FlipY", RSDKv5.AttributeTypes.BOOL));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("CharacterID", RSDKv5.AttributeTypes.VAR));
 
                 // Write Start Positions
                 byte[] startPosDataSonic = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["startpos"])[0].Filename);
@@ -1837,6 +1837,7 @@ namespace S3toIE2 {
                 RSDKv5.SceneEntity startPosSonicTails = new RSDKv5.SceneEntity(playerObjects, SlotID++);
                 startPosSonicTails.Position.X.High = (short)BitConverter.ToUInt16(startPosDataSonic, 2);
                 startPosSonicTails.Position.Y.High = (short)BitConverter.ToUInt16(startPosDataSonic, 0);
+                startPosSonicTails.Attributes[0].ValueUInt8 = 0xFF;
                 startPosSonicTails.Attributes[4] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
                 startPosSonicTails.Attributes[4].ValueVar = 0b00011011;
                 playerObjects.Entities.Add(startPosSonicTails);
@@ -1844,6 +1845,7 @@ namespace S3toIE2 {
                 RSDKv5.SceneEntity startPosSonicKnux = new RSDKv5.SceneEntity(playerObjects, SlotID++);
                 startPosSonicKnux.Position.X.High = (short)BitConverter.ToUInt16(startPosDataKnux, 2);
                 startPosSonicKnux.Position.Y.High = (short)BitConverter.ToUInt16(startPosDataKnux, 0);
+                startPosSonicKnux.Attributes[0].ValueUInt8 = 0xFF;
                 startPosSonicKnux.Attributes[4] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
                 startPosSonicKnux.Attributes[4].ValueVar = 0b00000100;
                 playerObjects.Entities.Add(startPosSonicKnux);
@@ -1856,13 +1858,13 @@ namespace S3toIE2 {
                 int ringDataCount = ringData.Length / 4 - 1;
 
                 RSDKv5.SceneObject ringObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("Ring"), new List<RSDKv5.AttributeInfo>());
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("filter"), RSDKv5.AttributeTypes.UINT8));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("type"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("planeFilter"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("moveType"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("amplitude"), RSDKv5.AttributeTypes.POSITION));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("speed"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("angle"), RSDKv5.AttributeTypes.INT32));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Filter"), RSDKv5.AttributeTypes.UINT8));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Type"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("PlaneFilter"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("MoveType"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Amplitude"), RSDKv5.AttributeTypes.POSITION));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Speed"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Angle"), RSDKv5.AttributeTypes.INT32));
 
                 using (MemoryStream ringStream = new MemoryStream(ringData))
                 {
@@ -1876,6 +1878,7 @@ namespace S3toIE2 {
                         RSDKv5.SceneEntity ringEntity = new RSDKv5.SceneEntity(ringObjects, SlotID++);
                         ringEntity.Position.X.High = x;
                         ringEntity.Position.Y.High = y;
+                        ringEntity.Attributes[0].ValueUInt8 = 0xFF;
                         ringObjects.Entities.Add(ringEntity);
                     }
                 }
@@ -2079,10 +2082,10 @@ namespace S3toIE2 {
                     IDs.Add(def.Key);
 
                     RSDKv5.SceneObject objDefinition = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier(ObjectName), new List<RSDKv5.AttributeInfo>());
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("subtype", RSDKv5.AttributeTypes.UINT8));
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flipX", RSDKv5.AttributeTypes.BOOL));
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flipY", RSDKv5.AttributeTypes.BOOL));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("FlipX", RSDKv5.AttributeTypes.BOOL));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("FlipY", RSDKv5.AttributeTypes.BOOL));
                     foreach (PropertySpec n in def.Value.CustomProperties)
                     {
                         if (n.Type == typeof(bool))

@@ -1,41 +1,44 @@
-filter
-subtype
-flipX
-flipY
-characterID
-type
-planeFilter
-moveType
-amplitude
-speed
-angle
+Filter
+Subtype
+FlipX
+FlipY
+CharacterID
+Type
+PlaneFilter
+MoveType
+Amplitude
+Speed
+Angle
 sprite
 behavior
 direction
 delay
 offset
-scroll rate
+scrollrate
 twirl
 color
 layer
-kill transverse speed
+killtransversespeed
 movement
 count
-star post id
-ring id
-hpz warp
-priority only
+starpostid
+ringid
+hpzwarp
+priorityonly
 size
-right/down path
-left/up path
-right/down priority
-left/up priority
-ground only
-no spin lock
-snap to wall
-lock controls
+right/downpath
+left/uppath
+right/downpriority
+left/uppriority
+groundonly
+nospinlock
+snaptowall
+lockcontrols
 width
 height
 distance
+action
+length
+
 action
 length
