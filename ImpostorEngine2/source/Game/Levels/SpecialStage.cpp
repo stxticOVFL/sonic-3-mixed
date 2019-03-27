@@ -105,9 +105,8 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     ZoneID = 20;
     Act = 0;
 
-	PlayMusic("Music/Mixed/BlueSpheresSPD.ogg", 5309957, -1);
-    //Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg", true);
-    //Sound::Audio->LoopPoint[0] = 5309957;
+    Sound::SoundBank[0] = new ISound("Music/BlueSpheresSPD.ogg", true);
+    Sound::Audio->LoopPoint[0] = 5309957;
 
 	if (!LayoutBackup)
 		LayoutBackup = (Uint8*)calloc(0x400, 1);
@@ -181,7 +180,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	G->FadeToWhite = true;
 
 	if (!MobileButtonsSprite) {
-		MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+		MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App, 1);
 		ISprite::Animation an;
 		an.Name = "";
 		an.FrameCount = 8;
@@ -200,14 +199,14 @@ PUBLIC void Level_SpecialStage::Init() {
 		MobileButtonsSprite->UpdatePalette();
 	}
 	if (!PauseSprite) {
-		PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+		PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App, 1);
 		PauseSprite->SetTransparentColorIndex(0);
-		PauseSprite->LoadAnimation("UI/PauseMenu.bin");
+		PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 	}
 
 	if (!ItemsSprite) {
 		//if (SaveGame::CurrentMode == 1) {
-			ItemsSprite = new ISprite("Global/Items.gif", App);
+			ItemsSprite = new ISprite("Global/Items.gif", App, SaveGame::CurrentMode);
 			ItemsSprite->Print = true;
 			ItemsSprite->LoadAnimation("Global/ItemBox.bin");
 			ItemsSprite->LoadAnimation("Global/Ring.bin");
@@ -221,7 +220,7 @@ PUBLIC void Level_SpecialStage::Init() {
 		}*/
 	}
 
-	IResource* BSS_Setup_Bin = IResources::Load("Stages/Special/OBJ_BSS_Setup.bin");
+	IResource* BSS_Setup_Bin = IResources::Load("Stages/Special/OBJ_BSS_Setup.bin", 1);
 	if (BSS_Setup_Bin) {
 		IStreamer reader(BSS_Setup_Bin);
 

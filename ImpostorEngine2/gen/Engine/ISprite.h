@@ -65,10 +65,7 @@ public:
     void operator delete(void* const block) noexcept;
 
     ISprite(const char* filename, IApp* app);
-    ISprite(const char* filename, IApp* app, bool IsPrinting);
     ISprite(const char* filename, IApp* app, int mode);
-    ISprite(const char* filename, IApp* app, int mode, bool IsPrinting);
-    ~ISprite();
     void SetTransparentColorIndex(int i);
     void SetPalette(int i, uint32_t col);
     void SetPaletteAlt(int i, uint32_t col);

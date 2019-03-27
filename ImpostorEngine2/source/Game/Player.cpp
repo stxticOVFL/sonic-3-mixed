@@ -448,14 +448,14 @@ void IPlayer::Create() {
 	// 0x01 - Animation Loops
 	// 0x04 - Animation Stops
 
+	//TODO: Clean up later
 	if (Character == CharacterType::Sonic) {
 		H = 40;
 		OrigH = H;
 		DropDashEnabled = true; // Default to true for now.
 		if (!Thremixed) {
 			int i = 0;
-			Sprites[0] = new ISprite("Sprites/Players/S3/Sonic.gif", App);
-
+			Sprites[0] = new ISprite("Sprites/Players/S3/Sonic.gif", App, 0);
 			Sprites[0]->LoadAnimation("Sprites/Players/S3/Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
@@ -469,13 +469,13 @@ void IPlayer::Create() {
 		else {
 			bool Tria = true;
 			if (Tria) {
-				Sprites[0] = new ISprite("Sprites/Players/Sonic1.gif", App);
-				Sprites[1] = new ISprite("Sprites/Players/Sonic2.gif", App);
-				Sprites[2] = new ISprite("Sprites/Players/Sonic3.gif", App);
-				Sprites[3] = new ISprite("Sprites/Players/Sonic4.gif", App);
-				Sprites[4] = new ISprite("Sprites/Players/SonicCutsceneCPZ.gif", App);
+				Sprites[0] = new ISprite("Sprites/Player/Sonic1.gif", App, 1);
+				Sprites[1] = new ISprite("Sprites/Player/Sonic2.gif", App, 1);
+				Sprites[2] = new ISprite("Sprites/Player/Sonic3.gif", App), 1;
+				Sprites[3] = new ISprite("Sprites/Player/Sonic4.gif", App, 1);
+				Sprites[4] = new ISprite("Sprites/Player/SonicCutsceneCPZ.gif", App, 1);
 
-				Sprites[0]->LoadAnimation("Sprites/Players/Sonicold.bin");
+				Sprites[0]->LoadAnimation("Sprites/Player/Sonicold.bin");
 
 				int i = 0;
 				for (; i < Sprites[0]->AnimCount; i++) {
@@ -501,8 +501,8 @@ void IPlayer::Create() {
 			}
 			else {
 				int i = 0;
-				Sprites[0] = new ISprite("Sprites/Players/S3/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(1);
-				Sprites[1] = new ISprite("Sprites/Players/S3/Sonic.gif", App);
+				Sprites[0] = new ISprite("Sprites/Players/S3/Sonic3MClassic.gif", App, 0); Sprites[0]->SetTransparentColorIndex(1);
+				Sprites[1] = new ISprite("Sprites/Players/S3/Sonic.gif", App, 0);
 
 				Sprites[0]->LoadAnimation("Sprites/Players/S3/Sonic3MClassic.bin");
 				for (; i < Sprites[0]->AnimCount; i++) {
@@ -523,7 +523,7 @@ void IPlayer::Create() {
 		OrigH = H;
 		if (!Thremixed) {
 			int i = 0;
-			Sprites[0] = new ISprite("Sprites/Players/S3/Tails.gif", App);
+			Sprites[0] = new ISprite("Sprites/Players/S3/Tails.gif", App, 0);
 
 			Sprites[0]->LoadAnimation("Sprites/Players/S3/Tails.bin");
 			Sprites[0]->LoadAnimation("Sprites/Players/S3/TailSprite.bin");
@@ -532,10 +532,10 @@ void IPlayer::Create() {
 			}
 		}
 		else {
-			Sprites[0] = new ISprite("Sprites/Players/Tails1.gif", App);
-			Sprites[1] = new ISprite("Sprites/Players/Tails2.gif", App);
-			Sprites[2] = new ISprite("Sprites/Players/Tails3.gif", App);
-			Sprites[3] = new ISprite("Sprites/Players/TailsCutsceneCPZ.gif", App);
+			Sprites[0] = new ISprite("Sprites/Players/Tails1.gif", App, 1);
+			Sprites[1] = new ISprite("Sprites/Players/Tails2.gif", App, 1);
+			Sprites[2] = new ISprite("Sprites/Players/Tails3.gif", App, 1);
+			Sprites[3] = new ISprite("Sprites/Players/TailsCutsceneCPZ.gif", App, 1);
 
 			Sprites[0]->LoadAnimation("Sprites/Players/Tails.bin");
 			Sprites[0]->LoadAnimation("Sprites/Players/TailSprite.bin");
@@ -558,11 +558,11 @@ void IPlayer::Create() {
 			}
 		}
 		else {
-			Sprites[0] = new ISprite("Sprites/Players/Knux1.gif", App);
-			Sprites[1] = new ISprite("Sprites/Players/Knux2.gif", App);
-			Sprites[2] = new ISprite("Sprites/Players/Knux3.gif", App);
-			Sprites[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App);
-			Sprites[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App);
+			Sprites[0] = new ISprite("Sprites/Players/Knux1.gif", App, 1);
+			Sprites[1] = new ISprite("Sprites/Players/Knux2.gif", App, 1);
+			Sprites[2] = new ISprite("Sprites/Players/Knux3.gif", App, 1);
+			Sprites[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App, 1);
+			Sprites[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App, 1);
 
 			Sprites[0]->LoadAnimation("Sprites/Players/Knux.bin");
 			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
@@ -577,10 +577,10 @@ void IPlayer::Create() {
 	}
 	else if (Character == CharacterType::Mighty) {
 		Thremixed = true;
-		Sprites[0] = new ISprite("Sprites/Players/Mighty1.gif", App);
-		Sprites[1] = new ISprite("Sprites/Players/Mighty2.gif", App);
-		Sprites[2] = new ISprite("Sprites/Players/Mighty2.gif", App);
-		Sprites[3] = new ISprite("Sprites/Players/MightyCutsceneCPZ.gif", App);
+		Sprites[0] = new ISprite("Sprites/Players/Mighty1.gif", App, 1);
+		Sprites[1] = new ISprite("Sprites/Players/Mighty2.gif", App, 1);
+		Sprites[2] = new ISprite("Sprites/Players/Mighty2.gif", App, 1);
+		Sprites[3] = new ISprite("Sprites/Players/MightyCutsceneCPZ.gif", App, 1);
 
 		Sprites[0]->LoadAnimation("Sprites/Players/Mighty.bin");
 		Sprites[1]->LinkAnimation(Sprites[0]->Animations);
@@ -593,10 +593,10 @@ void IPlayer::Create() {
 	}
 	else if (Character == CharacterType::Ray) {
 		Thremixed = true;
-		Sprites[0] = new ISprite("Sprites/Players/Ray1.gif", App);
-		Sprites[1] = new ISprite("Sprites/Players/Ray2.gif", App);
-		Sprites[2] = new ISprite("Sprites/Players/Ray3.gif", App);
-		Sprites[3] = new ISprite("Sprites/Players/RayCutsceneCPZ.gif", App);
+		Sprites[0] = new ISprite("Sprites/Players/Ray1.gif", App, 1);
+		Sprites[1] = new ISprite("Sprites/Players/Ray2.gif", App, 1);
+		Sprites[2] = new ISprite("Sprites/Players/Ray3.gif", App, 1);
+		Sprites[3] = new ISprite("Sprites/Players/RayCutsceneCPZ.gif", App, 1);
 
 		Sprites[0]->LoadAnimation("Sprites/Players/Ray.bin");
 		Sprites[1]->LinkAnimation(Sprites[0]->Animations);
@@ -617,16 +617,10 @@ void IPlayer::Create() {
 
 	SpriteDashDust = Scene->ExplosionSprite;
 
-	if (Thremixed) {
-		SpriteShields = new ISprite("Sprites/Global/ShieldsOld.gif", App);
-		SpriteShields->LoadAnimation("Sprites/Global/ShieldsOld.bin");
-	}
-	else {
-		SpriteShields = new ISprite("Sprites/GlobalS3K/ShieldsOld.gif", App);
-		SpriteShields->LoadAnimation("Sprites/GlobalS3K/ShieldsOld.bin");
-	}
+	SpriteShields = new ISprite("Sprites/Global/ShieldsOld.gif", App, SaveGame::CurrentMode);
+	SpriteShields->LoadAnimation("Sprites/Global/ShieldsOld.bin");
 
-	SpriteShields2 = new ISprite("Sprites/Global/Shields.gif", App);
+	SpriteShields2 = new ISprite("Sprites/Global/Shields.gif", App, SaveGame::CurrentMode);
 	SpriteShields2->LoadAnimation("Sprites/Global/Invincible.bin");
 	SpriteShields2->LoadAnimation("Sprites/Global/Shields.bin");
 
@@ -3664,7 +3658,11 @@ void IPlayer::Render(int CamX, int CamY) {
 			y = 20;
 
 		/*
+<<<<<<< HEAD
 		"Sprites/Players/TailSprite.bin"
+=======
+		"Sprites/Player/TailSprite.bin"
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		"Tails 0" (55) (Flags: 04, FtL: 0, Spd: 64, Frames: 10)
 		"Tails 1" (56) (Flags: 01, FtL: 0, Spd: 64, Frames: 6)
 		"Tails 2" (57) (Flags: 00, FtL: 0, Spd: 128, Frames: 6)

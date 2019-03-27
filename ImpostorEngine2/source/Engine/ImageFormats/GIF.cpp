@@ -1,16 +1,16 @@
 #if INTERFACE
-
 #include <Utils/Standard.h>
 #include <Engine/IStreamer.h>
 
 class GIF {
-public:
-    Uint32* Colors = NULL;
-    Uint8*  Data = NULL;
-    Uint32  Width = 0;
-    Uint32  Height = 0;
-    Uint32  TransparentColorIndex = 0;
-	bool indexed = true;
+    public:
+        Uint32* Colors = NULL;
+        Uint8*  Data = NULL;
+        Uint32  Width = 0;
+        Uint32  Height = 0;
+        Uint32  TransparentColorIndex = 0;
+        bool indexed = true;
+        vector<Uint8*> Frames;
 };
 #endif
 
@@ -20,12 +20,18 @@ public:
 #include <Engine/ImageFormats/GIF.h>
 #include <Engine/Diagnostics/Memory.h>
 
-struct Entry {
-    uint8_t  Used;
-    uint16_t Length;
-	uint16_t Prefix;
-	uint8_t  Suffix;
+struct Node {
+    Uint16 Key;
+    struct Node* Children[];
 };
+
+struct Entry {
+    Uint8  Used;
+    Uint16 Length;
+	Uint16 Prefix;
+	Uint8  Suffix;
+};
+
 PUBLIC STATIC Uint32 GIF::ReadCode(IStreamer* stream, int codeSize, int* blockLength, int* bitCache, int* bitCacheLength) {
     if (*blockLength == 0)
         *blockLength = stream->ReadByte();
@@ -46,9 +52,115 @@ PUBLIC STATIC Uint32 GIF::ReadCode(IStreamer* stream, int codeSize, int* blockLe
 
     return result;
 }
+PUBLIC STATIC void   GIF::WriteCode(IStreamer* stream, int* offset, int* partial, Uint8* buffer, uint16_t key, int key_size) {
+    int byte_offset, bit_offset, bits_to_write;
+    byte_offset = *offset >> 3;
+    bit_offset = *offset & 0x7;
+    *partial |= ((uint32_t)key) << bit_offset;
+    bits_to_write = bit_offset + key_size;
+    while (bits_to_write >= 8) {
+        buffer[byte_offset++] = *partial & 0xFF;
+        if (byte_offset == 0xFF) {
+            stream->WriteByte(0xFF);
+            stream->WriteBytes(buffer, 0xFF);
+            byte_offset = 0;
+        }
+        *partial >>= 8;
+        bits_to_write -= 8;
+    }
+    *offset = (*offset + key_size) % (0xFF * 8);
+}
+PUBLIC        void   GIF::WriteFrame(IStreamer* stream, Uint8* data) {
+    int depth = 8;
+    // Put Image
+    Node* node;
+    Node* root;
+    Node* child;
+    int nkeys, key_size, i, j;
+    int degree = 1 << depth;
 
-PUBLIC STATIC GIF* GIF::Load(const char* filename) {
-    Uint8* px;
+    Uint8 buffer[0x100];
+    int offset = 0, partial = 0;
+
+	//  stream->WriteByte(0x21);
+	// stream->WriteByte(0xF9);
+	// stream->WriteByte(0x04);
+	// stream->WriteByte(0x01);
+	// stream->WriteUInt16(100 / 50); // 50 fps
+    // stream->WriteByte((Uint8)this->TransparentColorIndex);
+    // stream->WriteByte(0x00);
+
+    stream->WriteByte(0x2C);
+    stream->WriteUInt16(0); // X
+    stream->WriteUInt16(0); // Y
+    stream->WriteUInt16((Uint16)this->Width); // Width
+    stream->WriteUInt16((Uint16)this->Height); // Height
+
+    stream->WriteByte(0x00); // Packed field
+    stream->WriteByte((Uint8)depth); // Key size
+
+    root = node = (Node*)NewTree(degree, &nkeys);
+    key_size = depth + 1;
+    WriteCode(stream, &offset, &partial, buffer, degree, key_size); /* clear code */
+    for (i = 0; i < this->Height; i++) {
+        for (j = 0; j < this->Width; j++) {
+            Uint8 pixel = (Uint8)(data[i * this->Width + j] & (degree - 1));
+            child = node->Children[pixel];
+            if (child) {
+                node = child;
+            }
+            else {
+                WriteCode(stream, &offset, &partial, buffer, node->Key, key_size);
+                if (nkeys < 0x1000) {
+                    if (nkeys == (1 << key_size))
+                        key_size++;
+                    node->Children[pixel] = (Node*)NewNode(nkeys++, degree);
+                }
+                else {
+                    WriteCode(stream, &offset, &partial, buffer, degree, key_size); /* clear code */
+                    FreeTree(root, degree);
+                    root = node = (Node*)NewTree(degree, &nkeys);
+                    key_size = depth + 1;
+                }
+                node = root->Children[pixel];
+            }
+        }
+    }
+    WriteCode(stream, &offset, &partial, buffer, node->Key, key_size);
+    WriteCode(stream, &offset, &partial, buffer, degree + 1, key_size); /* stop code */
+    // end_key(gif);
+    int byte_offset;
+    byte_offset = offset >> 3;
+    if (offset & 7)
+        buffer[byte_offset++] = partial & 0xFF;
+    stream->WriteByte((Uint8)byte_offset);
+    stream->WriteBytes(buffer, byte_offset);
+    stream->WriteByte(0);
+    offset = partial = 0;
+    //
+    FreeTree(root, degree);
+}
+
+PUBLIC STATIC void*  GIF::NewNode(Uint16 key, int degree) {
+    Node* node = (Node*)Memory::Calloc(1, sizeof(*node) + degree * sizeof(Node*));
+    if (node) node->Key = key;
+    return node;
+}
+PUBLIC STATIC void*  GIF::NewTree(int degree, int* nkeys) {
+    Node *root = (Node*)GIF::NewNode(0, degree);
+    for (*nkeys = 0; *nkeys < degree; (*nkeys)++)
+        root->Children[*nkeys] = (Node*)GIF::NewNode(*nkeys, degree);
+    *nkeys += 2;
+    return root;
+}
+PUBLIC STATIC void   GIF::FreeTree(void* root, int degree) {
+    if (!root) return;
+    for (int i = 0; i < degree; i++) FreeTree(((Node*)root)->Children[i], degree);
+    Memory::Free(root);
+}
+
+PUBLIC STATIC GIF*   GIF::Load(const char* filename) {
+	Uint8* px;
     Entry* codeTable = (Entry*)Memory::Calloc(0x1000, sizeof(Entry));
 
     GIF* gif = new GIF;
@@ -64,19 +176,20 @@ PUBLIC STATIC GIF* GIF::Load(const char* filename) {
     if (!stream)
         goto GIF_Load_FAIL;
 
-    Uint8 magicGIF[3];
+    Uint8 magicGIF[4];
     stream->ReadBytesTo(magicGIF, 3);
     if (memcmp(magicGIF, "GIF", 3) != 0) {
-        IApp::Print(2, "Invalid GIF file! Found \"%*.s\", expected \"GIF\"!", 3, magicGIF);
+        magicGIF[3] = 0;
+        IApp::Print(2, "Invalid GIF file! Found \"%s\", expected \"GIF\"!", magicGIF);
         goto GIF_Load_FAIL;
     }
 
     Uint8 magic89a[4];
     stream->ReadBytesTo(magic89a, 3);
-    if (memcmp(magic89a, "89a", 3) != 0) {
-		magic89a[3] = 0;
-        // IApp::Print(2, "Invalid GIF version! Found \"%s\", expected \"89a\"! %s", magic89a, filename);
-        // goto GIF_Load_FAIL;
+    if (memcmp(magic89a, "87a", 3) != 0 && memcmp(magic89a, "89a", 3) != 0) {
+        magic89a[3] = 0;
+        IApp::Print(2, "Invalid GIF version! Found \"%s\", expected \"87a\" or \"89a\"!", magic89a);
+        goto GIF_Load_FAIL;
     }
 
     Uint16 width, height, paletteTableSize;
@@ -101,11 +214,11 @@ PUBLIC STATIC GIF* GIF::Load(const char* filename) {
 
     if ((width & (width - 1)) != 0) {
         IApp::Print(2, "GIF width must be power of two!");
-        //goto GIF_Load_FAIL;
+        // goto GIF_Load_FAIL;
     }
     if ((height & (height - 1)) != 0) {
         IApp::Print(2, "GIF width must be power of two!");
-        //goto GIF_Load_FAIL;
+        // goto GIF_Load_FAIL;
     }
 
     colorBitDepth = ((logicalScreenDesc & 0x70) >> 4) + 1; // normally 7, sometimes it is 4 (wrong)
@@ -155,11 +268,13 @@ PUBLIC STATIC GIF* GIF::Load(const char* filename) {
                 switch (subtype) {
                     // Graphics Control Extension
                     case 0xF9:
-                        stream->Skip(0x06);
+                        // stream->Skip(0x06);
                         // temp = stream->ReadByte();  // Block Size [byte] (always 0x04)
                         // temp = stream->ReadByte();  // Packed Field [byte] //
                         // temp16 = stream->ReadUInt16(); // Delay Time [short] //
-                        // temp = stream->ReadByte();  // Transparent Color Index? [byte] //
+                        stream->Skip(0x04);
+                        gif->TransparentColorIndex = stream->ReadByte();  // Transparent Color Index? [byte] //
+                        stream->Skip(0x01);
                         // temp = stream->ReadByte();  // Block Terminator [byte] //
                         break;
                     // Plain Text Extension
@@ -316,6 +431,74 @@ PUBLIC STATIC GIF* GIF::Load(const char* filename) {
         Memory::Free(codeTable);
         if (stream) delete stream;
         return gif;
+}
+PUBLIC STATIC bool   GIF::Save(GIF* gif, const char* filename) {
+    return gif->Save(filename);
+}
+
+PUBLIC bool GIF::Save(const char* filename) {
+    IResource* R = IResources::Open(filename);
+    if (!R) {
+        IApp::Print(2, "Could not open file '%s'!", filename);
+        return false;
+    }
+
+    IStreamer* stream = new IStreamer(R);
+    if (!stream)
+        return false;
+
+    stream->WriteByte('G');
+    stream->WriteByte('I');
+    stream->WriteByte('F');
+    stream->WriteByte('8');
+    stream->WriteByte('9');
+    stream->WriteByte('a');
+
+    stream->WriteUInt16((Uint16)this->Width);
+    stream->WriteUInt16((Uint16)this->Height);
+
+    Uint8 logicalScreenDesc = 0x70;
+    if (Colors) {
+        logicalScreenDesc |= 0x80;
+        logicalScreenDesc |= 0x07; // 256 colors
+    }
+
+    stream->WriteByte(logicalScreenDesc);
+    //stream->WriteByte((Uint8)this->TransparentColorIndex);
+	stream->WriteByte(0x00);
+    stream->WriteByte(0x00);
+
+    for (int p = 0; p < 256; p++) {
+        stream->WriteByte(this->Colors[p] >> 16 & 0xFF);
+        stream->WriteByte(this->Colors[p] >> 8 & 0xFF);
+        stream->WriteByte(this->Colors[p] & 0xFF);
+    }
+
+    if (this->Frames.size()) {
+        stream->WriteByte('!');
+        stream->WriteByte(0xFF);
+        stream->WriteByte(0x0B);
+
+        stream->WriteBytes((Uint8*)"NETSCAPE2.0", 11);
+
+        stream->WriteByte(0x03);
+        stream->WriteByte(0x01);
+
+        stream->WriteUInt16(0x00); // Loop forver
+        stream->WriteByte(0x00);
+    }
+
+    if (this->Frames.size())
+        for (int i = 0; i < this->Frames.size(); i++)
+            this->WriteFrame(stream, this->Frames[i]);
+    else
+        this->WriteFrame(stream, this->Data);
+
+	stream->WriteByte(0x3B);
+
+    IResources::Close(R);
+    if (stream) delete stream;
+    return true;
 }
 
 PUBLIC GIF::~GIF() {

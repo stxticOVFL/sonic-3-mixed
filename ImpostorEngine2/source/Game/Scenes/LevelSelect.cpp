@@ -320,11 +320,11 @@ PUBLIC void Scene_LevelSelect::Update() {
 				mode = 2;
 			if (mode == 2)
 				selected = 0;
-			partner++;
+			/*partner++;
 			if (partner == 0xFF)
 				partner = 0;
 			if (partner > 4)
-				partner = 0xFF;
+				partner = 0xFF;*/
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA] && App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
@@ -333,11 +333,11 @@ PUBLIC void Scene_LevelSelect::Update() {
 				mode = 0;
 			if (mode == 2)
 				selected = 0;
-			partner--;
+			/*partner--;
 			if (partner == 0xFF)
 				partner = 4;
 			if (partner < 0)
-				partner = 0xFF;
+				partner = 0xFF;*/
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 

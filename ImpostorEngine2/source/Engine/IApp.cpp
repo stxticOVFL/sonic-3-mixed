@@ -270,6 +270,8 @@ PUBLIC void IApp::Run() {
     G->Present();
 
     while (Running) {
+		bool TakeSnapshot = false;
+
         frameTimeMillis = SDL_GetTicks();
         while (SDL_PollEvent(&e) != 0) {
             switch (e.type) {
@@ -320,6 +322,9 @@ PUBLIC void IApp::Run() {
                                 MetricFrameCounterTime++;
                             }
                             break;
+						case SDLK_9:
+							TakeSnapshot = true;
+							break;
                         case SDLK_f:
                             G->SetDisplay(1272, 720, 1);
                             break;
@@ -414,6 +419,11 @@ PUBLIC void IApp::Run() {
         G->DrawText(54, 126, "Options", 0xFFFFFF);
         G->DrawText(54, 136, "Exit", 0xFFFFFF);
         //*/
+
+		if (TakeSnapshot) {
+			TakeSnapshot = false;
+			G->SaveScreenshot();
+		}
 
         G->Present();
 

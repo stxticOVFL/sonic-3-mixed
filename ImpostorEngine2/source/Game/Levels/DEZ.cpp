@@ -17,8 +17,6 @@ public:
 PUBLIC Level_DEZ::Level_DEZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
-	sprintf(ZoneLetters, "DEZ");
-	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 0) : (act == 1 ? 76070 : 0), SaveGame::CurrentMode);
 
     if (Act == 1) {
         Str_TileConfigBin = "Stages/DEZ/TileConfig1.bin";
@@ -43,18 +41,18 @@ PUBLIC Level_DEZ::Level_DEZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 
 PUBLIC void Level_DEZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
+		KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
+		KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
+		KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
+		KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneASZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
-        KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-    }
+		KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
+		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
+	}
 }
 
 PUBLIC void Level_DEZ::RestartStage(bool doActTransition, bool drawBackground) {

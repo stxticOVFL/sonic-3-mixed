@@ -260,7 +260,8 @@ class LevelScene : public IScene {
 #include <Game/SaveGame.h>
 #include <Engine/Diagnostics/Memory.h>
 
-#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectPropCount++; ObjectProps.push_back(op); Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs.at(ID)) ID--; obj->Sprite = SpriteMapIDs.at(ID); obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
+
+#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
 const char* ObjectName[347];
 
 int BlankTile = 0;
@@ -352,7 +353,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	startTime = SDL_GetTicks();
 
 	/*
-	GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
+	GlobalDisplaySprite =
+	("Sprites/Global/Display.gif", App);
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
@@ -488,35 +490,7 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     if (IApp::GlobalApp == NULL) {
         return 0xFFFFFFFF;
     }
-
-    if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
-        size_t BinIndex = SpriteBinMap.find(std::string(Filename))->second;
-        // If BinIndex is bigger then SpriteBinMapIDs.size(), Then a clear happened,
-        // And for some reason the SpriteBinMap wasn't also cleared.
-        if (BinIndex > SpriteBinMap.size() || GetSpriteFromBinIndex(BinIndex) == nullptr) {
-            return ResetSpriteBin(Filename);
-        } else {
-            return BinIndex;
-        }
-    } else {
-        ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
-        SpriteBinMapIDs.push_back(BinSprite);
-        SpriteBinMapIDs.shrink_to_fit();
-        size_t BinIndex = SpriteBinMapIDs.size() - 1;
-
-        if (!FindSpriteBin(std::string(Filename))) {
-            std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
-            SpriteBinMap.insert(pair);
-        }
-        return BinIndex;
-    }
-};
-
-PROTECTED STATIC size_t LevelScene::ResetSpriteBin(const char* Filename) {
-    if (IApp::GlobalApp == NULL) {
-        return 0xFFFFFFFF;
-    }
-    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
+    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp, SaveGame::CurrentMode);
     SpriteBinMapIDs.push_back(BinSprite);
     SpriteBinMapIDs.shrink_to_fit();
     size_t BinIndex = SpriteBinMapIDs.size() - 1;
@@ -556,6 +530,28 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
         return BinSprite;
     }
 };
+
+PROTECTED STATIC size_t LevelScene::ResetSpriteBin(const char* Filename) {
+	if (IApp::GlobalApp == NULL) {
+		return 0xFFFFFFFF;
+	}
+	ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
+	SpriteBinMapIDs.push_back(BinSprite);
+	SpriteBinMapIDs.shrink_to_fit();
+	size_t BinIndex = SpriteBinMapIDs.size() - 1;
+
+	if (!FindSpriteBin(std::string(Filename))) {
+		std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
+		SpriteBinMap.insert(pair);
+	}
+	else {
+		SpriteBinMap.erase(SpriteBinMap.find(std::string(Filename)));
+		std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
+		SpriteBinMap.insert(pair);
+	}
+	return BinIndex;
+};
+
 
 PUBLIC STATIC ISprite* LevelScene::GetSpriteFromBinIndex(size_t index) {
 	if (index < 0 || index >= SpriteBinMapIDs.size()) {
@@ -615,26 +611,28 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		startTime = SDL_GetTicks();
 
 		if (!PauseSprite) {
-			PauseSprite = new ISprite("UI/PauseMenu.bin", App);
+			PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App, 1);
 			PauseSprite->SetTransparentColorIndex(0);
+			PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
-			GlobalDisplaySprite = new ISprite("Global/Display.gif", App);
+			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App, 1);
 			GlobalDisplaySprite->Print = App->DEV;
-			GlobalDisplaySprite->LoadAnimation("Global/HUD.bin");
-			GlobalDisplaySprite->LoadAnimation("Global/TitleCard.bin");
-			GlobalDisplaySprite->LoadAnimation("Global/PlaneSwitch.bin");
+            GlobalDisplaySprite->LoadAnimation("Global/HUD.bin");
+            GlobalDisplaySprite->LoadAnimation("Global/TitleCard.bin");
+            GlobalDisplaySprite->LoadAnimation("Global/PlaneSwitch.bin");
 		}
 		if (!GlobalDisplaySpriteS3K) {
 			GlobalDisplaySpriteS3K = new ISprite("GlobalS3K/HUD.bin", App);
 		}
 		if (!SuperButtonsSprite) {
-			SuperButtonsSprite = new ISprite("UI/SuperButtons.bin", App);
+			SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
+			SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 			SuperButtonsSprite->SetPalette(1, 0x282028);
 			SuperButtonsSprite->UpdatePalette();
 		}
 		if (!MobileButtonsSprite) {
-			MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+			MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App, 1);
 			ISprite::Animation an;
 			an.Name = "";
 			an.FrameCount = 8;
@@ -653,72 +651,60 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			MobileButtonsSprite->UpdatePalette();
 		}
 		if (!EditorSprite) {
-			EditorSprite = new ISprite("Editor/Icons.gif", App);
-			EditorSprite->LoadAnimation("Editor/PlayerIcons.bin");
-			EditorSprite->LoadAnimation("Editor/EditorIcons.bin");
+			EditorSprite = new ISprite("Sprites/Editor/Icons.gif", App, 1);
+			EditorSprite->LoadAnimation("Sprites/Editor/PlayerIcons.bin");
+			EditorSprite->LoadAnimation("Sprites/Editor/EditorIcons.bin");
 		}
 		if (!ItemsSprite) {
+			ItemsSprite = new ISprite("Sprites/Global/Items.gif", App, SaveGame::CurrentMode);
+			ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
+			ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
 			if (SaveGame::CurrentMode == 1) {
-				ItemsSprite = new ISprite("Global/Items.gif", App);
-				ItemsSprite->LoadAnimation("Global/ItemBox.bin");
-				ItemsSprite->LoadAnimation("Global/Ring.bin");
-				ItemsSprite->LoadAnimation("Special/Ring.bin");
-			} else {
-				ItemsSprite = new ISprite("GlobalS3K/Items.gif", App);
-				ItemsSprite->LoadAnimation("GlobalS3K/ItemBox.bin");
-				ItemsSprite->LoadAnimation("GlobalS3K/Ring.bin");
+				ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
 			}
 		}
 		if (!AnimalsSprite) {
-			AnimalsSprite = new ISprite("Global/Animals.bin", App);
+			AnimalsSprite = new ISprite("Sprites/Global/Animals.gif", App, SaveGame::CurrentMode);
+			AnimalsSprite->LoadAnimation("Sprites/Global/Animals.bin");
 		}
 		if (!ObjectsSprite) {
-			if (SaveGame::CurrentMode == 1) {
-				ObjectsSprite = new ISprite("Global/Objects.gif", App);
-				ObjectsSprite->LoadAnimation("Global/Springs.bin");
-				ObjectsSprite->LoadAnimation("Global/Spikes.bin");
-				ObjectsSprite->LoadAnimation("Global/StarPost.bin");
-				ObjectsSprite->LoadAnimation("Global/ScoreBonus.bin");
-			}
-			else {
-				ObjectsSprite = new ISprite("GlobalS3K/Objects.gif", App);
-				ObjectsSprite->LoadAnimation("GlobalS3K/Springs.bin");
-				ObjectsSprite->LoadAnimation("GlobalS3K/Spikes.bin");
-				ObjectsSprite->LoadAnimation("GlobalS3K/StarPost.bin");
-				ObjectsSprite->LoadAnimation("GlobalS3K/ScoreBonus.bin");
-
-				ObjectsSprite->LoadAnimation("GlobalS3K/Gray Button.bin");
-				ObjectsSprite->LoadAnimation("GlobalS3K/EggPrison.bin");
+			ObjectsSprite = new ISprite("Sprites/Global/Objects.gif", App, SaveGame::CurrentMode);
+			ObjectsSprite->LoadAnimation("Sprites/Global/Springs.bin");
+			ObjectsSprite->LoadAnimation("Sprites/Global/Spikes.bin");
+			ObjectsSprite->LoadAnimation("Sprites/Global/StarPost.bin");
+			ObjectsSprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
+			if (SaveGame::CurrentMode != 1) {
+				ObjectsSprite->LoadAnimation("Sprites/Global/Gray Button.bin");
+				ObjectsSprite->LoadAnimation("Sprites/Global/EggPrison.bin");
 			}
 		}
 		if (!Objects2Sprite) {
-			Objects2Sprite = new ISprite("Global/SignPost.bin", App);
+			Objects2Sprite = new ISprite("Sprites/Global/Objects2.gif", App, SaveGame::CurrentMode);
+			Objects2Sprite->LoadAnimation("Sprites/Global/SignPost.bin");
+			// printf("\n");
 		}
 		if (!Objects3Sprite) {
-			Objects3Sprite = new ISprite("Global/Objects3.gif", App);
-			Objects3Sprite->LoadAnimation("Global/SpecialRing.bin");
-			Objects3Sprite->LoadAnimation("Global/SuperSparkle.bin");
-			Objects3Sprite->LoadAnimation("Global/Shields.bin");
+			Objects3Sprite = new ISprite("Sprites/Global/Objects3.gif", App, SaveGame::CurrentMode);
+			Objects3Sprite->LoadAnimation("Sprites/Global/SpecialRing.bin");
+			Objects3Sprite->LoadAnimation("Sprites/Global/SuperSparkle.bin");
+			Objects3Sprite->LoadAnimation("Sprites/Global/Shields.bin");
+			// printf("\n");
 		}
 		if (!RobotnikSprite) {
-			RobotnikSprite = new ISprite("GlobalS3K/Robotnik.gif", App);
-			RobotnikSprite->LoadAnimation("GlobalS3K/EggMobile.bin");
-			RobotnikSprite->LoadAnimation("GlobalS3K/Crane.bin");
+			RobotnikSprite = new ISprite("Sprites/Global/Robotnik.gif", App, SaveGame::CurrentMode);
+			RobotnikSprite->LoadAnimation("Sprites/Global/EggMobile.bin");
+			RobotnikSprite->LoadAnimation("Sprites/Global/Crane.bin");
+			// printf("\n");
 		}
 		if (!ExplosionSprite) {
-			if (SaveGame::CurrentMode == 1) {
-				ExplosionSprite = new ISprite("Global/Explosions.gif", App);
-				ExplosionSprite->LoadAnimation("Global/Dust.bin");
-				ExplosionSprite->LoadAnimation("Global/Explosions.bin");
-			} else {
-				ExplosionSprite = new ISprite("GlobalS3K/Explosions.gif", App);
-				ExplosionSprite->LoadAnimation("GlobalS3K/Dust.bin");
-				ExplosionSprite->LoadAnimation("GlobalS3K/Explosions.bin");
-			}
+				ExplosionSprite = new ISprite("Sprites/Global/Explosions.gif", App, SaveGame::CurrentMode);
+				ExplosionSprite->LoadAnimation("Sprites/Global/Dust.bin");
+				ExplosionSprite->LoadAnimation("Sprites/Global/Explosions.bin");
 		}
 		if (!WaterSprite) {
-			WaterSprite = new ISprite("Global/Water.gif", App, true);
-            WaterSprite->LoadAnimation("Global/Water.bin");
+			WaterSprite = new ISprite("Sprites/Global/Water.gif", App, SaveGame::CurrentMode);
+			WaterSprite->Print = true;
+			WaterSprite->LoadAnimation("Sprites/Global/Water.bin");
 		}
 
 		IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);
@@ -1620,11 +1606,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 	startTime = SDL_GetTicks();
 
-	TileSprite = new ISprite(Str_TileSprite, App);
-	TileSprite->SetTransparentColorIndex(0x30);
+	TileSprite = new ISprite(Str_TileSprite, App, SaveGame::CurrentMode);
 
 	if (Str_AnimatedSprites) {
-		AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
+		AnimTileSprite = new ISprite(Str_AnimatedSprites, App, SaveGame::CurrentMode);
 		AnimTileSprite->LinkPalette(TileSprite);
 	}
 
@@ -3363,18 +3348,19 @@ PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool 
 }
 
 PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y, int vl) {
-	Explosion* dropdashdust;
-	dropdashdust = new Explosion();
-	dropdashdust->G = G;
-	dropdashdust->App = App;
-	dropdashdust->CurrentAnimation = animation;
-	dropdashdust->FlipX = flip;
-	dropdashdust->Active = true;
-	dropdashdust->Sprite = sprite;
-	dropdashdust->VisualLayer = vl;
-	dropdashdust->X = x;
-	dropdashdust->Y = y;
-	TempObjects.push_back(dropdashdust);
+	Explosion* expl;
+	expl = new Explosion();
+	expl->G = G;
+	expl->App = App;
+	expl->CurrentAnimation = animation;
+	expl->FlipX = flip;
+	expl->Active = true;
+	expl->Sprite = sprite;
+	expl->VisualLayer = vl;
+	expl->X = x;
+	expl->Y = y;
+    expl->IsExplosion = true;
+	TempObjects.push_back(expl);
 
 	return dropdashdust;
 }
@@ -5378,6 +5364,7 @@ PUBLIC void LevelScene::RenderTitleCard() {
 		}
 		else {
 			ISprite::AnimFrame Frame;
+			IApp::Print(3, "LevelName[i] - \'A\' = %d", LevelName[i] - 'A');
 			Frame = GlobalDisplaySprite->Animations[15].Frames[LevelName[i] - 'A'];
 			ex += Frame.W + 1;
 		}
@@ -6363,7 +6350,7 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 }
 
 PUBLIC VIRTUAL void LevelScene::Cleanup() {
-#define CLEANUP(name) if (name) { printf("%s\n", #name); name->Cleanup(); delete name; name = NULL; }
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 
 	App->Audio->ClearMusic();
 	CLEANUP(Sound::SoundBank[0]);

@@ -474,6 +474,7 @@ public:
     bool     FlipX = false;
     bool     FlipY = false;
     bool     DoDeform = false;
+    bool     IsExplosion = false;
     
     bool     isDebugModeObject = false;
     bool     isHeldDebugObject = false;

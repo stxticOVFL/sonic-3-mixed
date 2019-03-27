@@ -73,6 +73,7 @@ PUBLIC void Level_TDZ::EarlyUpdate() {
 
     LevelScene::EarlyUpdate();
 }
+
 PUBLIC void Level_TDZ::Subupdate() {
     LevelScene::Subupdate();
 }
