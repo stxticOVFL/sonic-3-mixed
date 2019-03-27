@@ -6274,7 +6274,7 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 }
 
 PUBLIC VIRTUAL void LevelScene::Cleanup() {
-#define CLEANUP(name) if (name) { printf("%s\n", #name); name->Cleanup(); delete name; name = NULL; }
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 
 	App->Audio->ClearMusic();
 	CLEANUP(Sound::SoundBank[0]);

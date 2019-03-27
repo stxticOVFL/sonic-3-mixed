@@ -12,6 +12,8 @@ need_t IModel;
 class IGraphics {
 protected:
 	int Filter = 0;
+private:
+	int FrameBufferSize = 0;
 public:
 	IApp * App = NULL;
 	SDL_Surface* Screen = NULL;
@@ -57,7 +59,10 @@ public:
 #include <Engine/IResources.h>
 #include <Engine/IGraphics.h>
 #include <Engine/IMath.h>
+#include <Engine/ImageFormats/GIF.h>
 #include <Engine/Diagnostics/Memory.h>
+
+#include <time.h>
 
 unsigned char Font8x8_basic[128][8];
 void (IGraphics::*SetPixelFunction)(int, int, uint32_t);
@@ -96,6 +101,77 @@ PUBLIC IGraphics::IGraphics(IApp* app) {
 
 PUBLIC VIRTUAL IGraphics::~IGraphics() {
 
+}
+
+PUBLIC VIRTUAL bool IGraphics::SaveScreenshot() {
+	Uint32* palette = (Uint32*)Memory::Calloc(256, sizeof(Uint32));
+	Uint32* pixelChecked = (Uint32*)Memory::Calloc(FrameBufferSize, sizeof(Uint32));
+	Uint8* pixelIndexes = (Uint8*)Memory::Calloc(FrameBufferSize, sizeof(Uint8));
+	Uint8  paletteCount = 0;
+	for (int checking = 0; checking < FrameBufferSize; checking++) {
+		if (!pixelChecked[checking]) {
+			Uint32 color = FrameBuffer[checking] & 0xFFFFFF;
+			for (int comparing = checking; comparing < FrameBufferSize; comparing++) {
+				if (color == (FrameBuffer[comparing] & 0xFFFFFF)) {
+					pixelIndexes[comparing] = paletteCount;
+					pixelChecked[comparing] = 1;
+				}
+			}
+			if (paletteCount == 255) {
+				Memory::Free(palette);
+				Memory::Free(pixelChecked);
+				Memory::Free(pixelIndexes);
+				IApp::Print(2, "Too many colors!");
+				return false;
+			}
+			palette[paletteCount++] = color;
+		}
+	}
+
+	int hours, minutes, seconds, day, month, year;
+	time_t now;
+	time(&now);
+	struct tm *local = localtime(&now);
+	hours = local->tm_hour;      	// get hours since midnight (0-23)
+	minutes = local->tm_min;     	// get minutes passed after the hour (0-59)
+	seconds = local->tm_sec;     	// get seconds passed after minute (0-59)
+
+	day = local->tm_mday;        	// get day of month (1 to 31)
+	month = local->tm_mon + 1;   	// get month of year (0 to 11)
+	year = local->tm_year + 1900 - 2000;	// get year since 1900
+
+	char filename[100];
+	sprintf(filename, "ImpostorEngine3_%02d-%02d-%02d_%02d-%02d-%02d.gif", day, month, year, hours, minutes, seconds);
+
+	IApp::Print(3, "filename: %s", filename);
+
+	GIF* gif = new GIF;
+	gif->Colors = palette;
+	gif->Data = pixelIndexes;
+	gif->Width = App->WIDTH;
+	gif->Height = App->HEIGHT;
+	gif->TransparentColorIndex = 0xFF;
+	if (!gif->Save(filename)) {
+		for (int i = 0; i < gif->Frames.size(); i++) {
+			//Memory::Free(gif->Frames[i]);
+		}
+		gif->Data = NULL;
+		delete gif;
+		Memory::Free(palette);
+		Memory::Free(pixelChecked);
+		Memory::Free(pixelIndexes);
+		return false;
+	}
+	for (int i = 0; i < gif->Frames.size(); i++) {
+		//Memory::Free(gif->Frames[i]);
+	}
+	gif->Data = NULL;
+	delete gif;
+	Memory::Free(palette);
+	Memory::Free(pixelChecked);
+	Memory::Free(pixelIndexes);
+
+	return true;
 }
 
 PUBLIC VIRTUAL void IGraphics::MakeAllTexturesAndFrameBuffers() {
@@ -145,8 +221,9 @@ PUBLIC VIRTUAL int IGraphics::FinishSpriteListBuffer() {
 
 PUBLIC VIRTUAL void IGraphics::Init() {
 	PixelScale = 1;
-	FrameBuffer = (uint32_t*)calloc(App->WIDTH * App->HEIGHT, sizeof(uint32_t));
-	FrameBufferClone = (uint32_t*)calloc(App->WIDTH * App->HEIGHT, sizeof(uint32_t));
+	FrameBufferSize = App->WIDTH * App->HEIGHT;
+	FrameBuffer = (uint32_t*)calloc(FrameBufferSize, sizeof(uint32_t));
+	FrameBufferClone = (uint32_t*)calloc(FrameBufferSize, sizeof(uint32_t));
 	RENDER_WIDTH = App->WIDTH;
 
 	IResource* res = IResources::Load("Sprites/UI/DevFont.bin");
@@ -466,7 +543,7 @@ PUBLIC VIRTUAL void IGraphics::ClearClip() {
 
 PUBLIC VIRTUAL void IGraphics::MakeClone() {
 	HaveClone = true;
-	memcpy(FrameBufferClone, FrameBuffer, App->WIDTH * App->HEIGHT * PixelScale * sizeof(uint32_t));
+	memcpy(FrameBufferClone, FrameBuffer, FrameBufferSize * PixelScale * sizeof(uint32_t));
 }
 
 PUBLIC VIRTUAL void IGraphics::DrawClone() {
@@ -475,7 +552,7 @@ PUBLIC VIRTUAL void IGraphics::DrawClone() {
 		//memcpy(FrameBuffer, FrameBufferClone, RENDER_WIDTH * App->HEIGHT * sizeof(uint32_t));
 
 		// More than likely VERY slow, but fades
-		int x = 0, y = 0, size = App->WIDTH * App->HEIGHT;
+		int x = 0, y = 0, size = FrameBufferSize;
 		for (int i = 0; i < size; i++) {
 			x++;
 			if (x >= App->WIDTH) {
@@ -648,9 +725,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteNormal(ISprite* sprite, int SrcX, int S
 		if (FlipY)
 			PY = Height - PY;
 
-		PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, Pal);
-		if (PC != TrPal) {
-			SetPixel(Screen, CenterX + DX + RealCenterX, CenterY + DY + RealCenterY, PC);
+		// PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, Pal);
+		PC = *(sprite->Data + (SrcY + PY) * sprite->Width + (SrcX + PX));
+		// if (PC != TrPal) {
+		if (PC) {
+			SetPixel(Screen, CenterX + DX + RealCenterX, CenterY + DY + RealCenterY, Pal[PC]);
 		}
 
 		DX++;
@@ -751,15 +830,14 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
 						PX = Width - PX - 1;
 					if (FlipY)
 						PY = Height - PY - 1;
-					if (finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
-						PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->PaletteAlt);
-						if (PC != sprite->PaletteAlt[sprite->TransparentColorIndex])
-							SetPixel(Screen, finX, finY, PC);
-					}
-					else {
-						PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->Palette);
-						if (sprite->Paletted && PC != sprite->Palette[sprite->TransparentColorIndex])
-							SetPixel(Screen, finX, finY, PC);
+					PC = *(sprite->Data + (SrcY + PY) * sprite->Width + (SrcX + PX));
+					if (PC) {
+						if (finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
+							SetPixel(Screen, finX, finY, sprite->PaletteAlt[PC]);
+						}
+						else {
+							SetPixel(Screen, finX, finY, sprite->Palette[PC]);
+						}
 					}
 				}
 			}
@@ -788,15 +866,14 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int SrcX, int SrcY, i
 						PX = Width - PX - 1;
 					if (FlipY)
 						PY = Height - PY - 1;
-					if (finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
-						PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->PaletteAlt);
-						if (PC != sprite->PaletteAlt[sprite->TransparentColorIndex])
-							SetPixel(Screen, finX, finY, PC);
-					}
-					else {
-						PC = GetPixelSPR(sprite, SrcX + PX, SrcY + PY, sprite->Palette);
-						if (sprite->Paletted && PC != sprite->Palette[sprite->TransparentColorIndex])
-							SetPixel(Screen, finX, finY, PC);
+					PC = *(sprite->Data + (SrcY + PY) * sprite->Width + (SrcX + PX));
+					if (PC) {
+						if (finY >= WaterPaletteStartLine && sprite->Paletted == 2) {
+							SetPixel(Screen, finX, finY, sprite->PaletteAlt[PC]);
+						}
+						else {
+							SetPixel(Screen, finX, finY, sprite->Palette[PC]);
+						}
 					}
 				}
 			}
@@ -896,7 +973,7 @@ PUBLIC VIRTUAL void IGraphics::DrawModelOn2D(IModel* model, int x, int y, double
 
 	IMatrix3 transform = rotateX.Multiply(rotateY).Multiply(rotateZ);
 
-	int size = App->WIDTH * App->HEIGHT;
+	int size = FrameBufferSize;
 	double* zBuffer = (double*)Memory::TrackedMalloc("IGraphics::DrawModelOn2D::zBuffer", size * sizeof(double));
 	for (int q = 0; q < size; q++) {
 		zBuffer[q] = -9999999999.9f;
@@ -1061,7 +1138,7 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteIn3D(ISprite* sprite, int animation, in
 
 	IMatrix3 transform = rotateX.Multiply(rotateY).Multiply(rotateZ);
 
-	int size = App->WIDTH * App->HEIGHT;
+	int size = FrameBufferSize;
 	double* zBuffer = (double*)malloc(size * sizeof(double));
 	for (int q = 0; q < size; q++) {
 		zBuffer[q] = -9999999999.9f;

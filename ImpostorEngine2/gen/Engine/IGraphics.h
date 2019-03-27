@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class ISprite;
 class IModel;
@@ -19,6 +20,8 @@ class IApp;
 
 class IGraphics {
 private:
+    int FrameBufferSize = 0;
+
     void Flip();
     void ScanLine(long x1, long y1, long x2, long y2);
 
@@ -52,6 +55,7 @@ public:
     IGraphics();
     IGraphics(IApp* app);
     virtual ~IGraphics();
+    virtual bool SaveScreenshot();
     virtual void MakeAllTexturesAndFrameBuffers();
     virtual void MakeTexture(ISprite* sprite);
     virtual void UpdatePalette(ISprite* sprite);
