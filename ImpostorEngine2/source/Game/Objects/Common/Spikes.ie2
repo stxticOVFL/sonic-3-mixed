@@ -6,11 +6,11 @@ var Vertical:int;
 var In:bool;
 
 event Spikes() : CONSTRUCTER {
-    /*if (SaveGame.CurrentMode == 0) {
+    if (SaveGame.CurrentMode == 0) {
         BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/Spikes.bin");
     } else {
 	    BinIndex = LevelScene.LoadSpriteBin("Global/Spikes.bin");
-    }*/
+    }
 }
 
 event Create() {
@@ -58,8 +58,10 @@ event Create() {
     if (!((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2))
         In = true;
 
-    CurrentAnimation = 6;
+    CurrentAnimation = Sprite.FindAnimation("Spikes V");
+    //Sprite.LinkPalette(Scene.TileSprite);
 }
+
 event Update() {
     if ((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2) {
         Timer++;

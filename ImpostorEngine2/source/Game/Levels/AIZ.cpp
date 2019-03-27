@@ -1309,6 +1309,7 @@ PUBLIC void Level_AIZ::Cleanup() {
 
     CLEANUP(AIZObjectsSprite);
     CLEANUP(AIZBossSprite);
+    CLEANUP(AIZShipTileSprite);
 
     LevelScene::Cleanup();
 }

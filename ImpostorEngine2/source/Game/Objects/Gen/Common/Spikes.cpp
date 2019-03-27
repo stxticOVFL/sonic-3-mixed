@@ -6,6 +6,12 @@
 typedef IMath Math;
 
 CONSTRUCTER Spikes::Spikes() {
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/Spikes.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/Spikes.bin");
+    }
 }
 
 void Spikes::Create() {
@@ -51,7 +57,7 @@ void Spikes::Create() {
 
     if (!((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2)) In = true;
 
-    CurrentAnimation = 6;
+    CurrentAnimation = Sprite->FindAnimation("Spikes V");
 }
 
 void Spikes::Update() {

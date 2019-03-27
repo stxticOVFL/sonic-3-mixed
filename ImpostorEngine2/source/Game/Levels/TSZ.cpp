@@ -1302,6 +1302,7 @@ PUBLIC void Level_TSZ::Cleanup() {
 
     CLEANUP(TSZObjectsSprite);
     CLEANUP(TSZBossSprite);
+	CLEANUP(TSZShipTileSprite);
 
     LevelScene::Cleanup();
 }
