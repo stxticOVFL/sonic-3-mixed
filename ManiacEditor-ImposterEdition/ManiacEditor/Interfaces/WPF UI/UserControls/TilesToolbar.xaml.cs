@@ -330,10 +330,20 @@ namespace ManiacEditor
 			TilesList.Images.Clear();
 			TileGridImage = new GIF((TilesImagePath), colors);
 
-			for (int i = 0; i < 1024; i++)
-			{
-				TilesList.Images.Add(TileGridImage.GetBitmap(new System.Drawing.Rectangle(0,16*i,16,16) , TilesFlipHorizontal, TilesFlipVertical));
-			}
+            int TileID = 0;
+
+            for (int y = 0; y < TileGridImage.ToBitmap().Height / 16; y++) 
+            {
+                for (int x = 0; x < TileGridImage.ToBitmap().Width / 16; x++)
+                {
+                    if (TileID < 1024)
+                    {
+                        TilesList.Images.Add(TileGridImage.GetBitmap(new System.Drawing.Rectangle(16 * x, 16 * y, 16, 16), TilesFlipHorizontal, TilesFlipVertical));
+                        TileID++;
+                    }
+                }
+            }
+
 			int indexStorage = TilesList.SelectedIndex;
 			TilesList.SelectedIndex = -1;
 			TilesList.SelectedIndex = indexStorage;

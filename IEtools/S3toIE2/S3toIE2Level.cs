@@ -497,7 +497,7 @@ namespace S3toIE2 {
                     filepath = @"C:\Users\theclashingfritz\Documents\skdisasm\SonLVL INI Files\";
                     break;
                 case 2:
-                    filepath = @"C:\Users\owner\Documents\Sonic Hacking Stuff\Dissasemblies\Sonic 3\SonLVL INI Files";
+                    filepath = @"C:\Users\owner\Documents\Fan Games\3mZones\Sonic 3\SonLVL INI Files";
                     break;
                 default:
 
@@ -1114,7 +1114,7 @@ namespace S3toIE2 {
                     break;
                 case 2:
                     Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\MStages\";
-                    Globals.ROOT = @"C:\Users\owner\Documents\Sonic Hacking Stuff\Dissasemblies\Sonic 3\";
+                    Globals.ROOT = @"C:\Users\owner\Documents\Fan Games\3mZones\Sonic 3\";
                     break;
             }
             
@@ -1906,7 +1906,7 @@ namespace S3toIE2 {
 
                         break;
                     case 2:
-                        filepath = @"C:\Users\owner\Documents\Sonic Hacking Stuff\Dissasemblies\Sonic 3\SonLVL INI Files";
+                        filepath = @"C:\Users\owner\Documents\Fan Games\3mZones\Sonic 3\SonLVL INI Files";
                         break;
                 }
                 string filename = lvlIDs[ZoneID] + "\\" + Act + ".ini";

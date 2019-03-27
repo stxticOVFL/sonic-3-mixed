@@ -847,7 +847,10 @@ namespace ManiacEditor
 				bool SolidTopB = ((tile >> 14) & 1) == 1;
 				bool SolidLrbB = ((tile >> 15) & 1) == 1;
 
-				d.DrawBitmap(EditorInstance.EditorTiles.StageTiles.Image.GetTexture(d._device, new Rectangle(0, (tile & 0x3ff) * EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE), flipX, flipY),
+                int tile_x = ((TileIndex % (EditorInstance.EditorTiles.StageTiles.Image.ToBitmap().Width / EditorConstants.TILE_SIZE)) * EditorConstants.TILE_SIZE);
+                int tile_y = ((TileIndex / (EditorInstance.EditorTiles.StageTiles.Image.ToBitmap().Width / EditorConstants.TILE_SIZE)) * EditorConstants.TILE_SIZE);
+
+                d.DrawBitmap(EditorInstance.EditorTiles.StageTiles.Image.GetTexture(d._device, new Rectangle(tile_x, tile_y, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE), flipX, flipY),
 				x * EditorConstants.TILE_SIZE, y * EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, selected, Transperncy);
 
 				if (EditorInstance.UIModes.ShowFlippedTileHelper == true)
@@ -858,7 +861,7 @@ namespace ManiacEditor
 
 				if (EditorInstance.UIModes.ShowTileID == true)
 				{
-					d.DrawBitmap(EditorInstance.EditorTiles.StageTiles.IDImage.GetTexture(d._device, new Rectangle(0, (tile & 0x3ff) * EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE), false, false),
+					d.DrawBitmap(EditorInstance.EditorTiles.StageTiles.IDImage.GetTexture(d._device, new Rectangle(tile_x, tile_y, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE), false, false),
 					x * EditorConstants.TILE_SIZE, y * EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, selected, Transperncy);
 				}
 			}
@@ -881,8 +884,11 @@ namespace ManiacEditor
             bool SolidLrbA = ((tile >> 13) & 1) == 1;
             bool SolidTopB = ((tile >> 14) & 1) == 1;
             bool SolidLrbB = ((tile >> 15) & 1) == 1;
-          
-            g.DrawImage(EditorInstance.EditorTiles.StageTiles.Image.GetBitmap(new Rectangle(0, TileIndex * EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE), flipX, flipY),
+
+            int tile_x = ((TileIndex % (EditorInstance.EditorTiles.StageTiles.Image.ToBitmap().Width / EditorConstants.TILE_SIZE)) * EditorConstants.TILE_SIZE);
+            int tile_y = ((TileIndex / (EditorInstance.EditorTiles.StageTiles.Image.ToBitmap().Width / EditorConstants.TILE_SIZE)) * EditorConstants.TILE_SIZE);
+
+            g.DrawImage(EditorInstance.EditorTiles.StageTiles.Image.GetBitmap(new Rectangle(tile_x, tile_y, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE), flipX, flipY),
                 new Rectangle(x * EditorConstants.TILE_SIZE, y * EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE, EditorConstants.TILE_SIZE));
             if (EditorInstance.UIModes.ShowCollisionA == true)
             {
