@@ -97,7 +97,7 @@ PUBLIC STATIC BMP* BMP::Load(const char* filename) {
 		case 32:
 			
 
-			for (int i = 0; i < ArraySize; i++)
+			for (int p = 0; p < ArraySize; p++)
 			{
 				buffer[p] = 0;
 				// Load 'blue'
@@ -113,7 +113,7 @@ PUBLIC STATIC BMP* BMP::Load(const char* filename) {
 			break;
 		case 24:
 
-			for (int i = 0; i < ArraySize; i++)
+			for (int p = 0; p < ArraySize; p++)
 			{
 				buffer[p] = 0;
 				// Load 'blue'

@@ -26,6 +26,11 @@ using IniNameValue = System.Collections.Generic.KeyValuePair<string, string>;
 namespace S3toIE2 {
     public class S3toIE2Level {
 
+        //Aurum = 0
+        //Frizz = 1
+        //Ducky = 2
+        static int User = 2;
+
         public static int ParseInt(string str) {
             // if (str == "") return 0;
 
@@ -480,9 +485,24 @@ namespace S3toIE2 {
 
         public static void ConvertSonLVLObjDefToTiled(string zone, int act, string outFolderName, string iniName, bool andknux, int zoneID) {
             // string filepath, string filename, string RSDKfolderID
-            // @"C:\Users\Justin\skdisasm-master\SonLVL INI Files\", @"AIZ\1.ini", "AIZ1"
 
-            string filepath = @"C:\Users\theclashingfritz\Documents\skdisasm\SonLVL INI Files\";
+            string filepath = "";
+
+            switch(User)
+            {
+                case 0:
+                    filepath = @"C:\Users\Justin\skdisasm-master\SonLVL INI Files\";//, @"AIZ\1.ini"//, "AIZ1";
+                    break;
+                case 1:
+                    filepath = @"C:\Users\theclashingfritz\Documents\skdisasm\SonLVL INI Files\";
+                    break;
+                case 2:
+                    filepath = @"C:\Users\owner\Documents\Sonic Hacking Stuff\Dissasemblies\Sonic 3\SonLVL INI Files";
+                    break;
+                default:
+
+                    break;
+            }
             string filename = zone + "\\" + act + ".ini";
             string RSDKfolderID = outFolderName;
 
@@ -722,7 +742,19 @@ namespace S3toIE2 {
                 Console.WriteLine();
             }
 
-            Globals.OUT = @"C:\Users\Justin\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\";
+            switch (User)
+            {
+                case 0:
+                    Globals.OUT = @"C:\Users\Justin\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\";
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+                    Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\MStages";
+                    break;
+            }
+            
 
             using (XmlWriter writer = XmlWriter.Create("Out (Tiled)/" + RSDKfolderID + "/Tileset.tsx", settings)) {
                 writer.WriteStartDocument();
@@ -1071,7 +1103,21 @@ namespace S3toIE2 {
 
             string LEVELROOT = Globals.ROOT + @"Levels\" + zone + "\\";
 
-            Globals.OUT = @"C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\ImpostorEngine2\source\Resources\MStages\";
+            switch (User)
+            {
+                case 0:
+
+                    break;
+                case 1:
+                    Globals.OUT = @"C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\ImpostorEngine2\source\Resources\MStages\";
+                    Globals.ROOT = @"C:\Users\theclashingfritz\Documents\skdisasm\";
+                    break;
+                case 2:
+                    Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\MStages\";
+                    Globals.ROOT = @"C:\Users\owner\Documents\Sonic Hacking Stuff\Dissasemblies\Sonic 3\";
+                    break;
+            }
+            
 
             IniDictionary iniDictionary = IniFile.Load(Globals.ROOT + @"SonLVL INI Files\SonLVL.ini");
             IniGroup iniLevel = iniDictionary[(andknux ? @"Sonic & Knuckles\" : @"Sonic 3\") + iniName];
@@ -1791,15 +1837,15 @@ namespace S3toIE2 {
                 RSDKv5.SceneEntity startPosSonicTails = new RSDKv5.SceneEntity(playerObjects, SlotID++);
                 startPosSonicTails.Position.X.High = (short)BitConverter.ToUInt16(startPosDataSonic, 2);
                 startPosSonicTails.Position.Y.High = (short)BitConverter.ToUInt16(startPosDataSonic, 0);
-                startPosSonicTails.Attributes[1] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
-                startPosSonicTails.Attributes[1].ValueVar = 1 | 2 | 0 | 8 | 16;
+                startPosSonicTails.Attributes[4] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
+                startPosSonicTails.Attributes[4].ValueVar = 0b00011011;
                 playerObjects.Entities.Add(startPosSonicTails);
 
                 RSDKv5.SceneEntity startPosSonicKnux = new RSDKv5.SceneEntity(playerObjects, SlotID++);
                 startPosSonicKnux.Position.X.High = (short)BitConverter.ToUInt16(startPosDataKnux, 2);
                 startPosSonicKnux.Position.Y.High = (short)BitConverter.ToUInt16(startPosDataKnux, 0);
-                startPosSonicKnux.Attributes[1] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
-                startPosSonicKnux.Attributes[1].ValueVar = 0 | 0 | 4 | 0 | 0;
+                startPosSonicKnux.Attributes[4] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
+                startPosSonicKnux.Attributes[4].ValueVar = 0b00000100;
                 playerObjects.Entities.Add(startPosSonicKnux);
 
                 scene.Objects.Add(playerObjects);
@@ -1846,8 +1892,20 @@ namespace S3toIE2 {
                 fileStream.Write(objectData, 0, objectDataCount * 6);
                 //*/
 
+                string filepath = "";
 
-                string filepath = @"C:\Users\Justin\skdisasm-master\SonLVL INI Files\";
+                switch (User)
+                {
+                    case 0:
+                        filepath =  @"C:\Users\Justin\skdisasm-master\SonLVL INI Files\";
+                        break;
+                    case 1:
+
+                        break;
+                    case 2:
+                        filepath = @"C:\Users\owner\Documents\Sonic Hacking Stuff\Dissasemblies\Sonic 3\SonLVL INI Files";
+                        break;
+                }
                 string filename = lvlIDs[ZoneID] + "\\" + Act + ".ini";
                 string RSDKfolderID = outFolderName;
 
@@ -2028,9 +2086,9 @@ namespace S3toIE2 {
                     foreach (PropertySpec n in def.Value.CustomProperties)
                     {
                         if (n.Type == typeof(bool))
-                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower(), RSDKv5.AttributeTypes.BOOL));
+                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower().Replace(" ", ""), RSDKv5.AttributeTypes.BOOL));
                         else
-                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower(), RSDKv5.AttributeTypes.INT32));
+                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower().Replace(" ",""), RSDKv5.AttributeTypes.INT32));
                     }
 
                     scene.Objects.Add(objDefinition);
@@ -2039,7 +2097,7 @@ namespace S3toIE2 {
                 byte[] objectData = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["objects"])[0].Filename);
                 int objectDataCount = objectData.Length / 6 - 1;
 
-                for (int o = 0; o < objectDataCount && false; o++)
+                for (int o = 0; o < objectDataCount; o++)
                 {
                     int x = objectData[o * 6 + 0] << 8 | objectData[o * 6 + 1];
                     int y = objectData[o * 6 + 2] << 8 | objectData[o * 6 + 3];
@@ -2056,70 +2114,48 @@ namespace S3toIE2 {
 
                     if (IDs.Contains(ID))
                     {
-                        int idid = IDs.IndexOf(ID);
+                        //int idid = IDs.IndexOf(ID);
 
                         RSDKv5.SceneObject def = scene.Objects[ObjectIDtoObjectDefinitionIndexMap[ID]];
-
 
                         RSDKv5.SceneEntity objEntity = new RSDKv5.SceneEntity(def, SlotID++);
                         objEntity.Position.X.High = (short)x;
                         objEntity.Position.Y.High = (short)y;
-                        objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.UINT8)); // filter
-                        objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.UINT8)); // subtype
-                        objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.BOOL)); // flipX
-                        objEntity.Attributes.Add(new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.BOOL)); // flipY
                         objEntity.Attributes[0].ValueUInt8 = 0xFF;
                         objEntity.Attributes[1].ValueUInt8 = (byte)SubType;
                         objEntity.Attributes[2].ValueBool = FlipX;
                         objEntity.Attributes[3].ValueBool = FlipY;
                         def.Entities.Add(objEntity);
-
-                        int i = 1;
-                        /*bool none = true;
-                        foreach (PropertySpec n in objdefs[idid].Value.CustomProperties)
-                        {
-                            RSDKv5.AttributeValue av;
-                            if (n.Type == typeof(bool))
-                            {
-                                av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.BOOL);
-                                av.ValueBool = (bool)n.GetValue(entry);
-                            }
-                            else if (n.Type == typeof(string))
-                            {
-                                int value = 1;
-                                string vvvvv = (string)n.GetValue(entry);
-                                av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
-                                if (vvvvv == "None" || vvvvv == "N/A")
-                                    value = 0;
-                                av.ValueInt32 = value;
-                            }
-                            else
-                            {
-                                av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
-                                Console.WriteLine("ID: " + ID + "    val: " + n.GetValue(entry));
-                                av.ValueInt32 = Convert.ToInt32(n.GetValue(entry));
-                            }
-                            none = false;
-
-                            objEntity.Attributes.Add(av);
-                            i++;
-                        }
-                        if (none)
-                        {
-                            RSDKv5.AttributeValue av;
-                            av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
-                            av.ValueInt32 = (int)SubType;
-
-                            objEntity.Attributes.Add(av);
-                            i++;
-                        }*/
                     }
 
                 }
 
+                StreamWriter NamesWriter = new StreamWriter(File.OpenWrite(Globals.OUT + outFolderName + "\\ObjectNames.txt"));
+                for (int i = 0; i < scene.Objects.Count; i++)
+                {
+                    NamesWriter.WriteLine(scene.Objects[i].Name.Name);
+                }
+                NamesWriter.Close();
 
+                List<string> AttribNames = new List<string>();
 
+                for (int i = 0; i < scene.Objects.Count; i++)
+                {
+                    for (int ii = 0; ii < scene.Objects[i].Attributes.Count; ii++)
+                    {
+                        if (!AttribNames.Contains(scene.Objects[i].Attributes[ii].Name.Name))
+                        {
+                            AttribNames.Add(scene.Objects[i].Attributes[ii].Name.Name);
+                        }
+                    }
+                }
 
+                NamesWriter = new StreamWriter(File.OpenWrite(Globals.OUT + outFolderName + "\\AttributeNames.txt"));
+                for (int i = 0; i < AttribNames.Count; i++)
+                {
+                    NamesWriter.WriteLine(AttribNames[i]);
+                }
+                NamesWriter.Close();
 
                 scene.Write(fileStream);
 
@@ -2509,20 +2545,27 @@ namespace S3toIE2 {
             int fX = flipX ? 1 : 0;
             for (int x = 0; x < tilStride; x++) {
                 for (int y = 0; y < 8; y++) {
-                    int basee = tileData[tilStart + x + y * tilStride];
-                    int baseY = (ypos + y) * bmpData.Stride;
-                    if (flipY)
-                        baseY = (ypos + 7 - y) * bmpData.Stride;
-                    int bX = x;
-                    if (flipX)
-                        bX = (tilStride - 1 - x);
+                    try
+                    {
+                        int basee = tileData[tilStart + x + y * tilStride];
+                        int baseY = (ypos + y) * bmpData.Stride;
+                        if (flipY)
+                            baseY = (ypos + 7 - y) * bmpData.Stride;
+                        int bX = x;
+                        if (flipX)
+                            bX = (tilStride - 1 - x);
 
-                    pal &= 3;
+                        pal &= 3;
 
-                    if ((((basee >> 4) + pal * 0x10) & 0xF) != 0)
-                        pixels[baseY + xpos + bX * 2 + fX] = (byte)((basee >> 4) + pal * 0x10);
-                    if ((((basee & 0xF) + pal * 0x10) & 0xF) != 0)
-                        pixels[baseY + xpos + bX * 2 + 1 - fX] = (byte)((basee & 0xF) + pal * 0x10);
+                        if ((((basee >> 4) + pal * 0x10) & 0xF) != 0)
+                            pixels[baseY + xpos + bX * 2 + fX] = (byte)((basee >> 4) + pal * 0x10);
+                        if ((((basee & 0xF) + pal * 0x10) & 0xF) != 0)
+                            pixels[baseY + xpos + bX * 2 + 1 - fX] = (byte)((basee & 0xF) + pal * 0x10);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("ERROR: " + ex.Message);
+                    }
                 }
             }
         }

@@ -1,0 +1,41 @@
+filter
+subtype
+flipX
+flipY
+characterID
+type
+planeFilter
+moveType
+amplitude
+speed
+angle
+sprite
+behavior
+direction
+delay
+offset
+scroll rate
+twirl
+color
+layer
+kill transverse speed
+movement
+count
+star post id
+ring id
+hpz warp
+priority only
+size
+right/down path
+left/up path
+right/down priority
+left/up priority
+ground only
+no spin lock
+snap to wall
+lock controls
+width
+height
+distance
+action
+length

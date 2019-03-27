@@ -606,6 +606,12 @@
     <ClCompile Include="..\source\Engine\ImageFormats\GIF.cpp">
       <Filter>Source Files\Engine\ImageFormats</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Engine\ImageFormats\BMP.cpp">
+      <Filter>Source Files\Engine\ImageFormats</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Engine\ImageFormats\PNG.cpp">
+      <Filter>Source Files\Engine\ImageFormats</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

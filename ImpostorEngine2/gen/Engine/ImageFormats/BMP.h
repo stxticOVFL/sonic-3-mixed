@@ -19,6 +19,7 @@ public:
     Uint32  Width = 0;
     Uint32  Height = 0;
     Uint32  TransparentColorIndex = 0;
+    bool  indexed = true;
 
     static BMP* Load(const char* filename);
     ~BMP();

@@ -6,11 +6,11 @@
 class GIF {
 public:
     Uint32* Colors = NULL;
-	Uint32*  Data = NULL;
+    Uint8*  Data = NULL;
     Uint32  Width = 0;
     Uint32  Height = 0;
     Uint32  TransparentColorIndex = 0;
-	bool  indexed = true;
+	bool indexed = true;
 };
 #endif
 
@@ -127,7 +127,7 @@ PUBLIC STATIC GIF* GIF::Load(const char* filename) {
     }
 
     // Prepare image data
-    gif->Data = (Uint32*)Memory::TrackedCalloc("GIF::Data", width * height, sizeof(Uint32));
+    gif->Data = (Uint8*)Memory::TrackedCalloc("GIF::Data", width * height, sizeof(Uint8));
     px = gif->Data;
 
     width--;
