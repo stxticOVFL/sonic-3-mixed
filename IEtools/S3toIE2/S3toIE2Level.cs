@@ -1577,7 +1577,7 @@ namespace S3toIE2 {
                 }
             }
 
-            using (FileStream fileStream = new FileStream(Globals.OUT + outFolderName + "\\SceneRS.bin", FileMode.OpenOrCreate))
+            using (FileStream fileStream = new FileStream(Globals.OUT + outFolderName + "\\Scene.bin", FileMode.OpenOrCreate))
             {
                 RSDKv5.Scene scene = new RSDKv5.Scene();
                 // scene.MAGIC = new byte[] { (byte)'U', (byte)'C', (byte)'D', (byte)'\0' };
@@ -2088,10 +2088,14 @@ namespace S3toIE2 {
                     objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("FlipY", RSDKv5.AttributeTypes.BOOL));
                     foreach (PropertySpec n in def.Value.CustomProperties)
                     {
+                        string name = n.Name.ToLower().Replace(" ", "");
+                        string tmp = name[0].ToString().ToUpper();
+                        name = name.Remove(0, 1);
+                        name = tmp + name;
                         if (n.Type == typeof(bool))
-                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower().Replace(" ", ""), RSDKv5.AttributeTypes.BOOL));
+                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(name, RSDKv5.AttributeTypes.BOOL));
                         else
-                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(n.Name.ToLower().Replace(" ",""), RSDKv5.AttributeTypes.INT32));
+                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(name, RSDKv5.AttributeTypes.INT32));
                     }
 
                     scene.Objects.Add(objDefinition);
@@ -2133,30 +2137,63 @@ namespace S3toIE2 {
 
                 }
 
-                StreamWriter NamesWriter = new StreamWriter(File.OpenWrite(Globals.OUT + outFolderName + "\\ObjectNames.txt"));
+                List<string> ObjectNames = new List<string>();
+                List<string> AttributeNames = new List<string>();
+
+                StreamReader NamesReader;
+
+                if (File.Exists(Globals.OUT + "\\Objects.ini"))
+                {
+                    NamesReader = new StreamReader(File.OpenRead(Globals.OUT + "\\Objects.ini"));
+
+                    while (!NamesReader.EndOfStream)
+                    {
+                        ObjectNames.Add(NamesReader.ReadLine());
+                    }
+                    NamesReader.Close();
+                }
+
+                if (File.Exists(Globals.OUT + "\\Attributes.ini"))
+                {
+                    NamesReader = new StreamReader(File.OpenRead(Globals.OUT + "\\Attributes.ini"));
+
+                    while (!NamesReader.EndOfStream)
+                    {
+                        AttributeNames.Add(NamesReader.ReadLine());
+                    }
+                    NamesReader.Close();
+                }
+
                 for (int i = 0; i < scene.Objects.Count; i++)
                 {
-                    NamesWriter.WriteLine(scene.Objects[i].Name.Name);
+                    if (!ObjectNames.Contains(scene.Objects[i].Name.Name))
+                    {
+                        ObjectNames.Add(scene.Objects[i].Name.Name);
+                    }
                 }
-                NamesWriter.Close();
-
-                List<string> AttribNames = new List<string>();
 
                 for (int i = 0; i < scene.Objects.Count; i++)
                 {
                     for (int ii = 0; ii < scene.Objects[i].Attributes.Count; ii++)
                     {
-                        if (!AttribNames.Contains(scene.Objects[i].Attributes[ii].Name.Name))
+                        if (!AttributeNames.Contains(scene.Objects[i].Attributes[ii].Name.Name))
                         {
-                            AttribNames.Add(scene.Objects[i].Attributes[ii].Name.Name);
+                            AttributeNames.Add(scene.Objects[i].Attributes[ii].Name.Name);
                         }
                     }
                 }
 
-                NamesWriter = new StreamWriter(File.OpenWrite(Globals.OUT + outFolderName + "\\AttributeNames.txt"));
-                for (int i = 0; i < AttribNames.Count; i++)
+                StreamWriter NamesWriter = new StreamWriter(File.OpenWrite(Globals.OUT + "\\Objects.ini"));
+                for (int i = 0; i < ObjectNames.Count; i++)
                 {
-                    NamesWriter.WriteLine(AttribNames[i]);
+                    NamesWriter.WriteLine(ObjectNames[i]);
+                }
+                NamesWriter.Close();
+
+                NamesWriter = new StreamWriter(File.OpenWrite(Globals.OUT + "\\Attributes.ini"));
+                for (int i = 0; i < AttributeNames.Count; i++)
+                {
+                    NamesWriter.WriteLine(AttributeNames[i]);
                 }
                 NamesWriter.Close();
 
