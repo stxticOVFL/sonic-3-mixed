@@ -94,7 +94,7 @@ PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 	Sound::Init();
 	SaveGame::Init();
 
-	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
+	// Sound::SoundBank[0] = new ISound("Music/Save Select.ogg", true);
 	// Sound::Audio->LoopPoint[0] = 131859;
 	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Menu.ogg")) {
 		Sound::SoundBank[0] = new ISound("Music/Menu.ogg", true);
@@ -111,6 +111,7 @@ PUBLIC void Scene_DataSelect::Init() {
 	App->Input->UseTouchController = false;
 
 	if (!MenuSprite) {
+<<<<<<< HEAD
 		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
 		MenuSprite->SetTransparentColorIndex(0x0);
@@ -118,18 +119,35 @@ PUBLIC void Scene_DataSelect::Init() {
 	}
 	if (!SuperButtonsSprite) {
 		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
+=======
+		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App, 1);
+		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
+		MenuSprite->SetTransparentColorIndex(0x2C);
+		MenuSprite->UpdatePalette();
+	}
+	if (!SuperButtonsSprite) {
+		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
+<<<<<<< HEAD
 		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
+=======
+		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App, 1);
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 	if (!SaveIconsSprite) {
 		ISprite::Animation an;
+<<<<<<< HEAD
 		SaveIconsSprite = new ISprite("Sprites/UI/SaveIcons.gif", App);
+=======
+		SaveIconsSprite = new ISprite("Sprites/UI/SaveIcons.gif", App, 1);
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 
 		an.Name = (char*)"Static";
 		an.FrameCount = 4;
@@ -203,7 +221,11 @@ PUBLIC void Scene_DataSelect::Init() {
 		SaveIconsSprite->Animations.push_back(an);
 	}
 	if (!SaveSelectSprite) {
+<<<<<<< HEAD
 		SaveSelectSprite = new ISprite("Sprites/UI/SaveSelectEN.gif", App);
+=======
+		SaveSelectSprite = new ISprite("Sprites/UI/SaveSelectEN.gif", App, 1);
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		SaveSelectSprite->LoadAnimation("Sprites/UI/SaveSelect.bin");
 	}
 

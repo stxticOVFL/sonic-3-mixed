@@ -105,9 +105,14 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     ZoneID = 20;
     Act = 0;
 
+<<<<<<< HEAD
 	PlayMusic("Music/Mixed/BlueSpheresSPD.ogg", 5309957, -1);
     //Sound::SoundBank[0] = new ISound("Music/Mixed/BlueSpheresSPD.ogg", true);
     //Sound::Audio->LoopPoint[0] = 5309957;
+=======
+    Sound::SoundBank[0] = new ISound("Music/BlueSpheresSPD.ogg", true);
+    Sound::Audio->LoopPoint[0] = 5309957;
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 
 	if (!LayoutBackup)
 		LayoutBackup = (Uint8*)calloc(0x400, 1);
@@ -115,7 +120,11 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
 	if (!LayoutExtra)
 		LayoutExtra = (Uint8*)calloc(0x400, 1);
 
+<<<<<<< HEAD
     Globe = new ISprite("Special/Globe.gif", App);
+=======
+    Globe = new ISprite("Sprites/Special/Globe.gif", App, 1);
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 	ISprite::Animation an;
 	an.Name = "";
 	an.FrameCount = 1;
@@ -130,6 +139,7 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
 	G->MakeFrameBufferID(Globe, an.Frames + 0);
 	Globe->Animations.push_back(an);
 
+<<<<<<< HEAD
     GlobeSpin = new ISprite("Special/GlobeSpin.gif", App);
     GlobeSpin->LoadAnimation("Special/GlobeSpin.bin");
 
@@ -142,6 +152,20 @@ PUBLIC Level_SpecialStage::Level_SpecialStage(IApp* app, IGraphics* g) : LevelSc
     //Objects->LoadAnimation("Special/PaletteIcon.bin");
 
     Players = new ISprite("Special/Players.gif", App);
+=======
+    GlobeSpin = new ISprite("Sprites/Special/GlobeSpin.gif", App, 1);
+    GlobeSpin->LoadAnimation("Sprites/Special/GlobeSpin.bin");
+
+    Horizon = new ISprite("Sprites/Special/Horizon.gif", App, 1);
+    Horizon->LoadAnimation("Sprites/Special/Horizon.bin");
+
+    Objects = new ISprite("Sprites/Special/Objects.gif", App, SaveGame::CurrentMode);
+    Objects->LoadAnimation("Sprites/Special/HUD.bin");
+    Objects->LoadAnimation("Sprites/Special/StageObjects.bin");
+    //Objects->LoadAnimation("Sprites/Special/PaletteIcon.bin");
+
+    Players = new ISprite("Sprites/Special/Players.gif", App, 1);
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 
 	switch (SaveGame::CurrentCharacterFlag)
 	{
@@ -181,7 +205,7 @@ PUBLIC void Level_SpecialStage::Init() {
 	G->FadeToWhite = true;
 
 	if (!MobileButtonsSprite) {
-		MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
+		MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App, 1);
 		ISprite::Animation an;
 		an.Name = "";
 		an.FrameCount = 8;
@@ -200,14 +224,18 @@ PUBLIC void Level_SpecialStage::Init() {
 		MobileButtonsSprite->UpdatePalette();
 	}
 	if (!PauseSprite) {
-		PauseSprite = new ISprite("UI/PauseMenu.gif", App);
+		PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App, 1);
 		PauseSprite->SetTransparentColorIndex(0);
-		PauseSprite->LoadAnimation("UI/PauseMenu.bin");
+		PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 	}
 
 	if (!ItemsSprite) {
 		//if (SaveGame::CurrentMode == 1) {
+<<<<<<< HEAD
 			ItemsSprite = new ISprite("Global/Items.gif", App);
+=======
+			ItemsSprite = new ISprite("Sprites/Global/Items.gif", App, SaveGame::CurrentMode);
+>>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 			ItemsSprite->Print = true;
 			ItemsSprite->LoadAnimation("Global/ItemBox.bin");
 			ItemsSprite->LoadAnimation("Global/Ring.bin");
@@ -221,7 +249,7 @@ PUBLIC void Level_SpecialStage::Init() {
 		}*/
 	}
 
-	IResource* BSS_Setup_Bin = IResources::Load("Stages/Special/OBJ_BSS_Setup.bin");
+	IResource* BSS_Setup_Bin = IResources::Load("Stages/Special/OBJ_BSS_Setup.bin", 1);
 	if (BSS_Setup_Bin) {
 		IStreamer reader(BSS_Setup_Bin);
 

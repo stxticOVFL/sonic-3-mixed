@@ -61,6 +61,7 @@ public:
     bool Print = false; //
 
     ISprite(const char* filename, IApp* app);
+    ISprite(const char* filename, IApp* app, int mode);
     ISprite(const char* filename, IApp* app, bool IsPrinting);
     ISprite(const char* filename, IApp* app, int mode);
     ISprite(const char* filename, IApp* app, int mode, bool IsPrinting);
