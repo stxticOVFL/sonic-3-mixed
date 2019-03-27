@@ -1,0 +1,3 @@
+BlankObject
+PlayerSpawn
+Ring

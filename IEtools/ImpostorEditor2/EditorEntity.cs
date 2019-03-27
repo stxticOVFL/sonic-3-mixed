@@ -14,11 +14,11 @@ namespace ImpostorEditor2
 
         public bool Selected;
 
-        private RSDKv5.Scene.ISCN_Object entity;
+        private RSDKv5.SceneEntity entity;
 
-        public RSDKv5.Scene.ISCN_Object Entity { get { return entity; } }
+        public RSDKv5.SceneEntity Entity { get { return entity; } }
 
-        public EditorEntity(RSDKv5.Scene.ISCN_Object entity)
+        public EditorEntity(RSDKv5.SceneEntity entity)
         {
             this.entity = entity;
         }

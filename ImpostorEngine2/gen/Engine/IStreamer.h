@@ -19,9 +19,15 @@ public:
     unsigned char* ptr_start;
     IResource* res = NULL;
     long distance = 0;
+    bool ExternalAllocation = false;
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 
     IStreamer(void* pt);
+    IStreamer(unsigned char* pt);
     IStreamer(IResource* r);
+    ~IStreamer();
     float ReadFloat();
     size_t Seek(int64_t offset);
     size_t Skip(int64_t offset);
@@ -40,6 +46,7 @@ public:
     char* ReadLine();
     char* ReadString();
     std::string ReadRSDKString();
+    char* ReadRSDKUnicodeString();
     void WriteByte(unsigned char data);
     void WriteBytes(unsigned char* data, int n);
     void WriteUInt16(unsigned short data);
@@ -52,7 +59,7 @@ public:
     void WriteInt32BE(signed int data);
     void WriteString(char* string);
     void WriteRSDKString(char* string);
-    unsigned long  Decompress(void* dst, int dstLen, void* src, int srcLen);
+    unsigned long Decompress(void* dst, int dstLen, void* src, int srcLen);
     unsigned char* ReadCompressed();
     unsigned long  Distance();
     IStreamer GetCompressedStream();

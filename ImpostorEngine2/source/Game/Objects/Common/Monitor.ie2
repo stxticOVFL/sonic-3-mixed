@@ -7,6 +7,8 @@ var SubTypeFrame:int;
 var PlayerAggressor:int;
 var Player:IPlayer;
 
+var MonitorType:int;
+
 enum ItemTypes {
     TYPE_STATIC,
     TYPE_1UP,
@@ -28,6 +30,14 @@ enum ItemTypes {
     // This marks how many subtypes are in the list,
     // don't move it.
     END_LIST_DONT_MOVE,
+}
+
+event Monitor() : CONSTRUCTER {
+    if (SaveGame.CurrentMode == 0) {
+        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/ItemBox.bin");
+    } else {
+	    BinIndex = LevelScene.LoadSpriteBin("Global/ItemBox.bin");
+    }
 }
 
 event Create() {
@@ -54,58 +64,14 @@ event Create() {
     CanFall = false;
     GhostY = 0.0;
     CleanupInactiveObject = true;
-
-    if (Attributes) {
-        // New style of Attributes (instead of SubType)
+        // New style of Attributes (instead of MonitorType)
         // NOTE: Does not replace, just an alternative for now.
-		
-		///*
-		if (Scene.ManiaLevel) {
-			// Mania Attributes to ours
-			switch (Attributes[0]) {
-				case 0:
-					SubType = ItemTypes.TYPE_RINGS;
-					break;
-				case 1:
-					SubType = ItemTypes.TYPE_SHIELD_BUBBLE;
-					break;
-				case 2:
-					SubType = ItemTypes.TYPE_SHIELD_BUBBLE;
-					break;
-				case 3:
-					SubType = ItemTypes.TYPE_SHIELD_FIRE;
-					break;
-				case 4:
-					SubType = ItemTypes.TYPE_SHIELD_LIGHTNING;
-					break;
-				case 5:
-					SubType = ItemTypes.TYPE_INVINCIBILITY;
-					break;
-				case 6:
-					SubType = ItemTypes.TYPE_SPEED_SHOES;
-					break;
-				case 7:
-					SubType = ItemTypes.TYPE_1UP;
-					break;
-				case 10:
-					SubType = ItemTypes.TYPE_ROBOTNIK;
-					break;
-				case 11:
-					SubType = ItemTypes.TYPE_HYPER_RING;
-					break;
-				case 14:
-					SubType = ItemTypes.TYPE_SUPER;
-					break;
-			}
-		}
-		else {
-			SubType = Attributes[0];
-		}
-		//*/
-    }
 
+	MonitorType = SubType;
+    //MonitorType = GetAttribute("Type").value_uint8;
+	
     SubTypeFrame = 0;
-    switch (SubType) {
+    switch (MonitorType) {
         case ItemTypes.TYPE_RINGS:
             SubTypeFrame = 0;
             break;
@@ -151,7 +117,7 @@ event Create() {
 }
 
 event UpdateSubType() {
-    switch (SubType) {
+    switch (MonitorType) {
         case ItemTypes.TYPE_RINGS:
             SubTypeFrame = 0;
             break;
@@ -228,7 +194,7 @@ event Update() {
         Priority = false;
 
     if (Timer == 32) {
-        switch (SubType) {
+        switch (MonitorType) {
             case ItemTypes.TYPE_STATIC:
                 Scene.Players[PlayerAggressor].Hurt(X, false);
                 break;
@@ -329,40 +295,32 @@ event Render(CamX:int, CamY:int) {
             G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
 
-        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0))
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) {
             return;
+        }
 
         G.DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
-    }
-    else {
+    } else {
         if (CurrentAnimation == 4) {
             // Main box
             G.DrawSprite(Sprite, 0, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
-        }
-        else {
+        } else {
             // Broken
             G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
-        if (CurrentAnimation == 4 && (Scene.Frame % 6 >= 4))
+        
+        if (CurrentAnimation == 4 && (Scene.Frame % 6 >= 4)) {
             return;
+        }
 
-        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0))
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) {
             return;
+        }
 
         G.DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
     }
-
-    /*
-    if (CurrentAnimation == 4) {
-        G.DrawModeOverlay = true;
-        G.SetDrawAlpha(0x80);
-        G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - 2, 0, IE_NOFLIP);
-        G.DrawModeOverlay = false;
-        G.SetDrawAlpha(0xFF);
-    }
-    */
 	
-				if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
@@ -385,17 +343,7 @@ event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {
 
     return 1;
 }
+
 event OnBreakVertical(PlayerID:int, HitFrom:int) : int {
     return OnBreakHorizontal(PlayerID, HitFrom);
 }
-
-/*
-event OnTouchHitbox(int):int {  }
-event OnPush(int, int):int {  }
-event OnGrabbed(int):int {  }
-event OnBreakHorizontal(int, int):int {  }
-event OnBreakVertical(int, int):int {  }
-
-event CustomSolidityCheck(int, int, int, bool):int { return false; }
-event OnLeaveScreen():int { }
-//*/

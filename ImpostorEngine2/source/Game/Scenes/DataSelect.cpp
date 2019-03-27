@@ -111,15 +111,6 @@ PUBLIC void Scene_DataSelect::Init() {
 	App->Input->UseTouchController = false;
 
 	if (!MenuSprite) {
-<<<<<<< HEAD
-		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
-		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
-		MenuSprite->SetTransparentColorIndex(0x0);
-		MenuSprite->UpdatePalette();
-	}
-	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
-=======
 		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App, 1);
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
 		MenuSprite->SetTransparentColorIndex(0x2C);
@@ -127,27 +118,18 @@ PUBLIC void Scene_DataSelect::Init() {
 	}
 	if (!SuperButtonsSprite) {
 		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-<<<<<<< HEAD
-		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
-=======
 		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 	if (!SaveIconsSprite) {
 		ISprite::Animation an;
-<<<<<<< HEAD
-		SaveIconsSprite = new ISprite("Sprites/UI/SaveIcons.gif", App);
-=======
 		SaveIconsSprite = new ISprite("Sprites/UI/SaveIcons.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 
 		an.Name = (char*)"Static";
 		an.FrameCount = 4;
@@ -221,11 +203,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		SaveIconsSprite->Animations.push_back(an);
 	}
 	if (!SaveSelectSprite) {
-<<<<<<< HEAD
-		SaveSelectSprite = new ISprite("Sprites/UI/SaveSelectEN.gif", App);
-=======
 		SaveSelectSprite = new ISprite("Sprites/UI/SaveSelectEN.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		SaveSelectSprite->LoadAnimation("Sprites/UI/SaveSelect.bin");
 	}
 
@@ -462,8 +440,7 @@ PUBLIC void Scene_DataSelect::Update() {
 					ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
 					ls->PlayerStartX = 160;
 					ls->PlayerStartY = 1328;
-					//ls->Thremixed = true;
-					SaveGame::CurrentMode = 1; //Set it to mixed mode
+					SaveGame::CurrentMode = 1; //Force it to mixed mode
 					ls->ZoneID = 1;
 					ls->VisualAct = 2;
 					sprintf(ls->LevelName, "BENT LETTUCE");
@@ -471,25 +448,6 @@ PUBLIC void Scene_DataSelect::Update() {
 					App->NextScene = ls;
 					break;
 				}
-
-				/*
-				SaveGame::CurrentEmeralds = 0x0000;
-				LevelScene* ls = new LevelScene(App, G);
-				Sound::SoundBank[0] = new ISound("Stages/MSZ/Act2.ogg", true);
-				Sound::Audio->LoopPoint[0] = 179390 / 4;
-				ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
-				ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
-				ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
-				ls->PlayerStartX = 160;
-				ls->PlayerStartY = 1328;
-				ls->Thremixed = true;
-				ls->ZoneID = 1;
-				ls->VisualAct = 1;
-				SaveGame::CurrentCharacterFlag = (int)CharacterType::Ray;
-				sprintf(ls->LevelName, "TEST BENIS");
-				sprintf(ls->LevelNameDiscord, "Mirage Saloon");
-				App->NextScene = ls;
-				//*/
 			}
 		}
 	}

@@ -103,7 +103,6 @@ PUBLIC void Level_FBZ::LoadZoneSpecificSprites() {
         SpriteMap["MGZ"]->LoadAnimation("MGZ/Swinging Platform.bin");
 	}
 
-<<<<<<< HEAD
     if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
@@ -117,21 +116,6 @@ PUBLIC void Level_FBZ::LoadZoneSpecificSprites() {
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
     }
-=======
-	if (!KnuxSprite[0]) {
-		KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneASZ.gif", App);
-
-		KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
-		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-	}
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 }
 
 PUBLIC void Level_FBZ::EarlyUpdate() {

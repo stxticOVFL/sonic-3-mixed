@@ -5,6 +5,15 @@
 
 typedef IMath Math;
 
+CONSTRUCTER StarPost::StarPost() {
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/StarPost.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin");
+    }
+}
+
 void StarPost::Create() {
     Object::Create();
     Active = true;
@@ -39,13 +48,21 @@ void StarPost::Update() {
             }
 
         }
-        if (Scene->Checkpoint > this->SubType) this->Blinking = true;
+        if (Scene->Checkpoint > this->SubType) {
+            this->Blinking = true;
+        }
 
-        if (this->Activated && this->Spin < 32) this->Spin++;
+        if (this->Activated && this->Spin < 32) {
+            this->Spin++;
+        }
 
-        if (this->Spin == 32) this->Blinking = true;
+        if (this->Spin == 32) {
+            this->Blinking = true;
+        }
 
-        if (this->Blinking) this->Frame = ((Scene->Frame >> 2) & 0x1);
+        if (this->Blinking) {
+            this->Frame = ((Scene->Frame >> 2) & 0x1);
+        }
 
         if (ShowStars) {
             if (StarTimer = 0x400) {
@@ -80,20 +97,14 @@ void StarPost::DrawStar(int Rock, int Ang, int Side, int CamX, int CamY) {
     int xx = (cosval * Math::cosHex(Ang)) >> 16;
     int yy = (cosval * Math::sinHex(Ang)) >> 16;
     if (Math::sinHex(Rock) * Side >= 0) {
-        G->DrawSprite(Sprite, Sprite->Animations[13].Frames[0].X, Sprite->Animations[13].Frames[0].Y, Sprite->Animations[13].Frames[0].W, Sprite->Animations[13].Frames[0].H, X - CamX + xx, Y - CamY + yy, 0, IE_NOFLIP, Sprite->Animations[13].Frames[0].OffX, Sprite->Animations[13].Frames[0].OffY);
-    }
-
-    if (App->viewObjectCollision) {
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(xx - (16 / 2) - CamX, yy - (16 / 2) - CamY, W, H, DrawCollisionsColor);
-        G->SetDrawAlpha(0xFF);
+        G->DrawSprite(Sprite, Sprite->Animations[5].Frames[0].X, Sprite->Animations[5].Frames[0].Y, Sprite->Animations[5].Frames[0].W, Sprite->Animations[5].Frames[0].H, X - CamX + xx, Y - CamY + yy, 0, IE_NOFLIP, Sprite->Animations[5].Frames[0].OffX, Sprite->Animations[5].Frames[0].OffY);
     }
 
 }
 
 void StarPost::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, 8, 0, this->X - CamX, this->Y - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, 9 + Frame, Frame, this->X - CamX + (Math::sinHex(this->Spin << 4) >> 13), this->Y - CamY - 16 - (Math::cosHex(this->Spin << 4) >> 13), 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, 0, 0, this->X - CamX, this->Y - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, 1 + Frame, Frame, this->X - CamX + (Math::sinHex(this->Spin << 4) >> 13), this->Y - CamY - 16 - (Math::cosHex(this->Spin << 4) >> 13), 0, IE_NOFLIP);
     if (ShowStars) {
     }
 

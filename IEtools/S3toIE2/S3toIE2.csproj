@@ -53,44 +53,17 @@
     <Compile Include="AnimationEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AnimationEditor.Designer.cs">
+    <Compile Include="AnimationEditor.designer.cs">
       <DependentUpon>AnimationEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Crc32Algorithm.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="S3toIE2Level.cs" />
-    <Compile Include="SpritesheetList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SpritesheetList.Designer.cs">
-      <DependentUpon>SpritesheetList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HitboxEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HitboxEditor.Designer.cs">
-      <DependentUpon>HitboxEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="PromptDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PromptDialog.Designer.cs">
-      <DependentUpon>PromptDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AnimationEditor.resx">
       <DependentUpon>AnimationEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SpritesheetList.resx">
-      <DependentUpon>SpritesheetList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HitboxEditor.resx">
-      <DependentUpon>HitboxEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PromptDialog.resx">
-      <DependentUpon>PromptDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

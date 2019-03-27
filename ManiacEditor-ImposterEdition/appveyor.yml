@@ -1,0 +1,44 @@
+version: 1.0.0.{build}
+image: Visual Studio 2017
+skip_tags: true
+environment:
+  matrix:
+    - BUILD: Universal (x86 / x64) (To Download Click Artifacts for any of these entries below) ||||---------------------------------------
+      appveyor_build_worker_image: Visual Studio 2017
+      configuration: Release
+    - BUILD: x86 Only ||||-----------------------------------------------------------------------------------------------------------------
+      appveyor_build_worker_image: Visual Studio 2017
+      configuration: Release
+      platform: x86     
+    - BUILD: x64 Only ||||-----------------------------------------------------------------------------------------------------------------
+      appveyor_build_worker_image: Visual Studio 2017
+      configuration: Release
+      platform: x64
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+before_build:
+- cmd: nuget restore
+install:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - git submodule update --init --recursive
+  - nuget restore
+  - nuget restore "RSDK-Reverse/RSDK Reverse.sln"
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - nuget restore "ManiacEditor.sln"
+build:
+  verbosity: minimal
+  project: ManiacEditor.sln
+artifacts:
+ - path: 'ManiacEditor\bin\Release(x86)'
+   name: 'ManiacEditor-Generations-BETA-$(appveyor_build_version)[x86]'
+   type: zip
+ - path: 'ManiacEditor\bin\Release(x64)'
+   name: 'ManiacEditor-Generations-BETA-$(appveyor_build_version)[x64]' 
+   type: zip
+ - path: 'ManiacEditor\bin\Release'
+   name: 'ManiacEditor-Generations-BETA-$(appveyor_build_version)[AnyCPU]' 
+   type: zip

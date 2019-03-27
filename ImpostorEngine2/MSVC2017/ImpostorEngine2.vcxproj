@@ -27,7 +27,9 @@
     <ClCompile Include="..\source\Engine\IGraphics.cpp" />
     <ClCompile Include="..\source\Engine\IINI.cpp" />
     <ClCompile Include="..\source\Engine\IInput.cpp" />
+    <ClCompile Include="..\source\Engine\ImageFormats\BMP.cpp" />
     <ClCompile Include="..\source\Engine\ImageFormats\GIF.cpp" />
+    <ClCompile Include="..\source\Engine\ImageFormats\PNG.cpp" />
     <ClCompile Include="..\source\Engine\IMath.cpp" />
     <ClCompile Include="..\source\Engine\IModel.cpp" />
     <ClCompile Include="..\source\Engine\IResource.cpp" />
@@ -62,6 +64,7 @@
     <ClCompile Include="..\source\Game\Levels\SpecialStage.cpp" />
     <ClCompile Include="..\source\Game\Levels\SSZ.cpp" />
     <ClCompile Include="..\source\Game\Levels\TDZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\TSZ.cpp" />
     <ClCompile Include="..\source\Game\MovingSprite.cpp" />
     <ClCompile Include="..\source\Game\Object.cpp" />
     <ClCompile Include="..\source\Game\ObjectNames.cpp" />
@@ -94,8 +97,8 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\BatbrightParts.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bouncepad.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\Bumper.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\CNZLightBulb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\HoverFan.cpp" />
-    <ClCompile Include="..\source\Game\Objects\Gen\CNZ\LightBulb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CNZ\VacuumTube.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CorkFloor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\CutsceneKnuckles.cpp" />
@@ -109,6 +112,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\CommonSpecial\ViewCollisionToggler.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\AnimSprite.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\AutomaticTunnel.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\BlankObject.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BreakableWall.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BubbleAir.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Bubbler.cpp" />
@@ -122,8 +126,11 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSpikes.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Monitor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\PlaneSwitcher.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\PlatformOutliner.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\PlayerSpawn.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Ridge.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Ring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\RollEnforcer.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\SpecialRing.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp" />
@@ -186,7 +193,6 @@
     <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Test\Platform.cpp" />
     <ClCompile Include="..\source\Game\Player.cpp" />
-    <ClCompile Include="..\source\Game\Ring.cpp" />
     <ClCompile Include="..\source\Game\SaveGame.cpp" />
     <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp" />
     <ClCompile Include="..\source\Game\Scenes\LevelSelect.cpp" />
@@ -403,7 +409,7 @@
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>zlibwapi.lib;discord-rpc.lib;glew32.lib;opengl32.lib;glu32.lib;freeglut.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>
@@ -423,7 +429,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;_CONSOLE;MSVC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;NDEBUG;_CONSOLE;MSVC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -457,7 +463,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='NoGen (Release)|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;_CONSOLE;MSVC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;ZLIB_WINAPI;NDEBUG;_CONSOLE;MSVC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -502,7 +508,7 @@
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>zlibwapi.lib;discord-rpc.lib;glew32.lib;opengl32.lib;glu32.lib;freeglut.lib;libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>2000000</StackReserveSize>

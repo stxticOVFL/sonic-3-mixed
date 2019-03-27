@@ -37,3 +37,19 @@ C:\Users\Justin\Dropbox\ImpostorEditor2\ImpostorEditor2\bin\Debug\SonicRetro.Ken
 C:\Users\Justin\Dropbox\ImpostorEditor2\ImpostorEditor2\bin\Debug\SonicRetro.KensSharp.Kosinski.pdb
 C:\Users\Justin\Dropbox\ImpostorEditor2\ImpostorEditor2\bin\Debug\SonicRetro.KensSharp.Nemesis.pdb
 C:\Users\Justin\Dropbox\ImpostorEditor2\ImpostorEditor2\bin\Debug\SonicRetro.KensSharp.Enigma.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.DevicePanel.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.Editor.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.EntitiesToolbar.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.ImageViewer.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.Properties.Resources.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.SceneSelect.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\MyTabControl.TabControlX.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\MyTabControl.TabPanelControl.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.TilesList.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.TilesToolbar.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.TileSwapper.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.exe
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\ImpostorEditor2\obj\Debug\ImpostorEditor2.pdb

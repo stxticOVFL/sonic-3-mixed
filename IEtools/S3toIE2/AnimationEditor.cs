@@ -1383,8 +1383,8 @@ namespace S3toIE2 {
                                 LittleEndian.Write2(output, (ushort)sprite.Frames[f].BoxY); // Y
                                 LittleEndian.Write2(output, sprite.Frames[f].W); // W
                                 LittleEndian.Write2(output, sprite.Frames[f].H); // H
-                                LittleEndian.Write2(output, (ushort)sprite.Frames[f].X); // Centering X
-                                LittleEndian.Write2(output, (ushort)sprite.Frames[f].Y); // Centering Y
+                                LittleEndian.Write2(output, (ushort)sprite.Frames[f].X); // Pivoting X
+                                LittleEndian.Write2(output, (ushort)sprite.Frames[f].Y); // Pivoting Y
                             }
                         }
                     }
@@ -1407,8 +1407,8 @@ namespace S3toIE2 {
                             Dictionary<int, int> frameTopOffsets = new Dictionary<int, int>();
                             Dictionary<int, int> frameWidthOffsets = new Dictionary<int, int>();
                             Dictionary<int, int> frameHeightOffsets = new Dictionary<int, int>();
-                            Dictionary<int, int> frameCenterXOffsets = new Dictionary<int, int>();
-                            Dictionary<int, int> frameCenterYOffsets = new Dictionary<int, int>();
+                            Dictionary<int, int> framePivotXOffsets = new Dictionary<int, int>();
+                            Dictionary<int, int> framePivotYOffsets = new Dictionary<int, int>();
                             Dictionary<int, int> frameDurationOffsets = new Dictionary<int, int>();
 
                             Dictionary<string, Dictionary<int, int>> frameOffsets = new Dictionary<string, Dictionary<int, int>>();
@@ -1416,9 +1416,9 @@ namespace S3toIE2 {
                             frameOffsets.Add("Left", frameLeftOffsets);
                             frameOffsets.Add("Width", frameWidthOffsets);
                             frameOffsets.Add("Height", frameHeightOffsets);
-                            frameOffsets.Add("CenterX", frameCenterXOffsets);
-                            frameOffsets.Add("CenterY", frameCenterYOffsets);
-                            frameOffsets.Add("Duration", frameDurationOffsets);
+                            frameOffsets.Add("PivotX", framePivotXOffsets);
+                            frameOffsets.Add("PivotY", framePivotYOffsets);
+                            frameOffsets.Add("Delay", frameDurationOffsets);
 
 
                             foreach (FrameAlt fa in sprite.Anim[a].FrameAlterations) {
@@ -1455,10 +1455,10 @@ namespace S3toIE2 {
                                 if (frameHeightOffsets.ContainsKey(f))
                                     h = frameHeightOffsets[f];
 
-                                if (frameCenterXOffsets.ContainsKey(f))
-                                    cx = frameCenterXOffsets[f];
-                                if (frameCenterYOffsets.ContainsKey(f))
-                                    cy = frameCenterYOffsets[f];
+                                if (framePivotXOffsets.ContainsKey(f))
+                                    cx = framePivotXOffsets[f];
+                                if (framePivotYOffsets.ContainsKey(f))
+                                    cy = framePivotYOffsets[f];
 
                                 if (frameDurationOffsets.ContainsKey(f))
                                     dur = frameDurationOffsets[f];
@@ -1470,8 +1470,8 @@ namespace S3toIE2 {
                                 LittleEndian.Write2(output, (ushort)top); // Y
                                 LittleEndian.Write2(output, (ushort)w); // W
                                 LittleEndian.Write2(output, (ushort)h); // H
-                                LittleEndian.Write2(output, (ushort)cx); // Centering X
-                                LittleEndian.Write2(output, (ushort)cy); // Centering Y
+                                LittleEndian.Write2(output, (ushort)cx); // Pivoting X
+                                LittleEndian.Write2(output, (ushort)cy); // Pivoting Y
                             }
                         }
                     }
@@ -1545,8 +1545,7 @@ namespace S3toIE2 {
             using (FileStream input = File.OpenRead(filename)) {
                 using (BinaryReader reader = new BinaryReader(input)) {
                     string[] spp = filename.Split('\\');
-                    currentAnimation = new RSDKv5.Animation();
-                    currentAnimation.Load(reader);
+                    currentAnimation = new RSDKv5.Animation((RSDKv5.Reader)reader);
 
                     this.Text = "Animation Editor - " + spp[spp.Length - 1];
                     this.currentFilename = filename;
@@ -1556,14 +1555,12 @@ namespace S3toIE2 {
         }
 
         void SaveAs(string filename) {
-            using (FileStream output = File.OpenWrite(filename)) {
-                currentAnimation.Save(output);
-                currentFilename = filename;
+            currentAnimation.Write(new RSDKv5.Writer(filename));
+            currentFilename = filename;
 
-                string[] spp = filename.Split('\\');
-                this.Text = "Animation Editor - " + spp[spp.Length - 1];
-                this.currentFilename = filename;
-            }
+            string[] spp = filename.Split('\\');
+            this.Text = "Animation Editor - " + spp[spp.Length - 1];
+            this.currentFilename = filename;
         }
 
         void Save(bool showDialog) {
@@ -1636,9 +1633,9 @@ namespace S3toIE2 {
             splitContainerFrame.Enabled = true;
 
             RSDKv5.Animation.AnimationEntry animationEntry = currentAnimation.Animations[currentAnimationIndex];
-            numericUpDownSpeed.Value = animationEntry.FrameSpeed;
-            numericUpDownLoopIndex.Value = animationEntry.FrameLoop;
-            comboBoxFlags.SelectedIndex = animationEntry.Unknown;
+            numericUpDownSpeed.Value = animationEntry.SpeedMultiplyer;
+            numericUpDownLoopIndex.Value = animationEntry.LoopIndex;
+            comboBoxFlags.SelectedIndex = animationEntry.RotationFlags;
             groupBoxFrame.Text = "Current Frame: " + currentFrame + " - Total: " + animationEntry.Frames.Count;
 
             listViewFrames.Items.Clear();
@@ -1656,15 +1653,15 @@ namespace S3toIE2 {
         }
         void UpdateFrameUI() {
             if (currentAnimationIndex >= 0 && currentFrame >= 0 && currentFrame < currentAnimation.Animations[currentAnimationIndex].Frames.Count) {
-                RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-                numericUpDownCenterX.Value = frame.CenterX;
-                numericUpDownCenterY.Value = frame.CenterY;
+                RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+                numericUpDownCenterX.Value = frame.PivotX;
+                numericUpDownCenterY.Value = frame.PivotY;
                 numericUpDownLeft.Value = frame.X;
                 numericUpDownTop.Value = frame.Y;
                 numericUpDownWidth.Value = frame.Width;
                 numericUpDownHeight.Value = frame.Height;
                 numericUpDownID.Value = frame.ID;
-                numericUpDownDuration.Value = frame.Duration;
+                numericUpDownDuration.Value = frame.Delay;
                 groupBoxFrame.Text = "Current Frame: " + currentFrame + " - Total: " + currentAnimation.Animations[currentAnimationIndex].Frames.Count;
 
                 comboBoxHitbox_SelectedIndexChanged(null, null);
@@ -1698,7 +1695,7 @@ namespace S3toIE2 {
                 if (spriteSheets.Count > 0) {
                     if (currentAnimationIndex >= 0) {
                         if (currentAnimation.Animations[currentAnimationIndex].Frames.Count > 0) {
-                            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+                            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
 
                             int w = frame.Width;
                             int h = frame.Height;
@@ -1709,7 +1706,7 @@ namespace S3toIE2 {
                             g.DrawLine(Pens.Black, x - w, y, x + w, y);
 
                             //g.FillRectangle(new SolidBrush(Color.FromArgb(0xFF, 0x00, 0xFF)), x, y, w, h);
-                            g.DrawImage(spriteSheets[frame.SpriteSheet], x + frame.CenterX, y + frame.CenterY, new Rectangle(frame.X, frame.Y, w, h), GraphicsUnit.Pixel);
+                            g.DrawImage(spriteSheets[frame.SpriteSheet], x + frame.PivotX, y + frame.PivotY, new Rectangle(frame.X, frame.Y, w, h), GraphicsUnit.Pixel);
                         }
                     }
                 }
@@ -1827,80 +1824,80 @@ namespace S3toIE2 {
 
         private void numericUpDownSpeed_ValueChanged(object sender, EventArgs e) {
             RSDKv5.Animation.AnimationEntry animationEntry = currentAnimation.Animations[currentAnimationIndex];
-            animationEntry.FrameSpeed = (int)numericUpDownSpeed.Value;
+            animationEntry.SpeedMultiplyer = (short)numericUpDownSpeed.Value;
         }
 
         private void numericUpDownLoopIndex_ValueChanged(object sender, EventArgs e) {
             RSDKv5.Animation.AnimationEntry animationEntry = currentAnimation.Animations[currentAnimationIndex];
-            animationEntry.FrameLoop = (int)numericUpDownLoopIndex.Value;
+            animationEntry.LoopIndex = (byte)numericUpDownLoopIndex.Value;
         }
 
         private void comboBoxFlags_SelectedIndexChanged(object sender, EventArgs e) {
             RSDKv5.Animation.AnimationEntry animationEntry = currentAnimation.Animations[currentAnimationIndex];
-            animationEntry.Unknown = (byte)comboBoxFlags.SelectedIndex;
+            animationEntry.RotationFlags = (byte)comboBoxFlags.SelectedIndex;
         }
 
         private void numericUpDownLeft_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.X = (int)numericUpDownLeft.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.X = (short)numericUpDownLeft.Value;
             panelPreview.Refresh();
         }
 
         private void numericUpDownTop_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.Y = (int)numericUpDownTop.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.Y = (short)numericUpDownTop.Value;
             panelPreview.Refresh();
         }
 
         private void numericUpDownWidth_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.Width = (int)numericUpDownWidth.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.Width = (short)numericUpDownWidth.Value;
             panelPreview.Refresh();
         }
 
         private void numericUpDownHeight_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.Height = (int)numericUpDownHeight.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.Height = (short)numericUpDownHeight.Value;
             panelPreview.Refresh();
         }
 
         private void numericUpDownCenterX_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.CenterX = (int)numericUpDownCenterX.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.PivotX = (short)numericUpDownCenterX.Value;
             panelPreview.Refresh();
         }
 
         private void numericUpDownCenterY_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.CenterY = (int)numericUpDownCenterY.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.PivotY = (short)numericUpDownCenterY.Value;
             panelPreview.Refresh();
         }
 
         private void numericUpDownID_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.ID = (int)numericUpDownID.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.ID = (short)numericUpDownID.Value;
             panelPreview.Refresh();
         }
 
         private void numericUpDownDuration_ValueChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.Duration = (int)numericUpDownDuration.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.Delay = (short)numericUpDownDuration.Value;
             panelPreview.Refresh();
         }
 
@@ -1916,7 +1913,7 @@ namespace S3toIE2 {
                 if (spriteSheets.Count > 0) {
                     if (currentAnimationIndex >= 0) {
                         if (currentAnimation.Animations[currentAnimationIndex].Frames.Count > 0) {
-                            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[e.ItemIndex];
+                            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[e.ItemIndex];
 
                             g.FillRectangle(new SolidBrush(Color.FromArgb(0xFF, 0x00, 0xFF)), e.Bounds);
 
@@ -1963,7 +1960,8 @@ namespace S3toIE2 {
         }
 
         private void toolStripButtonAnimationAdd_Click(object sender, EventArgs e) {
-            RSDKv5.Animation.AnimationEntry animation = new RSDKv5.Animation.AnimationEntry("New Animation");
+            RSDKv5.Animation.AnimationEntry animation = new RSDKv5.Animation.AnimationEntry();
+            animation.AnimName = "New Animation";
             currentAnimation.Animations.Add(animation);
 
             currentAnimationIndex = currentAnimation.Animations.Count - 1;
@@ -1995,7 +1993,7 @@ namespace S3toIE2 {
                         RSDKv5.Animation.AnimationEntry anim = currentAnimation.Animations[currentAnimationIndex];
                         using (MemoryStream output = new MemoryStream()) {
                             output.Write(BitConverter.GetBytes(0x494E41), 0, 4);
-                            anim.Write(output, currentAnimation);
+                            //anim.Write(output);
                             PutOnClipboard(output.ToArray());
                         }
                     }
@@ -2006,7 +2004,7 @@ namespace S3toIE2 {
         private void toolStripButtonAnimationPaste_Click(object sender, EventArgs e) {
             using (MemoryStream input = new MemoryStream(GetFromClipboard())) {
                 if (LittleEndian.ReadUInt32(input) == 0x494E41) {
-                    RSDKv5.Animation.AnimationEntry anim = new RSDKv5.Animation.AnimationEntry(new BinaryReader(input), currentAnimation);
+                    RSDKv5.Animation.AnimationEntry anim = new RSDKv5.Animation.AnimationEntry((RSDKv5.Reader)(new BinaryReader(input)), currentAnimation);
                     int count = 1;
                     foreach (RSDKv5.Animation.AnimationEntry an in currentAnimation.Animations) {
                         if (an.AnimName.Substring(0, anim.AnimName.Length < an.AnimName.Length ? anim.AnimName.Length : an.AnimName.Length) == anim.AnimName)
@@ -2023,7 +2021,7 @@ namespace S3toIE2 {
         }
 
         private void hitboxEditorToolStripMenuItem_Click(object sender, EventArgs e) {
-            HitboxEditor hitboxEditor = new HitboxEditor();
+            /*HitboxEditor hitboxEditor = new HitboxEditor();
 
             for (int i = 0; i < currentAnimation.CollisionBoxes.Count; i++) {
                 hitboxEditor.listBoxHitboxes.Items.Add(currentAnimation.CollisionBoxes[i]);
@@ -2040,7 +2038,7 @@ namespace S3toIE2 {
                     comboBoxHitbox.Items.Add(currentAnimation.CollisionBoxes[i]);
                     comboBoxHitbox.SelectedIndex = 0;
                 }
-            }
+            }*/
         }
 
         private void numericUpDownHitboxLeft_ValueChanged(object sender, EventArgs e) {
@@ -2048,8 +2046,8 @@ namespace S3toIE2 {
             if (comboBoxHitbox.SelectedIndex < 0) return;
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Left = (int)numericUpDownHitboxLeft.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Left = (short)numericUpDownHitboxLeft.Value;
             panelPreview.Refresh();
         }
 
@@ -2058,8 +2056,8 @@ namespace S3toIE2 {
             if (comboBoxHitbox.SelectedIndex < 0) return;
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Top = (int)numericUpDownHitboxTop.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Top = (short)numericUpDownHitboxTop.Value;
             panelPreview.Refresh();
         }
 
@@ -2068,8 +2066,8 @@ namespace S3toIE2 {
             if (comboBoxHitbox.SelectedIndex < 0) return;
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Right = (int)numericUpDownHitboxRight.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Right = (short)numericUpDownHitboxRight.Value;
             panelPreview.Refresh();
         }
 
@@ -2078,15 +2076,15 @@ namespace S3toIE2 {
             if (comboBoxHitbox.SelectedIndex < 0) return;
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
-            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Bottom = (int)numericUpDownHitboxBottom.Value;
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            frame.HitBoxes[comboBoxHitbox.SelectedIndex].Bottom = (short)numericUpDownHitboxBottom.Value;
             panelPreview.Refresh();
         }
 
         private void comboBoxHitbox_SelectedIndexChanged(object sender, EventArgs e) {
             if (currentAnimation.Animations.Count == 0) return;
             if (currentAnimation.Animations[currentAnimationIndex].Frames.Count == 0) return;
-            RSDKv5.Animation.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
+            RSDKv5.Animation.AnimationEntry.Frame frame = currentAnimation.Animations[currentAnimationIndex].Frames[currentFrame];
 
             if (frame.HitBoxes.Count == 0) {
                 numericUpDownHitboxLeft.Enabled = numericUpDownHitboxRight.Enabled = numericUpDownHitboxTop.Enabled = numericUpDownHitboxBottom.Enabled = false;
@@ -2107,11 +2105,11 @@ namespace S3toIE2 {
                 if (spriteSheets.Count > 0) {
                     if (currentAnimationIndex >= 0) {
                         RSDKv5.Animation.AnimationEntry anim = currentAnimation.Animations[currentAnimationIndex];
-                        PromptDialog prompt = new PromptDialog("New name for \"" + anim.AnimName + "\"?", anim.AnimName);
+                        /*PromptDialog prompt = new PromptDialog("New name for \"" + anim.AnimName + "\"?", anim.AnimName);
                         if (prompt.ShowDialog() == DialogResult.OK) {
                             anim.AnimName = prompt.TextEntry.Text;
                             listBoxAnimations.Items[currentAnimationIndex] = anim.AnimName;
-                        }
+                        }*/
                     }
                 }
             }
@@ -2122,11 +2120,11 @@ namespace S3toIE2 {
                 if (spriteSheets.Count > 0) {
                     if (currentAnimationIndex >= 0) {
                         RSDKv5.Animation.AnimationEntry anim = currentAnimation.Animations[currentAnimationIndex];
-                        RSDKv5.Animation.Frame f = new RSDKv5.Animation.Frame();
+                        RSDKv5.Animation.AnimationEntry.Frame f = new RSDKv5.Animation.AnimationEntry.Frame();
                         f.Width = 32;
                         f.Height = 32;
                         for (int i = 0; i < currentAnimation.CollisionBoxes.Count; ++i) {
-                            var hitBox = new RSDKv5.Animation.Frame.HitBox();
+                            var hitBox = new RSDKv5.Animation.AnimationEntry.Frame.HitBox();
                             hitBox.Left = 0;
                             hitBox.Top = 0;
                             hitBox.Right = 0;
@@ -2169,7 +2167,7 @@ namespace S3toIE2 {
                                 int whereEnd = anim.Frames.Count;
                                 for (int i = 0; i < anim.Frames.Count; i++) {
                                     if (listViewFrames.SelectedIndices.Contains(i)) {
-                                        anim.Frames.Insert(i + 1, anim.Frames[i].Clone());
+                                        //anim.Frames.Insert(i + 1, anim.Frames[i].Clone());
                                         listViewFrames.Items.Add("");
                                     }
                                 }
@@ -2193,7 +2191,7 @@ namespace S3toIE2 {
                 List<int> guys = new List<int>();
                 for (int i = 0; i < anim.Frames.Count; i++) {
                     if (listViewFrames.SelectedIndices.Contains(i)) {
-                        RSDKv5.Animation.Frame f = anim.Frames[i];
+                        RSDKv5.Animation.AnimationEntry.Frame f = anim.Frames[i];
                         anim.Frames.RemoveAt(i);
                         anim.Frames.Insert(i - 1, f);
                         guys.Add(i - 1);
@@ -2227,7 +2225,7 @@ namespace S3toIE2 {
                 List<int> guys = new List<int>();
                 for (int i = anim.Frames.Count - 1; i >= 0; i--) {
                     if (listViewFrames.SelectedIndices.Contains(i)) {
-                        RSDKv5.Animation.Frame f = anim.Frames[i];
+                        RSDKv5.Animation.AnimationEntry.Frame f = anim.Frames[i];
                         anim.Frames.RemoveAt(i);
                         anim.Frames.Insert(i + 1, f);
                         guys.Add(i + 1);
@@ -2258,7 +2256,7 @@ namespace S3toIE2 {
                                 for (int i = 0; i < anim.Frames.Count; i++) {
                                     if (listViewFrames.SelectedIndices.Contains(i)) {
                                         output.Write(BitConverter.GetBytes(0x69696969), 0, 4);
-                                        RSDKv5.Animation.Frame.WriteFrame(output, currentAnimation, anim, i);
+                                        //anim.Frames[i].Write(output);
                                     }
                                 }
                                 output.Write(BitConverter.GetBytes(0xFFFFFFFF), 0, 4);
@@ -2277,7 +2275,7 @@ namespace S3toIE2 {
                         using (MemoryStream input = new MemoryStream(GetFromClipboard())) {
                             while (LittleEndian.ReadUInt32(input) == 0x69696969) {
                                 RSDKv5.Animation.AnimationEntry anim = currentAnimation.Animations[currentAnimationIndex];
-                                anim.Frames.Add(RSDKv5.Animation.Frame.ReadFrame(new BinaryReader(input), currentAnimation));
+                                //anim.Frames.Add(RSDKv5.Animation.AnimationEntry.Frame.ReadFrame(new BinaryReader(input), currentAnimation));
                                 listViewFrames.Items.Add("");
                             }
                         }
@@ -2287,7 +2285,7 @@ namespace S3toIE2 {
         }
 
         private void spritesheetListEditorToolStripMenuItem_Click(object sender, EventArgs e) {
-            SpritesheetList hitboxEditor = new SpritesheetList();
+            /*SpritesheetList hitboxEditor = new SpritesheetList();
 
             for (int i = 0; i < currentAnimation.SpriteSheets.Count; i++) {
                 hitboxEditor.listBoxSpritesheetFilenames.Items.Add(currentAnimation.SpriteSheets[i]);
@@ -2312,7 +2310,7 @@ namespace S3toIE2 {
 
                     spriteSheets.Add(new Bitmap(currentAnimation.SpriteSheets[i]));
                 }
-            }
+            }*/
         }
         
         private void listViewFrames_KeyDown(object sender, KeyEventArgs e) {

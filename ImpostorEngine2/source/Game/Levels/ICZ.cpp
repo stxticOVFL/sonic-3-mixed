@@ -242,7 +242,6 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
     }
 
 	if (!KnuxSprite[0]) {
-<<<<<<< HEAD
         KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
         KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
@@ -255,20 +254,6 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
     }
-=======
-		KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneASZ.gif", App);
-
-		KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
-		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-	}
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 }
 
 PUBLIC void Level_ICZ::FinishResults() {
@@ -312,21 +297,21 @@ PUBLIC void Level_ICZ::GoToNextAct() {
 PUBLIC void Level_ICZ::EarlyUpdate() {
     if (Act == 1) {
         // Background (Inside)
-        Data->layers[0].Visible = false;
-        Data->layers[0].RelativeY = 0x80;
+        Data->Layers[0].Visible = false;
+        Data->Layers[0].RelativeY = 0x80;
         // Snowpile
-        Data->layers[1].Visible = false;
-        Data->layers[1].Flags = 0 | 2 | 4;
+        Data->Layers[1].Visible = false;
+        Data->Layers[1].Flags = 0 | 2 | 4;
         // Background (Outside)
-        Data->layers[2].RelativeY = 0x1;
-        Data->layers[2].UseDeltaCameraY = true;
+        Data->Layers[2].RelativeY = 0x1;
+        Data->Layers[2].UseDeltaCameraY = true;
         // FG Low/High
-        Data->layers[3].IsScrollingVertical = true;
-        Data->layers[4].IsScrollingVertical = true;
+        Data->Layers[3].IsScrollingVertical = true;
+        Data->Layers[4].IsScrollingVertical = true;
 
         if (Player->EZX < 0x3960) {
-            Data->layers[0].Visible = false;
-            Data->layers[2].Visible = true;
+            Data->Layers[0].Visible = false;
+            Data->Layers[2].Visible = true;
 
             if (TileSprite->GetPalette(0x31) != 0xEEEEEE) {
                 TileSprite->SetPalette(0x31, 0xEEEEEE);
@@ -348,8 +333,8 @@ PUBLIC void Level_ICZ::EarlyUpdate() {
             }
         }
         else {
-            Data->layers[0].Visible = true;
-            Data->layers[2].Visible = false;
+            Data->Layers[0].Visible = true;
+            Data->Layers[2].Visible = false;
 
             if (TileSprite->GetPalette(0x31) != 0x00CCEE) {
                 TileSprite->SetPalette(0x31, 0x00CCEE);

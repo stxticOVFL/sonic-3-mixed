@@ -315,9 +315,8 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
         FireLayerBackup = NULL;
         CutsceneActTimer = 60;
 
-        Data->layers[4].OffsetY = 0;
-    }
-    else {
+        Data->Layers[4].OffsetY = 0;
+    } else {
         VisualWaterLevel = 0x528;
         WaterLevel = 0x528;
 
@@ -529,7 +528,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                     water = 0;
                 }
                 else {
-                    memset(Data->layers[1].Deform, 0, water);
+                    memset(Data->Layers[1].Deform, 0, water);
                 }
 
                 int8_t AIZ1_WaterDeformDelta[64] = {
@@ -539,14 +538,14 @@ PUBLIC void Level_AIZ::Subupdate() {
                 	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
                 };
                 for (int i = water; i < App->HEIGHT; i++) {
-                    Data->layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                    Data->Layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
             }
             else {
-                memset(Data->layers[1].Deform, 0, App->HEIGHT);
+                memset(Data->Layers[1].Deform, 0, App->HEIGHT);
             }
-            memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
-            memcpy(Data->layers[3].Deform, Data->layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[2].Deform, Data->Layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[3].Deform, Data->Layers[1].Deform, App->HEIGHT);
         }
 
         if (TreeRevealRow < 32) {
@@ -556,14 +555,14 @@ PUBLIC void Level_AIZ::Subupdate() {
                 if (AIZ_TreeRevealArray[ind]) {
                     x = (i & 0xF) + 0x2C8;
                     y = (i >> 04) + 0x028;
-                    pos = x + Data->layers[2].Width * y;
+                    pos = x + Data->Layers[2].Width * y;
                     x = (i & 0xF);
                     y = (i >> 04);
-                    Data->layers[2].Tiles[pos] = Data->layers[2].Tiles[x + Data->layers[2].Width * y];
-                    Data->layers[3].Tiles[pos] = Data->layers[3].Tiles[x + Data->layers[2].Width * y];
+                    Data->Layers[2].Tiles[pos] = Data->Layers[2].Tiles[x + Data->Layers[2].Width * y];
+                    Data->Layers[3].Tiles[pos] = Data->Layers[3].Tiles[x + Data->Layers[2].Width * y];
                 }
-                // Data->layers[5].Tiles[i] *= !AIZ_TreeRevealArray[ind];
-                // Data->layers[6].Tiles[i] *= !AIZ_TreeRevealArray[ind];
+                // Data->Layers[5].Tiles[i] *= !AIZ_TreeRevealArray[ind];
+                // Data->Layers[6].Tiles[i] *= !AIZ_TreeRevealArray[ind];
             }
         }
 
@@ -597,39 +596,39 @@ PUBLIC void Level_AIZ::Subupdate() {
                 AddExplosion(5, false, IMath::randRange(CameraX, CameraX + App->WIDTH), IMath::randRange(CameraY, CameraY + App->HEIGHT));
             }
 
-			if (!Data->layers[4].NoBuffer) {
-				Data->layers[4].NoBuffer = true;
+			if (!Data->Layers[4].NoBuffer) {
+				Data->Layers[4].NoBuffer = true;
 			}
 
-            if (Data->layers[4].OffsetY <= -0x68) {
+            if (Data->Layers[4].OffsetY <= -0x68) {
                 int d0 = FireRiseValue + 0x2800;
                 if (d0 > 0xA0000)
                     d0 = 0xA0000;
                 FireRiseValue = d0;
 
-                if (Data->layers[4].OffsetY > -0x200)
-                    Data->layers[4].OffsetY -= FireRiseValue >> 17;
+                if (Data->Layers[4].OffsetY > -0x200)
+                    Data->Layers[4].OffsetY -= FireRiseValue >> 17;
 
-                if (Data->layers[4].OffsetY < -0x180) {
-                    Data->layers[4].OffsetY += 0x40;
+                if (Data->Layers[4].OffsetY < -0x180) {
+                    Data->Layers[4].OffsetY += 0x40;
 
                     Timerrrr--;
                 }
             }
             else {
                 FireRiseValue2 += (-0x680000 - FireRiseValue2) >> 5;
-                Data->layers[4].OffsetY = FireRiseValue2 >> 16;
+                Data->Layers[4].OffsetY = FireRiseValue2 >> 16;
             }
 
             if (Timerrrr == 0) {
                 FireLayerBackup = new Layer;
-                memcpy(FireLayerBackup, &Data->layers[4], sizeof(Layer));
+                memcpy(FireLayerBackup, &Data->Layers[4], sizeof(Layer));
 
                 GoToNextAct();
                 Timerrrr = -1;
             }
 
-            Data->layers[4].OffsetX = (Frame * 6) & 0x60;
+            Data->Layers[4].OffsetX = (Frame * 6) & 0x60;
 
             short firetileoffsets[16] = {
                 0x100, 0xFF, 0xFE, 0xFB,
@@ -639,7 +638,7 @@ PUBLIC void Level_AIZ::Subupdate() {
             };
 
             for (int i = 0; i < 20; i++) {
-                Data->layers[4].TileOffsetY[i] = (firetileoffsets[(Frame / 4 + i * 2) & 0xF] - 0x100);
+                Data->Layers[4].TileOffsetY[i] = (firetileoffsets[(Frame / 4 + i * 2) & 0xF] - 0x100);
             }
         }
     }
@@ -663,15 +662,15 @@ PUBLIC void Level_AIZ::Subupdate() {
             };
             if (wantUnderwaterFireEffect) {
                 for (int i = 0; i < App->HEIGHT; i++) {
-                   Data->layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                   Data->Layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
                 }
             } else {
                 for (int i = 0; i < App->HEIGHT; i++) {
-                   Data->layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                   Data->Layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
                 }  
             }
 
-            memset(Data->layers[1].Deform, 0, water);
+            memset(Data->Layers[1].Deform, 0, water);
 
             int8_t AIZ2_FGDeformDelta[64] = {
                 0,    0,    1,    1,    0,    0,    0,    0,    1,    0,    0,    0,    0,    1,    0,    0,
@@ -680,7 +679,7 @@ PUBLIC void Level_AIZ::Subupdate() {
         	    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    0,    0,    1,    1,    0,    0
             };
             for (int i = 0; i < water; i++) {
-               Data->layers[1].Deform[i] = AIZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+               Data->Layers[1].Deform[i] = AIZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
 
             int8_t AIZ1_WaterDeformDelta[64] = {
@@ -690,28 +689,28 @@ PUBLIC void Level_AIZ::Subupdate() {
             	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
             };
             for (int i = water; i < App->HEIGHT; i++) {
-                Data->layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                Data->Layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
             
             // Also apply the effect to the BG.
             if (!wantUnderwaterFireEffect) {
                 for (int i = water; i < App->HEIGHT; i++) {
-                    Data->layers[0].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                    Data->Layers[0].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
             }
 
-            memcpy(Data->layers[2].Deform, Data->layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[2].Deform, Data->Layers[1].Deform, App->HEIGHT);
         }
 
-        Data->layers[3].Flags = 0 | 2 | 4;
-        Data->layers[4].Flags = 0 | 2 | 4;
+        Data->Layers[3].Flags = 0 | 2 | 4;
+        Data->Layers[4].Flags = 0 | 2 | 4;
 
-        Data->layers[3].RelativeY = 0x00;
-        Data->layers[3].Info[0].RelativeX = 0x00;
-        Data->layers[4].RelativeY = 0x00;
-        Data->layers[4].Info[0].RelativeX = 0x00;
+        Data->Layers[3].RelativeY = 0x00;
+        Data->Layers[3].Info[0].RelativeX = 0x00;
+        Data->Layers[4].RelativeY = 0x00;
+        Data->Layers[4].Info[0].RelativeX = 0x00;
 
-        Data->layers[3].Visible = Data->layers[4].Visible = false;
+        Data->Layers[3].Visible = Data->Layers[4].Visible = false;
 
         if (VisualAct == 1) {
             if (RoutineNumber == -2) {
@@ -719,17 +718,17 @@ PUBLIC void Level_AIZ::Subupdate() {
                     if (FireLayerBackup != NULL) {
                         int ind = Data->layerCount;
                         FireInd = ind;
-                        memcpy(&Data->layers[ind], FireLayerBackup, sizeof(Layer));
+                        memcpy(&Data->Layers[ind], FireLayerBackup, sizeof(Layer));
                         Data->layerCount++;
                         FireLayerBackup = NULL;
 
                         // Alter tiles
-                        Data->layers[ind].Flags = 0 | 0 | 4;
+                        Data->Layers[ind].Flags = 0 | 0 | 4;
                         for (int i = 16; i < 40; i += 4) {
-                            memcpy(Data->layers[ind].Tiles + (32 * i), AIZ2_BF_ChunkBackup, sizeof(short) * 32 * 4);
+                            memcpy(Data->Layers[ind].Tiles + (32 * i), AIZ2_BF_ChunkBackup, sizeof(short) * 32 * 4);
                         }
-                        memcpy(Data->layers[ind].Tiles + (32 * 40), AIZ2_BF_ChunkBackup, sizeof(short) * 0x100);
-                        memset(Data->layers[ind].Tiles + (32 * 0), 0, sizeof(short) * 0x200);
+                        memcpy(Data->Layers[ind].Tiles + (32 * 40), AIZ2_BF_ChunkBackup, sizeof(short) * 0x100);
+                        memset(Data->Layers[ind].Tiles + (32 * 0), 0, sizeof(short) * 0x200);
 
                         TileSprite->SetPalette(0x31, 0xEE4400);
                         TileSprite->SetPalette(0x32, 0xEE6600);
@@ -747,10 +746,10 @@ PUBLIC void Level_AIZ::Subupdate() {
                     CameraMaxX = 0x10;
                     CutsceneActTimer--;
 
-                    Data->layers[FireInd].OffsetX = (Frame * 6) & 0x60;
-                    Data->layers[FireInd].OffsetY -= FireRiseValue >> 17;
-                    if (Data->layers[FireInd].OffsetY < -0x300) {
-                        Data->layers[FireInd].OffsetY = -0x300;
+                    Data->Layers[FireInd].OffsetX = (Frame * 6) & 0x60;
+                    Data->Layers[FireInd].OffsetY -= FireRiseValue >> 17;
+                    if (Data->Layers[FireInd].OffsetY < -0x300) {
+                        Data->Layers[FireInd].OffsetY = -0x300;
                         CutsceneActTimer = 0;
                     }
                     else {
@@ -788,8 +787,8 @@ PUBLIC void Level_AIZ::Subupdate() {
         else {
             int d0 = ShipTimer >> 16;
 
-            Data->layers[3].OffsetX = Data->layers[4].OffsetX = 0x3D80 - d0;
-            Data->layers[3].Visible = Data->layers[4].Visible = true;
+            Data->Layers[3].OffsetX = Data->Layers[4].OffsetX = 0x3D80 - d0;
+            Data->Layers[3].Visible = Data->Layers[4].Visible = true;
 
             if (d0 < 0x3CDC) {
                 // do boss small and tree
@@ -826,10 +825,10 @@ PUBLIC void Level_AIZ::Subupdate() {
                 else if (d0 < 0x3D5C) {
                     // go up
                     d0 -= 0x3D5C;
-                    Data->layers[3].OffsetY = Data->layers[4].OffsetY += d0 / 32;
+                    Data->Layers[3].OffsetY = Data->Layers[4].OffsetY += d0 / 32;
                 }
                 else {
-                    Data->layers[3].OffsetY = Data->layers[4].OffsetY = -0x40 + AIZBattleShip_BobbingMotion[d0 >> 2 & 0xF];
+                    Data->Layers[3].OffsetY = Data->Layers[4].OffsetY = -0x40 + AIZBattleShip_BobbingMotion[d0 >> 2 & 0xF];
                 }
                 if (RoutineNumber == 4) {
                     int val = 40;
@@ -848,7 +847,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                 TileSpriteBackup = TileSprite;
 
                 ISprite::Animation an;
-                an.Name = NULL;
+                an.Name = "NULL";
                 an.FrameCount = 0x400;
                 an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
                 for (int i = 0; i < 0x400; i++) {
@@ -866,9 +865,9 @@ PUBLIC void Level_AIZ::Subupdate() {
 
             // Clear out waterfall
             if (LevelTriggerFlag >> 0 & 1) {
-                if (Data->layers[1].Tiles[0x270 + 0x3B * Data->layers[1].Width] != 0x0000) {
+                if (Data->Layers[1].Tiles[0x270 + 0x3B * Data->Layers[1].Width] != 0x0000) {
                     for (int i = 0x3B; i < 0x53; i++) {
-                        memset(&Data->layers[1].Tiles[0x270 + i * Data->layers[1].Width], 0x00, 8 * sizeof(short));
+                        memset(&Data->Layers[1].Tiles[0x270 + i * Data->Layers[1].Width], 0x00, 8 * sizeof(short));
                     }
                 }
             }
@@ -981,17 +980,17 @@ PUBLIC void Level_AIZ::HandleCamera() {
         if (SuperSonicMoving) {
             if (CameraX < 0x1400 && !OnBeach) {
                 BackgroundRepeatTileWidth = 32;
-                Data->layers[1].Visible = false;
-                Data->layers[2].Visible = false;
+                Data->Layers[1].Visible = false;
+                Data->Layers[2].Visible = false;
                 // Intro sequence camera stuff
             }
             else if (CameraX >= 0x1400 && !OnBeach) {
                 CameraX = 0x000;
                 //Player->EZX -= 0x800;
                 BackgroundRepeatTileWidth = 0;
-                Data->layers[1].Visible = true;
-                Data->layers[2].Visible = true;
-                Data->layers[0].ScrollIndexes[0].Size = 0x7FFF;
+                Data->Layers[1].Visible = true;
+                Data->Layers[2].Visible = true;
+                Data->Layers[0].ScrollIndexes[0].Size = 0x7FFF;
                 OnBeach = true;
             }
 
@@ -1110,11 +1109,11 @@ PUBLIC void Level_AIZ::HandleCamera() {
             }
 
             if (CameraX >= 0x3D00) {
-                Data->layers[0].OffsetY = 0xA8;
-                Data->layers[0].UseDeltaCameraX = true;
+                Data->Layers[0].OffsetY = 0xA8;
+                Data->Layers[0].UseDeltaCameraX = true;
             }
             else {
-                Data->layers[0].OffsetY = 0;
+                Data->Layers[0].OffsetY = 0;
             }
 
             int ToS3X = CameraX + App->WIDTH / 2 - 0xA0;
@@ -1173,8 +1172,11 @@ PUBLIC void Level_AIZ::HandleCamera() {
 						IPlayer* Player = Players[p];
 						Player->EZX -= 0x200;
 					}
-                    for (vector<Object*>::iterator it = Explosions.begin(); it != Explosions.end(); ++it) {
-                        (*it)->X -= 0x200;
+                    for (vector<Object*>::iterator it = TempObjects.begin(); it != TempObjects.end(); ++it) {
+						Object *obj = *it;
+						if (obj->IsExplosion) {
+							obj->X -= 0x200;
+						}
                     }
 
                     for (unsigned int o = 0; o < (unsigned int)ObjectCount && Player->Action != ActionType::Dead; o++) {
@@ -1310,6 +1312,7 @@ PUBLIC void Level_AIZ::Cleanup() {
 
     CLEANUP(AIZObjectsSprite);
     CLEANUP(AIZBossSprite);
+    CLEANUP(AIZShipTileSprite);
 
     LevelScene::Cleanup();
 }

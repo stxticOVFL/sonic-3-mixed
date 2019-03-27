@@ -128,7 +128,7 @@ PUBLIC void Level_HCZ::Init() {
         IResource* StageBin = IResources::Load("Stages/HCZ/Palette.bin");
         if (StageBin) {
             IStreamer reader(StageBin);
-			Memory::Free(reader.ReadBytes(128 * 4));
+			delete[] reader.ReadBytes(128 * 4);
 
             uint8_t* n = reader.ReadBytes(128 * 4);
             memcpy(TileSprite->PaletteAlt + 128, n, 128 * 4);
@@ -137,7 +137,7 @@ PUBLIC void Level_HCZ::Init() {
             memcpy(SpriteMap["HCZ Boss"]->PaletteAlt + 128, n, 128 * 4);
             if (Act == 1)
                 memcpy(WaterLine->PaletteAlt + 128, n, 128 * 4);
-            Memory::Free(n);
+            delete[] n;
 
             n = reader.ReadBytes(96 * 4);
             memcpy(SpriteMap["HCZ"]->PaletteAlt, n, 96 * 4);
@@ -148,7 +148,7 @@ PUBLIC void Level_HCZ::Init() {
             for (int p = 0; p < 3; p++)
                 if (Player->Sprites[p])
                     memcpy(Player->Sprites[p]->PaletteAlt, n, 96 * 4);
-			Memory::Free(n);
+			delete[] n;
 
             TileSprite->SetPaletteAlt(0, 0xFF00FF);
 
@@ -314,7 +314,6 @@ PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 		SpriteMap["HCZ Boss"]->LoadAnimation("HCZ/LaundroMobile.bin");
 	}
 
-<<<<<<< HEAD
     if (!KnuxSprite[0]) {
         KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
         KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
@@ -328,21 +327,6 @@ PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
     }
-=======
-	if (!KnuxSprite[0]) {
-		KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneASZ.gif", App);
-
-		KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
-		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-	}
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 }
 
 PUBLIC void Level_HCZ::Cleanup() {
@@ -387,7 +371,7 @@ PUBLIC void Level_HCZ::RenderAboveForeground() {
             for (int i = 0; i < sizeof(copymake) / sizeof(int); i += 4) {
                 for (int x = copymake[i]; x < copymake[i] + 8; x++) {
                     for (int y = copymake[i + 1]; y < copymake[i + 1] + 8; y++) {
-                        int tile = Data->layers[4].Tiles[x + y * Data->layers[4].Width];
+                        int tile = Data->Layers[4].Tiles[x + y * Data->Layers[4].Width];
                         int flipX = ((tile >> 10) & 1);
                         int flipY = ((tile >> 11) & 1);
                         tile = tile & 0x3FF;
@@ -583,8 +567,8 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
             }
         }
 
-        Data->layers[3].OffsetX = WallX >> 16;
-        Data->layers[3].OffsetY = WallY;
+        Data->Layers[3].OffsetX = WallX >> 16;
+        Data->Layers[3].OffsetY = WallY;
 
         // Boss water and camera management
         if (Player->Action != ActionType::Dead) {
@@ -756,8 +740,8 @@ PUBLIC void Level_HCZ::Subupdate() {
 
     // Wall shit (part 2)
     if (Act == 2) {
-        Data->layers[3].Visible = true;
-        Data->layers[3].Flags = 0 | 2 | 4;
+        Data->Layers[3].Visible = true;
+        Data->Layers[3].Flags = 0 | 2 | 4;
 
         for (int p = 0; p < PlayerCount; p++) {
             IPlayer* Player = Players[p];

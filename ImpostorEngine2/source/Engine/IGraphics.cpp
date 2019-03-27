@@ -762,6 +762,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSprite(ISprite* sprite, int animation, int fr
 		return;
 	}
 
+	if (sprite == NULL)
+	{
+		IApp::Print(2, "sprite %s is NULL or corrupted!", sprite->Filename);
+	}
+
 	ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
 	IGraphics::DrawSprite(sprite, animframe.X, animframe.Y, animframe.W, animframe.H, x, y, angle, flip, animframe.OffX, animframe.OffY);
 }
@@ -780,6 +785,11 @@ PUBLIC VIRTUAL void IGraphics::DrawSpriteSized(ISprite* sprite, int animation, i
 		IApp::Print(2, "Frame %d in animation \"%s\" does not exist in sprite %s!", frame, sprite->Animations[animation].Name, sprite->Filename);
 		assert(frame >= 0 && frame < sprite->Animations[animation].FrameCount);
 		return;
+	}
+
+	if (sprite == NULL)
+	{
+		IApp::Print(2, "sprite %s is NULL or corrupted!", sprite->Filename);
 	}
 
 	ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
@@ -903,7 +913,7 @@ PUBLIC VIRTUAL void IGraphics::DrawText(int x, int y, const char* string, unsign
 PUBLIC VIRTUAL void IGraphics::DrawTextShadow(int x, int y, const char* string, unsigned int pixel) {
 	DrawText(x + 1, y + 1, string, 0);
 	DrawText(x, y, string, pixel);
-}
+	}
 
 PUBLIC VIRTUAL void IGraphics::DrawLine(int x0, int y0, int x1, int y1, uint32_t col) {
 	int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;

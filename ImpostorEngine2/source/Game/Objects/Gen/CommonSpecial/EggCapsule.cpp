@@ -5,6 +5,15 @@
 
 typedef IMath Math;
 
+CONSTRUCTER EggCapsule::EggCapsule() {
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/EggPrison.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/EggPrison.bin");
+    }
+}
+
 void EggCapsule::Create() {
     Object::Create();
     Active = true;
@@ -14,7 +23,7 @@ void EggCapsule::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     W = 64;
     H = 64;
-    CurrentAnimation = 16;
+    CurrentAnimation = Sprite->FindAnimation("Capsule");
     Broken = false;
     if (Flying) {
         MaxAccel = 0xC0;

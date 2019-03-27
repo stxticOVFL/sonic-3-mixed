@@ -8,6 +8,11 @@ public:
     unsigned char* ptr_start;
     IResource* res = NULL;
     long distance = 0;
+	bool ExternalAllocation = false;
+    
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 };
 #endif
 
@@ -19,8 +24,26 @@ PUBLIC IStreamer::IStreamer(void* pt) {
     ptr_start = (unsigned char*)pt;
 }
 
+PUBLIC IStreamer::IStreamer(unsigned char* pt) {
+	this->ptr = pt;
+	ptr_start = pt;
+}
+
 PUBLIC IStreamer::IStreamer(IResource* r) {
     res = r;
+}
+
+PUBLIC IStreamer::~IStreamer() {
+	if (ExternalAllocation) {
+        if (ptr != nullptr) {
+            delete[] ptr;
+            ptr = nullptr;
+        }
+        if (ptr_start != nullptr) {
+            delete[] ptr_start;
+            ptr_start = nullptr;
+        }
+	}
 }
 
 PUBLIC float IStreamer::ReadFloat() {
@@ -63,11 +86,14 @@ PUBLIC unsigned char  IStreamer::ReadByte() {
 
 PUBLIC unsigned char* IStreamer::ReadByte4() {
     if (res) {
-        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadByte4", 4);
+        unsigned char* data = new unsigned char[5];;
         res->Read(data, 1 * 4);
+		data[4] = '\0';
         return data;
     }
-    unsigned char* data = ptr;
+	unsigned char* data = new unsigned char[5];
+	memcpy(data, ptr, 4);
+	data[4] = '\0';
     ptr += 4;
     distance += 4;
     return data;
@@ -75,12 +101,14 @@ PUBLIC unsigned char* IStreamer::ReadByte4() {
 
 PUBLIC unsigned char* IStreamer::ReadBytes(int n) {
     if (res) {
-        unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
+        unsigned char* data = new unsigned char[n + 1];
         res->Read(data, 1 * n);
+		data[n] = '\0';
         return data;
     }
-    unsigned char* data = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadBytes", n);
+    unsigned char* data = new unsigned char[n + 1];
     memcpy(data, ptr, n);
+	data[n] = '\0';
     ptr += n;
     distance += n;
     return data;
@@ -174,6 +202,7 @@ PUBLIC std::string IStreamer::ReadRSDKString() {
         unsigned char count = ReadByte();
 		char *readData = new char[count + 1];
 		res->Read(readData, 1 * count);
+        readData[count] = '\0';
         std::string data(readData);
 		delete readData;
         return data;
@@ -182,11 +211,35 @@ PUBLIC std::string IStreamer::ReadRSDKString() {
     ptr++;
 	char *newData = new char[count + 1];
     memcpy(newData, ptr, count);
+    newData[count] = '\0';
 	std::string data(newData);
 	delete newData;
     ptr += count;
     distance += count + 1;
     return data;
+}
+
+PUBLIC char* IStreamer::ReadRSDKUnicodeString() {
+	if (res) {
+		unsigned char count = ReadUInt16();
+		char* data = (char*)malloc(count + 1);
+		for (int i = 0; i < count; i++)
+		{
+			data[i] = ReadByte();
+			ReadByte();
+		}
+		//res->Read(data, 1 * count);
+		data[count] = 0;
+		return data;
+	}
+	unsigned char count = *ptr;
+	ptr++;
+	char* data = (char*)malloc(count + 1);
+	memcpy(data, ptr, count);
+	data[count] = 0;
+	ptr += count;
+	distance += count + 1;
+	return data;
 }
 
 /// Write functions
@@ -263,12 +316,12 @@ PUBLIC void IStreamer::WriteRSDKString(char* string) {
     WriteByte(0);
 }
 
-PUBLIC unsigned long  IStreamer::Decompress(void* dst, int dstLen, void* src, int srcLen) {
+PUBLIC unsigned long IStreamer::Decompress(void* dst, int dstLen, void* src, int srcLen) {
     z_stream strm  = {0};
     strm.total_in  = strm.avail_in  = srcLen;
     strm.total_out = strm.avail_out = dstLen;
-    strm.next_in   = (Bytef *) src;
-    strm.next_out  = (Bytef *) dst;
+    strm.next_in   = (Bytef *)src;
+    strm.next_out  = (Bytef *)dst;
 
     strm.zalloc = Z_NULL;
     strm.zfree  = Z_NULL;
@@ -282,13 +335,11 @@ PUBLIC unsigned long  IStreamer::Decompress(void* dst, int dstLen, void* src, in
         err = inflate(&strm, Z_FINISH);
         if (err == Z_STREAM_END) {
             ret = strm.total_out;
-        }
-        else {
+        } else {
              inflateEnd(&strm);
              return err;
         }
-    }
-    else {
+    } else {
         inflateEnd(&strm);
         return err;
     }
@@ -301,17 +352,19 @@ PUBLIC unsigned char* IStreamer::ReadCompressed() {
     unsigned int compressed_size = ReadUInt32() - 4; // 0x47 = 71 - 4 = 67
     unsigned int uncompressed_size = ReadUInt32BE(); // 0x200 = 512
 
-    unsigned char* out = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadCompressed::out", uncompressed_size);
+    unsigned char* out = new unsigned char[uncompressed_size + 1];
+	out[uncompressed_size] = '\0';
 
     if (res) {
-        unsigned char* in = (unsigned char*)Memory::TrackedMalloc("IStreamer::ReadCompressed::in", compressed_size);
+		unsigned char* in = new unsigned char[compressed_size + 1];
+		in[compressed_size] = '\0';
         res->Read(in, 1 * compressed_size);
 
         Decompress(out, uncompressed_size, in, compressed_size);
 
-        Memory::Free(in);
-    }
-    else {
+
+        delete[] in;
+    } else {
         Decompress(out, uncompressed_size, ptr, compressed_size);
 
         ptr += compressed_size;
@@ -329,4 +382,30 @@ PUBLIC unsigned long  IStreamer::Distance() {
 
 PUBLIC IStreamer IStreamer::GetCompressedStream() {
     return IStreamer(ReadCompressed());
+}
+
+void* IStreamer::operator new(size_t const size) {
+    for (;;) {
+        if (void* const block = Memory::TrackedMalloc("IStreamer", size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
+void* IStreamer::operator new(size_t const size, std::nothrow_t const&) noexcept {
+    try {
+        return operator new(size);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+void IStreamer::operator delete(void* const block) noexcept {
+    Memory::Free(block);
 }

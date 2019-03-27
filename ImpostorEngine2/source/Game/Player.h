@@ -539,6 +539,34 @@ public:
 	void CheckDespawn();
 	void DoVictory();
 	void DoSuperTransform();
+    
+#ifndef NDEBUG
+    void* operator new(size_t const size) {
+        for (;;) {
+            if (void* const block = Memory::TrackedMalloc("Player", size)) {
+                return block;
+            }
+            if (_callnewh(size) == 0) {
+                static const std::bad_alloc nomem;
+                _RAISE(nomem);
+            }
+
+            // The new handler was successful; try to allocate again...
+        }
+    }
+    
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept {
+        try {
+            return operator new(size);
+        } catch (...) {
+            return nullptr;
+        }
+    }
+    
+    void operator delete(void* const block) noexcept {
+        Memory::Free(block);
+    }
+#endif
 };
 
 #endif /* S3_PLAYER_H */

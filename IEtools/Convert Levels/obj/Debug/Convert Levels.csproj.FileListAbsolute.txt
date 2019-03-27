@@ -29,3 +29,21 @@ C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\AniPLCs.txt
 C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\Convert Levels.exe.config
 C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\Convert Levels.exe
 C:\Users\Justin\Dropbox\ImpostorEditor2\S3toIE2\bin\Debug\Convert Levels.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\AniPLCs.txt
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\Convert Levels.exe.config
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\Convert Levels.exe
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\S3toIE2\bin\Debug\Convert Levels.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.csproj.CopyComplete
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.exe
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\AniPLCs.txt
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\Convert Levels.exe.config
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\Convert Levels.exe
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\S3toIE2\bin\Debug\Convert Levels.pdb
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.csprojAssemblyReference.cache
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.csproj.CoreCompileInputs.cache
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.csproj.CopyComplete
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.exe
+C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\IEtools\Convert Levels\obj\Debug\Convert Levels.pdb

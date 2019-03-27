@@ -38,7 +38,9 @@ public:
     int SubTypeFrame;
     int PlayerAggressor;
     IPlayer* Player;
+    int MonitorType;
     
+    CONSTRUCTER Monitor();
     void Create();
     void UpdateSubType();
     uint8_t GetSubTypeMax();

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace S3toIE2 {
     public class Globals {
         public static bool ColorTypeDoubleUp = true;
-        public static string ROOT = @"C:\Users\Justin\skdisasm-master\";
-        public static string OUT = @"C:\Users\Justin\sonic-3-mixed\ImpostorEngine2\source\Resources\Sprites\";
+        public static string ROOT = @"C:\Users\theclashingfritz\Documents\skdisasm\";
+        public static string OUT = @"C:\Users\theclashingfritz\Documents\Sonic-3-Mixed\ImpostorEngine2\source\Resources\MSprites\";
 
         public static byte[] MeasuredGenesisColors = new byte[] { 0x00, 0x34, 0x57, 0x74, 0x90, 0xAC, 0xCE, 0xFF };
         public static int GetGenesisColors(ref byte r, ref byte g, ref byte b) {

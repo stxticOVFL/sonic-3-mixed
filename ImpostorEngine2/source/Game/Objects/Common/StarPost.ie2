@@ -8,6 +8,15 @@ var ShowStars:bool;
 var StarTimer:int;
 var Stars:Object[4];
 
+event StarPost() : CONSTRUCTER {
+    if (SaveGame.CurrentMode == 0) {
+        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/StarPost.bin");
+    } else {
+	    BinIndex = LevelScene.LoadSpriteBin("Global/StarPost.bin");
+    }
+}
+
+
 event Create() {
     Active = true;
     Priority = false;
@@ -40,47 +49,42 @@ event Create() {
 }
 
 event Update() {
-	if (!isHeldDebugObject)
-	{
-	    // 2 full rotations, counter clockwise, takes 32 frames
-    // blinks every 4 frames
-    for (var i:int = 0; i < 20; i++) {
-        if (Scene.CollisionAt(this.X, this.Y + H / 2 - 1)) {
-            this.Y -= 1;
+	if (!isHeldDebugObject) {
+        // 2 full rotations, counter clockwise, takes 32 frames
+        // blinks every 4 frames
+        for (var i:int = 0; i < 20; i++) {
+            if (Scene.CollisionAt(this.X, this.Y + H / 2 - 1)) {
+                this.Y -= 1;
+            }
         }
-    }
 
-    if (Scene.Checkpoint > this.SubType)
-        this.Blinking = true;
-
-    if (this.Activated && this.Spin < 32)
-        this.Spin++;
-
-    if (this.Spin == 32)
-        this.Blinking = true;
-
-    if (this.Blinking)
-        this.Frame = ((Scene.Frame >> 2) & 0x1);
-	
-	if (ShowStars)
-	{
-		if (StarTimer = 0x400)
-		{
-			Stars[0].Active = true;
-			Stars[1].Active = true;
-			Stars[2].Active = true;
-			Stars[3].Active = true;
-		}
-		if (StarTimer > 0)
-		{
-			StarTimer--;
-		}
-		else
-		{
-			StarTimer = 0;
-			ShowStars = false;
-		}
-	}	
+        if (Scene.Checkpoint > this.SubType) {
+            this.Blinking = true;
+        }
+        if (this.Activated && this.Spin < 32) {
+            this.Spin++;
+        }
+        if (this.Spin == 32) {
+            this.Blinking = true;
+        }
+        if (this.Blinking) {
+            this.Frame = ((Scene.Frame >> 2) & 0x1);
+        }
+        
+        if (ShowStars) {
+            if (StarTimer = 0x400) {
+                Stars[0].Active = true;
+                Stars[1].Active = true;
+                Stars[2].Active = true;
+                Stars[3].Active = true;
+            }
+            if (StarTimer > 0) {
+                StarTimer--;
+            } else {
+                StarTimer = 0;
+                ShowStars = false;
+            }
+        }	
 	}
 }
 
@@ -97,39 +101,32 @@ event DrawStar(Rock:int, Ang:int, Side:int, CamX:int, CamY:int) {
 
     if (Math.sinHex(Rock) * Side >= 0) {
         G.DrawSprite(Sprite,
-            Sprite.Animations[13].Frames[0].X,
-            Sprite.Animations[13].Frames[0].Y,
-            Sprite.Animations[13].Frames[0].W,
-            Sprite.Animations[13].Frames[0].H,
+            Sprite.Animations[5].Frames[0].X,
+            Sprite.Animations[5].Frames[0].Y,
+            Sprite.Animations[5].Frames[0].W,
+            Sprite.Animations[5].Frames[0].H,
             X - CamX + xx, Y - CamY + yy, 0,
             IE_NOFLIP,
-            Sprite.Animations[13].Frames[0].OffX,
-            Sprite.Animations[13].Frames[0].OffY);
+            Sprite.Animations[5].Frames[0].OffX,
+            Sprite.Animations[5].Frames[0].OffY);
     }
-	
-				if (App.viewObjectCollision) {
-		G.SetDrawAlpha(0x80);
-		G.DrawRectangle(xx - (16 / 2) - CamX, yy - (16 / 2) - CamY, W, H, DrawCollisionsColor);
-		G.SetDrawAlpha(0xFF);
-	}
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, 8, 0, this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, 0, 0, this.X - CamX, this.Y - CamY, 0, IE_NOFLIP);
 
-    G.DrawSprite(Sprite, 9 + Frame, Frame, this.X - CamX + (Math.sinHex(this.Spin << 4) >> 13), this.Y - CamY - 16 - (Math.cosHex(this.Spin << 4) >> 13), 0, IE_NOFLIP);
+    G.DrawSprite(Sprite, 1 + Frame, Frame, this.X - CamX + (Math.sinHex(this.Spin << 4) >> 13), this.Y - CamY - 16 - (Math.cosHex(this.Spin << 4) >> 13), 0, IE_NOFLIP);
 	
-	if (ShowStars)
-	{
+	if (ShowStars) {
 		//Draw Stars
-        /*G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
-        G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
-        G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
-        G.DrawSprite(Sprite, 8 + 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);*/
+        /*G.DrawSprite(Sprite, 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);
+        G.DrawSprite(Sprite, 5, 0, this.X - CamX, (this.Y - 40) - CamY, 0, IE_NOFLIP);*/
 		//DrawStar(0,Frame,0,CamX,CamY);
 	}
 	
-				if (App.viewObjectCollision) {
+    if (App.viewObjectCollision) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);

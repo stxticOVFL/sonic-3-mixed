@@ -87,12 +87,13 @@ event DrawAIZ(CamX:int, CamY:int) {
 
     G.DrawSprite(Sprite, CurrentAnimation, SubType & 0xF, X - CamX, Y - CamY, 0, IE_NOFLIP);
 	
-		if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
 	}
 }
+
 event DrawHCZ(CamX:int, CamY:int) {
     if (Scene.ZoneID != 2) return;
 
@@ -128,7 +129,7 @@ event DrawHCZ(CamX:int, CamY:int) {
         G.DrawSprite(Scene.TileSprite, 0, 0x92, 8 + X - CamX + (0), 8 + Y + 16 - CamY + (0), 0, IE_NOFLIP);
     }
 	
-		if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
@@ -162,7 +163,7 @@ event DrawMGZ(CamX:int, CamY:int) {
     G.DrawSprite(Scene.TileSprite, 0, 0x45, 8 + X - CamX + 00 + ( 0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
     G.DrawSprite(Scene.TileSprite, 0, 0x44, 8 + X - CamX + 16 + ( 0), 8 + Y + h - CamY + (-16), 0, IE_FLIPX);
 	
-		if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
@@ -201,6 +202,7 @@ event BreakHCZ(HitSide:int) {
         Scene.AddFallingTile(0x92, X, Y + 16, 0, 0, false, false, HitSide * 0x600, 0x600);
     }
 }
+
 event BreakMGZ(HitSide:int) {
     if (Scene.ZoneID != 3) return;
 
@@ -239,8 +241,7 @@ event Update() {
                     Y += 8;
                     if (Y - InitialY > 160)
                         Active = false;
-                }
-                else {
+                } else {
                     Y -= 8;
                     if (InitialY - Y > 160)
                         Active = false;
@@ -257,8 +258,9 @@ event Render(CamX:int, CamY:int) {
     DrawAIZ(CamX, CamY);
     DrawHCZ(CamX, CamY);
     DrawMGZ(CamX, CamY);
-    if (Scene.ZoneID >= 4 && CurrentAnimation >= 0)
+    if (Scene.ZoneID >= 4 && CurrentAnimation >= 0) {
         G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, IE_NOFLIP);
+    }
 }
 
 event OnBreakHorizontal(PlayerID:int, HitFrom:int) : int {

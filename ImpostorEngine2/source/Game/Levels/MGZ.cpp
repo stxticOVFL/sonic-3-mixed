@@ -62,8 +62,8 @@ PUBLIC void Level_MGZ::RestartStage(bool doActTransition, bool drawBackground) {
 
 	LevelScene::RestartStage(doActTransition, drawBackground);
 
-	// Data->layers[1].IsScrollingVertical = true;
-	// Data->layers[2].IsScrollingVertical = true;
+	// Data->Layers[1].IsScrollingVertical = true;
+	// Data->Layers[2].IsScrollingVertical = true;
 
 	if (Act == 1) {
 		if (Checkpoint == -1)
@@ -155,7 +155,6 @@ PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
 	}
 
 	if (!KnuxSprite[0]) {
-<<<<<<< HEAD
 		KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
 		KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
 		KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
@@ -163,15 +162,6 @@ PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
 		KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
 
 		KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
-=======
-		KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneASZ.gif", App);
-
-		KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
 		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
 		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
@@ -215,14 +205,14 @@ PUBLIC void Level_MGZ::HandleCamera() {
 	// 0x3: Don't Repeat Y
 
 	if (Act == 1) {
-		Data->layers[1].IsScrollingVertical = true;
-		Data->layers[2].IsScrollingVertical = true;
+		Data->Layers[1].IsScrollingVertical = true;
+		Data->Layers[2].IsScrollingVertical = true;
 	}
 	else if (Act == 2) {
-		Data->layers[1].Flags |= 1 | 0 | 4;
-		Data->layers[1].OffsetX = 0x3480;
+		Data->Layers[1].Flags |= 1 | 0 | 4;
+		Data->Layers[1].OffsetX = 0x3480;
 		if (RoutineNumber == 0) {
-			Data->layers[1].OffsetY = 0x0B00;
+			Data->Layers[1].OffsetY = 0x0B00;
 
 			if (Player->EZX >= 0x36C0 &&
 				Player->EZY >= 0xAD0) {
@@ -245,15 +235,15 @@ PUBLIC void Level_MGZ::HandleCamera() {
 				RoutineNumber = 2;
 			}
 		}
-		Data->layers[1].OffsetY = 0x0B00 - (FloorY >> 16);
+		Data->Layers[1].OffsetY = 0x0B00 - (FloorY >> 16);
 
 		if (Player->EZX >= 0x3000 &&
 			Player->EZY >= 0x0680 &&
 			Player->EZX < 0x3660 &&
 			Player->EZY < 0x07F0) {
-			Data->layers[0].RelativeY = 0x0100;
-			Data->layers[0].OffsetX = 0x3580;
-			Data->layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
+			Data->Layers[0].RelativeY = 0x0100;
+			Data->Layers[0].OffsetX = 0x3580;
+			Data->Layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
 
 			BackgroundColor = TileSprite->GetPalette(0x3A);
 		}
@@ -261,22 +251,22 @@ PUBLIC void Level_MGZ::HandleCamera() {
 			Player->EZY >= 0x07F0 &&
 			Player->EZX < 0x3E80 &&
 			Player->EZY < 0x0C00) {
-			Data->layers[0].RelativeY = 0x0100;
-			Data->layers[0].OffsetX = 0x3580;
-			Data->layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
+			Data->Layers[0].RelativeY = 0x0100;
+			Data->Layers[0].OffsetX = 0x3580;
+			Data->Layers[0].OffsetY = -0x8F0 + (FloorY >> 16);
 
 			BackgroundColor = TileSprite->GetPalette(0x3A);
 		}
 		else if (Player->EZX > 0x3920 && Player->EZY < 0x7E8) {
-			Data->layers[0].RelativeY = 0x0030;
-			Data->layers[0].OffsetX = 0;
-			Data->layers[0].OffsetY = -0x00F0;
+			Data->Layers[0].RelativeY = 0x0030;
+			Data->Layers[0].OffsetX = 0;
+			Data->Layers[0].OffsetY = -0x00F0;
 
 			BackgroundColor = TileSprite->GetPalette(0x31);
 		}
 		else {
-			Data->layers[0].RelativeY = 0x0030;
-			Data->layers[0].OffsetY = 0;
+			Data->Layers[0].RelativeY = 0x0030;
+			Data->Layers[0].OffsetY = 0;
 			BackgroundColor = TileSprite->GetPalette(0x3A);
 		}
 	}

@@ -1,5 +1,9 @@
 var Activated:bool;
 
+event WarpStars() : CONSTRUCTER {
+	BinIndex = LevelScene.LoadSpriteBin("Global/StarPost.bin");
+}
+
 event Create() {
     Active = true;
     Priority = false;

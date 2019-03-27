@@ -152,11 +152,12 @@ PUBLIC IInput::IInput(IApp* app) {
 }
 
 PUBLIC void IInput::Cleanup() {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++) {
         Memory::Free(Controllers[i]);
-
-	for (int i = 0; i < 4; i++)
+    }
+	for (int i = 0; i < 4; i++) {
 		Memory::Free(ControllerMaps[i]);
+    }
 }
 
 PUBLIC void IInput::Poll() {
@@ -316,6 +317,7 @@ PUBLIC uint8_t* IInput::GetControllerInput(int ControllerID) {
 	if (ControllerID < 0) return NULL;
     return Controllers[ControllerID];
 }
+
 PUBLIC bool IInput::GetControllerInput(int ControllerID, int Button) {
 	if (ControllerID < 0) return false;
 	return !!Controllers[ControllerID][Button];

@@ -5,6 +5,15 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Monitor::Monitor() {
+    if (SaveGame::CurrentMode == 0) {
+        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/ItemBox.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("Global/ItemBox.bin");
+    }
+}
+
 void Monitor::Create() {
     Object::Create();
     W = 26;
@@ -24,52 +33,9 @@ void Monitor::Create() {
     CanFall = false;
     GhostY = 0.0;
     CleanupInactiveObject = true;
-    if (Attributes) {
-        if (Scene->ManiaLevel) {
-            switch (Attributes[0]) {
-                case 0:
-                SubType = ItemTypes::TYPE_RINGS;
-                break;
-                case 1:
-                SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
-                break;
-                case 2:
-                SubType = ItemTypes::TYPE_SHIELD_BUBBLE;
-                break;
-                case 3:
-                SubType = ItemTypes::TYPE_SHIELD_FIRE;
-                break;
-                case 4:
-                SubType = ItemTypes::TYPE_SHIELD_LIGHTNING;
-                break;
-                case 5:
-                SubType = ItemTypes::TYPE_INVINCIBILITY;
-                break;
-                case 6:
-                SubType = ItemTypes::TYPE_SPEED_SHOES;
-                break;
-                case 7:
-                SubType = ItemTypes::TYPE_1UP;
-                break;
-                case 10:
-                SubType = ItemTypes::TYPE_ROBOTNIK;
-                break;
-                case 11:
-                SubType = ItemTypes::TYPE_HYPER_RING;
-                break;
-                case 14:
-                SubType = ItemTypes::TYPE_SUPER;
-                break;
-            }
-
-        }
-        else {
-            SubType = Attributes[0];
-        }
-    }
-
+    MonitorType = SubType;
     SubTypeFrame = 0;
-    switch (SubType) {
+    switch (MonitorType) {
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
         break;
@@ -115,7 +81,7 @@ void Monitor::Create() {
 }
 
 void Monitor::UpdateSubType() {
-    switch (SubType) {
+    switch (MonitorType) {
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
         break;
@@ -193,7 +159,7 @@ void Monitor::Update() {
     else if (!CanFall) Priority = false;
 
     if (Timer == 32) {
-        switch (SubType) {
+        switch (MonitorType) {
             case ItemTypes::TYPE_STATIC:
             Scene->Players[PlayerAggressor]->Hurt(X, false);
             break;
@@ -295,7 +261,9 @@ void Monitor::Render(int CamX, int CamY) {
         else {
             G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
-        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) return;
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) {
+            return;
+        }
 
         G->DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
     }
@@ -306,13 +274,17 @@ void Monitor::Render(int CamX, int CamY) {
         else {
             G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
         }
-        if (CurrentAnimation == 4 && (Scene->Frame % 6 >= 4)) return;
+        if (CurrentAnimation == 4 && (Scene->Frame % 6 >= 4)) {
+            return;
+        }
 
-        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) return;
+        if (CurrentAnimation == 1 && (Timer >= 64 && Timer % 3 != 0)) {
+            return;
+        }
 
         G->DrawSprite(Sprite, 2, SubTypeFrame, X - CamX, Y + (int)(-CamY - 5 + GhostY), 0, IE_NOFLIP);
     }
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

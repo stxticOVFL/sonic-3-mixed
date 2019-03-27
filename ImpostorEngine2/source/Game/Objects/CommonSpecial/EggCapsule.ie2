@@ -4,6 +4,14 @@ var Flying:bool;
 var Broken:bool;
 var Button:Object;
 
+event EggCapsule() : CONSTRUCTER {
+    if (SaveGame.CurrentMode == 0) {
+        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/EggPrison.bin");
+    } else {
+	    BinIndex = LevelScene.LoadSpriteBin("Global/EggPrison.bin");
+    }
+}
+
 event Create() {
     Active = true;
     Priority = true;
@@ -15,7 +23,7 @@ event Create() {
 
     W = 64;
     H = 64;
-    CurrentAnimation = 16;
+    CurrentAnimation = Sprite.FindAnimation("Capsule");
 
     Broken = false;
 
@@ -35,6 +43,7 @@ event Create() {
 
     VisualLayer = 1;
 }
+
 event Update() {
     ///*
     if (Flying) {
@@ -73,6 +82,7 @@ event Update() {
     }
     //*/
 }
+
 event Render(CamX:int, CamY:int) {
     if (Flying) {
         G.DrawSprite(Sprite, CurrentAnimation + 3, Scene.Frame & 3, X - 20 - CamX, Y - 36 - CamY, 0, IE_NOFLIP);

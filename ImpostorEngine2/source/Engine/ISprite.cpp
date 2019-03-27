@@ -21,6 +21,7 @@ public:
         int Y;
         int W;
         int H;
+        int Extra;
         int OffX;
         int OffY;
         int SheetNumber;
@@ -48,7 +49,11 @@ public:
     std::string Filename;
     ISprite* LinkedSprite = NULL;
 
-    bool Print = false; //
+    bool Print = false;
+    
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 };
 #endif
 
@@ -184,11 +189,9 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
     if (!LinkedSprite) {
         if (Palette) {
             Memory::Free(Palette);
-			Palette = NULL;
         }
         if (PaletteAlt) {
             Memory::Free(PaletteAlt);
-			PaletteAlt = NULL;
         }
     }
     Palette = other->Palette;
@@ -279,7 +282,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 
     IStreamer reader(SpriteFile);
 
-    IApp::Print(-1 + Print, "\"%s\"", checkedFilename.c_str());
+    IApp::Print(-1 + Print, "\"%s\"", filename);
 
     reader.ReadUInt32BE(); // magic
 
@@ -349,7 +352,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
     PaletteID = 0;
     PaletteAltID = 0;
 
-    Filename = checkedFilename;
+    Filename = std::string(filename);
 
     size_t ticks = SDL_GetTicks();
     GIF* gif = GIF::Load(Filename.c_str());
@@ -364,7 +367,7 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
             PaletteAlt = NULL;
         }
     }
-
+    
     if (gif) {
         IApp::Print(-1, "GIF load took %zu ms", SDL_GetTicks() - ticks);
         Data = gif->Data;
@@ -372,7 +375,6 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
         Height = gif->Height;
         Palette = gif->Colors;
         TransparentColorIndex = gif->TransparentColorIndex;
-
         PaletteAlt = (uint32_t*)Memory::TrackedCalloc("ISprite::PaletteAlt", 256, sizeof(uint32_t));
     }
     else {
@@ -409,18 +411,28 @@ PUBLIC int ISprite::FindAnimation(const char* animname) {
 		}
 	}
 
+    App->Print(2, "Couldn't find animation %s in Sprite %s!", animname, Filename.c_str());
     return -1;
 }
 
 PUBLIC int ISprite::FindAnimation(const char* animname, const bool dir) {
-    if (dir) return FindAnimation(animname);
+#ifndef NDEBUG
+	assert(this != nullptr);
+#endif
+
+    if (dir) { 
+        return FindAnimation(animname);
+    }
     std::vector<Animation> Reversed = Animations;
     std::reverse(Reversed.begin(), Reversed.end());
 
-    for (int a = 0; a < AnimCount; a++)
-        if (Reversed[a].Name[0] == animname[0] && !strcmp(Reversed[a].Name.c_str(), animname))
+    for (int a = 0; a < AnimCount; a++) {
+        if (Reversed[a].Name[0] == animname[0] && !strcmp(Reversed[a].Name.c_str(), animname)) {
             return a;
-
+        }
+    }
+    
+    App->Print(2, "Couldn't find animation %s in Sprite %s!", animname, Filename.c_str());
     return -1;
 }
 
@@ -454,11 +466,9 @@ PUBLIC void ISprite::Cleanup() {
     if (!LinkedSprite) {
         if (Palette) {
             Memory::Free(Palette);
-			Palette = NULL;
         }
         if (PaletteAlt) {
             Memory::Free(PaletteAlt);
-			PaletteAlt = NULL;
         }
     }
 
@@ -494,4 +504,30 @@ PRIVATE bool ISprite::strEndsWith(const char* str, const char* suffix) {
     }
 
     return 0 == strncmp( str + str_len - suffix_len, suffix, suffix_len );
+}
+
+void* ISprite::operator new(size_t const size) {
+    for (;;) {
+        if (void* const block = Memory::TrackedMalloc("ISprite", size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
+void* ISprite::operator new(size_t const size, std::nothrow_t const&) noexcept {
+    try {
+        return operator new(size);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+void ISprite::operator delete(void* const block) noexcept {
+    Memory::Free(block);
 }

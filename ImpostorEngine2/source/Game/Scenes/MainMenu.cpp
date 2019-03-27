@@ -105,11 +105,7 @@ PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 
 PUBLIC void Scene_MainMenu::Init() {
 	if (!MenuSprite) {
-<<<<<<< HEAD
-		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
-=======
 		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
@@ -117,11 +113,7 @@ PUBLIC void Scene_MainMenu::Init() {
 		MenuSprite->UpdatePalette();
 	}
 	if (!SphereSprite) {
-<<<<<<< HEAD
-		SphereSprite = new ISprite("Sprites/UI/MenuSpheres.gif", App);
-=======
 		SphereSprite = new ISprite("Sprites/UI/MenuSpheres.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 
 		ISprite::Animation an;
 		an.Name = (char*)"Sign in GitLab.com";
@@ -141,21 +133,13 @@ PUBLIC void Scene_MainMenu::Init() {
 		SphereSprite->SetTransparentColorIndex(26);
 	}
 	if (!SuperButtonsSprite) {
-<<<<<<< HEAD
-		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
-=======
 		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-<<<<<<< HEAD
-		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
-=======
 		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App, 1);
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
 		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
@@ -324,6 +308,12 @@ PUBLIC void Scene_MainMenu::Update() {
 				}
 			}
 		}
+
+		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA_PRESSED])
+		{
+			App->NextScene = new Scene_LevelSelect(App, G);
+			CONFIRM_PRESSED = true;
+		}
 	}
 
 	if (CONFIRM_PRESSED) {
@@ -331,8 +321,6 @@ PUBLIC void Scene_MainMenu::Update() {
 		if (selected / 2 != 0 || subselected > -1) {
 			FadeIn = false;
 			FadeTimerMax = 30;
-			//opened = false;
-			//openTimer = 20;
 		}
 		else {
 			openTimer = 15;
@@ -360,6 +348,25 @@ PUBLIC void Scene_MainMenu::Update() {
 		else {
 			openRed = openTimer;
 		}
+	}
+
+	//TEMP, Tally the total score
+	if (App->Input->GetControllerInput(0)[IInput::I_EXTRA2_PRESSED])
+	{
+		//Big ass value
+		unsigned long long TotalScore = 0;
+
+		for (int i = 0; i < 36; i++)
+		{
+			if (SaveGame::Savefiles[i].State > 0)
+			{
+				TotalScore += SaveGame::Savefiles[i].Score;
+			}
+		}
+
+		//lu more like
+		//loser
+		App->Print(0, "Total Score = %lu", TotalScore);
 	}
 
 	if (FrameCircle & 1) return;

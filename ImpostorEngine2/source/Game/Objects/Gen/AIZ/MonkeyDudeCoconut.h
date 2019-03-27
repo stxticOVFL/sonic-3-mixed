@@ -16,6 +16,7 @@ class MonkeyDudeCoconut: public Enemy {
 public:    
     
     
+    CONSTRUCTER MonkeyDudeCoconut();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

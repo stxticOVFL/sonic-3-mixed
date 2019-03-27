@@ -16,6 +16,7 @@ class PlatformOutliner: public Object {
 public:    
     
     
+    CONSTRUCTER PlatformOutliner();
     void Create();
     void Update();
     void OnAnimationFinish();

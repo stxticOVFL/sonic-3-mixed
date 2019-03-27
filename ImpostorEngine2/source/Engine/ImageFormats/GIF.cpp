@@ -3,14 +3,14 @@
 #include <Engine/IStreamer.h>
 
 class GIF {
-public:
-    Uint32* Colors = NULL;
-    Uint8*  Data = NULL;
-    Uint32  Width = 0;
-    Uint32  Height = 0;
-    Uint32  TransparentColorIndex = 0;
-
-    vector<Uint8*> Frames;
+    public:
+        Uint32* Colors = NULL;
+        Uint8*  Data = NULL;
+        Uint32  Width = 0;
+        Uint32  Height = 0;
+        Uint32  TransparentColorIndex = 0;
+        bool indexed = true;
+        vector<Uint8*> Frames;
 };
 #endif
 
@@ -24,6 +24,7 @@ struct Node {
     Uint16 Key;
     struct Node* Children[];
 };
+
 struct Entry {
     Uint8  Used;
     Uint16 Length;

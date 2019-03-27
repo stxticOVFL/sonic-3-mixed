@@ -5,6 +5,41 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Rock::Rock() {
+    Act1BinIndex = -1;
+    Act1RockBitsBinIndex = -1;
+    Act2BinIndex = -1;
+    Act2RockBitsBinIndex = -1;
+    BinIndex = -1;
+    RockBitsBinIndex = -1;
+    RockBitsSprite = 0;
+    CurrentRockBitsAnimation = -1;
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        Act1BinIndex = LevelScene::LoadSpriteBin("AIZ/Rock.bin");
+        Act1RockBitsBinIndex = LevelScene::LoadSpriteBin("AIZ/Rock Bits.bin");
+        Act2BinIndex = LevelScene::LoadSpriteBin("AIZ/Rock 2.bin");
+        Act2RockBitsBinIndex = LevelScene::LoadSpriteBin("AIZ/Rock Bits 2.bin");
+        BinIndex = Act1BinIndex;
+        RockBitsBinIndex = Act1RockBitsBinIndex;
+    }
+    else if (LevelScene::IsZoneCurrently("TSZ")) {
+        Act1BinIndex = LevelScene::LoadSpriteBin("AIZ/Rock.bin");
+        Act1RockBitsBinIndex = LevelScene::LoadSpriteBin("AIZ/Rock Bits.bin");
+        Act2BinIndex = LevelScene::LoadSpriteBin("AIZ/Rock 2.bin");
+        Act2RockBitsBinIndex = LevelScene::LoadSpriteBin("AIZ/Rock Bits 2.bin");
+        BinIndex = Act1BinIndex;
+        RockBitsBinIndex = Act1RockBitsBinIndex;
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Rock.bin");
+        RockBitsBinIndex = LevelScene::LoadSpriteBin("AIZ/Rock Bits.bin");
+        Act1BinIndex = BinIndex;
+        Act1RockBitsBinIndex = RockBitsBinIndex;
+        Act2BinIndex = BinIndex;
+        Act2RockBitsBinIndex = RockBitsBinIndex;
+    }
+}
+
 void Rock::Create() {
     Object::Create();
     Active = true;
@@ -94,11 +129,18 @@ void Rock::Create() {
     Rock2Vels[i++] = 0xFE40;
     i = 0;
     i = 0;
-    if (Scene->ZoneID == 1) {
+    switch (Scene->ZoneID) {
+        case 1:
         W = 46;
-        if (RockSize == 0) H = 78;
-        else if (RockSize == 1) H = 46;
-        else if (RockSize == 2) H = 30;
+        if (RockSize == 0) {
+            H = 78;
+        }
+        else if (RockSize == 1) {
+            H = 46;
+        }
+        else if (RockSize == 2) {
+            H = 30;
+        }
 
         if ((SubType & 0xF) == 0xF) {
             BreakableByJump = CollideSide::TOP;
@@ -127,10 +169,29 @@ void Rock::Create() {
             }
 
         }
-        CurrentAnimation = 27;
-        if (Scene->Act == 2) CurrentAnimation = 29;
+        if (Scene->Act == 1) {
+            BinIndex = Act1BinIndex;
+            RockBitsBinIndex = Act1RockBitsBinIndex;
+            Sprite = LevelScene::GetSpriteFromBinIndex(BinIndex);
+            Sprite->LinkPalette(Scene->TileSprite);
+            RockBitsSprite = LevelScene::GetSpriteFromBinIndex(RockBitsBinIndex);
+            RockBitsSprite->LinkPalette(Scene->TileSprite);
+            CurrentAnimation = Sprite->FindAnimation("Rock");
+            CurrentRockBitsAnimation = RockBitsSprite->FindAnimation("Rock Bits");
+        }
+        else if (Scene->Act == 2) {
+            BinIndex = Act2BinIndex;
+            RockBitsBinIndex = Act2RockBitsBinIndex;
+            Sprite = LevelScene::GetSpriteFromBinIndex(BinIndex);
+            Sprite->LinkPalette(Scene->TileSprite);
+            RockBitsSprite = LevelScene::GetSpriteFromBinIndex(RockBitsBinIndex);
+            RockBitsSprite->LinkPalette(Scene->TileSprite);
+            CurrentAnimation = Sprite->FindAnimation("Rock 2");
+            CurrentRockBitsAnimation = RockBitsSprite->FindAnimation("Rock Bits 2");
+        }
 
         Scene->AddSelfToRegistry(this, "Breakable");
+        break;
     }
 
 }
@@ -152,39 +213,37 @@ void Rock::BreakAIZ(int HitSide) {
 
     int off = 1;
     if (HitSide == 0) {
-        Scene->AddMovingSprite(Sprite, X + 12, Y + 4, CurrentAnimation + 1, 0 + ((off + 3) & 3), false, false, 0x1C0, -0x1C0, 0x18);
-        Scene->AddMovingSprite(Sprite, X - 12, Y + 4, CurrentAnimation + 1, 0 + ((off + 2) & 3), false, false, -0x1B0, -0x1C0, 0x18);
-        Scene->AddMovingSprite(Sprite, X + 12, Y - 4, CurrentAnimation + 1, 0 + ((off + 1) & 3), false, false, 0x100, -0x1E0, 0x18);
-        Scene->AddMovingSprite(Sprite, X - 4, Y - 4, CurrentAnimation + 1, 0 + ((off + 0) & 3), false, false, -0x100, -0x200, 0x18);
+        Scene->AddMovingSprite(RockBitsSprite, X + 12, Y + 4, CurrentRockBitsAnimation, 0 + ((off + 3) & 3), false, false, 0x1C0, -0x1C0, 0x18);
+        Scene->AddMovingSprite(RockBitsSprite, X - 12, Y + 4, CurrentRockBitsAnimation, 0 + ((off + 2) & 3), false, false, -0x1B0, -0x1C0, 0x18);
+        Scene->AddMovingSprite(RockBitsSprite, X + 12, Y - 4, CurrentRockBitsAnimation, 0 + ((off + 1) & 3), false, false, 0x100, -0x1E0, 0x18);
+        Scene->AddMovingSprite(RockBitsSprite, X - 4, Y - 4, CurrentRockBitsAnimation, 0 + ((off + 0) & 3), false, false, -0x100, -0x200, 0x18);
     }
-    else {
-        if (RockSize == 0) {
-            for (int i = 0; i < 8; i++)
+    else if (RockSize == 0) {
+        for (int i = 0; i < 8; i++)
 {
-                Scene->AddMovingSprite(Sprite, X + Rock0Pos[i << 1], Y + Rock0Pos[(i << 1) + 1], CurrentAnimation + 1, 0 + ((8 - i) & 3), false, false, HitSide * Rock0Vels[i << 1], Rock0Vels[(i << 1) + 1], 0x18);
-            }
+            Scene->AddMovingSprite(RockBitsSprite, X + Rock0Pos[i << 1], Y + Rock0Pos[(i << 1) + 1], CurrentRockBitsAnimation, 0 + ((8 - i) & 3), false, false, HitSide * Rock0Vels[i << 1], Rock0Vels[(i << 1) + 1], 0x18);
         }
-        else if (RockSize == 1) {
-            for (int i = 0; i < 5; i++)
+    }
+    else if (RockSize == 1) {
+        for (int i = 0; i < 5; i++)
 {
-                Scene->AddMovingSprite(Sprite, X + Rock1Pos[i << 1], Y + Rock1Pos[(i << 1) + 1], CurrentAnimation + 1, 0 + ((5 - i) & 3), false, false, HitSide * Rock0Vels[i << 1], Rock0Vels[(i << 1) + 1], 0x18);
-            }
+            Scene->AddMovingSprite(RockBitsSprite, X + Rock1Pos[i << 1], Y + Rock1Pos[(i << 1) + 1], CurrentRockBitsAnimation, 0 + ((5 - i) & 3), false, false, HitSide * Rock0Vels[i << 1], Rock0Vels[(i << 1) + 1], 0x18);
         }
-        else if (RockSize == 2) {
-            Scene->AddMovingSprite(Sprite, X + 12, Y + 4, CurrentAnimation + 1, 0 + ((off + 3) & 3), false, false, HitSide * -0x2C0, -0x280, 0x18);
-            Scene->AddMovingSprite(Sprite, X - 12, Y + 4, CurrentAnimation + 1, 0 + ((off + 2) & 3), false, false, HitSide * -0x280, -0x200, 0x18);
-            Scene->AddMovingSprite(Sprite, X + 12, Y - 4, CurrentAnimation + 1, 0 + ((off + 1) & 3), false, false, HitSide * -0x300, -0x300, 0x18);
-            Scene->AddMovingSprite(Sprite, X - 4, Y - 4, CurrentAnimation + 1, 0 + ((off + 0) & 3), false, false, HitSide * -0x2C0, -0x280, 0x18);
-        }
+    }
+    else if (RockSize == 2) {
+        Scene->AddMovingSprite(RockBitsSprite, X + 12, Y + 4, CurrentRockBitsAnimation, 0 + ((off + 3) & 3), false, false, HitSide * -0x2C0, -0x280, 0x18);
+        Scene->AddMovingSprite(RockBitsSprite, X - 12, Y + 4, CurrentRockBitsAnimation, 0 + ((off + 2) & 3), false, false, HitSide * -0x280, -0x200, 0x18);
+        Scene->AddMovingSprite(RockBitsSprite, X + 12, Y - 4, CurrentRockBitsAnimation, 0 + ((off + 1) & 3), false, false, HitSide * -0x300, -0x300, 0x18);
+        Scene->AddMovingSprite(RockBitsSprite, X - 4, Y - 4, CurrentRockBitsAnimation, 0 + ((off + 0) & 3), false, false, HitSide * -0x2C0, -0x280, 0x18);
+    }
 
-    }
 }
 
 void Rock::Render(int CamX, int CamY) {
     if (!Solid) return;
 
     DrawAIZ(CamX, CamY);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

@@ -5,6 +5,17 @@
 
 typedef IMath Math;
 
+CONSTRUCTER RhinoBot::RhinoBot() {
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot.bin");
+        DustBinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot Dust.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot.bin");
+        DustBinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot Dust.bin");
+    }
+}
+
 void RhinoBot::Create() {
     Enemy::Create();
     Active = true;
@@ -18,7 +29,42 @@ void RhinoBot::Create() {
     Speed = 0;
     Acceleration = -0x10;
     HitCount = 1;
-    CurrentAnimation = 24;
+    DustSprite = LevelScene::GetSpriteFromBinIndex(DustBinIndex);
+    CurrentAnimation = Sprite->FindAnimation("RhinoBot");
+    CurrentDustAnimation = DustSprite->FindAnimation("RhinoBot Dust");
+    switch (Scene->ZoneID) {
+        case 1:
+        Sprite->LinkPalette(Scene->TileSprite);
+        DustSprite->LinkPalette(Scene->TileSprite);
+        break;
+        case 2:
+        break;
+        case 3:
+        break;
+        case 4:
+        break;
+        case 5:
+        break;
+        case 6:
+        break;
+        case 7:
+        break;
+        case 8:
+        break;
+        case 9:
+        break;
+        case 10:
+        break;
+        case 11:
+        break;
+        case 12:
+        break;
+        case 13:
+        break;
+        case 14:
+        break;
+    }
+
     CleanupInactiveObject = true;
 }
 
@@ -146,20 +192,22 @@ void RhinoBot::Render(int CamX, int CamY) {
     }
 
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, Flip > 0);
-    if (Frame == 2) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+    if (Frame == 2) {
+        G->DrawSprite(DustSprite, CurrentDustAnimation, ((Scene->Frame / 3) & 3), X - CamX + Flip * 14, Y - CamY + 1, 0, Flip > 0);
+    }
 
-    if (Timer != -1) G->DrawSprite(Sprite, CurrentAnimation + 1, ((Scene->Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    if (Timer != -1) {
+        G->DrawSprite(DustSprite, CurrentDustAnimation, ((Scene->Frame / 3) & 3), X - CamX, Y - CamY + 1, 0, Flip > 0);
+    }
 
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         if (Frame == 2) {
-            G->SetDrawAlpha(0x80);
             G->DrawRectangle(X - (W / 2) - CamX + Flip * 14, Y - (H / 2) - CamY + 1, W, H, DrawCollisionsColor);
-            G->SetDrawAlpha(0xFF);
         }
-
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        else {
+            G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+        }
         G->SetDrawAlpha(0xFF);
     }
 

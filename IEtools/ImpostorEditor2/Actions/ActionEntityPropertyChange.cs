@@ -9,13 +9,13 @@ namespace ImpostorEditor2.Actions
 {
     class ActionEntityPropertyChange : IAction
     {
-        RSDKv5.Scene.ISCN_Object entity;
+        RSDKv5.SceneEntity entity;
         string tag;
         object oldValue;
         object newValue;
-        Action<RSDKv5.Scene.ISCN_Object, string, object, object> setValue;
+        Action<RSDKv5.Scene.SceneEntity, string, object, object> setValue;
 
-        public ActionEntityPropertyChange(RSDKv5.Scene.ISCN_Object entity, string tag, object oldValue, object newValue, Action<RSDKv5.Scene.ISCN_Object, string, object, object> setValue)
+        public ActionEntityPropertyChange(RSDKv5.Scene.SceneEntity entity, string tag, object oldValue, object newValue, Action<RSDKv5.Scene.SceneEntity, string, object, object> setValue)
         {
             this.entity = entity;
             this.tag = tag;

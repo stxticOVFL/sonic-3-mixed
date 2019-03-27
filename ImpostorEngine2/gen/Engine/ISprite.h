@@ -36,6 +36,7 @@ public:
     int Y;
     int W;
     int H;
+    int Extra;
     int OffX;
     int OffY;
     int SheetNumber;
@@ -58,14 +59,13 @@ public:
     IGraphics* G = NULL;
     std::string Filename;
     ISprite* LinkedSprite = NULL;
-    bool Print = false; //
+    bool Print = false;
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 
     ISprite(const char* filename, IApp* app);
     ISprite(const char* filename, IApp* app, int mode);
-    ISprite(const char* filename, IApp* app, bool IsPrinting);
-    ISprite(const char* filename, IApp* app, int mode);
-    ISprite(const char* filename, IApp* app, int mode, bool IsPrinting);
-    ~ISprite();
     void SetTransparentColorIndex(int i);
     void SetPalette(int i, uint32_t col);
     void SetPaletteAlt(int i, uint32_t col);

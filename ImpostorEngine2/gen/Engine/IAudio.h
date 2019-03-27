@@ -51,6 +51,9 @@ public:
     float 			GlobalVolume = 1.0f;
     float 			MusicVolume = 1.0f;
     float 			SoundFXVolume = 1.0f;
+    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size, std::nothrow_t const&) noexcept;
+    void operator delete(void* const block) noexcept;
 
     IAudio(IApp* app);
     void SetSound(int channel, uint8_t* buffer, int length);
