@@ -5,6 +5,15 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Bloominator::Bloominator() {
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Tulipon.bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Tulipon.bin");
+    }
+}
+
 void Bloominator::Create() {
     Enemy::Create();
     Active = true;
@@ -13,7 +22,12 @@ void Bloominator::Create() {
     H = 48;
     Frame = 0;
     HitCount = 1;
-    CurrentAnimation = 32;
+    switch (Scene->ZoneID) {
+        case 1:
+        Sprite->LinkPalette(Scene->TileSprite);
+    }
+
+    CurrentAnimation = Sprite->FindAnimation("Tulipon");
     CleanupInactiveObject = true;
     for (int i = 0; i < 2; i++)
 {
@@ -86,7 +100,7 @@ void Bloominator::Render(int CamX, int CamY) {
     }
 
     G->DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

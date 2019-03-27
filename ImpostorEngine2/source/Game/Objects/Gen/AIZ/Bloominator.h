@@ -17,6 +17,7 @@ public:
     
     Object* Children[2];
     
+    CONSTRUCTER Bloominator();
     void Create();
     void Update();
     int OnHit();

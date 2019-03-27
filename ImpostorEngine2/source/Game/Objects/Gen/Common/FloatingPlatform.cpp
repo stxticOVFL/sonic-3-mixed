@@ -28,6 +28,8 @@ CONSTRUCTER FloatingPlatform::FloatingPlatform() {
     }
     else {
         BinIndex = LevelScene::LoadSpriteBin("AIZ/Floating Platform.bin");
+        Act1BinIndex = BinIndex;
+        Act2BinIndex = BinIndex;
     }
 }
 

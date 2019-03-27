@@ -30,6 +30,8 @@ event FloatingPlatform() : CONSTRUCTER {
         BinIndex = LevelScene.LoadSpriteBin("LBZ/Floating Platform.bin");
     } else {
         BinIndex = LevelScene.LoadSpriteBin("AIZ/Floating Platform.bin");
+        Act1BinIndex = BinIndex;
+        Act2BinIndex = BinIndex;
     }
 }
 

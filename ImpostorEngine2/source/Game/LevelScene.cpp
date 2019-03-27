@@ -558,7 +558,12 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
 };
 
 PUBLIC STATIC ISprite* LevelScene::GetSpriteFromBinIndex(size_t index) {
-    return SpriteBinMapIDs.at(index);
+	if (index < 0 || index >= SpriteBinMapIDs.size()) {
+        IApp::Print(2, "LevelScene::GetSpriteFromBinIndex: index '%d' was not valid!", index);
+		return nullptr;
+	} else {
+		return SpriteBinMapIDs.at(index);
+	}
 };
 
 PROTECTED STATIC bool LevelScene::FindSpriteBin(std::string filename) {

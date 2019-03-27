@@ -25,8 +25,14 @@ public:
     Sint16 Rock1Vels[16];
     Sint8 Rock2Pos[32];
     Sint16 Rock2Vels[16];
+    int Act1RockBitsBinIndex;
+    int Act2RockBitsBinIndex;
+    int CurrentRockBitsAnimation;
+    int RockBitsBinIndex;
+    ISprite* RockBitsSprite;
     bool Knux;
     
+    CONSTRUCTER Rock();
     void Create();
     void Update();
     void DrawAIZ(int CamX, int CamY);

@@ -4,6 +4,14 @@ subclass Enemy;
 
 var Children:Object[2];
 
+event Bloominator() : CONSTRUCTER {
+    if (LevelScene.IsZoneCurrently("AIZ")) {
+        BinIndex = LevelScene.LoadSpriteBin("AIZ/Tulipon.bin");
+    } else {
+        BinIndex = LevelScene.LoadSpriteBin("AIZ/Tulipon.bin");
+    }
+}
+
 event Create() {
     Active = true;
     Priority = false;
@@ -14,7 +22,12 @@ event Create() {
     Frame = 0;
     HitCount = 1;
 
-    CurrentAnimation = 32;
+    switch (Scene.ZoneID) {
+        case 1: // AIZ
+            Sprite.LinkPalette(Scene.TileSprite);
+    }
+
+    CurrentAnimation = Sprite.FindAnimation("Tulipon");
     CleanupInactiveObject = true;
 
     for (var i:int = 0; i < 2; i++) {
@@ -85,7 +98,7 @@ event Render(CamX:int, CamY:int) {
     }
         G.DrawSprite(Sprite, CurrentAnimation, Subframe, X - CamX, Y - CamY, 0, IE_NOFLIP);
 	
-				if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);

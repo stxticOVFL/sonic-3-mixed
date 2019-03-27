@@ -16,6 +16,8 @@ CONSTRUCTER CollapsingPlatform::CollapsingPlatform() {
     }
     else {
         BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform.bin");
+        Act1BinIndex = BinIndex;
+        Act2BinIndex = BinIndex;
     }
 }
 

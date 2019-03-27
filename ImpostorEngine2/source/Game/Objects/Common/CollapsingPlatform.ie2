@@ -16,6 +16,8 @@ event CollapsingPlatform() : CONSTRUCTER {
         BinIndex = LevelScene.LoadSpriteBin("ICZ/Collapsing Bridge 1.bin");
     } else {
         BinIndex = LevelScene.LoadSpriteBin("AIZ/Collapsing Platform.bin");
+        Act1BinIndex = BinIndex;
+        Act2BinIndex = BinIndex;
     }
 }
 
