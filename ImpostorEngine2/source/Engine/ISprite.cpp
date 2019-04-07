@@ -350,7 +350,7 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
         an.FrameCount = reader.ReadUInt16();
         an.AnimationSpeed = reader.ReadUInt16();
         an.FrameToLoop = reader.ReadByte();
-        an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: Partial engine rotation, 3: Static rotation using extra frames, 4: Unknown (used alot in Mania)
+        an.Flags = reader.ReadByte(); // 0: Default behavior, 1: Full engine rotation, 2: 45-Degree rotation, 3: Static rotation using extra frames, 4: 90-Degree Rotation
         an.Frames = new AnimFrame[an.FrameCount];
 		IApp::Print(-1 + Print, "    \"%s\" (%d) (Flags: %02X, FtL: %d, Spd: %d, Frames: %d)", an.Name.c_str(), a, an.Flags, an.FrameToLoop, an.AnimationSpeed, an.FrameCount);
         for (int i = 0; i < an.FrameCount; i++) {

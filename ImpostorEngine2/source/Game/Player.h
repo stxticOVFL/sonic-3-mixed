@@ -359,7 +359,8 @@ public:
 	int                 SlopeFactorMode = 0;                     // - 0: Sonic 1 & 2, 1: Sonic 3, 2: Sonic 3?
 
 	bool                InputLockLeftRight = false;                 // - If set to true, the player will only rotate if angle is greater than 45 degrees(Only applies to 360 rotation).
-	bool                Use360SpriteRotation = true;   // - If set to true characters will use 360 degree sprite rotations, false for 8 degree rotations.
+	//Unneeded, as it's handled by the rotation flags
+	//bool                Use360SpriteRotation = true;   // - If set to true characters will use 360 degree sprite rotations, false for 8 degree rotations.
 
 	bool                FlagsAllowXMovement = true;
 	bool                FlagsAllowYMovement = true;

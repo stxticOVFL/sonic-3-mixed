@@ -1070,7 +1070,7 @@ void IPlayer::Create() {
 				Sprites[3] = new ("ISprite - PlayersMixed/Sonic4.gif") ISprite("PlayersMixed/Sonic4.gif", App);
 				Sprites[4] = new ("ISprite - PlayersMixed/SonicCutsceneCPZ.gif") ISprite("PlayersMixed/SonicCutsceneCPZ.gif", App);
 
-				Sprites[0]->LoadAnimation("PlayersMixed/Sonicold.bin");
+				Sprites[0]->LoadAnimation("PlayersMixed/Sonic.bin");
 
 				int i = 0;
 				for (; i < Sprites[0]->AnimCount; i++) {
@@ -4135,11 +4135,8 @@ void IPlayer::LateUpdate() {
 			DisplayAngle = FinalAngle << 8;
         }
 	}
-
 	// For animations that don't rotate, set DisplayAngle to 0
-	bool noRotate =
-		Action != ActionType::Normal &&
-		Action != ActionType::Grab;
+	bool noRotate = Sprites[0]->Animations[CurrentAnimation].Flags == 0;
 	if (noRotate)
 		DisplayAngle = 0;
 
@@ -4387,6 +4384,7 @@ void IPlayer::Render(int CamX, int CamY) {
 
 		ISprite::AnimFrame currentFrame = animation.Frames[CurrentFrame / 0x100];
 
+		//AfterImages
 		if ((SuperForm && Thremixed) || HyperForm || (SpeedSneakersActive && Thremixed) || Action == ActionType::MightyStomp) {
 			for (int i = -5 - 8; i <= -5; i += 4) {
 				G->SetDrawAlpha(0xFF + i * 0xC);
@@ -4409,6 +4407,40 @@ void IPlayer::Render(int CamX, int CamY) {
 		}
 
 		G->SetDrawAlpha(0xFF);
+
+		bool LowerZero = FinalAngle < 0;
+
+		switch (Sprites[0]->Animations[CurrentAnimation].Flags)
+		{
+		case 0:
+			FinalAngle = 0;
+			break;
+		default:
+			break;
+		case 3: //Just fucking use Flag 2 lmao I ain't programming this shit
+		case 2:
+			FinalAngle = IMath::abs(FinalAngle);
+			FinalAngle += 16;
+			FinalAngle &= 255;
+			FinalAngle >>= 5;
+			FinalAngle *= 45;
+			if (LowerZero) FinalAngle = -FinalAngle;
+			break;
+		 
+			break;
+		case 4: //basically YFlip
+			if (IMath::abs(FinalAngle) < 180) FinalAngle = 0;
+			break;
+		case 5: //no idea how I'd do this shit
+			break;
+			//I don't know what this bullshit is but mania has it so bada bing bada boom it's in here too!
+		case 6: //What what
+			FinalAngle = DisplayFlip > 0 ? 135 : 225;
+			break;
+		case 7: //What
+			FinalAngle = 135;
+			break;
+		}
 
 		G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, EZX + x - CamX, EZY + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
 	
