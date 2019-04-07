@@ -406,6 +406,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	std::memset(KnuxSprite, 0, sizeof(KnuxSprite));
 
 	VisualAct = Act;
+
+
 }
 
 int MusicVolume = 0xFF;
@@ -471,14 +473,16 @@ PUBLIC VIRTUAL void LevelScene::LoadZoneSpecificSprites() {
 ISprite* GlobalDisplaySpriteS3K = NULL;
 Object* LastObjectUpdated = NULL;
 
-int StateSaved = false;
+bool StateSaved = false;
 int StatePlayerSpawnX = -1;
 int StatePlayerSpawnY = -1;
 int StateTimer = 0;
 int StateLives = 0;
 int StateRings = 0;
+int StateShield = 0;
+
 PUBLIC void LevelScene::SaveState() {
-	if (StateSaved) return;
+	//if (StateSaved) return;
 
 	StateSaved = true;
 	StateTimer = Timer;
@@ -486,10 +490,11 @@ PUBLIC void LevelScene::SaveState() {
 	StateLives = Player->Lives;
 	StatePlayerSpawnX = Player->X;
 	StatePlayerSpawnY = Player->Y;
+	StateShield = (int)Player->Shield;
 }
 
 PUBLIC void LevelScene::LoadState() {
-	if (!StateSaved) return;
+	//if (!StateSaved) return;
 
 	StateSaved = false;
 	ResetTimer = false;
@@ -498,6 +503,14 @@ PUBLIC void LevelScene::LoadState() {
 	Player->Lives = StateLives;
 	SpecialSpawnPositionX = StatePlayerSpawnX;
 	SpecialSpawnPositionY = StatePlayerSpawnY;
+
+	for (int i = 0; i < PlayerCount; i++)
+	{
+		Players[i]->X = StatePlayerSpawnX;
+		Players[i]->Y = StatePlayerSpawnY;
+	}
+
+	Player->Shield = (ShieldType)StateShield;
 }
 
 PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
@@ -2881,28 +2894,27 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	}
 
 	for (int p = 0; p < PlayerCount; p++) {
-		IPlayer* Player = Players[p];
 
-		Player->EZX = (pX - p * 16);
-		Player->EZY = pY;
-		Player->DisplayX = Players[p]->X;
-		Player->DisplayY = Players[p]->Y;
-		Player->Action = ActionType::Normal;
+		Players[p]->EZX = (pX - p * 16);
+		Players[p]->EZY = pY;
+		Players[p]->DisplayX = Players[p]->X;
+		Players[p]->DisplayY = Players[p]->Y;
+		Players[p]->Action = ActionType::Normal;
 
-		Player->GroundSpeed = 0;
-		Player->XSpeed = 0;
-		Player->YSpeed = 0;
-		Player->Flip = 1;
-		Player->DisplayFlip = 1;
+		Players[p]->GroundSpeed = 0;
+		Players[p]->XSpeed = 0;
+		Players[p]->YSpeed = 0;
+		Players[p]->Flip = 1;
+		Players[p]->DisplayFlip = 1;
 
-		Player->ControlLocked = false;
-		Player->ObjectControlled = 0x00;
+		Players[p]->ControlLocked = false;
+		Players[p]->ObjectControlled = 0x00;
 
 		if (ResetTimer)
-			Player->Rings = 0;
+			Players[p]->Rings = 0;
 
-		Player->Create();
-		Player->LateUpdate();
+		Players[p]->Create();
+		Players[p]->LateUpdate();
 	}
 
 	if (ResetTimer)

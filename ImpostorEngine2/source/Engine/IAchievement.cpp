@@ -80,7 +80,14 @@ PUBLIC STATIC void IAchievement::SetAchievement(int AchievementID, bool State) {
 		AchievementGet = true;
 		PoopTimer = 0;
 		PoopGot = false;
-		printf("Got achievement: %s\n", AchievementList[AchievementID].Name);
+		App->Print(0, "Got achievement: %s\n", AchievementList[AchievementID].Name);
+
+		for (int i = 0; i < TOTAL_ACHIEVEMENT_COUNT; i++)
+		{
+			SaveGame::AchievementData[i] = AchievementList[i].Achieved;
+		}
+		SaveGame::Flush();
+
 		//Play a SFX
 	}
 	AchievementList[AchievementID].Achieved = State;
