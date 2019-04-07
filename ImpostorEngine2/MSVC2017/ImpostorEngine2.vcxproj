@@ -435,7 +435,7 @@
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
     </Link>
     <PreBuildEvent>
-      <Command>"../tools/makeheaders.exe" "../"</Command>
+      <Command>"../tools/makeheaders.exe" "../source"</Command>
     </PreBuildEvent>
     <CustomBuildStep>
       <Command>

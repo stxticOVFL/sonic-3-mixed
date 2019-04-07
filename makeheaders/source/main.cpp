@@ -1236,7 +1236,10 @@ int main(int argc, char **argv) {
     }
     SaveClassHashTable();
 
-    sprintf(finalpath, "%s%s", finalpath, "source/Game/Objects");
+	char* devPath = (char*)malloc(1024);
+	sprintf(devPath, "%s/Resources/Objects/DevConfig.bin", finalpath);
+
+    sprintf(finalpath, "%s%s", finalpath, "/Game/Objects");
 
     // Create Gen if not already there
     char* fullasspath = (char*)malloc(1024);
@@ -1244,6 +1247,27 @@ int main(int argc, char **argv) {
     struct stat st;
     if (stat(fullasspath, &st) == -1)
         createDir(fullasspath);
+
+	//increment build value
+	short b = 0;	
+	//printf("%s\n%s\n", devPath, fullasspath);
+	FILE* dc = fopen(devPath, "rb+");
+	if (dc) {
+		fseek(dc, 2, 0);
+		fread(&b, sizeof(short), 1, dc);
+		PrintHeader(stdout, "makeheaders: ", PrintColor::Green);
+		printf("Current Build: %.3d\n", b);
+		fseek(dc, 2, 0);
+		b++;
+		fwrite(&b, sizeof(short), 1, dc);
+		PrintHeader(stdout, "makeheaders: ", PrintColor::Green);
+		printf("New Build:     %.3d\n", b);
+	}
+	else {
+		PrintHeader(stdout, "makeheaders: ", PrintColor::Red);
+		printf("DevConfig.bin not found! Skipping...\n");
+	}
+	fclose(dc);
 
     LoadObjectHashTable();
 
