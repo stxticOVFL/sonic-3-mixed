@@ -18,6 +18,7 @@ public:
     int Length;
     int LastY;
     
+    CONSTRUCTER FallingLog();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

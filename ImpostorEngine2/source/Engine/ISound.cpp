@@ -33,7 +33,7 @@ public:
 
 #include <Engine/ISound.h>
 
-struct  WAV_HEADER {
+struct  WAV_HEADER {	
     /* RIFF Chunk Descriptor */
     uint8_t         RIFF[4];        // RIFF Header Magic header
     uint32_t        ChunkSize;      // RIFF Chunk Size
@@ -212,6 +212,10 @@ PUBLIC int ISound::SeekVorbis(Vorbis* vorb, int64_t pos) {
     return ov_pcm_seek(&vorb->vf, (ogg_int64_t)pos);
 }
 
+PUBLIC long long ISound::TellVorbis(Vorbis* vorb) {
+	return ov_pcm_tell(&vorb->vf);
+}
+
 PUBLIC ISound::ISound(const char* filename) {
     ISound::Load(filename, false);
 }
@@ -350,9 +354,19 @@ PUBLIC void ISound::Seek(int amount) {
     }
 }
 
+PUBLIC long long ISound::GetPosition() {
+	if (StreamFromFile) {
+		if (vorbis_file)
+			return TellVorbis(vorbis_file);
+		else
+			return Resource->Position();
+	}
+}
+
 PUBLIC void ISound::Cleanup() {
-    if (Buffer)
+	if (Buffer) {
 		SDL_FreeWAV(Buffer);
+	}
 
     if (Stream) {
 		SDL_FreeWAV(ExtraBuffer);

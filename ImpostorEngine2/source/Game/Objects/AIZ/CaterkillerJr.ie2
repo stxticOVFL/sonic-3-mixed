@@ -5,6 +5,10 @@ subclass Enemy;
 var Routine:int;
 var PosTable:Uint32[0x80];
 
+event CaterkillerJr() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("AIZ/Caterkiller Jr.bin");
+}
+
 event Create() {
     Active = true;
     Priority = false;
@@ -18,7 +22,7 @@ event Create() {
     Frame = 0;
     HitCount = 1;
 
-    CurrentAnimation = 4;
+    CurrentAnimation = Sprite.FindAnimation("Caterkiller Jr");
     CleanupInactiveObject = true;
 
     XSpeed = -0x100;

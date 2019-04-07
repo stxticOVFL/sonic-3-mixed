@@ -86,17 +86,20 @@ class LevelScene : public IScene {
             RESTART = 2,
             EXIT = 3,
             DIED = 4,
-            TO_BONUS_STAGE1 = 5,
-            TO_BONUS_STAGE2 = 6,
+            TO_BONUS_STAGE = 5,
             TO_SPECIAL_STAGE = 7,
             NEXT_ZONE = 8,
             CUSTOM_FADE_ACTION = 9,
         };
 
+		//0 = Itemball, 1 = Pachinko, 2 = Slots
+		int NextBonusStage = 0;
+
         //For RPC
         char* ModeName;
 
         int maxLayer = 1;
+		Uint8 SceneMode = 0xFF;
         bool Thremixed = false;
         bool DeformObjects = false;
         bool DeformPlayer = false;
@@ -223,6 +226,7 @@ class LevelScene : public IScene {
         bool CollisionCheckForAlternate2 = false;
 
         uint32_t BackgroundColor = 0x000000;
+		uint32_t TintColor = 0x000000;
         bool SepThread = false;
         uint16_t Signal[8]; //
 
@@ -233,9 +237,16 @@ class LevelScene : public IScene {
         bool ViewTileInfo = false;
         bool ViewTileCollision = false;
         
-        void* operator new(size_t const size) noexcept;
+        void* operator new(size_t const size);
         void* operator new(size_t const size, std::nothrow_t const&) noexcept;
         void operator delete(void* const block) noexcept;
+
+		enum Achevements {
+			ACHIEVEMENT_RINGHOG,
+			ACHIEVEMENT_POWERHOUR,
+			ACHIEVEMENT_SUPERAQUIRED,
+			ACHIEVEMENT_HYPERAQUIRED,
+		};
 };
 #endif
 
@@ -256,12 +267,12 @@ class LevelScene : public IScene {
 #include <Game/Scenes/LevelSelect.h>
 
 #include <Game/Levels/SpecialStage.h>
+#include <Game/Levels/BonusStage.h>
 
 #include <Game/SaveGame.h>
 #include <Engine/Diagnostics/Memory.h>
 
-
-#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectProps[ObjectPropCount++] = op; Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs[ID]) ID--; obj->Sprite = SpriteMapIDs[ID]; obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
+#define ADD_OBJECT() ObjectProp op; op.X = X; op.Y = Y; op.ID = ID; op.SubType = SubType; op.LoadFlag = PRIORITY; op.FlipX = FLIPX; op.FlipY = FLIPY; ObjectPropCount++; ObjectProps.push_back(op); Object* obj = GetNewObjectFromID(ID); if (obj) { obj->G = G; obj->App = App; obj->Scene = this; obj->InitialX = X; obj->InitialY = Y; obj->FlipX = FLIPX == 1; obj->FlipY = FLIPY == 1; obj->ID = ID; while (!SpriteMapIDs.at(ID)) ID--; obj->Sprite = SpriteMapIDs.at(ID); obj->SubType = SubType; ObjectCount++; Objects.push_back(obj); }
 const char* ObjectName[347];
 
 int BlankTile = 0;
@@ -278,6 +289,9 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 	//Create Achievements Here (may change later lol)
 	App->Achievements->CreateAchievement("Ring Hog");
+	App->Achievements->CreateAchievement("Power Hour");
+	App->Achievements->CreateAchievement("Super Form Aquired!");
+	App->Achievements->CreateAchievement("Hyper Form Aquired");
 
 	//Load up our achievement states
 	for (int i = 0; i < TOTAL_ACHIEVEMENT_COUNT; i++)
@@ -322,13 +336,14 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	for (int i = 0; i < 0xFF; i++) {
 		DebugObjectIDList[i] = 0;
 	}
-	AddNewDebugObjectID(0x00); // Ring
+	AddNewDebugObjectID(Obj_Ring); // Ring
 	AddNewDebugObjectID(Obj_Monitor); // Monitor
-	AddNewDebugObjectID(Obj_Spring); // Spring
-	AddNewDebugObjectID(Obj_Spikes); // Spikes
-	AddNewDebugObjectID(Obj_SpecialRing); // Special Ring
 	AddNewDebugObjectID(Obj_StarPost); // StarPost
 	AddNewDebugObjectID(Obj_Signpost); // SignPost
+	AddNewDebugObjectID(Obj_EggCapsule); // SignPost
+	AddNewDebugObjectID(Obj_SpecialRing); // Special Ring
+	AddNewDebugObjectID(Obj_Spring); // Spring
+	AddNewDebugObjectID(Obj_Spikes); // Spikes
 	if (App->DEV) {
 		AddNewDebugObjectID(Obj_AutomaticTunnel); // Automatic Tunnel
 		AddNewDebugObjectID(Obj_RollEnforcer); // Roll Enforcer
@@ -353,8 +368,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	startTime = SDL_GetTicks();
 
 	/*
-	GlobalDisplaySprite =
-	("Sprites/Global/Display.gif", App);
+	GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App);
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/HUD.bin");
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/TitleCard.bin");
 	GlobalDisplaySprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
@@ -421,7 +435,7 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 		ModePath = "Mixed";
 	}
 	if (mode != -1) {
-		sprintf(MusicPath, "Music/%s/%s%d.ogg", ModePath, ZoneLetters, act);
+		sprintf(MusicPath, "%s/Music/%s%d.ogg", ModePath, ZoneLetters, act);
 	}
 	PlayMusic(MusicPath, loop, vol);
 }
@@ -490,7 +504,36 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     if (IApp::GlobalApp == NULL) {
         return 0xFFFFFFFF;
     }
-    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp, SaveGame::CurrentMode);
+
+    if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
+        size_t BinIndex = SpriteBinMap.find(std::string(Filename))->second;
+        // If BinIndex is bigger then SpriteBinMapIDs.size(), Then a clear happened,
+        // And for some reason the SpriteBinMap wasn't also cleared.
+        if (BinIndex > SpriteBinMap.size() || GetSpriteFromBinIndex(BinIndex) == nullptr) {
+            return ResetSpriteBin(Filename);
+        } else {
+            return BinIndex;
+        }
+    } else {
+        ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
+        SpriteBinMapIDs.push_back(BinSprite);
+        SpriteBinMapIDs.shrink_to_fit();
+        size_t BinIndex = SpriteBinMapIDs.size() - 1;
+
+        if (!FindSpriteBin(std::string(Filename))) {
+            std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
+            SpriteBinMap.insert(pair);
+        }
+        return BinIndex;
+    }
+};
+
+PROTECTED STATIC size_t LevelScene::ResetSpriteBin(const char* Filename) {
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+    if (IApp::GlobalApp == NULL) {
+        return 0xFFFFFFFF;
+    }
+    ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
     SpriteBinMapIDs.push_back(BinSprite);
     SpriteBinMapIDs.shrink_to_fit();
     size_t BinIndex = SpriteBinMapIDs.size() - 1;
@@ -499,7 +542,8 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
         std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
         SpriteBinMap.insert(pair);
     } else {
-        SpriteBinMap.erase(SpriteBinMap.find(std::string(Filename)));
+		auto it = SpriteBinMap.find(std::string(Filename));
+        SpriteBinMap.erase(it);
         std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
         SpriteBinMap.insert(pair);
     }
@@ -530,28 +574,6 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
         return BinSprite;
     }
 };
-
-PROTECTED STATIC size_t LevelScene::ResetSpriteBin(const char* Filename) {
-	if (IApp::GlobalApp == NULL) {
-		return 0xFFFFFFFF;
-	}
-	ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp);
-	SpriteBinMapIDs.push_back(BinSprite);
-	SpriteBinMapIDs.shrink_to_fit();
-	size_t BinIndex = SpriteBinMapIDs.size() - 1;
-
-	if (!FindSpriteBin(std::string(Filename))) {
-		std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
-		SpriteBinMap.insert(pair);
-	}
-	else {
-		SpriteBinMap.erase(SpriteBinMap.find(std::string(Filename)));
-		std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
-		SpriteBinMap.insert(pair);
-	}
-	return BinIndex;
-};
-
 
 PUBLIC STATIC ISprite* LevelScene::GetSpriteFromBinIndex(size_t index) {
 	if (index < 0 || index >= SpriteBinMapIDs.size()) {
@@ -611,28 +633,26 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		startTime = SDL_GetTicks();
 
 		if (!PauseSprite) {
-			PauseSprite = new ISprite("Sprites/UI/PauseMenu.gif", App, 1);
+			PauseSprite = new ISprite("UI/PauseMenu.bin", App);
 			PauseSprite->SetTransparentColorIndex(0);
-			PauseSprite->LoadAnimation("Sprites/UI/PauseMenu.bin");
 		}
 		if (!GlobalDisplaySprite) {
-			GlobalDisplaySprite = new ISprite("Sprites/Global/Display.gif", App, 1);
+			GlobalDisplaySprite = new ISprite("Global/Display.gif", App);
 			GlobalDisplaySprite->Print = App->DEV;
-            GlobalDisplaySprite->LoadAnimation("Global/HUD.bin");
-            GlobalDisplaySprite->LoadAnimation("Global/TitleCard.bin");
-            GlobalDisplaySprite->LoadAnimation("Global/PlaneSwitch.bin");
+			GlobalDisplaySprite->LoadAnimation("Global/HUD.bin");
+			GlobalDisplaySprite->LoadAnimation("Global/TitleCard.bin");
+			GlobalDisplaySprite->LoadAnimation("Global/PlaneSwitch.bin");
 		}
 		if (!GlobalDisplaySpriteS3K) {
 			GlobalDisplaySpriteS3K = new ISprite("GlobalS3K/HUD.bin", App);
 		}
 		if (!SuperButtonsSprite) {
-			SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
-			SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
+			SuperButtonsSprite = new ISprite("UI/SuperButtons.bin", App);
 			SuperButtonsSprite->SetPalette(1, 0x282028);
 			SuperButtonsSprite->UpdatePalette();
 		}
 		if (!MobileButtonsSprite) {
-			MobileButtonsSprite = new ISprite("Sprites/UI/Mobile Buttons.gif", App, 1);
+			MobileButtonsSprite = new ISprite("UI/Mobile Buttons.gif", App);
 			ISprite::Animation an;
 			an.Name = "";
 			an.FrameCount = 8;
@@ -651,60 +671,73 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			MobileButtonsSprite->UpdatePalette();
 		}
 		if (!EditorSprite) {
-			EditorSprite = new ISprite("Sprites/Editor/Icons.gif", App, 1);
-			EditorSprite->LoadAnimation("Sprites/Editor/PlayerIcons.bin");
-			EditorSprite->LoadAnimation("Sprites/Editor/EditorIcons.bin");
+			EditorSprite = new ISprite("Editor/Icons.gif", App);
+			EditorSprite->LoadAnimation("Editor/PlayerIcons.bin");
+			EditorSprite->LoadAnimation("Editor/EditorIcons.bin");
 		}
 		if (!ItemsSprite) {
-			ItemsSprite = new ISprite("Sprites/Global/Items.gif", App, SaveGame::CurrentMode);
-			ItemsSprite->LoadAnimation("Sprites/Global/ItemBox.bin");
-			ItemsSprite->LoadAnimation("Sprites/Global/Ring.bin");
 			if (SaveGame::CurrentMode == 1) {
-				ItemsSprite->LoadAnimation("Sprites/Special/Ring.bin");
+				ItemsSprite = new ISprite("Global/Items.gif", App);
+				ItemsSprite->LoadAnimation("Global/ItemBox.bin");
+				ItemsSprite->LoadAnimation("Global/Ring.bin");
+				ItemsSprite->LoadAnimation("Special/Ring.bin");
+				ItemsSprite->SetTransparentColorIndex(0x0);
+			} else {
+				ItemsSprite = new ISprite("GlobalS3K/Items.gif", App);
+				ItemsSprite->LoadAnimation("GlobalS3K/ItemBox.bin");
+				ItemsSprite->LoadAnimation("GlobalS3K/Ring.bin");
 			}
 		}
 		if (!AnimalsSprite) {
-			AnimalsSprite = new ISprite("Sprites/Global/Animals.gif", App, SaveGame::CurrentMode);
-			AnimalsSprite->LoadAnimation("Sprites/Global/Animals.bin");
+			AnimalsSprite = new ISprite("Global/Animals.bin", App);
 		}
 		if (!ObjectsSprite) {
-			ObjectsSprite = new ISprite("Sprites/Global/Objects.gif", App, SaveGame::CurrentMode);
-			ObjectsSprite->LoadAnimation("Sprites/Global/Springs.bin");
-			ObjectsSprite->LoadAnimation("Sprites/Global/Spikes.bin");
-			ObjectsSprite->LoadAnimation("Sprites/Global/StarPost.bin");
-			ObjectsSprite->LoadAnimation("Sprites/Global/ScoreBonus.bin");
-			if (SaveGame::CurrentMode != 1) {
-				ObjectsSprite->LoadAnimation("Sprites/Global/Gray Button.bin");
-				ObjectsSprite->LoadAnimation("Sprites/Global/EggPrison.bin");
+			if (SaveGame::CurrentMode == 1) {
+				ObjectsSprite = new ISprite("Global/Objects.gif", App);
+				ObjectsSprite->LoadAnimation("Global/Springs.bin");
+				ObjectsSprite->LoadAnimation("Global/Spikes.bin");
+				ObjectsSprite->LoadAnimation("Global/StarPost.bin");
+				ObjectsSprite->LoadAnimation("Global/ScoreBonus.bin");
+			}
+			else {
+				ObjectsSprite = new ISprite("GlobalS3K/Objects.gif", App);
+				ObjectsSprite->LoadAnimation("GlobalS3K/Springs.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/Spikes.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/StarPost.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/ScoreBonus.bin");
+
+				ObjectsSprite->LoadAnimation("GlobalS3K/Gray Button.bin");
+				ObjectsSprite->LoadAnimation("GlobalS3K/EggPrison.bin");
 			}
 		}
 		if (!Objects2Sprite) {
-			Objects2Sprite = new ISprite("Sprites/Global/Objects2.gif", App, SaveGame::CurrentMode);
-			Objects2Sprite->LoadAnimation("Sprites/Global/SignPost.bin");
-			// printf("\n");
+			Objects2Sprite = new ISprite("Global/SignPost.bin", App);
 		}
 		if (!Objects3Sprite) {
-			Objects3Sprite = new ISprite("Sprites/Global/Objects3.gif", App, SaveGame::CurrentMode);
-			Objects3Sprite->LoadAnimation("Sprites/Global/SpecialRing.bin");
-			Objects3Sprite->LoadAnimation("Sprites/Global/SuperSparkle.bin");
-			Objects3Sprite->LoadAnimation("Sprites/Global/Shields.bin");
-			// printf("\n");
+			Objects3Sprite = new ISprite("Global/Objects3.gif", App);
+			Objects3Sprite->LoadAnimation("Global/SpecialRing.bin");
+			Objects3Sprite->LoadAnimation("Global/SuperSparkle.bin");
+			Objects3Sprite->LoadAnimation("Global/Shields.bin");
 		}
 		if (!RobotnikSprite) {
-			RobotnikSprite = new ISprite("Sprites/Global/Robotnik.gif", App, SaveGame::CurrentMode);
-			RobotnikSprite->LoadAnimation("Sprites/Global/EggMobile.bin");
-			RobotnikSprite->LoadAnimation("Sprites/Global/Crane.bin");
-			// printf("\n");
+			RobotnikSprite = new ISprite("GlobalS3K/Robotnik.gif", App);
+			RobotnikSprite->LoadAnimation("GlobalS3K/EggMobile.bin");
+			RobotnikSprite->LoadAnimation("GlobalS3K/Crane.bin");
 		}
 		if (!ExplosionSprite) {
-				ExplosionSprite = new ISprite("Sprites/Global/Explosions.gif", App, SaveGame::CurrentMode);
-				ExplosionSprite->LoadAnimation("Sprites/Global/Dust.bin");
-				ExplosionSprite->LoadAnimation("Sprites/Global/Explosions.bin");
+			if (SaveGame::CurrentMode == 1) {
+				ExplosionSprite = new ISprite("Global/Explosions.gif", App);
+				ExplosionSprite->LoadAnimation("Global/Dust.bin");
+				ExplosionSprite->LoadAnimation("Global/Explosions.bin");
+			} else {
+				ExplosionSprite = new ISprite("GlobalS3K/Explosions.gif", App);
+				ExplosionSprite->LoadAnimation("GlobalS3K/Dust.bin");
+				ExplosionSprite->LoadAnimation("GlobalS3K/Explosions.bin");
+			}
 		}
 		if (!WaterSprite) {
-			WaterSprite = new ISprite("Sprites/Global/Water.gif", App, SaveGame::CurrentMode);
-			WaterSprite->Print = true;
-			WaterSprite->LoadAnimation("Sprites/Global/Water.bin");
+			WaterSprite = new ISprite("Global/Water.gif", App, true);
+            WaterSprite->LoadAnimation("Global/Water.bin");
 		}
 
 		IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Common Sprites", (SDL_GetTicks() - startTime) / 1000.0);
@@ -1557,7 +1590,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			Player->Thremixed = SaveGame::CurrentMode == 1;
 			Player->Create();
 			Player->Lives = SaveGame::GetLives();
-
 			Players[0] = Player;
 
 			PlayerCount = 1;
@@ -1606,10 +1638,11 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 	startTime = SDL_GetTicks();
 
-	TileSprite = new ISprite(Str_TileSprite, App, SaveGame::CurrentMode);
+	TileSprite = new ISprite(Str_TileSprite, App);
+	TileSprite->SetTransparentColorIndex(0x30);
 
 	if (Str_AnimatedSprites) {
-		AnimTileSprite = new ISprite(Str_AnimatedSprites, App, SaveGame::CurrentMode);
+		AnimTileSprite = new ISprite(Str_AnimatedSprites, App);
 		AnimTileSprite->LinkPalette(TileSprite);
 	}
 
@@ -1687,6 +1720,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		delete[] TileData;
 	} else {
 		App->Print(2, "TileConfig at '%s' could not be read.", Str_TileConfigBin);
+		system("pause");
 		exit(1);
 	}
 
@@ -1871,8 +1905,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Data->Layers[i].Info[g].RelativeX = reader.ReadUInt16(); // actually is Scrolling Multiplier X
 				Data->Layers[i].Info[g].ConstantX = (short)reader.ReadUInt16(); // actually is Constant movement X
 
-				Data->Layers[i].Info[g].HeatWaveEnabled = reader.ReadByte();
-				Data->Layers[i].Info[g].Byte2 = reader.ReadByte();
+				Data->Layers[i].Info[g].Behaviour = reader.ReadByte();
+				Data->Layers[i].Info[g].DrawLayer = reader.ReadByte();
 
 				if (Data->CameraLayer == -1) {
 					if (Data->Layers[i].RelativeY == 0x100 &&
@@ -1884,7 +1918,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						Data->CameraLayer = i;
 				}
 
-				//App->Print(0, " > ScrollInfo %d: RelX (%X) ConstX (%X) %d %d", g, Data->Layers[i].Info[g].RelativeX, Data->Layers[i].Info[g].ConstantX, Data->Layers[i].Info[g].HeatWaveEnabled, Data->Layers[i].Info[g].Byte2);
+				//App->Print(0, " > ScrollInfo %d: RelX (%X) ConstX (%X) %d %d", g, Data->Layers[i].Info[g].RelativeX, Data->Layers[i].Info[g].ConstantX, Data->Layers[i].Info[g].Behaviour, Data->Layers[i].Info[g].Byte2);
 			}
 
 			if ((mag >> 24) == 'S') {
@@ -2134,14 +2168,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                                     Attributes[a].ValString = reader.ReadRSDKUnicodeString();
                                     break;
                                 case ATTRIBUTE_POSITION:
-                                    short XHigh = reader.ReadInt16();
-                                    unsigned short XLow = reader.ReadInt16();
-                                    short YHigh = reader.ReadInt16();
-                                    unsigned short YLow = reader.ReadInt16();
 
-                                    // Remind me to make it better - RDC
-                                    Attributes[a].ValPosition.X = XHigh + ((float)XLow / 0x10000);
-                                    Attributes[a].ValPosition.Y = YHigh + ((float)YLow / 0x10000);
+                                    Attributes[a].ValPosition.X = reader.ReadInt16() + ((float)reader.ReadUInt16() / 0x10000);
+                                    Attributes[a].ValPosition.Y = reader.ReadInt16() + ((float)reader.ReadUInt16() / 0x10000);
                                     break;
 							}
 							if (obj) {
@@ -2159,6 +2188,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->App = App;
 						obj->Scene = this;
 
+						obj->Sprite = App->NullSprite;
+
 						if (obj->BinIndex == 0xFFFFFFFF && (ObjectName != "BlankObject" && ObjectName != "PlayerSpawn")) {
 							App->Print(1, "Object '%s' Sprite Not found!", ObjectName);
 						} else {
@@ -2174,6 +2205,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 						// Load our filter attribute, And if nothing return 0.
 						obj->Filter = obj->GetAttribute("Filter")->ValUint8;
+
+						//Setup object flags
+						obj->S3Object = bool(obj->Filter >> 0 & 1);
+						obj->SKObject = bool(obj->Filter >> 1 & 1);
+						obj->MixedObject = bool(obj->Filter >> 2 & 1);
+						obj->LockedOnObject = bool(obj->Filter >> 3 & 1);
 
 						// Done for backwards compatibility, Returns false on error.
 						obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
@@ -2193,13 +2230,14 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                         RingPropCount++;
                         RingProps.push_back(op);
                         delete obj;
-					} if (obj && ObjHash == OBJ_PLANESWITCHER) {
+					} 
+					if (obj && ObjHash == OBJ_PLANESWITCHER) {
 						PlaneSwitchers[PlaneSwitchCount].X = obj->X;
 						PlaneSwitchers[PlaneSwitchCount].Y = obj->Y;
 						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->ValUint32;
 						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->ValUint32;
 						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath")->ValBool;
-						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValUint32*2;
 						if (PlaneSwitchers[PlaneSwitchCount].Size <= 0) PlaneSwitchers[PlaneSwitchCount].Size = 1;
 						PlaneSwitchCount++;
 					}
@@ -2211,7 +2249,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					//free(attributes);
 				}
 			}
-
 			//delete[] AttributeTypes;
 			//delete[] attributes;
 		}
@@ -2678,11 +2715,15 @@ PUBLIC VIRTUAL void LevelScene::Init() {
 	SpriteBinMapIDs.assign(0x600, NULL);
 
 	LoadData();
-	App->Print(0, "%d", SaveGame::CurrentEmeralds);
+	//App->Print(0, "%d", SaveGame::CurrentEmeralds);
 
 	uint64_t startTime = SDL_GetTicks();
 	RestartStage(true, false);
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Init RestartStage()", (SDL_GetTicks() - startTime) / 1000.0);
+	if (TintColor != 0x000000 && SaveGame::CurrentMode != 0)
+		for (int i = 0; i < 256; i++)
+			for (int j = 0; j < PlayerCount; j++)
+				Players[j]->Sprites[0]->SetPalette(i, G->ColorBlendHex(Players[j]->Sprites[0]->GetPalette(i), TintColor, 50));
 
 	switch (ZoneID) {
 	case 2:
@@ -2794,7 +2835,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	LoadState();
 
 	SaveGame::SetLives(Player->Lives);
-	SaveGame::SetZone(ZoneID - 1);
+	if (ZoneID < 0xF0) SaveGame::SetZone(ZoneID - 1);
 	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = (uint8_t)Player->Shield < 5 ? (uint8_t)Player->Shield : 0;
 	SaveGame::Savefiles[SaveGame::CurrentSaveFile].BlueRing = 0;
 	SaveGame::Flush();
@@ -2947,6 +2988,22 @@ PUBLIC VIRTUAL void LevelScene::PatchLayer(int layer) {
 			}
 		}
 	}
+}
+
+PUBLIC VIRTUAL int LevelScene::FindLayer(std::string name) {
+	if (Data)
+	{
+		for (int i = 0; i < Data->layerCount; i++)
+		{
+			if (Data->Layers[i].Name == name)
+			{
+				//Success!
+				return i;
+			}
+		}
+	}
+	//Fail
+	return 0;
 }
 
 PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
@@ -3269,7 +3326,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 		}
 	}
 	for (unsigned int o = 0; o < (unsigned int)ObjectSolidCount; o++) {
-		Object* obj = ObjectsSolid.at(o);
+		Object* obj = ObjectsSolid[o];
 		if (!obj) continue;
 		if (!obj->Active) continue;
 		if (!obj->OnScreen) continue;
@@ -3285,8 +3342,7 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 					return true;
 				}
 			}
-		}
-		else {
+		} else {
 			bool playerCheck = true;
 			if (player)
 				playerCheck = player->YSpeed >= 0 && player->EZY < obj->Y - obj->H / 2;
@@ -3348,19 +3404,18 @@ PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool 
 }
 
 PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y, int vl) {
-	Explosion* expl;
-	expl = new Explosion();
-	expl->G = G;
-	expl->App = App;
-	expl->CurrentAnimation = animation;
-	expl->FlipX = flip;
-	expl->Active = true;
-	expl->Sprite = sprite;
-	expl->VisualLayer = vl;
-	expl->X = x;
-	expl->Y = y;
-    expl->IsExplosion = true;
-	TempObjects.push_back(expl);
+	Explosion* dropdashdust;
+	dropdashdust = new Explosion();
+	dropdashdust->G = G;
+	dropdashdust->App = App;
+	dropdashdust->CurrentAnimation = animation;
+	dropdashdust->FlipX = flip;
+	dropdashdust->Active = true;
+	dropdashdust->Sprite = sprite;
+	dropdashdust->VisualLayer = vl;
+	dropdashdust->X = x;
+	dropdashdust->Y = y;
+	TempObjects.push_back(dropdashdust);
 
 	return dropdashdust;
 }
@@ -3451,6 +3506,13 @@ PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int anima
 
 PUBLIC void LevelScene::AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life, int hold) {
 	ISprite::AnimFrame animframe = sprite->Animations[animation].Frames[frame];
+
+	int animState = G->CheckAnimation(sprite, animation, frame);
+	if (animState == 1) animation = 0;
+	if (animState == 2) frame = 0;
+	if (animState == 3) {
+		animation = 0; frame = 0;
+	}
 
 	MovingSprite* tile = new MovingSprite();
 	tile->G = G;
@@ -3654,7 +3716,8 @@ PUBLIC VIRTUAL void LevelScene::EarlyUpdate() {
 }
 
 PUBLIC VIRTUAL void LevelScene::Subupdate() {
-	if (ManiaLevel) {
+	//Probably just for bent lettuce?
+	/*if (ManiaLevel) {
 		int8_t DeformDelta[64] = {
 			0,    0,    1,    1,    0,    0,    0,    0,    1,    0,    0,    0,    0,    1,    0,    0,
 			0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    0,    0,    1,    1,    0,    0,
@@ -3664,7 +3727,7 @@ PUBLIC VIRTUAL void LevelScene::Subupdate() {
 		for (int i = 0; i < App->HEIGHT; i++) {
 			G->Deform[i] = DeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F] - 1;
 		}
-	}
+	}*/
 }
 
 PUBLIC VIRTUAL void LevelScene::DoResults() {
@@ -3913,7 +3976,7 @@ PUBLIC void LevelScene::Update() {
 		}
 
 		if (Player) {
-			if (LevelCardTimer >= 1.5 && Player->Action != ActionType::Dead && FadeAction < FadeActionType::TO_BONUS_STAGE1 && !StopTimer)
+			if (LevelCardTimer >= 1.5 && Player->Action != ActionType::Dead && FadeAction < FadeActionType::TO_BONUS_STAGE && !StopTimer)
 				Timer++;
 		}
 
@@ -3923,7 +3986,7 @@ PUBLIC void LevelScene::Update() {
 		// Max timer
 		if (Timer > 10 * 60 * 60 - 1) Timer = 10 * 60 * 60 - 1;
 
-		if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
+		if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction < FadeActionType::TO_BONUS_STAGE) {
 			if (Player) {
 				Player->InputController = 0;
 				Player->InputUp = App->Input->GetControllerInput(Player->InputController)[IInput::I_UP];
@@ -3955,11 +4018,11 @@ PUBLIC void LevelScene::Update() {
 			}
 		}
 
-		if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction == FadeActionType::TO_BONUS_STAGE1) {
+		/*if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction == FadeActionType::TO_BONUS_STAGE) {
 			if (Player) {
 			}
 			App->Print(3, "imagine we went to the bonus stage uwu");
-		}
+		}*/
 
 		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
 		{
@@ -4276,7 +4339,7 @@ PUBLIC void LevelScene::Update() {
 		EarlyUpdate();
 
 		if (maxLayer) {
-			if (LevelCardTimer >= 1.0 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
+			if (LevelCardTimer >= 1.0 && FadeAction < FadeActionType::TO_BONUS_STAGE) {
 				for (int p = 0; p < PlayerCount; p++) {
 					playerUpdateCount[p]++;
 
@@ -4289,164 +4352,173 @@ PUBLIC void LevelScene::Update() {
 			}
 		}
 
-		for (unsigned int o = 0; o < (unsigned int)ObjectCount && Player->Action != ActionType::Dead; o++) {
-			Object* obj = Objects[o];
-			if (obj != NULL) {
-				if (obj->Active) {
-					LastObjectUpdated = obj;
+		if (Player)
+		{
+			for (unsigned int o = 0; o < (unsigned int)ObjectCount && Player->Action != ActionType::Dead; o++) {
+				Object* obj = Objects[o];
+				if (obj != NULL) {
+					if (obj->Active) {
+						LastObjectUpdated = obj;
 
-                    //int32_t NoNegativeCamY = CameraY + App->HEIGHT / 2;
+						//int32_t NoNegativeCamY = CameraY + App->HEIGHT / 2;
 
-					bool OnScreen = false;
+						bool OnScreen = false;
 
-					if (Data->Layers[Data->CameraLayer].IsScrollingVertical) {
-                         // Reverse Engineered code from Sonic 3 & Knuckles, Ported to our form.
-                         /*
-                         // Original Version
-                         OnScreen |= (
-                                  -1 < (obj->X - CameraX) + obj->W &&
-                                  ((obj->X - CameraX) - obj->W) < 0x140 &&
-                                  ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < ((obj->H * 2) + 0xe0));
+						if (Data->Layers[Data->CameraLayer].IsScrollingVertical) {
+							// Reverse Engineered code from Sonic 3 & Knuckles, Ported to our form.
+							/*
+							// Original Version
+							OnScreen |= (
+									 -1 < (obj->X - CameraX) + obj->W &&
+									 ((obj->X - CameraX) - obj->W) < 0x140 &&
+									 ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < ((obj->H * 2) + 0xe0));
 
-                         // Split up version.
-                         OnScreen |= (
-                                (-1 < ((obj->X - CameraX) + obj->W)) &&
-                                (((obj->X - CameraX) - obj->W) < 0x140) &&
-                                ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) &&
-                                (((obj->Y - CameraY) - obj->H & ScreenYWrapValue) < 0xe0));
+							// Split up version.
+							OnScreen |= (
+								   (-1 < ((obj->X - CameraX) + obj->W)) &&
+								   (((obj->X - CameraX) - obj->W) < 0x140) &&
+								   ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) &&
+								   (((obj->Y - CameraY) - obj->H & ScreenYWrapValue) < 0xe0));
 
-                         // If this was true in the original, It'd skip the part where the
-                         // flag for being visible was modified.
-                         OnScreen |= (
-                                (((obj->X - CameraX) + obj->W) < 0) ||
-                                (0x13f < ((obj->X - CameraX) - obj->W)) ||
-                                obj->H * 2 + 0xe0 <= ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
+							// If this was true in the original, It'd skip the part where the
+							// flag for being visible was modified.
+							OnScreen |= (
+								   (((obj->X - CameraX) + obj->W) < 0) ||
+								   (0x13f < ((obj->X - CameraX) - obj->W)) ||
+								   obj->H * 2 + 0xe0 <= ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
 
-                         // Modified version to work the reverse of the one above.
-                         OnScreen |= (
-                                (((obj->X - CameraX) + obj->W) >= 0) ||
-                                (0x13f >= ((obj->X - CameraX) - obj->W)) ||
-                                obj->H * 2 + 0xe0 > ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
+							// Modified version to work the reverse of the one above.
+							OnScreen |= (
+								   (((obj->X - CameraX) + obj->W) >= 0) ||
+								   (0x13f >= ((obj->X - CameraX) - obj->W)) ||
+								   obj->H * 2 + 0xe0 > ((obj->Y - CameraY) + obj->H & ScreenYWrapValue));
 
-                         OnScreen |= (
-                                (-1 < ((obj->X - 0x80) + obj->W)) &&
-                                (((obj->X - 0x80) - obj->W) < 0x140) &&
-                                (-1 < ((obj->Y - 0x80) + obj->H)) &&
-                                (((obj->Y - 0x80) - obj->H) < 0xe0));
-                        */
+							OnScreen |= (
+								   (-1 < ((obj->X - 0x80) + obj->W)) &&
+								   (((obj->X - 0x80) - obj->W) < 0x140) &&
+								   (-1 < ((obj->Y - 0x80) + obj->H)) &&
+								   (((obj->Y - 0x80) - obj->H) < 0xe0));
+						   */
 
-                        if (obj->VisW > obj->W || obj->VisH > obj->H) {
-                            OnScreen |= (
-                                  -1 < (obj->X - CameraX) + obj->VisW &&
-                                  ((obj->X - CameraX) - obj->VisW) < 0x140 &&
-                                  ((obj->Y - CameraY) + obj->VisH & ScreenYWrapValue) < ((obj->VisH * 2) + 0xe0));
+							if (obj->VisW > obj->W || obj->VisH > obj->H) {
+								OnScreen |= (
+									-1 < (obj->X - CameraX) + obj->VisW &&
+									((obj->X - CameraX) - obj->VisW) < 0x140 &&
+									((obj->Y - CameraY) + obj->VisH & ScreenYWrapValue) < ((obj->VisH * 2) + 0xe0));
 
-                            /*
-                            OnScreen |= (
-                                obj->X + obj->VisW / 2 >= CameraX - 0x80 &&
-                                (obj->Y + obj->VisH / 2) % (Data->Layers[Data->CameraLayer].Height * 16) >= CameraY - 0x80 &&
-                                obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 0x80 &&
-                                (obj->Y - obj->VisH / 2) % (Data->Layers[Data->CameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
-                            */
-                        } else {
-                            int16_t Calc = (obj->Y - CameraY) + obj->H & ScreenYWrapValue;
-							if ((obj->Y - CameraY) + obj->H > ScreenYWrapValue) {
-								Calc = (((obj->Y - CameraY) + obj->H) + ScreenYWrapValue) & ScreenYWrapValue;
+								/*
+								OnScreen |= (
+									obj->X + obj->VisW / 2 >= CameraX - 0x80 &&
+									(obj->Y + obj->VisH / 2) % (Data->Layers[Data->CameraLayer].Height * 16) >= CameraY - 0x80 &&
+									obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 0x80 &&
+									(obj->Y - obj->VisH / 2) % (Data->Layers[Data->CameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
+								*/
 							}
-                            OnScreen |= (
-                                  -1 < (obj->X - CameraX) + obj->W &&
-                                  ((obj->X - CameraX) - obj->W) < 0x140 &&
-                                  (Calc < (obj->H * 2) + 0xe0));
-
-                            if (obj->PrintDebuggingInfo) {
-                                App->Print(0, "%04X, %04X", Calc, (obj->H * 2) + 0xe0);
-                            }
-
-                            /*
-                            OnScreen |= (
-                                obj->X + obj->W / 2 >= CameraX - 0x80 &&
-                                (obj->Y + obj->H / 2) % (Data->Layers[Data->CameraLayer].Height * 16) >= CameraY - 0x80 &&
-                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
-                                (obj->Y - obj->H / 2) % (Data->Layers[Data->CameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
-                            */
-                        }
-					} else {
-                        if (obj->VisW > obj->W || obj->VisH > obj->H) {
-                            OnScreen |= (
-                                obj->X + obj->VisW >= CameraX - 0x80 &&
-                                obj->Y + obj->VisH >= CameraY - 0x80 &&
-                                obj->X - obj->VisW < CameraX + App->WIDTH + 0x80 &&
-                                obj->Y - obj->VisH < CameraY + App->HEIGHT + 0x80);
-                        } else {
-                            OnScreen |= (
-                                obj->X + obj->W / 2 >= CameraX - 0x80 &&
-                                obj->Y + obj->H / 2 >= CameraY - 0x80 &&
-                                obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
-                                obj->Y - obj->H / 2 < CameraY + App->HEIGHT + 0x80);
-                        }
-                    }
-
-					if (obj->OnScreen && !OnScreen) {
-						obj->OnScreen = OnScreen;
-						obj->OnLeaveScreen();
-					}
-
-					obj->OnScreen = OnScreen;
-					if (obj->Priority || OnScreen) {
-						obj->CollidingWithPlayer = false;
-						for (int p = 0; p < PlayerCount && maxLayer; p++) {
-							if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 - 1 &&
-								obj->Y + obj->H / 2 >= Players[p]->EZY - Players[p]->H / 2 - 1 &&
-								obj->X - obj->W / 2 < Players[p]->EZX + Players[p]->W / 2 + 1 &&
-								obj->Y - obj->H / 2 < Players[p]->EZY + Players[p]->H / 2 + 1) {
-								if (Players[p]->Action == ActionType::Dead) continue;
-
-								int wy = (Player->W + obj->W) * ((int)Players[p]->EZY - (int)obj->Y);
-								int hx = (Player->H + obj->H) * ((int)Players[p]->EZX - (int)obj->X);
-
-								int hitFrom = (int)CollideSide::RIGHT;
-
-								if (wy > hx) {
-									if (wy > -hx) {
-										hitFrom = (int)CollideSide::BOTTOM;
-									} else {
-										hitFrom = (int)CollideSide::LEFT;
-                                    }
-								} else {
-									if (wy > -hx) {
-										hitFrom = (int)CollideSide::RIGHT;
-									} else {
-										hitFrom = (int)CollideSide::TOP;
-                                    }
-                                }
-
-								obj->CollidingWithPlayer |= obj->OnCollisionWithPlayer(Players[p]->PlayerID, hitFrom, 0);
-
-								if (obj->Pushable) {
-									obj->OnPush(Players[p]->PlayerID, hitFrom);
+							else {
+								int16_t Calc = (obj->Y - CameraY) + obj->H & ScreenYWrapValue;
+								if ((obj->Y - CameraY) + obj->H > ScreenYWrapValue) {
+									Calc = (((obj->Y - CameraY) + obj->H) + ScreenYWrapValue) & ScreenYWrapValue;
 								}
-							}
+								OnScreen |= (
+									-1 < (obj->X - CameraX) + obj->W &&
+									((obj->X - CameraX) - obj->W) < 0x140 &&
+									(Calc < (obj->H * 2) + 0xe0));
 
-							if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 &&
-								obj->X - obj->W / 2 < Players[p]->EZX + Players[p]->W / 2 &&
-								Players[p]->EZY + Players[p]->H / 2 >= obj->Y - obj->H / 2 - 4 &&
-								Players[p]->EZY + Players[p]->H / 2 < obj->Y - obj->H / 2 + 2 &&
-								Players[p]->YSpeed >= 0 &&
-								Players[p]->Ground) {
-								obj->BeingStoodOn = true;
+								if (obj->PrintDebuggingInfo) {
+									App->Print(0, "%04X, %04X", Calc, (obj->H * 2) + 0xe0);
+								}
+
+								/*
+								OnScreen |= (
+									obj->X + obj->W / 2 >= CameraX - 0x80 &&
+									(obj->Y + obj->H / 2) % (Data->Layers[Data->CameraLayer].Height * 16) >= CameraY - 0x80 &&
+									obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
+									(obj->Y - obj->H / 2) % (Data->Layers[Data->CameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
+								*/
 							}
-							else
-								obj->BeingStoodOn = false;
+						}
+						else {
+							if (obj->VisW > obj->W || obj->VisH > obj->H) {
+								OnScreen |= (
+									obj->X + obj->VisW >= CameraX - 0x80 &&
+									obj->Y + obj->VisH >= CameraY - 0x80 &&
+									obj->X - obj->VisW < CameraX + App->WIDTH + 0x80 &&
+									obj->Y - obj->VisH < CameraY + App->HEIGHT + 0x80);
+							}
+							else {
+								OnScreen |= (
+									obj->X + obj->W / 2 >= CameraX - 0x80 &&
+									obj->Y + obj->H / 2 >= CameraY - 0x80 &&
+									obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
+									obj->Y - obj->H / 2 < CameraY + App->HEIGHT + 0x80);
+							}
 						}
 
-						obj->Update();
+						if (obj->OnScreen && !OnScreen) {
+							obj->OnScreen = OnScreen;
+							obj->OnLeaveScreen();
+						}
+
+						obj->OnScreen = OnScreen;
+						if (obj->Priority || OnScreen) {
+							obj->CollidingWithPlayer = false;
+							for (int p = 0; p < PlayerCount && maxLayer; p++) {
+								if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 - 1 &&
+									obj->Y + obj->H / 2 >= Players[p]->EZY - Players[p]->H / 2 - 1 &&
+									obj->X - obj->W / 2 < Players[p]->EZX + Players[p]->W / 2 + 1 &&
+									obj->Y - obj->H / 2 < Players[p]->EZY + Players[p]->H / 2 + 1) {
+									if (Players[p]->Action == ActionType::Dead) continue;
+
+									int wy = (Player->W + obj->W) * ((int)Players[p]->EZY - (int)obj->Y);
+									int hx = (Player->H + obj->H) * ((int)Players[p]->EZX - (int)obj->X);
+
+									int hitFrom = (int)CollideSide::RIGHT;
+
+									if (wy > hx) {
+										if (wy > -hx) {
+											hitFrom = (int)CollideSide::BOTTOM;
+										}
+										else {
+											hitFrom = (int)CollideSide::LEFT;
+										}
+									}
+									else {
+										if (wy > -hx) {
+											hitFrom = (int)CollideSide::RIGHT;
+										}
+										else {
+											hitFrom = (int)CollideSide::TOP;
+										}
+									}
+
+									obj->CollidingWithPlayer |= obj->OnCollisionWithPlayer(Players[p]->PlayerID, hitFrom, 0);
+
+									if (obj->Pushable) {
+										obj->OnPush(Players[p]->PlayerID, hitFrom);
+									}
+								}
+
+								if (obj->X + obj->W / 2 >= Players[p]->EZX - Players[p]->W / 2 &&
+									obj->X - obj->W / 2 < Players[p]->EZX + Players[p]->W / 2 &&
+									Players[p]->EZY + Players[p]->H / 2 >= obj->Y - obj->H / 2 - 4 &&
+									Players[p]->EZY + Players[p]->H / 2 < obj->Y - obj->H / 2 + 2 &&
+									Players[p]->YSpeed >= 0 &&
+									Players[p]->Ground) {
+									obj->BeingStoodOn = true;
+								}
+								else
+									obj->BeingStoodOn = false;
+							}
+
+							obj->Update();
+						}
 					}
 				}
 			}
 		}
 
 		if (maxLayer) {
-			if (LevelCardTimer >= 1.0 && FadeAction < FadeActionType::TO_BONUS_STAGE1) {
+			if (LevelCardTimer >= 1.0 && FadeAction < FadeActionType::TO_BONUS_STAGE) {
 				for (int p = 0; p < PlayerCount; p++) {
 					playerLateUpdateCount[p]++;
 
@@ -4684,7 +4756,7 @@ PUBLIC void LevelScene::Update() {
 		if (FadeAction == FadeActionType::RESTART) {
 			Paused = false;
 			PauseFinished = true;
-			Player->Shield = ShieldType::None;
+			if (Player) Player->Shield = ShieldType::None;
 			SaveGame::Savefiles[SaveGame::CurrentSaveFile].Shield = 0;
 			RestartStage(false, true);
 			FadeAction = FadeActionType::FADEIN;
@@ -4728,6 +4800,14 @@ PUBLIC void LevelScene::Update() {
 			}
 
 			NextScene->Act = toLevel;
+			App->NextScene = NextScene;
+		}
+		if (FadeAction == FadeActionType::TO_BONUS_STAGE) {
+			FadeAction = 0;
+			FadeTimerMax = 1;
+
+			Level_BonusStage* NextScene = new Level_BonusStage(App, G, NextBonusStage);
+			NextScene->ZoneID = 0x100 | VisualAct;
 			App->NextScene = NextScene;
 		}
 		else if (FadeAction == FadeActionType::NEXT_ZONE) {
@@ -5364,7 +5444,6 @@ PUBLIC void LevelScene::RenderTitleCard() {
 		}
 		else {
 			ISprite::AnimFrame Frame;
-			IApp::Print(3, "LevelName[i] - \'A\' = %d", LevelName[i] - 'A');
 			Frame = GlobalDisplaySprite->Animations[15].Frames[LevelName[i] - 'A'];
 			ex += Frame.W + 1;
 		}
@@ -5431,7 +5510,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 		paltimer = 0;
 	}
 
-	int paletteToCycle[18] = {
+	int paletteToCycle[9] = {
 		0xEAD100,
 		0xE4C700,
 		0xE0BF00,
@@ -5441,7 +5520,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 		0xCD9D00,
 		0xC89400,
 		0xC48C00,
-		0xBE8200,
+		/*0xBE8200,
 		0xB97A00,
 		0xB47100,
 		0xB06A00,
@@ -5449,13 +5528,13 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 		0xA65900,
 		0xA15000,
 		0x9D4800,
-		0x993A00,
+		0x993A00,//*/
 	};
 
 	int anim_off;
 
 	for (int i = 0; i < 9; i++)
-		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 18) % 18]);
+		PauseSprite->SetPalette(60 - i, paletteToCycle[(palframe - i + 9) % 9]);
 
 	//White Tint
 	G->SetDrawAlpha((int)((60 - pauseAnimTimer) * 2) < 0 ? 0 : (int)((60 - pauseAnimTimer) * 2)); //theres probably an easier way, dont care
@@ -5467,7 +5546,7 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	//Base Black BG
 	G->DrawSprite(PauseSprite, 0, 2, 0, App->HEIGHT - PauseSprite->Animations[0].Frames[3].H + pauseAnimTimer, 0, IE_NOFLIP);
 	//Top BG thingy
-	G->DrawSprite(PauseSprite, 0, 2, 0, 17 - pauseAnimTimer, 0, IE_FLIPY);
+	G->DrawSprite(PauseSprite, 0, 2, 0, 23 - pauseAnimTimer, 0, IE_FLIPY);
 	//G->DrawSprite(PauseSprite, 0, 2, 0, 0, 0, IE_NOFLIP);
 
 	//Buttons
@@ -5496,6 +5575,14 @@ PUBLIC void LevelScene::RenderPauseScreen() {
 	G->DrawSprite(PauseSprite, 2, 5 * (SaveGame::CurrentEmeralds >> 12 & 1), 365 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
 	G->DrawSprite(PauseSprite, 2, 6 * (SaveGame::CurrentEmeralds >> 13 & 1), 382 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
 	G->DrawSprite(PauseSprite, 2, 7 * (SaveGame::CurrentEmeralds >> 14 & 1), 399 + 8, 218 + 8 + pauseAnimTimer, 0, IE_NOFLIP);
+
+	int xadj = 10;	
+	//Player Heads
+	if (SaveGame::CurrentPartnerFlag != 0xFF) {
+		G->DrawSprite(PauseSprite, 4, SaveGame::CurrentPartnerFlag, 31, 215 + pauseAnimTimer, 0, IE_NOFLIP);
+		xadj = 0;
+	}
+	G->DrawSprite(PauseSprite, 4, SaveGame::CurrentCharacterFlag, xadj + 1, 215 + pauseAnimTimer, 0, IE_NOFLIP);
 
 	G->DrawSprite(PauseSprite, 0, 3, 148, 6 - pauseAnimTimer, 0, IE_NOFLIP); //"You are currently Paused"
 
@@ -5717,7 +5804,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 				}
 			}
 			else {
-				if (layer.Info[0].HeatWaveEnabled) {
+				if (layer.Info[0].Behaviour == 1) {
 					if (ManiaLevel)
 						G->DoDeform = true;
 				}
@@ -5886,7 +5973,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 					}
 				}
 
-				if (layer.Info[0].HeatWaveEnabled) {
+				if (layer.Info[0].Behaviour) {
 					if (ManiaLevel)
 						G->DoDeform = false;
 				}
@@ -5904,7 +5991,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		// Rendering objects
 		for (int i = 0; i < ObjectCount; i++) {
 			Object* obj = Objects[i];
-			//if (obj->Active && (obj->OnScreen || obj->Priority)) {
 			if (obj == NULL) continue;
 
 			if (obj->Active && obj->OnScreen) {
@@ -6087,6 +6173,24 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 			char ghgh[3];
 			sprintf(ghgh, "%02X", PlaneSwitchers[i].Angle & 0xFF);
 			G->DrawTextShadow(PlaneSwitchers[i].X - 8 - CameraX, PlaneSwitchers[i].Y - CameraY - 4, ghgh, PlaneSwitchers[i].OnPath ? 0xF2D141 : 0xFFFFFF);
+	
+			int W = 16 * PlaneSwitchers[i].Size;
+			int H = 16 * PlaneSwitchers[i].Size;
+			int rnd = (PlaneSwitchers[i].Angle & 0xC0);
+			if (rnd == 0x00 ||
+				rnd == 0x80) {
+				W = 16;
+			}
+			else {
+				H = 16;
+			}
+
+			if (rnd != PlaneSwitchers[i].Angle)
+				continue; // just don't even deal with angles like these tbh
+
+			G->SetDrawAlpha(0x80);
+			G->DrawRectangle(PlaneSwitchers[i].X - (W / 2) - CameraX, PlaneSwitchers[i].Y - (H / 2) - CameraY, W, H, 0xCC53D1);
+			G->SetDrawAlpha(0xFF);
 		}
 	}
 	if (ViewPlayerStats) {
@@ -6350,7 +6454,7 @@ PUBLIC VIRTUAL void LevelScene::Render() {
 }
 
 PUBLIC VIRTUAL void LevelScene::Cleanup() {
-#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+#define CLEANUP(name) if (name) { printf("%s\n", #name); name->Cleanup(); delete name; name = NULL; }
 
 	App->Audio->ClearMusic();
 	CLEANUP(Sound::SoundBank[0]);
@@ -6385,13 +6489,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	}
 
 	for (int i = 0; i < PlayerCount; i++) {
-		if (Players[i]->Character != CharacterType::Knuckles || !ClearedKnuxSprite) {
-			for (int s = 0; s < 8; s++) {
-				CLEANUP(Players[i]->Sprites[s]);
-			}
-		}
-		CLEANUP(Players[i]->SpriteShields);
-		CLEANUP(Players[i]->SpriteShields2);
+		Players[i]->Cleanup();
 		delete Players[i];
 	}
 

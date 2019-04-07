@@ -27,18 +27,21 @@ public:
 #include <Game/Levels/ICZ.h>
 #include <Game/Levels/LBZ.h>
 #include <Game/Levels/MHZ.h>
-//#include <Game/Levels/FBZ.h>
-//#include <Game/Levels/SOZ.h>
-//#include <Game/Levels/LRZ.h>
-//#include <Game/Levels/HPZ.h>
-//#include <Game/Levels/SSZ.h>
-//#include <Game/Levels/DEZ.h>
-//#include <Game/Levels/TDZ.h>
+#include <Game/Levels/FBZ.h>
+#include <Game/Levels/SOZ.h>
+#include <Game/Levels/LRZ.h>
+#include <Game/Levels/HPZ.h>
+#include <Game/Levels/SSZ.h>
+#include <Game/Levels/DEZ.h>
+#include <Game/Levels/TDZ.h>
 #include <Game/Levels/SpecialStage.h>
+#include <Game/Levels/BonusStage.h>
 
 #include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
 #include <Game/Scenes/SettingsMenu.h>
+#include <Game/Scenes/ExtrasMenu.h>
+#include <Game/Scenes/VSMenu.h>
 
 #include <Game/Scenes/MainMenu.h>
 #include <ctime>
@@ -86,35 +89,34 @@ int paletteToCycle[18] = {
 	0x993A00,
 };
 
+int MainMenu_at = 0;
+
 PUBLIC Scene_MainMenu::Scene_MainMenu(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
-
-	// Memory::ClearTrackedMemory();
-
-	Sound::Audio = App->Audio;
-	Sound::Init();
-
-	// Sound::SoundBank[0] = new ISound("Music/Save Select.ogg", true);
-	// Sound::Audio->LoopPoint[0] = 131859;
-	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Menu.ogg")) {
-		Sound::SoundBank[0] = new ISound("Music/Menu.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
-	}
 }
 
 PUBLIC void Scene_MainMenu::Init() {
+	int at = 0;
+	if (Sound::SoundBank[0]) {
+		char* ct = strstr(Sound::SoundBank[0]->Name, "Menu");
+		if (ct != NULL)
+			at = Sound::SoundBank[0]->GetPosition();
+		//free(ct);
+	}
+	App->Audio->ClearMusic();
+	Sound::PlayStream(0, "Music/Menu1.ogg", true, 0, at, true);
+
 	if (!MenuSprite) {
-		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App, 1);
-		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
+		MenuSprite = new ISprite("UI/MainMenu.gif", App, 1);
+		MenuSprite->LoadAnimation("UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
 		MenuSprite->SetTransparentColorIndex(0x0);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SphereSprite) {
-		SphereSprite = new ISprite("Sprites/UI/MenuSpheres.gif", App, 1);
-
+		SphereSprite = new ISprite("UI/MenuSpheres.gif", App, 1);
 		ISprite::Animation an;
 		an.Name = (char*)"Sign in GitLab.com";
 		an.FrameCount = 5;
@@ -133,14 +135,14 @@ PUBLIC void Scene_MainMenu::Init() {
 		SphereSprite->SetTransparentColorIndex(26);
 	}
 	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
-		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
+		SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App, 1);
+		SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App, 1);
-		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
+		TextSprite = new ISprite("UI/CreditsText.gif", App, 1);
+		TextSprite->LoadAnimation("UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 
@@ -187,6 +189,11 @@ PUBLIC void Scene_MainMenu::Update() {
 
 				App->NextScene = NextScene;
 			}
+			else if (selected == 1) {
+				Scene_VSMenu* NextScene = new Scene_VSMenu(App, G);
+
+				App->NextScene = NextScene;
+			}
 			else if (selected == 2) {
 				Scene_SettingsMenu* NextScene = new Scene_SettingsMenu(App, G);
 				NextScene->MenuSprite = MenuSprite;
@@ -199,6 +206,11 @@ PUBLIC void Scene_MainMenu::Update() {
 				MenuSprite = NULL;
 				SuperButtonsSprite = NULL;
 				TextSprite = NULL;
+
+				App->NextScene = NextScene;
+			}
+			else if (selected == 3) {
+				Scene_ExtrasMenu* NextScene = new Scene_ExtrasMenu(App, G);
 
 				App->NextScene = NextScene;
 			}

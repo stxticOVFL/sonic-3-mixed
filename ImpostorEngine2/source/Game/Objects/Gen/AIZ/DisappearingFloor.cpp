@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER DisappearingFloor::DisappearingFloor() {
+    BinIndex = LevelScene::LoadSpriteBin("AIZ/Disappearing Floor.bin");
+}
+
 void DisappearingFloor::Create() {
     Object::Create();
     Active = true;
@@ -23,7 +27,7 @@ void DisappearingFloor::Create() {
 
     Offset <<= Period;
     Visible = true;
-    CurrentAnimation = 10;
+    CurrentAnimation = Sprite->FindAnimation("Disappearing Floor");
     Frame = 4;
 }
 

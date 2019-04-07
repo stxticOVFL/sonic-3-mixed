@@ -10,6 +10,7 @@
 
 class IScene;
 class IScene;
+class ISprite;
 class IGraphics;
 class IInput;
 class IAudio;
@@ -28,6 +29,7 @@ class IApp {
 public:
     IScene* Scene = NULL;
     IScene* NextScene = NULL;
+    ISprite* NullSprite = NULL;
     IGraphics* G = NULL;
     IInput* Input = NULL;
     IAudio* Audio = NULL;
@@ -47,6 +49,12 @@ public:
     static Platforms Platform; //
     static bool Mobile;
     static IApp* GlobalApp;
+    //DEV MENU
+    bool DevMenuEnabled;
+    bool DevMenuActive = false;
+    Uint32 DevMenuColour = 0x0000FF;
+    Uint8 DevMenuSelected = 0;
+    Uint8 DevMenuCurMenu = 0;
 
     IApp();
     void LoadSettings();

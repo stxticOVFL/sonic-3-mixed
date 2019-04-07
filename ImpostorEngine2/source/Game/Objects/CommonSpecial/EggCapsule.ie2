@@ -45,10 +45,12 @@ event Create() {
 }
 
 event Update() {
-    ///*
-    if (Flying) {
+    
+	if (!isHeldDebugObject)
+	{
+		    if (Flying) {
         Swing_UpAndDown();
-    }
+		}
     else {
         if (Gravity) {
             while (Scene.CollisionAt(X, Y + 32 + 1)) {
@@ -80,6 +82,7 @@ event Update() {
 
         Scene.DoResults();
     }
+	}
     //*/
 }
 

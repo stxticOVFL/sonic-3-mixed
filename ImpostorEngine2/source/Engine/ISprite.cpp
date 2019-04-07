@@ -51,9 +51,11 @@ public:
 
     bool Print = false;
     
-    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size);
+    void* operator new(size_t const size, const char* identifier);
     void* operator new(size_t const size, std::nothrow_t const&) noexcept;
     void operator delete(void* const block) noexcept;
+    void operator delete(void* const block, const char* identifier) noexcept;
 };
 #endif
 
@@ -65,24 +67,124 @@ public:
 #include <algorithm>
 #include <fstream>
 #include <Engine/ImageFormats/GIF.h>
+#include <Engine/ImageFormats/BMP.h>
+#include <Engine/ImageFormats/PNG.h>
 #include <Engine/Diagnostics/Memory.h>
 
 static std::unordered_map<const char*, gd_GIF*> GifMap;
 
-int Mode = 1;
-
 PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
-	ISprite(filename, app, Mode);
-}
-PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
     App = app;
     G = app->G;
-	Mode = mode;
-    if (strEndsWith(filename, ".bin")) {
-        LoadBin(filename);
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
     } else {
         LoadSprite(Filename);
     }
+}
+
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, bool IsPrinting) {
+    App = app;
+    G = app->G;
+    Print = IsPrinting;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename);
+    }
+}
+
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
+    App = app;
+    G = app->G;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+	std::string outfile;
+	switch (mode) {
+		case 0: {
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		case 1:
+		case 2: {
+			outfile.clear();
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		default:
+			outfile.clear();
+			outfile.append(checkedFilename);
+	}
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename);
+    }
+}
+
+PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinting) {
+    App = app;
+    G = app->G;
+    Print = IsPrinting;
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+	std::string outfile;
+	switch (mode) {
+		case 0: {
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		case 1:
+		case 2: {
+			outfile.clear();
+			outfile.append("Classic/");
+			outfile.append(checkedFilename);
+			std::ifstream cfile(outfile);
+			if ((bool)cfile) {
+				break;
+			}
+		}
+		default:
+			outfile.clear();
+			outfile.append(checkedFilename);
+	}
+    Filename = checkedFilename;
+    if (strEndsWith(Filename.c_str(), ".bin")) {
+        LoadBin(Filename.c_str());
+    } else {
+        LoadSprite(Filename);
+    }
+}
+
+PUBLIC ISprite::~ISprite() {
+
 }
 
 PUBLIC void ISprite::SetTransparentColorIndex(int i) {
@@ -204,10 +306,15 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 }
 
 PUBLIC void ISprite::LoadBin(const char* filename) {
-    IResource* BinFile = IResources::Load(filename, Mode);
-    if (!BinFile) {
-        IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+        Filename = checkedFilename;
+    }
+    IResource* BinFile = IResources::Load(checkedFilename.c_str());
+    if (BinFile == NULL) {
+        IApp::Print(2, "Couldn't open file '%s'!", checkedFilename.c_str());
+        fflush(stdin);
         exit(0);
     }
 
@@ -273,16 +380,20 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
 }
 
 PUBLIC void ISprite::LoadAnimation(const char* filename) {
-    IResource* SpriteFile = IResources::Load(filename, Mode);
-    if (!SpriteFile) {
-        IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+    }
+    IResource* SpriteFile = IResources::Load(checkedFilename.c_str());
+    if (SpriteFile == NULL) {
+        IApp::Print(2, "Couldn't open file '%s'!", checkedFilename.c_str());
+        fflush(stdin);
         exit(0);
     }
 
     IStreamer reader(SpriteFile);
 
-    IApp::Print(-1 + Print, "\"%s\"", filename);
+    IApp::Print(-1 + Print, "\"%s\"", checkedFilename.c_str());
 
     reader.ReadUInt32BE(); // magic
 
@@ -341,21 +452,44 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 }
 
 PUBLIC void ISprite::LoadSprite(const char* filename) {
-    IResource* res = IResources::Load(filename, true, Mode);
-	if (!res) {
-		IApp::Print(2, "Couldn't open file '%s'!", filename);
-		fflush(stdin);
-		return;
-	}
+    std::string checkedFilename(filename);
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+        checkedFilename = "Sprites/" + checkedFilename;
+        Filename = checkedFilename;
+    }
 
     TextureID = 0;
     PaletteID = 0;
     PaletteAltID = 0;
 
-    Filename = std::string(filename);
+    Filename = checkedFilename;
 
     size_t ticks = SDL_GetTicks();
-    GIF* gif = GIF::Load(Filename.c_str());
+
+	int strleng = strlen(Filename.c_str());
+
+	GIF* gif;
+
+	switch (Filename.c_str()[strleng - 3])
+	{
+		PNG* png;
+		BMP* bmp;
+	case 'b':
+	case 'B':
+		bmp = BMP::Load(Filename.c_str());
+		gif = BMP::ToGif(bmp);
+		//delete[] bmp;
+		break;
+	case 'p':
+	case 'P':
+		png = PNG::Load(Filename.c_str());
+		gif = PNG::ToGif(png);
+		//delete[] png;
+		break;
+	default:
+		gif = GIF::Load(Filename.c_str());
+		break;
+	}
 
     if (!LinkedSprite) {
         if (Palette) {
@@ -378,8 +512,15 @@ PUBLIC void ISprite::LoadSprite(const char* filename) {
         PaletteAlt = (uint32_t*)Memory::TrackedCalloc("ISprite::PaletteAlt", 256, sizeof(uint32_t));
     }
     else {
-        IApp::Print(2, "GIF could not be loaded!");
-        exit(-1);
+        IApp::Print(2, "GIF could not be loaded! Making 'Empty' Sprite");
+		gif = GIF::Load("Classic/Sprites/Dev/NullGfx.gif");
+		Data = gif->Data;
+		Width = gif->Width;
+		Height = gif->Height;
+		Palette = gif->Colors;
+		TransparentColorIndex = gif->TransparentColorIndex;
+		PaletteAlt = (uint32_t*)Memory::TrackedCalloc("ISprite::PaletteAlt", 256, sizeof(uint32_t));
+        //exit(-1);
     }
 
     Paletted = 1;
@@ -403,7 +544,7 @@ PROTECTED inline bool ISprite::FindGIF(const char* filename) {
 
 PUBLIC int ISprite::FindAnimation(const char* animname) {
 #ifndef NDEBUG
-	assert(this != nullptr);
+	//assert(this != nullptr);
 #endif
 	for (int a = 0; a < AnimCount; a++) {
 		if (Animations[a].Name[0] == animname[0] && !strcmp(Animations[a].Name.c_str(), animname)) {
@@ -412,12 +553,12 @@ PUBLIC int ISprite::FindAnimation(const char* animname) {
 	}
 
     App->Print(2, "Couldn't find animation %s in Sprite %s!", animname, Filename.c_str());
-    return -1;
+    return 0;
 }
 
 PUBLIC int ISprite::FindAnimation(const char* animname, const bool dir) {
 #ifndef NDEBUG
-	assert(this != nullptr);
+	//assert(this != nullptr);
 #endif
 
     if (dir) { 
@@ -433,7 +574,7 @@ PUBLIC int ISprite::FindAnimation(const char* animname, const bool dir) {
     }
     
     App->Print(2, "Couldn't find animation %s in Sprite %s!", animname, Filename.c_str());
-    return -1;
+    return 0;
 }
 
 PUBLIC void ISprite::LinkAnimation(std::vector<Animation> ani) {
@@ -520,6 +661,20 @@ void* ISprite::operator new(size_t const size) {
     }
 }
 
+void* ISprite::operator new(size_t size, const char* identifier) {
+    for (;;) {
+        if (void* const block = Memory::TrackedMalloc(identifier, size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
 void* ISprite::operator new(size_t const size, std::nothrow_t const&) noexcept {
     try {
         return operator new(size);
@@ -530,4 +685,8 @@ void* ISprite::operator new(size_t const size, std::nothrow_t const&) noexcept {
 
 void ISprite::operator delete(void* const block) noexcept {
     Memory::Free(block);
+}
+
+void ISprite::operator delete(void* const block, const char* identifier) noexcept {
+    operator delete(block);
 }

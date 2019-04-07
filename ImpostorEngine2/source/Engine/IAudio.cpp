@@ -151,12 +151,12 @@ PUBLIC void IAudio::PushMusicAt(ISound* music, double at, bool loop, uint32_t lp
     StackNode* newms = new StackNode();
     newms->Audio = music;
 
-    music->Seek(int(ceil(at * AUDIO_FREQUENCY)));
+    music->Seek(int(ceil(at)));
 	if (music->Stream)
 		SDL_AudioStreamClear(music->Stream);
 
-    newms->Buffer = music->Buffer + int(ceil(at * AUDIO_FREQUENCY)) * 4;
-    newms->Length = music->Length - int(ceil(at * AUDIO_FREQUENCY)) * 4;
+    newms->Buffer = music->Buffer + int(ceil(at)) * 4;
+    newms->Length = music->Length - int(ceil(at)) * 4;
     newms->BufferStart = music->Buffer;
     newms->LengthStart = music->Length;
     newms->Loop = loop;

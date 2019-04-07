@@ -30,6 +30,7 @@ public:
     static uint8_t  CurrentPartnerFlag;
 	static uint16_t CurrentUsedZoneRings;
 	static uint16_t CurrentEmeralds;
+	static bool		SuperEmeraldRoomActivated;
 
 	static bool AchievementData[0x40];
 };
@@ -59,6 +60,7 @@ uint8_t             SaveGame::CurrentPartnerFlag = 0xFF;
 uint16_t            SaveGame::CurrentUsedZoneRings = 0x0000; // resets on every zone
 uint16_t            SaveGame::CurrentEmeralds = 0xFFFF;
 bool				SaveGame::AchievementData[TOTAL_ACHIEVEMENT_COUNT];
+bool				SaveGame::SuperEmeraldRoomActivated = false;
 
 SaveGame::SaveFile  SaveGame::Savefiles[36];
 
@@ -70,7 +72,7 @@ PUBLIC STATIC void SaveGame::Init() {
 	InitializedSaveGame = true;
 
 	memset(SaveGame::Savefiles, 0, sizeof(SaveGame::Savefiles));
-    IResource* SaveBin = IResources::Load("../../Save.bin");
+    IResource* SaveBin = IResources::Load("../Save.bin");
     if (SaveBin) {
         IStreamer reader(SaveBin);
         for (int s = 0; s < 36; s++) {
@@ -114,7 +116,7 @@ PUBLIC STATIC void SaveGame::InitializeSaveGame(int s) {
 }
 
 PUBLIC STATIC void SaveGame::Flush() {
-    IResource* SaveBin = IResources::Open("../../Save.bin");
+    IResource* SaveBin = IResources::Open("../Save.bin");
     if (SaveBin) {
         IStreamer writer(SaveBin);
         for (int s = 0; s < 36; s++) {

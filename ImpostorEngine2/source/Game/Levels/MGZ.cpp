@@ -23,28 +23,50 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	ZoneID = 3;
 	VisualAct = Act = act;
 	sprintf(ZoneLetters, "MGZ");
-
-	if (Act == 1) {
-		//Sound::SoundBank[0] = new ISound("Music/MGZ1.ogg", true);
-		// Sound::Audio->LoopPoint[0] = 1007820;
-
-		Str_TileConfigBin = "Stages/MGZ1/TileConfig.bin";
-		Str_SceneBin = "Stages/MGZ1/Scene.bin";
-		Str_TileSprite = "Stages/MGZ1/16x16Tiles.gif";
-		Str_AnimatedSprites = "Stages/MGZ1/Animated Tiles.gif";
-	}
-	else {
-		//Sound::SoundBank[0] = new ISound("Music/MGZ2.ogg", true);
-		//Sound::Audio->LoopPoint[0] = 21609;
-		// Sound::Audio->LoopPoint[0] = 1007820;
-
-		Str_TileConfigBin = "Stages/MGZ2/TileConfig.bin";
-		Str_SceneBin = "Stages/MGZ2/Scene.bin";
-		Str_TileSprite = "Stages/MGZ2/16x16Tiles.gif";
-		Str_AnimatedSprites = "Stages/MGZ2/Animated Tiles.gif";
-	}
+	TintColor = 0xFF9034;
     
-    AddNewDebugObjectID(0x5B); // Top Platform
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/MGZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/MGZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/MGZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/MGZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/MGZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/MGZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/MGZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/MGZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/MGZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/MGZ2/Stageconfig.bin";
+		}
+	}
+	else
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/MGZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/MGZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/MGZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/MGZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/MGZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Classic/Stages/MGZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/MGZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/MGZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/MGZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/MGZ2/Stageconfig.bin";
+		}
+	}
+
+    AddNewDebugObjectID(Obj_TopPlatform); // Top Platform
+    AddNewDebugObjectID(Obj_Spiker); 
+    AddNewDebugObjectID(Obj_Mantis); 
+    AddNewDebugObjectID(Obj_BubblesBadnik); 
+    //Soon
+	//AddNewDebugObjectID(Obj_TunnelBot); 
+    //AddNewDebugObjectID(Obj_DrillMobile); 
 
 	sprintf(LevelName, "MARBLE GARDEN");
 	sprintf(LevelNameDiscord, "Marble Garden");
@@ -146,22 +168,35 @@ PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
 		MGZObjectsSprite->LoadAnimation("MGZ/Smashing Pillar.bin");
 		MGZObjectsSprite->LoadAnimation("MGZ/Swinging Spike Ball.bin");
 		MGZObjectsSprite->LoadAnimation("MGZ/Top Platform.bin");
-		MGZObjectsSprite->LoadAnimation("MGZ/Miniboss.bin");
-		MGZObjectsSprite->LoadAnimation("MGZ/End Boss.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Tunnelbot.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/DrillMobile.bin");
 		MGZObjectsSprite->LoadAnimation("MGZ/Non Animated Sprites.bin");
-		MGZObjectsSprite->LoadAnimation("MGZ/Bubbles Badnik.bin");
+		MGZObjectsSprite->LoadAnimation("MGZ/Bubbles.bin");
 		MGZObjectsSprite->LoadAnimation("MGZ/Spiker.bin");
 		MGZObjectsSprite->LoadAnimation("MGZ/Mantis.bin");
 	}
 
 	if (!KnuxSprite[0]) {
-		KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-		KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
 		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
 		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
 		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

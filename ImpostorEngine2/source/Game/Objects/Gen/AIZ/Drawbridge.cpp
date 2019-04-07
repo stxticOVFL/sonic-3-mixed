@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER Drawbridge::Drawbridge() {
+    BinIndex = LevelScene::LoadSpriteBin("AIZ/Drawbridge.bin");
+}
+
 void Drawbridge::Create() {
     Object::Create();
     Active = true;
@@ -12,7 +16,7 @@ void Drawbridge::Create() {
     DoDeform = true;
     W = 16;
     H = 192;
-    CurrentAnimation = 12;
+    CurrentAnimation = Sprite->FindAnimation("Drawbridge");
     Solid = true;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");

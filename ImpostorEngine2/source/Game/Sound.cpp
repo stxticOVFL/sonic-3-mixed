@@ -274,15 +274,16 @@ PUBLIC STATIC void Sound::Init() {
 
 	LOADSOUND(SFX_EMERALD, "Sounds/Emerald.wav");
 
-    Sound::SoundBank[0xFF] = new ISound("Music/Mixed/Invincible.ogg", true);
-    Sound::SoundBank[0xFE] = new ISound("Music/Mixed/Sneakers.ogg", true);
-    Sound::SoundBank[0xFD] = new ISound("Music/Drowning.ogg", true);
-    Sound::SoundBank[0xFC] = new ISound("Music/ActComplete.ogg", true);
-    Sound::SoundBank[0xFB] = new ISound("Music/1up.ogg", false);
+	//Load Mixed mode SFX for safety
+	if (!Sound::SoundBank[0xFF] || strcmp(Sound::SoundBank[0xFF]->Name, "Mixed/Music/Invincible.ogg")) Sound::SoundBank[0xFF] = new ISound("Mixed/Music/Invincible.ogg", true);
+	if (!Sound::SoundBank[0xFE] || strcmp(Sound::SoundBank[0xFE]->Name, "Mixed/Music/Sneakers.ogg")) Sound::SoundBank[0xFE] = new ISound("Mixed/Music/Sneakers.ogg", true);
+	if (!Sound::SoundBank[0xFD] || strcmp(Sound::SoundBank[0xFD]->Name, "Mixed/Music/Drowning.ogg")) Sound::SoundBank[0xFD] = new ISound("Mixed/Music/Drowning.ogg", true);
+	if (!Sound::SoundBank[0xFC] || strcmp(Sound::SoundBank[0xFC]->Name, "Mixed/Music/ActComplete.ogg")) Sound::SoundBank[0xFC] = new ISound("Mixed/Music/ActComplete.ogg", true);
+	if (!Sound::SoundBank[0xFB] || strcmp(Sound::SoundBank[0xFB]->Name, "Mixed/Music/1up.ogg")) Sound::SoundBank[0xFB] = new ISound("Mixed/Music/1up.ogg", false);
 
-	Sound::SoundBank[0xF2] = new ISound("Music/Classic/Knuckles.ogg", true);
-	Sound::SoundBank[0xF1] = new ISound("Music/S3 Miniboss.ogg", true);
-	Sound::SoundBank[0xF0] = new ISound("Music/Boss.ogg", true);
+	if (!Sound::SoundBank[0xF2] || strcmp(Sound::SoundBank[0xF2]->Name, "Mixed/Music/Knuckles.ogg")) Sound::SoundBank[0xF2] = new ISound("Mixed/Music/Knuckles.ogg", true);
+	if (!Sound::SoundBank[0xF1] || strcmp(Sound::SoundBank[0xF1]->Name, "Mixed/Music/Miniboss.ogg")) Sound::SoundBank[0xF1] = new ISound("Mixed/Music/Miniboss.ogg", true);
+	if (!Sound::SoundBank[0xF0] || strcmp(Sound::SoundBank[0xF0]->Name, "Mixed/Music/Boss.ogg")) Sound::SoundBank[0xF0] = new ISound("Mixed/Music/Boss.ogg", true);
 
 	Sound::AudioLoaded = true;
 }
@@ -303,4 +304,20 @@ PUBLIC STATIC void Sound::Stop(int sound) {
 	if (Sound::SoundBank[sound]->LoadFailed) return;
 
 	Sound::Audio->SetSound(sound, NULL, Sound::SoundBank[sound]->Length);
+}
+
+PUBLIC STATIC void Sound::LoadStream(int sound, const char* file, bool loop, int lp, bool override) {
+	if (!Sound::SoundBank[sound] || strcmp(Sound::SoundBank[sound]->Name, file) != 0 || override) {
+		Sound::SoundBank[sound] = new ISound(file, true);
+
+		Sound::Audio->LoopPoint[sound] = lp;
+		Sound::Audio->Loop[sound] = loop;
+	}
+}
+
+PUBLIC STATIC void Sound::PlayStream(int sound, const char* file, bool loop, int lp, int at, bool override) {
+	if (!Sound::SoundBank[sound] || !Audio->IsPlayingMusic(Sound::SoundBank[sound]) || strcmp(Sound::SoundBank[sound]->Name, file) != 0 || override) {
+		Sound::LoadStream(sound, file, loop, lp, true);
+		Sound::Audio->PushMusicAt(Sound::SoundBank[sound], at, loop, lp);
+	}
 }

@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class IApp;
 
@@ -45,6 +46,8 @@ public:
     I_LEFT_PRESSED = 15,
     I_DOWN_PRESSED = 16,
     I_UP_PRESSED = 17,
+    I_ANY_PRESSED = 18,
+    I_ANY = 19,
     }; 
     int* ControllerMaps[4];
     bool UseTouchController = false;

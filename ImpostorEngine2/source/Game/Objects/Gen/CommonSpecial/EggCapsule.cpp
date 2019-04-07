@@ -41,35 +41,38 @@ void EggCapsule::Create() {
 }
 
 void EggCapsule::Update() {
-    if (Flying) {
-        Swing_UpAndDown();
-    }
-    else {
-        if (Gravity) {
-            while (Scene->CollisionAt(X, Y + 32 + 1)) {
-                Y--;
-                YSpeed = 0;
-                Gravity = 0;
-            }
+    if (!isHeldDebugObject) {
+        if (Flying) {
+            Swing_UpAndDown();
+        }
+        else {
+            if (Gravity) {
+                while (Scene->CollisionAt(X, Y + 32 + 1)) {
+                    Y--;
+                    YSpeed = 0;
+                    Gravity = 0;
+                }
 
-            if (Gravity == 0) {
-                Y++;
-                Y++;
-                Sound::Play(Sound::SFX_IMPACT4);
-                Scene->ShakeTimer = 20;
+                if (Gravity == 0) {
+                    Y++;
+                    Y++;
+                    Sound::Play(Sound::SFX_IMPACT4);
+                    Scene->ShakeTimer = 20;
+                }
+
             }
 
         }
+        Button->SubY = SubY + (YSpeed << 8) - 0x200000;
+        Button->InitialY = Button->SubY >> 16;
+        if (Button->BounceOffShield && !Broken) {
+            Broken = true;
+            Scene->StopTimer = true;
+            Sound::Play(Sound::SFX_DESTROY);
+            App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
+            Scene->DoResults();
+        }
 
-    }
-    Button->SubY = SubY + (YSpeed << 8) - 0x200000;
-    Button->InitialY = Button->SubY >> 16;
-    if (Button->BounceOffShield && !Broken) {
-        Broken = true;
-        Scene->StopTimer = true;
-        Sound::Play(Sound::SFX_DESTROY);
-        App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
-        Scene->DoResults();
     }
 
     Object::Update();

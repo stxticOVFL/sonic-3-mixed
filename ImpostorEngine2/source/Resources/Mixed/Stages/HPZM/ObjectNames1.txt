@@ -1,0 +1,10 @@
+BlankObject
+PlayerSpawn
+Ring
+PlaneSwitch
+AutoSpin
+InvisibleSolidBlock
+InvisibleHurtBlock(top)
+InvisibleHurtBlock(sides)
+MasterEmerald
+Teleporter

@@ -145,26 +145,44 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	sprintf(ZoneLetters, "ICZ");
 	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 206454 : 0) : 0, SaveGame::CurrentMode);
 
-    if (Act == 1) {
-        //Sound::SoundBank[0] = new ISound("Music/ICZ1.ogg", false);
-		//Sound::Audio->LoopPoint[0] = 0;
-
-
-        Str_TileConfigBin = "Stages/ICZ1/TileConfig.bin";
-        Str_SceneBin = "Stages/ICZ1/Scene.bin";
-        Str_TileSprite = "Stages/ICZ1/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/ICZ1/Animated Tiles.gif";
-		ScreenYWrapValue = 0x7FF;
-    } else if (Act == 2) {
-        //Sound::SoundBank[0] = new ISound("Music/ICZ2.ogg", false);
-		//Sound::Audio->LoopPoint[0] = 0;
-
-        Str_TileConfigBin = "Stages/ICZ2/TileConfig.bin";
-        Str_SceneBin = "Stages/ICZ2/Scene.bin";
-        Str_TileSprite = "Stages/ICZ2/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/ICZ2/Animated Tiles.gif";
-		ScreenYWrapValue = 0xFFF;
-    }
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/ICZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/ICZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/ICZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/ICZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/ICZ1/Stageconfig.bin";
+			ScreenYWrapValue = 0x7FF;
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/ICZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/ICZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/ICZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/ICZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/ICZ2/Stageconfig.bin";
+			ScreenYWrapValue = 0xFFF;
+		}
+	}
+	else
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/ICZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/ICZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/ICZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/ICZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/ICZ1/Stageconfig.bin";
+			ScreenYWrapValue = 0x7FF;
+		}
+		else {
+			Str_TileConfigBin = "Classic/Stages/ICZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/ICZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/ICZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/ICZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/ICZ2/Stageconfig.bin";
+			ScreenYWrapValue = 0xFFF;
+		}
+	}
 
     sprintf(LevelName, "ICECAP");
     sprintf(LevelNameDiscord, "IceCap");
@@ -176,6 +194,9 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     else if (Act == 2) {
         VisualWaterLevel = WaterLevel = 0xAD8;
     }
+
+	AddNewDebugObjectID(Obj_StarPointer);
+	AddNewDebugObjectID(Obj_IceCube);
 }
 
 PUBLIC void Level_ICZ::RestartStage(bool doActTransition, bool drawBackground) {
@@ -242,13 +263,26 @@ PUBLIC void Level_ICZ::LoadZoneSpecificSprites() {
     }
 
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

@@ -17,6 +17,7 @@ public:
     
     bool Activated;
     
+    CONSTRUCTER Drawbridge();
     void Create();
     void Update();
     void Break();

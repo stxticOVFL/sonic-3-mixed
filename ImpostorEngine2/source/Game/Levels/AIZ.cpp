@@ -221,42 +221,84 @@ int BombIndex = 0;
 PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, g) {
     ZoneID = 1;
     VisualAct = Act = ACT;
+	sprintf(ZoneLetters, "AIZ");
 
-    IApp::Print(0, "Starting AIZ...");
+    IApp::Print(0, "Starting AIZ... %d", ACT);
 
     uint64_t startTime = SDL_GetTicks();
+	PlayMusic(ACT < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (ACT < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);
 
-    if (Act == 0) {
-        Sound::SoundBank[0] = new ISound("Music/AIZ1.ogg", true);
-		Sound::Audio->LoopPoint[0] = 1;
 
-        Str_TileConfigBin = "Stages/AIZ/TileConfig1.bin";
-        Str_SceneBin = "Stages/AIZ/Scene0.bin";
-        Str_TileSprite = "Stages/AIZ/16x16Tiles0.gif";
-        Str_ObjectsList = "Stages/AIZ/Objects0.bin";
-        Str_RingsList = "Stages/AIZ/Rings0.bin";
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 0) {
+			/*Str_TileConfigBin = "Mixed/Stages/AIZ/TileConfig1.bin";
+			Str_SceneBin = "Mixed/Stages/AIZ/Scene0.bin";
+			Str_TileSprite = "Mixed/Stages/AIZ/16x16Tiles0.gif";
+			Str_ObjectsList = "Mixed/Stages/AIZ/Objects0.bin";
+			Str_RingsList = "Mixed/Stages/AIZ/Rings0.bin";
+			Str_StageBin = "Mixed/Stages/AIZ1/Stageconfig.bin";*/
 
-        VisualAct = 1;
-    }
-    else if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/AIZ1.ogg", true);
-		// Sound::Audio->LoopPoint[0] = 2381;
+			Str_TileConfigBin = "Mixed/Stages/AIZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/AIZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/AIZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/AIZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/AIZ1/Stageconfig.bin";
 
-        Str_TileConfigBin = "Stages/AIZ1/TileConfig.bin";
-        Str_SceneBin = "Stages/AIZ1/Scene.bin";
-        Str_TileSprite = "Stages/AIZ1/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/AIZ1/Animated Tiles.gif";
-    }
-    else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/AIZ2.ogg", true);
-        Sound::Audio->LoopPoint[0] = 94550;
-		// Sound::Audio->LoopPoint[0] = 85113;
+			VisualAct = 1;
+		}
+		else if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/AIZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/AIZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/AIZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/AIZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/AIZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/AIZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/AIZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/AIZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/AIZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/AIZ2/Stageconfig.bin";
+		}
+	}
+	else
+	{
+		if (Act == 0) {
+			/*Str_TileConfigBin = "Classic/Stages/AIZ/TileConfig1.bin";
+			Str_SceneBin = "Classic/Stages/AIZ/Scene0.bin";
+			Str_TileSprite = "Classic/Stages/AIZ/16x16Tiles0.gif";
+			Str_ObjectsList = "Classic/Stages/AIZ/Objects0.bin";
+			Str_RingsList = "Classic/Stages/AIZ/Rings0.bin";
+			Str_StageBin = "Classic/Stages/AIZ1/Stageconfig.bin";*/
 
-        Str_TileConfigBin = "Stages/AIZ2/TileConfig.bin";
-        Str_SceneBin = "Stages/AIZ2/Scene.bin";
-        Str_TileSprite = "Stages/AIZ2/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/AIZ2/Animated Tiles.gif";
-    }
+			Str_TileConfigBin = "Classic/Stages/AIZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/AIZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/AIZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/AIZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/AIZ1/Stageconfig.bin";
+
+			VisualAct = 1;
+		}
+		else if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/AIZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/AIZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/AIZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/AIZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/AIZ1/Stageconfig.bin";
+
+		}
+		else {
+			//PlayMusic("AIZ2.ogg", 94550, SaveGame::CurrentMode);
+			// Sound::Audio->LoopPoint[0] = 85113;
+
+			Str_TileConfigBin = "Classic/Stages/AIZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/AIZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/AIZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/AIZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/AIZ2/Stageconfig.bin";
+		}
+	}
 
     sprintf(LevelName, "ANGEL ISLAND");
     sprintf(LevelNameDiscord, "Angel Island");
@@ -279,13 +321,13 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
         // PlayerStartY = 0x01B0;
     }
     
-    AddNewDebugObjectID(0x04); // Collapsing Platform
-    AddNewDebugObjectID(0x0D); // Breakable Wall
-    //AddNewDebugObjectID(0x2E); // Spiked Log - Currently doesn't work. (Sprites do not render.)
-    AddNewDebugObjectID(0x8C); // Bloominator
-    //AddNewDebugObjectID(0x8D); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
-    //AddNewDebugObjectID(0x8E); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
-    //AddNewDebugObjectID(0x8F); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
+    AddNewDebugObjectID(Obj_CollapsingPlatform); // Collapsing Platform
+    AddNewDebugObjectID(Obj_BreakableWall); // Breakable Wall
+    AddNewDebugObjectID(Obj_SpikedLog); // Spiked Log - Currently doesn't work. (Sprites do not render.)
+    AddNewDebugObjectID(Obj_Bloominator); // Bloominator
+    AddNewDebugObjectID(Obj_RhinoBot); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
+    AddNewDebugObjectID(Obj_MonkeyDude); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
+    AddNewDebugObjectID(Obj_CaterkillerJr); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
 }
@@ -328,8 +370,7 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
             if (SavedPositionX == -1) {
                 if (!doActTransition) {
                     App->NextScene = new Level_AIZ(App, G, 1);
-                }
-                else {
+                } else {
                     LevelCardTimer = 6.0;
                     FadeTimer = -1;
                     FadeAction = 0;
@@ -343,8 +384,7 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
         if (RoutineNumber == -2) {
             LevelCardTimer = 6.0;
             LevelCardHide = true;
-        }
-        else {
+        } else {
             LevelCardTimer = 0.0;
             LevelCardHide = false;
         }
@@ -372,77 +412,90 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
-    SpriteMapIDs[0x04] = AIZObjectsSprite;
-    SpriteMapIDs[0x05] = AIZObjectsSprite;
-    SpriteMapIDs[0x06] = AIZObjectsSprite;
-    SpriteMapIDs[0x09] = AIZObjectsSprite;
-    SpriteMapIDs[0x0A] = AIZObjectsSprite;
-    SpriteMapIDs[0x0C] = AIZObjectsSprite;
-    SpriteMapIDs[0x0D] = AIZObjectsSprite;
-    SpriteMapIDs[0x0F] = AIZObjectsSprite;
-    //SpriteMapIDs[0x24] = EditorSprite;
-	SpriteMapIDs[0x2F] = AIZObjectsSprite;
-    SpriteMapIDs[0x35] = AIZObjectsSprite;
-	SpriteMapIDs[0x51] = AIZObjectsSprite;
-    SpriteMapIDs[0x8C] = AIZObjectsSprite;
-    SpriteMapIDs[0x90] = AIZBossSprite;
+    SpriteMapIDs.at(0x04) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x05) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x06) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x09) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0A) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0C) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0D) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x0F) = AIZObjectsSprite;
+    //SpriteMapIDs.at(0x24) = EditorSprite;
+	SpriteMapIDs.at(0x2F) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x35) = AIZObjectsSprite;
+	SpriteMapIDs.at(0x51) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x8C) = AIZObjectsSprite;
+    SpriteMapIDs.at(0x90) = AIZBossSprite;
 }
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
     if (!AIZObjectsSprite) {
-		AIZObjectsSprite = new ISprite("Sprites/AIZ/Objects.gif", App, SaveGame::CurrentMode);
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Tree.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Act 1 Zipline Peg.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Animated Sprites.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Breakable Wall.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Caterkiller Jr.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Log Bridge.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Collapsing Platform 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Cork Floor 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Disappearing Floor Water.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Drawbridge.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Draw Bridge Fire.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 1).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log (Act 2).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 1).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Falling Log Splash (Act 2).bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Flipping Bridge.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Floating Platform 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Foreground Plant.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Monkey Dude.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Non Animated Sprites.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/RhinoBot Dust.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Ride Vine.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Rock Bits 2.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Spiked Log.bin");
-        AIZObjectsSprite->LoadAnimation("Sprites/AIZ/Tulipon.bin");
+		AIZObjectsSprite = new ISprite("AIZ/Objects.gif", App);
+        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Tree.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Zipline Peg.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Animated Sprites.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Breakable Wall.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Caterkiller Jr.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Log Bridge.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor Water.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Drawbridge.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Draw Bridge Fire.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 1).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 2).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 1).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 2).bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Flipping Bridge.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Foreground Plant.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Monkey Dude.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Non Animated Sprites.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot Dust.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Ride Vine.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits 2.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Spiked Log.bin");
+        AIZObjectsSprite->LoadAnimation("AIZ/Tulipon.bin");
 	}
 
     if (!AIZBossSprite) {
-        AIZBossSprite = new ISprite("Sprites/AIZ/Boss.gif", App, SaveGame::CurrentMode);
+        AIZBossSprite = new ISprite("AIZ/Boss.gif", App);
         AIZBossSprite->Print = true;
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Act 2 Background Tree.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Airship.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/End Boss.bin");
-        AIZBossSprite->LoadAnimation("Sprites/AIZ/Miniboss.bin");
+        AIZBossSprite->LoadAnimation("AIZ/Act 2 Background Tree.bin");
+        AIZBossSprite->LoadAnimation("AIZ/Airship.bin");
+        AIZBossSprite->LoadAnimation("AIZ/FlameMobile.bin");
+        AIZBossSprite->LoadAnimation("AIZ/FireBreath.bin");
     }
 
     if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App, 1);
-        KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App, 1);
-        KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App, 1);
-        KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App, 1);
-        KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneHPZ.gif", App, 1);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
@@ -780,7 +833,7 @@ PUBLIC void Level_AIZ::Subupdate() {
             if (RoutineNumber < 0) {
                 if (CameraX > 0xF50 + 160 - App->WIDTH / 2) {
                     RoutineNumber = 0xCD;
-                    AddNewObject(Obj_AIZMiniboss, 0x00, 0x11F0, 0x288 - 8, false, false);
+                    AddNewObject(Obj_FireBreathCutscene, 0x00, 0x11F0, 0x288 - 8, false, false);
                 }
             }
         }
@@ -847,7 +900,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                 TileSpriteBackup = TileSprite;
 
                 ISprite::Animation an;
-                an.Name = "NULL";
+                an.Name = "";
                 an.FrameCount = 0x400;
                 an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
                 for (int i = 0; i < 0x400; i++) {
@@ -1173,10 +1226,7 @@ PUBLIC void Level_AIZ::HandleCamera() {
 						Player->EZX -= 0x200;
 					}
                     for (vector<Object*>::iterator it = TempObjects.begin(); it != TempObjects.end(); ++it) {
-						Object *obj = *it;
-						if (obj->IsExplosion) {
-							obj->X -= 0x200;
-						}
+                        (*it)->X -= 0x200;
                     }
 
                     for (unsigned int o = 0; o < (unsigned int)ObjectCount && Player->Action != ActionType::Dead; o++) {

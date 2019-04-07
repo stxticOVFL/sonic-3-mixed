@@ -12,17 +12,20 @@ struct TileCfg {
 	/// </summary>
     unsigned char Config[5];
 };
+
 struct ScrollingInfo {
     int RelativeX;
     int ConstantX;
-    char HeatWaveEnabled;
-    char Byte2;
+    char Behaviour;
+    char DrawLayer;
 };
+
 struct ScrollingIndex {
     int  Index;
     int  Size;
     int* TileBuffers = NULL;
 };
+
 struct Layer {
     std::string Name;
     bool Visible = true;

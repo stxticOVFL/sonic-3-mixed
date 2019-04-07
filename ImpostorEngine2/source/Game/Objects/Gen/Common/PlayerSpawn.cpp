@@ -14,7 +14,7 @@ void PlayerSpawn::Create() {
     bool SpawnRay;
     SpawnAsSidekick = false;
     SpawnPlayerIndex = 0;
-    SpawnPlayerID = SubType;
+    SpawnPlayerID = (uint8_t)GetAttribute("CharacterID")->ValVariable;
     SpawnSonic = bool(SpawnPlayerID >> 0 & 1);
     SpawnMiles = bool(SpawnPlayerID >> 1 & 1);
     SpawnKnux = bool(SpawnPlayerID >> 2 & 1);

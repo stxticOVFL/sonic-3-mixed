@@ -20,6 +20,7 @@ public:
     int PeriodFrames;
     bool Visible;
     
+    CONSTRUCTER DisappearingFloor();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

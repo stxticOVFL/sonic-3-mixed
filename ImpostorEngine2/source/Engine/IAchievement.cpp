@@ -71,6 +71,7 @@ PUBLIC STATIC void IAchievement::CreateAchievement(char* name, int ID) {
 }
 
 int PoopTimer = 0;
+int PoopHold = 0;
 bool PoopGot = false;
 
 PUBLIC STATIC void IAchievement::SetAchievement(int AchievementID, bool State) {
@@ -80,6 +81,7 @@ PUBLIC STATIC void IAchievement::SetAchievement(int AchievementID, bool State) {
 		PoopTimer = 0;
 		PoopGot = false;
 		printf("Got achievement: %s\n", AchievementList[AchievementID].Name);
+		//Play a SFX
 	}
 	AchievementList[AchievementID].Achieved = State;
 	SaveGame::AchievementData[AchievementID] = State;
@@ -87,20 +89,29 @@ PUBLIC STATIC void IAchievement::SetAchievement(int AchievementID, bool State) {
 
 PUBLIC STATIC void IAchievement::OnAchievementGet(int AchievementID) {
 	//TO-DO: MAKE THIS FUCKING WORK HOLY SHIT
-	App->G->DrawRectangle(40, 40, 80, 80, 0xFFFFFF);
+	App->G->DrawRectangle(App->WIDTH - PoopTimer - 10, App->HEIGHT - 60, 120, 60, 0x0000FF);
 
-	App->G->DrawText(30, 30, AchievementList[AchievementID].Name, 0xFFFFFF);
+	App->G->DrawTextShadow(App->WIDTH - PoopTimer, App->HEIGHT - 50, AchievementList[AchievementID].Name, 0xFFFFFF);
 
-	if (!PoopGot) {
-		PoopTimer++;
-	} else {
-		PoopTimer--;
-	}
-	if (PoopTimer >= 40) {
-		PoopGot = true;
-	}
+	if (!App->DevMenuActive)
+	{
+		if (!PoopGot && PoopHold < 1) {
+			PoopTimer += 4;
+		}
+		else if (PoopGot) {
+			PoopTimer -= 4;
+		}
 
-	if (PoopGot && PoopTimer < 0) {
-		AchievementGet = false;
+		if (!PoopGot && PoopTimer >= 100) {
+			PoopHold++;
+		}
+
+		if (PoopHold >= 0x80) {
+			PoopGot = true;
+		}
+
+		if (PoopGot && PoopTimer < 0) {
+			AchievementGet = false;
+		}
 	}
 }

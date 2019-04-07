@@ -4,11 +4,21 @@
 #include <stdlib.h>
 
 class Memory {
-private:
-    static vector<void*> TrackedMemory;
-    static vector<size_t> TrackedSizes;
-    static vector<const char*> TrackedMemoryNames;
+    private:
+        static vector<void*> TrackedMemory;
+        static vector<size_t> TrackedSizes;
+        static vector<const char*> TrackedMemoryNames;
 };
+
+inline void* operator new(size_t size, const char* identifier);
+inline void* operator new(size_t const size, std::nothrow_t const&, const char* identifier) noexcept;
+inline void* operator new[](size_t const size, const char* identifier);
+inline void* operator new[](size_t const size, std::nothrow_t const& x, const char* identifier) noexcept;
+inline void operator delete(void* const block, const char* identifier) noexcept;
+inline void operator delete(void* block, std::nothrow_t const&, const char* identifier) noexcept;
+inline void operator delete[](void* block, const char* identifier) noexcept;
+inline void operator delete[](void* block, std::nothrow_t const&, const char* identifier) noexcept;
+inline void operator delete[](void* block, size_t, const char* identifier) noexcept;
 #endif
 
 #include <Engine/IApp.h>
@@ -18,8 +28,59 @@ vector<void*> Memory::TrackedMemory;
 vector<size_t> Memory::TrackedSizes;
 vector<const char*> Memory::TrackedMemoryNames;
 
- 
-// These are the VC operators, Rewritten to use this system.
+// These are the VC operators, Rewritten to use this system, However only the new ones 
+// with identifier as an argument are to be used. The rest are for reference.
+
+void* operator new(size_t size, const char* identifier) {
+    for (;;) {
+        if (void* const block = Memory::TrackedMalloc(identifier, size)) {
+            return block;
+        }
+        if (_callnewh(size) == 0) {
+            static const std::bad_alloc nomem;
+            _RAISE(nomem);
+        }
+
+        // The new handler was successful; try to allocate again...
+    }
+}
+
+void* operator new(size_t const size, std::nothrow_t const&, const char* identifier) noexcept {
+    try {
+        return operator new(size, identifier);
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+void* operator new[](size_t const size, const char* identifier) {
+	return operator new(size, identifier);
+}
+
+void* operator new[](size_t const size, std::nothrow_t const& x, const char* identifier) noexcept {
+    return operator new(size, x, identifier);
+}
+
+void operator delete(void* const block, const char* identifier) noexcept {
+    Memory::Free(block);
+}
+
+void operator delete(void* block, std::nothrow_t const&, const char* identifier) noexcept {
+    operator delete(block, identifier);
+}
+
+void operator delete[](void* block, const char* identifier) noexcept {
+    operator delete(block, identifier);
+}
+
+void operator delete[](void* block, std::nothrow_t const&, const char* identifier) noexcept {
+    operator delete[](block, identifier);
+}
+
+void operator delete[](void* block, size_t, const char* identifier) noexcept {
+    operator delete[](block, identifier);
+}
+
 /*
 void* __CRTDECL operator new(size_t const size) {
     for (;;) {
@@ -123,39 +184,13 @@ PUBLIC STATIC void* Memory::TrackedCalloc(const char* identifier, size_t count, 
 #endif
     return mem;
 }
-PUBLIC STATIC void   Memory::Track(void* pointer, const char* identifier) {
-    for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
-        if (TrackedMemory[i] == pointer) {
-            TrackedMemoryNames[i] = identifier;
-            return;
-        }
-    }
-}
-PUBLIC STATIC void   Memory::Track(void* pointer, size_t size, const char* identifier) {
-    for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
-        if (TrackedMemory[i] == pointer) {
-            TrackedSizes[i] = size;
-            TrackedMemoryNames[i] = identifier;
-            return;
-        }
-    }
 
-    TrackedMemory.push_back(pointer);
-    TrackedSizes.push_back(size);
-    TrackedMemoryNames.push_back(identifier);
-}
-
-PUBLIC STATIC void   Memory::TrackLast(const char* identifier) {
-    if (TrackedMemoryNames.size() == 0) return;
-    TrackedMemoryNames[TrackedMemoryNames.size() - 1] = identifier;
-}
-
-PUBLIC STATIC void   Memory::Free(void* pointer) {
-    free(pointer);
+PUBLIC STATIC void Memory::Free(void* mem) {
+    free(mem);
 
 #ifndef NDEBUG
     for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
-        if (TrackedMemory[i] == pointer) {
+        if (TrackedMemory[i] == mem) {
             TrackedMemoryNames.erase(TrackedMemoryNames.begin() + i);
             TrackedMemory.erase(TrackedMemory.begin() + i);
             TrackedSizes.erase(TrackedSizes.begin() + i);
@@ -165,8 +200,16 @@ PUBLIC STATIC void   Memory::Free(void* pointer) {
 #endif
 }
 
-PUBLIC STATIC void   Memory::ClearTrackedMemory() {
-    TrackedMemoryNames.clear();
+PUBLIC STATIC void Memory::TrackMemory(const char* identifier, void *mem, size_t count, size_t size) {
+    if (mem) {
+        TrackedMemory.push_back(mem);
+        TrackedSizes.push_back(count * size);
+        TrackedMemoryNames.push_back(identifier);
+    }
+}
+
+PUBLIC STATIC void Memory::ClearTrackedMemory() {
+	TrackedMemoryNames.clear();
     TrackedMemory.clear();
     TrackedSizes.clear();
 }
@@ -181,10 +224,10 @@ PUBLIC STATIC size_t Memory::CheckLeak() {
 
 PUBLIC STATIC void Memory::PrintLeak() {
     size_t total = 0;
-    IApp::Print(-1, "Printing unfreed memory...");
+    IApp::Print(0, "Printing unfreed memory...");
     for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
-        IApp::Print(-1, " : %p [%zu bytes] (%s)", TrackedMemory[i], TrackedSizes[i], TrackedMemoryNames[i] ? TrackedMemoryNames[i] : "no name");
+        IApp::Print(0, " : %p [%zu bytes] (%s)", TrackedMemory[i], TrackedSizes[i], TrackedMemoryNames[i] ? TrackedMemoryNames[i] : "no name");
         total += TrackedSizes[i];
     }
-    IApp::Print(-1, "Total: %zu bytes (%.3f MB)", total, total / 1024 / 1024.0);
+    IApp::Print(0, "Total: %zu bytes (%.3f MB)", total, total / 1024 / 1024.0);
 }

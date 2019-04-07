@@ -13,6 +13,8 @@ public:
     IScene*	Scene = NULL;
     IScene*	NextScene = NULL;
 
+	ISprite* NullSprite = NULL;
+
     IGraphics* G = NULL;
     IInput* Input = NULL;
     IAudio* Audio = NULL;
@@ -36,6 +38,13 @@ public:
     static Platforms Platform; //
 	static bool Mobile;
     static IApp* GlobalApp;
+
+	//DEV MENU
+	bool DevMenuEnabled;
+	bool DevMenuActive = false;
+	Uint32 DevMenuColour = 0x0000FF;
+	Uint8 DevMenuSelected = 0;
+	Uint8 DevMenuCurMenu = 0;
 };
 #endif
 
@@ -58,6 +67,7 @@ public:
 #include <Game/Levels/TDZ.h>
 #include <Game/Levels/SpecialStage.h>
 
+#include <Game/Scenes/TitleScreen.h>
 #include <Game/Scenes/MainMenu.h>
 #include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
@@ -164,6 +174,21 @@ PUBLIC IApp::IApp() {
     Audio = new IAudio(this);
     Achievements = new IAchievement(this);
 
+	NullSprite = new ISprite("Classic/Sprites/Dev/NullGfx.gif", this);
+	ISprite::Animation an;
+	an.Name = "";
+	an.FrameCount = 1;
+	an.Frames = new ISprite::AnimFrame[an.FrameCount];
+	ISprite::AnimFrame ts_af;
+	ts_af.X = 0;
+	ts_af.Y = 0;
+	ts_af.W = ts_af.H = 16;
+	ts_af.OffX = ts_af.OffY = -8;
+	an.Frames[0] = ts_af;
+	G->MakeFrameBufferID(NullSprite, an.Frames);
+	NullSprite->Animations.push_back(an);
+
+
     Running = true;
 }
 
@@ -219,7 +244,7 @@ PUBLIC void IApp::Run() {
 
     Print(0, "Starting scene");
     if (!Scene) {
-        Scene = new Scene_MainMenu(this, G);
+        Scene = new Scene_TitleScreen(this, G);
 		// Scene = new Scene_DataSelect(this, G);
         // Scene = new Scene_LevelSelect(this, G);
         // Scene = new Level_SpecialStage(this, G);
@@ -238,7 +263,7 @@ PUBLIC void IApp::Run() {
 		Sound::Audio->LoopPoint[0] = 179390 / 4;
 		ls->Str_TileConfigBin = "Stages/MSZ/TileConfig.bin";
 		ls->Str_SceneBin = "Stages/MSZ/Scene2.bin";
-		ls->Str_TileSprite = "Stages/MSZ/16x16Tiles.gif";
+		ls->Str_NullSprite = "Stages/MSZ/16x16Tiles.gif";
 		ls->PlayerStartX = 160;
 		ls->PlayerStartY = 1328;
 		ls->Thremixed = true;
@@ -258,8 +283,18 @@ PUBLIC void IApp::Run() {
     bool Stepper = false;
     bool Step = false;
 
-    bool DevMenu = false;
-    Settings->GetBool("dev", "devMenu", &DevMenu);
+    Settings->GetBool("dev", "devMenu", &DevMenuEnabled);
+
+	//Audio be like *wiggly air noises*
+	int audiopoop;
+	Settings->GetInteger("audio", "global", &audiopoop);
+	Audio->GlobalVolume = (float)audiopoop / 100;
+	Settings->GetInteger("audio", "music", &audiopoop);
+	Audio->MusicVolume = (float)audiopoop / 100;
+	Settings->GetInteger("audio", "sfx", &audiopoop);
+	Audio->SoundFXVolume = (float)audiopoop / 100;
+
+	Settings->GetBool("dev", "viewObjectCollision", &viewObjectCollision);
 
     int MetricFrameCounterTime = 0;
     int UpdatesPerFrame = 1;
@@ -270,8 +305,6 @@ PUBLIC void IApp::Run() {
     G->Present();
 
     while (Running) {
-		bool TakeSnapshot = false;
-
         frameTimeMillis = SDL_GetTicks();
         while (SDL_PollEvent(&e) != 0) {
             switch (e.type) {
@@ -285,11 +318,13 @@ PUBLIC void IApp::Run() {
                 case SDL_KEYDOWN:
                     switch (e.key.keysym.sym) {
                         case SDLK_ESCAPE:
-                            if (DevMenu)
-                                Running = false;
+							if (!DevMenuEnabled)
+								Running = false;
+							else
+								DevMenuActive = !DevMenuActive;
                             break;
                         case SDLK_BACKQUOTE:
-                            if (DevMenu) {
+                            if (DevMenuEnabled) {
                                 Stepper = !Stepper;
                                 MetricFrameCounterTime = 0;
                             }
@@ -310,21 +345,18 @@ PUBLIC void IApp::Run() {
                             break; }
                         */
                         case SDLK_BACKSPACE:
-                            if (DevMenu) {
+                            if (DevMenuEnabled) {
                                 UnlockedFramerate = !UnlockedFramerate;
                                 SDL_GL_SetSwapInterval(!UnlockedFramerate);
                             }
                             break;
                         case SDLK_BACKSLASH:
-                            if (DevMenu) {
+                            if (DevMenuEnabled) {
                                 Stepper = true;
                                 Step = true;
                                 MetricFrameCounterTime++;
                             }
                             break;
-						case SDLK_9:
-							TakeSnapshot = true;
-							break;
                         case SDLK_f:
                             G->SetDisplay(1272, 720, 1);
                             break;
@@ -343,7 +375,7 @@ PUBLIC void IApp::Run() {
 
                 // Update scene
                 MetricUpdateTime = SDL_GetTicks();
-                Scene->Update();
+				if (!DevMenuActive) Scene->Update();
                 MetricUpdateTime = SDL_GetTicks() - MetricUpdateTime;
             }
         }
@@ -353,22 +385,32 @@ PUBLIC void IApp::Run() {
         // Then render it
         MetricRenderTime = SDL_GetTicks();
 		if (NextScene == NULL)
+		{
 			Scene->Render();
+			if (Achievements->AchievementGet) {
+				Achievements->OnAchievementGet(Achievements->GotAchievement);
+			}
+		}
         MetricRenderTime = SDL_GetTicks() - MetricRenderTime;
 
         // If there's a new scene to go to
         if (NextScene != NULL) {
 			unsigned long now = SDL_GetTicks();
-			Scene->Cleanup();
-            delete Scene;
+
+			IScene* OldScene = Scene;
             Scene = NextScene;
             NextScene = NULL;
+			OldScene->Cleanup();
+			delete OldScene;
+			OldScene = NULL;
 
             Scene->Init();
             Input->Poll();
-            Scene->Update();
-			if (Achievements->AchievementGet) Achievements->OnAchievementGet(Achievements->GotAchievement);
+			if (!DevMenuActive) Scene->Update();
             Scene->Render();
+			if (Achievements->AchievementGet) {
+				Achievements->OnAchievementGet(Achievements->GotAchievement);
+			}
 			beginFrameBatch += now - SDL_GetTicks();
         }
 
@@ -397,32 +439,106 @@ PUBLIC void IApp::Run() {
             Y += 8;
         }
 
-        /*
+		int MaxButtons = 5;
         // Dev Menu
-        G->DrawRectangle(200 - 150, 32, 300, 56, Color { 0xF2 / 2, 0xD1 / 2, 0x41 / 2 });
-        G->DrawRectangle(200 - 150, 92, 300, 100, Color { 0xF2 / 2, 0xD1 / 2, 0x41 / 2 });
+		if (DevMenuActive && DevMenuEnabled)
+		{
+			//Main
+			G->DrawRectangle(200 - 150, 32, 300, 56, DevMenuColour);
+			//Menus
+			G->DrawRectangle(200 - 150, 92, 300, 75, DevMenuColour);
+			//Stats
+			G->DrawRectangle(200 - 150, 170, 300, 56, DevMenuColour);
 
-        G->DrawText(200 - strlen("IMPOSTOR ENGINE 2") * 4, 36, "IMPOSTOR ENGINE 2", 0xFFFFFF);
-        G->DrawText(200 - strlen("Debug Menu") * 4, 46, "Debug Menu", 0xC0C0C0);
+			G->DrawText(200 - strlen("IMPOSTOR ENGINE 2") * 4, 36, "IMPOSTOR ENGINE 2", 0xFFFFFF);
+			G->DrawText(200 - strlen("Dev Menu") * 4, 46, "Dev Menu", 0xFFFFFF);
 
-        G->DrawText(200 - strlen("Sonic 3") * 4, 66, "Sonic 3", 0xF2D141);
-        G->DrawText(200 - strlen("0.00.001") * 4, 76, "0.00.001", 0xC0C0C0);
-        // Version Numbering
-        // #1.#2.#3
-        // #1: MAJOR - a major overhaul, so basically never for a finished product
-        // #2: MINOR - Sizeable feature addition
-        // #3: PATCH - bug fix or patch
+			G->DrawText(200 - strlen("Sonic 3'Mixed") * 4, 66, "Sonic 3'Mixed", 0xC0C0C0);
+			G->DrawText(200 - strlen("0.00.001") * 4, 76, "0.00.001", 0xC0C0C0);
 
-        G->DrawText(54,  96, "Resume", 0xF2D141);
-        G->DrawText(54, 106, "Restart Scene", 0xFFFFFF);
-        G->DrawText(54, 116, "Scene List", 0xFFFFFF);
-        G->DrawText(54, 126, "Options", 0xFFFFFF);
-        G->DrawText(54, 136, "Exit", 0xFFFFFF);
-        //*/
+			//STATS AND SHIT
+			char buffer[0x40];
+			sprintf(buffer, "Global Volume: %d", (int)(Audio->GlobalVolume * 100));
+			G->DrawText(200 - strlen(buffer) * 4, 175, buffer, 0xFFFFFF);
+			sprintf(buffer, "Music Volume: %d", (int)(Audio->MusicVolume * 100));
+			G->DrawText(200 - strlen(buffer) * 4, 175 + 16, buffer, 0xFFFFFF);
+			sprintf(buffer, "SoundFX Volume: %d", (int)(Audio->SoundFXVolume * 100));
+			G->DrawText(200 - strlen(buffer) * 4, 175 + 32, buffer, 0xFFFFFF);
+			switch (DevMenuCurMenu)
+			{
+			default:
+				MaxButtons = 5;
+				// Version Numbering
+				// #1.#2.#3
+				// #1: MAJOR - a major overhaul, so basically never for a finished product
+				// #2: MINOR - Sizeable feature addition
+				// #3: PATCH - bug fix or patch
 
-		if (TakeSnapshot) {
-			TakeSnapshot = false;
-			G->SaveScreenshot();
+				G->DrawText(200 - strlen("Resume") * 4, 96, "Resume", DevMenuSelected == 0 ? 0xF2D141 : 0);
+				G->DrawText(200 - strlen("Restart Scene") * 4, 106, "Restart Scene", DevMenuSelected == 1 ? 0xF2D141 : 0);
+				G->DrawText(200 - strlen("Scene List") * 4, 116, "Scene List", DevMenuSelected == 2 ? 0xF2D141 : 0);
+				G->DrawText(200 - strlen("Options") * 4, 126, "Options", DevMenuSelected == 3 ? 0xF2D141 : 0);
+				G->DrawText(200 - strlen("Exit") * 4, 136, "Exit", DevMenuSelected == 4 ? 0xF2D141 : 0);
+
+				switch (DevMenuSelected)
+				{
+				case 1:
+					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
+					{
+						//Restart Scene
+						Print(1, "Scene Restart not implemented yet!");
+					}
+					break;
+				case 2:
+					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
+					{
+						Print(1, "Scene Select Menu not implemented yet!");
+					}
+					break;
+				case 3:
+					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
+					{
+						Print(1, "Options Menu not implemented yet!");
+					}
+					break;
+				case 4:
+					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
+					{
+						Running = false;
+					}
+					break;
+				default:
+					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
+					{
+						DevMenuActive = false;
+					}
+					break;
+				}
+				break;
+			}
+
+			if (Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED])
+			{
+				if (DevMenuSelected < MaxButtons)
+				{
+					DevMenuSelected++;
+				}
+				else
+				{
+					DevMenuSelected = 0;
+				}
+			}
+			if (Input->GetControllerInput(0)[IInput::I_UP_PRESSED])
+			{
+				if (DevMenuSelected > 0)
+				{
+					DevMenuSelected--;
+				}
+				else
+				{
+					DevMenuSelected = MaxButtons-1;
+				}
+			}
 		}
 
         G->Present();
@@ -443,17 +559,6 @@ PUBLIC void IApp::Run() {
             FPS = 1000.f / (now - beginFrameBatch) * 60;
             beginFrameBatch = now;
         }
-
-		//Audio be like *wiggly air noises*
-		int audiopoop;
-		Settings->GetInteger("audio", "global", &audiopoop);
-		Audio->GlobalVolume = (float)audiopoop / 100;
-		Settings->GetInteger("audio", "music", &audiopoop);
-		Audio->MusicVolume = (float)audiopoop / 100;
-		Settings->GetInteger("audio", "sfx", &audiopoop);
-		Audio->SoundFXVolume = (float)audiopoop / 100;
-
-		Settings->GetBool("dev", "viewObjectCollision", &viewObjectCollision);
     }
 }
 

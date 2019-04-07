@@ -662,6 +662,7 @@ bool MakeHeader(char* filename) {
     if (FindChar(filename, '.') < 0) {
         PrintHeader(stderr, "error: ", PrintColor::Red);
         fprintf(stderr, "Could not find '.' in '%s'!\n", filename);
+        system("pause");
         exit(-69);
         return false;
     }
@@ -672,6 +673,7 @@ bool MakeHeader(char* filename) {
     if (!f) {
         PrintHeader(stderr, "error: ", PrintColor::Red);
         fprintf(stderr, "Could not open file '%s'!\n", filename);
+        system("pause");
         exit(-69);
     }
 
@@ -747,6 +749,7 @@ bool MakeHeader(char* filename) {
     if (interfaceStart != -1 && interfaceEnd == -1) {
         PrintHeader(stderr, "error: ", PrintColor::Red);
         fprintf(stderr, "Missing matching #endif in file '%s'!\n", filename);
+        system("pause");
         exit(-69);
         return false;
     }
@@ -1130,7 +1133,7 @@ void MakeObjectListing(char* fullpath) {
     string includes;
     string sauce;
 	string sauceHash;
-    char* ObjectListSourcePart = (char*)calloc(1, 8024);
+    char* ObjectListSourcePart = (char*)calloc(1, 12024);
     for (int i = 0; i < ObjectNamesAndIDs.size(); i++) {
         includes += "#include \"" + get<0>(ObjectNamesAndIDs[i]) + "h\"";
 
@@ -1164,12 +1167,13 @@ void MakeObjectListing(char* fullpath) {
     }
     includes += "};\n";
 
-    char* ObjectListHeader = (char*)calloc(1, 12024);
+    char* ObjectListHeader = (char*)calloc(1, 82024);
     sprintf(ObjectListHeader, template1, includes.c_str());
     //printf("%s\n\n\n", ObjectListHeader);
     FILE* f = fopen(fullasspath, "wb");
     if (!f) {
         printf("\x1b[1;31mFatal Error:\x1b[0m Could not open file '%s'!\n", fullasspath);
+        system("pause");
         return;
     }
     fprintf(f, "%s", ObjectListHeader);
@@ -1178,12 +1182,13 @@ void MakeObjectListing(char* fullpath) {
     sprintf(fullasspath, "%s/Gen/ObjectListing.cpp", fullpath);
     printf("%s\n", fullasspath);
 
-    char* ObjectListSource = (char*)calloc(1, 52024);
+    char* ObjectListSource = (char*)calloc(1, 82024);
     sprintf(ObjectListSource, template2, sauce.c_str(), sauceHash.c_str());
     //printf("%s\n\n\n", ObjectListSource);
     f = fopen(fullasspath, "wb");
     if (!f) {
         printf("\x1b[1;31mFatal Error:\x1b[0m Could not open file '%s'!\n", fullasspath);
+        system("pause");
         return;
     }
     fprintf(f, "%s", ObjectListSource);
@@ -1210,8 +1215,7 @@ int main(int argc, char **argv) {
 
     if (argv[1][0] == '/') {
         sprintf(finalpath, "%s%s", argv[1], "");
-    }
-    else {
+    } else {
         char cwd[1024];
         getcwd(cwd, sizeof(cwd));
         sprintf(finalpath, "%s/%s%s", cwd, argv[1], "");

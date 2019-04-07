@@ -33,7 +33,7 @@ event Create() {
     CleanupInactiveObject = true;
 
 	ShowStars = false;
-	StarTimer = 0x400;
+	StarTimer = 0x100;
 
 	Stars[0] = Scene.AddNewObject(Obj_WarpStars, 0, X, Y - 64, FlipX, false);
 	Stars[1] = Scene.AddNewObject(Obj_WarpStars, 1, X, Y - 64, FlipX, false);
@@ -72,7 +72,7 @@ event Update() {
         }
         
         if (ShowStars) {
-            if (StarTimer = 0x400) {
+            if (StarTimer == 0x100) {
                 Stars[0].Active = true;
                 Stars[1].Active = true;
                 Stars[2].Active = true;
@@ -85,6 +85,13 @@ event Update() {
                 ShowStars = false;
             }
         }	
+		else
+		{
+			Stars[0].Active = false;
+            Stars[1].Active = false;
+            Stars[2].Active = false;
+            Stars[3].Active = false;
+		}
 	}
 }
 

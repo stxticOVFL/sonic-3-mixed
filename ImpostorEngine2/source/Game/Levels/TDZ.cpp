@@ -18,14 +18,25 @@ PUBLIC Level_TDZ::Level_TDZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 7;
     Act = act;
 
-    if (Act == 1) {
-        Str_TileConfigBin = "Stages/TDZ/TileConfig1.bin";
-        Str_SceneBin = "Stages/TDZ/Scene1.bin";
-        Str_TileSprite = "Stages/TDZ/16x16Tiles1.gif";
-        //Str_AnimatedSprites = "TDZ/AnimatedTiles";
-        Str_ObjectsList = "Stages/TDZ/Objects1.bin";
-        Str_RingsList = "Stages/TDZ/Rings1.bin";
-    }
+	sprintf(ZoneLetters, "TDZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
+
+	if (SaveGame::CurrentMode >= 1)
+	{
+		Str_TileConfigBin = "Mixed/Stages/TDZ/TileConfig.bin";
+		Str_SceneBin = "Mixed/Stages/TDZ/Scene.bin";
+		Str_TileSprite = "Mixed/Stages/TDZ/16x16Tiles.gif";
+		Str_AnimatedSprites = "Mixed/Stages/TDZ/Animated Tiles.gif";
+		Str_StageBin = "Mixed/Stages/TDZ/Stageconfig.bin";
+	}
+	else
+	{
+		Str_TileConfigBin = "Classic/Stages/TDZ/TileConfig.bin";
+		Str_SceneBin = "Classic/Stages/TDZ/Scene.bin";
+		Str_TileSprite = "Classic/Stages/TDZ/16x16Tiles.gif";
+		Str_AnimatedSprites = "Classic/Stages/TDZ/Animated Tiles.gif";
+		Str_StageBin = "Classic/Stages/TDZ/Stageconfig.bin";
+	}
 
     sprintf(LevelName, "THE DOOMSDAY");
     sprintf(LevelNameDiscord, "The Doomsday");
@@ -41,13 +52,26 @@ PUBLIC Level_TDZ::Level_TDZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 
 PUBLIC void Level_TDZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
@@ -73,7 +97,6 @@ PUBLIC void Level_TDZ::EarlyUpdate() {
 
     LevelScene::EarlyUpdate();
 }
-
 PUBLIC void Level_TDZ::Subupdate() {
     LevelScene::Subupdate();
 }

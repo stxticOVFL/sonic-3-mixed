@@ -612,6 +612,48 @@
     <ClCompile Include="..\source\Engine\ImageFormats\PNG.cpp">
       <Filter>Source Files\Engine\ImageFormats</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FlameMobile.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\TunnelBot.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\DrillMobile.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\ScrewMobile.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BigShaker.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreathFlame.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreathCutscene.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreathBomb.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreath.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Scenes\ExtrasMenu.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Scenes\VSMenu.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Scenes\TitleScreen.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Levels\BonusStage.cpp">
+      <Filter>Source Files\Game\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\DepthCharge.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">
@@ -652,9 +694,6 @@
     </ClInclude>
     <ClInclude Include="..\source\Engine\IGenesis.hh">
       <Filter>Source Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gen\Game\Scenes\SettingsMenu.h">
-      <Filter>Source Files\Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -948,6 +987,9 @@
     </None>
     <None Include="..\source\Game\Objects\GHZ\Motobug.ie2">
       <Filter>Source Files\Game\Objects\GHZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\HCZ\ScrewMobile.ie2">
+      <Filter>Source Files\Game\Objects\HCZ</Filter>
     </None>
   </ItemGroup>
 </Project>

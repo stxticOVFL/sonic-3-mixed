@@ -17,15 +17,43 @@ public:
 PUBLIC Level_EMZ::Level_EMZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 7;
     Act = act;
+	sprintf(ZoneLetters, "EMZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
 
-    if (Act == 1) {
-        Str_TileConfigBin = "Stages/EMZ/TileConfig1.bin";
-        Str_SceneBin = "Stages/EMZ/Scene1.bin";
-        Str_TileSprite = "Stages/EMZ/16x16Tiles1.gif";
-        //Str_AnimatedSprites = "Sprites/EMZ/AnimatedTiles";
-        Str_ObjectsList = "Stages/EMZ/Objects1.bin";
-        Str_RingsList = "Stages/EMZ/Rings1.bin";
-    }
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/EMZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/EMZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/EMZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/EMZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/EMZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/EMZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/EMZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/EMZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/EMZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/EMZ2/Stageconfig.bin";
+		}
+	}
+	else
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/EMZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/EMZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/EMZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/EMZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/EMZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Classic/Stages/EMZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/EMZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/EMZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/EMZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/EMZ2/Stageconfig.bin";
+		}
+	}
 
     sprintf(LevelName, "ENDLESS MINE");
     sprintf(LevelNameDiscord, "Endless Mine");
@@ -41,18 +69,31 @@ PUBLIC Level_EMZ::Level_EMZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 
 PUBLIC void Level_EMZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
-		KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneASZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-		KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
-		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-	}
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
+        KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
+        KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
+        KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
+        KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
+    }
 }
 
 PUBLIC void Level_EMZ::RestartStage(bool doActTransition, bool drawBackground) {

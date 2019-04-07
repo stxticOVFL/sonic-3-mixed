@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER CollapsingLogBridge::CollapsingLogBridge() {
+    BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Log Bridge.bin");
+}
+
 void CollapsingLogBridge::Create() {
     Solid::Create();
     Active = true;
@@ -17,7 +21,7 @@ void CollapsingLogBridge::Create() {
     SolidTop = true;
     SolidCustomized = true;
     Drawbridge = false;
-    CurrentAnimation = 5;
+    CurrentAnimation = Sprite->FindAnimation("Collapsing Log Bridge");
     if (SubType & 0x80) {
         VisualLayer = 1;
         Drawbridge = true;

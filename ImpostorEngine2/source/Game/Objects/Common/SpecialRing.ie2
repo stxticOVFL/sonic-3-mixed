@@ -9,14 +9,18 @@ var StoredY:int;
 var Used:bool;
 var RingID:int;
 
+var Scale:double;
+
 event Create() {
     Active = true;
-    Priority = false;
+    Priority = true;
 
     W = 8;
     H = 64;
     VisW = 64;
     VisH = 64;
+
+	Scale = 1;
 
     HyperColor = 0xFFFF00;
     HyperRing = true;
@@ -42,7 +46,11 @@ event Create() {
 }
 
 event Update() {
-    if (this.HyperRing) {
+	if (OnScreen)
+	{
+		if (Scale < 1) Scale+= 0.01;
+		
+	if (this.HyperRing) {
         Timer = Scene.Frame << 5 & 0x7FF;
         if (Timer < 0x200) {
             percent = (Timer - 0x000) & 0x1FF;
@@ -88,6 +96,13 @@ event Update() {
     }
 
     if (GoTimer > 0) {
+	}
+	}
+	else
+	{
+		Scale = 0.5;
+	}
+
         Sprite = Scene.Objects3Sprite;
 
         var LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
@@ -109,10 +124,10 @@ event Render(CamX:int, CamY:int) {
     }
 
     if (Used) {
-        G.DrawModelOn2D(Scene.GiantRingModel, this.X - CamX, this.Y - CamY, 1.0, 0, Scene.Frame & 0xFF, (Scene.Frame / 5) & 0xFF, 0x999999, true);
+        G.DrawModelOn2D(Scene.GiantRingModel, this.X - CamX, this.Y - CamY, Scale, 0, Scene.Frame & 0xFF, (Scene.Frame / 5) & 0xFF, 0x999999, true);
     }
     else {
-        G.DrawModelOn2D(Scene.GiantRingModel, this.X - CamX, this.Y - CamY, 1.0, 0, Scene.Frame & 0xFF, (Scene.Frame / 5) & 0xFF, HyperColor, false);
+        G.DrawModelOn2D(Scene.GiantRingModel, this.X - CamX, this.Y - CamY, Scale, 0, Scene.Frame & 0xFF, (Scene.Frame / 5) & 0xFF, HyperColor, false);
     }
 	
 	if (App.viewObjectCollision) {
@@ -133,7 +148,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     }
     else if (HyperRing) {
         // If we haven't activated the Super Emerald room yet, regardless of how many emeralds obtained
-        if (false) { // SaveGame.SuperEmeraldRoomActivated
+        if (SaveGame.SuperEmeraldRoomActivated) {
             // go to super emerald room, activate it, and save
             // remember: if no regular emeralds, super emeralds will not show up in room!
         }

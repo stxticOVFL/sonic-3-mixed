@@ -94,42 +94,66 @@ PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 	Sound::Init();
 	SaveGame::Init();
 
-	// Sound::SoundBank[0] = new ISound("Music/Save Select.ogg", true);
-	// Sound::Audio->LoopPoint[0] = 131859;
-	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Menu.ogg")) {
-		Sound::SoundBank[0] = new ISound("Music/Menu.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
+	//Please don't hate me for this bruddas - Ducky wucky
+	if (Mode >= 1)
+	{
+		if (!Sound::SoundBank[0xFF] || strcmp(Sound::SoundBank[0xFF]->Name, "Mixed/Music/Invincible.ogg")) Sound::SoundBank[0xFF] = new ISound("Mixed/Music/Invincible.ogg", true);
+		if (!Sound::SoundBank[0xFE] || strcmp(Sound::SoundBank[0xFE]->Name, "Mixed/Music/Sneakers.ogg")) Sound::SoundBank[0xFE] = new ISound("Mixed/Music/Sneakers.ogg", true);
+		if (!Sound::SoundBank[0xFD] || strcmp(Sound::SoundBank[0xFD]->Name, "Mixed/Music/Drowning.ogg")) Sound::SoundBank[0xFD] = new ISound("Mixed/Music/Drowning.ogg", true);
+		if (!Sound::SoundBank[0xFC] || strcmp(Sound::SoundBank[0xFC]->Name, "Mixed/Music/ActComplete.ogg")) Sound::SoundBank[0xFC] = new ISound("Mixed/Music/ActComplete.ogg", true);
+		if (!Sound::SoundBank[0xFB] || strcmp(Sound::SoundBank[0xFB]->Name, "Mixed/Music/1up.ogg")) Sound::SoundBank[0xFB] = new ISound("Mixed/Music/1up.ogg", false);
+
+		if (!Sound::SoundBank[0xF2] || strcmp(Sound::SoundBank[0xF2]->Name, "Mixed/Music/Knuckles.ogg")) Sound::SoundBank[0xF2] = new ISound("Mixed/Music/Knuckles.ogg", true);
+		if (!Sound::SoundBank[0xF1] || strcmp(Sound::SoundBank[0xF1]->Name, "Mixed/Music/Miniboss.ogg")) Sound::SoundBank[0xF1] = new ISound("Mixed/Music/Miniboss.ogg", true);
+		if (!Sound::SoundBank[0xF0] || strcmp(Sound::SoundBank[0xF0]->Name, "Mixed/Music/Boss.ogg")) Sound::SoundBank[0xF0] = new ISound("Mixed/Music/Boss.ogg", true);
+	}
+	else
+	{
+		if (!Sound::SoundBank[0xFF] || strcmp(Sound::SoundBank[0xFF]->Name, "Classic/Music/Invincible.ogg")) Sound::SoundBank[0xFF] = new ISound("Classic/Music/Invincible.ogg", true);
+		if (!Sound::SoundBank[0xFE] || strcmp(Sound::SoundBank[0xFE]->Name, "Classic/Music/Sneakers.ogg")) Sound::SoundBank[0xFE] = new ISound("Classic/Music/Sneakers.ogg", true);
+		if (!Sound::SoundBank[0xFD] || strcmp(Sound::SoundBank[0xFD]->Name, "Classic/Music/Drowning.ogg")) Sound::SoundBank[0xFD] = new ISound("Classic/Music/Drowning.ogg", true);
+		if (!Sound::SoundBank[0xFC] || strcmp(Sound::SoundBank[0xFC]->Name, "Classic/Music/ActComplete.ogg")) Sound::SoundBank[0xFC] = new ISound("Classic/Music/ActComplete.ogg", true);
+		if (!Sound::SoundBank[0xFB] || strcmp(Sound::SoundBank[0xFB]->Name, "Classic/Music/1up.ogg")) Sound::SoundBank[0xFB] = new ISound("Classic/Music/1up.ogg", false);
+
+		if (!Sound::SoundBank[0xF2] || strcmp(Sound::SoundBank[0xF2]->Name, "Classic/Music/Knuckles.ogg")) Sound::SoundBank[0xF2] = new ISound("Classic/Music/Knuckles.ogg", true);
+		if (!Sound::SoundBank[0xF1] || strcmp(Sound::SoundBank[0xF1]->Name, "Classic/Music/Miniboss.ogg")) Sound::SoundBank[0xF1] = new ISound("Classic/Music/Miniboss.ogg", true);
+		if (!Sound::SoundBank[0xF0] || strcmp(Sound::SoundBank[0xF0]->Name, "Classic/Music/Boss.ogg")) Sound::SoundBank[0xF0] = new ISound("Classic/Music/Boss.ogg", true);
 	}
 }
 
 PUBLIC void Scene_DataSelect::Init() {
-	if (Sound::SoundBank[0] && !App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
-		App->Audio->ClearMusic();
-		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	int at = 0;
+	if (Sound::SoundBank[0]) {
+		char* ct = strstr(Sound::SoundBank[0]->Name, "Menu");
+		if (ct != NULL)
+			at = Sound::SoundBank[0]->GetPosition();
+		//free(ct);
 	}
+	App->Audio->ClearMusic();
+	Sound::PlayStream(0, "Music/Menu3.ogg", true, 0, at, true);
 
 	App->Input->UseTouchController = false;
 
 	if (!MenuSprite) {
-		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App, 1);
+		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
-		MenuSprite->SetTransparentColorIndex(0x2C);
+		MenuSprite->SetTransparentColorIndex(0x0);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App, 1);
+		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
 		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App, 1);
+		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
 		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 	if (!SaveIconsSprite) {
 		ISprite::Animation an;
-		SaveIconsSprite = new ISprite("Sprites/UI/SaveIcons.gif", App, 1);
+		SaveIconsSprite = new ISprite("Sprites/UI/SaveIcons.gif", App);
 
 		an.Name = (char*)"Static";
 		an.FrameCount = 4;
@@ -203,7 +227,7 @@ PUBLIC void Scene_DataSelect::Init() {
 		SaveIconsSprite->Animations.push_back(an);
 	}
 	if (!SaveSelectSprite) {
-		SaveSelectSprite = new ISprite("Sprites/UI/SaveSelectEN.gif", App, 1);
+		SaveSelectSprite = new ISprite("Sprites/UI/SaveSelectEN.gif", App);
 		SaveSelectSprite->LoadAnimation("Sprites/UI/SaveSelect.bin");
 	}
 

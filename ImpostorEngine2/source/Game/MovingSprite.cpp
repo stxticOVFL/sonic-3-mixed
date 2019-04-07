@@ -70,7 +70,14 @@ PUBLIC void MovingSprite::Update() {
     int ext = -Height / 2;
     if (Left < 0) {
         Animate();
-        ext = Sprite->Animations[CurrentAnimation].Frames[Frame].OffY;
+		if (CurrentAnimation < Sprite->Animations.size())
+		{
+			ext = Sprite->Animations[CurrentAnimation].Frames[Frame].OffY;
+		}
+		else
+		{
+			ext = App->NullSprite->Animations[0].Frames[0].OffY;
+		}
     }
 
     if (Y + ext >= Scene->CameraY + App->HEIGHT || LifeSpan == 0) {

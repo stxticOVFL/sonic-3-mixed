@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class IResource;
 
@@ -44,11 +45,13 @@ public:
     Vorbis* LoadVorbis(IResource* src, SDL_AudioSpec *spec);
     int ReadVorbis(Vorbis* vorb, void* dst, int size);
     int SeekVorbis(Vorbis* vorb, int64_t pos);
+    long long TellVorbis(Vorbis* vorb);
     ISound(const char* filename);
     ISound(const char* filename, bool streamFromFile);
     void Load(const char* filename, bool streamFromFile);
     int  RequestMoreData(int samples, int amount);
     void Seek(int amount);
+    long long GetPosition();
     void Cleanup();
 };
 

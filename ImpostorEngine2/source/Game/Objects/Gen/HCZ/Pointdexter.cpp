@@ -25,24 +25,30 @@ int Pointdexter::OnHit() {
 }
 
 void Pointdexter::Update() {
-    SubX = (SubX + 1) & 3;
-    if (SubX == 3) X += Flip;
+    if (!isHeldDebugObject) {
+        SubX = (SubX + 1) & 3;
+        if (SubX == 3) X += Flip;
 
-    if (X >= InitialX + SubType) Flip = -1;
+        if (X >= InitialX + SubType) Flip = -1;
 
-    if (X <= InitialX - SubType) Flip = 1;
+        if (X <= InitialX - SubType) Flip = 1;
 
-    Y = InitialY + (G->MyCos[(Timer << 1) & 0xFF] * 3);
-    Timer = (Timer + 1) & 0x1FF;
-    if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
-    else if (Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
+        Y = InitialY + (G->MyCos[(Timer << 1) & 0xFF] * 3);
+        Timer = (Timer + 1) & 0x1FF;
+        if (Sprite->Animations.size() > CurrentAnimation) {
+            if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
+            else if (Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
 
-    if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount << 8) {
-        Frame = Sprite->Animations[CurrentAnimation].FrameToLoop << 8;
+            if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount << 8) {
+                Frame = Sprite->Animations[CurrentAnimation].FrameToLoop << 8;
+            }
+
+        }
+
+        if (Frame >> 8 == 0) Hurting = false;
+        else Hurting = true;
     }
 
-    if (Frame >> 8 == 0) Hurting = false;
-    else Hurting = true;
     Object::Update();
 }
 

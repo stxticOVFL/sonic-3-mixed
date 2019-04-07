@@ -14,6 +14,7 @@ void Mantis::Create() {
     this->CurrentAnimation = 25;
     HitCount = 1;
     wentUp = false;
+    Gravity = 0x80;
     StartYpos = this->Y;
     this->Y += 64;
 }
@@ -25,16 +26,19 @@ int Mantis::OnHit() {
 void Mantis::Update() {
     CheckDistanceToPlayers();
     if (PlayerXDistance <= 0x200) {
-        if (Y < StartYpos + 32) {
-            Y += 4;
+        if (Y == StartYpos) {
+            YSpeed = -0xBF0;
         }
         else {
             wentUp = true;
         }
     }
 
+    if (wentUp) YSpeed = 0;
+
     if (wentUp && Y > StartYpos) {
-        Y -= 4;
+        YSpeed = 0;
+        Y = StartYpos;
     }
 
     MoveSprite();

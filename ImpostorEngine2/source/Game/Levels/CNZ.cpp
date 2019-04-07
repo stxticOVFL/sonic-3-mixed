@@ -369,25 +369,43 @@ Uint32 AnPal_PalCNZ_4[122] = {
 PUBLIC Level_CNZ::Level_CNZ(IApp* app, IGraphics* g, int act) : LevelScene(app, g) {
     ZoneID = 4;
     VisualAct = Act = act;
+	sprintf(ZoneLetters, "CNZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode, 0x1A0);
 
-    if (Act == 1) {
-        Sound::SoundBank[0] = new ISound("Music/CNZ1.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
-
-        Str_TileConfigBin = "Stages/CNZ1/TileConfig.bin";
-        Str_SceneBin = "Stages/CNZ1/Scene.bin";
-        Str_TileSprite = "Stages/CNZ1/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/CNZ1/Animated Tiles.gif";
-    }
-    else if (Act == 2) {
-        Sound::SoundBank[0] = new ISound("Music/CNZ2.ogg", false);
-		Sound::Audio->LoopPoint[0] = 0;
-
-        Str_TileConfigBin = "Stages/CNZ2/TileConfig.bin";
-        Str_SceneBin = "Stages/CNZ2/Scene.bin";
-        Str_TileSprite = "Stages/CNZ2/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/CNZ2/Animated Tiles.gif";
-    }
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/CNZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/CNZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/CNZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/CNZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/CNZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/CNZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/CNZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/CNZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/CNZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/CNZ2/Stageconfig.bin";
+		}
+	}
+	else
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/CNZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/CNZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/CNZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/CNZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/CNZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Classic/Stages/CNZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/CNZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/CNZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/CNZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/CNZ2/Stageconfig.bin";
+		}
+	}
 
     sprintf(LevelName, "CARNIVAL NIGHT");
     sprintf(LevelNameDiscord, "Carnival Night");
@@ -399,6 +417,10 @@ PUBLIC Level_CNZ::Level_CNZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     else if (Act == 2) {
 
     }
+
+	AddNewDebugObjectID(Obj_Balloon);
+	AddNewDebugObjectID(Obj_Batbright);
+	AddNewDebugObjectID(Obj_Bumper);
 }
 
 PUBLIC void Level_CNZ::RestartStage(bool doActTransition, bool drawBackground) {
@@ -413,92 +435,103 @@ PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 
     if (Act <= 1) {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = CNZObjectsSprite;
-        SpriteMapIDs[0x05] = CNZObjectsSprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = CNZObjectsSprite;
-        SpriteMapIDs[0x0A] = CNZObjectsSprite;
-        SpriteMapIDs[0x0C] = CNZObjectsSprite;
-        SpriteMapIDs[0x0D] = CNZObjectsSprite;
-        SpriteMapIDs[0x0F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x2F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = CNZObjectsSprite;
-        SpriteMapIDs[0x4A] = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x01) = ItemsSprite;
+        SpriteMapIDs.at(0x04) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x05) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x07) = ObjectsSprite;
+    	SpriteMapIDs.at(0x08) = ObjectsSprite;
+        SpriteMapIDs.at(0x09) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0A) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0C) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0D) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x2F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x34) = ObjectsSprite;
+        SpriteMapIDs.at(0x35) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x4A) = CNZObjectsSprite;
 
-    	SpriteMapIDs[0x51] = CNZObjectsSprite;
-        SpriteMapIDs[0xA5] = CNZObjectsSprite;
-    }
-    else {
-    	SpriteMapIDs[0x01] = ItemsSprite;
-        SpriteMapIDs[0x04] = CNZObjectsSprite;
-        SpriteMapIDs[0x05] = CNZObjectsSprite;
-        SpriteMapIDs[0x06] = CNZObjectsSprite;
-    	SpriteMapIDs[0x07] = ObjectsSprite;
-    	SpriteMapIDs[0x08] = ObjectsSprite;
-        SpriteMapIDs[0x09] = CNZObjectsSprite;
-        SpriteMapIDs[0x0A] = CNZObjectsSprite;
-        SpriteMapIDs[0x0C] = CNZObjectsSprite;
-        SpriteMapIDs[0x0D] = CNZObjectsSprite;
-        SpriteMapIDs[0x0F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x2F] = CNZObjectsSprite;
-    	SpriteMapIDs[0x34] = ObjectsSprite;
-        SpriteMapIDs[0x35] = CNZObjectsSprite;
-		SpriteMapIDs[0x35] = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x51) = CNZObjectsSprite;
+        SpriteMapIDs.at(0xA5) = CNZObjectsSprite;
+    } else {
+    	SpriteMapIDs.at(0x01) = ItemsSprite;
+        SpriteMapIDs.at(0x04) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x05) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x06) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x07) = ObjectsSprite;
+    	SpriteMapIDs.at(0x08) = ObjectsSprite;
+        SpriteMapIDs.at(0x09) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0A) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0C) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0D) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x0F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x2F) = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x34) = ObjectsSprite;
+        SpriteMapIDs.at(0x35) = CNZObjectsSprite;
+		SpriteMapIDs.at(0x35) = CNZObjectsSprite;
 
-    	SpriteMapIDs[0x51] = CNZObjectsSprite;
-        SpriteMapIDs[0x8C] = CNZObjectsSprite;
-        SpriteMapIDs[0xA5] = CNZObjectsSprite;
+    	SpriteMapIDs.at(0x51) = CNZObjectsSprite;
+        SpriteMapIDs.at(0x8C) = CNZObjectsSprite;
+        SpriteMapIDs.at(0xA5) = CNZObjectsSprite;
     }
 }
 
 PUBLIC void Level_CNZ::LoadZoneSpecificSprites() {
     if (!CNZObjectsSprite) {
-		CNZObjectsSprite = new ISprite("Sprites/CNZ/Objects.gif", App);
+		CNZObjectsSprite = new ISprite("CNZ/Objects.gif", App);
 		CNZObjectsSprite->Print = true;
 
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Breakable Wall.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Balloon.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Button.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cork Floor.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cylinder.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Door Horizontal.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/End Boss.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Light Bulb.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Miniboss.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Rising Platform.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Trap Door.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon.bin");
-		CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Ball.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Cannon Base.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Bumper.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Clamer.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Batbot.bin");
-        CNZObjectsSprite->LoadAnimation("Sprites/CNZ/Sparkle.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Breakable Wall.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Balloon.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Button.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cork Floor.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cylinder.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Door Horizontal.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/End Boss.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Light Bulb.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Miniboss.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Rising Platform.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Trap Door.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cannon.bin");
+		CNZObjectsSprite->LoadAnimation("CNZ/Cannon Ball.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Cannon Base.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Bumper.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Clamer.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Batbot.bin");
+        CNZObjectsSprite->LoadAnimation("CNZ/Sparkle.bin");
 	}
 
 	if (!KnuxSprite[0]) {
-		KnuxSprite[0] = new ISprite("Sprites/Player/Knux1.gif", App);
-		KnuxSprite[1] = new ISprite("Sprites/Player/Knux2.gif", App);
-		KnuxSprite[2] = new ISprite("Sprites/Player/Knux3.gif", App);
-		KnuxSprite[3] = new ISprite("Sprites/Player/KnuxCutsceneAIZ.gif", App);
-		KnuxSprite[4] = new ISprite("Sprites/Player/KnuxCutsceneASZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-		KnuxSprite[0]->LoadAnimation("Sprites/Player/Knux.bin");
-		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-	}
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
+        KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
+        KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
+        KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
+        KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
+    }
 }
 
 PUBLIC void Level_CNZ::FinishResults() {
 	if (VisualAct == 1) {
 		LevelScene::FinishResults();
-	}
-	else {
+	} else {
 		FadeAction = FadeActionType::NEXT_ZONE;
 		FadeTimerMax = 90;
 		FadeMax = 0x140;
@@ -525,8 +558,7 @@ PUBLIC void Level_CNZ::GoToNextAct() {
 		NextAct->RoutineNumber = 0x00;
 
 		App->NextScene = NextAct;
-	}
-	else {
+	} else {
 		Level_ICZ* NextAct = new Level_ICZ(App, G, 1);
 		TransferCommonLevelData(NextAct);
 		App->NextScene = NextAct;
@@ -590,8 +622,7 @@ PUBLIC void Level_CNZ::Subupdate() {
 PUBLIC void Level_CNZ::HandleCamera() {
     if (Act == 1) {
 
-    }
-    else if (Act == 2) {
+    } else if (Act == 2) {
 
     }
     LevelScene::HandleCamera();

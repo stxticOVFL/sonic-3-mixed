@@ -17,6 +17,7 @@ event Create() {
     HitCount = 1;
 
 	wentUp = false;
+	Gravity = 0x80;
     
 	StartYpos = this.Y;
     this.Y += 64;
@@ -29,18 +30,21 @@ event OnHit():int {
 event Update() {
     CheckDistanceToPlayers();
     if (PlayerXDistance <= 0x200) {
-		if (Y < StartYpos + 32)
+		if (Y == StartYpos)
 		{
-			Y+=4; //rise, my child
+			YSpeed = -0xBF0;
 		}
 		else
 		{
 			wentUp=true;
 		}
     }
+	if (wentUp)
+		YSpeed = 0;
 	if (wentUp && Y > StartYpos)
 	{
-		Y-=4; //lower, my child
+		YSpeed = 0;
+		Y = StartYpos;
 	}
 	MoveSprite();
 }

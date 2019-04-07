@@ -174,6 +174,7 @@ bool ReportErrorPos(int line, int pos, const char* string, ...) {
 char* ReadFile(const char* path) {
     FILE* file = fopen(path, "rb");
     if (file == NULL) {
+
         ReportError(0, "Could not open file \"%s\".", path);
         exit(69);
     }

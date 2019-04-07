@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 
 #include <Game/LevelScene.h>

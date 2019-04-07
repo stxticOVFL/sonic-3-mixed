@@ -55,18 +55,22 @@ PUBLIC Scene_SettingsMenu::Scene_SettingsMenu(IApp* app, IGraphics* g) {
 	Settings = App->Settings; //used mainly for graphics
 
 	Sound::Audio = App->Audio;
-	Sound::Init();
+	Sound::Init();	
 
-	// Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
-	// Sound::Audio->LoopPoint[0] = 131859;
-	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Menu.ogg")) {
-		Sound::SoundBank[0] = new ISound("Music/Menu.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
-	}
 	Discord_UpdatePresence("Main Menu", "Settings", "icon", false);
 }
 
 PUBLIC void Scene_SettingsMenu::Init() {
+	int at = 0;
+	if (Sound::SoundBank[0]) {
+		char* ct = strstr(Sound::SoundBank[0]->Name, "Menu");
+		if (ct != NULL)
+			at = Sound::SoundBank[0]->GetPosition();
+		//free(ct);
+	}
+	App->Audio->ClearMusic();
+	Sound::PlayStream(0, "Music/Menu3.ogg", true, 0, at, true);
+
 	if (!MenuSprite) {
 		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
 		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
@@ -93,11 +97,6 @@ PUBLIC void Scene_SettingsMenu::Init() {
 		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
 		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
-	}
-
-	if (!App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
-		App->Audio->ClearMusic();
-		App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
 	}
 
 	App->Input->UseTouchController = false;

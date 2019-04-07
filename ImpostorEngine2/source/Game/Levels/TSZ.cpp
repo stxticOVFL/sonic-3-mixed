@@ -231,34 +231,34 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 	PlayMusic(ACT < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (ACT < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);
 
 	if (Act == 0) {
-		Str_StageBin = "Stages/AIZM/Act1/StageConfig.bin";
-		Str_TileConfigBin = "Stages/AIZM/Act1/TileConfig.bin";
-		Str_SceneBin = "Stages/AIZM/Act1/Scene1.bin";
-		Str_TileSprite = "Stages/AIZM/Act1/16x16Tiles.gif";
+		Str_StageBin = "Mixed/Stages/AIZM/Act1/StageConfig.bin";
+		Str_TileConfigBin = "Mixed/Stages/AIZM/Act1/TileConfig.bin";
+		Str_SceneBin = "Mixed/Stages/AIZM/Act1/Scene1.bin";
+		Str_TileSprite = "Mixed/Stages/AIZM/Act1/Tiles.gif";
 		//Str_AnimatedSprites = "Stages/AIZ1/Act1/Animated Tiles.gif";
 
 		VisualAct = 1;
 	}
 	else if (Act == 1) {
-		Str_StageBin = "Stages/AIZM/Act1/StageConfig.bin";
-		Str_TileConfigBin = "Stages/AIZM/Act1/TileConfig.bin";
-		Str_SceneBin = "Stages/AIZM/Act1/Scene1.bin";
-		Str_TileSprite = "Stages/AIZM/Act1/16x16Tiles.gif";
+		Str_StageBin = "Mixed/Stages/AIZM/Act1/StageConfig.bin";
+		Str_TileConfigBin = "Mixed/Stages/AIZM/Act1/TileConfig.bin";
+		Str_SceneBin = "Mixed/Stages/AIZM/Act1/Scene1.bin";
+		Str_TileSprite = "Mixed/Stages/AIZM/Act1/Tiles.gif";
 		//Str_AnimatedSprites = "Stages/AIZ1/Act1/Animated Tiles.gif";
 	}
 	else if (Act == 2) {
-		Str_StageBin = "Stages/AIZM/Act2/StageConfig.bin";
-		Str_TileConfigBin = "Stages/AIZM/Act2/TileConfig.bin";
-		Str_SceneBin = "Stages/AIZM/Act2/Scene2.bin";
-		Str_TileSprite = "Stages/AIZM/Act2/16x16Tiles.gif";
+		Str_StageBin = "Mixed/Stages/AIZM/Act2/StageConfig.bin";
+		Str_TileConfigBin = "Mixed/Stages/AIZM/Act2/TileConfig.bin";
+		Str_SceneBin = "Mixed/Stages/AIZM/Act2/Scene2.bin";
+		Str_TileSprite = "Mixed/Stages/AIZM/Act2/Tiles.gif";
 		//Str_AnimatedSprites = "Stages/AIZ2/Act2/Animated Tiles.gif";
 	}
 
     sprintf(LevelName, "TEST ZONE");
-    sprintf(LevelNameDiscord, "Angel Island (Mania Testing)");
+    sprintf(LevelNameDiscord, "Funny Zone");
 
     if (Act == 0) {
-        PlayerStartX = 0x01E0;
+		PlayerStartX = 0x01E0;
         PlayerStartY = 0x041A;
 
         HUDVisible = false;
@@ -277,11 +277,11 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     
     AddNewDebugObjectID(0x04); // Collapsing Platform
     AddNewDebugObjectID(0x0D); // Breakable Wall
-    //AddNewDebugObjectID(0x2E); // Spiked Log - Currently doesn't work. (Sprites do not render.)
+    AddNewDebugObjectID(0x2E); // Spiked Log - Currently doesn't work. (Sprites do not render.)
     AddNewDebugObjectID(0x8C); // Bloominator
-    //AddNewDebugObjectID(0x8D); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
-    //AddNewDebugObjectID(0x8E); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
-    //AddNewDebugObjectID(0x8F); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
+    AddNewDebugObjectID(0x8D); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
+    AddNewDebugObjectID(0x8E); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
+    AddNewDebugObjectID(0x8F); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
 }
@@ -425,18 +425,31 @@ PUBLIC void Level_TSZ::LoadZoneSpecificSprites() {
         TSZBossSprite->Print = true;
         TSZBossSprite->LoadAnimation("AIZ/Act 2 Background Tree.bin");
         TSZBossSprite->LoadAnimation("AIZ/Airship.bin");
-        TSZBossSprite->LoadAnimation("AIZ/End Boss.bin");
-        TSZBossSprite->LoadAnimation("AIZ/Miniboss.bin");
+		TSZBossSprite->LoadAnimation("AIZ/FlameMobile.bin");
+		TSZBossSprite->LoadAnimation("AIZ/FireBreath.bin");
     }
 
     if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
@@ -773,7 +786,7 @@ PUBLIC void Level_TSZ::Subupdate() {
             if (RoutineNumber < 0) {
                 if (CameraX > 0xF50 + 160 - App->WIDTH / 2) {
                     RoutineNumber = 0xCD;
-                    AddNewObject(Obj_AIZMiniboss, 0x00, 0x11F0, 0x288 - 8, false, false);
+                    AddNewObject(Obj_FireBreathCutscene, 0x00, 0x11F0, 0x288 - 8, false, false);
                 }
             }
         }
