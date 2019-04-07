@@ -1236,7 +1236,7 @@ int main(int argc, char **argv) {
     }
     SaveClassHashTable();
 
-    sprintf(finalpath, "%s%s", finalpath, "/Game/Objects");
+    sprintf(finalpath, "%s%s", finalpath, "source/Game/Objects");
 
     // Create Gen if not already there
     char* fullasspath = (char*)malloc(1024);
