@@ -69,7 +69,7 @@ PUBLIC void Scene_SettingsMenu::Init() {
 		//free(ct);
 	}
 	App->Audio->ClearMusic();
-	Sound::PlayStream(0, "Music/Menu3.ogg", true, 0, at, true);
+	Sound::PlayStream(0, "Music/Menu2.ogg", true, 0, at, true);
 
 	if (!MenuSprite) {
 		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);

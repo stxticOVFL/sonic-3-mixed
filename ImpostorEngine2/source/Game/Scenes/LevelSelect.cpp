@@ -67,7 +67,7 @@ PUBLIC void Scene_LevelSelect::Init() {
 		//free(ct);
 	}
 	App->Audio->ClearMusic();
-	Sound::PlayStream(0, "Music/Menu2.ogg", true, 0, at, true);
+	Sound::PlayStream(0, "Music/Menu3.ogg", true, 0, at, true);
 
     App->Input->UseTouchController = true;
 

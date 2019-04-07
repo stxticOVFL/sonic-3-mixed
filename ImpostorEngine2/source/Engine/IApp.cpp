@@ -48,6 +48,13 @@ public:
 	Uint8 DevMenuFlagA = 0;
 	Uint8 DevMenuFlagB = 0;
 	Uint8 DevMenuFlagC = 0;
+	
+	Uint8 Major = 0;
+	Uint8 Minor = 0;
+	short Build = 1;
+	char VersionString[9];
+
+	char Title[256];
 
 	int isSharp = 1;
 };
@@ -121,10 +128,19 @@ PUBLIC IApp::IApp() {
 
     SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
     SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
-    // SDL_SetHint(SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH, "1");
+    // SDL_SetHint(SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH, "1");	
     // SDL_GL_SetAttribute(SDL_GL_RETAINED_BACKING, 0);
 
     LoadSettings();
+
+	IResource* DevConfig = IResources::Load("Objects/DevConfig.bin");
+	IStreamer DevRead(DevConfig);
+
+	Major = DevRead.ReadByte();
+	Minor = DevRead.ReadByte();
+	Build = DevRead.ReadInt16();
+	sprintf(VersionString, "%.1d.%.2d.%.3d", Major, Minor, Build);
+	sprintf(Title, DevRead.ReadRSDKString().c_str());
 
     // HACK:
     if (IApp::Platform == Platforms::Android) {
@@ -155,9 +171,10 @@ PUBLIC IApp::IApp() {
 		isSharp = 0;
 		scale = 1;
 #else
-		//desW = WIDTH * 3;
-		//desH = HEIGHT * 3;
-		//scale = 1;
+		desW = WIDTH;
+		desH = HEIGHT;
+		isSharp = 1;
+		scale = 3;
 #endif
 	}
 
@@ -177,7 +194,7 @@ PUBLIC IApp::IApp() {
 	DevMenuFlagB = scale;
 	Settings->GetInteger("display", "shader", &isSharp);
 	G->SetDisplay(desW, desH, isSharp);
-    SDL_SetWindowTitle(G->Window, "Sonic 3'Mixed");
+    SDL_SetWindowTitle(G->Window, Title);
 	int full = 0;
 	Settings->GetInteger("display", "fullscreen", &full);
 	SDL_SetWindowFullscreen(G->Window, full);
@@ -467,9 +484,9 @@ PUBLIC void IApp::Run() {
 			G->DrawText(WIDTH / 2 - strlen("Dev Menu") * 4, DrawY, "Dev Menu", 0xFFFFFF);
 			DrawY += 16;
 
-			G->DrawText(WIDTH / 2 - strlen("Sonic 3'Mixed") * 4, DrawY, "Sonic 3'Mixed", 0x848294);
+			G->DrawText(WIDTH / 2 - strlen(Title) * 4, DrawY, Title, 0x848294);
 			DrawY += 8;
-			G->DrawText(WIDTH / 2 - strlen("0.00.001") * 4, DrawY, "0.00.001", 0x848294);
+			G->DrawText(WIDTH / 2 - 8 * 4, DrawY, VersionString, 0x848294);
 
 			//STATS AND SHIT
 			char buffer[0x40];
@@ -501,7 +518,10 @@ PUBLIC void IApp::Run() {
 					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
 					{
 						//Restart Scene
-						Print(1, "Scene Restart not implemented yet!");
+						//Print(1, "Scene Restart not implemented yet!");
+						Scene->Cleanup();
+						Scene->Init();
+						DevMenuActive = 0;
 					}
 					break;
 				case 2:

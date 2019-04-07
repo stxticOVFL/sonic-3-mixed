@@ -420,6 +420,7 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop, int vol) {
 	Sound::SoundBank[0] = new ISound(path, true);
 	Sound::Audio->LoopPoint[0] = loop;
 	MusicVolume = vol;
+	Sound::Audio->PushMusic(Sound::SoundBank[0], loop, true);
 }
 
 PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode) {
@@ -428,17 +429,11 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode) {
 
 PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) {
 	char MusicPath[0x100];
-	const char* ModePath;
-	if (mode == 0) {
-		ModePath = "Classic";
-	} else if (mode == -1) {
-		sprintf(MusicPath, "Music/%s%d.ogg", ZoneLetters, act);
-	} else {
-		ModePath = "Mixed";
-	}
-	if (mode != -1) {
+	const char* ModePath = mode == 0 ? "Classic" : "Mixed";
+	if (mode != -1)
 		sprintf(MusicPath, "%s/Music/%s%d.ogg", ModePath, ZoneLetters, act);
-	}
+	else 
+		sprintf(MusicPath, "Music/%s%d.ogg", ZoneLetters, act);
 	PlayMusic(MusicPath, loop, vol);
 }
 

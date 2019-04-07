@@ -24,7 +24,19 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	VisualAct = Act = act;
 	sprintf(ZoneLetters, "MGZ");
 	TintColor = 0xFF9034;
-    
+	
+	/*char *tc = "", *s = "", *t = "", *a = "", *sc = "";
+	sprintf(tc, "%s/Stages/%s%d/TileConfig.bin", SaveGame::CurrentMode >= 1 ? "Mixed" : "Classic", ZoneLetters, act);
+	sprintf(s, "%s/Stages/%s%d/Scene.bin", SaveGame::CurrentMode >= 1 ? "Mixed" : "Classic", ZoneLetters, act);
+	sprintf(t, "%s/Stages/%s%d/16x16Tiles.gif", SaveGame::CurrentMode >= 1 ? "Mixed" : "Classic", ZoneLetters, act);
+	sprintf(a, "%s/Stages/%s%d/Animated Tiles.gif", SaveGame::CurrentMode >= 1 ? "Mixed" : "Classic", ZoneLetters, act);
+	sprintf(sc, "%s/Stages/%s%d/Stageconfig.bin", SaveGame::CurrentMode >= 1 ? "Mixed" : "Classic", ZoneLetters, act);
+	Str_TileConfigBin = tc;
+	Str_SceneBin = s;
+	Str_TileSprite = t;
+	Str_AnimatedSprites = a;
+	Str_StageBin = sc;//*/
+
 	if (SaveGame::CurrentMode >= 1)
 	{
 		if (Act == 1) {
@@ -58,7 +70,7 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 			Str_AnimatedSprites = "Classic/Stages/MGZ2/Animated Tiles.gif";
 			Str_StageBin = "Classic/Stages/MGZ2/Stageconfig.bin";
 		}
-	}
+	}//*/
 
     AddNewDebugObjectID(Obj_TopPlatform); // Top Platform
     AddNewDebugObjectID(Obj_Spiker); 
@@ -73,14 +85,12 @@ PUBLIC Level_MGZ::Level_MGZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 }
 
 PUBLIC void Level_MGZ::Init() {
-	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0 : 193952) : 0, SaveGame::CurrentMode);
-
 	LevelScene::Init();
 }
 
 PUBLIC void Level_MGZ::RestartStage(bool doActTransition, bool drawBackground) {
 	App->Audio->ClearMusic();
-	App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0 : 193952) : 0, SaveGame::CurrentMode);
 
 	LevelScene::RestartStage(doActTransition, drawBackground);
 

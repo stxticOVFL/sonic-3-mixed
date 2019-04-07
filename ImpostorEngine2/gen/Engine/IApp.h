@@ -58,6 +58,11 @@ public:
     Uint8 DevMenuFlagA = 0;
     Uint8 DevMenuFlagB = 0;
     Uint8 DevMenuFlagC = 0;
+    Uint8 Major = 0;
+    Uint8 Minor = 0;
+    short Build = 1;
+    char VersionString[9];
+    char Title[256];
     int isSharp = 1;
 
     IApp();
