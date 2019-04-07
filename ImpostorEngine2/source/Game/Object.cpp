@@ -65,22 +65,25 @@ void Object::Animate() {
     if (!Sprite) return;
 	if (CurrentAnimation < 0) return;
 
-	SDL_assert(CurrentAnimation < Sprite->Animations.size());
+	//SDL_assert(CurrentAnimation < Sprite->Animations.size());
 
-    if (AnimationFrame == -2)
-        AnimationFrame = Sprite->Animations[CurrentAnimation].Frames[Frame].Duration;
+	if (Sprite->Animations.size() > CurrentAnimation)
+	{
+		if (AnimationFrame == -2)
+			AnimationFrame = Sprite->Animations[CurrentAnimation].Frames[Frame].Duration;
 
-    if (AnimationFrame > 0) {
-        AnimationFrame -= Sprite->Animations[CurrentAnimation].AnimationSpeed;
-        if (AnimationFrame <= 0) {
-            Frame++;
-            if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount) {
-                Frame = Sprite->Animations[CurrentAnimation].FrameToLoop;
-                OnAnimationFinish();
-            }
-            AnimationFrame = Sprite->Animations[CurrentAnimation].Frames[Frame].Duration;
-        }
-    }
+		if (AnimationFrame > 0) {
+			AnimationFrame -= Sprite->Animations[CurrentAnimation].AnimationSpeed;
+			if (AnimationFrame <= 0) {
+				Frame++;
+				if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount) {
+					Frame = Sprite->Animations[CurrentAnimation].FrameToLoop;
+					OnAnimationFinish();
+				}
+				AnimationFrame = Sprite->Animations[CurrentAnimation].Frames[Frame].Duration;
+			}
+		}
+	}
 }
 
 void Object::AnimationProgress(int16_t animationData[]) {

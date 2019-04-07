@@ -70,24 +70,24 @@
 #include "AIZ/RhinoBot.h"			// 4374E9C7
 #include "AIZ/MonkeyDude.h"			// B7C95057
 #include "AIZ/CaterkillerJr.h"			// 3F487ED4
-#include "AIZ/AIZMinibossCutscene.h"			// BE856454
-#include "AIZ/AIZMiniboss.h"			// 8030D25C
-#include "AIZ/AIZBoss.h"			// CC92A8FA
+#include "AIZ/FireBreathCutscene.h"			// 842C5D59
+#include "AIZ/FireBreath.h"			// CDF582CA
+#include "AIZ/FlameMobile.h"			// 7893A0E1
 #include "HCZ/Jawz.h"			// 2160C123
 #include "HCZ/Blastoid.h"			// CD00547A
 #include "HCZ/Buggernaut.h"			// 78C3EB13
 #include "HCZ/TurboSpiker.h"			// 8E6F27CF
 #include "HCZ/MegaChomper.h"			// C50988CE
 #include "HCZ/Pointdexter.h"			// F365CCC4
-#include "HCZ/HCZMiniboss.h"			// 31F4D537
-#include "HCZ/HCZBoss.h"			// 6DE7611D
+#include "HCZ/BigShaker.h"			// 92C9F0D4
+#include "HCZ/ScrewMobile.h"			// 1EF84BB7
 #include "MGZ/BubblesBadnik.h"			// A8CF1ABB
 #include "MGZ/Spiker.h"			// DF9FA830
 #include "MGZ/Mantis.h"			// 2C7E197C
 #include "MGZ/MGZDriller.h"			// CCA7D752
-#include "MGZ/MGZMiniBoss.h"			// 8886B305
+#include "MGZ/TunnelBot.h"			// 403E6CD3
 #include "MGZ/DrillerEggman.h"			// 88549378
-#include "MGZ/MGZBoss.h"			// DD1ABC3A
+#include "MGZ/DrillMobile.h"			// EFAD5D3C
 #include "CNZ/Batbright.h"			// 9D8C15CA
 #include "ICZ/StarPointer.h"			// 804AD12D
 #include "ICZ/CrushingColumn.h"			// A5F30B34
@@ -100,9 +100,9 @@
 #include "ICZ/SnowPile.h"			// CF9FDC21
 #include "LBZ/Orbinaut.h"			// 75BEA9FB
 #include "AIZ/AirshipBomb.h"			// 8E8C37A1
-#include "AIZ/AIZMinibossBomb.h"			// 89077B11
-#include "AIZ/AIZMinibossFlame.h"			// 3195387E
 #include "AIZ/BloominatorSpore.h"			// BF8DF98A
+#include "AIZ/FireBreathBomb.h"			// A1BB73AA
+#include "AIZ/FireBreathFlame.h"			// CE81DA7E
 #include "AIZ/MonkeyDudeCoconut.h"			// 5C688649
 #include "CNZ/BatbrightParts.h"			// D5ADBFDB
 #include "Common/BlankObject.h"			// 8D487F51
@@ -118,6 +118,7 @@
 #include "GHZ/Motobug.h"			// 219C1E61
 #include "GHZ/MotobugSmoke.h"			// 5B38E7A8
 #include "HCZ/BlastoidShot.h"			// 3692A9F5
+#include "HCZ/DepthCharge.h"			// B708D750
 #include "HCZ/TurboSpikerSpike.h"			// 77A23BDE
 #include "ICZ/SegmentedColumnStub.h"			// 91BDF05
 #include "ICZ/StarPointerOrbs.h"			// 802D069A
@@ -196,24 +197,24 @@ enum {
     Obj_RhinoBot = 0x08D,
     Obj_MonkeyDude = 0x08E,
     Obj_CaterkillerJr = 0x08F,
-    Obj_AIZMinibossCutscene = 0x090,
-    Obj_AIZMiniboss = 0x091,
-    Obj_AIZBoss = 0x092,
+    Obj_FireBreathCutscene = 0x090,
+    Obj_FireBreath = 0x091,
+    Obj_FlameMobile = 0x092,
     Obj_Jawz = 0x093,
     Obj_Blastoid = 0x094,
     Obj_Buggernaut = 0x095,
     Obj_TurboSpiker = 0x096,
     Obj_MegaChomper = 0x097,
     Obj_Pointdexter = 0x098,
-    Obj_HCZMiniboss = 0x099,
-    Obj_HCZBoss = 0x09A,
+    Obj_BigShaker = 0x099,
+    Obj_ScrewMobile = 0x09A,
     Obj_BubblesBadnik = 0x09B,
     Obj_Spiker = 0x09C,
     Obj_Mantis = 0x09D,
     Obj_MGZDriller = 0x09E,
-    Obj_MGZMiniBoss = 0x09F,
+    Obj_TunnelBot = 0x09F,
     Obj_DrillerEggman = 0x0A0,
-    Obj_MGZBoss = 0x0A1,
+    Obj_DrillMobile = 0x0A1,
     Obj_Batbright = 0x0A5,
     Obj_StarPointer = 0x0AE,
     Obj_CrushingColumn = 0x0AF,
@@ -226,9 +227,9 @@ enum {
     Obj_SnowPile = 0x0B9,
     Obj_Orbinaut = 0x0C0,
     Obj_AirshipBomb = 0x400,
-    Obj_AIZMinibossBomb = 0x401,
-    Obj_AIZMinibossFlame = 0x402,
-    Obj_BloominatorSpore = 0x403,
+    Obj_BloominatorSpore = 0x401,
+    Obj_FireBreathBomb = 0x402,
+    Obj_FireBreathFlame = 0x403,
     Obj_MonkeyDudeCoconut = 0x404,
     Obj_BatbrightParts = 0x405,
     Obj_BlankObject = 0x406,
@@ -244,12 +245,13 @@ enum {
     Obj_Motobug = 0x410,
     Obj_MotobugSmoke = 0x411,
     Obj_BlastoidShot = 0x412,
-    Obj_TurboSpikerSpike = 0x413,
-    Obj_SegmentedColumnStub = 0x414,
-    Obj_StarPointerOrbs = 0x415,
-    Obj_SwingingPlatformTrigger = 0x416,
-    Obj_ReliefEye = 0x417,
-    Obj_Platform = 0x418,
+    Obj_DepthCharge = 0x413,
+    Obj_TurboSpikerSpike = 0x414,
+    Obj_SegmentedColumnStub = 0x415,
+    Obj_StarPointerOrbs = 0x416,
+    Obj_SwingingPlatformTrigger = 0x417,
+    Obj_ReliefEye = 0x418,
+    Obj_Platform = 0x419,
 };
 
 Object* GetNewObjectFromID(int ID);

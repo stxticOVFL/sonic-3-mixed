@@ -18,6 +18,7 @@ public:
     int Routine;
     Uint32 PosTable[0x80];
     
+    CONSTRUCTER CaterkillerJr();
     void Create();
     void OnSwingFinish();
     void Update();

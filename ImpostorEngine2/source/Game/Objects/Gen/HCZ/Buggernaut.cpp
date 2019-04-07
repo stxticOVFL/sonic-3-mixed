@@ -36,78 +36,84 @@ int Buggernaut::OnHit() {
 }
 
 void Buggernaut::Update() {
-    if (Routine == 4) {
-        if (Scene->Player->EZX < X) {
-            if (XSpeed > -MaximumSpeed) XSpeed -= Acceleration;
+    if (!isHeldDebugObject) {
+        if (Routine == 4) {
+            if (Scene->Player->EZX < X) {
+                if (XSpeed > -MaximumSpeed) XSpeed -= Acceleration;
 
-            Flip = -1;
+                Flip = -1;
+            }
+            else {
+                if (XSpeed < MaximumSpeed) XSpeed += Acceleration;
+
+                Flip = 1;
+            }
+            if (Scene->Player->EZY < Y) {
+                if (YSpeed > -MaximumSpeed) YSpeed -= Acceleration;
+
+            }
+            else {
+                if (YSpeed < MaximumSpeed) YSpeed += Acceleration;
+
+            }
+            if (Y > Scene->WaterLevel - 8) YSpeed = -0x200;
+
+            SubX += XSpeed << 8;
+            SubY += YSpeed << 8;
+        }
+
+        if (SubX < ChildSubX) {
+            if (ChildXSpeed > -MaximumSpeed) ChildXSpeed -= Acceleration << 1;
+
+            ChildFlip = -1;
         }
         else {
-            if (XSpeed < MaximumSpeed) XSpeed += Acceleration;
+            if (ChildXSpeed < MaximumSpeed) ChildXSpeed += Acceleration << 1;
 
-            Flip = 1;
+            ChildFlip = 1;
         }
-        if (Scene->Player->EZY < Y) {
-            if (YSpeed > -MaximumSpeed) YSpeed -= Acceleration;
+        if (SubY < ChildSubY) {
+            if (ChildYSpeed > -MaximumSpeed) ChildYSpeed -= Acceleration << 1;
 
         }
         else {
-            if (YSpeed < MaximumSpeed) YSpeed += Acceleration;
+            if (ChildYSpeed < MaximumSpeed) ChildYSpeed += Acceleration << 1;
 
         }
-        if (Y > Scene->WaterLevel - 8) YSpeed = -0x200;
+        if ((ChildSubY >> 16) > Scene->WaterLevel - 8) ChildYSpeed = -0x200;
 
-        SubX += XSpeed << 8;
-        SubY += YSpeed << 8;
-    }
-
-    if (SubX < ChildSubX) {
-        if (ChildXSpeed > -MaximumSpeed) ChildXSpeed -= Acceleration << 1;
-
-        ChildFlip = -1;
-    }
-    else {
-        if (ChildXSpeed < MaximumSpeed) ChildXSpeed += Acceleration << 1;
-
-        ChildFlip = 1;
-    }
-    if (SubY < ChildSubY) {
-        if (ChildYSpeed > -MaximumSpeed) ChildYSpeed -= Acceleration << 1;
-
-    }
-    else {
-        if (ChildYSpeed < MaximumSpeed) ChildYSpeed += Acceleration << 1;
-
-    }
-    if ((ChildSubY >> 16) > Scene->WaterLevel - 8) ChildYSpeed = -0x200;
-
-    ChildSubX += ChildXSpeed << 8;
-    ChildSubY += ChildYSpeed << 8;
-    if (Timer > 0) {
-        Timer -= 1;
-    }
-    else {
-        if (TimerRoutine == 0) {
-            Routine = 2;
-            TimerRoutine = 2;
-            Timer = 0x3F;
+        ChildSubX += ChildXSpeed << 8;
+        ChildSubY += ChildYSpeed << 8;
+        if (Timer > 0) {
+            Timer -= 1;
         }
-        else if (TimerRoutine == 2) {
-            Routine = 4;
-            TimerRoutine = 0;
-            Timer = 0x7F;
+        else {
+            if (TimerRoutine == 0) {
+                Routine = 2;
+                TimerRoutine = 2;
+                Timer = 0x3F;
+            }
+            else if (TimerRoutine == 2) {
+                Routine = 4;
+                TimerRoutine = 0;
+                Timer = 0x7F;
+            }
+
+        }
+        if (Sprite->Animations.size() > CurrentAnimation) {
+            if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
+            else if (Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
+
+            if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount << 8) {
+                Frame = Sprite->Animations[CurrentAnimation].FrameToLoop << 8;
+            }
+
         }
 
-    }
-    if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
-    else if (Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
-
-    if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount << 8) {
-        Frame = Sprite->Animations[CurrentAnimation].FrameToLoop << 8;
+        X = SubX >> 16;
+        Y = SubY >> 16;
     }
 
-    X = SubX >> 16;
-    Y = SubY >> 16;
     Object::Update();
 }
 

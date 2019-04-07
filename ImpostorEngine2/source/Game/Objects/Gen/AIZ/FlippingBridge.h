@@ -21,6 +21,7 @@ public:
     int Flip;
     int RevolutionDuration;
     
+    CONSTRUCTER FlippingBridge();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

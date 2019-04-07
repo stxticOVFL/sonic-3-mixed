@@ -2,6 +2,7 @@
 
 #include <Utils/Standard.h>
 #include <Engine/IStreamer.h>
+#include <Engine/ImageFormats/GIF.h>
 
 class PNG {
 public:
@@ -113,15 +114,39 @@ PUBLIC STATIC PNG* PNG::Load(const char* filename) {
 
 	goto PNG_Load_Success;
 
-PNG_Load_FAIL:
-	delete png;
-	png = NULL;
-
 PNG_Load_Success:
 	IResources::Close(R);
 	Memory::Free(buf);
 	if (stream) delete stream;
 	return png;
+
+PNG_Load_FAIL:
+	delete png;
+	png = NULL;
+
+	IResources::Close(R);
+	if (stream) delete stream;
+	return NULL;
+}
+
+PUBLIC STATIC GIF* PNG::ToGif(PNG* png) {
+	if (png) {
+		if (!png->indexed) {
+			IApp::Print(2, "BMP Wasn't indexed! GIF can only be indexed!");
+			return NULL;
+		}
+		GIF* gif = new GIF;
+		gif->Colors = png->Colors;
+		gif->Width = png->Width;
+		gif->Height = png->Height;
+		gif->TransparentColorIndex = png->TransparentColorIndex;
+		gif->Data = (Uint8*)Memory::TrackedCalloc("PNG::Data->GIF::Data", png->Width * png->Height, sizeof(Uint8));
+		for (int i = 0; i < png->Width * png->Height; i++) {
+			gif->Data[i] = (Uint8)png->Data[i];
+		}
+		return gif;
+	}
+	return NULL;
 }
 
 PUBLIC PNG::~PNG() {

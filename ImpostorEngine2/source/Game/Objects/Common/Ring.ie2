@@ -28,7 +28,10 @@ event Create() {
 }
 
 event Update() {
-    // If bouncing ring:
+	
+	if (!isHeldDebugObject)
+	{
+		    // If bouncing ring:
     if (MagnetizedTo < 0) {
         YSpeed += 0x18;
 
@@ -132,6 +135,7 @@ event Update() {
     if (Timer == 0) {
         Active = false;
     }
+	}
 }
 
 event Render(CamX:int, CamY:int) {

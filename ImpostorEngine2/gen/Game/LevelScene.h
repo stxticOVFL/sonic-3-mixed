@@ -102,15 +102,17 @@ public:
     RESTART = 2,
     EXIT = 3,
     DIED = 4,
-    TO_BONUS_STAGE1 = 5,
-    TO_BONUS_STAGE2 = 6,
+    TO_BONUS_STAGE = 5,
     TO_SPECIAL_STAGE = 7,
     NEXT_ZONE = 8,
     CUSTOM_FADE_ACTION = 9,
     }; 
+    //0 = Itemball, 1 = Pachinko, 2 = Slots
+    int NextBonusStage = 0;
     //For RPC
     char* ModeName;
     int maxLayer = 1;
+    Uint8 SceneMode = 0xFF;
     bool Thremixed = false;
     bool DeformObjects = false;
     bool DeformPlayer = false;
@@ -203,6 +205,7 @@ public:
     bool CollisionCheckForAlternate = false;
     bool CollisionCheckForAlternate2 = false;
     uint32_t BackgroundColor = 0x000000;
+    uint32_t TintColor = 0x000000;
     bool SepThread = false;
     uint16_t Signal[8]; //
     bool ViewPalettes = false;
@@ -211,9 +214,15 @@ public:
     bool ViewPlayerUpdateStats = false;
     bool ViewTileInfo = false;
     bool ViewTileCollision = false;
-    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size);
     void* operator new(size_t const size, std::nothrow_t const&) noexcept;
     void operator delete(void* const block) noexcept;
+    enum Achevements {
+    ACHIEVEMENT_RINGHOG, 
+    ACHIEVEMENT_POWERHOUR, 
+    ACHIEVEMENT_SUPERAQUIRED, 
+    ACHIEVEMENT_HYPERAQUIRED, 
+    }; 
 
     LevelScene(IApp* app, IGraphics* g);
     virtual void PlayMusic(const char* path, int loop);
@@ -235,6 +244,7 @@ public:
     void LoadInBackground();
     virtual void RestartStage(bool doActTransition, bool drawBackground);
     virtual void PatchLayer(int layer);
+    virtual int FindLayer(std::string name);
     virtual void UpdateDiscord();
     bool CollisionAt(int probeX, int probeY);
     bool CollisionAt(int probeX, int probeY, Object* IgnoreObject);

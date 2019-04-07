@@ -5,6 +5,17 @@
 
 typedef IMath Math;
 
+CONSTRUCTER FallingLog::FallingLog() {
+    /*if (Scene->Act == 1) {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Falling Log (Act 1).bin");
+        LevelScene::LoadSpriteBin("AIZ/Falling Log Splash (Act 1).bin");
+    }
+    else {
+        BinIndex = LevelScene::LoadSpriteBin("AIZ/Falling Log (Act 2).bin");
+        LevelScene::LoadSpriteBin("AIZ/Falling Log Splash (Act 2).bin");
+    }*/
+}
+
 void FallingLog::Create() {
     Object::Create();
     Active = true;
@@ -15,8 +26,8 @@ void FallingLog::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     Length = 0;
     LastY = Y;
-    CurrentAnimation = 14;
-    if (Scene->Act == 2) CurrentAnimation = 15;
+    //CurrentAnimation = Sprite->FindAnimation("Falling Log (Act 1)");
+    //if (Scene->Act == 2) CurrentAnimation = Sprite->FindAnimation("Falling Log (Act 2)");
 
 }
 

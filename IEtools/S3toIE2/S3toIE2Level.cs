@@ -142,6 +142,17 @@ namespace S3toIE2 {
             "SSZ",
             "DEZ",
             "DDZ",
+
+            "ALZ",
+            "BPZ",
+            "CGZ",
+            "DPZ",
+            "EMZ",
+
+            "Slots",
+            "Itemball",
+            "Pachinko",
+
         };
         static string[] lvlNames = new string[] {
             "Angel Island",
@@ -159,6 +170,16 @@ namespace S3toIE2 {
             "Sky Sanctuary",
             "Death Egg",
             "The Doomsday",
+
+            "Azure Lake",
+            "Balloon Park",
+            "Chrome Gadget",
+            "Desert Palace",
+            "Endless Mine",
+
+            "Slots",
+            "Itemball",
+            "Pachinko",
         };
 
         public static Dictionary<string, ObjectData> INIObjDefs;
@@ -751,7 +772,7 @@ namespace S3toIE2 {
 
                     break;
                 case 2:
-                    Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\MStages";
+                    Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\Mixed\Stages\";
                     break;
             }
             
@@ -1089,16 +1110,11 @@ namespace S3toIE2 {
             
         }
 
-        public static void ConvertLevel(string zone, int act, string outFolderName, string iniName, bool andknux) {
+        public static void ConvertLevel(string zone, int act, string outFolderName, string iniName, int StageMode) {
             int zoneID = 0;
-            for (; zoneID < 15; zoneID++) {
+            for (; zoneID < 21; zoneID++) {
                 if (zone == lvlIDs[zoneID])
                     break;
-            }
-
-            if (DOTILEDCONVERT) {
-                ConvertSonLVLObjDefToTiled(zone, act, outFolderName, iniName, andknux, zoneID);
-                return;
             }
 
             string LEVELROOT = Globals.ROOT + @"Levels\" + zone + "\\";
@@ -1113,14 +1129,34 @@ namespace S3toIE2 {
                     Globals.ROOT = @"C:\Users\theclashingfritz\Documents\skdisasm\";
                     break;
                 case 2:
-                    Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\Stages\MStages\";
+                    Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\Mixed\Stages\";
                     Globals.ROOT = @"C:\Users\owner\Documents\Fan Games\3mZones\Sonic 3\";
                     break;
             }
             
 
             IniDictionary iniDictionary = IniFile.Load(Globals.ROOT + @"SonLVL INI Files\SonLVL.ini");
-            IniGroup iniLevel = iniDictionary[(andknux ? @"Sonic & Knuckles\" : @"Sonic 3\") + iniName];
+
+            IniGroup iniLevel = new IniGroup();
+
+            switch (StageMode)
+            {
+                case 0: //Sonic 3
+                    iniLevel = iniDictionary[(@"Sonic 3\") + iniName];
+                    break;
+                case 1: //Sonic & Knuckles
+                    iniLevel = iniDictionary[(@"Sonic & Knuckles\") + iniName];
+                    break;
+                case 2: //2P Zones
+                    iniLevel = iniDictionary[(@"Competition\") + iniName];
+                    break;
+                case 3: //Bonus Stages
+                    iniLevel = iniDictionary[(@"Bonus Stage\") + iniName];
+                    break;
+                default: //Sonic 3
+                    iniLevel = iniDictionary[(@"Sonic 3\") + iniName];
+                    break;
+            }
 
             /*
              * Timeline:
@@ -1183,19 +1219,46 @@ namespace S3toIE2 {
 
             // Set Palette
             int lasti = 0;
+            int[] palette;
             ColorPalette cpal = tileImage.Palette;
-            int[] palette = LoadPalette(Globals.ROOT + @"General\Sprites\Sonic\Palettes\SonicAndTails.bin", Globals.ROOT + FileInfo.Load(iniLevel["palette"])[1].Filename);
-            for (int i = 0; i < palette.Length; i++) {
-                cpal.Entries[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
-                cpal.Entries[i & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
-                lasti = i;
+            if (outFolderName == "ALZ1" || outFolderName == "BPZ1" || outFolderName == "CGZ1" || outFolderName == "DPZ1" || outFolderName == "EMZ1")
+            {
+                if (iniLevel.ContainsKey("palette"))
+                {
+                    palette = LoadPalette(Globals.ROOT + @"General\Sprites\Sonic\Palettes\SonicAndTails.bin", Globals.ROOT + FileInfo.Load(iniLevel["palette"])[2].Filename);
+                    for (int i = 0; i < palette.Length; i++)
+                    {
+                        cpal.Entries[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                        cpal.Entries[i & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                        lasti = i;
+                    }
+                    palette = LoadPalette(null, Globals.ROOT + FileInfo.Load(iniLevel["palette"])[1].Filename);
+                    for (int i = 0; i < palette.Length; i++)
+                    {
+                        cpal.Entries[i + 0x40] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                        cpal.Entries[(i + 0x40) & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                        lasti = i + 0x40;
+                    }
+                }
             }
-            if (iniLevel.ContainsKey("palette2")) {
-                palette = LoadPalette(null, Globals.ROOT + FileInfo.Load(iniLevel["palette2"])[1].Filename);
-                for (int i = 0; i < palette.Length; i++) {
-                    cpal.Entries[i + 0x40] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
-                    cpal.Entries[(i + 0x40) & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
-                    lasti = i + 0x40;
+            else
+            {
+                palette = LoadPalette(Globals.ROOT + @"General\Sprites\Sonic\Palettes\SonicAndTails.bin", Globals.ROOT + FileInfo.Load(iniLevel["palette"])[1].Filename);
+                for (int i = 0; i < palette.Length; i++)
+                {
+                    cpal.Entries[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                    cpal.Entries[i & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                    lasti = i;
+                }
+                if (iniLevel.ContainsKey("palette2"))
+                {
+                    palette = LoadPalette(null, Globals.ROOT + FileInfo.Load(iniLevel["palette2"])[1].Filename);
+                    for (int i = 0; i < palette.Length; i++)
+                    {
+                        cpal.Entries[i + 0x40] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                        cpal.Entries[(i + 0x40) & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                        lasti = i + 0x40;
+                    }
                 }
             }
 
@@ -1821,6 +1884,29 @@ namespace S3toIE2 {
 
                 ushort SlotID = 0;
 
+                //Blank Object Slot (always slot 0, used for errors etc)
+                RSDKv5.SceneObject blankObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("BlankObject"), new List<RSDKv5.AttributeInfo>());
+                blankObjects.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
+                blankObjects.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
+
+                scene.Objects.Add(blankObjects);
+
+                //Stage Setups (always slot 1)
+                RSDKv5.SceneObject setupObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier(lvlIDs[ZoneID] + "Setup"), new List<RSDKv5.AttributeInfo>());
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("ActID", RSDKv5.AttributeTypes.UINT8));
+
+                RSDKv5.SceneEntity stageSetup = new RSDKv5.SceneEntity(setupObjects, SlotID++);
+                stageSetup.Position.X.High = (short)0;
+                stageSetup.Position.Y.High = (short)0;
+                stageSetup.Attributes[0].ValueUInt8 = 0xFF;
+                stageSetup.Attributes[2].ValueUInt8 = (byte)Act;
+                setupObjects.Entities.Add(stageSetup);
+
+                scene.Objects.Add(setupObjects);
+
+                //Player Spawn entities (always slot 2)
                 RSDKv5.SceneObject playerObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("PlayerSpawn"), new List<RSDKv5.AttributeInfo>());
                 playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
                 playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
@@ -1885,16 +1971,6 @@ namespace S3toIE2 {
 
                 scene.Objects.Add(ringObjects);
 
-
-                // Write Object Data
-                /*
-                byte[] objectData = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["objects"])[0].Filename);
-                int objectDataCount = objectData.Length / 6 - 1;
-
-                LittleEndian.Write2(fileStream, (ushort)objectDataCount);
-                fileStream.Write(objectData, 0, objectDataCount * 6);
-                //*/
-
                 string filepath = "";
 
                 switch (User)
@@ -1915,8 +1991,7 @@ namespace S3toIE2 {
                 if (!File.Exists(Path.Combine(filepath, filename)))
                     filename = lvlIDs[ZoneID] + "\\Main.ini";
 
-                bool andknux = ZoneID >= 6;
-                bool andknuxobjects = andknux;
+                bool andknuxobjects = false;
                 if (lvlIDs[ZoneID] == "FBZ")
                     andknuxobjects = false;
 
@@ -1925,7 +2000,41 @@ namespace S3toIE2 {
                 Environment.CurrentDirectory = filepath;
                 LevelData.UnknownSprite = new Sprite(new BitmapBits(new Bitmap(32, 32, PixelFormat.Format8bppIndexed)));
                 LevelData.Game = GameInfo.Load(Path.Combine(filepath, "SonLVL.ini"));
-                LevelData.LoadLevel((andknux ? @"Sonic & Knuckles\" : @"Sonic 3\") + iniName, true);
+
+                switch(ZoneID)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        LevelData.LoadLevel((@"Sonic 3\") + iniName, true);
+                        break;
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                    case 11:
+                    case 12:
+                    case 13:
+                        andknuxobjects = true;
+                        LevelData.LoadLevel((@"Sonic & Knuckles\") + iniName, true);
+                        break;
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                        LevelData.LoadLevel((@"Competition\") + iniName, true);
+                        break;
+                    case 19:
+                    case 20:
+                    case 21:
+                        LevelData.LoadLevel((@"Bonus Stage\") + iniName, true);
+                        break;
+                }
 
                 INIObjDefs = new Dictionary<string, ObjectData>();
                 Dictionary<string, ObjectData> obj;
@@ -2073,7 +2182,14 @@ namespace S3toIE2 {
                 {
                     string ObjectName = S3Objects[def.Key];
                     if (andknuxobjects)
-                        ObjectName = SKObjects[def.Key];
+                        try
+                        {
+                            ObjectName = SKObjects[def.Key];
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
 
                     Console.WriteLine(ObjectName + " (" + def.Key.ToHex68k() + ")");
 
@@ -2086,16 +2202,27 @@ namespace S3toIE2 {
                     objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
                     objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("FlipX", RSDKv5.AttributeTypes.BOOL));
                     objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("FlipY", RSDKv5.AttributeTypes.BOOL));
-                    foreach (PropertySpec n in def.Value.CustomProperties)
+
+                    if (objDefinition.Name.Name == "PlaneSwitch")
                     {
-                        string name = n.Name.ToLower().Replace(" ", "");
-                        string tmp = name[0].ToString().ToUpper();
-                        name = name.Remove(0, 1);
-                        name = tmp + name;
-                        if (n.Type == typeof(bool))
-                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(name, RSDKv5.AttributeTypes.BOOL));
-                        else
-                            objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(name, RSDKv5.AttributeTypes.INT32));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Flags", RSDKv5.AttributeTypes.UINT32));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Size", RSDKv5.AttributeTypes.UINT32));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Angle", RSDKv5.AttributeTypes.INT32));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("OnPath", RSDKv5.AttributeTypes.BOOL));
+                    }
+                    else
+                    {
+                        foreach (PropertySpec n in def.Value.CustomProperties)
+                        {
+                            string name = n.Name.ToLower().Replace(" ", "");
+                            string tmp = name[0].ToString().ToUpper();
+                            name = name.Remove(0, 1);
+                            name = tmp + name;
+                            if (n.Type == typeof(bool))
+                                objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(name, RSDKv5.AttributeTypes.BOOL));
+                            else
+                                objDefinition.Attributes.Add(new RSDKv5.AttributeInfo(name, RSDKv5.AttributeTypes.INT32));
+                        }
                     }
 
                     scene.Objects.Add(objDefinition);
@@ -2121,7 +2248,7 @@ namespace S3toIE2 {
 
                     if (IDs.Contains(ID))
                     {
-                        //int idid = IDs.IndexOf(ID);
+                        int idid = IDs.IndexOf(ID);
 
                         RSDKv5.SceneObject def = scene.Objects[ObjectIDtoObjectDefinitionIndexMap[ID]];
 
@@ -2132,7 +2259,69 @@ namespace S3toIE2 {
                         objEntity.Attributes[1].ValueUInt8 = (byte)SubType;
                         objEntity.Attributes[2].ValueBool = FlipX;
                         objEntity.Attributes[3].ValueBool = FlipY;
-                        def.Entities.Add(objEntity);
+
+                        if (def.Name.Name == "PlaneSwitch")
+                        {
+                            int H = (4 << (SubType & 0x03)) - 1;
+
+                            int groundOnly = (SubType >> 7) & 0x01;
+                            int orientation = (SubType >> 2) & 0x01;
+
+                            int leftUpPath = ((SubType >> 4) & 0x01);
+                            int rightDownPath = ((SubType >> 3) & 0x01);
+                            int leftUpPriority = ((SubType >> 6) & 0x01); //1 is high, 0 is low
+                            int rightDownPriority = ((SubType >> 5) & 0x01);
+
+                            objEntity.Attributes[4].ValueUInt32 = (uint)(rightDownPath << 3 | rightDownPriority << 2 | leftUpPath << 1 | leftUpPriority);
+                            objEntity.Attributes[5].ValueUInt32 = (uint)H;
+                            objEntity.Attributes[6].ValueInt32 = orientation * 0xC0;
+                            objEntity.Attributes[7].ValueBool = groundOnly == 1;
+                        }
+                        else
+                        {
+                            bool none = false;
+                            int AID = 4;
+                            foreach (PropertySpec n in objdefs[idid].Value.CustomProperties)
+                            {
+                                RSDKv5.AttributeValue av;
+                                if (n.Type == typeof(bool))
+                                {
+                                    av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.BOOL);
+                                    try
+                                    {
+                                        av.ValueBool = (bool)n.GetValue(LevelData.Objects[o]);
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                    objEntity.Attributes[AID] = av;
+                                }
+                                else if (n.Type == typeof(string))
+                                {
+                                    string vvvvv = (string)n.GetValue(LevelData.Objects[o]);
+                                    av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.STRING);
+                                    av.ValueString = vvvvv;
+                                    objEntity.Attributes[AID] = av;
+                                }
+                                else
+                                {
+                                    av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
+                                    Console.WriteLine("ID: " + ID + "    val: " + n.GetValue(LevelData.Objects[o]));
+                                    av.ValueInt32 = Convert.ToInt32(n.GetValue(LevelData.Objects[o]));
+                                    objEntity.Attributes[AID] = av;
+                                }
+                                if (none)
+                                {
+                                    av = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.INT32);
+                                    av.ValueInt32 = (int)SubType;
+
+                                    objEntity.Attributes[AID] = av;
+                                }
+                                AID++;
+                            }
+                        }
+                            def.Entities.Add(objEntity);
                     }
 
                 }

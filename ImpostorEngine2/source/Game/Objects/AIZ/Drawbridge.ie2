@@ -2,6 +2,12 @@ object 0x32;
 
 var Activated:bool;
 
+//drawbrits
+event Drawbridge() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("AIZ/Drawbridge.bin");
+}
+
+
 event Create() {
     Active = true;
     Priority = false;
@@ -9,7 +15,7 @@ event Create() {
 
     W = 16;
     H = 192;
-    CurrentAnimation = 12;
+    CurrentAnimation = Sprite.FindAnimation("Drawbridge");
 
     Solid = true;
     SolidCustomized = true;

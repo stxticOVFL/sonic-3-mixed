@@ -4,6 +4,7 @@
 class Scene_LevelSelect : public IScene {
 public:
     int selected = 0;
+	bool GoBack = false;
 };
 #endif
 
@@ -36,6 +37,7 @@ public:
 #include <Game/SaveGame.h>
 
 #include <Game/Scenes/LevelSelect.h>
+#include <Game/Scenes/MainMenu.h>
 
 int character = 0; 
 int partner = 0xFF;
@@ -50,19 +52,22 @@ PUBLIC Scene_LevelSelect::Scene_LevelSelect(IApp* app, IGraphics* g) {
 
     // Sound::SoundBank[0] = new ISound("Music/Mixed/SaveSelectTria.ogg", true);
     // Sound::Audio->LoopPoint[0] = 131859;
-	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Music/Menu.ogg")) {
-		Sound::SoundBank[0] = new ISound("Music/Menu.ogg", true);
-		Sound::Audio->LoopPoint[0] = 0;
-	}
+
+	Discord_UpdatePresence("Main Menu", "Level Select", "icon", false);
 
     selected = 1;
 }
 
 PUBLIC void Scene_LevelSelect::Init() {
-    if (!App->Audio->IsPlayingMusic(Sound::SoundBank[0])) {
-        App->Audio->ClearMusic();
-        App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
-    }
+	int at = 0;
+	if (Sound::SoundBank[0]) {
+		char* ct = strstr(Sound::SoundBank[0]->Name, "Menu");
+		if (ct != NULL)
+			at = Sound::SoundBank[0]->GetPosition();
+		//free(ct);
+	}
+	App->Audio->ClearMusic();
+	Sound::PlayStream(0, "Music/Menu2.ogg", true, 0, at, true);
 
     App->Input->UseTouchController = true;
 
@@ -89,29 +94,29 @@ bool HaveStage[36] = {
     true,
 	true, // MHZ
 	true,
-	false, // FBZ
-	false,
-	false, // SOZ
-	false,
-	false, // LRZ
-	false, // HPZ
-	false, // SSZ
-	false, // DEZ
-	false,
-	false, // TDZ
+	true, // FBZ
+	true,
+	true, // SOZ
+	true,
+	true, // LRZ
+	true, // HPZ
+	true, // SSZ
+	true, // DEZ
+	true,
+	true, // TDZ
 	//LOCKED ON
-	false, //ALZ
-	false,
-	false, //DPZ
-	false,
-	false, //BPZ
-	false,
-	false, //ASZ
-	false,
-	false, //EMZ
-	false,
-	false, //CGZ
-	false,
+	true, //ALZ
+	true,
+	true, //DPZ
+	true,
+	true, //BPZ
+	true,
+	true, //ASZ
+	true,
+	true, //EMZ
+	true,
+	true, //CGZ
+	true,
 };
 
 bool HaveSpecial[16]{
@@ -123,14 +128,14 @@ bool HaveSpecial[16]{
 	true,
 	true,
 	true,
-	false,
-	false,
-	false,
-	false,
-	false,
-	false,
-	false,
-	false
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true,
+	true
 };
 
 PUBLIC void Scene_LevelSelect::Update() {
@@ -157,6 +162,7 @@ PUBLIC void Scene_LevelSelect::Update() {
                     delete Sound::SoundBank[0];
                     Sound::SoundBank[0] = NULL;
 					if (mode != 2) {
+						IApp::Print(0, "%d", selected);
 						switch (selected) {
 							LevelScene* ls;
 						case 0:
@@ -200,17 +206,17 @@ PUBLIC void Scene_LevelSelect::Update() {
 							App->NextScene = new Level_LRZ(App, G, (selected % 2) + 1);
 							break;
 						case 20:
-							App->NextScene = new Level_HPZ(App, G, (selected % 2) + 1);
+							App->NextScene = new Level_HPZ(App, G, 1);
 							break;
 						case 21:
-							App->NextScene = new Level_SSZ(App, G, (selected % 2) + 1);
+							App->NextScene = new Level_SSZ(App, G, 1);
 							break;
 						case 22:
 						case 23:
 							App->NextScene = new Level_DEZ(App, G, (selected % 2) + 1);
 							break;
 						case 24:
-							App->NextScene = new Level_TDZ(App, G, (selected % 2) + 1);
+							App->NextScene = new Level_TDZ(App, G, 1);
 							break;
 						default:
 							//BENT LETTUCE BABY
@@ -252,6 +258,20 @@ PUBLIC void Scene_LevelSelect::Update() {
 					SaveGame::CurrentMode = mode;
                 }
             //}
+
+				if (GoBack) {
+					Scene_MainMenu* NextScene = new Scene_MainMenu(App, G);
+					/*NextScene->MenuSprite = MenuSprite;
+					NextScene->SuperButtonsSprite = SuperButtonsSprite;
+					NextScene->TextSprite = TextSprite;
+
+					// Make these NULL so they don't get accidentally cleaned up later
+					MenuSprite = NULL;
+					SuperButtonsSprite = NULL;
+					TextSprite = NULL;*/
+
+					App->NextScene = NextScene;
+				}
         }
     }
 
@@ -320,11 +340,11 @@ PUBLIC void Scene_LevelSelect::Update() {
 				mode = 2;
 			if (mode == 2)
 				selected = 0;
-			/*partner++;
+			partner++;
 			if (partner == 0xFF)
 				partner = 0;
 			if (partner > 4)
-				partner = 0xFF;*/
+				partner = 0xFF;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 		if (App->Input->GetControllerInput(0)[IInput::I_EXTRA] && App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
@@ -333,11 +353,11 @@ PUBLIC void Scene_LevelSelect::Update() {
 				mode = 0;
 			if (mode == 2)
 				selected = 0;
-			/*partner--;
+			partner--;
 			if (partner == 0xFF)
 				partner = 4;
 			if (partner < 0)
-				partner = 0xFF;*/
+				partner = 0xFF;
 			Sound::Play(Sound::SFX_MENUBLEEP);
 		}
 
@@ -348,11 +368,11 @@ PUBLIC void Scene_LevelSelect::Update() {
 
     if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
         bool acc = false;
-        if (selected < 12) {
+        //if (selected < 12) {
             if (HaveStage[mode != 2 ? selected : selected + 26]) {
                 acc = true;
             }
-        }
+        //}
 		if (selected > 25 && HaveSpecial[selected - 26])
 			acc = true;
         if (acc) {
@@ -365,6 +385,20 @@ PUBLIC void Scene_LevelSelect::Update() {
             Sound::Play(Sound::SFX_MENUFAIL);
         }
     }
+	if (App->Input->GetControllerInput(0)[IInput::I_PAUSE_PRESSED]) {
+		mode++;
+		if (mode > 2)
+		{
+			mode = 0;
+		}
+	}
+	SaveGame::CurrentMode = mode;
+
+	if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
+		GoBack = true;
+		FadeIn = false;
+		FadeTimerMax = 30;
+	}
 }
 
 PUBLIC void Scene_LevelSelect::Render() {
@@ -402,18 +436,21 @@ PUBLIC void Scene_LevelSelect::Render() {
 
     G->SetFilter(IE_FILTER_FADEABLE);
 
+	//BG
     G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0x0022EE);
 
+	//Regular Zones
     for (int i = 0; i < 13; i++) {
         Uint32 col = 0x999999;
-        if (i * 2 < 12) {
+        //if (i * 2 < 12) {
             if (HaveStage[i * 2] || HaveStage[i * 2 + 1]) {
                 col = 0xFFFFFF;
             }
-        }
+        //}
         G->DrawTextShadow(4, 4 + i * 18, wordGRoup[i], (selected / 2 == i && mode != 2) ? 0xFFFF00 : col);
     }
 
+	//Comp Zones
 	for (int i = 0; i < 6; i++) {
 		Uint32 col = 0x999999;
 		if ((i * 2) + 13 < 18) {
@@ -428,17 +465,23 @@ PUBLIC void Scene_LevelSelect::Render() {
     char poop[20];
     char poopbuddy[20];
 	char poopmode[20];
+
+	//Act Numbers
     for (int i = 0; i < 26; i++) {
-        Uint32 col = 0x999999;
-        if (i < 12) {
-            if (HaveStage[i]) {
-                col = 0xFFFFFF;
-            }
-        }
-        sprintf(poop, "%d", (i % 2) + 1);
-        G->DrawTextShadow(4 + 16 * 8, 4 + i * 9, poop, (selected == i && mode != 2) ? 0xFFFF00 : col);
+		Uint32 col = 0x999999;
+		//if (i < 12) {
+		if (HaveStage[i]) {
+			col = 0xFFFFFF;
+		}
+		//}
+		if (i != 25)
+		{
+			sprintf(poop, "%d", (i % 2) + 1);
+			G->DrawTextShadow(4 + 16 * 8, 4 + i * 9, poop, (selected == i && mode != 2) ? 0xFFFF00 : col);
+		}
     }
 
+	//Bonus Stages?
 	for (int i = 0; i < 12; i++) {
 		Uint32 col = 0x999999;
 		if (i + 26 < 18) {
@@ -450,6 +493,7 @@ PUBLIC void Scene_LevelSelect::Render() {
 		G->DrawTextShadow(180 + 16 * 8, 4 + i * 9, poop, (selected == i && mode == 2) ? 0xFFFF00 : col);
 	}
 
+	//Special Stage IDs
 	for (int i = 0; i < 16; i++) {
 		Uint32 col = 0x999999;
 		if (HaveSpecial[i]) {
@@ -459,6 +503,7 @@ PUBLIC void Scene_LevelSelect::Render() {
 		G->DrawTextShadow(180 + ((i / 8)) * 30, 4 + 122 + (i / 8 == 0 ? i : i - 8) * 9, poop, selected == i + 26 ? 0xFFFF00 : col);
 	}
     
+	//Main Char
     switch (character) {
         case 0:
             sprintf(poop, "%s", "Sonic");
@@ -480,6 +525,7 @@ PUBLIC void Scene_LevelSelect::Render() {
             break;
     }
     
+	//Partner Char
     switch (partner) {
         case 0:
             sprintf(poopbuddy, "%s", "Sonic");
@@ -501,14 +547,15 @@ PUBLIC void Scene_LevelSelect::Render() {
             break;
     }
     
+	//Mode
     switch (mode) {
-        case 0:
+        default:
             sprintf(poopmode, "%s", "Classic");
             break;
         case 1:
             sprintf(poopmode, "%s", "Mixed");
             break;
-        default:
+		case 2:
             sprintf(poopmode, "%s", "Locked On");
             break;
     }

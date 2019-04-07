@@ -24,11 +24,9 @@ public:
     static void* Calloc(size_t count, size_t size);
     static void* TrackedMalloc(const char* identifier, size_t size);
     static void* TrackedCalloc(const char* identifier, size_t count, size_t size);
-    static void   Track(void* pointer, const char* identifier);
-    static void   Track(void* pointer, size_t size, const char* identifier);
-    static void   TrackLast(const char* identifier);
-    static void   Free(void* pointer);
-    static void   ClearTrackedMemory();
+    static void Free(void* mem);
+    static void TrackMemory(const char* identifier, void *mem, size_t count, size_t size);
+    static void ClearTrackedMemory();
     static size_t CheckLeak();
     static void PrintLeak();
 };

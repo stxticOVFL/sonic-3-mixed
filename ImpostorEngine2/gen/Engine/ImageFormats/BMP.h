@@ -11,6 +11,7 @@
 
 #include <Utils/Standard.h>
 #include <Engine/IStreamer.h>
+#include <Engine/ImageFormats/GIF.h>
 
 class BMP {
 public:
@@ -22,6 +23,7 @@ public:
     bool  indexed = true;
 
     static BMP* Load(const char* filename);
+    static GIF* ToGif(BMP* bmp);
     ~BMP();
 };
 

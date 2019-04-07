@@ -11,6 +11,7 @@
 
 #include <Utils/Standard.h>
 #include <Engine/IStreamer.h>
+#include <Engine/ImageFormats/GIF.h>
 
 class PNG {
 public:
@@ -22,6 +23,7 @@ public:
     bool  indexed = false;
 
     static PNG* Load(const char* filename);
+    static GIF* ToGif(PNG* png);
     ~PNG();
 };
 

@@ -474,12 +474,16 @@ public:
     bool     FlipX = false;
     bool     FlipY = false;
     bool     DoDeform = false;
-    bool     IsExplosion = false;
     
     bool     isDebugModeObject = false;
     bool     isHeldDebugObject = false;
     
     bool     PrintDebuggingInfo = false;
+
+	bool     S3Object = true;
+	bool     SKObject = true;
+	bool     MixedObject = true;
+	bool     LockedOnObject = true;
 
     int16_t  W = 32;
     int16_t  H = 32;
@@ -498,6 +502,7 @@ public:
     bool     Active = false;
     bool     Priority = false;
     bool     OnScreen = false;
+    bool     OutOfBounds = false;
 	bool     DrawCollisions = false;
     bool     CleanupInactiveObject = false;
     bool     IsFloatingPlatform = false;
@@ -614,6 +619,18 @@ public:
 		return &ObjectAttribute; //Make a default
 	}
     
+	virtual Uint32 AttribColourToUint32(AttributeColor colour, bool alpha)
+	{
+		Uint32 result = 0x000000;
+
+		// Load 'alpha'
+		if (alpha) result |= colour.a << 24;
+
+		result = ((colour.r << 16) + (colour.g << 8) + colour.b);
+
+		return result;
+	}
+
 	virtual void AddAttribute(char* name)
 	{
 		AttributeValue av;

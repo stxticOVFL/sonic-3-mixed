@@ -56,6 +56,9 @@ event OnHit() : int {
 }
 
 event Update() {
+
+	if (!isHeldDebugObject)
+	{
     // Obj_Buggernaut_Chase
     if (Routine == 4) {
         if (Scene.Player.EZX < X) {
@@ -126,7 +129,9 @@ event Update() {
         }
     }
 
-    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
+	if (Sprite.Animations.size() > CurrentAnimation)
+	{
+	    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
         Frame += Sprite.Animations[CurrentAnimation].AnimationSpeed;
     else if (Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
         Frame += 0x100 / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
@@ -134,11 +139,11 @@ event Update() {
     if (Frame >= Sprite.Animations[CurrentAnimation].FrameCount << 8) {
         Frame = Sprite.Animations[CurrentAnimation].FrameToLoop << 8;
     }
+	}
 
     X = SubX >> 16;
     Y = SubY >> 16;
-
-
+	}
 }
 
 event Render(CamX:int, CamY:int) {

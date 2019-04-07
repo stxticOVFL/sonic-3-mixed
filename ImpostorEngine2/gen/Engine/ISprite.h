@@ -60,12 +60,17 @@ public:
     std::string Filename;
     ISprite* LinkedSprite = NULL;
     bool Print = false;
-    void* operator new(size_t const size) noexcept;
+    void* operator new(size_t const size);
+    void* operator new(size_t const size, const char* identifier);
     void* operator new(size_t const size, std::nothrow_t const&) noexcept;
     void operator delete(void* const block) noexcept;
+    void operator delete(void* const block, const char* identifier) noexcept;
 
     ISprite(const char* filename, IApp* app);
+    ISprite(const char* filename, IApp* app, bool IsPrinting);
     ISprite(const char* filename, IApp* app, int mode);
+    ISprite(const char* filename, IApp* app, int mode, bool IsPrinting);
+    ~ISprite();
     void SetTransparentColorIndex(int i);
     void SetPalette(int i, uint32_t col);
     void SetPaletteAlt(int i, uint32_t col);

@@ -35,6 +35,8 @@ public:
         I_LEFT_PRESSED = 15,
         I_DOWN_PRESSED = 16,
         I_UP_PRESSED = 17,
+		I_ANY_PRESSED = 18,
+		I_ANY = 19,
     };
 
     int* ControllerMaps[4];
@@ -78,7 +80,7 @@ PUBLIC IInput::IInput(IApp* app) {
     App = app;
 
     for (int i = 0; i < 4; i++)
-        Controllers[i] = (uint8_t*)Memory::TrackedCalloc("IInput::Controllers[i]", 1, 18);
+        Controllers[i] = (uint8_t*)Memory::TrackedCalloc("IInput::Controllers[i]", 1, 20);
 
     for (int i = 0; i < 4; i++)
         ControllerType[i] = ControllerType::None;
@@ -111,7 +113,7 @@ PUBLIC IInput::IInput(IApp* app) {
         { "deny", I_DENY, SDL_SCANCODE_S },
 		{ "extra2", I_EXTRA2, SDL_SCANCODE_D },
         { "extra", I_EXTRA, SDL_SCANCODE_Q },
-        { "pause", I_PAUSE, SDL_SCANCODE_W },
+        { "pause", I_PAUSE, SDL_SCANCODE_RETURN },
     };
 
 	if (IApp::Platform == Platforms::Switch) {
@@ -297,6 +299,23 @@ PUBLIC void IInput::Poll() {
         Controllers[i][I_EXTRA_PRESSED] = EXTRA && !Controllers[i][I_EXTRA];
         Controllers[i][I_PAUSE_PRESSED] = PAUSE && !Controllers[i][I_PAUSE];
 
+		Controllers[i][I_ANY_PRESSED] = false;
+		Controllers[i][I_ANY] = false;
+
+		if (Controllers[i][I_UP_PRESSED] ||
+			Controllers[i][I_DOWN_PRESSED] ||
+			Controllers[i][I_LEFT_PRESSED] ||
+			Controllers[i][I_RIGHT_PRESSED] ||
+			Controllers[i][I_CONFIRM_PRESSED] ||
+			Controllers[i][I_DENY_PRESSED] ||
+			Controllers[i][I_EXTRA2_PRESSED] ||
+			Controllers[i][I_EXTRA_PRESSED] ||
+			Controllers[i][I_PAUSE_PRESSED] ||
+			MouseDown)
+		{
+			Controllers[i][I_ANY_PRESSED] = true;
+		}
+
         Controllers[i][I_UP] = UP;
         Controllers[i][I_DOWN] = DOWN;
         Controllers[i][I_LEFT] = LEFT;
@@ -306,6 +325,15 @@ PUBLIC void IInput::Poll() {
 		Controllers[i][I_EXTRA2] = EXTRA2;
         Controllers[i][I_EXTRA] = EXTRA;
         Controllers[i][I_PAUSE] = PAUSE;
+
+		for (int ii = 0; ii < 17; ii++)
+		{
+			if (Controllers[i][ii])
+			{
+				Controllers[i][I_ANY] = true;
+				break;
+			}
+		}
     }
 }
 

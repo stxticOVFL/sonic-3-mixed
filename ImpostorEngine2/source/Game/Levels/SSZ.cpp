@@ -18,14 +18,43 @@ PUBLIC Level_SSZ::Level_SSZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 7;
     Act = act;
 
-    if (Act == 1) {
-        Str_TileConfigBin = "Stages/SSZ/TileConfig1.bin";
-        Str_SceneBin = "Stages/SSZ/Scene1.bin";
-        Str_TileSprite = "Stages/SSZ/16x16Tiles1.gif";
-        //Str_AnimatedSprites = "SSZ/AnimatedTiles";
-        Str_ObjectsList = "Stages/SSZ/Objects1.bin";
-        Str_RingsList = "Stages/SSZ/Rings1.bin";
-    }
+	sprintf(ZoneLetters, "SSZ");
+	PlayMusic(act, 0, SaveGame::CurrentMode);
+
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/SSZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/SSZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/SSZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/SSZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/SSZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/SSZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/SSZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/SSZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/SSZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/SSZ2/Stageconfig.bin";
+		}
+	}
+	else
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/SSZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/SSZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/SSZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/SSZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/SSZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Classic/Stages/SSZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/SSZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/SSZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/SSZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/SSZ2/Stageconfig.bin";
+		}
+	}
 
     sprintf(LevelName, "SKY SANCTUARY");
     sprintf(LevelNameDiscord, "Sky Sanctuary");

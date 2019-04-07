@@ -166,6 +166,8 @@ public:
     static void Play(int sound);
     static void Loop(int sound, int looppoint);
     static void Stop(int sound);
+    static void LoadStream(int sound, const char* file, bool loop, int lp, bool override);
+    static void PlayStream(int sound, const char* file, bool loop, int lp, int at, bool override);
 };
 
 #endif /* SOUND_H */

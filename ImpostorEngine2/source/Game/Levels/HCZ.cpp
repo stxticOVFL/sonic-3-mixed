@@ -74,27 +74,44 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     VisualAct = Act = act;
 	sprintf(ZoneLetters, "HCZ");
 
-    if (Act == 1) {
-		//Sound::SoundBank[0] = new ISound("Music/HCZ1.ogg", true);
-		//Sound::Audio->LoopPoint[0] = 1;
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/HCZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/HCZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/HCZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/HCZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/HCZ1/Stageconfig.bin";
 
-        Str_TileConfigBin = "Stages/HCZ1/TileConfig.bin";
-        Str_SceneBin = "Stages/HCZ1/Scene.bin";
-        Str_TileSprite = "Stages/HCZ1/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/HCZ1/Animated Tiles.gif";
+			WaterLine = new ISprite("HCZ/AniTiles2.gif", App);
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/HCZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/HCZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/HCZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/HCZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/HCZ2/Stageconfig.bin";
+		}
+	}
+	else
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/HCZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/HCZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/HCZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/HCZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/HCZ1/Stageconfig.bin";
 
-        WaterLine = new ISprite("HCZ/AniTiles2.gif", App);
-    }
-    else {
-		//Sound::SoundBank[0] = new ISound("Music/HCZ2.ogg", true);
-		//Sound::Audio->LoopPoint[0] = 1;
-		// Sound::Audio->LoopPoint[0] = 329797;
-
-        Str_TileConfigBin = "Stages/HCZ2/TileConfig.bin";
-        Str_SceneBin = "Stages/HCZ2/Scene.bin";
-        Str_TileSprite = "Stages/HCZ2/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/HCZ2/Animated Tiles.gif";
-    }
+			WaterLine = new ISprite("HCZ/AniTiles2.gif", App);
+		}
+		else {
+			Str_TileConfigBin = "Classic/Stages/HCZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/HCZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/HCZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/HCZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/HCZ2/Stageconfig.bin";
+		}
+	}
 
     sprintf(LevelName, "HYDROCITY");
     sprintf(LevelNameDiscord, "Hydrocity");
@@ -116,6 +133,16 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         VisualWaterLevel = 0x700;
         WaterLevel = 0x700;
     }
+
+	AddNewDebugObjectID(Obj_HCZSnakeBlocks);
+	AddNewDebugObjectID(Obj_Blastoid);
+	AddNewDebugObjectID(Obj_TurboSpiker);
+	AddNewDebugObjectID(Obj_Buggernaut);
+	AddNewDebugObjectID(Obj_MegaChomper);
+	AddNewDebugObjectID(Obj_Jawz);
+	AddNewDebugObjectID(Obj_Pointdexter);
+	AddNewDebugObjectID(Obj_BigShaker);
+	AddNewDebugObjectID(Obj_ScrewMobile);
 }
 
 PUBLIC void Level_HCZ::Init() {
@@ -125,7 +152,7 @@ PUBLIC void Level_HCZ::Init() {
 
     bool Thremixed = false;
     if (Thremixed) {
-        IResource* StageBin = IResources::Load("Stages/HCZ/Palette.bin");
+        IResource* StageBin = IResources::Load("Objects/HCZSetup.bin");
         if (StageBin) {
             IStreamer reader(StageBin);
 			delete[] reader.ReadBytes(128 * 4);
@@ -135,6 +162,7 @@ PUBLIC void Level_HCZ::Init() {
             memcpy(SpriteMap["HCZ"]->PaletteAlt + 128, n, 128 * 4);
             memcpy(SpriteMap["HCZ Enemies"]->PaletteAlt + 128, n, 128 * 4);
             memcpy(SpriteMap["HCZ Boss"]->PaletteAlt + 128, n, 128 * 4);
+            memcpy(SpriteMap["HCZ Boss2"]->PaletteAlt + 128, n, 128 * 4);
             if (Act == 1)
                 memcpy(WaterLine->PaletteAlt + 128, n, 128 * 4);
             delete[] n;
@@ -143,6 +171,7 @@ PUBLIC void Level_HCZ::Init() {
             memcpy(SpriteMap["HCZ"]->PaletteAlt, n, 96 * 4);
             memcpy(SpriteMap["HCZ Enemies"]->PaletteAlt, n, 96 * 4);
             memcpy(SpriteMap["HCZ Boss"]->PaletteAlt, n, 96 * 4);
+            memcpy(SpriteMap["HCZ Boss2"]->PaletteAlt, n, 96 * 4);
             memcpy(ItemsSprite->PaletteAlt, n, 96 * 4);
             memcpy(ObjectsSprite->PaletteAlt, n, 96 * 4);
             for (int p = 0; p < 3; p++)
@@ -156,6 +185,7 @@ PUBLIC void Level_HCZ::Init() {
             SpriteMap["HCZ"]->Paletted = 2;
             SpriteMap["HCZ Enemies"]->Paletted = 2;
             SpriteMap["HCZ Boss"]->Paletted = 2;
+            SpriteMap["HCZ Boss2"]->Paletted = 2;
             ItemsSprite->Paletted = 2;
             ObjectsSprite->Paletted = 2;
             if (Act == 1)
@@ -165,6 +195,7 @@ PUBLIC void Level_HCZ::Init() {
             SpriteMap["HCZ"]->UpdatePalette();
             SpriteMap["HCZ Enemies"]->UpdatePalette();
             SpriteMap["HCZ Boss"]->UpdatePalette();
+            SpriteMap["HCZ Boss2"]->UpdatePalette();
             ItemsSprite->UpdatePalette();
             ObjectsSprite->UpdatePalette();
             if (Act == 1)
@@ -240,6 +271,7 @@ PUBLIC void Level_HCZ::GoToNextAct() {
         NextAct->SpriteMap["HCZ"] = SpriteMap["HCZ"];
         NextAct->SpriteMap["HCZ Enemies"] = SpriteMap["HCZ Enemies"];
         NextAct->SpriteMap["HCZ Boss"] = SpriteMap["HCZ Boss"];
+        NextAct->SpriteMap["HCZ Boss2"] = SpriteMap["HCZ Boss2"];
         // Enable Title Card with no fade-in
         NextAct->LevelCardTimer = 0.0;
         NextAct->FadeTimer = 0;
@@ -282,6 +314,7 @@ PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
 
 	SpriteMapIDs.at(0x93) = SpriteMap["HCZ Enemies"];
 	SpriteMapIDs.at(0x99) = SpriteMap["HCZ Boss"];
+	SpriteMapIDs.at(0x9A) = SpriteMap["HCZ Boss2"];
     
     SpriteMapIDs.at(0x40F) = SpriteMap["HCZ Enemies"];
 }
@@ -311,17 +344,34 @@ PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 	}
 	if (!SpriteMap["HCZ Boss"]) {
 		SpriteMap["HCZ Boss"] = new ISprite("HCZ/Boss.gif", App);
-		SpriteMap["HCZ Boss"]->LoadAnimation("HCZ/LaundroMobile.bin");
+		SpriteMap["HCZ Boss"]->LoadAnimation("HCZ/BigShaker.bin");
+	}
+	if (!SpriteMap["HCZ Boss2"]) {
+		SpriteMap["HCZ Boss2"] = new ISprite("HCZ/Objects2.gif", App);
+		SpriteMap["HCZ Boss2"]->LoadAnimation("HCZ/ScrewMobile.bin");
 	}
 
     if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

@@ -156,31 +156,18 @@ public:
 
 	bool ReloadPlayer = true;
 
-	/*
-	Uint32 SonicPaletteNormal[6];
-	Uint32 SonicPaletteSuper[6];
-	Uint32 SonicPaletteSuperPulse[6];
+	Uint32 PaletteNormal[16];
+	Uint32 PaletteSuper[16];
+	Uint32 PaletteSuperPulse[16];
 
-	Uint32 TailsPaletteNormal[6];
-	Uint32 TailsPaletteSuper[6];
-	Uint32 TailsPaletteSuperPulse[6];
+	Uint32 PaletteNormalHCZ[16];
+	Uint32 PaletteSuperHCZ[16];
+	Uint32 PaletteSuperPulseHCZ[16];
 
-	Uint32 KnuxPaletteNormal[6];
-	Uint32 KnuxPaletteSuper[6];
-	Uint32 KnuxPaletteSuperPulse[6];
-
-	Uint32 SonicPaletteNormalHCZ[6];
-	Uint32 SonicPaletteSuperHCZ[6];
-	Uint32 SonicPaletteSuperPulseHCZ[6];
-
-	Uint32 TailsPaletteNormalHCZ[6];
-	Uint32 TailsPaletteSuperHCZ[6];
-	Uint32 TailsPaletteSuperPulseHCZ[6];
-
-	Uint32 KnuxPaletteNormalHCZ[6];
-	Uint32 KnuxPaletteSuperHCZ[6];
-	Uint32 KnuxPaletteSuperPulseHCZ[6];
-	//*/
+	Uint32 PaletteHyper[16];
+	Uint32 PaletteHyperBlend[16];
+	Uint32 PaletteHyperExtended[32];
+	Uint32 PaletteHyperPulse[16];
 
 	/*ITexture* Palette1 = NULL;
 	ITexture* Palette2 = NULL;*/
@@ -331,6 +318,7 @@ public:
 	int                 TerrainAngle = 0;
 
 	bool				MightyStomping = false;
+    bool                ClearKnucklesSprites = false;
 
 	bool                Ground = false;
 	bool                Landed = false;
@@ -371,7 +359,8 @@ public:
 	int                 SlopeFactorMode = 0;                     // - 0: Sonic 1 & 2, 1: Sonic 3, 2: Sonic 3?
 
 	bool                InputLockLeftRight = false;                 // - If set to true, the player will only rotate if angle is greater than 45 degrees(Only applies to 360 rotation).
-	bool                Use360SpriteRotation = true;   // - If set to true characters will use 360 degree sprite rotations, false for 8 degree rotations.
+	//Unneeded, as it's handled by the rotation flags
+	//bool                Use360SpriteRotation = true;   // - If set to true characters will use 360 degree sprite rotations, false for 8 degree rotations.
 
 	bool                FlagsAllowXMovement = true;
 	bool                FlagsAllowYMovement = true;
@@ -417,6 +406,7 @@ public:
 	int                 Data3 = 0;
 	int                 OrigH = 0;
 	int                 WaitTimer = -1;
+	//LevelScene*			Level = NULL;
 	// </editor-fold> Object-Use Variables
 
 	/*
@@ -430,6 +420,7 @@ public:
 	void Update();
 	void LateUpdate();
 	void Render(int CamX, int CamY);
+    void Cleanup();
 
 	void AnimSet(int Start, int End, int Speed, bool Stop);
 	void AnimExecute();

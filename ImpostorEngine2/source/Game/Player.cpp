@@ -8,268 +8,6 @@
 // Find:    #([A-f0-9]+) ([A-f0-9]+) ([A-f0-9]+) ([A-f0-9]+)
 // Replace: 0x$3$2$1,
 
-Uint32 SonicPaletteNormal[6] = {
-	// Just blue
-	0x00000080,
-	0x000038C0,
-	0x000068F0,
-	0x001888F0,
-	0x0030A0F0,
-	0x0068D0F0,
-};
-Uint32 SonicPaletteSuper[6] = {
-	// Just gold
-	0x00F0C000,
-	0x00F0D028,
-	0x00F0E040,
-	0x00F0E860,
-	0x00F0E898,
-	0x00F0E8D0,
-};
-
-Uint32 SonicPaletteSuperPulse[6] = {
-	0x00F0D898,
-	0x00F0E0B0,
-	0x00F0E8C0,
-	0x00F0F0D8,
-	0x00F0F0F0,
-	0x00F0F0F8,
-};
-
-Uint32 TailsPaletteNormal[6] = {
-	0x800801,
-	0xB01801,
-	0xD05001,
-	0xE07808,
-	0xE89008,
-	0xF0A801,
-};
-Uint32 TailsPaletteSuper[6] = {
-	0xF03830,
-	0xF06848,
-	0xF09860,
-	0xF0B868,
-	0xF0C870,
-	0xF0D870,
-};
-Uint32 TailsPaletteSuperPulse[6] = {
-	0x800801,
-	0xB01801,
-	0xD05001,
-	0xE07808,
-	0xE89008,
-	0xF0A801,
-};
-
-Uint32 KnuxPaletteNormal[6] = {
-	0x580818,
-	0x980130,
-	0xD00840,
-	0xE82858,
-	0xF06080,
-	0xF08088,
-};
-Uint32 KnuxPaletteSuper[6] = {
-	0xF05878,
-	0xF06090,
-	0xF080A0,
-	0xF098B0,
-	0xF0B0C8,
-	0xF0C0C8,
-};
-Uint32 KnuxPaletteSuperPulse[6] = {
-	0x580818,
-	0x980130,
-	0xD00840,
-	0xE82858,
-	0xF06080,
-	0xF08088,
-};
-
-Uint32 SonicPaletteNormalHCZ[6] = {
-	0x200888,
-	0x3020C8,
-	0x3840F0,
-	0x4070F0,
-	0x4098F0,
-	0x40C0F0,
-};
-Uint32 SonicPaletteSuperHCZ[6] = {
-	0x88C880,
-	0x68E090,
-	0x50F098,
-	0x68F0C0,
-	0x78F0C8,
-	0xA0F0D8,
-};
-Uint32 SonicPaletteSuperPulseHCZ[6] = {
-	0x60E898,
-	0x48F0A0,
-	0x58F0B0,
-	0x68F0C0,
-	0x90F0D0,
-	0xA0F0D8,
-};
-
-Uint32 TailsPaletteNormalHCZ[6] = {
-	0x880808,
-	0xA03810,
-	0xA05848,
-	0xB07058,
-	0xC08068,
-	0xC89078,
-};
-Uint32 TailsPaletteSuperHCZ[6] = {
-	0xCC6161,
-	0xDC8462,
-	0xD5978A,
-	0xDEA893,
-	0xE6B09D,
-	0xEABAA7,
-};
-Uint32 TailsPaletteSuperPulseHCZ[6] = {
-	0x880808,
-	0xA03810,
-	0xA05848,
-	0xB07058,
-	0xC08068,
-	0xC89078,
-};
-
-Uint32 KnuxPaletteNormalHCZ[6] = {
-	0x181050,
-	0x301090,
-	0x5018A8,
-	0x8828C0,
-	0xA048C0,
-	0xB868C8,
-};
-Uint32 KnuxPaletteSuperHCZ[6] = {
-	0x746DA3,
-	0x7F65D0,
-	0x9768E0,
-	0xC070EF,
-	0xD086EB,
-	0xDE9CED,
-};
-Uint32 KnuxPaletteSuperPulseHCZ[6] = {
-	0x181050,
-	0x301090,
-	0x5018A8,
-	0x8828C0,
-	0xA048C0,
-	0xB868C8,
-};
-
-Uint32 SonicPaletteS3Normal[3] = {
-	0x6666EE,
-	0x2244CC,
-	0x222288,
-};
-Uint32 SonicPaletteS3Super[3] = {
-	0xEEEE88,
-	0xEEEE00,
-	0xAAAA00,
-};
-Uint32 SonicPaletteS3SuperPulse[3] = {
-	0xEEEECC,
-	0xEEEECC,
-	0xEEEEAA,
-};
-
-Uint32 SonicPaletteS3Hyper[17] = {
-	0x00ACCEFF,
-	0x0090ACFF,
-	0x00CEFFCE,
-	0x00ACFFAC,
-	0x0000FF34,
-	0x00CEFFAC,
-	0x00CEFF57,
-	0x00CECE00,
-	0x00FFFFCE,
-	0x00FFFF90,
-	0x00FFCE57,
-	0x00FFCECE,
-	0x00FFACAC,
-	0x00FFCEFF,
-	0x00CEACCE,
-};
-
-Uint32 SonicPaletteS3HyperBlend[16] = {
-	0x00F693F2,
-	0x00F4FFF4,
-	0x0030FF14,
-	0x00FFFFCC,
-	0x00CEFF8B,
-	0x00DFF3FC,
-	0x00FFFB56,
-	0x00FFFFC8,
-	0x00FFF69B,
-	0x00FFDE52,
-	0x00FFFDF4,
-	0x00FFE693,
-	0x00FFF7F2,
-	0x00FFDFCB,
-	0x007B7078, // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
-	0x008DF4FF,
-};
-
-Uint32 SonicPaletteS3HyperExtended[31] = {
-	0x00ACCEFF,
-	0x00F693F2,
-	0x0090ACFF,
-	0x00F4FFF4,
-	0x00CEFFCE,
-	0x0030FF14,
-	0x00ACFFAC,
-	0x00FFFFCC,
-	0x0000FF34,
-	0x00CEFF8B,
-	0x00CEFFAC,
-	0x00DFF3FC,
-	0x00CEFF57,
-	0x00FFFB56,
-	0x00CECE00,
-	0x00FFFFC8,
-	0x00FFFFCE,
-	0x00FFF69B,
-	0x00FFFF90,
-	0x00FFDE52,
-	0x00FFCE57,
-	0x00FFFDF4,
-	0x00FFCECE,
-	0x00FFE693,
-	0x00FFACAC,
-	0x00FFF7F2,
-	0x00FFCEFF,
-	0x00FFDFCB,
-	0x00CEACCE,
-	0x007B7078,    // This one is iffy. But is a Gray Color. Also was blended with 0, 0, 0 in RGB for some odd reason.
-	0x008DF4FF,
-};
-
-Uint32 SonicPaletteS3HyperPulse[3] = {
-	0xEEEECC,
-	0xEEEECC,
-	0xEEEEAA,
-};
-
-Uint32 SonicPaletteS3NormalHCZ[3] = {
-	0x2288AA,
-	0x006688,
-	0x004466,
-};
-Uint32 SonicPaletteS3SuperHCZ[3] = {
-	0xCCEE88,
-	0xAAEE44,
-	0x88AA44,
-};
-Uint32 SonicPaletteS3SuperPulseHCZ[3] = {
-	0xEEEECC,
-	0xCCEECC,
-	0xCCEEAA,
-};
-
 enum class AnimationEnum {
 	Idle = 0,
 	Bored1,
@@ -430,8 +168,864 @@ void IPlayer::Create() {
 
 		SpeedSneakersTimer = 0;
 		SpeedSneakersActive = false;
-	};
 
+		Uint32 Colour = 0;
+
+		Uint8 R;
+		Uint8 G;
+		Uint8 B;
+
+		IResource* PaletteReader;
+
+		int Character = SaveGame::CurrentCharacterFlag;
+
+		if (Sidekick)
+		{
+			Character = SaveGame::CurrentPartnerFlag;
+		}
+
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteNormal[i] = Colour;
+		}
+
+		//Load Super Palette
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteSuper[i] = Colour;
+		}
+
+		//Load Super Pulse Palette
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteSuperPulse[i] = Colour;
+		}
+
+		//Load Normal Palette (HCZ)
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteNormalHCZ[i] = Colour;
+		}
+
+		//Load Super Palette (HCZ)
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteSuperHCZ[i] = Colour;
+		}
+
+		//Load Super Pulse Palette (HCZ)
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteSuperPulseHCZ[i] = Colour;
+		}
+
+		//Load Hyper Pulse Palette
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteHyper[i] = Colour;
+			PaletteHyperExtended[i] = Colour;
+		}
+
+		//Load Hyper Blend Palette
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteHyperBlend[i] = Colour;
+			PaletteHyperExtended[i + 16] = Colour;
+		}
+
+		//Load Hyper Pulse Palette
+		for (int i = 0; i < 16; i++)
+		{
+			Colour = ((255 << 16) + (0 << 8) + 255);
+			PaletteSuperPulseHCZ[i] = Colour;
+		}
+
+		if (SaveGame::CurrentMode >= 1)
+		{
+			switch (Character)
+			{
+			case 1: //Miles
+				PaletteReader = IResources::Load("Objects/PlayerMilesM.bin");
+				//Load Miles Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			case 2: //Knux
+				PaletteReader = IResources::Load("Objects/PlayerKnux.bin");
+				//Load Knux Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			case 3: //Mighty
+				PaletteReader = IResources::Load("Objects/PlayerMighty.bin");
+				//Load Mighty Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			case 4: //Ray
+				PaletteReader = IResources::Load("Objects/PlayerRay.bin");
+				//Load Ray Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			default: //Default to Sonic
+				PaletteReader = IResources::Load("Objects/PlayerSonicM.bin");
+				//Load Mania Sonic Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					//Load Hyper Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteHyper[i] = Colour;
+						PaletteHyperExtended[i] = Colour;
+					}
+
+					//Load Hyper Blend Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteHyperBlend[i] = Colour;
+						PaletteHyperExtended[i + 16] = Colour;
+					}
+
+					//Load Hyper Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			}
+		}
+		else
+		{
+			switch (Character)
+			{
+			case 1: //Miles
+				PaletteReader = IResources::Load("Objects/PlayerMilesC.bin");
+				//Load Miles Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			case 2: //Knux
+				PaletteReader = IResources::Load("Objects/PlayerKnux.bin");
+				//Load Knux Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			case 3: //Mighty
+				PaletteReader = IResources::Load("Objects/PlayerMighty.bin");
+				//Load Mighty Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			case 4: //Ray
+				PaletteReader = IResources::Load("Objects/PlayerRay.bin");
+				//Load Ray Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			default: //Default to Sonic
+				PaletteReader = IResources::Load("Objects/PlayerSonicS3.bin");
+				//Load S3 Sonic Colours
+				if (PaletteReader)
+				{
+					IStreamer reader(PaletteReader);
+
+					//Load Normal Pallete
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormal[i] = Colour;
+					}
+
+					//Load Super Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuper[i] = Colour;
+					}
+
+					//Load Super Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulse[i] = Colour;
+					}
+
+					//Load Normal Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteNormalHCZ[i] = Colour;
+					}
+
+					//Load Super Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperHCZ[i] = Colour;
+					}
+
+					//Load Super Pulse Palette (HCZ)
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					//Load Hyper Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteHyper[i] = Colour;
+						PaletteHyperExtended[i] = Colour;
+					}
+
+					//Load Hyper Blend Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteHyperBlend[i] = Colour;
+						PaletteHyperExtended[i + 16] = Colour;
+					}
+
+					//Load Hyper Pulse Palette
+					for (int i = 0; i < 16; i++)
+					{
+						R = reader.ReadByte();
+						G = reader.ReadByte();
+						B = reader.ReadByte();
+						Colour = ((R << 16) + (G << 8) + B);
+						PaletteSuperPulseHCZ[i] = Colour;
+					}
+
+					IResources::Close(PaletteReader);
+				}
+				break;
+			}
+		}
+	};
+		
 	if (Sprites[0]) { // prevent re-loading sprites on restart
 		goto PlayerSetPalettes;
 	}
@@ -448,41 +1042,42 @@ void IPlayer::Create() {
 	// 0x01 - Animation Loops
 	// 0x04 - Animation Stops
 
-	//TODO: Clean up later
 	if (Character == CharacterType::Sonic) {
 		H = 40;
 		OrigH = H;
 		DropDashEnabled = true; // Default to true for now.
 		if (!Thremixed) {
 			int i = 0;
-			Sprites[0] = new ISprite("Sprites/Players/S3/Sonic.gif", App, 0);
-			Sprites[0]->LoadAnimation("Sprites/Players/S3/Sonic.bin");
+            
+             // Allocates memory by calling: ISprite::operator new(size_t size, const char* identifier)
+             // and then constructs an object at the newly allocated space.
+			Sprites[0] = new ("ISprite - PlayersClassic/Sonic.gif") ISprite("PlayersClassic/Sonic.gif", App);
+			Sprites[0]->SetTransparentColorIndex(0);
+            Sprites[0]->LoadAnimation("PlayersClassic/Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
-
-			Sprites[0]->LoadAnimation("Sprites/Players/S3/Super Sonic.bin");
+			Sprites[0]->LoadAnimation("PlayersClassic/Super Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
-		}
-		else {
+		} else {
 			bool Tria = true;
 			if (Tria) {
-				Sprites[0] = new ISprite("Sprites/Player/Sonic1.gif", App, 1);
-				Sprites[1] = new ISprite("Sprites/Player/Sonic2.gif", App, 1);
-				Sprites[2] = new ISprite("Sprites/Player/Sonic3.gif", App), 1;
-				Sprites[3] = new ISprite("Sprites/Player/Sonic4.gif", App, 1);
-				Sprites[4] = new ISprite("Sprites/Player/SonicCutsceneCPZ.gif", App, 1);
+				Sprites[0] = new ("ISprite - PlayersMixed/Sonic1.gif") ISprite("PlayersMixed/Sonic1.gif", App);
+				Sprites[1] = new ("ISprite - PlayersMixed/Sonic2.gif") ISprite("PlayersMixed/Sonic2.gif", App);
+				Sprites[2] = new ("ISprite - PlayersMixed/Sonic3.gif") ISprite("PlayersMixed/Sonic3.gif", App);
+				Sprites[3] = new ("ISprite - PlayersMixed/Sonic4.gif") ISprite("PlayersMixed/Sonic4.gif", App);
+				Sprites[4] = new ("ISprite - PlayersMixed/SonicCutsceneCPZ.gif") ISprite("PlayersMixed/SonicCutsceneCPZ.gif", App);
 
-				Sprites[0]->LoadAnimation("Sprites/Player/Sonicold.bin");
+				Sprites[0]->LoadAnimation("PlayersMixed/Sonic.bin");
 
 				int i = 0;
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 				}
 
-				Sprites[0]->LoadAnimation("Sprites/Players/SuperSonic.bin");
+				Sprites[0]->LoadAnimation("PlayersMixed/SuperSonic.bin");
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 				}
@@ -498,18 +1093,17 @@ void IPlayer::Create() {
 				Sprites[0]->Animations[54 + (int)AnimationEnum::Run].AnimationSpeed = 0x100;
 				Sprites[0]->Animations[54 + (int)AnimationEnum::Dash].AnimationSpeed = 0x100;
 				Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
-			}
-			else {
+			} else {
 				int i = 0;
-				Sprites[0] = new ISprite("Sprites/Players/S3/Sonic3MClassic.gif", App, 0); Sprites[0]->SetTransparentColorIndex(1);
-				Sprites[1] = new ISprite("Sprites/Players/S3/Sonic.gif", App, 0);
+				Sprites[0] = new ("ISprite - PlayersClassic/Sonic3MClassic.gif") ISprite("PlayersClassic/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(0);
+				Sprites[1] = new ("ISprite - PlayersClassic/Sonic.gif") ISprite("PlayersClassic/Sonic.gif", App);
 
-				Sprites[0]->LoadAnimation("Sprites/Players/S3/Sonic3MClassic.bin");
+				Sprites[0]->LoadAnimation("PlayersClassic/Sonic3MClassic.bin");
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 				}
 
-				Sprites[0]->LoadAnimation("Sprites/Players/S3/Super Sonic.bin");
+				Sprites[0]->LoadAnimation("PlayersClassic/Super Sonic.bin");
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 				}
@@ -517,28 +1111,26 @@ void IPlayer::Create() {
 				Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 			}
 		}
-	}
-	else if (Character == CharacterType::Tails) {
+	} else if (Character == CharacterType::Tails) {
 		H = 32;
 		OrigH = H;
 		if (!Thremixed) {
 			int i = 0;
-			Sprites[0] = new ISprite("Sprites/Players/S3/Tails.gif", App, 0);
+			Sprites[0] = new ("ISprite - PlayersClassic/Tails.gif") ISprite("PlayersClassic/Tails.gif", App);
 
-			Sprites[0]->LoadAnimation("Sprites/Players/S3/Tails.bin");
-			Sprites[0]->LoadAnimation("Sprites/Players/S3/TailSprite.bin");
+			Sprites[0]->LoadAnimation("PlayersClassic/Tails.bin");
+			Sprites[0]->LoadAnimation("PlayersClassic/TailSprite.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
-		}
-		else {
-			Sprites[0] = new ISprite("Sprites/Players/Tails1.gif", App, 1);
-			Sprites[1] = new ISprite("Sprites/Players/Tails2.gif", App, 1);
-			Sprites[2] = new ISprite("Sprites/Players/Tails3.gif", App, 1);
-			Sprites[3] = new ISprite("Sprites/Players/TailsCutsceneCPZ.gif", App, 1);
+		} else {
+			Sprites[0] = new ("ISprite - PlayersMixed/Tails1.gif") ISprite("PlayersMixed/Tails1.gif", App);
+			Sprites[1] = new ("ISprite - PlayersMixed/Tails2.gif") ISprite("PlayersMixed/Tails2.gif", App);
+			Sprites[2] = new ("ISprite - PlayersMixed/Tails3.gif") ISprite("PlayersMixed/Tails3.gif", App);
+			Sprites[3] = new ("ISprite - PlayersMixed/TailsCutsceneCPZ.gif") ISprite("PlayersMixed/TailsCutsceneCPZ.gif", App);
 
-			Sprites[0]->LoadAnimation("Sprites/Players/Tails.bin");
-			Sprites[0]->LoadAnimation("Sprites/Players/TailSprite.bin");
+			Sprites[0]->LoadAnimation("PlayersMixed/Tails.bin");
+			Sprites[0]->LoadAnimation("PlayersMixed/TailSprite.bin");
 			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -547,8 +1139,7 @@ void IPlayer::Create() {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
 		}
-	}
-	else if (Character == CharacterType::Knuckles) {
+	} else if (Character == CharacterType::Knuckles) {
 		H = 40;
 		OrigH = H;
 		Thremixed = true;
@@ -556,15 +1147,15 @@ void IPlayer::Create() {
 			for (int i = 0; i < 5; i++) {
 				Sprites[i] = Scene->KnuxSprite[i];
 			}
-		}
-		else {
-			Sprites[0] = new ISprite("Sprites/Players/Knux1.gif", App, 1);
-			Sprites[1] = new ISprite("Sprites/Players/Knux2.gif", App, 1);
-			Sprites[2] = new ISprite("Sprites/Players/Knux3.gif", App, 1);
-			Sprites[3] = new ISprite("Sprites/Players/KnuxCutsceneAIZ.gif", App, 1);
-			Sprites[4] = new ISprite("Sprites/Players/KnuxCutsceneHPZ.gif", App, 1);
+		} else {
+            ClearKnucklesSprites = true;
+			Sprites[0] = new ("ISprite - PlayersMixed/Knux1.gif") ISprite("PlayersMixed/Knux1.gif", App);
+			Sprites[1] = new ("ISprite - PlayersMixed/Knux2.gif") ISprite("PlayersMixed/Knux2.gif", App);
+			Sprites[2] = new ("ISprite - PlayersMixed/Knux3.gif") ISprite("PlayersMixed/Knux3.gif", App);
+			Sprites[3] = new ("ISprite - PlayersMixed/KnuxCutsceneAIZ.gif") ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			Sprites[4] = new ("ISprite - PlayersMixed/KnuxCutsceneHPZ.gif") ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-			Sprites[0]->LoadAnimation("Sprites/Players/Knux.bin");
+			Sprites[0]->LoadAnimation("PlayersMixed/Knux.bin");
 			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -577,12 +1168,12 @@ void IPlayer::Create() {
 	}
 	else if (Character == CharacterType::Mighty) {
 		Thremixed = true;
-		Sprites[0] = new ISprite("Sprites/Players/Mighty1.gif", App, 1);
-		Sprites[1] = new ISprite("Sprites/Players/Mighty2.gif", App, 1);
-		Sprites[2] = new ISprite("Sprites/Players/Mighty2.gif", App, 1);
-		Sprites[3] = new ISprite("Sprites/Players/MightyCutsceneCPZ.gif", App, 1);
+		Sprites[0] = new ("ISprite - PlayersMixed/Mighty1.gif") ISprite("PlayersMixed/Mighty1.gif", App);
+		Sprites[1] = new ("ISprite - PlayersMixed/Mighty2.gif") ISprite("PlayersMixed/Mighty2.gif", App);
+		Sprites[2] = new ("ISprite - PlayersMixed/Mighty2.gif") ISprite("PlayersMixed/Mighty2.gif", App);
+		Sprites[3] = new ("ISprite - PlayersMixed/MightyCutsceneCPZ.gif") ISprite("PlayersMixed/MightyCutsceneCPZ.gif", App);
 
-		Sprites[0]->LoadAnimation("Sprites/Players/Mighty.bin");
+		Sprites[0]->LoadAnimation("PlayersMixed/Mighty.bin");
 		Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -593,12 +1184,12 @@ void IPlayer::Create() {
 	}
 	else if (Character == CharacterType::Ray) {
 		Thremixed = true;
-		Sprites[0] = new ISprite("Sprites/Players/Ray1.gif", App, 1);
-		Sprites[1] = new ISprite("Sprites/Players/Ray2.gif", App, 1);
-		Sprites[2] = new ISprite("Sprites/Players/Ray3.gif", App, 1);
-		Sprites[3] = new ISprite("Sprites/Players/RayCutsceneCPZ.gif", App, 1);
+		Sprites[0] = new ("ISprite - PlayersMixed/Ray1.gif") ISprite("PlayersMixed/Ray1.gif", App);
+		Sprites[1] = new ("ISprite - PlayersMixed/Ray2.gif") ISprite("PlayersMixed/Ray2.gif", App);
+		Sprites[2] = new ("ISprite - PlayersMixed/Ray3.gif") ISprite("PlayersMixed/Ray3.gif", App);
+		Sprites[3] = new ("ISprite - PlayersMixed/RayCutsceneCPZ.gif") ISprite("PlayersMixed/RayCutsceneCPZ.gif", App);
 
-		Sprites[0]->LoadAnimation("Sprites/Players/Ray.bin");
+		Sprites[0]->LoadAnimation("PlayersMixed/Ray.bin");
 		Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -617,12 +1208,18 @@ void IPlayer::Create() {
 
 	SpriteDashDust = Scene->ExplosionSprite;
 
-	SpriteShields = new ISprite("Sprites/Global/ShieldsOld.gif", App, SaveGame::CurrentMode);
-	SpriteShields->LoadAnimation("Sprites/Global/ShieldsOld.bin");
+	if (Thremixed) {
+		SpriteShields = new ("ISprite - Global/ShieldsOld.gif") ISprite("Global/ShieldsOld.gif", App);
+		SpriteShields->LoadAnimation("Global/ShieldsOld.bin");
+	}
+	else {
+		SpriteShields = new ("ISprite - GlobalS3K/ShieldsOld.gif") ISprite("GlobalS3K/ShieldsOld.gif", App);
+		SpriteShields->LoadAnimation("GlobalS3K/ShieldsOld.bin");
+	}
 
-	SpriteShields2 = new ISprite("Sprites/Global/Shields.gif", App, SaveGame::CurrentMode);
-	SpriteShields2->LoadAnimation("Sprites/Global/Invincible.bin");
-	SpriteShields2->LoadAnimation("Sprites/Global/Shields.bin");
+	SpriteShields2 = new ("ISprite - Global/Shields.gif") ISprite("Global/Shields.gif", App);
+	SpriteShields2->LoadAnimation("Global/Invincible.bin");
+	SpriteShields2->LoadAnimation("Global/Shields.bin");
 
 	for (int i = 0; i < 8; i++) {
 		if (!Sprites[i]) break;
@@ -647,37 +1244,72 @@ PlayerSetPalettes:
 		return;
 	}
 
+	palNormal = PaletteNormal;
+	palNormalHCZ = PaletteNormalHCZ;
+
 	if (Character == CharacterType::Sonic) {
-		palWhere = 0x40;
-		palNormal = SonicPaletteNormal;
-		palNormalHCZ = SonicPaletteNormalHCZ;
-	}
+		if (SaveGame::CurrentMode >= 1)
+		{
+			palWhere = 0x40;
+		}
+		else
+		{
+			palWhere = 0x02;
+		}
+	} 
 	else if (Character == CharacterType::Tails) {
-		palWhere = 0x46;
-		palNormal = TailsPaletteNormal;
-		palNormalHCZ = TailsPaletteNormalHCZ;
-	}
+		if (SaveGame::CurrentMode >= 1)
+		{
+			palWhere = 0x46;
+		}
+		else
+		{
+			palWhere = 0x08;
+		}
+	} 
 	else if (Character == CharacterType::Knuckles) {
 		palWhere = 0x50;
-		palNormal = KnuxPaletteNormal;
-		palNormalHCZ = KnuxPaletteNormalHCZ;
 	}
+	else if (Character == CharacterType::Mighty) {
+		palWhere = 0x60;
+	}
+	else if (Character == CharacterType::Ray) {
+		palWhere = 0x70;
+	} 
 	else {
 		// Default to Sonic
-		palWhere = 0x40;
-		palNormal = SonicPaletteNormal;
-		palNormalHCZ = SonicPaletteNormalHCZ;
+		if (SaveGame::CurrentMode >= 1)
+		{
+			palWhere = 0x40;
+		}
+		else
+		{
+			palWhere = 0x02;
+		}
 	}
 
 	for (int i = 0; i < 8; i++) {
 		if (!Sprites[i]) break;
-
-		memcpy(Sprites[i]->Palette + palWhere, palNormal, 6 * 4);
-		memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, 6 * 4);
+		int Size = 6;
+		if (SaveGame::CurrentMode == 0) Size = 3;
+		if (SaveGame::CurrentMode == 0 && Character == CharacterType::Tails) Size = 2;
+		memcpy(Sprites[i]->Palette + palWhere, palNormal, Size * 4);
+		memcpy(Sprites[i]->PaletteAlt + palWhere, palNormalHCZ, Size * 4);
 		Sprites[i]->Paletted = 2;
 		Sprites[i]->UpdatePalette();
 	}
 
+}
+
+void IPlayer::Cleanup() {
+#define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+    if (Character != CharacterType::Knuckles || ClearKnucklesSprites) {
+        for (int s = 0; s < 8; s++) {
+            CLEANUP(Sprites[s]);
+        }
+    }
+    CLEANUP(SpriteShields);
+    CLEANUP(SpriteShields2);
 }
 
 void IPlayer::ChangeAnimation(int animationID) {
@@ -2392,6 +3024,10 @@ void IPlayer::Update() {
 				}
 			}
 		}
+		else //Deform!
+		{
+			Deform();
+		}
 	}
 
 	// Mid-air actions, etc...
@@ -2427,10 +3063,27 @@ void IPlayer::Update() {
 			Sound::Play(Sound::SFX_SPINDASHREV);
 		}
 		else if (Action == ActionType::Jumping && JumpVariable == 1) {
-			if (HyperForm) {
+			if (HyperForm) { //Hyper Dash
 				if (ShieldUsable && Character == CharacterType::Sonic) {
 					if (InputUp) {
-						YSpeed = -0x800;
+						if (YSpeed > 0)	YSpeed = -0x800;
+						else YSpeed -= 0x800;
+						Scene->ShakeTimer = 20;
+					}
+					if (InputDown) {
+						if (YSpeed < 0)	YSpeed = 0x800;
+						else YSpeed += 0x800;
+						Scene->ShakeTimer = 20;
+					}
+					if (InputLeft) {
+						if (XSpeed > 0)	XSpeed = -0x800;
+						else XSpeed -= 0x800;
+						Scene->ShakeTimer = 20;
+					}
+					if (InputRight) {
+						if (XSpeed < 0)	XSpeed = 0x800;
+						else XSpeed += 0x800;
+						Scene->ShakeTimer = 20;
 					}
 					if (InputJumpHold && DropDashEnabled) {
 						if (DropDashRev == 0) {
@@ -3210,107 +3863,64 @@ void IPlayer::LateUpdate() {
 	DisplayY = EZY;
 
 	int palWhere, palCount = 6;
+	if (SaveGame::CurrentMode == 0) palCount = 3;
+	if (SaveGame::CurrentMode == 0 && Character == CharacterType::Tails) palCount = 2;
 	Uint32 *palSuper, *palHyper = NULL, *palNormal, *palSuperHCZ, *palHyperHCZ = NULL, *palNormalHCZ, *palSuperPulse, *palSuperPulseHCZ, *palHyperPulse = NULL, *palHyperPulseHCZ = NULL;
 
+	palSuper = PaletteSuper;
+	palNormal = PaletteNormal;
+	palSuperHCZ = PaletteSuperHCZ;
+	palNormalHCZ = PaletteNormalHCZ;
+	palSuperPulse = PaletteSuperPulse;
+	palSuperPulseHCZ = PaletteSuperPulseHCZ;
+	palHyperPulse = PaletteHyperPulse;
+	palHyperPulseHCZ = PaletteHyperPulse;
+
+	if (ExtendedHyperPallete) {
+		palHyper = PaletteHyperExtended;
+	}
+	else {
+		palHyper = PaletteHyper;
+	}
+
 	if (Character == CharacterType::Sonic) {
-		palWhere = 0x40;
-		palSuper = SonicPaletteSuper;
-		palNormal = SonicPaletteNormal;
-		palSuperHCZ = SonicPaletteSuperHCZ;
-		if (ExtendedHyperPallete) {
-			palHyper = SonicPaletteS3HyperExtended;
+		if (SaveGame::CurrentMode >= 1)
+		{
+			palWhere = 0x40;
 		}
-		else {
-			palHyper = SonicPaletteS3Hyper;
-		}
-		palNormalHCZ = SonicPaletteNormalHCZ;
-		palSuperPulse = SonicPaletteSuperPulse;
-		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
-		palHyperPulse = SonicPaletteS3HyperPulse;
-		palHyperPulseHCZ = SonicPaletteS3HyperPulse;
-		if (!Thremixed) {
-			palWhere = 0x2;
-			palCount = 3;
-			palSuper = SonicPaletteS3Super;
-			if (ExtendedHyperPallete) {
-				palHyper = SonicPaletteS3HyperExtended;
-			}
-			else {
-				palHyper = SonicPaletteS3Hyper;
-			}
-			palNormal = SonicPaletteS3Normal;
-			palSuperHCZ = SonicPaletteS3SuperHCZ;
-			palNormalHCZ = SonicPaletteS3NormalHCZ;
-			palSuperPulse = SonicPaletteS3SuperPulse;
-			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
-			palHyperPulse = SonicPaletteS3HyperPulse;
-			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
+		else
+		{
+			palWhere = 0x02;
 		}
 	}
 	else if (Character == CharacterType::Tails) {
-		palWhere = 0x46;
-		palSuper = TailsPaletteSuper;
-		palNormal = TailsPaletteNormal;
-		palSuperHCZ = TailsPaletteSuperHCZ;
-		palNormalHCZ = TailsPaletteNormalHCZ;
-		palSuperPulse = TailsPaletteSuperPulse;
-		palSuperPulseHCZ = TailsPaletteSuperPulseHCZ;
+		if (SaveGame::CurrentMode >= 1)
+		{
+			palWhere = 0x46;
+		}
+		else
+		{
+			palWhere = 0x08;
+		}
 	}
 	else if (Character == CharacterType::Knuckles) {
 		palWhere = 0x50;
-		palSuper = KnuxPaletteSuper;
-		palNormal = KnuxPaletteNormal;
-		palSuperHCZ = KnuxPaletteSuperHCZ;
-		palNormalHCZ = KnuxPaletteNormalHCZ;
-		palSuperPulse = KnuxPaletteSuperPulse;
-		palSuperPulseHCZ = KnuxPaletteSuperPulseHCZ;
 	}
-	/*else if (Character == CharacterType::Mighty) {
+	else if (Character == CharacterType::Mighty) {
 		palWhere = 0x60;
-		palSuper = SonicPaletteSuper;
-		palNormal = SonicPaletteNormal;
-		palNormalHCZ = SonicPaletteNormalHCZ;
 	}
 	else if (Character == CharacterType::Ray) {
 		palWhere = 0x70;
-		palSuper = SonicPaletteSuper;
-		palNormal = SonicPaletteNormal;
-		palNormalHCZ = SonicPaletteNormalHCZ;
-	}*/
+	}
 	else {
 		// Default to Sonic
-		palWhere = 0x40;
-		palSuper = SonicPaletteSuper;
-		palNormal = SonicPaletteNormal;
-		palSuperHCZ = SonicPaletteSuperHCZ;
-		if (ExtendedHyperPallete) {
-			palHyper = SonicPaletteS3HyperExtended;
+		if (SaveGame::CurrentMode >= 1)
+		{
+			palWhere = 0x40;
 		}
-		else {
-			palHyper = SonicPaletteS3Hyper;
-		}
-		palNormalHCZ = SonicPaletteNormalHCZ;
-		palSuperPulse = SonicPaletteSuperPulse;
-		palSuperPulseHCZ = SonicPaletteSuperPulseHCZ;
-		palHyperPulse = SonicPaletteS3HyperPulse;
-		palHyperPulseHCZ = SonicPaletteS3HyperPulse;
-		if (!Thremixed) {
-			palWhere = 0x2;
-			palCount = 3;
-			palSuper = SonicPaletteS3Super;
-			if (ExtendedHyperPallete) {
-				palHyper = SonicPaletteS3HyperExtended;
-			}
-			else {
-				palHyper = SonicPaletteS3Hyper;
-			}
-			palNormal = SonicPaletteS3Normal;
-			palSuperHCZ = SonicPaletteS3SuperHCZ;
-			palNormalHCZ = SonicPaletteS3NormalHCZ;
-			palSuperPulse = SonicPaletteS3SuperPulse;
-			palSuperPulseHCZ = SonicPaletteS3SuperPulseHCZ;
-			palHyperPulse = SonicPaletteS3HyperPulse;
-			palHyperPulseHCZ = SonicPaletteS3HyperPulse;
+		else
+		{
+			palWhere = 0x02;
 		}
 	}
 
@@ -3473,7 +4083,10 @@ void IPlayer::LateUpdate() {
 			if (!Sprites[i]) break;
 
 			for (int p = 0; p < palCount; p++) {
-				Sprites[i]->SetPalette(palWhere + p, palNormal[p]);
+				if (Scene->TintColor != 0x0 && SaveGame::CurrentMode != 0)
+					Sprites[i]->SetPalette(palWhere + p, G->ColorBlendHex(palNormal[p], Scene->TintColor, 50));
+				else
+					Sprites[i]->SetPalette(palWhere + p, palNormal[p]);
 				Sprites[i]->SetPaletteAlt(palWhere + p, palNormalHCZ[p]);
 			}
 			Sprites[i]->UpdatePalette();
@@ -3522,11 +4135,8 @@ void IPlayer::LateUpdate() {
 			DisplayAngle = FinalAngle << 8;
         }
 	}
-
 	// For animations that don't rotate, set DisplayAngle to 0
-	bool noRotate =
-		Action != ActionType::Normal &&
-		Action != ActionType::Grab;
+	bool noRotate = Sprites[0]->Animations[CurrentAnimation].Flags == 0;
 	if (noRotate)
 		DisplayAngle = 0;
 
@@ -3658,11 +4268,7 @@ void IPlayer::Render(int CamX, int CamY) {
 			y = 20;
 
 		/*
-<<<<<<< HEAD
-		"Sprites/Players/TailSprite.bin"
-=======
-		"Sprites/Player/TailSprite.bin"
->>>>>>> 8ca042d82762e8a747aa4b41005ffff6b63e5665
+		"Sprites/PlayersMixed/TailSprite.bin"
 		"Tails 0" (55) (Flags: 04, FtL: 0, Spd: 64, Frames: 10)
 		"Tails 1" (56) (Flags: 01, FtL: 0, Spd: 64, Frames: 6)
 		"Tails 2" (57) (Flags: 00, FtL: 0, Spd: 128, Frames: 6)
@@ -3769,8 +4375,16 @@ void IPlayer::Render(int CamX, int CamY) {
 		}
 
 		ISprite::Animation animation = Sprites[0]->Animations[CurrentAnimation];
+
+		//shid fixies
+		if (animation.Frames[CurrentFrame / 0x100].SheetNumber > 0x10)
+		{
+			animation.Frames[CurrentFrame / 0x100].SheetNumber = 0;
+		}
+
 		ISprite::AnimFrame currentFrame = animation.Frames[CurrentFrame / 0x100];
 
+		//AfterImages
 		if ((SuperForm && Thremixed) || HyperForm || (SpeedSneakersActive && Thremixed) || Action == ActionType::MightyStomp) {
 			for (int i = -5 - 8; i <= -5; i += 4) {
 				G->SetDrawAlpha(0xFF + i * 0xC);
@@ -3793,6 +4407,40 @@ void IPlayer::Render(int CamX, int CamY) {
 		}
 
 		G->SetDrawAlpha(0xFF);
+
+		bool LowerZero = FinalAngle < 0;
+
+		switch (Sprites[0]->Animations[CurrentAnimation].Flags)
+		{
+		case 0:
+			FinalAngle = 0;
+			break;
+		default:
+			break;
+		case 3: //Just fucking use Flag 2 lmao I ain't programming this shit
+		case 2:
+			FinalAngle = IMath::abs(FinalAngle);
+			FinalAngle += 16;
+			FinalAngle &= 255;
+			FinalAngle >>= 5;
+			FinalAngle *= 45;
+			if (LowerZero) FinalAngle = -FinalAngle;
+			break;
+		 
+			break;
+		case 4: //basically YFlip
+			if (IMath::abs(FinalAngle) < 180) FinalAngle = 0;
+			break;
+		case 5: //no idea how I'd do this shit
+			break;
+			//I don't know what this bullshit is but mania has it so bada bing bada boom it's in here too!
+		case 6: //What what
+			FinalAngle = DisplayFlip > 0 ? 135 : 225;
+			break;
+		case 7: //What
+			FinalAngle = 135;
+			break;
+		}
 
 		G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, EZX + x - CamX, EZY + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
 	
@@ -4072,6 +4720,9 @@ void IPlayer::Deform() {
 	SuperFormAnim = SuperFormAnimType::Deforming;
 	InvincibilityTimer = 0;
 	Invincibility = InvincibilityType::None;
+	//Restore Stage music
+	App->Audio->ClearMusic();
+	App->Audio->PushMusic(Sound::SoundBank[0], Sound::Audio->Loop[0], Sound::Audio->LoopPoint[0]);
 }
 
 void IPlayer::CheckDespawn() {
@@ -4079,7 +4730,7 @@ void IPlayer::CheckDespawn() {
 	if (Action == ActionType::Respawn) return;
 
 	if (OnScreen) {
-		RespawnTimer = 0;
+		RespawnTimer = 0;	
 	} else {
 		RespawnTimer++;
 		if (RespawnTimer >= 0x12C) {
@@ -4127,15 +4778,15 @@ void IPlayer::HandlePathSwitchers() {
 		sz_r = 0;
 
 	for (int i = 0; i < Scene->PlaneSwitchCount; i++) {
-		int W = 8 * Scene->PlaneSwitchers[i].Size;
-		int H = 8 * Scene->PlaneSwitchers[i].Size;
+		int W = 16 * Scene->PlaneSwitchers[i].Size;
+		int H = 16 * Scene->PlaneSwitchers[i].Size;
 		int rnd = (Scene->PlaneSwitchers[i].Angle & 0xC0);
 		if (rnd == 0x00 ||
 			rnd == 0x80) {
-			W = 0;
+			W = 16;
 		}
 		else {
-			H = 0;
+			H = 16;
 		}
 
 		if (rnd != Scene->PlaneSwitchers[i].Angle)
@@ -4673,4 +5324,12 @@ void IPlayer::DoSuperTransform() {
 	YSpeed = 0x0;
 
 	Sound::Play(Sound::SFX_TRANSFORM);
+
+	if (Sound::SoundBank[0xFF])
+	{
+		Sound::Audio->LoopPoint[0xFF] = 0;
+		Sound::Audio->Loop[0xFF] = true;
+		App->Audio->ClearMusic();
+		App->Audio->PushMusic(Sound::SoundBank[0xFF], true, Sound::Audio->LoopPoint[0xFF]);
+	}
 }

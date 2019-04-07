@@ -5,6 +5,10 @@ subclass Solid;
 var Drawbridge:bool;
 var Allotted:int;
 
+event CollapsingLogBridge() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("AIZ/Collapsing Log Bridge.bin");
+}
+
 event Create() {
     Active = true;
     Priority = false;
@@ -20,7 +24,7 @@ event Create() {
     SolidCustomized = true;
 
     Drawbridge = false;
-    CurrentAnimation = 5;
+    CurrentAnimation = Sprite.FindAnimation("Collapsing Log Bridge");
     if (SubType & 0x80) {
         VisualLayer = 1;
         Drawbridge = true;

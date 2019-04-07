@@ -23,6 +23,7 @@ public:
     int StoredY;
     bool Used;
     int RingID;
+	double Scale;
     
     void Create();
     void Update();

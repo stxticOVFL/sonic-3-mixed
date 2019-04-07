@@ -14,6 +14,7 @@
 class Scene_LevelSelect : public IScene {
 public:
     int selected = 0;
+    bool GoBack = false;
 
     Scene_LevelSelect(IApp* app, IGraphics* g);
     void Init();

@@ -46,6 +46,7 @@
     <ClCompile Include="..\source\Game\Levels\AIZ.cpp" />
     <ClCompile Include="..\source\Game\Levels\ALZ.cpp" />
     <ClCompile Include="..\source\Game\Levels\ASZ.cpp" />
+    <ClCompile Include="..\source\Game\Levels\BonusStage.cpp" />
     <ClCompile Include="..\source\Game\Levels\BPZ.cpp" />
     <ClCompile Include="..\source\Game\Levels\CGZ.cpp" />
     <ClCompile Include="..\source\Game\Levels\CNZ.cpp" />
@@ -81,6 +82,11 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\DisappearingFloor.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Drawbridge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FallingLog.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreath.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreathBomb.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreathCutscene.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FireBreathFlame.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FlameMobile.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\FlippingBridge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\ForegroundPlant.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\HollowTree.cpp" />
@@ -139,11 +145,13 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\WarpStars.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\Motobug.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\MotobugSmoke.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BigShaker.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Blastoid.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BlastoidShot.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Block.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\BreakBar.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Buggernaut.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\DepthCharge.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Fan.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HandLauncher.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\HCZBoss.cpp" />
@@ -159,6 +167,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\LargeFan.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\MegaChomper.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\Pointdexter.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\HCZ\ScrewMobile.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\SpinningColumn.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\TurboSpiker.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\TurboSpikerSpike.cpp" />
@@ -177,6 +186,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\LBZ\Orbinaut.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\BubblesBadnik.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\DrillerEggman.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\DrillMobile.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Mantis.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZBoss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\MGZDashTrigger.cpp" />
@@ -190,21 +200,24 @@
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\ReliefEye.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\Spiker.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\MGZ\TopPlatform.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\MGZ\TunnelBot.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\ObjectListing.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Test\Platform.cpp" />
     <ClCompile Include="..\source\Game\Player.cpp" />
     <ClCompile Include="..\source\Game\SaveGame.cpp" />
     <ClCompile Include="..\source\Game\Scenes\DataSelect.cpp" />
+    <ClCompile Include="..\source\Game\Scenes\ExtrasMenu.cpp" />
     <ClCompile Include="..\source\Game\Scenes\LevelSelect.cpp" />
     <ClCompile Include="..\source\Game\Scenes\MainMenu.cpp" />
     <ClCompile Include="..\source\Game\Scenes\SettingsMenu.cpp" />
+    <ClCompile Include="..\source\Game\Scenes\TitleScreen.cpp" />
+    <ClCompile Include="..\source\Game\Scenes\VSMenu.cpp" />
     <ClCompile Include="..\source\Game\ScoreGhost.cpp" />
     <ClCompile Include="..\source\Game\Sound.cpp" />
     <ClCompile Include="..\source\main.cpp" />
     <ClCompile Include="..\source\Utils\gifdec.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\gen\Game\Scenes\SettingsMenu.h" />
     <ClInclude Include="..\source\Engine\I3D.hh" />
     <ClInclude Include="..\source\Engine\IGenesis.hh" />
     <ClInclude Include="..\source\Engine\IHeader.hh" />
@@ -302,6 +315,7 @@
     <None Include="..\source\Game\Objects\HCZ\LargeFan.ie2" />
     <None Include="..\source\Game\Objects\HCZ\MegaChomper.ie2" />
     <None Include="..\source\Game\Objects\HCZ\Pointdexter.ie2" />
+    <None Include="..\source\Game\Objects\HCZ\ScrewMobile.ie2" />
     <None Include="..\source\Game\Objects\HCZ\SpinningColumn.ie2" />
     <None Include="..\source\Game\Objects\HCZ\TurboSpiker.ie2" />
     <None Include="..\source\Game\Objects\MGZ\BubblesBadnik.ie2" />
@@ -368,6 +382,7 @@
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <ExecutablePath>$(SolutionDir)External\Debug\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -401,7 +416,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <UndefinePreprocessorDefinitions>PUBLIC;PRIVATE;INTERFACE;VIRTUAL</UndefinePreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <MinimalRebuild>true</MinimalRebuild>
@@ -420,7 +435,7 @@
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
     </Link>
     <PreBuildEvent>
-      <Command>"../tools/makeheaders.exe" "../source"</Command>
+      <Command>"../tools/makeheaders.exe" "../"</Command>
     </PreBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -454,7 +469,7 @@
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
     </Link>
     <PreBuildEvent>
-      <Command>"../tools/makeheaders.exe" "../source"</Command>
+      <Command>"../tools/makeheaders.exe" "../"</Command>
     </PreBuildEvent>
     <CustomBuildStep>
       <Command>

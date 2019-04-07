@@ -6,6 +6,7 @@
 #define PROTECTED
 #define STATIC
 #define VIRTUAL
+#define CONSTRUCTER
 
 class ISprite;
 class ISprite;
@@ -24,8 +25,15 @@ public:
     ISprite* Players = NULL;
     uint8_t* Layout = NULL;
     uint8_t* LayoutCopy = NULL;
+    int playFieldLayerID;
+    int ringCountLayerID;
+    int backgroundLayerID;
+    int globeLayerID;
+    int StartMessageAnim;
+    int PerfectMessageAnim;
 
     Level_SpecialStage(IApp* app, IGraphics* g);
+    void LoadStage();
     void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
     Uint8* LayoutAt(int ox, int oy);
@@ -44,6 +52,7 @@ public:
     void Subupdate();
     void HandleCamera();
     void RenderEverything();
+    void Cleanup();
 };
 
 #endif /* LEVEL_SPECIALSTAGE_H */

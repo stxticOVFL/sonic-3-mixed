@@ -9,19 +9,23 @@ void HCZMiniboss::Create() {
     Enemy::Create();
     TimerSpin = 0;
     SpinSpeed = 0;
+    RocketSpeed = 0;
     RocketTurn = 0;
     InvulnTimer = 0;
     Started = false;
     ExplosionTimer = 0x80;
     Active = true;
     Priority = false;
+    IdlePosY = InitialY + 0xEB;
+    PillarX = InitialX;
+    PillarY = InitialY + 352;
     W = 64;
     H = 64;
-    Y = 0x680;
     Radius = 32;
     Timer = 0;
     HitCount = 6;
     Boss = true;
+    State = BossState::ENTERING;
     int i = 0;
     MainPalette[i++] = Sprite->Palette[0x10];
     MainPalette[i++] = Sprite->Palette[0x11];
@@ -161,6 +165,43 @@ void HCZMiniboss::Update() {
         return;
     }
 
+    switch (State) {
+        case BossState::ENTERING:
+        if (Y < IdlePosY) {
+            Y += 2;
+        }
+        else {
+			State = BossState::SPEEDING_UP;
+        }
+        break;
+        case BossState::MOVING:
+        WallSlide();
+        break;
+        case BossState::SLOWING_DOWN:
+        if (SpinSpeed > 0x0) {
+            SpinSpeed -= 0x1;
+            RocketSpeed = 0;
+        }
+        else {
+            State = BossState::SPINNING_WATER;
+        }
+        break;
+        case BossState::SPINNING_WATER:
+        SpinWater();
+        break;
+        case BossState::SPEEDING_UP:
+        if (SpinSpeed < 0x100) {
+            SpinSpeed += 0x1;
+            RocketSpeed = 1;
+        }
+        else {
+            State = BossState::MOVING;
+        }
+        break;
+        case BossState::DEAD:
+        break;
+    }
+
     HandleDamage();
     if (!Started) {
         App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
@@ -168,14 +209,12 @@ void HCZMiniboss::Update() {
         Started = true;
     }
 
-    if (SpinSpeed < 0x100) SpinSpeed += 0x1;
-
     TimerSpin += SpinSpeed;
     if (TimerSpin >= (Sprite->Animations[2].FrameCount * 512)) {
         TimerSpin = 0;
     }
 
-    RocketTurn += 1;
+    RocketTurn += RocketSpeed;
     if (RocketTurn >= 0x40) {
         RocketTurn = 0x0;
     }
@@ -201,11 +240,11 @@ void HCZMiniboss::DrawRocket(int Rock, int Ang, int Flip, int Side, int CamX, in
 void HCZMiniboss::Render(int CamX, int CamY) {
     for (int i = 0; i < 0x41; i += 0x20)
 {
-        G->DrawSprite(Sprite, 1, TimerSpin >> 9, 0x3720 - CamX, 0x06F8 - CamY - i, 0, IE_NOFLIP);
+        G->DrawSprite(Sprite, 1, TimerSpin >> 9, InitialX - CamX, PillarY - CamY - i, 0, IE_NOFLIP);
     }
-    G->DrawSprite(Sprite, 2, TimerSpin >> 9, 0x3720 - CamX, 0x06E0 - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, 0, 2, 0x3720 - CamX, 0x06B8 - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, 0, 3, 0x3720 - CamX, 0x06E0 - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, 2, TimerSpin >> 9, InitialX - CamX, PillarY - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, 0, 2, InitialX - CamX, PillarY - 0x3F - CamY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, 0, 3, InitialX - CamX, PillarY - CamY, 0, IE_NOFLIP);
     DrawRocket(RocketTurn + 0x00, 0xE0, IE_NOFLIP, 1, CamX, CamY);
     DrawRocket(RocketTurn + 0x20, 0xE0, IE_NOFLIP, 1, CamX, CamY);
     DrawRocket(RocketTurn + 0x10, 0xA0, IE_FLIPX, 1, CamX, CamY);
@@ -222,4 +261,10 @@ void HCZMiniboss::Render(int CamX, int CamY) {
     }
 
     }
+
+void HCZMiniboss::WallSlide() {
+}
+
+void HCZMiniboss::SpinWater() {
+}
 

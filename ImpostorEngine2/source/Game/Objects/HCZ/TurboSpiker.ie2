@@ -39,7 +39,10 @@ event OnHit() : int {
 }
 
 event Update() {
-    if (Math.pydistance(X, Y, Scene.Players[0].X, Scene.Players[0].Y) <= 0xA0 && VisualLayer == -1) {
+
+	if (!isHeldDebugObject)
+	{
+		    if (Math.pydistance(X, Y, Scene.Players[0].X, Scene.Players[0].Y) <= 0xA0 && VisualLayer == -1) {
         VisualLayer = 1;
         Sound.Play(Sound.SFX_SPLASH);
         FireTimer = 20;
@@ -70,7 +73,10 @@ event Update() {
     if (TurnTimer > 0) 
         CurrentAnimation = 8;
     Flip = (Scene.Players[0].X >= X && !Fired) ? -1 : (KeptFlip != 0 ? KeptFlip : 1);
-    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
+	
+	if (Sprite.Animations.size() > CurrentAnimation)
+	{
+			    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 2)
         Frame += Sprite.Animations[CurrentAnimation].AnimationSpeed;
     else if (Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
         Frame += 0x100 / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
@@ -78,11 +84,13 @@ event Update() {
     if (Frame >= Sprite.Animations[CurrentAnimation].FrameCount << 8) {
         Frame = Sprite.Animations[CurrentAnimation].FrameToLoop << 8;
     }
+	}
     if (Fired && !OnScreen) {
         Active = false;
         X = -32;
         Y = -32;
     }
+	}
 }
 
 event MoveSprite() {

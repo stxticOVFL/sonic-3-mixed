@@ -20,8 +20,6 @@ class IApp;
 
 class IGraphics {
 private:
-    int FrameBufferSize = 0;
-
     void Flip();
     void ScanLine(long x1, long y1, long x2, long y2);
 
@@ -55,7 +53,6 @@ public:
     IGraphics();
     IGraphics(IApp* app);
     virtual ~IGraphics();
-    virtual bool SaveScreenshot();
     virtual void MakeAllTexturesAndFrameBuffers();
     virtual void MakeTexture(ISprite* sprite);
     virtual void UpdatePalette(ISprite* sprite);
@@ -99,6 +96,7 @@ public:
     virtual void DrawRectangleStroke(int x, int y, int w, int h, uint32_t col);
     virtual void DrawSprite(SDL_Surface* surface, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY);
     virtual void DrawSpriteNormal(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, bool FlipX, bool FlipY, int RealCenterX, int RealCenterY);
+    virtual int CheckAnimation(ISprite* sprite, int animation, int frame);
     virtual void DrawSprite(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip);
     virtual void DrawSpriteSized(ISprite* sprite, int animation, int frame, int x, int y, int angle, int flip, int width, int height);
     virtual void DrawSprite(ISprite* sprite, int SrcX, int SrcY, int Width, int Height, int CenterX, int CenterY, int Angle, int Flip, int RealCenterX, int RealCenterY);

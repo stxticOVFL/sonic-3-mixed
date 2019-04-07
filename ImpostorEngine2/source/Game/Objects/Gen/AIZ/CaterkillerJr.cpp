@@ -5,6 +5,10 @@
 
 typedef IMath Math;
 
+CONSTRUCTER CaterkillerJr::CaterkillerJr() {
+    BinIndex = LevelScene::LoadSpriteBin("AIZ/Caterkiller Jr.bin");
+}
+
 void CaterkillerJr::Create() {
     Enemy::Create();
     Active = true;
@@ -15,7 +19,7 @@ void CaterkillerJr::Create() {
     VisH = 64;
     Frame = 0;
     HitCount = 1;
-    CurrentAnimation = 4;
+    CurrentAnimation = Sprite->FindAnimation("Caterkiller Jr");
     CleanupInactiveObject = true;
     XSpeed = -0x100;
     Routine = 4;

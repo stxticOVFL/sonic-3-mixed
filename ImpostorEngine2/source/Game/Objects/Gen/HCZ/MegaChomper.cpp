@@ -39,6 +39,13 @@ void MegaChomper::Update() {
         Routine = 6;
     }
 
+    if (!Scene->maxLayer && Routine == 6) {
+        Routine = 8;
+        XSpeed = 0x200;
+        YSpeed = -0x400;
+        Scene->Player->InputLockLeftRight = false;
+    }
+
     if (Routine == 6) {
         LRTimer = LRTimer == 0 ? 0 : LRTimer - 1;
         if (LRTimer == 0) {

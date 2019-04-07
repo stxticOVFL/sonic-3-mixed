@@ -18,7 +18,7 @@ public:
     uint8_t  State;
     uint8_t  Mode;
     uint16_t CharacterFlag;
-    uint16_t PartnerFlag = 0xFF;
+    uint16_t PartnerFlag;
     uint8_t  Shield;
     uint8_t  BlueRing;
     uint8_t  LastZoneID;
@@ -39,6 +39,7 @@ public:
     static uint8_t  CurrentPartnerFlag;
     static uint16_t CurrentUsedZoneRings;
     static uint16_t CurrentEmeralds;
+    static bool		SuperEmeraldRoomActivated;
     static bool AchievementData[0x40];
 
     static void Init();

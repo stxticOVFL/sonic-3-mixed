@@ -59,7 +59,17 @@ event Update() {
         Invincible = true;
         Routine = 6;
     }
+	
 
+	//if debug mode
+	if (!Scene.maxLayer && Routine == 6)
+	{
+		Routine = 8;
+        XSpeed = 0x200;
+        YSpeed = -0x400;
+        Scene.Player.InputLockLeftRight = false;
+	}
+	
     if (Routine == 6) {
         LRTimer = LRTimer == 0 ? 0 : LRTimer - 1;
         if (LRTimer == 0) {
@@ -143,7 +153,8 @@ event Update() {
             YSpeed = -0x400;
             Scene.Player.InputLockLeftRight = false;
         }
-
+		
+	
         if (Scene.Frame % 60 == 0) {
             Scene.Player.InputLockLeftRight = true;
             if (Scene.Player.Rings > 0) {

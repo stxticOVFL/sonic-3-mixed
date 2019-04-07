@@ -20,25 +20,40 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	sprintf(ZoneLetters, "LBZ");
 	PlayMusic(act, 0, SaveGame::CurrentMode);
 
-
-    if (Act == 1) {
-        //Sound::SoundBank[0] = new ISound("Music/LBZ1.ogg", false);
-		//Sound::Audio->LoopPoint[0] = 0;
-
-        Str_TileConfigBin = "Stages/LBZ1/TileConfig.bin";
-        Str_SceneBin = "Stages/LBZ1/Scene.bin";
-        Str_TileSprite = "Stages/LBZ1/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/LBZ1/Animated Tiles.gif";
-    }
-    else if (Act == 2) {
-        //Sound::SoundBank[0] = new ISound("Music/LBZ2.ogg", false);
-		//Sound::Audio->LoopPoint[0] = 0;
-
-        Str_TileConfigBin = "Stages/LBZ2/TileConfig.bin";
-        Str_SceneBin = "Stages/LBZ2/Scene.bin";
-        Str_TileSprite = "Stages/LBZ2/16x16Tiles.gif";
-        Str_AnimatedSprites = "Stages/LBZ2/Animated Tiles.gif";
-    }
+	if (SaveGame::CurrentMode >= 1)
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Mixed/Stages/LBZ1/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/LBZ1/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/LBZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/LBZ1/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/LBZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Mixed/Stages/LBZ2/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/LBZ2/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/LBZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/LBZ2/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/LBZ2/Stageconfig.bin";
+		}
+	}
+	else
+	{
+		if (Act == 1) {
+			Str_TileConfigBin = "Classic/Stages/LBZ1/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/LBZ1/Scene.bin";
+			Str_TileSprite = "Classic/Stages/LBZ1/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/LBZ1/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/LBZ1/Stageconfig.bin";
+		}
+		else {
+			Str_TileConfigBin = "Classic/Stages/LBZ2/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/LBZ2/Scene.bin";
+			Str_TileSprite = "Classic/Stages/LBZ2/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/LBZ2/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/LBZ2/Stageconfig.bin";
+		}
+	}
 
     sprintf(LevelName, "LAUNCH BASE");
     sprintf(LevelNameDiscord, "Launch Base");
@@ -53,6 +68,8 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     else {
 		VisualWaterLevel = WaterLevel = 0x660;
     }
+
+	AddNewDebugObjectID(Obj_Orbinaut);
 }
 
 PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
@@ -119,13 +136,26 @@ PUBLIC void Level_LBZ::LoadZoneSpecificSprites() {
 	}
 
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+		}
         KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
         KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);

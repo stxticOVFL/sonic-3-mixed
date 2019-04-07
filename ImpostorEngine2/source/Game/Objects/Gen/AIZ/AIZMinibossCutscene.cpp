@@ -32,7 +32,7 @@ void AIZMinibossCutscene::Create() {
     Shot1 = -1;
     Shot2 = -1;
     Shot3 = -1;
-    Cutscene = ID == Obj_AIZMinibossCutscene;
+    Cutscene = ID == Obj_FireBreathCutscene;
     int i = 0;
     MainPalette[i++] = 0x000000;
     MainPalette[i++] = 0xEEEEEE;

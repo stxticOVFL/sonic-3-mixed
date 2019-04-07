@@ -210,13 +210,13 @@ Object* GetNewObjectFromID(int ID) {
             return new CaterkillerJr();
             break;
         case 0x90U:
-            return new AIZMinibossCutscene();
+            return new FireBreathCutscene();
             break;
         case 0x91U:
-            return new AIZMiniboss();
+            return new FireBreath();
             break;
         case 0x92U:
-            return new AIZBoss();
+            return new FlameMobile();
             break;
         case 0x93U:
             return new Jawz();
@@ -237,10 +237,10 @@ Object* GetNewObjectFromID(int ID) {
             return new Pointdexter();
             break;
         case 0x99U:
-            return new HCZMiniboss();
+            return new BigShaker();
             break;
         case 0x9AU:
-            return new HCZBoss();
+            return new ScrewMobile();
             break;
         case 0x9BU:
             return new BubblesBadnik();
@@ -255,13 +255,13 @@ Object* GetNewObjectFromID(int ID) {
             return new MGZDriller();
             break;
         case 0x9FU:
-            return new MGZMiniBoss();
+            return new TunnelBot();
             break;
         case 0xA0U:
             return new DrillerEggman();
             break;
         case 0xA1U:
-            return new MGZBoss();
+            return new DrillMobile();
             break;
         case 0xA5U:
             return new Batbright();
@@ -300,13 +300,13 @@ Object* GetNewObjectFromID(int ID) {
             return new AirshipBomb();
             break;
         case 0x401U:
-            return new AIZMinibossBomb();
+            return new BloominatorSpore();
             break;
         case 0x402U:
-            return new AIZMinibossFlame();
+            return new FireBreathBomb();
             break;
         case 0x403U:
-            return new BloominatorSpore();
+            return new FireBreathFlame();
             break;
         case 0x404U:
             return new MonkeyDudeCoconut();
@@ -354,21 +354,24 @@ Object* GetNewObjectFromID(int ID) {
             return new BlastoidShot();
             break;
         case 0x413U:
-            return new TurboSpikerSpike();
+            return new DepthCharge();
             break;
         case 0x414U:
-            return new SegmentedColumnStub();
+            return new TurboSpikerSpike();
             break;
         case 0x415U:
-            return new StarPointerOrbs();
+            return new SegmentedColumnStub();
             break;
         case 0x416U:
-            return new SwingingPlatformTrigger();
+            return new StarPointerOrbs();
             break;
         case 0x417U:
-            return new ReliefEye();
+            return new SwingingPlatformTrigger();
             break;
         case 0x418U:
+            return new ReliefEye();
+            break;
+        case 0x419U:
             return new Platform();
             break;
 
@@ -587,14 +590,14 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x3F487ED4U:
             return new CaterkillerJr();
             break;
-        case 0xBE856454U:
-            return new AIZMinibossCutscene();
+        case 0x842C5D59U:
+            return new FireBreathCutscene();
             break;
-        case 0x8030D25CU:
-            return new AIZMiniboss();
+        case 0xCDF582CAU:
+            return new FireBreath();
             break;
-        case 0xCC92A8FAU:
-            return new AIZBoss();
+        case 0x7893A0E1U:
+            return new FlameMobile();
             break;
         case 0x2160C123U:
             return new Jawz();
@@ -614,11 +617,11 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0xF365CCC4U:
             return new Pointdexter();
             break;
-        case 0x31F4D537U:
-            return new HCZMiniboss();
+        case 0x92C9F0D4U:
+            return new BigShaker();
             break;
-        case 0x6DE7611DU:
-            return new HCZBoss();
+        case 0x1EF84BB7U:
+            return new ScrewMobile();
             break;
         case 0xA8CF1ABBU:
             return new BubblesBadnik();
@@ -632,14 +635,14 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0xCCA7D752U:
             return new MGZDriller();
             break;
-        case 0x8886B305U:
-            return new MGZMiniBoss();
+        case 0x403E6CD3U:
+            return new TunnelBot();
             break;
         case 0x88549378U:
             return new DrillerEggman();
             break;
-        case 0xDD1ABC3AU:
-            return new MGZBoss();
+        case 0xEFAD5D3CU:
+            return new DrillMobile();
             break;
         case 0x9D8C15CAU:
             return new Batbright();
@@ -677,14 +680,14 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x8E8C37A1U:
             return new AirshipBomb();
             break;
-        case 0x89077B11U:
-            return new AIZMinibossBomb();
-            break;
-        case 0x3195387EU:
-            return new AIZMinibossFlame();
-            break;
         case 0xBF8DF98AU:
             return new BloominatorSpore();
+            break;
+        case 0xA1BB73AAU:
+            return new FireBreathBomb();
+            break;
+        case 0xCE81DA7EU:
+            return new FireBreathFlame();
             break;
         case 0x5C688649U:
             return new MonkeyDudeCoconut();
@@ -730,6 +733,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x3692A9F5U:
             return new BlastoidShot();
+            break;
+        case 0xB708D750U:
+            return new DepthCharge();
             break;
         case 0x77A23BDEU:
             return new TurboSpikerSpike();

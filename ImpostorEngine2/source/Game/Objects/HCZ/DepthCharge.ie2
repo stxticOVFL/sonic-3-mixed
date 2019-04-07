@@ -1,0 +1,13 @@
+
+event DepthCharge() : CONSTRUCTER {
+    //BinIndex = LevelScene.LoadSpriteBin("HCZ/BigShaker.bin");
+}
+
+event Create() {
+
+	W = 16;
+    H = 16;
+
+	CurrentAnimation = Sprite.FindAnimation("Depth Charge");
+
+}

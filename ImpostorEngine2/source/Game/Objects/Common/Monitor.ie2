@@ -239,6 +239,10 @@ event Update() {
                 App.Audio.RemoveMusic(Sound.SoundBank[0xFD]);
                 break;
             case ItemTypes.TYPE_INVINCIBILITY:
+				if (Scene.Players[PlayerAggressor.Invincibility == InvincibilityType.Full)
+				{
+					App.Achievements.SetAchievement(1, true); 			//Power Hour Achievement
+				}
                 if (!Scene.Players[PlayerAggressor].SuperForm && !Scene.Players[PlayerAggressor].HyperForm) {
                     Scene.Players[PlayerAggressor].Invincibility = InvincibilityType.Full;
                     if (Scene.Players[PlayerAggressor].InvincibilityTimer == 0) {
