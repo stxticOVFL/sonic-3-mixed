@@ -1,3 +1,6 @@
+var GoTimer:int;
+var StoredX:int;
+var StoredY:int;
 
 event WarpStars() : CONSTRUCTER {
     if (SaveGame.CurrentMode == 0) {
@@ -22,7 +25,14 @@ event Create() {
 }
 
 event Update() {
-
+	if (Active)
+	{
+		if (Timer > 0) Timer--;
+		else Timer = 0;
+	}
+	else {
+		Timer = 64;
+	}
 }
 
 event Render(CamX:int, CamY:int) {
@@ -42,11 +52,12 @@ event Render(CamX:int, CamY:int) {
 event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (PlayerID != 0) return 0;
 	if (!Active) return 0;
+	if (Timer != 0) return 0;
 
     Scene.Player.ObjectControlled = 0xFF;
     Scene.Player.Hidden = true;
     Scene.StopTimer = true;
-    //GoTimer = 48;
+    GoTimer = 48;
     //StoredX = Scene.Player.EZX;
     //StoredY = Scene.Player.EZY;
     App.Audio.FadeMusic(1.0);

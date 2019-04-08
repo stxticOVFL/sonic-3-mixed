@@ -15,6 +15,9 @@ class WarpStars;
 class WarpStars: public Object {
 public:    
     
+    int GoTimer;
+    int StoredX;
+    int StoredY;
     
     CONSTRUCTER WarpStars();
     void Create();
