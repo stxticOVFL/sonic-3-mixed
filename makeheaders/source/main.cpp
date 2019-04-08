@@ -1248,8 +1248,19 @@ int main(int argc, char **argv) {
     if (stat(fullasspath, &st) == -1)
         createDir(fullasspath);
 
+    LoadObjectHashTable();
+
+    InitAll();
+    if (ListObjectDir(finalpath, finalpath, 0))
+        MakeObjectListing(finalpath);
+    GarbageCollect();
+
+    stop = clock();
+    PrintHeader(stdout, "makeheaders: ", PrintColor::Green);
+    printf("Generated %d header(s) in %.3f milliseconds.\n\n", class_count_alpha, (stop - start) * 1000.f / CLOCKS_PER_SEC);
+
 	//increment build value
-	short b = 0;	
+	short b = 0;
 	//printf("%s\n%s\n", devPath, fullasspath);
 	FILE* dc = fopen(devPath, "rb+");
 	if (dc) {
@@ -1268,17 +1279,6 @@ int main(int argc, char **argv) {
 		printf("DevConfig.bin not found! Skipping...\n");
 	}
 	fclose(dc);
-
-    LoadObjectHashTable();
-
-    InitAll();
-    if (ListObjectDir(finalpath, finalpath, 0))
-        MakeObjectListing(finalpath);
-    GarbageCollect();
-
-    stop = clock();
-    PrintHeader(stdout, "makeheaders: ", PrintColor::Green);
-    printf("Generated %d header(s) in %.3f milliseconds.\n\n", class_count_alpha, (stop - start) * 1000.f / CLOCKS_PER_SEC);
 
     return 0;
 }
