@@ -55,6 +55,7 @@ public:
 	char VersionString[9];
 
 	char Title[256];
+	char LevelNames[0xFF][0xFF];
 
 	int isSharp = 1;
 };
@@ -141,6 +142,16 @@ PUBLIC IApp::IApp() {
 	Build = DevRead.ReadInt16();
 	sprintf(VersionString, "%.1d.%.2d.%.3d", Major, Minor, Build);
 	sprintf(Title, DevRead.ReadRSDKString().c_str());
+
+	byte StageCount = DevRead.ReadByte();
+
+	for (int i = 0; i < StageCount; i++)
+	{
+		sprintf(LevelNames[i], DevRead.ReadRSDKString().c_str());
+	}
+
+	//RMG YOU HAVE TO CLOSE IT! - You're welcome, with love - Ducky
+	IResources::Close(DevConfig);
 
     // HACK:
     if (IApp::Platform == Platforms::Android) {
@@ -555,10 +566,10 @@ PUBLIC void IApp::Run() {
 				break;
 			case 1: //Select Scene
 				MaxButtons = 4; //TO-DO: ALL OF THIS
-				G->DrawText(WIDTH / 2 - strlen("Title Screen") * 4, 96, "Title Screen", DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
-				G->DrawText(WIDTH / 2 - strlen("Main Menu") * 4, 106, "Main Menu", DevMenuSelected == 1 ? 0xF0F0F0 : 0x848294);
-				G->DrawText(WIDTH / 2 - strlen("Angel Island 1") * 4, 116, "Angel Island 1", DevMenuSelected == 2 ? 0xF0F0F0 : 0x848294);
-				G->DrawText(WIDTH / 2 - strlen("Angel Island 2") * 4, 126, "Angel Island 2", DevMenuSelected == 3 ? 0xF0F0F0 : 0x848294);
+				G->DrawText(WIDTH / 2 - strlen(LevelNames[0]) * 4, 96, LevelNames[0], DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
+				G->DrawText(WIDTH / 2 - strlen(LevelNames[1]) * 4, 106, LevelNames[1], DevMenuSelected == 1 ? 0xF0F0F0 : 0x848294);
+				G->DrawText(WIDTH / 2 - strlen(LevelNames[2]) * 4, 116, LevelNames[2], DevMenuSelected == 2 ? 0xF0F0F0 : 0x848294);
+				G->DrawText(WIDTH / 2 - strlen(LevelNames[3]) * 4, 126, LevelNames[3], DevMenuSelected == 3 ? 0xF0F0F0 : 0x848294);
 				break;
 			case 2: //Options General
 				MaxButtons = 5;

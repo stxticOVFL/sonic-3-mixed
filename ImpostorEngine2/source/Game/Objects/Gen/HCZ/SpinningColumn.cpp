@@ -73,8 +73,14 @@ void SpinningColumn::Update() {
         }
 
     }
-    
-	AutoAnimate = true;
+    if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 2) Frame += Sprite->Animations[CurrentAnimation].AnimationSpeed;
+    else if (Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += 0x100 / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
+
+    if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount << 8) {
+        Frame = Sprite->Animations[CurrentAnimation].FrameToLoop << 8;
+    }
+
+    return;
     Object::Update();
 }
 

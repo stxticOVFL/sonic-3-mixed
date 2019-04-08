@@ -77,6 +77,10 @@ PUBLIC void MovingSprite::Update() {
 		else
 		{
 			ext = App->NullSprite->Animations[0].Frames[0].OffY;
+			Left = 0;
+			Top = 0;
+			Width = 1;
+			Height = 1;
 		}
     }
 

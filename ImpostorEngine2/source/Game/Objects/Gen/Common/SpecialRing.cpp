@@ -14,6 +14,7 @@ void SpecialRing::Create() {
     VisW = 64;
     VisH = 64;
     Scale = 1;
+    CurrentAnimation = Sprite->FindAnimation("Ring Flash");
     HyperColor = 0xFFFF00;
     HyperRing = true;
     percent = 0;

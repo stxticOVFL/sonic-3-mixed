@@ -10,7 +10,7 @@ void PlaneSwitcher::Create() {
     Active = true;
     AttributeValue* AttributeHolder;
     AttributeHolder = GetAttribute("Angle");
-    Angle = AttributeHolder->ValInt32;
+    Angle = AttributeHolder->ValUint32;
     AttributeHolder = GetAttribute("Flags");
     Flags = AttributeHolder->ValUint32;
     AttributeHolder = GetAttribute("OnPath");
@@ -33,7 +33,7 @@ void PlaneSwitcher::Render(int CamX, int CamY) {
     }
 
 int PlaneSwitcher::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
-    /*if (OnPath) {
+    if (OnPath) {
         if (Scene->Players[PlayerID]->Ground) {
             int dot;
             dot = 0;
@@ -63,7 +63,7 @@ int PlaneSwitcher::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
             Scene->Players[PlayerID]->Layer = (Flags >> 1) & 1;
             Scene->Players[PlayerID]->VisualLayer = (Flags >> 0) & 1;
         }
-    }*/
+    }
     return 1;
 }
 
