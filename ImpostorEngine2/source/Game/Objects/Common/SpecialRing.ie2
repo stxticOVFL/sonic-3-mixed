@@ -23,6 +23,8 @@ event Create() {
 
 	Scale = 1;
 
+	CurrentAnimation = Sprite.FindAnimation("Ring Flash");
+
     HyperColor = 0xFFFF00;
     HyperRing = true;
     percent = 0;

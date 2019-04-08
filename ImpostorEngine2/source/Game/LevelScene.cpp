@@ -2187,11 +2187,12 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                                     HashString.erase(16);
                                 }
 								obj->ObjectAttributes.emplace(HashString, Attributes[a]);
+								obj->ObjectAttributeCount++;
 							}
 						}
 					}
 
-					if (obj && (ObjHash != OBJ_RING /*&& ObjHash != OBJ_PLANESWITCHER*/)) {
+					if (obj && (ObjHash != OBJ_RING && ObjHash != OBJ_PLANESWITCHER)) {
 						obj->G = G;
 						obj->App = App;
 						obj->Scene = this;
@@ -2245,7 +2246,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->ValUint32;
 						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->ValUint32;
 						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath")->ValBool;
-						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValUint32*2;
+						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValUint32;
 						if (PlaneSwitchers[PlaneSwitchCount].Size <= 0) PlaneSwitchers[PlaneSwitchCount].Size = 1;
 						PlaneSwitchCount++;
 					}

@@ -20,6 +20,7 @@ public:
     bool Blinking;
     bool ShowStars;
     int StarTimer;
+    int StarGoTimer;
     Object* Stars[4];
     
     CONSTRUCTER StarPost();

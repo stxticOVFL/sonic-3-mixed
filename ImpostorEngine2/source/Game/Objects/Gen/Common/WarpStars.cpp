@@ -28,6 +28,13 @@ void WarpStars::Create() {
 }
 
 void WarpStars::Update() {
+    if (Active) {
+        if (Timer > 0) Timer--;
+        else Timer = 0;
+    }
+    else {
+        Timer = 64;
+    }
     Object::Update();
 }
 
@@ -49,9 +56,12 @@ int WarpStars::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     if (!Active) return 0;
 
+    if (Timer != 0) return 0;
+
     Scene->Player->ObjectControlled = 0xFF;
     Scene->Player->Hidden = true;
     Scene->StopTimer = true;
+    GoTimer = 48;
     App->Audio->FadeMusic(1.0);
     Scene->SaveState();
     Scene->NextBonusStage = Math::randRange(0, 2);

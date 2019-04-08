@@ -63,6 +63,7 @@ public:
     short Build = 1;
     char VersionString[9];
     char Title[256];
+    char LevelNames[0xFF][0xFF];
     int isSharp = 1;
 
     IApp();

@@ -70,6 +70,10 @@ void StarPost::Update() {
                 Stars[1]->Active = true;
                 Stars[2]->Active = true;
                 Stars[3]->Active = true;
+                Stars[0]->Timer = 64;
+                Stars[1]->Timer = 64;
+                Stars[2]->Timer = 64;
+                Stars[3]->Timer = 64;
             }
 
             if (StarTimer > 0) {
@@ -129,7 +133,10 @@ int StarPost::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->SavedPositionX = X;
         Scene->SavedPositionY = Y + H / 2 - 16;
         if (Scene->Players[PlayerID]->Rings >= 25) {
-            if (StarTimer > 0) ShowStars = true;
+            if (StarTimer > 0) {
+                ShowStars = true;
+                StarGoTimer = 48;
+            }
 
         }
 
