@@ -53,70 +53,66 @@ event Update() {
 	{
 		if (Scale < 1) Scale+= 0.01;
 		
-	if (this.HyperRing) {
-        Timer = Scene.Frame << 5 & 0x7FF;
-        if (Timer < 0x200) {
-            percent = (Timer - 0x000) & 0x1FF;
-            if (percent >= 0x100)
-                percent = (percent & 0xFF) ^ 0xFF;
-            HyperColor = G.ColorBlendHex(0xF2D141, 0x6181F2, percent);
+        if (this.HyperRing) {
+            Timer = Scene.Frame << 5 & 0x7FF;
+            if (Timer < 0x200) {
+                percent = (Timer - 0x000) & 0x1FF;
+                if (percent >= 0x100)
+                    percent = (percent & 0xFF) ^ 0xFF;
+                HyperColor = G.ColorBlendHex(0xF2D141, 0x6181F2, percent);
+            }
+            else if (Timer < 0x400) {
+                percent = (Timer - 0x200) & 0x1FF;
+                if (percent >= 0x100)
+                    percent = (percent & 0xFF) ^ 0xFF;
+                HyperColor = G.ColorBlendHex(0xF2D141, 0x41C241, percent);
+            }
+            else if (Timer < 0x600) {
+                percent = (Timer - 0x400) & 0x1FF;
+                if (percent >= 0x100)
+                    percent = (percent & 0xFF) ^ 0xFF;
+                HyperColor = G.ColorBlendHex(0xF2D141, 0xF28141, percent);
+            }
+            else if (Timer < 0x800) {
+                percent = (Timer - 0x600) & 0x1FF;
+                if (percent >= 0x100)
+                    percent = (percent & 0xFF) ^ 0xFF;
+                HyperColor = G.ColorBlendHex(0xF2D141, 0x8141F2, percent);
+            }
         }
-        else if (Timer < 0x400) {
-            percent = (Timer - 0x200) & 0x1FF;
-            if (percent >= 0x100)
-                percent = (percent & 0xFF) ^ 0xFF;
-            HyperColor = G.ColorBlendHex(0xF2D141, 0x41C241, percent);
+
+        if (GoTimer > 0) {
+            Scene.Player.EZX = StoredX;
+            Scene.Player.EZY = StoredY;
+
+            GoTimer--;
         }
-        else if (Timer < 0x600) {
-            percent = (Timer - 0x400) & 0x1FF;
-            if (percent >= 0x100)
-                percent = (percent & 0xFF) ^ 0xFF;
-            HyperColor = G.ColorBlendHex(0xF2D141, 0xF28141, percent);
+
+        if (GoTimer == 0) {
+            Scene.FadeAction = 7;
+            Scene.FadeTimerMax = 48 + 48;
+            Scene.FadeMax = 0x200;
+            G.FadeToWhite = true;
+            Sound.Play(Sound.SFX_SS_WARP);
+            GoTimer = -1;
+            Active = false;
         }
-        else if (Timer < 0x800) {
-            percent = (Timer - 0x600) & 0x1FF;
-            if (percent >= 0x100)
-                percent = (percent & 0xFF) ^ 0xFF;
-            HyperColor = G.ColorBlendHex(0xF2D141, 0x8141F2, percent);
+
+        if (GoTimer > 0) {
         }
-    }
-
-    if (GoTimer > 0) {
-        Scene.Player.EZX = StoredX;
-        Scene.Player.EZY = StoredY;
-
-        GoTimer--;
-    }
-
-    if (GoTimer == 0) {
-        Scene.FadeAction = 7;
-        Scene.FadeTimerMax = 48 + 48;
-        Scene.FadeMax = 0x200;
-        G.FadeToWhite = true;
-        Sound.Play(Sound.SFX_SS_WARP);
-        GoTimer = -1;
-        Active = false;
-    }
-
-    if (GoTimer > 0) {
 	}
-	}
-	else
-	{
-		Scale = 0.5;
-	}
+	else Scale = 0.5;
 
-        Sprite = Scene.Objects3Sprite;
+    Sprite = Scene.Objects3Sprite;
 
-        var LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
-        var FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;
+    var LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
+    var FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;
 
-        if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
-            Frame += ((0x100 * Sprite.Animations[CurrentAnimation].AnimationSpeed * 0x100) >> 8) / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
+    if (Sprite.Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0)
+        Frame += ((0x100 * Sprite.Animations[CurrentAnimation].AnimationSpeed * 0x100) >> 8) / Sprite.Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
 
-        if (Frame >= FrameCount * 0x100) {
-            Frame = FrameCount * 0x100 - 0x100;
-        }
+    if (Frame >= FrameCount * 0x100) {
+        Frame = FrameCount * 0x100 - 0x100;
     }
 }
 

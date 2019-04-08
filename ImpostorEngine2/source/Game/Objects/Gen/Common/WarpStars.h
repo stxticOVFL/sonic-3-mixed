@@ -15,7 +15,6 @@ class WarpStars;
 class WarpStars: public Object {
 public:    
     
-    bool Activated;
     
     CONSTRUCTER WarpStars();
     void Create();

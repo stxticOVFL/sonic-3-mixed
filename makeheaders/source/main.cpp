@@ -1051,7 +1051,7 @@ void ConvertIScriptToC(char* fullname, const char* parent, int startindex, char*
         goto DONE;
 
     PrintHeader(stdout, "Converting ImpostorScript: ", PrintColor::Green);
-    printf("%s\n", filename);
+    printf("%s\n", fullname + startindex + 1);
 
     char genfolder[1024];
     memset(genfolder, 0, 1024);

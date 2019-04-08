@@ -95,9 +95,9 @@ event BreakAIZ(HitSide:int) {
     var h:int = 6;
     var x:int = X - w * 8;
     var y:int = Y + H / 2 - h * 16;
-	var:int left;
-	var:int top;
-	var:int top2;
+	var left:int;
+	var top:int;
+	var top2:int;
 	if (CurrentAnimation < Sprite.Animations.size())
 	{
 		left = Sprite.Animations[CurrentAnimation].Frames[Frame].X;

@@ -205,18 +205,18 @@ void Monitor::Update() {
             App->Audio->RemoveMusic(Sound::SoundBank[0xFD]);
             break;
             case ItemTypes::TYPE_INVINCIBILITY:
-				if (Scene->Players[PlayerAggressor]->Invincibility == InvincibilityType::Full)
-				{
-					App->Achievements->SetAchievement(1, true);
-				}
-				if (!Scene->Players[PlayerAggressor]->SuperForm && !Scene->Players[PlayerAggressor]->HyperForm) {
-					Scene->Players[PlayerAggressor]->Invincibility = InvincibilityType::Full;
-					if (Scene->Players[PlayerAggressor]->InvincibilityTimer == 0) {
-						App->Audio->PushMusic(Sound::SoundBank[0xFF], true, 14702);
-					}
+            if (Scene->Players[PlayerAggressor]->Invincibility == InvincibilityType::Full) {
+                App->Achievements->SetAchievement(1, true);
+            }
 
-					Scene->Players[PlayerAggressor]->InvincibilityTimer += 1200;
-				}
+            if (!Scene->Players[PlayerAggressor]->SuperForm && !Scene->Players[PlayerAggressor]->HyperForm) {
+                Scene->Players[PlayerAggressor]->Invincibility = InvincibilityType::Full;
+                if (Scene->Players[PlayerAggressor]->InvincibilityTimer == 0) {
+                    App->Audio->PushMusic(Sound::SoundBank[0xFF], true, 14702);
+                }
+
+                Scene->Players[PlayerAggressor]->InvincibilityTimer += 1200;
+            }
 
             break;
             case ItemTypes::TYPE_SUPER:

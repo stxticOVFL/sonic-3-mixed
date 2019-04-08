@@ -98,13 +98,14 @@ void CorkFloor::BreakAIZ(int HitSide) {
     int h = 6;
     int x = X - w * 8;
     int y = Y + H / 2 - h * 16;
-	int left, top, top2;
-	if (CurrentAnimation < Sprite->Animations.size())
-	{
-		left = Sprite->Animations[CurrentAnimation].Frames[Frame].X;
-		top = Sprite->Animations[CurrentAnimation].Frames[Frame].Y;
-		top2 = Sprite->Animations[CurrentAnimation].Frames[Frame].Y;
-	}
+    int left;
+    int top;
+    int top2;
+    if (CurrentAnimation < Sprite->Animations.size()) {
+        left = Sprite->Animations[CurrentAnimation].Frames[Frame].X;
+        top = Sprite->Animations[CurrentAnimation].Frames[Frame].Y;
+        top2 = Sprite->Animations[CurrentAnimation].Frames[Frame].Y;
+    }
 
     int toph = 16;
     for (int i = 0; i < w; i++)

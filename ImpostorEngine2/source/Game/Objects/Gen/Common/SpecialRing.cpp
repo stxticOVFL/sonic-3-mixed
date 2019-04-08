@@ -13,7 +13,7 @@ void SpecialRing::Create() {
     H = 64;
     VisW = 64;
     VisH = 64;
-	Scale = 0;
+    Scale = 1;
     HyperColor = 0xFFFF00;
     HyperRing = true;
     percent = 0;
@@ -28,79 +28,77 @@ void SpecialRing::Create() {
     StoredY = 0;
     RingID = SubType & 0x7F;
     Used = (SaveGame::CurrentUsedZoneRings >> RingID & 1) == 1;
-	if (isHeldDebugObject) {
-		Used = false;
-	}
+    if (isHeldDebugObject) {
+        Used = false;
+    }
+
     CleanupInactiveObject = true;
 }
 
 void SpecialRing::Update() {
-	if (OnScreen)
-	{
-		if (Scale < 1) Scale += 0.01;
+    if (OnScreen) {
+        if (Scale < 1) Scale += 0.01;
 
-		if (this->HyperRing) {
-			Timer = Scene->Frame << 5 & 0x7FF;
-			if (Timer < 0x200) {
-				percent = (Timer - 0x000) & 0x1FF;
-				if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
+        if (this->HyperRing) {
+            Timer = Scene->Frame << 5 & 0x7FF;
+            if (Timer < 0x200) {
+                percent = (Timer - 0x000) & 0x1FF;
+                if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
 
-				HyperColor = G->ColorBlendHex(0xF2D141, 0x6181F2, percent);
-			}
-			else if (Timer < 0x400) {
-				percent = (Timer - 0x200) & 0x1FF;
-				if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
+                HyperColor = G->ColorBlendHex(0xF2D141, 0x6181F2, percent);
+            }
+            else if (Timer < 0x400) {
+                percent = (Timer - 0x200) & 0x1FF;
+                if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
 
-				HyperColor = G->ColorBlendHex(0xF2D141, 0x41C241, percent);
-			}
-			else if (Timer < 0x600) {
-				percent = (Timer - 0x400) & 0x1FF;
-				if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
+                HyperColor = G->ColorBlendHex(0xF2D141, 0x41C241, percent);
+            }
+            else if (Timer < 0x600) {
+                percent = (Timer - 0x400) & 0x1FF;
+                if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
 
-				HyperColor = G->ColorBlendHex(0xF2D141, 0xF28141, percent);
-			}
-			else if (Timer < 0x800) {
-				percent = (Timer - 0x600) & 0x1FF;
-				if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
+                HyperColor = G->ColorBlendHex(0xF2D141, 0xF28141, percent);
+            }
+            else if (Timer < 0x800) {
+                percent = (Timer - 0x600) & 0x1FF;
+                if (percent >= 0x100) percent = (percent & 0xFF) ^ 0xFF;
 
-				HyperColor = G->ColorBlendHex(0xF2D141, 0x8141F2, percent);
-			}
+                HyperColor = G->ColorBlendHex(0xF2D141, 0x8141F2, percent);
+            }
 
-		}
+        }
 
-		if (GoTimer > 0) {
-			Scene->Player->EZX = StoredX;
-			Scene->Player->EZY = StoredY;
-			GoTimer--;
-		}
+        if (GoTimer > 0) {
+            Scene->Player->EZX = StoredX;
+            Scene->Player->EZY = StoredY;
+            GoTimer--;
+        }
 
-		if (GoTimer == 0) {
-			Scene->FadeAction = 7;
-			Scene->FadeTimerMax = 48 + 48;
-			Scene->FadeMax = 0x200;
-			G->FadeToWhite = true;
-			Sound::Play(Sound::SFX_SS_WARP);
-			GoTimer = -1;
-			Active = false;
-		}
+        if (GoTimer == 0) {
+            Scene->FadeAction = 7;
+            Scene->FadeTimerMax = 48 + 48;
+            Scene->FadeMax = 0x200;
+            G->FadeToWhite = true;
+            Sound::Play(Sound::SFX_SS_WARP);
+            GoTimer = -1;
+            Active = false;
+        }
 
-		if (GoTimer > 0) {
-			Sprite = Scene->Objects3Sprite;
-			int LoopPoint = Sprite->Animations[CurrentAnimation].FrameToLoop;
-			int FrameCount = Sprite->Animations[CurrentAnimation].FrameCount;
-			if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += ((0x100 * Sprite->Animations[CurrentAnimation].AnimationSpeed * 0x100) >> 8) / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
+        if (GoTimer > 0) {
+        }
 
-			if (Frame >= FrameCount * 0x100) {
-				Frame = FrameCount * 0x100 - 0x100;
-			}
+    }
+    else Scale = 0.5;
+    Sprite = Scene->Objects3Sprite;
+    int LoopPoint = Sprite->Animations[CurrentAnimation].FrameToLoop;
+    int FrameCount = Sprite->Animations[CurrentAnimation].FrameCount;
+    if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += ((0x100 * Sprite->Animations[CurrentAnimation].AnimationSpeed * 0x100) >> 8) / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;
 
-		}
-	}
-	else
-	{
-		Scale = 0.05;
-	}
-	Object::Update();
+    if (Frame >= FrameCount * 0x100) {
+        Frame = FrameCount * 0x100 - 0x100;
+    }
+
+    Object::Update();
 }
 
 void SpecialRing::Render(int CamX, int CamY) {
@@ -130,14 +128,13 @@ int SpecialRing::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     if (Used) return 0;
 
-    if ((SaveGame::GetEmeralds() >= 0x3FFF && HyperRing) || ((SaveGame::GetEmeralds() & 0x7F) == 0x7F && !HyperRing)) {
+    if ((SaveGame::GetEmeralds() == 0x3FFF && HyperRing) || ((SaveGame::GetEmeralds() & 0x7F) == 0x7F && !HyperRing)) {
         Scene->Player->GiveRing(50);
         Active = false;
     }
     else if (HyperRing) {
-		if (SaveGame::SuperEmeraldRoomActivated) {
-
-		}
+        if (SaveGame::SuperEmeraldRoomActivated) {
+        }
         else if ((SaveGame::GetEmeralds() & 0x7F) != 0x7F) {
             Scene->Player->ObjectControlled = 0xFF;
             Scene->Player->Hidden = true;
@@ -149,9 +146,10 @@ int SpecialRing::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
             Scene->SaveState();
             SaveGame::SetUsedZoneRings(RingID);
             SaveGame::Flush();
-			App->Print(0, "Hyper");
             Frame = 0;
             CurrentAnimation = 0;
+        }
+        else {
         }
     }
     else {
