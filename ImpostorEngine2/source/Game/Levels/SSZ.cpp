@@ -19,7 +19,6 @@ PUBLIC Level_SSZ::Level_SSZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     Act = act;
 
 	sprintf(ZoneLetters, "SSZ");
-	PlayMusic(act, 0, SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -84,8 +83,15 @@ PUBLIC void Level_SSZ::LoadZoneSpecificSprites() {
     }
 }
 
+PUBLIC void Level_SSZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_SSZ::RestartStage(bool doActTransition, bool drawBackground) {
-    LevelScene::RestartStage(doActTransition, drawBackground);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode);
+	LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
 

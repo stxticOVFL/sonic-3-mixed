@@ -18,7 +18,6 @@ PUBLIC Level_HPZ::Level_HPZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 7;
     Act = act;
 	sprintf(ZoneLetters, "HPZ");
-	PlayMusic(act, 0, SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -78,8 +77,15 @@ PUBLIC void Level_HPZ::LoadZoneSpecificSprites() {
     }
 }
 
+PUBLIC void Level_HPZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_HPZ::RestartStage(bool doActTransition, bool drawBackground) {
-    LevelScene::RestartStage(doActTransition, drawBackground);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode);
+	LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
 

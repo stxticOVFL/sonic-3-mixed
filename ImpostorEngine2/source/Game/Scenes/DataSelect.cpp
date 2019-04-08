@@ -95,7 +95,8 @@ PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 	SaveGame::Init();
 
 	//Please don't hate me for this bruddas - Ducky wucky
-	if (Mode >= 1)
+	//i hate you for this - rmg
+	/*if (Mode >= 1)
 	{
 		if (!Sound::SoundBank[0xFF] || strcmp(Sound::SoundBank[0xFF]->Name, "Mixed/Music/Invincible.ogg")) Sound::SoundBank[0xFF] = new ISound("Mixed/Music/Invincible.ogg", true);
 		if (!Sound::SoundBank[0xFE] || strcmp(Sound::SoundBank[0xFE]->Name, "Mixed/Music/Sneakers.ogg")) Sound::SoundBank[0xFE] = new ISound("Mixed/Music/Sneakers.ogg", true);
@@ -118,7 +119,17 @@ PUBLIC Scene_DataSelect::Scene_DataSelect(IApp* app, IGraphics* g, int m) {
 		if (!Sound::SoundBank[0xF2] || strcmp(Sound::SoundBank[0xF2]->Name, "Classic/Music/Knuckles.ogg")) Sound::SoundBank[0xF2] = new ISound("Classic/Music/Knuckles.ogg", true);
 		if (!Sound::SoundBank[0xF1] || strcmp(Sound::SoundBank[0xF1]->Name, "Classic/Music/Miniboss.ogg")) Sound::SoundBank[0xF1] = new ISound("Classic/Music/Miniboss.ogg", true);
 		if (!Sound::SoundBank[0xF0] || strcmp(Sound::SoundBank[0xF0]->Name, "Classic/Music/Boss.ogg")) Sound::SoundBank[0xF0] = new ISound("Classic/Music/Boss.ogg", true);
-	}
+	}//*/
+
+	Sound::LoadStream(0xFF, IApp::Format("%s/Music/Invincible.ogg", Mode >= 1 ? "Mixed" : "Classic"), true, 0, false);
+	Sound::LoadStream(0xFE, IApp::Format("%s/Music/Sneakers.ogg", Mode >= 1 ? "Mixed" : "Classic"), true, 0, false);
+	Sound::LoadStream(0xFD, IApp::Format("%s/Music/Drowning.ogg", Mode >= 1 ? "Mixed" : "Classic"), false, 0, false);
+	Sound::LoadStream(0xFC, IApp::Format("%s/Music/ActComplete.ogg", Mode >= 1 ? "Mixed" : "Classic"), false, 0, false);
+	Sound::LoadStream(0xFB, IApp::Format("%s/Music/1up.ogg", Mode >= 1 ? "Mixed" : "Classic"), false, 0, false);
+
+	Sound::LoadStream(0xF2, IApp::Format("%s/Music/Knuckles.ogg", Mode >= 1 ? "Mixed" : "Classic"), true, 0, false);
+	Sound::LoadStream(0xF1, IApp::Format("%s/Music/Miniboss.ogg", Mode >= 1 ? "Mixed" : "Classic"), true, 0, false);
+	Sound::LoadStream(0xF0, IApp::Format("%s/Music/Boss.ogg", Mode >= 1 ? "Mixed" : "Classic"), true, 0, false);
 }
 
 PUBLIC void Scene_DataSelect::Init() {

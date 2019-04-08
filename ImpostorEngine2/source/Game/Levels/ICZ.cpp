@@ -143,7 +143,6 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 5;
     VisualAct = Act = act;
 	sprintf(ZoneLetters, "ICZ");
-	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 206454 : 0) : 0, SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -199,10 +198,14 @@ PUBLIC Level_ICZ::Level_ICZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	AddNewDebugObjectID(Obj_IceCube);
 }
 
+PUBLIC void Level_ICZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_ICZ::RestartStage(bool doActTransition, bool drawBackground) {
-    App->Audio->ClearMusic();
-    if (Sound::SoundBank[0])
-        App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 206454 : 0) : 0, SaveGame::CurrentMode);
 
     LevelScene::RestartStage(doActTransition, drawBackground);
 }

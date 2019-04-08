@@ -18,7 +18,6 @@ PUBLIC Level_DEZ::Level_DEZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 7;
     Act = act;
 	sprintf(ZoneLetters, "DEZ");
-	PlayMusic(act, SaveGame::CurrentMode == 0 ? (act == 1 ? 0 : 0) : (act == 1 ? 76070 : 0), SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -96,8 +95,15 @@ PUBLIC void Level_DEZ::LoadZoneSpecificSprites() {
     }
 }
 
+PUBLIC void Level_DEZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_DEZ::RestartStage(bool doActTransition, bool drawBackground) {
-    LevelScene::RestartStage(doActTransition, drawBackground);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0 : 0) : (Act == 1 ? 76070 : 0), SaveGame::CurrentMode);
+	LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
 

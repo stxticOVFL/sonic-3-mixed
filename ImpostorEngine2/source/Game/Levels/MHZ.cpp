@@ -18,7 +18,6 @@ PUBLIC Level_MHZ::Level_MHZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 7;
     Act = act;
 	sprintf(ZoneLetters, "MHZ");
-	PlayMusic(act, 0, SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -96,8 +95,15 @@ PUBLIC void Level_MHZ::LoadZoneSpecificSprites() {
     }
 }
 
+PUBLIC void Level_MHZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_MHZ::RestartStage(bool doActTransition, bool drawBackground) {
-    LevelScene::RestartStage(doActTransition, drawBackground);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode);
+	LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
 

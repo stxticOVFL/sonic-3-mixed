@@ -71,6 +71,7 @@ public:
     void ExecuteCommand(char* cmd);
     void Run();
     void Cleanup();
+    static const char* Format(const char* string, ...);
     static void Print(int sev, const char* string, ...);
 };
 

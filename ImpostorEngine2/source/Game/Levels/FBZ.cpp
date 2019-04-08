@@ -55,8 +55,15 @@ PUBLIC Level_FBZ::Level_FBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     sprintf(LevelNameDiscord, "Flying Battery");
 }
 
+PUBLIC void Level_FBZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_FBZ::RestartStage(bool doActTransition, bool drawBackground) {
-    LevelScene::RestartStage(doActTransition, drawBackground);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode);
+	LevelScene::RestartStage(doActTransition, drawBackground);
 }
 
 PUBLIC void Level_FBZ::AssignSpriteMapIDs() {

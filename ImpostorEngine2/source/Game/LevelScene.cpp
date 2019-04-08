@@ -477,7 +477,7 @@ int StateRings = 0;
 int StateShield = 0;
 
 PUBLIC void LevelScene::SaveState() {
-	//if (StateSaved) return;
+	if (StateSaved) return;
 
 	StateSaved = true;
 	StateTimer = Timer;
@@ -489,7 +489,7 @@ PUBLIC void LevelScene::SaveState() {
 }
 
 PUBLIC void LevelScene::LoadState() {
-	//if (!StateSaved) return;
+	if (!StateSaved) return;
 
 	StateSaved = false;
 	ResetTimer = false;

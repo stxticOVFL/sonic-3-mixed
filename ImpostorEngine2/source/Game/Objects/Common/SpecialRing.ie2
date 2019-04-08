@@ -19,6 +19,7 @@ event Create() {
     H = 64;
     VisW = 64;
     VisH = 64;
+    CurrentAnimation = 0;
 
 	Scale = 1;
 

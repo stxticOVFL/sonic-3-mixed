@@ -13,6 +13,7 @@ void SpecialRing::Create() {
     H = 64;
     VisW = 64;
     VisH = 64;
+    CurrentAnimation = 0;
     Scale = 1;
     HyperColor = 0xFFFF00;
     HyperRing = true;

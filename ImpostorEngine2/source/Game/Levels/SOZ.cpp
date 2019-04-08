@@ -18,7 +18,6 @@ PUBLIC Level_SOZ::Level_SOZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 9;
     VisualAct = Act = act;
 	sprintf(ZoneLetters, "SOZ");
-	PlayMusic(act, 0, SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -68,10 +67,14 @@ PUBLIC Level_SOZ::Level_SOZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     }
 }
 
+PUBLIC void Level_SOZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_SOZ::RestartStage(bool doActTransition, bool drawBackground) {
-    App->Audio->ClearMusic();
-    if (Sound::SoundBank[0])
-        App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode);
 
     LevelScene::RestartStage(doActTransition, drawBackground);
 }

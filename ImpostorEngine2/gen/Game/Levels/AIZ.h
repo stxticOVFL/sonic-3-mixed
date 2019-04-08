@@ -26,6 +26,7 @@ public:
     Level_AIZ* Act2Preload = NULL; //
 
     Level_AIZ(IApp* app, IGraphics* g, int ACT);
+    void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
     void AssignSpriteMapIDs();
     void LoadZoneSpecificSprites();

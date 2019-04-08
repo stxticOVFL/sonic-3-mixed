@@ -19,7 +19,6 @@ PUBLIC Level_TDZ::Level_TDZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     Act = act;
 
 	sprintf(ZoneLetters, "TDZ");
-	PlayMusic(act, 0, SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -79,8 +78,15 @@ PUBLIC void Level_TDZ::LoadZoneSpecificSprites() {
     }
 }
 
+PUBLIC void Level_TDZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_TDZ::RestartStage(bool doActTransition, bool drawBackground) {
-    LevelScene::RestartStage(doActTransition, drawBackground);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode);
+	LevelScene::RestartStage(doActTransition, drawBackground);
 
     if (Act == 1) {
 

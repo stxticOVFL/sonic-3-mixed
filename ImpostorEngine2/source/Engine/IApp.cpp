@@ -910,6 +910,14 @@ PUBLIC void IApp::Cleanup() {
     SDL_Quit();
 }
 
+PUBLIC STATIC const char* IApp::Format(const char* string, ...) {
+	va_list args;
+	va_start(args, string);
+	char str[4000];
+	vsprintf(str, string, args);
+	return str;
+}
+
 PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
 #if !ANDROID
     if (sev < 0)

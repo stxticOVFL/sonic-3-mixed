@@ -4418,6 +4418,12 @@ void IPlayer::Render(int CamX, int CamY) {
 		default:
 			break;
 		case 3: //Just fucking use Flag 2 lmao I ain't programming this shit
+			//rmg's note: extremely smooth rotation because itll look off as fuck and itll piss me off
+			FinalAngle = IMath::abs(FinalAngle);
+			FinalAngle &= 255;
+			FinalAngle >>= 5;
+			if (LowerZero) FinalAngle = -FinalAngle;
+			break;
 		case 2:
 			FinalAngle = IMath::abs(FinalAngle);
 			FinalAngle += 16;
@@ -4425,8 +4431,6 @@ void IPlayer::Render(int CamX, int CamY) {
 			FinalAngle >>= 5;
 			FinalAngle *= 45;
 			if (LowerZero) FinalAngle = -FinalAngle;
-			break;
-		 
 			break;
 		case 4: //basically YFlip
 			if (IMath::abs(FinalAngle) < 180) FinalAngle = 0;
@@ -4437,8 +4441,13 @@ void IPlayer::Render(int CamX, int CamY) {
 		case 6: //What what
 			FinalAngle = DisplayFlip > 0 ? 135 : 225;
 			break;
-		case 7: //What
-			FinalAngle = 135;
+		case 7: //we're using this as 10 deg rotation fuck 135 rotation bitchass shit
+			FinalAngle = IMath::abs(FinalAngle);
+			FinalAngle += 16;
+			FinalAngle &= 255;
+			FinalAngle >>= 5;
+			FinalAngle *= 10;
+			if (LowerZero) FinalAngle = -FinalAngle;
 			break;
 		}
 

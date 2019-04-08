@@ -423,10 +423,14 @@ PUBLIC Level_CNZ::Level_CNZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	AddNewDebugObjectID(Obj_Bumper);
 }
 
+PUBLIC void Level_CNZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_CNZ::RestartStage(bool doActTransition, bool drawBackground) {
-    App->Audio->ClearMusic();
-    if (Sound::SoundBank[0])
-        App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode, 0x1A0);
 
     LevelScene::RestartStage(doActTransition, drawBackground);
 }

@@ -17,6 +17,7 @@ public:
 
     Level_HPZ(IApp* app, IGraphics* g, int act);
     void LoadZoneSpecificSprites();
+    void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
     void EarlyUpdate();
     void Subupdate();

@@ -14,6 +14,7 @@
 class Level_SOZ : public LevelScene {
 public:
     Level_SOZ(IApp* app, IGraphics* g, int act);
+    void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
     void LoadZoneSpecificSprites();
     void EarlyUpdate();

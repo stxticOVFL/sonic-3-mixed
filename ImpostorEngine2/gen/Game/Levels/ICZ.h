@@ -17,6 +17,7 @@ public:
     ISprite* ICZObjectsSprite = NULL;
 
     Level_ICZ(IApp* app, IGraphics* g, int act);
+    void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
     void AssignSpriteMapIDs();
     void LoadZoneSpecificSprites();

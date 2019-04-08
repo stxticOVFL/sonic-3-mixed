@@ -228,7 +228,6 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 	SaveGame::CurrentMode = 1;
 
     uint64_t startTime = SDL_GetTicks();
-	PlayMusic(ACT < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (ACT < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, ACT < 2 ? 0x90 : 0xE0);
 
 	if (Act == 0) {
 		Str_StageBin = "Mixed/Stages/AIZM/Act1/StageConfig.bin";
@@ -286,9 +285,14 @@ PUBLIC Level_TSZ::Level_TSZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
 }
 
+PUBLIC void Level_TSZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_TSZ::RestartStage(bool doActTransition, bool drawBackground) {
-    App->Audio->ClearMusic();
-    App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	App->Audio->ClearMusic();
+	PlayMusic(Act < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (Act < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, Act < 2 ? 0x90 : 0xE0);
 
     BackgroundRepeatTileWidth = 32;
 

@@ -146,8 +146,6 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 }
 
 PUBLIC void Level_HCZ::Init() {
-	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0 : 407013) : (Act == 1 ? 942525 : 0), SaveGame::CurrentMode, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0xA0 : 0xE0) : 0xFF);
-
     LevelScene::Init();
 
     bool Thremixed = false;
@@ -222,7 +220,7 @@ PUBLIC void Level_HCZ::Init() {
 
 PUBLIC void Level_HCZ::RestartStage(bool doActTransition, bool drawBackground) {
     App->Audio->ClearMusic();
-    App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	PlayMusic(Act, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0 : 407013) : (Act == 1 ? 942525 : 0), SaveGame::CurrentMode, SaveGame::CurrentMode == 0 ? (Act == 1 ? 0xA0 : 0xE0) : 0xFF);
 
     LevelScene::RestartStage(doActTransition, drawBackground);
 

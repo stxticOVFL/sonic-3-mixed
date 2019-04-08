@@ -115,20 +115,21 @@ PUBLIC void Scene_TitleScreen::Update() {
 	}
 
 	character = character % 5;
-
-	if (App->Input->GetControllerInput(0)[IInput::I_ANY_PRESSED]) {
-		bool acc = true;
-		if (acc) {
-			Sound::Play(Sound::SFX_MENUACCEPT);
-			FadeIn = false;
-			FadeTimerMax = 30;
-			App->Audio->FadeMusic(0.5);
-			GoBack = true;
+	
+	if (FadeTimer == -1)
+		if (App->Input->GetControllerInput(0)[IInput::I_ANY_PRESSED]) {
+			bool acc = true;
+			if (acc) {
+				Sound::Play(Sound::SFX_MENUACCEPT);
+				FadeIn = false;
+				FadeTimerMax = 30;
+				App->Audio->FadeMusic(0.5);
+				GoBack = true;
+			}
+			else {
+				Sound::Play(Sound::SFX_MENUFAIL);
+			}
 		}
-		else {
-			Sound::Play(Sound::SFX_MENUFAIL);
-		}
-	}
 
 	bool Go = IMath::randRange(1, 10) == 5;
 

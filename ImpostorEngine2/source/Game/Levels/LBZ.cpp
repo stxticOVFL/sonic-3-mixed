@@ -18,7 +18,6 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
     ZoneID = 6;
     VisualAct = Act = act;
 	sprintf(ZoneLetters, "LBZ");
-	PlayMusic(act, 0, SaveGame::CurrentMode);
 
 	if (SaveGame::CurrentMode >= 1)
 	{
@@ -72,10 +71,14 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 	AddNewDebugObjectID(Obj_Orbinaut);
 }
 
+PUBLIC void Level_LBZ::Init() {
+	LevelScene::Init();
+}
+
+
 PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
-    App->Audio->ClearMusic();
-    if (Sound::SoundBank[0])
-        App->Audio->PushMusic(Sound::SoundBank[0], true, Sound::Audio->LoopPoint[0]);
+	App->Audio->ClearMusic();
+	PlayMusic(Act, 0, SaveGame::CurrentMode);
 
     LevelScene::RestartStage(doActTransition, drawBackground);
 }
