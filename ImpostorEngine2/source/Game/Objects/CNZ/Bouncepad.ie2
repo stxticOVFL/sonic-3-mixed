@@ -49,13 +49,9 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
 }
 
 event Render(CamX:int, CamY:int) {
-    /*
-		G.DrawSprite(Sprite, 0, Frame, X - CamX, Y - CamY, Rotation, FlipX | FlipY << 1);
-    
-    */
-					if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
-		}
+	}
 }

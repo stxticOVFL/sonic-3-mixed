@@ -32,7 +32,8 @@ int Bouncepad::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 }
 
 void Bouncepad::Render(int CamX, int CamY) {
-    if (App->viewObjectCollision) {
+    G->DrawSprite(Sprite, 0, Frame, X - CamX, Y - CamY, Rotation, FlipX | FlipY << 1);
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

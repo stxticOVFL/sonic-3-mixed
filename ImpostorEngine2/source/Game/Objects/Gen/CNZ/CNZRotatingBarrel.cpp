@@ -1,4 +1,4 @@
-// Object ID: 0x15
+// Object ID: 0x47
 // Object Name: CNZRotatingBarrel.cpp
 
 #include "CNZRotatingBarrel.h"

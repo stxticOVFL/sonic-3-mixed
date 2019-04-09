@@ -1,4 +1,4 @@
-object 0x15;
+object 0x47;
 
 event CNZRotatingBarrel() : CONSTRUCTER {
     BinIndex = LevelScene.LoadSpriteBin("CNZ/Cylinder.bin");
@@ -15,6 +15,7 @@ event Create() {
 }
 
 event Update() {
+    
 
 }
 
@@ -33,5 +34,4 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Player == 0) {
         return false;
     }
-
 }
