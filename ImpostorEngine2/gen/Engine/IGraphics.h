@@ -43,7 +43,8 @@ public:
     int    DivTable[0x100];
     int    WaterPaletteStartLine = 0xFFFF;
     int    Clip[4];
-    int8_t* Deform = NULL;
+    int8_t* DeformX = NULL;
+    int8_t* DeformY = NULL;
     bool    DoDeform = false;
     int    DrawAlpha = 0xFF;
     int    DrawModeOverlay = false;

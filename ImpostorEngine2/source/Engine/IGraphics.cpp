@@ -42,7 +42,8 @@ public:
 
 	int    Clip[4];
 
-	int8_t* Deform = NULL;
+	int8_t* DeformX = NULL;
+	int8_t* DeformY = NULL;
 	bool    DoDeform = false;
 
 	int    DrawAlpha = 0xFF;
@@ -76,7 +77,8 @@ PUBLIC IGraphics::IGraphics(IApp* app) {
 	SetFilterFunction[2] = &IGraphics::FilterNone;
 	SetFilterFunction[3] = &IGraphics::FilterNone;
 
-	Deform = (int8_t*)calloc(App->HEIGHT, 1);
+	DeformX = (int8_t*)calloc(App->HEIGHT, 1);
+	DeformY = (int8_t*)calloc(App->WIDTH, 1);
 
 	Clip[0] = 0;
 	Clip[1] = 0;
@@ -370,7 +372,10 @@ PUBLIC VIRTUAL void IGraphics::SetPixelTrue(SDL_Surface* surface, int x, int y, 
 }
 
 PUBLIC VIRTUAL void IGraphics::SetPixel(SDL_Surface* surface, int x, int y, uint32_t pixel) {
-	if (DoDeform) x += Deform[y];
+	if (DoDeform) {
+		x += DeformX[y];
+		y += DeformY[x];
+	};
 
 	if (x <  Clip[0] ||
 		y <  Clip[1] ||

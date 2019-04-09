@@ -495,7 +495,7 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 				Data->Layers[i].Visible = false;
 			}
 
-			Data->Layers[i].Deform = (int8_t*)Memory::TrackedCalloc("LevelScene::Data->Layers[i].Deform", 1, App->HEIGHT);
+			Data->Layers[i].DeformX = (int8_t*)Memory::TrackedCalloc("LevelScene::Data->Layers[i].DeformX", 1, App->HEIGHT);
 
 			int Width = (int)reader.ReadUInt16();
 			int Height = (int)reader.ReadUInt16();
@@ -2243,7 +2243,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 		// Draw Tiles
 		if (layer.Visible) {
 			G->DoDeform = true;
-			memcpy(G->Deform, layer.Deform, App->HEIGHT);
+			memcpy(G->DeformX, layer.DeformX, App->HEIGHT);
 			if (layer.InfoCount > 1) {
 				int buf = 0;
 				for (s = 0; s < layer.ScrollIndexCount; s++) {
