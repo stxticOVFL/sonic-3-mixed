@@ -141,6 +141,6 @@ PUBLIC void Scene_ExtrasMenu::Render() {
 PUBLIC void Scene_ExtrasMenu::Cleanup() {
 #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 
-	App->Audio->ClearMusic();
-	CLEANUP(Sound::SoundBank[0]);
+	//App->Audio->ClearMusic();
+	//CLEANUP(Sound::SoundBank[0]);
 }

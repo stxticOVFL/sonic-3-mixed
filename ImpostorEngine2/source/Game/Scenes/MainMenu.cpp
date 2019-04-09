@@ -159,19 +159,18 @@ PUBLIC void Scene_MainMenu::Init() {
 }
 
 PUBLIC void Scene_MainMenu::Update() {
+	G->SetFade(0);
 	if (FadeTimer == -1 && FadeTimerMax > 1)
 		FadeTimer = FadeTimerMax;
 	if (FadeTimer > 0) {
 		FadeTimer--;
 
 		if (!FadeIn) {
-			//G->DrawSprite(MenuSprite, 21, 0, )
-		}
 			//G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));
-		else {
-
 		}
+		else {
 			//G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
+		}
 		
 	}
 
@@ -570,7 +569,6 @@ PUBLIC void Scene_MainMenu::Render() {
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (117 - 2), cenY + (-39), 0, IE_NOFLIP);
 
-
 	/*
 	if (selected == 0) {
 		G->DrawTextSprite(TextSprite, 6, 'A', 4, 32, "PICK\nBETWEEN\nDIFFERENT\nGAMEPLAY\nMODES AND\nEXPERIENCE\nSONIC i AND\nKNUCKLES\nIN ANY WAY\nYOU CHOOSEr");
@@ -617,8 +615,13 @@ PUBLIC void Scene_MainMenu::Render() {
 		G->DrawTextSprite(TextSprite, 6, 'A', drawX + 16, App->HEIGHT - 12, "ACCEPT");
 		drawX += 16 + G->MeasureTextSprite(TextSprite, 6, 'A', "ACCEPT") + 24;
 	}
-}
 
+	//Fade
+	if (FadeTimer != -1) {
+		G->DrawSprite(MenuSprite, 21, 0, ((FadeIn ? 20 : 0) - FadeTimer) * (App->WIDTH / 20), cenY, 0, FadeIn ? IE_FLIPX : IE_NOFLIP);
+		G->DrawRectangle(FadeIn ? ((20 - FadeTimer) * (App->WIDTH / 20)) - 10 : 0, 0, FadeIn ? (FadeTimer * (App->WIDTH / 20)) - 10 : App->WIDTH - ((20 - FadeTimer) * (App->WIDTH / 20)), App->HEIGHT, 0);
+	}
+}
 PUBLIC void Scene_MainMenu::Cleanup() {
 #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 

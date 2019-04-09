@@ -140,6 +140,6 @@ PUBLIC void Scene_VSMenu::Render() {
 PUBLIC void Scene_VSMenu::Cleanup() {
 #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
 
-	App->Audio->ClearMusic();
-	CLEANUP(Sound::SoundBank[0]);
+	//App->Audio->ClearMusic();
+	//CLEANUP(Sound::SoundBank[0]);
 }
