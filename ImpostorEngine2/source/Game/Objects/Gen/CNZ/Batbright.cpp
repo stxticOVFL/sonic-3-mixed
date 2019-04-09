@@ -80,7 +80,7 @@ int Batbright::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
 void Batbright::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

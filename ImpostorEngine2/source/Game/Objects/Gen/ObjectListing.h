@@ -43,6 +43,7 @@
 #include "CNZ/Balloon.h"			// 65BE2A3A
 #include "CNZ/CNZLightBulb.h"			// A17F0176
 #include "CNZ/HoverFan.h"			// 7C977754
+#include "CNZ/CNZRotatingBarrel.h"			// 3F2CD13F
 #include "CNZ/VacuumTube.h"			// 177568D6
 #include "CNZ/Bumper.h"			// 9DD277AF
 #include "CNZ/Bouncepad.h"			// 3B4DCB47
@@ -170,6 +171,7 @@ enum {
     Obj_Balloon = 0x041,
     Obj_CNZLightBulb = 0x045,
     Obj_HoverFan = 0x046,
+    Obj_CNZRotatingBarrel = 0x047,
     Obj_VacuumTube = 0x048,
     Obj_Bumper = 0x04A,
     Obj_Bouncepad = 0x04B,
