@@ -15,6 +15,7 @@
 #include "Common/BreakableWall.h"			// 60436E3A
 #include "Common/Ridge.h"			// EC54C850
 #include "Common/CollapsingBridge.h"			// 18C4AE0D
+#include "CNZ/CNZRotatingBarrel.h"			// 3F2CD13F
 #include "Common/AutomaticTunnel.h"			// C286FB4D
 #include "Common/RollEnforcer.h"			// 624D9DA4
 #include "Common/InvisibleBlock.h"			// B4878D6A
@@ -142,6 +143,7 @@ enum {
     Obj_BreakableWall = 0x00D,
     Obj_Ridge = 0x00E,
     Obj_CollapsingBridge = 0x00F,
+    Obj_CNZRotatingBarrel = 0x015,
     Obj_AutomaticTunnel = 0x024,
     Obj_RollEnforcer = 0x026,
     Obj_InvisibleBlock = 0x028,
