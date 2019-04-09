@@ -5,13 +5,17 @@ event CNZRotatingBarrel() : CONSTRUCTER {
 }
 
 event Create() {
-    this.Active = true;
-    this.Priority = false;
+    Active = true;
+    Priority = false;
+    Solid = true;
+    
+    Timer = 1;
+    Frame = 0;
 
-    this.W = 32;
-    this.H = 32;
+    W = 32;
+    H = 32;
 
-    this.CurrentAnimation = Sprite.FindAnimation("Cylinder");
+    CurrentAnimation = Sprite.FindAnimation("Cylinder");
 }
 
 event Update() {
@@ -20,7 +24,14 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 4, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+    Timer -= 1;
+    if (Timer < 0) {
+        Timer = 1;
+        Frame += 1;
+        Frame = Frame & 3;
+    }
+    
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 
     if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
@@ -34,4 +45,6 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (Player == 0) {
         return false;
     }
+    
+    return true;
 }

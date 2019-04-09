@@ -44,9 +44,6 @@ Object* GetNewObjectFromID(int ID) {
         case 0x0FU:
             return new CollapsingBridge();
             break;
-        case 0x15U:
-            return new CNZRotatingBarrel();
-            break;
         case 0x24U:
             return new AutomaticTunnel();
             break;
@@ -430,9 +427,6 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x18C4AE0DU:
             return new CollapsingBridge();
-            break;
-        case 0x3F2CD13FU:
-            return new CNZRotatingBarrel();
             break;
         case 0xC286FB4DU:
             return new AutomaticTunnel();
