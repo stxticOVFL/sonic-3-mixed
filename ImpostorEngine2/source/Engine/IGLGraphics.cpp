@@ -84,7 +84,8 @@ vector<VertexData>          RawVertArray;
 PUBLIC IGLGraphics::IGLGraphics(IApp* app) {
     App = app;
 
-    Deform = (int8_t*)calloc(App->HEIGHT, 1);
+    DeformX = (int8_t*)calloc(App->HEIGHT, 1);
+	DeformY = (int8_t*)calloc(App->WIDTH, 1);
 
     Clip[0] = -1;
 

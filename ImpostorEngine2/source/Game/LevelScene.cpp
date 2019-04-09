@@ -1893,13 +1893,14 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				Data->Layers[i].Visible = false;
             }
 
-            Data->Layers[i].Deform = (int8_t*)Memory::TrackedCalloc("LevelScene::Data->Layers[i].Deform", 1, App->HEIGHT);
+            Data->Layers[i].DeformX = (int8_t*)Memory::TrackedCalloc("LevelScene::Data->Layers[i].DeformX", 1, App->HEIGHT);
+			Data->Layers[i].DeformY = (int8_t*)Memory::TrackedCalloc("LevelScene::Data->Layers[i].DeformY", 1, App->WIDTH);
 
 			int Width = (int)reader.ReadUInt16();
 			int Height = (int)reader.ReadUInt16();
 
 			Data->Layers[i].RelativeY = reader.ReadUInt16();
-			Data->Layers[i].ConstantY = (short)reader.ReadUInt16();
+			Data->Layers[i].ConstantY = reader.ReadUInt16();
 
 			Data->Layers[i].InfoCount = (int)reader.ReadUInt16();
 
@@ -1911,7 +1912,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 			for (int g = 0; g < Data->Layers[i].InfoCount; g++) {
 				Data->Layers[i].Info[g].RelativeX = reader.ReadUInt16(); // actually is Scrolling Multiplier X
-				Data->Layers[i].Info[g].ConstantX = (short)reader.ReadUInt16(); // actually is Constant movement X
+				Data->Layers[i].Info[g].ConstantX = reader.ReadUInt16(); // actually is Constant movement X
 
 				Data->Layers[i].Info[g].Behaviour = reader.ReadByte();
 				Data->Layers[i].Info[g].DrawLayer = reader.ReadByte();
@@ -5716,7 +5717,8 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		// Draw Tiles
 		if (layer.Visible) {
 			G->DoDeform = true;
-			memcpy(G->Deform, layer.Deform, App->HEIGHT);
+			memcpy(G->DeformX, layer.DeformX, App->HEIGHT);
+			memcpy(G->DeformY, layer.DeformY, App->WIDTH);
 			if (layer.InfoCount > 1) {
 				int buf = 0;
 				for (s = 0; s < layer.ScrollIndexCount; s++) {
@@ -6474,7 +6476,8 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	Memory::Free(Data->animatedTileFrames);
 
 	for (int i = 0; i < Data->layerCount; i++) {
-        Memory::Free(Data->Layers[i].Deform);
+        Memory::Free(Data->Layers[i].DeformX);
+		Memory::Free(Data->Layers[i].DeformY);
 		delete[] Data->Layers[i].Info;
 		delete[] Data->Layers[i].Tiles;
         delete[] Data->Layers[i].TilesBackup;

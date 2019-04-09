@@ -585,7 +585,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                     water = 0;
                 }
                 else {
-                    memset(Data->Layers[1].Deform, 0, water);
+                    memset(Data->Layers[1].DeformX, 0, water);
                 }
 
                 int8_t AIZ1_WaterDeformDelta[64] = {
@@ -595,14 +595,14 @@ PUBLIC void Level_AIZ::Subupdate() {
                 	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
                 };
                 for (int i = water; i < App->HEIGHT; i++) {
-                    Data->Layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                    Data->Layers[1].DeformX[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
             }
             else {
-                memset(Data->Layers[1].Deform, 0, App->HEIGHT);
+                memset(Data->Layers[1].DeformX, 0, App->HEIGHT);
             }
-            memcpy(Data->Layers[2].Deform, Data->Layers[1].Deform, App->HEIGHT);
-            memcpy(Data->Layers[3].Deform, Data->Layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[2].DeformX, Data->Layers[1].DeformX, App->HEIGHT);
+            memcpy(Data->Layers[3].DeformX, Data->Layers[1].DeformX, App->HEIGHT);
         }
 
         if (TreeRevealRow < 32) {
@@ -709,7 +709,7 @@ PUBLIC void Level_AIZ::Subupdate() {
             if (water > App->HEIGHT - 1) {
                 water = App->HEIGHT - 1;
             }
-            // Deform = (int8_t*)calloc(App->HEIGHT, 1);
+            // DeformX = (int8_t*)calloc(App->HEIGHT, 1);
 
             int8_t AIZ2_BGDeformDelta[64] = {
                 -2,     1,    2,    2,-1,    2,    2,    1,    2,-1,-2,-2,-2,    1,-1,-1,
@@ -719,15 +719,15 @@ PUBLIC void Level_AIZ::Subupdate() {
             };
             if (wantUnderwaterFireEffect) {
                 for (int i = 0; i < App->HEIGHT; i++) {
-                   Data->Layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                   Data->Layers[0].DeformX[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
                 }
             } else {
                 for (int i = 0; i < App->HEIGHT; i++) {
-                   Data->Layers[0].Deform[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
+                   Data->Layers[0].DeformX[i] = AIZ2_BGDeformDelta[(i + (Frame >> 2) + CameraY) & 0x3F];
                 }  
             }
 
-            memset(Data->Layers[1].Deform, 0, water);
+            memset(Data->Layers[1].DeformX, 0, water);
 
             int8_t AIZ2_FGDeformDelta[64] = {
                 0,    0,    1,    1,    0,    0,    0,    0,    1,    0,    0,    0,    0,    1,    0,    0,
@@ -736,7 +736,7 @@ PUBLIC void Level_AIZ::Subupdate() {
         	    0,    0,    0,    0,    0,    0,    0,    0,    0,    1,    0,    0,    1,    1,    0,    0
             };
             for (int i = 0; i < water; i++) {
-               Data->Layers[1].Deform[i] = AIZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+               Data->Layers[1].DeformX[i] = AIZ2_FGDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
 
             int8_t AIZ1_WaterDeformDelta[64] = {
@@ -746,17 +746,17 @@ PUBLIC void Level_AIZ::Subupdate() {
             	0,    0,    0,    0,    0,    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,    1
             };
             for (int i = water; i < App->HEIGHT; i++) {
-                Data->Layers[1].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                Data->Layers[1].DeformX[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
             }
             
             // Also apply the effect to the BG.
             if (!wantUnderwaterFireEffect) {
                 for (int i = water; i < App->HEIGHT; i++) {
-                    Data->Layers[0].Deform[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
+                    Data->Layers[0].DeformX[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
             }
 
-            memcpy(Data->Layers[2].Deform, Data->Layers[1].Deform, App->HEIGHT);
+            memcpy(Data->Layers[2].DeformX, Data->Layers[1].DeformX, App->HEIGHT);
         }
 
         Data->Layers[3].Flags = 0 | 2 | 4;

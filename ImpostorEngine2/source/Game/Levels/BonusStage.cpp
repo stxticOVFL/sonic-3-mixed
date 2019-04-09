@@ -281,7 +281,7 @@ PUBLIC void Level_BonusStage::RenderEverything() {
 		// Draw Tiles
 		if (layer.Visible) {
 			G->DoDeform = true;
-			memcpy(G->Deform, layer.Deform, App->HEIGHT);
+			memcpy(G->DeformX, layer.DeformX, App->HEIGHT);
 			if (layer.InfoCount > 1) {
 				int buf = 0;
 				for (s = 0; s < layer.ScrollIndexCount; s++) {

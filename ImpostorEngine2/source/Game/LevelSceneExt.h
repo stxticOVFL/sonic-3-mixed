@@ -16,6 +16,7 @@ struct TileCfg {
 struct ScrollingInfo {
     int RelativeX;
     int ConstantX;
+
     char Behaviour;
     char DrawLayer;
 };
@@ -49,7 +50,8 @@ struct Layer {
     bool UseDeltaCameraX = false;
     bool UseDeltaCameraY = false;
 
-    int8_t* Deform = NULL;
+    int8_t* DeformX = NULL;
+	int8_t* DeformY = NULL;
 
 	bool NoBuffer = false;
 
