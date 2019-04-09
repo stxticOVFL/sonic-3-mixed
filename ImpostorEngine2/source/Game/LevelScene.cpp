@@ -1355,7 +1355,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			ObjectName[ThremixedIDS::CNZ_TrapDoor] = "Obj_CNZ_TrapDoor";
 			ObjectName[ThremixedIDS::CNZ_LightBulb] = "Obj_CNZ_LightBulb";
 			ObjectName[ThremixedIDS::CNZ_HoverFan] = "Obj_CNZ_HoverFan";
-			ObjectName[ThremixedIDS::CNZ_RotatingBarrels] = "Obj_CNZ_RotatingBarrels";
+			ObjectName[ThremixedIDS::CNZ_RotatingBarrel] = "Obj_CNZ_RotatingBarrel";
 			ObjectName[ThremixedIDS::CNZ_VacuumTubes] = "Obj_CNZ_VacuumTubes";
 			ObjectName[ThremixedIDS::CNZ_RotatingWheel] = "Obj_CNZ_RotatingWheel";
 			ObjectName[ThremixedIDS::CNZ_Bumper] = "Obj_CNZ_Bumper";

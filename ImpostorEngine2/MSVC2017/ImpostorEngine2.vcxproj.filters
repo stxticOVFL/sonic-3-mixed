@@ -991,5 +991,11 @@
     <None Include="..\source\Game\Objects\HCZ\ScrewMobile.ie2">
       <Filter>Source Files\Game\Objects\HCZ</Filter>
     </None>
+    <None Include="..\source\Game\Objects\CNZ\CNZLightBulb.ie2">
+      <Filter>Source Files\Game\Objects\CNZ</Filter>
+    </None>
+    <None Include="..\source\Game\Objects\CNZ\CNZRotatingBarrel.ie2">
+      <Filter>Source Files\Game\Objects\CNZ</Filter>
+    </None>
   </ItemGroup>
 </Project>

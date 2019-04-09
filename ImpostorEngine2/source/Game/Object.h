@@ -179,7 +179,7 @@ namespace ThremixedIDS {
 		CNZ_TrapDoor,
 		CNZ_LightBulb,
 		CNZ_HoverFan,
-		CNZ_RotatingBarrels,
+		CNZ_RotatingBarrel,
 		CNZ_VacuumTubes,
 		CNZ_RotatingWheel,
 		CNZ_Bumper,

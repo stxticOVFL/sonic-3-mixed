@@ -260,6 +260,8 @@
     <None Include="..\source\Game\Objects\CNZ\Batbright.ie2" />
     <None Include="..\source\Game\Objects\CNZ\BatbrightParts.ie2" />
     <None Include="..\source\Game\Objects\CNZ\Bouncepad.ie2" />
+    <None Include="..\source\Game\Objects\CNZ\CNZLightBulb.ie2" />
+    <None Include="..\source\Game\Objects\CNZ\CNZRotatingBarrel.ie2" />
     <None Include="..\source\Game\Objects\CNZ\HoverFan.ie2" />
     <None Include="..\source\Game\Objects\CNZ\VacuumTube.ie2" />
     <None Include="..\source\Game\Objects\CommonSpecial\CorkFloor.ie2" />
