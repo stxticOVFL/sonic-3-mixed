@@ -153,7 +153,7 @@ PUBLIC void Scene_MainMenu::Init() {
 
 	App->Input->UseTouchController = false;
 
-	FadeTimerMax = 30;
+	FadeTimerMax = 20;
 	FadeIn = true;
 	Discord_UpdatePresence("Main Menu", "", "icon", false);
 }
@@ -163,10 +163,16 @@ PUBLIC void Scene_MainMenu::Update() {
 		FadeTimer = FadeTimerMax;
 	if (FadeTimer > 0) {
 		FadeTimer--;
-		if (!FadeIn)
-			G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));
-		else
-			G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
+
+		if (!FadeIn) {
+			//G->DrawSprite(MenuSprite, 21, 0, )
+		}
+			//G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));
+		else {
+
+		}
+			//G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
+		
 	}
 
 	// Do Fade actions
