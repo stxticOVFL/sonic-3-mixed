@@ -15,6 +15,8 @@ class CNZRotatingBarrel;
 class CNZRotatingBarrel: public Object {
 public:    
     
+    int16_t YSubtypeVelocity;
+    int16_t PositionOffset;
     
     CONSTRUCTER CNZRotatingBarrel();
     void Create();

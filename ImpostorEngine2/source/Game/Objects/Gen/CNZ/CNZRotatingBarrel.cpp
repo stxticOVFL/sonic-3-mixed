@@ -7,6 +7,8 @@ typedef IMath Math;
 
 CONSTRUCTER CNZRotatingBarrel::CNZRotatingBarrel() {
     BinIndex = LevelScene::LoadSpriteBin("CNZ/Cylinder.bin");
+    YSubtypeVelocity = 0;
+    PositionOffset = 0;
 }
 
 void CNZRotatingBarrel::Create() {
@@ -14,10 +16,14 @@ void CNZRotatingBarrel::Create() {
     Active = true;
     Priority = false;
     Solid = true;
+    Scene->AddSelfToRegistry(this, "Solid");
+    YSubtypeVelocity = (SubType >> 3) & 0x0e;
     Timer = 1;
     Frame = 0;
-    W = 32;
-    H = 32;
+    W = 64;
+    H = 64;
+    VisW = 32;
+    VisH = 32;
     CurrentAnimation = Sprite->FindAnimation("Cylinder");
 }
 
@@ -44,10 +50,53 @@ void CNZRotatingBarrel::Render(int CamX, int CamY) {
 
 int CNZRotatingBarrel::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     IPlayer* Player = Scene->Players[PlayerID];
+    int16_t NewSpeed = YSpeed;
     if (Player == 0) {
         return false;
     }
 
+    MoveSprite();
+    PositionOffset = Player->Y - Y;
+    if (PositionOffset == 0) {
+        if (abs(NewSpeed) < 0x80) {
+            YSpeed = 0;
+        }
+
+    }
+    else if (PositionOffset < 0) {
+        if (YSubtypeVelocity <= NewSpeed) {
+            return true;
+        }
+
+        NewSpeed += 0x20;
+        if (NewSpeed >= 0) {
+            if (Player->InputDown) {
+                NewSpeed += 0x20;
+            }
+
+        }
+        else {
+            NewSpeed += 0x10;
+        }
+        YSpeed = NewSpeed;
+    }
+    else {
+        if (-YSubtypeVelocity >= NewSpeed) {
+            return true;
+        }
+
+        NewSpeed -= 0x20;
+        if (NewSpeed < 0) {
+            if (Player->InputUp) {
+                NewSpeed -= 0x20;
+            }
+
+        }
+        else {
+            NewSpeed -= 0x10;
+        }
+        YSpeed = NewSpeed;
+    }
     return true;
 }
 
