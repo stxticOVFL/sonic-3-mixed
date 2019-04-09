@@ -1,0 +1,37 @@
+object 0x15;
+
+event CNZRotatingBarrel() : CONSTRUCTER {
+    BinIndex = LevelScene.LoadSpriteBin("CNZ/Cylinder.bin");
+}
+
+event Create() {
+    this.Active = true;
+    this.Priority = false;
+
+    this.W = 32;
+    this.H = 32;
+
+    this.CurrentAnimation = Sprite.FindAnimation("Cylinder");
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+    G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 4, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+
+    if (DrawCollisions) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+    var Player:IPlayer = Scene.Players[PlayerID];
+    if (Player == 0) {
+        return false;
+    }
+
+}
