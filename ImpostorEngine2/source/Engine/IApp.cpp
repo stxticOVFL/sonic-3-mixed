@@ -276,6 +276,12 @@ PUBLIC void IApp::ExecuteCommand(char* cmd) {
 PUBLIC void IApp::Run() {
     if (!Running)
         return;
+        
+    if (WriteLogToFile) {
+        FILE* f = fopen("ImpostorEngine2.log", "w");
+        fclose(f);
+    }
+        
 
     unsigned long frameTimeMillis;
     unsigned long beginFrameBatch;
