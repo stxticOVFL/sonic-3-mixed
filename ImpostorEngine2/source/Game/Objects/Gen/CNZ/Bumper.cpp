@@ -14,6 +14,12 @@ void Bumper::Create() {
     ForceX = 0;
     ForceY = 0;
     ForcePower = 0;
+    if (LevelScene::IsZoneCurrently("CNZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("CNZ/Bumper.bin", SaveGame::CurrentMode);
+    }
+    else {
+        Sprite = LevelScene::LoadSpriteFromBin("Bonus/Bumper.bin", SaveGame::CurrentMode);
+    }
     this->CurrentAnimation = Sprite->FindAnimation("Bumper");
 }
 

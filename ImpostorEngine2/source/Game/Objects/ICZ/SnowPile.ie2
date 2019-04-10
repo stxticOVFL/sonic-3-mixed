@@ -1,9 +1,5 @@
 object 0xB9;
 
-event SnowPile() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("ICZ/Snowpile.bin");
-}
-
 event Create() {
     Active = true;
     Priority = false;
@@ -11,6 +7,7 @@ event Create() {
 	VisualLayer = -1;
     H = 16;
     W = 64;
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Snowpile.bin",SaveGame.CurrentMode);
     CurrentAnimation = Sprite.FindAnimation("SnowPile");
 
 }

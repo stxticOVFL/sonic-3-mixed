@@ -7,12 +7,9 @@ var VisualCircle:int;
 var Pivot:int;
 var Player:IPlayer;
 
-event SwingingPlatform() : CONSTRUCTER {
-    //BinIndex = LevelScene.LoadSpriteBin("ICZ/Swinging Platform.bin");
-}
-
 
 event Create() {
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Swinging Platform.bin",SaveGame.CurrentMode);
     CurrentAnimation = Sprite.FindAnimation("Swinging Platform");
     RingAnimation = Sprite.FindAnimation("Ring");
     W = 64;

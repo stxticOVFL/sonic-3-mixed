@@ -17,7 +17,6 @@ public:
     
     int SmokeTime;
     
-    CONSTRUCTER MotobugSmoke();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

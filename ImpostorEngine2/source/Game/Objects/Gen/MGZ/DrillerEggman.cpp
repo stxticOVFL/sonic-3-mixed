@@ -13,6 +13,8 @@ void DrillerEggman::Create() {
     this->H = 32;
     this->CurrentAnimation = 16;
     HitCount = 0xFFFF;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/DrillMobile.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("End Boss");
     this->Y += 1;
 }
 

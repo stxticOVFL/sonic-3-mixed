@@ -13,7 +13,8 @@ void HCZSnakeBlocks::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     W = 32;
     H = 32;
-    CurrentAnimation = 14;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Platform.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Main");
     Timer = SubType + Scene->Frame;
     Offset = (SubType & 0x7F);
     Reverse = false;

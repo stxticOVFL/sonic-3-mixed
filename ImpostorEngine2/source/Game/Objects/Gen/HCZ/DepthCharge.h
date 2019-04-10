@@ -16,7 +16,6 @@ class DepthCharge: public Object {
 public:    
     
     
-    CONSTRUCTER DepthCharge();
     void Create();
 };
 

@@ -16,7 +16,6 @@ class StarPointerOrbs: public Object {
 public:    
     
     
-    CONSTRUCTER StarPointerOrbs();
     void Create();
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);

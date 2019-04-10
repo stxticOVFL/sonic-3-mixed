@@ -18,6 +18,7 @@ void MGZTriggerPlatform::Create() {
         H = 0x40;
     }
 
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Trigger Platform.bin", SaveGame::CurrentMode);
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
 }

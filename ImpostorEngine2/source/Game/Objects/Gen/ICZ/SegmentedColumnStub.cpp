@@ -5,10 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER SegmentedColumnStub::SegmentedColumnStub() {
-    BinIndex = LevelScene::LoadSpriteBin("ICZ/Wall and Column.bin");
-}
-
 void SegmentedColumnStub::Create() {
     Object::Create();
     W = 64;
@@ -17,6 +13,7 @@ void SegmentedColumnStub::Create() {
     Priority = false;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Wall and Column.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Wall and Column");
     Frame = SubType == 0 ? 8 : 1;
 }

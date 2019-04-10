@@ -904,7 +904,7 @@ PUBLIC void Level_AIZ::Subupdate() {
 				else AIZShipTileSprite = new ISprite("Classic/Stages/AIZ2/16x16TilesB.gif", App);
                 TileSpriteBackup = TileSprite;
 
-                ISprite::Animation an;
+				ISprite::Animation an;
                 an.Name = "";
                 an.FrameCount = 0x400;
                 an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));

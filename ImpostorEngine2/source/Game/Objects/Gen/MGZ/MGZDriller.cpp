@@ -13,6 +13,7 @@ void MGZDriller::Create() {
     this->H = 32;
     this->CurrentAnimation = 13;
     HitCount = 0xFFFF;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/TunnelBot.bin", SaveGame::CurrentMode);
     this->Y += 1;
 }
 

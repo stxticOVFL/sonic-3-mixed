@@ -11,7 +11,8 @@ void TunnelBot::Create() {
     this->Priority = false;
     this->W = 64;
     this->H = 32;
-    this->CurrentAnimation = 13;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Tunnelbot.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("Main");
     HitCount = 6;
     int i = 0;
     MainPalette[i++] = 0x000000;

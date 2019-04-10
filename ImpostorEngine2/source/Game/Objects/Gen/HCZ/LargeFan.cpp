@@ -11,7 +11,8 @@ void LargeFan::Create() {
     Priority = false;
     W = 48;
     H = 64;
-    CurrentAnimation = 12;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/LargeFan.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Main");
     OutY = 0;
     PlayingSound = false;
 }

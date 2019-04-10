@@ -5,16 +5,13 @@
 
 typedef IMath Math;
 
-CONSTRUCTER StarPointer::StarPointer() {
-    BinIndex = LevelScene::LoadSpriteBin("ICZ/Star Pointer.bin");
-}
-
 void StarPointer::Create() {
     Enemy::Create();
     Active = true;
     Priority = false;
     W = 32;
     H = 32;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Star Pointer.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Star Pointer");
     for (int i = 0; i < 4; i++)
 {
@@ -40,7 +37,6 @@ void StarPointer::Update() {
         RotAngle = 0;
         RotAngle += OrbOffsets[i];
         RotAngle += TurnSpeed;
-        IApp::Print(0, "%d %d", RotAngle, sin(RotAngle));
         Orbs[i]->X = sin(RotAngle) * 20 + X;
         Orbs[i]->Y = cos(RotAngle) * 20 + Y;
         OrbOffsets[i] = RotAngle;
@@ -53,7 +49,7 @@ void StarPointer::Render(int CamX, int CamY) {
     if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
-        G->SetDrawAlpha(0x80);
+        G->SetDrawAlpha(0xFF);
     }
 
     G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);

@@ -347,7 +347,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	if (App->DEV) {
 		AddNewDebugObjectID(Obj_AutomaticTunnel); // Automatic Tunnel
 		AddNewDebugObjectID(Obj_RollEnforcer); // Roll Enforcer
-		AddNewDebugObjectID(Obj_InvisibleBlock); // Invisible Block
+		AddNewDebugObjectID(Obj_InvisibleBlockH); // Invisible Block
 		AddNewDebugObjectID(Obj_InvisibleSpikes); // Invisible Spikes
 		AddNewDebugObjectID(Obj_InvisibleDeath); // Invisible Death
 		AddNewDebugObjectID(Obj_ViewCollisionToggler); // View Collision Toggler
@@ -2297,6 +2297,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
 						obj->FlipY = obj->GetAttribute("FlipY")->ValBool;
 
+						obj->Create();
+
 						// Add our object to the scene
 						Objects.push_back(obj);
 						ObjectCount++;
@@ -4243,7 +4245,8 @@ PUBLIC void LevelScene::Update() {
 						break;
 					case Obj_InvisibleSpikes: // Invisible Spikes
 					case Obj_InvisibleDeath: // Invisible Death
-					case Obj_InvisibleBlock: // Invisible Block
+					case Obj_InvisibleBlockH: // Invisible Block
+					case Obj_InvisibleBlockV: // Invisible Block
 						obj = GetNewObjectFromID(objId);
 						Player->DebugObjectSubIndex = 17;
 						break;
@@ -4762,7 +4765,7 @@ PUBLIC void LevelScene::Update() {
 		if (ResultsTimer > 300) {
 			ControlsVisible = false;
 			if (!DoneSpinning) {
-				if (App->Input->GetControllerInput(0)[IInput::I_PAUSE]) {
+				if (App->Input->GetControllerInput(0)[IInput::I_ANY_PRESSED]) {
 					while (TimerTotal > 0) {
 						int amountToSubtract = 100;
 						if (TimerTotal < amountToSubtract)

@@ -14,6 +14,7 @@ void Relief::Create() {
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
     VisualLayer = 1;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Head Trigger.bin", SaveGame::CurrentMode);
     Object* Child;
     Child = Scene->AddNewObject(Obj_ReliefEye, SubType, X, Y, FlipX, false);
     Child->Sprite = Sprite;

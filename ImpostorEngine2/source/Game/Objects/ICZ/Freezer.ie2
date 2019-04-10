@@ -15,15 +15,12 @@ var StoredX:int[7];
 var StoredY:int[7];
 var StoredFrame:int[7]; //most likely will go unused when fill functionality happens
 
-event Freezer() : CONSTRUCTER {
-    //BinIndex = LevelScene.LoadSpriteBin("ICZ/Freezer.bin");
-}
-
 event Create() {
     W = 32;
     H = 24;
     Solid = false;
     FreezeTimer = 0;
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Freezer.bin",SaveGame.CurrentMode);
     CurrentAnimation = Sprite.FindAnimation("Freezer");
     DustAnimation = Sprite.FindAnimation("Particles");
     IceCubeAnimation = Sprite.FindAnimation("Player Ice Cube");

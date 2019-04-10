@@ -17,6 +17,7 @@ void MGZSwingingPlatform::Create() {
     H = 24;
     VisW = 48;
     VisH = 64;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Swinging Platform.bin", SaveGame::CurrentMode);
 }
 
 void MGZSwingingPlatform::Update() {

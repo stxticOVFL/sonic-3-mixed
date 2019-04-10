@@ -5,15 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER StarPointerOrbs::StarPointerOrbs() {
-    BinIndex = LevelScene::LoadSpriteBin("ICZ/Star Pointer.bin");
-}
-
 void StarPointerOrbs::Create() {
     Object::Create();
     Active = true;
     Priority = false;
     Frame = 1;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Star Pointer.bin", SaveGame::CurrentMode);
     W = 32;
     H = 32;
 }

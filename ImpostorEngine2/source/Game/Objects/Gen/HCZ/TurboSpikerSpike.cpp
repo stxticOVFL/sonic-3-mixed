@@ -16,6 +16,7 @@ void TurboSpikerSpike::Create() {
     XSpeed = 0x4F * (FlipX ? -1 : 1);
     Timer = 0;
     VisualLayer = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/TurboSpiker.bin", SaveGame::CurrentMode);
 }
 
 void TurboSpikerSpike::Update() {

@@ -11,7 +11,8 @@ void HandLauncher::Create() {
     Priority = false;
     W = 32;
     H = 32;
-    CurrentAnimation = 4;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/HandLauncher.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Base");
     Near = false;
     Spinning = false;
     Timer = -1;

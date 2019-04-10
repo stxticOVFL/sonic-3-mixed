@@ -16,7 +16,6 @@ class SegmentedColumnStub: public Object {
 public:    
     
     
-    CONSTRUCTER SegmentedColumnStub();
     void Create();
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
     void Break();

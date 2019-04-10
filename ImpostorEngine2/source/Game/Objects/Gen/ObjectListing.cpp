@@ -51,7 +51,7 @@ Object* GetNewObjectFromID(int ID) {
             return new RollEnforcer();
             break;
         case 0x28U:
-            return new InvisibleBlock();
+            return new InvisibleBlockH();
             break;
         case 0x29U:
             return new DisappearingFloor();
@@ -72,7 +72,7 @@ Object* GetNewObjectFromID(int ID) {
             return new SpikedLog();
             break;
         case 0x2FU:
-            return new NonAnim();
+            return new NonAnimSprite();
             break;
         case 0x30U:
             return new AnimSprite();
@@ -90,10 +90,10 @@ Object* GetNewObjectFromID(int ID) {
             return new ForegroundPlant();
             break;
         case 0x36U:
-            return new BreakBar();
+            return new BreakableBar();
             break;
         case 0x37U:
-            return new HCZVWaterStream();
+            return new VWaterStream();
             break;
         case 0x38U:
             return new Fan();
@@ -105,16 +105,16 @@ Object* GetNewObjectFromID(int ID) {
             return new HandLauncher();
             break;
         case 0x3BU:
-            return new HCZWaterWall();
+            return new WaterWall();
             break;
         case 0x3CU:
             return new Door();
             break;
         case 0x3EU:
-            return new HCZConveyorBelt();
+            return new ConveyorBelt();
             break;
         case 0x3FU:
-            return new HCZConveyorSpike();
+            return new ConveyorSpike();
             break;
         case 0x40U:
             return new Block();
@@ -141,13 +141,13 @@ Object* GetNewObjectFromID(int ID) {
             return new Bouncepad();
             break;
         case 0x4FU:
-            return new MGZQuickMud();
+            return new QuickMud();
             break;
         case 0x51U:
             return new FloatingPlatform();
             break;
         case 0x52U:
-            return new MGZSmashingPillar();
+            return new SmashingPillar();
             break;
         case 0x53U:
             return new MGZSwingingPlatform();
@@ -159,22 +159,22 @@ Object* GetNewObjectFromID(int ID) {
             return new Relief();
             break;
         case 0x57U:
-            return new MGZTriggerPlatform();
+            return new TriggerPlatform();
             break;
         case 0x59U:
-            return new MGZDashTrigger();
+            return new DashTrigger();
             break;
         case 0x5BU:
             return new TopPlatform();
             break;
         case 0x67U:
-            return new HCZSnakeBlocks();
+            return new SnakeBlocks();
             break;
         case 0x68U:
             return new SpinningColumn();
             break;
         case 0x69U:
-            return new HCZSlide();
+            return new Slide();
             break;
         case 0x6AU:
             return new InvisibleSpikes();
@@ -186,7 +186,7 @@ Object* GetNewObjectFromID(int ID) {
             return new TensionBridge();
             break;
         case 0x6DU:
-            return new HCZWaterSplash();
+            return new WaterSplash();
             break;
         case 0x80U:
             return new HiddenMonitor();
@@ -255,7 +255,7 @@ Object* GetNewObjectFromID(int ID) {
             return new Mantis();
             break;
         case 0x9EU:
-            return new MGZDriller();
+            return new TunnelBotCutscene();
             break;
         case 0x9FU:
             return new TunnelBot();
@@ -324,57 +324,60 @@ Object* GetNewObjectFromID(int ID) {
             return new BubbleAir();
             break;
         case 0x408U:
-            return new PlaneSwitcher();
+            return new InvisibleBlockV();
             break;
         case 0x409U:
-            return new PlatformOutliner();
+            return new PlaneSwitcher();
             break;
         case 0x40AU:
-            return new PlayerSpawn();
+            return new PlatformOutliner();
             break;
         case 0x40BU:
-            return new WarpStars();
+            return new PlayerSpawn();
             break;
         case 0x40CU:
-            return new EggCapsuleButton();
+            return new WarpStars();
             break;
         case 0x40DU:
-            return new Signpost();
+            return new EggCapsuleButton();
             break;
         case 0x40EU:
-            return new TensionBridgeChild();
+            return new Signpost();
             break;
         case 0x40FU:
-            return new ViewCollisionToggler();
+            return new TensionBridgeChild();
             break;
         case 0x410U:
-            return new Motobug();
+            return new ViewCollisionToggler();
             break;
         case 0x411U:
-            return new MotobugSmoke();
+            return new Motobug();
             break;
         case 0x412U:
-            return new BlastoidShot();
+            return new MotobugSmoke();
             break;
         case 0x413U:
-            return new DepthCharge();
+            return new BlastoidShot();
             break;
         case 0x414U:
-            return new TurboSpikerSpike();
+            return new DepthCharge();
             break;
         case 0x415U:
-            return new SegmentedColumnStub();
+            return new TurboSpikerSpike();
             break;
         case 0x416U:
-            return new StarPointerOrbs();
+            return new SegmentedColumnStub();
             break;
         case 0x417U:
-            return new SwingingPlatformTrigger();
+            return new StarPointerOrbs();
             break;
         case 0x418U:
-            return new ReliefEye();
+            return new SwingingPlatformTrigger();
             break;
         case 0x419U:
+            return new ReliefEye();
+            break;
+        case 0x41AU:
             return new Platform();
             break;
 
@@ -434,8 +437,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x624D9DA4U:
             return new RollEnforcer();
             break;
-        case 0xB4878D6AU:
-            return new InvisibleBlock();
+        case 0xBF7B0AFDU:
+            return new InvisibleBlockH();
             break;
         case 0x16A80CA8U:
             return new DisappearingFloor();
@@ -455,8 +458,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x22DC09C3U:
             return new SpikedLog();
             break;
-        case 0x10F942A2U:
-            return new NonAnim();
+        case 0x71F5C3A7U:
+            return new NonAnimSprite();
             break;
         case 0x9B4046ECU:
             return new AnimSprite();
@@ -473,11 +476,11 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x9D88FCCEU:
             return new ForegroundPlant();
             break;
-        case 0xEFFDFB55U:
-            return new BreakBar();
+        case 0xE0D9B634U:
+            return new BreakableBar();
             break;
-        case 0xD396DEF2U:
-            return new HCZVWaterStream();
+        case 0xD746F4D5U:
+            return new VWaterStream();
             break;
         case 0x7849B3C1U:
             return new Fan();
@@ -488,17 +491,17 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0xE6E16DBCU:
             return new HandLauncher();
             break;
-        case 0xEC4012B6U:
-            return new HCZWaterWall();
+        case 0x3B839BD2U:
+            return new WaterWall();
             break;
         case 0x81EC1830U:
             return new Door();
             break;
-        case 0x98E1D2FFU:
-            return new HCZConveyorBelt();
+        case 0x57260ED0U:
+            return new ConveyorBelt();
             break;
-        case 0xD719B2DU:
-            return new HCZConveyorSpike();
+        case 0x3CD6B406U:
+            return new ConveyorSpike();
             break;
         case 0x58F95E1CU:
             return new Block();
@@ -524,14 +527,14 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x3B4DCB47U:
             return new Bouncepad();
             break;
-        case 0x43F8965EU:
-            return new MGZQuickMud();
+        case 0x8942D1CCU:
+            return new QuickMud();
             break;
         case 0xC3C9288BU:
             return new FloatingPlatform();
             break;
-        case 0x6B9FADA2U:
-            return new MGZSmashingPillar();
+        case 0xABC86E5CU:
+            return new SmashingPillar();
             break;
         case 0x3B006393U:
             return new MGZSwingingPlatform();
@@ -542,23 +545,23 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0xFC346615U:
             return new Relief();
             break;
-        case 0x5809E61CU:
-            return new MGZTriggerPlatform();
+        case 0x8D951E1DU:
+            return new TriggerPlatform();
             break;
-        case 0xFF451B7U:
-            return new MGZDashTrigger();
+        case 0x1E4996EFU:
+            return new DashTrigger();
             break;
         case 0xC2A459B3U:
             return new TopPlatform();
             break;
-        case 0x1DBC27C1U:
-            return new HCZSnakeBlocks();
+        case 0xCFEF501BU:
+            return new SnakeBlocks();
             break;
         case 0x7DC95D09U:
             return new SpinningColumn();
             break;
-        case 0xBECC7360U:
-            return new HCZSlide();
+        case 0x1D05F53U:
+            return new Slide();
             break;
         case 0xE40C8E50U:
             return new InvisibleSpikes();
@@ -569,8 +572,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x5F02A27FU:
             return new TensionBridge();
             break;
-        case 0xAFDD0C56U:
-            return new HCZWaterSplash();
+        case 0x9095B5CCU:
+            return new WaterSplash();
             break;
         case 0x8616E0BDU:
             return new HiddenMonitor();
@@ -638,8 +641,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x2C7E197CU:
             return new Mantis();
             break;
-        case 0xCCA7D752U:
-            return new MGZDriller();
+        case 0x8AB74B2DU:
+            return new TunnelBotCutscene();
             break;
         case 0x403E6CD3U:
             return new TunnelBot();
@@ -706,6 +709,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x11DAFFC3U:
             return new BubbleAir();
+            break;
+        case 0x76DDB5BU:
+            return new InvisibleBlockV();
             break;
         case 0x7573BB38U:
             return new PlaneSwitcher();

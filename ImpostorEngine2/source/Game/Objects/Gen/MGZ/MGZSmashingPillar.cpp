@@ -14,7 +14,8 @@ void MGZSmashingPillar::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     W = 62;
     H = 80;
-    CurrentAnimation = 9;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Smahing Pillar.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Smashing Pillar");
     OGY = Y - 5 + 5;
     Y += 10;
     YSpeed = -0xA0;

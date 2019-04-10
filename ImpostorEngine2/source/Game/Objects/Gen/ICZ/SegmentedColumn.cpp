@@ -9,6 +9,7 @@ void SegmentedColumn::Create() {
     Object::Create();
     Active = true;
     Priority = false;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Wall and Column.bin", SaveGame::CurrentMode);
     for (int i = 0; i < 4; i++)
 {
         Stubs[i] = Scene->AddNewObject(Obj_SegmentedColumnStub, i == 3 ? (SubType == 0 ? 1 : 2) : 0, X, Y - (i * 32), false, false);

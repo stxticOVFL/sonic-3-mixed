@@ -6,14 +6,6 @@ var SmokeDelay:int;
 var State:int;
 var Smoke:Object;
 
-event Motobug() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("GHZ/Motobug.bin");
-    Time = 30;
-    SmokeDelay = 43;
-    Gravity = 10;
-    State = 0;
-    Smoke = NULL;
-}
 
 event Create() {
     Active = true;
@@ -29,6 +21,14 @@ event Create() {
     Frame = 0;
     Acceleration = 150;
     HitCount = 1;
+	
+	Sprite = LevelScene.LoadSpriteFromBin("GHZ/Motobug.bin",SaveGame.CurrentMode);
+    Time = 30;
+    SmokeDelay = 43;
+    Gravity = 10;
+    State = 0;
+    Smoke = NULL;
+	
     CurrentAnimation = 0;
 }
 

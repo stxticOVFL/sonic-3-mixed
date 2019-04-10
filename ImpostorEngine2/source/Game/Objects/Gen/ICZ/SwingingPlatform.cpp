@@ -5,11 +5,9 @@
 
 typedef IMath Math;
 
-CONSTRUCTER SwingingPlatform::SwingingPlatform() {
-}
-
 void SwingingPlatform::Create() {
     Object::Create();
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Swinging Platform.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Swinging Platform");
     RingAnimation = Sprite->FindAnimation("Ring");
     W = 64;

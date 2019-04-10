@@ -5,10 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER SnowPile::SnowPile() {
-    BinIndex = LevelScene::LoadSpriteBin("ICZ/Snowpile.bin");
-}
-
 void SnowPile::Create() {
     Object::Create();
     Active = true;
@@ -17,6 +13,7 @@ void SnowPile::Create() {
     VisualLayer = -1;
     H = 16;
     W = 64;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Snowpile.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("SnowPile");
 }
 

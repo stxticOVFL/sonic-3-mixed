@@ -11,7 +11,8 @@ void MegaChomper::Create() {
     Priority = false;
     W = 16;
     H = 16;
-    CurrentAnimation = 13;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/MegaChomper.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Main");
     Flip = 1;
     if (FlipX) Flip = -1;
 

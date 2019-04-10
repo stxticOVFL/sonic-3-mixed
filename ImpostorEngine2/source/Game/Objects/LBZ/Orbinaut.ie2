@@ -16,6 +16,7 @@ event Create() {
     H = 32;
 
 	//Aurum my boi pls add the anims
+	Sprite = LevelScene.LoadSpriteFromBin("LBZ/Orbinaut.bin",SaveGame.CurrentMode);
     //CurrentAnimation = Sprite.FindAnimation("Orbinaut");
 
 	for (var i:int = 0; i < 4; i++) {

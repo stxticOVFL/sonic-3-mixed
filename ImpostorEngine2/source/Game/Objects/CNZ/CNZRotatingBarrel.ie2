@@ -3,18 +3,13 @@ object 0x47;
 var YSubtypeVelocity:int16_t;
 var PositionOffset:int16_t;
 
-event CNZRotatingBarrel() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("CNZ/Cylinder.bin");
-    YSubtypeVelocity = 0;
-    PositionOffset = 0;
-}
-
 event Create() {
     Active = true;
     Priority = false;
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
-    
+    YSubtypeVelocity = 0;
+    PositionOffset = 0;
     YSubtypeVelocity = (SubType >> 3) & 0x0e;
     
     Timer = 1;
@@ -25,6 +20,8 @@ event Create() {
     
     VisW = 32;
     VisH = 32;
+
+	Sprite = LevelScene.LoadSpriteFromBin("CNZ/Cylinder.bin",SaveGame.CurrentMode);
 
     CurrentAnimation = Sprite.FindAnimation("Cylinder");
 }

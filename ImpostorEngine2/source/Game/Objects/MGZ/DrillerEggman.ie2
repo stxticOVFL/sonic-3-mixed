@@ -22,7 +22,9 @@ event Create() {
 	//we don't want it to die :)
     HitCount = 0xFFFF;
 
-    
+    Sprite = LevelScene.LoadSpriteFromBin("MGZ/DrillMobile.bin",SaveGame.CurrentMode);
+
+    this.CurrentAnimation = Sprite.FindAnimation("End Boss");
 
     this.Y += 1;
 }

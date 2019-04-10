@@ -6,10 +6,6 @@ var TimerAction:int;
 
 var FloorY:int;
 
-event CrushingColumn() : CONSTRUCTER { 
-    BinIndex = LevelScene.LoadSpriteBin("ICZ/Wall and Column.bin");
-}
-
 enum PillarType {
     UNKNOWN,
     CEILING_CRUSH,
@@ -44,6 +40,8 @@ event Create() {
 
     W = 64;
     H = 224;
+
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Wall and Column.bin",SaveGame.CurrentMode);
 
     CurrentAnimation = Sprite.FindAnimation("Wall and Column");
 

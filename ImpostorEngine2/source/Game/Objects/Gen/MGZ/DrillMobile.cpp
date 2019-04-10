@@ -11,9 +11,9 @@ void DrillMobile::Create() {
     this->Priority = false;
     this->W = 32;
     this->H = 32;
-    this->CurrentAnimation = 16;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/DrillMobile.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("End Boss");
     HitCount = 8;
-    this->Y += 1;
 }
 
 int DrillMobile::OnHit() {

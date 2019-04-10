@@ -1,14 +1,11 @@
 object 0xB8;
 subclass Enemy;
 
-event HarmfulIce() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("ICZ/Harmful Ice.bin");
-}
-
 event Create() {
     Active = true;
     Priority = false;
     Invincible = true;
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Harmful Ice.bin",SaveGame.CurrentMode);
     CurrentAnimation = Sprite.FindAnimation("Harmful Ice");
     W = 32;
     if (SubType == 0) {

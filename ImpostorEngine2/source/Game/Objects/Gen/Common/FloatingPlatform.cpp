@@ -44,8 +44,6 @@ void FloatingPlatform::Create() {
     }
     SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");
-    Outliner = Scene->AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
-    Outliner->Parent = this;
     Timer = 0;
     LastX = X;
     LastY = Y;
@@ -239,8 +237,6 @@ void FloatingPlatform::Update() {
     if (!Scene->maxLayer && !isHeldDebugObject) {
         int32_t AnimCount = Sprite->AnimCount;
         if (Scene->ZoneID == 3) {
-            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[0].W;
-            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[0].H;
         }
         else if (Scene->ZoneID == 2) {
             int32_t FrameCount = Sprite->Animations[CurrentAnimation % AnimCount].FrameCount;
@@ -249,17 +245,11 @@ void FloatingPlatform::Update() {
                 CaculatedFrame = Frame;
             }
 
-            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].W;
-            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].H;
         }
         else {
-            Outliner->W = Sprite->Animations[CurrentAnimation % AnimCount].Frames[Frame].W;
-            Outliner->H = Sprite->Animations[CurrentAnimation % AnimCount].Frames[Frame].H;
         }
-        Outliner->Visible = true;
     }
     else {
-        Outliner->Visible = false;
     }
     return;
     Object::Update();

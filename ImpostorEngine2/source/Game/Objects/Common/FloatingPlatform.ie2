@@ -48,8 +48,8 @@ event Create() {
     SolidTop = true;
     Scene.AddSelfToRegistry(this, "Solid");
     
-    Outliner = Scene.AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
-    Outliner.Parent = this;
+    //Outliner = Scene.AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
+    //Outliner.Parent = this;
 
     Timer = 0;
 
@@ -245,23 +245,23 @@ event Update() {
     if (!Scene.maxLayer && !isHeldDebugObject) {
         var AnimCount:int32_t = Sprite.AnimCount;
         if (Scene.ZoneID == 3) {
-            Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[0].W;
-            Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[0].H;
+            //Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[0].W;
+            //Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[0].H;
         } else if (Scene.ZoneID == 2) {
 			var FrameCount:int32_t = Sprite.Animations[CurrentAnimation % AnimCount].FrameCount;
             var CaculatedFrame:int32_t = Frame >> 8;
             if (CaculatedFrame >= FrameCount) {
                 CaculatedFrame = Frame;
             }
-            Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].W;
-            Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].H;
+            //Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].W;
+            //Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[CaculatedFrame % FrameCount].H;
         } else {
-            Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[Frame].W;
-            Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[Frame].H;
+            //Outliner.W = Sprite.Animations[CurrentAnimation % AnimCount].Frames[Frame].W;
+            //Outliner.H = Sprite.Animations[CurrentAnimation % AnimCount].Frames[Frame].H;
         }
-        Outliner.Visible = true;
+        //Outliner.Visible = true;
     } else {
-        Outliner.Visible = false;
+        //Outliner.Visible = false;
     }
     
     return;

@@ -11,7 +11,8 @@ void Buggernaut::Create() {
     Priority = false;
     W = 24;
     H = 24;
-    CurrentAnimation = 4;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Buggernaut.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Body");
     Flip = 1;
     if (FlipX) Flip = -1;
 

@@ -11,7 +11,8 @@ void Spiker::Create() {
     this->Priority = false;
     this->W = 32;
     this->H = 32;
-    this->CurrentAnimation = 22;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Spiker.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("Spiker Idle");
     HitCount = 1;
     StartYpos = this->Y;
 }

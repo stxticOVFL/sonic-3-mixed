@@ -5,15 +5,13 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Freezer::Freezer() {
-}
-
 void Freezer::Create() {
     Object::Create();
     W = 32;
     H = 24;
     Solid = false;
     FreezeTimer = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Freezer.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Freezer");
     DustAnimation = Sprite->FindAnimation("Particles");
     IceCubeAnimation = Sprite->FindAnimation("Player Ice Cube");

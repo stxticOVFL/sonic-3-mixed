@@ -18,6 +18,7 @@ void Stalagtite::Create() {
     SolidTop = true;
     Active = true;
     Priority = false;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Wall and Column.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Wall and Column");
     Frame = 5;
     Scene->AddSelfToRegistry(this, "Solid");

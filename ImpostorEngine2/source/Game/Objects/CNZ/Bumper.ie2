@@ -15,6 +15,13 @@ event Create() {
 	ForceY = 0;
 	ForcePower = 0;
 
+	if (LevelScene.IsZoneCurrently("CNZ")) {
+		Sprite = LevelScene.LoadSpriteFromBin("CNZ/Bumper.bin",SaveGame.CurrentMode);
+	}
+	else {
+		Sprite = LevelScene.LoadSpriteFromBin("Bonus/Bumper.bin",SaveGame.CurrentMode);
+	}
+
     this.CurrentAnimation = Sprite.FindAnimation("Bumper");
 }
 
@@ -24,10 +31,10 @@ event Update() {
 event Render(CamX:int, CamY:int) {
         G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
     
-					if (App.viewObjectCollision) {
-		G.SetDrawAlpha(0x80);
-		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
-		G.SetDrawAlpha(0xFF);
+		if (App.viewObjectCollision) {
+			G.SetDrawAlpha(0x80);
+			G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+			G.SetDrawAlpha(0xFF);
 		}
 }
 

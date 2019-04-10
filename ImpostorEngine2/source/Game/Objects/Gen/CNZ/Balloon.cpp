@@ -19,6 +19,7 @@ void Balloon::Create() {
     Acceleration = 0x10;
     SwingDirection = 0;
     Popped = false;
+    Sprite = LevelScene::LoadSpriteFromBin("CNZ/Balloon.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Default") + Color;
     AutoAnimate = true;
     CleanupInactiveObject = true;

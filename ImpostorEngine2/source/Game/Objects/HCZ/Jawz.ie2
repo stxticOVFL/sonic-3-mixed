@@ -13,7 +13,9 @@ event Create() {
 
     VisW = 48; // * 1 / 2
 
-    CurrentAnimation = 15;
+	Sprite = LevelScene.LoadSpriteFromBin("HCZ/Jawz.bin",SaveGame.CurrentMode);
+
+    CurrentAnimation = Sprite.FindAnimation("Main");
 
     Flip = -2;
 

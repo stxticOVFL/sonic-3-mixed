@@ -1,10 +1,5 @@
 object 0xB6;
 
-event IceCube() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("ICZ/Ice Cube.bin");
-}
-
-
 event Create() {
     Active = true;
     Priority = false;
@@ -15,6 +10,7 @@ event Create() {
     Scene.AddSelfToRegistry(this, "Solid");
     BreakableByJump = CollideSide.TOP;
     Scene.AddSelfToRegistry(this, "Breakable");
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Ice Cube.bin",SaveGame.CurrentMode);
     CurrentAnimation = Sprite.FindAnimation("Ice Cube");
 
 }

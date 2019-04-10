@@ -5,10 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER IceCube::IceCube() {
-    BinIndex = LevelScene::LoadSpriteBin("ICZ/Ice Cube.bin");
-}
-
 void IceCube::Create() {
     Object::Create();
     Active = true;
@@ -20,6 +16,7 @@ void IceCube::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     BreakableByJump = CollideSide::TOP;
     Scene->AddSelfToRegistry(this, "Breakable");
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Ice Cube.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Ice Cube");
 }
 

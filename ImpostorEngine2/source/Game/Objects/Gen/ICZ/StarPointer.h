@@ -20,7 +20,6 @@ public:
     float RotAngle;
     float TurnSpeed;
     
-    CONSTRUCTER StarPointer();
     void Create();
     int OnHit();
     void Update();

@@ -12,6 +12,7 @@ event Create() {
     Priority = false;
     //W = 0;
     //H = 0;
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Wall and Column.bin",SaveGame.CurrentMode);
     for (var i:int = 0; i < 4; i++) {
         Stubs[i] = Scene.AddNewObject(Obj_SegmentedColumnStub, i == 3 ? (SubType == 0 ? 1 : 2) : 0, X, Y - (i * 32), false, false);
         SolidList[i] = Stubs[i].Solid;

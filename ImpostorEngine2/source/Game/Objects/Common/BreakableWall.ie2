@@ -45,7 +45,7 @@ event Create() {
             if (Behavior == 2)
                 W = 48;
             VisualLayer = 1;
-			Sprite = LevelScene.LoadSpriteFromBin("HCZ/Breakable Wall.bin",SaveGame.CurrentMode);
+			//Sprite = LevelScene.LoadSpriteFromBin("HCZ/Breakable Wall.bin",SaveGame.CurrentMode);
             break;
         case 3: // MGZ
             W = 64;

@@ -43,7 +43,6 @@ void BreakableWall::Create() {
         if (Behavior == 2) W = 48;
 
         VisualLayer = 1;
-        Sprite = LevelScene::LoadSpriteFromBin("HCZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 3:
         W = 64;

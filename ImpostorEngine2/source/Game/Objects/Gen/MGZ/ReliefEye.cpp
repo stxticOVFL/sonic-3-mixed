@@ -30,7 +30,6 @@ int ReliefEye::OnHit() {
     HitCount--;
     if (HitCount == 0) {
         Scene->LevelTriggerFlag |= 1 << SubType;
-        App->Print(0, "SubType %d", SubType);
         return OnDeath();
     }
 

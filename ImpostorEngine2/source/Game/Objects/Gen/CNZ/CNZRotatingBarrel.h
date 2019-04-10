@@ -18,7 +18,6 @@ public:
     int16_t YSubtypeVelocity;
     int16_t PositionOffset;
     
-    CONSTRUCTER CNZRotatingBarrel();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

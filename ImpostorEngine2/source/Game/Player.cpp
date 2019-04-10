@@ -4096,6 +4096,30 @@ void IPlayer::LateUpdate() {
 	// Ease rotation
 	int8_t shortestrot;
 	int8_t FinalAngle = 0;
+
+	//Add this somehow
+
+	/*	//If the absolute value of the players internal angle plus some math stuff is less than 315
+	if ((((int)(abs(DisplayAngle) - FinalAngle + 540) % 360) - 180) < 315) {
+		if ((((int)(abs(0 - (int)DisplayAngle) + 540) % 360) - 180) >= 45) { //And it's also greater than 45...
+			FinalAngle = ((int)FinalAngle % 360) + ((((int)(DisplayAngle - FinalAngle + 540) % 360) - 180) * IMath::max(0.165, abs(GroundSpeed)) / 0x600) * 0.5;
+			// ^ Do this crazy interpolation code
+		}
+	}
+
+	//Same as above, but this time for when you enter the 315/45 range...
+	if ((((int)(abs(DisplayAngle) - FinalAngle + 540) % 360) - 180) < 315) {
+		if ((((int)(abs(0 - (int)DisplayAngle) + 540) % 360) - 180) < 45) {
+			FinalAngle = ((int)FinalAngle % 360) + ((((int)(0 - FinalAngle + 540) % 360) - 180) * IMath::max(0.165, abs(GroundSpeed)) / 0x600) * 0.5;
+			//Interpolate back to 0
+		}
+	}
+
+	//I uh, honestly don't remember what this does? If anything it smooths the angle out a bit, but removing it doesn't seem to affect much of anything. Might be a leftover.
+	if ((((int)abs(DisplayAngle - FinalAngle + 540) % 360) - 180) >= 315) {
+		FinalAngle = (int)DisplayAngle % 360;
+	}*/
+
 	if (IMath::abs((int8_t)Angle) >= 0x1C) {
 		FinalAngle = (int8_t)Angle;
 	}
@@ -4427,7 +4451,7 @@ void IPlayer::Render(int CamX, int CamY) {
 		case 2:
 			FinalAngle = IMath::abs(FinalAngle);
 			FinalAngle += 16;
-			FinalAngle &= 255;
+			//FinalAngle &= 255;
 			FinalAngle >>= 5;
 			FinalAngle *= 45;
 			if (LowerZero) FinalAngle = -FinalAngle;

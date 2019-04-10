@@ -32,8 +32,6 @@ void CollapsingPlatform::Create() {
     Sections = 8;
     Vsect = 2;
     CurrentAnimation = -1;
-    Outliner = Scene->AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
-    Outliner->Parent = this;
     SolidTop = true;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");
@@ -47,7 +45,7 @@ void CollapsingPlatform::Create() {
 
         if (Scene->Act == 2) {
             Sprite->LinkPalette(Scene->TileSprite);
-			CurrentAnimation = Sprite->FindAnimation("Collapsing Platform 2");
+            CurrentAnimation = Sprite->FindAnimation("Collapsing Platform 2");
         }
         else if (Scene->Act == 1) {
             BinIndex = Act1BinIndex;
@@ -98,12 +96,8 @@ void CollapsingPlatform::Create() {
 
 void CollapsingPlatform::Update() {
     if (!Scene->maxLayer && !isHeldDebugObject) {
-        Outliner->W = Sprite->Animations[CurrentAnimation].Frames[Frame].W;
-        Outliner->H = Sprite->Animations[CurrentAnimation].Frames[Frame].H;
-        Outliner->Visible = true;
     }
     else {
-        Outliner->Visible = false;
     }
     SolidTop = true;
     if (f > -1 && f <= Allotted) {

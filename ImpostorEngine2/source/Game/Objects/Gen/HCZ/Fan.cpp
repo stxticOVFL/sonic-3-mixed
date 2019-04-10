@@ -12,7 +12,8 @@ void Fan::Create() {
     W = 32;
     H = 32;
     Y += 28;
-    CurrentAnimation = 2;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Fan.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Vertical");
     BlowHeight = ((SubType & 0xF) + 8) << 4;
     HaveBlock = false;
     Solid = false;

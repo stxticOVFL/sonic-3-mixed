@@ -28,7 +28,8 @@ void SpinningColumn::Create() {
 
     if (ColumnType == 0xE0) MotionDirection = -1;
 
-    CurrentAnimation = 15;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Platform.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Spin");
 }
 
 void SpinningColumn::Update() {

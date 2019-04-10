@@ -1,7 +1,3 @@
-event SegmentedColumnStub() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("ICZ/Wall and Column.bin"); //TODO give seperate bin/animation
-}
-
 event Create() {
     W = 64;
     H = 32;
@@ -9,6 +5,7 @@ event Create() {
     Priority = false;
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Wall and Column.bin",SaveGame.CurrentMode);
     CurrentAnimation = Sprite.FindAnimation("Wall and Column");
     Frame = SubType == 0 ? 8 : 1;
 }

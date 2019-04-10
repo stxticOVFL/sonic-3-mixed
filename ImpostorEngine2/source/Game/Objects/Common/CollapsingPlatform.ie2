@@ -37,8 +37,8 @@ event Create() {
 
     CurrentAnimation = -1;
     
-    Outliner = Scene.AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
-    Outliner.Parent = this;
+    //Outliner = Scene.AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
+    //Outliner.Parent = this;
 
     SolidTop = true;
     SolidCustomized = true;
@@ -105,11 +105,11 @@ event Create() {
 
 event Update() {
     if (!Scene.maxLayer && !isHeldDebugObject) {
-        Outliner.W = Sprite.Animations[CurrentAnimation].Frames[Frame].W;
-        Outliner.H = Sprite.Animations[CurrentAnimation].Frames[Frame].H;
-        Outliner.Visible = true;
+        //Outliner.W = Sprite.Animations[CurrentAnimation].Frames[Frame].W;
+        //Outliner.H = Sprite.Animations[CurrentAnimation].Frames[Frame].H;
+        //Outliner.Visible = true;
     } else {
-        Outliner.Visible = false;
+        //Outliner.Visible = false;
     }
     
     SolidTop = true;

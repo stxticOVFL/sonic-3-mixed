@@ -11,7 +11,8 @@ void TopPlatform::Create() {
     Priority = false;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
-    CurrentAnimation = 11;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Top Platform.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Top Platform");
     W = 48;
     H = 24;
     VisW = 48;

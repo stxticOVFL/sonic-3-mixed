@@ -5,15 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER HarmfulIce::HarmfulIce() {
-    BinIndex = LevelScene::LoadSpriteBin("ICZ/Harmful Ice.bin");
-}
-
 void HarmfulIce::Create() {
     Enemy::Create();
     Active = true;
     Priority = false;
     Invincible = true;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Harmful Ice.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Harmful Ice");
     W = 32;
     if (SubType == 0) {

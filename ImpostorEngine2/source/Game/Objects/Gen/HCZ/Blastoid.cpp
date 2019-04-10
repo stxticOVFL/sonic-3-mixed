@@ -11,7 +11,8 @@ void Blastoid::Create() {
     this->Priority = false;
     this->W = 32;
     this->H = 32;
-    this->CurrentAnimation = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Blastoid.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("Main");
     HitCount = 1;
     this->Y += 1;
     ShotIndex = 0;

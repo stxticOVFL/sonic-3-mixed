@@ -11,6 +11,7 @@ void CNZLightBulb::Create() {
     this->Priority = false;
     this->W = 32;
     this->H = 32;
+    Sprite = LevelScene::LoadSpriteFromBin("CNZ/Light Bulb.bin", SaveGame::CurrentMode);
     this->CurrentAnimation = Sprite->FindAnimation("Light Bulb");
 }
 

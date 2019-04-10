@@ -134,7 +134,7 @@ PUBLIC Level_HCZ::Level_HCZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
         WaterLevel = 0x700;
     }
 
-	AddNewDebugObjectID(Obj_HCZSnakeBlocks);
+	AddNewDebugObjectID(Obj_SnakeBlocks);
 	AddNewDebugObjectID(Obj_Blastoid);
 	AddNewDebugObjectID(Obj_TurboSpiker);
 	AddNewDebugObjectID(Obj_Buggernaut);

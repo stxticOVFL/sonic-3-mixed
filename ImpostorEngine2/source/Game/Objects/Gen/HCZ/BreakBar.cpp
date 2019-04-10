@@ -11,7 +11,8 @@ void BreakBar::Create() {
     Priority = false;
     W = 8;
     H = ((SubType & 0x30) << 1) + 64;
-    CurrentAnimation = 9;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/BreakBar.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Vertical");
     Broken = false;
     Horizontal = !!(SubType & 0x80);
     Delay = (SubType & 0xF) * 60;

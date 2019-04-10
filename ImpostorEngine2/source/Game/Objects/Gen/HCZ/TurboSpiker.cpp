@@ -12,7 +12,8 @@ void TurboSpiker::Create() {
     W = 32;
     H = 16;
     Y += 7;
-    CurrentAnimation = 7;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/TurboSpiker.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Body");
     Flip = 1;
     if (FlipX) Flip = -1;
 

@@ -11,7 +11,8 @@ void BubblesBadnik::Create() {
     this->Priority = false;
     this->W = 32;
     this->H = 32;
-    this->CurrentAnimation = 20;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Bubbles.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("Bubbles Moving");
     HitCount = 1;
 }
 

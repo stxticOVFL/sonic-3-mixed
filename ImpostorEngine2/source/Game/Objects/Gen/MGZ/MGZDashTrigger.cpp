@@ -14,6 +14,7 @@ void MGZDashTrigger::Create() {
     Rev = 0;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Dash Trigger.bin", SaveGame::CurrentMode);
 }
 
 void MGZDashTrigger::Update() {

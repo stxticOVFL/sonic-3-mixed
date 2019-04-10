@@ -11,7 +11,8 @@ void Pointdexter::Create() {
     Priority = false;
     W = 32;
     H = 32;
-    CurrentAnimation = 14;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Pointdexter.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Main");
     Flip = 1;
     SubX = 0;
     if (FlipX) Flip = -1;

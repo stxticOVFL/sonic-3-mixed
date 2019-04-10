@@ -14,6 +14,8 @@ void BlastoidShot::Create() {
     Invincible = true;
     BounceOffShield = true;
     Timer = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Blastoid.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("Projectile");
 }
 
 void BlastoidShot::Update() {

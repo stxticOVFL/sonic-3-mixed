@@ -21,7 +21,6 @@ public:
     int State;
     Object* Smoke;
     
-    CONSTRUCTER Motobug();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

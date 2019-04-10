@@ -11,6 +11,7 @@ void Orbinaut::Create() {
     Priority = false;
     W = 32;
     H = 32;
+    Sprite = LevelScene::LoadSpriteFromBin("LBZ/Orbinaut.bin", SaveGame::CurrentMode);
     for (int i = 0; i < 4; i++)
 {
         Orbs[i] = Scene->AddNewObject(Obj_StarPointerOrbs, i, X, Y, FlipX, false);

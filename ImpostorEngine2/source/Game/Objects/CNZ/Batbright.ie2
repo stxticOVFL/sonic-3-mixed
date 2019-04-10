@@ -18,7 +18,10 @@ event Create() {
     Gravity = 0;
 
     Frame = 0;
-    CurrentAnimation = 35;
+	
+	Sprite = LevelScene.LoadSpriteFromBin("CNZ/Batbot.bin",SaveGame.CurrentMode);
+	
+    CurrentAnimation = Sprite.FindAnimation("Batbot Body");
 
     // Animation Timer data:
     // 2, 0, 1, 2, 1, $FC
@@ -51,7 +54,6 @@ event Create() {
 event Update() {
     CheckDistanceToPlayers();
     if (PlayerXDistance >= 0x40) {
-        App.Print(-1, "Not attacking player.");
         return;
     }
 

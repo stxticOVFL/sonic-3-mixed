@@ -261,7 +261,7 @@ void Object::MoveWithParent() {
     }
     
     X = host->X;
-    Y = host->Y;
+	Y = host->Y;
 }
 
 int Object::Swing_UpAndDown() {

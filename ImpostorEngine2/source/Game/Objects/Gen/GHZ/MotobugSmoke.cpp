@@ -5,11 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER MotobugSmoke::MotobugSmoke() {
-    BinIndex = LevelScene::LoadSpriteBin("Sprites/GHZ/Motobug.bin");
-    SmokeTime = 8;
-}
-
 void MotobugSmoke::Create() {
     Object::Create();
     Active = true;
@@ -23,6 +18,8 @@ void MotobugSmoke::Create() {
     Frame = 0;
     Acceleration = 150;
     CurrentAnimation = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("Sprites/GHZ/Motobug.bin");
+    SmokeTime = 8;
 }
 
 void MotobugSmoke::Update() {

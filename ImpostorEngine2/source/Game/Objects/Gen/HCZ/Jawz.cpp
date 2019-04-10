@@ -12,7 +12,8 @@ void Jawz::Create() {
     W = 48;
     H = 16;
     VisW = 48;
-    CurrentAnimation = 15;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/Jawz.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Main");
     Flip = -2;
     HitCount = 1;
 }

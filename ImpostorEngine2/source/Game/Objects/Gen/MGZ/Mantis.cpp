@@ -11,7 +11,8 @@ void Mantis::Create() {
     this->Priority = false;
     this->W = 32;
     this->H = 32;
-    this->CurrentAnimation = 25;
+    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Mantis.bin", SaveGame::CurrentMode);
+    this->CurrentAnimation = Sprite->FindAnimation("Mantis");
     HitCount = 1;
     wentUp = false;
     Gravity = 0x80;

@@ -8,16 +8,14 @@ var OrbOffsets:float[4];
 var RotAngle:float;
 var TurnSpeed:float;
 
-event StarPointer() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("ICZ/Star Pointer.bin");
-}
-
 event Create() {
     Active = true;
     Priority = false;
 
     W = 32;
     H = 32;
+
+	Sprite = LevelScene.LoadSpriteFromBin("ICZ/Star Pointer.bin",SaveGame.CurrentMode);
 
     CurrentAnimation = Sprite.FindAnimation("Star Pointer");
 
@@ -44,7 +42,6 @@ event Update() {
 		RotAngle = 0;
 		RotAngle += OrbOffsets[i];
 		RotAngle += TurnSpeed; 
-		IApp.Print(0, "%d %d", RotAngle, sin(RotAngle));
 		Orbs[i].X = sin(RotAngle)*20 + X;
 		Orbs[i].Y = cos(RotAngle)*20 + Y;
 		OrbOffsets[i] = RotAngle;
@@ -56,7 +53,7 @@ event Render(CamX:int, CamY:int) {
 	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
-		G.SetDrawAlpha(0x80);
+		G.SetDrawAlpha(0xFF);
 	}
     
     G.DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);

@@ -41,7 +41,6 @@ public:
     int TimerAction;
     int FloorY;
     
-    CONSTRUCTER CrushingColumn();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

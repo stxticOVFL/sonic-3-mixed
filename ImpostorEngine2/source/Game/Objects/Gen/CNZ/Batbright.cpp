@@ -16,7 +16,8 @@ void Batbright::Create() {
     VisH = 16;
     Gravity = 0;
     Frame = 0;
-    CurrentAnimation = 35;
+    Sprite = LevelScene::LoadSpriteFromBin("CNZ/Batbot.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Batbot Body");
     AnimationData[0] = 2;
     AnimationData[1] = 0;
     AnimationData[2] = 1;
@@ -44,7 +45,6 @@ void Batbright::Create() {
 void Batbright::Update() {
     CheckDistanceToPlayers();
     if (PlayerXDistance >= 0x40) {
-        App->Print(-1, "Not attacking player.");
         return;
     }
 

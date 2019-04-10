@@ -17,28 +17,28 @@
 #include "Common/CollapsingBridge.h"			// 18C4AE0D
 #include "Common/AutomaticTunnel.h"			// C286FB4D
 #include "Common/RollEnforcer.h"			// 624D9DA4
-#include "Common/InvisibleBlock.h"			// B4878D6A
+#include "Common/InvisibleBlockH.h"			// BF7B0AFD
 #include "AIZ/DisappearingFloor.h"			// 16A80CA8
 #include "CommonSpecial/CorkFloor.h"			// 4A50924F
 #include "AIZ/FlippingBridge.h"			// B48623A
 #include "AIZ/CollapsingLogBridge.h"			// C558537E
 #include "AIZ/FallingLog.h"			// BFF26300
 #include "AIZ/SpikedLog.h"			// 22DC09C3
-#include "Common/NonAnim.h"			// 10F942A2
+#include "Common/NonAnimSprite.h"			// 71F5C3A7
 #include "Common/AnimSprite.h"			// 9B4046EC
 #include "AIZ/Drawbridge.h"			// 5465065D
 #include "Common/Button.h"			// F72B92E4
 #include "Common/StarPost.h"			// C8B337E6
 #include "AIZ/ForegroundPlant.h"			// 9D88FCCE
-#include "HCZ/BreakBar.h"			// EFFDFB55
-#include "HCZ/HCZVWaterStream.h"			// D396DEF2
+#include "HCZ/BreakableBar.h"			// E0D9B634
+#include "HCZ/VWaterStream.h"			// D746F4D5
 #include "HCZ/Fan.h"			// 7849B3C1
 #include "HCZ/LargeFan.h"			// 35EA70E0
 #include "HCZ/HandLauncher.h"			// E6E16DBC
-#include "HCZ/HCZWaterWall.h"			// EC4012B6
+#include "HCZ/WaterWall.h"			// 3B839BD2
 #include "CommonSpecial/Door.h"			// 81EC1830
-#include "HCZ/HCZConveyorBelt.h"			// 98E1D2FF
-#include "HCZ/HCZConveyorSpike.h"			// D719B2D
+#include "HCZ/ConveyorBelt.h"			// 57260ED0
+#include "HCZ/ConveyorSpike.h"			// 3CD6B406
 #include "HCZ/Block.h"			// 58F95E1C
 #include "CNZ/Balloon.h"			// 65BE2A3A
 #include "CNZ/CNZLightBulb.h"			// A17F0176
@@ -47,22 +47,22 @@
 #include "CNZ/VacuumTube.h"			// 177568D6
 #include "CNZ/Bumper.h"			// 9DD277AF
 #include "CNZ/Bouncepad.h"			// 3B4DCB47
-#include "MGZ/MGZQuickMud.h"			// 43F8965E
+#include "MGZ/QuickMud.h"			// 8942D1CC
 #include "Common/FloatingPlatform.h"			// C3C9288B
-#include "MGZ/MGZSmashingPillar.h"			// 6B9FADA2
+#include "MGZ/SmashingPillar.h"			// ABC86E5C
 #include "MGZ/MGZSwingingPlatform.h"			// 3B006393
 #include "Common/Bubbler.h"			// 8E41B4A6
 #include "MGZ/Relief.h"			// FC346615
-#include "MGZ/MGZTriggerPlatform.h"			// 5809E61C
-#include "MGZ/MGZDashTrigger.h"			// FF451B7
+#include "MGZ/TriggerPlatform.h"			// 8D951E1D
+#include "MGZ/DashTrigger.h"			// 1E4996EF
 #include "MGZ/TopPlatform.h"			// C2A459B3
-#include "HCZ/HCZSnakeBlocks.h"			// 1DBC27C1
+#include "HCZ/SnakeBlocks.h"			// CFEF501B
 #include "HCZ/SpinningColumn.h"			// 7DC95D09
-#include "HCZ/HCZSlide.h"			// BECC7360
+#include "HCZ/Slide.h"			// 1D05F53
 #include "Common/InvisibleSpikes.h"			// E40C8E50
 #include "Common/InvisibleDeath.h"			// A0BE8640
 #include "CommonSpecial/TensionBridge.h"			// 5F02A27F
-#include "HCZ/HCZWaterSplash.h"			// AFDD0C56
+#include "HCZ/WaterSplash.h"			// 9095B5CC
 #include "Common/HiddenMonitor.h"			// 8616E0BD
 #include "CommonSpecial/EggCapsule.h"			// 973691D6
 #include "CommonSpecial/CutsceneKnuckles.h"			// 2822B56D
@@ -85,7 +85,7 @@
 #include "MGZ/BubblesBadnik.h"			// A8CF1ABB
 #include "MGZ/Spiker.h"			// DF9FA830
 #include "MGZ/Mantis.h"			// 2C7E197C
-#include "MGZ/MGZDriller.h"			// CCA7D752
+#include "MGZ/TunnelBotCutscene.h"			// 8AB74B2D
 #include "MGZ/TunnelBot.h"			// 403E6CD3
 #include "MGZ/DrillerEggman.h"			// 88549378
 #include "MGZ/DrillMobile.h"			// EFAD5D3C
@@ -108,6 +108,7 @@
 #include "CNZ/BatbrightParts.h"			// D5ADBFDB
 #include "Common/BlankObject.h"			// 8D487F51
 #include "Common/BubbleAir.h"			// 11DAFFC3
+#include "Common/InvisibleBlockV.h"			// 76DDB5B
 #include "Common/PlaneSwitcher.h"			// 7573BB38
 #include "Common/PlatformOutliner.h"			// 5DFC3336
 #include "Common/PlayerSpawn.h"			// EACB9471
@@ -145,28 +146,28 @@ enum {
     Obj_CollapsingBridge = 0x00F,
     Obj_AutomaticTunnel = 0x024,
     Obj_RollEnforcer = 0x026,
-    Obj_InvisibleBlock = 0x028,
+    Obj_InvisibleBlockH = 0x028,
     Obj_DisappearingFloor = 0x029,
     Obj_CorkFloor = 0x02A,
     Obj_FlippingBridge = 0x02B,
     Obj_CollapsingLogBridge = 0x02C,
     Obj_FallingLog = 0x02D,
     Obj_SpikedLog = 0x02E,
-    Obj_NonAnim = 0x02F,
+    Obj_NonAnimSprite = 0x02F,
     Obj_AnimSprite = 0x030,
     Obj_Drawbridge = 0x032,
     Obj_Button = 0x033,
     Obj_StarPost = 0x034,
     Obj_ForegroundPlant = 0x035,
-    Obj_BreakBar = 0x036,
-    Obj_HCZVWaterStream = 0x037,
+    Obj_BreakableBar = 0x036,
+    Obj_VWaterStream = 0x037,
     Obj_Fan = 0x038,
     Obj_LargeFan = 0x039,
     Obj_HandLauncher = 0x03A,
-    Obj_HCZWaterWall = 0x03B,
+    Obj_WaterWall = 0x03B,
     Obj_Door = 0x03C,
-    Obj_HCZConveyorBelt = 0x03E,
-    Obj_HCZConveyorSpike = 0x03F,
+    Obj_ConveyorBelt = 0x03E,
+    Obj_ConveyorSpike = 0x03F,
     Obj_Block = 0x040,
     Obj_Balloon = 0x041,
     Obj_CNZLightBulb = 0x045,
@@ -175,22 +176,22 @@ enum {
     Obj_VacuumTube = 0x048,
     Obj_Bumper = 0x04A,
     Obj_Bouncepad = 0x04B,
-    Obj_MGZQuickMud = 0x04F,
+    Obj_QuickMud = 0x04F,
     Obj_FloatingPlatform = 0x051,
-    Obj_MGZSmashingPillar = 0x052,
+    Obj_SmashingPillar = 0x052,
     Obj_MGZSwingingPlatform = 0x053,
     Obj_Bubbler = 0x054,
     Obj_Relief = 0x055,
-    Obj_MGZTriggerPlatform = 0x057,
-    Obj_MGZDashTrigger = 0x059,
+    Obj_TriggerPlatform = 0x057,
+    Obj_DashTrigger = 0x059,
     Obj_TopPlatform = 0x05B,
-    Obj_HCZSnakeBlocks = 0x067,
+    Obj_SnakeBlocks = 0x067,
     Obj_SpinningColumn = 0x068,
-    Obj_HCZSlide = 0x069,
+    Obj_Slide = 0x069,
     Obj_InvisibleSpikes = 0x06A,
     Obj_InvisibleDeath = 0x06B,
     Obj_TensionBridge = 0x06C,
-    Obj_HCZWaterSplash = 0x06D,
+    Obj_WaterSplash = 0x06D,
     Obj_HiddenMonitor = 0x080,
     Obj_EggCapsule = 0x081,
     Obj_CutsceneKnuckles = 0x082,
@@ -213,7 +214,7 @@ enum {
     Obj_BubblesBadnik = 0x09B,
     Obj_Spiker = 0x09C,
     Obj_Mantis = 0x09D,
-    Obj_MGZDriller = 0x09E,
+    Obj_TunnelBotCutscene = 0x09E,
     Obj_TunnelBot = 0x09F,
     Obj_DrillerEggman = 0x0A0,
     Obj_DrillMobile = 0x0A1,
@@ -236,24 +237,25 @@ enum {
     Obj_BatbrightParts = 0x405,
     Obj_BlankObject = 0x406,
     Obj_BubbleAir = 0x407,
-    Obj_PlaneSwitcher = 0x408,
-    Obj_PlatformOutliner = 0x409,
-    Obj_PlayerSpawn = 0x40A,
-    Obj_WarpStars = 0x40B,
-    Obj_EggCapsuleButton = 0x40C,
-    Obj_Signpost = 0x40D,
-    Obj_TensionBridgeChild = 0x40E,
-    Obj_ViewCollisionToggler = 0x40F,
-    Obj_Motobug = 0x410,
-    Obj_MotobugSmoke = 0x411,
-    Obj_BlastoidShot = 0x412,
-    Obj_DepthCharge = 0x413,
-    Obj_TurboSpikerSpike = 0x414,
-    Obj_SegmentedColumnStub = 0x415,
-    Obj_StarPointerOrbs = 0x416,
-    Obj_SwingingPlatformTrigger = 0x417,
-    Obj_ReliefEye = 0x418,
-    Obj_Platform = 0x419,
+    Obj_InvisibleBlockV = 0x408,
+    Obj_PlaneSwitcher = 0x409,
+    Obj_PlatformOutliner = 0x40A,
+    Obj_PlayerSpawn = 0x40B,
+    Obj_WarpStars = 0x40C,
+    Obj_EggCapsuleButton = 0x40D,
+    Obj_Signpost = 0x40E,
+    Obj_TensionBridgeChild = 0x40F,
+    Obj_ViewCollisionToggler = 0x410,
+    Obj_Motobug = 0x411,
+    Obj_MotobugSmoke = 0x412,
+    Obj_BlastoidShot = 0x413,
+    Obj_DepthCharge = 0x414,
+    Obj_TurboSpikerSpike = 0x415,
+    Obj_SegmentedColumnStub = 0x416,
+    Obj_StarPointerOrbs = 0x417,
+    Obj_SwingingPlatformTrigger = 0x418,
+    Obj_ReliefEye = 0x419,
+    Obj_Platform = 0x41A,
 };
 
 Object* GetNewObjectFromID(int ID);

@@ -39,9 +39,10 @@ namespace Convert_Levels {
             S3toIE2Level.ConvertLevel("Pachinko", 1, "Pachinko", "Rolling Jump Bonus", 3);
 
             //Regular Zones
+            S3toIE2Level.ConvertLevel("AIZ", 1, "AIZ1/Intro", "Angel Island Zone Act 1 Intro", 0);
             S3toIE2Level.ConvertLevel("AIZ", 1, "AIZ1", "Angel Island Zone Act 1", 0);
             S3toIE2Level.ConvertLevel("AIZ", 2, "AIZ2", "Angel Island Zone Act 2", 0);
-            // S3toIE2Level.ConvertLevel("AIZ", 2, "AIZ2B", "Angel Island Zone Act 2 Boss", 0); // Just needed 16x16 tiles.
+            S3toIE2Level.ConvertLevel("AIZ", 2, "AIZ2/Boss", "Angel Island Zone Act 2 Boss", 0);
             S3toIE2Level.ConvertLevel("HCZ", 1, "HCZ1", "Hydrocity Zone Act 1", 0);
             S3toIE2Level.ConvertLevel("HCZ", 2, "HCZ2", "Hydrocity Zone Act 2", 0);
             S3toIE2Level.ConvertLevel("MGZ", 1, "MGZ1", "Marble Garden Zone Act 1", 0);
@@ -52,24 +53,26 @@ namespace Convert_Levels {
             S3toIE2Level.ConvertLevel("ICZ", 2, "ICZ2", "Icecap Zone Act 2", 0);
             S3toIE2Level.ConvertLevel("LBZ", 1, "LBZ1", "Launch Base Zone Act 1", 0);
             S3toIE2Level.ConvertLevel("LBZ", 2, "LBZ2", "Launch Base Zone Act 2", 0);
+            //S3toIE2Level.ConvertLevel("LBZ", 2, "LBZ/Boss", "Launch Base Zone Act 2 Boss", 0);
             S3toIE2Level.ConvertLevel("MHZ", 1, "MHZ1", "Mushroom Hill Zone Act 1", 1);
+            //S3toIE2Level.ConvertLevel("MHZ", 1, "MHZ1/Boss", "Mushroom Hill Zone Act 1 Boss", 1);
             S3toIE2Level.ConvertLevel("MHZ", 2, "MHZ2", "Mushroom Hill Zone Act 2", 1);
             S3toIE2Level.ConvertLevel("FBZ", 1, "FBZ1", "Flying Battery Zone Act 1", 1);
             S3toIE2Level.ConvertLevel("FBZ", 2, "FBZ2", "Flying Battery Zone Act 2", 1);
             S3toIE2Level.ConvertLevel("SOZ", 1, "SOZ1", "Sandopolis Zone Act 1", 1);
-            S3toIE2Level.ConvertLevel("SOZ", 1, "SOZ1B", "Sandopolis Zone Act 1 Boss", 1);
+            S3toIE2Level.ConvertLevel("SOZ", 1, "SOZ1/Boss", "Sandopolis Zone Act 1 Boss", 1);
             S3toIE2Level.ConvertLevel("SOZ", 2, "SOZ2", "Sandopolis Zone Act 2", 1);
             S3toIE2Level.ConvertLevel("LRZ", 1, "LRZ1", "Lava Reef Zone Act 1", 1);
             S3toIE2Level.ConvertLevel("LRZ", 2, "LRZ2", "Lava Reef Zone Act 2", 1);
-            S3toIE2Level.ConvertLevel("LRZ", 2, "LRZ2B", "Lava Reef Zone Act 2 Boss", 1);
+            S3toIE2Level.ConvertLevel("LRZ", 2, "LRZ2/Boss", "Lava Reef Zone Act 2 Boss", 1);
             S3toIE2Level.ConvertLevel("HPZ", 1, "HPZ", "Hidden Palace Zone", 1);
-            S3toIE2Level.ConvertLevel("HPZ", 1, "HPZM", "Hidden Palace Zone Mini", 1);
+            S3toIE2Level.ConvertLevel("HPZ", 1, "HPZ/Mini", "Hidden Palace Zone Mini", 1);
             S3toIE2Level.ConvertLevel("SSZ", 1, "SSZ1", "Sky Sanctuary Zone Act 1", 1);
-            S3toIE2Level.ConvertLevel("SSZ", 1, "SSZ1B", "Sky Sanctuary Zone Act 1 Boss", 1);
+            S3toIE2Level.ConvertLevel("SSZ", 1, "SSZ1/Boss", "Sky Sanctuary Zone Act 1 Boss", 1);
             S3toIE2Level.ConvertLevel("SSZ", 2, "SSZ2", "Sky Sanctuary Zone Act 2", 1);
             S3toIE2Level.ConvertLevel("DEZ", 1, "DEZ1", "Death Egg Zone Act 1", 1);
             S3toIE2Level.ConvertLevel("DEZ", 2, "DEZ2", "Death Egg Zone Act 2", 1);
-            S3toIE2Level.ConvertLevel("DEZ", 2, "DEZ2B", "Death Egg Zone Act 2 Boss", 1);
+            S3toIE2Level.ConvertLevel("DEZ", 2, "DEZ2/Boss", "Death Egg Zone Act 2 Boss", 1);
             S3toIE2Level.ConvertLevel("DDZ", 1, "TDZ", "The Doomsday Zone", 1);
         }
     }

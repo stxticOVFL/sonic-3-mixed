@@ -5,10 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER CrushingColumn::CrushingColumn() {
-    BinIndex = LevelScene::LoadSpriteBin("ICZ/Wall and Column.bin");
-}
-
 void CrushingColumn::Create() {
     Object::Create();
     Active = true;
@@ -17,6 +13,7 @@ void CrushingColumn::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     W = 64;
     H = 224;
+    Sprite = LevelScene::LoadSpriteFromBin("ICZ/Wall and Column.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Wall and Column");
     YSpeed = 0;
     Type = SubType;
