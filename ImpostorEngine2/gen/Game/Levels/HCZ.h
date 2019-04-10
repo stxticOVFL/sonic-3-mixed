@@ -23,6 +23,7 @@ public:
     Level_HCZ(IApp* app, IGraphics* g, int act);
     void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
+    void LoadData();
     void FinishResults();
     void GoToNextAct();
     void AssignSpriteMapIDs();

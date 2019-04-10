@@ -72,30 +72,30 @@ PUBLIC void Scene_SettingsMenu::Init() {
 	Sound::PlayStream(0, "Music/Menu2.ogg", true, 0, at, true);
 
 	if (!MenuSprite) {
-		MenuSprite = new ISprite("Sprites/UI/MainMenu.gif", App);
-		MenuSprite->LoadAnimation("Sprites/UI/MainMenu.bin");
+		MenuSprite = new ISprite("Mixed/Sprites/UI/MainMenu.gif", App);
+		MenuSprite->LoadAnimation("Mixed/Sprites/UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
 		MenuSprite->SetTransparentColorIndex(0x0);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SettingsSprite) {
-		SettingsSprite = new ISprite("Sprites/UI/Settings.gif", App);
-		SettingsSprite->LoadAnimation("Sprites/UI/Settings.bin");
+		SettingsSprite = new ISprite("Mixed/Sprites/UI/Settings.gif", App);
+		SettingsSprite->LoadAnimation("Mixed/Sprites/UI/Settings.bin");
 		for (int i = 0; i < 9; i++)
 			SettingsSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
 		SettingsSprite->SetTransparentColorIndex(0x0);
 		SettingsSprite->UpdatePalette();
 	}
 	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("Sprites/UI/SuperButtons.gif", App);
-		SuperButtonsSprite->LoadAnimation("Sprites/UI/SuperButtons.bin");
+		SuperButtonsSprite = new ISprite("Mixed/Sprites/UI/SuperButtons.gif", App);
+		SuperButtonsSprite->LoadAnimation("Mixed/Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-		TextSprite = new ISprite("Sprites/UI/CreditsText.gif", App);
-		TextSprite->LoadAnimation("Sprites/UI/CreditsText.bin");
+		TextSprite = new ISprite("Mixed/Sprites/UI/CreditsText.gif", App);
+		TextSprite->LoadAnimation("Mixed/Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 

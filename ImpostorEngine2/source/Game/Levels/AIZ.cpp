@@ -434,49 +434,49 @@ PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
     if (!AIZObjectsSprite) {
-		AIZObjectsSprite = new ISprite("AIZ/Objects.gif", App);
-        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Tree.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Zipline Peg.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Animated Sprites.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Breakable Wall.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Caterkiller Jr.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Log Bridge.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform 2.bin");
-		AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor 2.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor Water.bin");
-		AIZObjectsSprite->LoadAnimation("AIZ/Drawbridge.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Draw Bridge Fire.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 1).bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 2).bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 1).bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 2).bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Flipping Bridge.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform 2.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Foreground Plant.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Monkey Dude.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Non Animated Sprites.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot Dust.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Ride Vine.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Rock.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Rock 2.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits 2.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Spiked Log.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Tulipon.bin");
+		AIZObjectsSprite = new ISprite("AIZ/Objects.gif", App, SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Tree.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Zipline Peg.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Animated Sprites.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Breakable Wall.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Caterkiller Jr.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Log Bridge.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform 2.bin", SaveGame::CurrentMode);
+		AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor 2.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor Water.bin", SaveGame::CurrentMode);
+		AIZObjectsSprite->LoadAnimation("AIZ/Drawbridge.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Draw Bridge Fire.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 1).bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 2).bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 1).bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Falling Log Splash (Act 2).bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Flipping Bridge.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform.bin", SaveGame::CurrentMode);
+		AIZObjectsSprite->LoadAnimation("AIZ/Floating Platform 2.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Foreground Plant.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Monkey Dude.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Non Animated Sprites.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/RhinoBot Dust.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Ride Vine.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock 2.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Rock Bits 2.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Spiked Log.bin", SaveGame::CurrentMode);
+        AIZObjectsSprite->LoadAnimation("AIZ/Tulipon.bin", SaveGame::CurrentMode);
 	}
 
     if (!AIZBossSprite) {
-        AIZBossSprite = new ISprite("AIZ/Boss.gif", App);
+        AIZBossSprite = new ISprite("AIZ/Boss.gif", App, SaveGame::CurrentMode);
         AIZBossSprite->Print = true;
-        AIZBossSprite->LoadAnimation("AIZ/Act 2 Background Tree.bin");
-        AIZBossSprite->LoadAnimation("AIZ/Airship.bin");
-        AIZBossSprite->LoadAnimation("AIZ/FlameMobile.bin");
-        AIZBossSprite->LoadAnimation("AIZ/FireBreath.bin");
+        AIZBossSprite->LoadAnimation("AIZ/Act 2 Background Tree.bin", SaveGame::CurrentMode);
+        AIZBossSprite->LoadAnimation("AIZ/Airship.bin", SaveGame::CurrentMode);
+        AIZBossSprite->LoadAnimation("AIZ/FlameMobile.bin", SaveGame::CurrentMode);
+        AIZBossSprite->LoadAnimation("AIZ/FireBreath.bin", SaveGame::CurrentMode);
     }
 
     if (!KnuxSprite[0]) {
@@ -509,6 +509,12 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 
 PUBLIC void Level_AIZ::LoadData() {
     LevelScene::LoadData();
+	//Water Palette
+	for (int i = 0; i < 256; i++)
+	{
+		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
+	}
+	TileSprite->UpdatePalette();
     AIZObjectsSprite->LinkPalette(TileSprite);
 }
 

@@ -59,8 +59,8 @@ PUBLIC void Scene_TitleScreen::Init() {
 
 	if (!TitleSprite)
 	{
-		TitleSprite = new ISprite("Sprites/Title/Title.gif", App);
-		TitleSprite->LoadAnimation("Sprites/Title/Title.bin");
+		TitleSprite = new ISprite("Classic/Sprites/Title/Title.gif", App);
+		TitleSprite->LoadAnimation("Classic/Sprites/Title/Title.bin");
 		TitleSprite->SetTransparentColorIndex(0);
 		//TitleSprite->SetTransparentColorIndex(0x20);
 		TitleSprite->UpdatePalette();
@@ -68,16 +68,16 @@ PUBLIC void Scene_TitleScreen::Init() {
 
 	if (!TitleBGSprite)
 	{
-		TitleBGSprite = new ISprite("Sprites/Title/BG.gif", App);
-		TitleBGSprite->LoadAnimation("Sprites/Title/Background.bin");
+		TitleBGSprite = new ISprite("Classic/Sprites/Title/BG.gif", App);
+		TitleBGSprite->LoadAnimation("Classic/Sprites/Title/Background.bin");
 		TitleBGSprite->SetTransparentColorIndex(0xFF);
 		TitleBGSprite->UpdatePalette();
 	}
 
 	if (!TitleSegaSprite)
 	{
-		TitleSegaSprite = new ISprite("Sprites/Title/Sega.gif", App);
-		TitleSegaSprite->LoadAnimation("Sprites/Title/Sega.bin");
+		TitleSegaSprite = new ISprite("Classic/Sprites/Title/Sega.gif", App);
+		TitleSegaSprite->LoadAnimation("Classic/Sprites/Title/Sega.bin");
 		TitleSegaSprite->SetTransparentColorIndex(0x0);
 		TitleSegaSprite->UpdatePalette();
 	}

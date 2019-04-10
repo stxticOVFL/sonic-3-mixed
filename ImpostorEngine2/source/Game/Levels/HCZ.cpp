@@ -246,6 +246,17 @@ PUBLIC void Level_HCZ::RestartStage(bool doActTransition, bool drawBackground) {
     }
 }
 
+PUBLIC void Level_HCZ::LoadData() {
+	LevelScene::LoadData();
+	if (Act == 1) TileSprite->SetTransparentColorIndex(0); //Lazy fix
+	//Water Palette
+	for (int i = 0; i < 256; i++)
+	{
+		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
+	}
+	TileSprite->UpdatePalette();
+}
+
 PUBLIC void Level_HCZ::FinishResults() {
     if (VisualAct == 1) {
         LevelScene::FinishResults();

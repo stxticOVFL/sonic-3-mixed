@@ -86,6 +86,7 @@ public:
     void LinkPalette(ISprite* other);
     void LoadBin(const char* filename);
     void LoadAnimation(const char* filename);
+    void LoadAnimation(const char* filename, byte mode);
     void LoadSprite(const char* filename);
     void LoadSprite(std::string filename);
     int FindAnimation(const char* animname);

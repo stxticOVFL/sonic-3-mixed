@@ -108,15 +108,15 @@ PUBLIC void Scene_MainMenu::Init() {
 	Sound::PlayStream(0, "Music/Menu1.ogg", true, 0, at, true);
 
 	if (!MenuSprite) {
-		MenuSprite = new ISprite("UI/MainMenu.gif", App, 1);
-		MenuSprite->LoadAnimation("UI/MainMenu.bin");
+		MenuSprite = new ISprite("Mixed/Sprites/UI/MainMenu.gif", App);
+		MenuSprite->LoadAnimation("Mixed/Sprites/UI/MainMenu.bin");
 		for (int i = 0; i < 9; i++)
 			MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[i]);
 		MenuSprite->SetTransparentColorIndex(0x0);
 		MenuSprite->UpdatePalette();
 	}
 	if (!SphereSprite) {
-		SphereSprite = new ISprite("UI/MenuSpheres.gif", App, 1);
+		SphereSprite = new ISprite("Mixed/Sprites/UI/MenuSpheres.gif", App);
 		ISprite::Animation an;
 		an.Name = (char*)"Sign in GitLab.com";
 		an.FrameCount = 5;
@@ -135,14 +135,14 @@ PUBLIC void Scene_MainMenu::Init() {
 		SphereSprite->SetTransparentColorIndex(26);
 	}
 	if (!SuperButtonsSprite) {
-		SuperButtonsSprite = new ISprite("UI/SuperButtons.gif", App, 1);
-		SuperButtonsSprite->LoadAnimation("UI/SuperButtons.bin");
+		SuperButtonsSprite = new ISprite("Mixed/Sprites/UI/SuperButtons.gif", App);
+		SuperButtonsSprite->LoadAnimation("Mixed/Sprites/UI/SuperButtons.bin");
 		SuperButtonsSprite->SetPalette(1, 0x282028);
 		SuperButtonsSprite->UpdatePalette();
 	}
 	if (!TextSprite) {
-		TextSprite = new ISprite("UI/CreditsText.gif", App, 1);
-		TextSprite->LoadAnimation("UI/CreditsText.bin");
+		TextSprite = new ISprite("Mixed/Sprites/UI/CreditsText.gif", App);
+		TextSprite->LoadAnimation("Mixed/Sprites/UI/CreditsText.bin");
 		TextSprite->UpdatePalette();
 	}
 

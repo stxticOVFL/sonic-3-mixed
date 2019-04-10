@@ -19,6 +19,7 @@ public:
     Level_ICZ(IApp* app, IGraphics* g, int act);
     void Init();
     void RestartStage(bool doActTransition, bool drawBackground);
+    void LoadData();
     void AssignSpriteMapIDs();
     void LoadZoneSpecificSprites();
     void FinishResults();

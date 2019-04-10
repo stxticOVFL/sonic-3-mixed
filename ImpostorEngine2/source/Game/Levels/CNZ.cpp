@@ -435,6 +435,16 @@ PUBLIC void Level_CNZ::RestartStage(bool doActTransition, bool drawBackground) {
     LevelScene::RestartStage(doActTransition, drawBackground);
 }
 
+PUBLIC void Level_CNZ::LoadData() {
+	LevelScene::LoadData();
+	//Water Palette
+	for (int i = 0; i < 256; i++)
+	{
+		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
+	}
+	TileSprite->UpdatePalette();
+}
+
 PUBLIC void Level_CNZ::AssignSpriteMapIDs() {
     LevelScene::AssignSpriteMapIDs();
 

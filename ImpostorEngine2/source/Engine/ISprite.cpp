@@ -177,7 +177,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinti
 			outfile.clear();
 			outfile.append(checkedFilename);
 	}
-    Filename = checkedFilename;
+    Filename = outfile;
     if (strEndsWith(Filename.c_str(), ".bin")) {
         LoadBin(Filename.c_str());
     } else {
@@ -389,8 +389,10 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
     IResource* SpriteFile = IResources::Load(checkedFilename.c_str());
     if (SpriteFile == NULL) {
         IApp::Print(2, "Couldn't open file '%s'!", checkedFilename.c_str());
-        fflush(stdin);
-        exit(0);
+        //fflush(stdin);
+        //exit(0);
+		IResources::Close(SpriteFile);
+		return;
     }
 
     IStreamer reader(SpriteFile);
@@ -431,7 +433,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
             AnimFrame frame;
             frame.SheetNumber = reader.ReadByte();
             frame.Duration = reader.ReadInt16();
-            reader.ReadUInt16(); //int ID = reader.ReadUInt16();
+			frame.Extra = reader.ReadUInt16(); //int ID = reader.ReadUInt16();
             frame.X = reader.ReadUInt16();
             frame.Y = reader.ReadUInt16();
             frame.W = reader.ReadUInt16();
@@ -451,6 +453,42 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
     }
     AnimCount += count;
     IResources::Close(SpriteFile);
+}
+
+PUBLIC void ISprite::LoadAnimation(const char* filename, byte mode) {
+	std::string checkedFilename(filename);
+	if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
+		checkedFilename = "Sprites/" + checkedFilename;
+	}
+
+	std::string outfile;
+	switch (mode) {
+	case 0: {
+		outfile.append("Classic/");
+		outfile.append(checkedFilename);
+		std::ifstream cfile(outfile);
+		if ((bool)cfile) {
+			break;
+		}
+	}
+			break;
+	case 1:
+	case 2: {
+		outfile.clear();
+		outfile.append("Mixed/");
+		outfile.append(checkedFilename);
+		std::ifstream cfile(outfile);
+		if ((bool)cfile) {
+			break;
+		}
+	}
+			break;
+	default:
+		outfile.clear();
+		outfile.append(checkedFilename);
+	}
+	Filename = outfile;
+	LoadAnimation(Filename.c_str());
 }
 
 PUBLIC void ISprite::LoadSprite(const char* filename) {

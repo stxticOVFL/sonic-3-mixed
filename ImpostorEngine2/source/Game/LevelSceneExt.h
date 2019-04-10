@@ -78,6 +78,8 @@ struct SceneData {
     TileCfg*  tiles2;
     ISprite*  tileTex;
 
+	uint32_t Palette[8][0xFF];
+
     int*      animatedTileFrames;
     int       animatedTilesCount = 0;
     int**     animatedTileDurations = NULL;

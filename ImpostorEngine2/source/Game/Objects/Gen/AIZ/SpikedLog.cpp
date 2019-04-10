@@ -9,7 +9,7 @@ void SpikedLog::Create() {
     Object::Create();
     Active = true;
     Priority = false;
-    W = 64;
+    W = 48;
     H = 16;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");

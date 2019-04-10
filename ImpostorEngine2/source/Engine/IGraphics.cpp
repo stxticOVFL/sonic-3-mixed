@@ -151,7 +151,7 @@ PUBLIC VIRTUAL void IGraphics::Init() {
 	FrameBufferClone = (uint32_t*)calloc(App->WIDTH * App->HEIGHT, sizeof(uint32_t));
 	RENDER_WIDTH = App->WIDTH;
 
-	IResource* res = IResources::Load("Sprites/UI/DevFont.bin");
+	IResource* res = IResources::Load("Classic/Sprites/UI/DevFont.bin");
 	if (res) {
 		res->Read(Font8x8_basic, 0x400);
 	}
