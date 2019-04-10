@@ -13,7 +13,8 @@ void SpikedLog::Create() {
     H = 16;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
-    CurrentAnimation = 31;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Spiked Log.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Spiked Log");
     Direction = 0;
     Period = 0;
     Spin = 0;

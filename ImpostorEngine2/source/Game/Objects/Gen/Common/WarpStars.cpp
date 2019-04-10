@@ -5,20 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER WarpStars::WarpStars() {
-    if (SaveGame::CurrentMode == 0) {
-        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/StarPost.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin");
-    }
-}
-
 void WarpStars::Create() {
     Object::Create();
     Active = false;
     Priority = true;
     DoDeform = false;
+    BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin", SaveGame::CurrentMode);
     W = 16;
     H = 16;
     Rotation = 0;

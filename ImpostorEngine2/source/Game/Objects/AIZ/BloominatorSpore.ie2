@@ -8,6 +8,8 @@ event Create() {
     W = 16;
     H = 16;
 
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Tulipon.bin",SaveGame.CurrentMode);
+
     Invincible = true;
     BounceOffShield = true;
 }

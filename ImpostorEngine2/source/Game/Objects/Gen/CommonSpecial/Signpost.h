@@ -22,7 +22,6 @@ public:
     bool Falling;
     bool StartResults;
     
-    CONSTRUCTER Signpost();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

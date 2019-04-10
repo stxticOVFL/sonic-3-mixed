@@ -5,40 +5,43 @@
 
 typedef IMath Math;
 
-CONSTRUCTER FloatingPlatform::FloatingPlatform() {
-    if (LevelScene::IsZoneCurrently("AIZ")) {
-        Act1BinIndex = LevelScene::LoadSpriteBin("AIZ/Floating Platform.bin");
-        Act2BinIndex = LevelScene::LoadSpriteBin("AIZ/Floating Platform 2.bin");
-        BinIndex = Act1BinIndex;
-    }
-    else if (LevelScene::IsZoneCurrently("HCZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("HCZ/Platform.bin");
-    }
-    else if (LevelScene::IsZoneCurrently("MGZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("MGZ/Floating Platform.bin");
-    }
-    else if (LevelScene::IsZoneCurrently("CNZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("CNZ/Rising Platform.bin");
-    }
-    else if (LevelScene::IsZoneCurrently("ICZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("ICZ/Platforms.bin");
-    }
-    else if (LevelScene::IsZoneCurrently("LBZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("LBZ/Floating Platform.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/Floating Platform.bin");
-        Act1BinIndex = BinIndex;
-        Act2BinIndex = BinIndex;
-    }
-}
-
 void FloatingPlatform::Create() {
     Object::Create();
     Active = true;
     Priority = true;
     DoDeform = true;
     IsFloatingPlatform = true;
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        if (Scene->Act <= 1) {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Floating Platform.bin", SaveGame::CurrentMode);
+        }
+        else {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Floating Platform 2.bin", SaveGame::CurrentMode);
+        }
+    }
+    else if (LevelScene::IsZoneCurrently("HCZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("HCZ/Platform.bin", SaveGame::CurrentMode);
+    }
+    else if (LevelScene::IsZoneCurrently("MGZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("MGZ/Floating Platform.bin", SaveGame::CurrentMode);
+    }
+    else if (LevelScene::IsZoneCurrently("CNZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("CNZ/Rising Platform.bin", SaveGame::CurrentMode);
+    }
+    else if (LevelScene::IsZoneCurrently("ICZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("ICZ/Platforms.bin", SaveGame::CurrentMode);
+    }
+    else if (LevelScene::IsZoneCurrently("LBZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("LBZ/Floating Platform.bin", SaveGame::CurrentMode);
+    }
+    else {
+        if (Scene->Act <= 1) {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Floating Platform.bin", SaveGame::CurrentMode);
+        }
+        else {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Floating Platform 2.bin", SaveGame::CurrentMode);
+        }
+    }
     SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");
     Outliner = Scene->AddNewObject(Obj_PlatformOutliner, 0, X, Y, false, false);
@@ -86,13 +89,10 @@ void FloatingPlatform::Create() {
     switch (Scene->ZoneID) {
         case 1:
         if (Scene->Act == 1) {
-            BinIndex = Act1BinIndex;
-            CurrentAnimation = Sprite->FindAnimation("Floating Platform");
             Sprite->LinkPalette(Scene->TileSprite);
+            CurrentAnimation = Sprite->FindAnimation("Floating Platform");
         }
         else if (Scene->Act == 2) {
-            BinIndex = Act2BinIndex;
-            Sprite = LevelScene::GetSpriteFromBinIndex(BinIndex);
             Sprite->LinkPalette(Scene->TileSprite);
             CurrentAnimation = Sprite->FindAnimation("Floating Platform 2");
         }

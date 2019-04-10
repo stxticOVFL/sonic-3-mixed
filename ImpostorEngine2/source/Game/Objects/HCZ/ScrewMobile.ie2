@@ -25,13 +25,11 @@ enum BossState {
 
 var State:int;
 
-event ScrewMobile() : CONSTRUCTER {
-    //BinIndex = LevelScene.LoadSpriteBin("HCZ/ScrewMobile.bin");
-}
-
 event Create() {
     Active = true;
     Priority = false;
+
+	BinIndex = LevelScene.LoadSpriteBin("HCZ/ScrewMobile.bin",SaveGame.CurrentMode);
 
     W = 32;
     H = 32;

@@ -9,19 +9,13 @@ var StarTimer:int;
 var StarGoTimer:int;
 var Stars:Object[4];
 
-event StarPost() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
-        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/StarPost.bin");
-    } else {
-	    BinIndex = LevelScene.LoadSpriteBin("Global/StarPost.bin");
-    }
-}
-
 
 event Create() {
     Active = true;
     Priority = false;
     DoDeform = false;
+
+	Sprite = LevelScene.LoadSpriteFromBin("Global/StarPost.bin",SaveGame.CurrentMode);
 
     W = 16;
     H = 64;

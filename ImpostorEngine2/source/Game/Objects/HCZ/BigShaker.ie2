@@ -39,10 +39,6 @@ enum BossState {
 
 var State:int;
 
-event BigShaker() : CONSTRUCTER {
-    //BinIndex = LevelScene.LoadSpriteBin("HCZ/BigShaker.bin");
-}
-
 event Create() {
     TimerSpin = 0;
     SpinSpeed = 0;
@@ -51,6 +47,8 @@ event Create() {
     InvulnTimer = 0;
     Started = false;
     ExplosionTimer = 0x80;
+
+	BinIndex = LevelScene.LoadSpriteBin("HCZ/BigShaker.bin",SaveGame.CurrentMode);
 
     Active = true;
     Priority = false;

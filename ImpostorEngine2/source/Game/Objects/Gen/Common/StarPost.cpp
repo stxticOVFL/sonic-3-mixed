@@ -5,20 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER StarPost::StarPost() {
-    if (SaveGame::CurrentMode == 0) {
-        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/StarPost.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin");
-    }
-}
-
 void StarPost::Create() {
     Object::Create();
     Active = true;
     Priority = false;
     DoDeform = false;
+    Sprite = LevelScene::LoadSpriteFromBin("Global/StarPost.bin", SaveGame::CurrentMode);
     W = 16;
     H = 64;
     Rotation = 0;

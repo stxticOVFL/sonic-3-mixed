@@ -2,18 +2,12 @@ var GoTimer:int;
 var StoredX:int;
 var StoredY:int;
 
-event WarpStars() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
-        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/StarPost.bin");
-    } else {
-	    BinIndex = LevelScene.LoadSpriteBin("Global/StarPost.bin");
-    }
-}
-
 event Create() {
     Active = false;
     Priority = true;
     DoDeform = false;
+
+	BinIndex = LevelScene.LoadSpriteBin("Global/StarPost.bin",SaveGame.CurrentMode);
 
     W = 16;
     H = 16;

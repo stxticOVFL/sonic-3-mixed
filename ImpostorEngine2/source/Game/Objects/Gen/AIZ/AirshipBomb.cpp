@@ -11,8 +11,8 @@ void AirshipBomb::Create() {
     Priority = true;
     W = 24;
     H = 32;
-    Sprite = Scene->SpriteMapIDs[0x90];
-    CurrentAnimation = 1;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Airship.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Bomb");
     Gravity = 0x70;
     X = InitialX + Scene->CameraX;
     Y = InitialY + Scene->CameraY;
@@ -59,12 +59,7 @@ void AirshipBomb::Update() {
 void AirshipBomb::Render(int CamX, int CamY) {
     X = Scene->Signal[6] + InitialX + CamX;
     Y = Scene->Signal[7] + (WeY >> 16) + CamY;
-    if (DrawCollisions) {
-        G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
-    }
-    else {
-        G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    }
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
     if (App->viewObjectCollision) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);

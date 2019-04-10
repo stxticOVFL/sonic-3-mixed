@@ -5,15 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Bloominator::Bloominator() {
-    if (LevelScene::IsZoneCurrently("AIZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/Tulipon.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/Tulipon.bin");
-    }
-}
-
 void Bloominator::Create() {
     Enemy::Create();
     Active = true;
@@ -22,6 +13,7 @@ void Bloominator::Create() {
     H = 48;
     Frame = 0;
     HitCount = 1;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Tulipon.bin", SaveGame::CurrentMode);
     switch (Scene->ZoneID) {
         case 1:
         Sprite->LinkPalette(Scene->TileSprite);

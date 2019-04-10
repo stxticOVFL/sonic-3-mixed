@@ -5,13 +5,11 @@
 
 typedef IMath Math;
 
-CONSTRUCTER ScrewMobile::ScrewMobile() {
-}
-
 void ScrewMobile::Create() {
     Enemy::Create();
     Active = true;
     Priority = false;
+    BinIndex = LevelScene::LoadSpriteBin("HCZ/ScrewMobile.bin", SaveGame::CurrentMode);
     W = 32;
     H = 32;
     int test;

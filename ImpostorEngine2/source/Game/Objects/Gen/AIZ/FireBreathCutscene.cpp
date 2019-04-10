@@ -5,13 +5,11 @@
 
 typedef IMath Math;
 
-CONSTRUCTER FireBreathCutscene::FireBreathCutscene() {
-}
-
 void FireBreathCutscene::Create() {
     Enemy::Create();
     Active = true;
     Priority = true;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/FireBreath.bin", SaveGame::CurrentMode);
     W = 48;
     H = 48;
     Radius = 24;

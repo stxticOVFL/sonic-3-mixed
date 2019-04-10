@@ -15,7 +15,9 @@ event Create() {
 
     VisualLayer = 1;
 
-    CurrentAnimation = 21;
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Foreground Plant.bin",SaveGame.CurrentMode);
+
+    CurrentAnimation = Sprite.FindAnimation("Foreground Plant");
 }
 
 event Render(CamX:int, CamY:int) {

@@ -9,6 +9,8 @@ event Create() {
 
     // VisualLayer = 1;
 
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Act 1 Tree.bin",SaveGame.CurrentMode);
+
     CurrentAnimation = 0;
     Frame = 0;
 }

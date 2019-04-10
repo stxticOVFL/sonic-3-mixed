@@ -9,16 +9,6 @@ var DustBinIndex:int;
 var CurrentDustAnimation:int;
 var DustSprite:ISprite;
 
-event RhinoBot() : CONSTRUCTER {
-    if (LevelScene.IsZoneCurrently("AIZ")) {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot.bin");
-        DustBinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot Dust.bin");
-    } else {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot.bin");
-        DustBinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot Dust.bin");
-    }
-}
-
 event Create() {
     Active = true;
     Priority = false;
@@ -35,6 +25,14 @@ event Create() {
 
     HitCount = 1;
     
+	if (LevelScene.IsZoneCurrently("AIZ")) {
+        Sprite = LevelScene.LoadSpriteFromBin("AIZ/RhinoBot.bin",SaveGame.CurrentMode);
+        DustBinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot Dust.bin",SaveGame.CurrentMode);
+    } else {
+        Sprite = LevelScene.LoadSpriteFromBin("AIZ/RhinoBot.bin",SaveGame.CurrentMode);
+        DustBinIndex = LevelScene.LoadSpriteBin("AIZ/RhinoBot Dust.bin",SaveGame.CurrentMode);
+    }
+	
     DustSprite = LevelScene.GetSpriteFromBinIndex(DustBinIndex);
     
     CurrentAnimation = Sprite.FindAnimation("RhinoBot");

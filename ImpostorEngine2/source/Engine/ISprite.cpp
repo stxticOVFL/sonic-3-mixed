@@ -125,7 +125,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
 		case 1:
 		case 2: {
 			outfile.clear();
-			outfile.append("Classic/");
+			outfile.append("Mixed/");
 			outfile.append(checkedFilename);
 			std::ifstream cfile(outfile);
 			if ((bool)cfile) {

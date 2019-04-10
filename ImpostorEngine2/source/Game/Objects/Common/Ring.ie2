@@ -9,11 +9,7 @@ var ShouldRingFall:bool;
 event Create() {    
 	Active = true;
 	
-	if (SaveGame.CurrentMode == 0) {
-        Sprite = LevelScene.LoadSpriteFromBin("GlobalS3K/Ring.bin");
-    } else {
-	    Sprite = LevelScene.LoadSpriteFromBin("Global/Ring.bin");
-    }
+	    Sprite = LevelScene.LoadSpriteFromBin("Global/Ring.bin",SaveGame.CurrentMode);
     ShouldRingFall = false;
 	
     Timer = 0xFF;

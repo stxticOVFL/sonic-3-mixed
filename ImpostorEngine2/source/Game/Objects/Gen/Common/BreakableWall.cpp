@@ -35,6 +35,7 @@ void BreakableWall::Create() {
         H = 80;
         Priority = true;
         CurrentAnimation = 3;
+        Sprite = LevelScene::LoadSpriteFromBin("AIZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 2:
         W = 32;
@@ -42,40 +43,67 @@ void BreakableWall::Create() {
         if (Behavior == 2) W = 48;
 
         VisualLayer = 1;
+        Sprite = LevelScene::LoadSpriteFromBin("HCZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 3:
         W = 64;
         H = 80;
         CurrentAnimation = 5;
+        Sprite = LevelScene::LoadSpriteFromBin("MGZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 4:
         W = 32;
         H = 64;
         CurrentAnimation = 0;
+        Sprite = LevelScene::LoadSpriteFromBin("CNZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 5:
         W = 64;
         H = 128;
         CurrentAnimation = 0;
+        Sprite = LevelScene::LoadSpriteFromBin("ICZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 6:
         W = 32;
         H = 64;
         CurrentAnimation = 1;
+        Sprite = LevelScene::LoadSpriteFromBin("LBZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 7:
+        W = 32;
+        H = 64;
+        if (Behavior == 4) H = 96;
+
+        Sprite = LevelScene::LoadSpriteFromBin("MHZ/Breakable Wall.bin", SaveGame::CurrentMode);
+        break;
         case 8:
+        W = 32;
+        H = 64;
+        if (Behavior == 4) H = 96;
+
+        Sprite = LevelScene::LoadSpriteFromBin("FBZ/Breakable Wall.bin", SaveGame::CurrentMode);
+        break;
         case 9:
         W = 32;
         H = 64;
         if (Behavior == 4) H = 96;
 
+        Sprite = LevelScene::LoadSpriteFromBin("SOZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
         case 10:
+        Sprite = LevelScene::LoadSpriteFromBin("LRZ/Breakable Wall.bin", SaveGame::CurrentMode);
+        break;
         case 11:
+        Sprite = LevelScene::LoadSpriteFromBin("HPZ/Breakable Wall.bin", SaveGame::CurrentMode);
+        break;
         case 12:
+        Sprite = LevelScene::LoadSpriteFromBin("SSZ/Breakable Wall.bin", SaveGame::CurrentMode);
+        break;
         case 13:
+        Sprite = LevelScene::LoadSpriteFromBin("DEZ/Breakable Wall.bin", SaveGame::CurrentMode);
+        break;
         case 14:
+        Sprite = LevelScene::LoadSpriteFromBin("DDZ/Breakable Wall.bin", SaveGame::CurrentMode);
         break;
     }
 

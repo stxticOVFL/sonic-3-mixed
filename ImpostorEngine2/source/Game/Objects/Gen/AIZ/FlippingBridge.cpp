@@ -5,10 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER FlippingBridge::FlippingBridge() {
-    BinIndex = LevelScene::LoadSpriteBin("AIZ/Flipping Bridge.bin");
-}
-
 void FlippingBridge::Create() {
     Object::Create();
     Active = true;
@@ -29,6 +25,7 @@ void FlippingBridge::Create() {
     Flip = FlipX ? 1 : -1;
     Timer = 0;
     Frame = 5;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Flipping Bridge.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Flipping Bridge");
 }
 

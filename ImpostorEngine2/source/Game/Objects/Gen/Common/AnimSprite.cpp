@@ -10,8 +10,8 @@ void AnimSprite::Create() {
     Active = true;
     switch (Scene->ZoneID) {
         case 1:
+        Sprite = LevelScene::LoadSpriteFromBin("AIZ/Animated Sprites.bin", SaveGame::CurrentMode);
         CurrentAnimation = 2;
-        break;
     }
 
     switch (SubType) {

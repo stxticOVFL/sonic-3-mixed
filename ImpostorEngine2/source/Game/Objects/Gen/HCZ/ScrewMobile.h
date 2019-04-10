@@ -33,7 +33,6 @@ public:
     int RackFrame;
     int State;
     
-    CONSTRUCTER ScrewMobile();
     void Create();
     void DoExplosionDebris();
     int OnHit();

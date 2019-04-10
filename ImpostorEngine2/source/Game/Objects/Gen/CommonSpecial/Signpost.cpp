@@ -5,21 +5,13 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Signpost::Signpost() {
-    if (SaveGame::CurrentMode == 0) {
-        BinIndex = LevelScene::LoadSpriteBin("Global/SignPost.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("Global/SignPost.bin");
-    }
-}
-
 void Signpost::Create() {
     Object::Create();
     W = 48;
     H = 24;
     Active = true;
     Priority = true;
+    Sprite = LevelScene::LoadSpriteFromBin("Global/SignPost.bin", SaveGame::CurrentMode);
     CurrentAnimation = int(Scene->Players[0]->Character);
     CleanupInactiveObject = true;
     XSpeed = 0;

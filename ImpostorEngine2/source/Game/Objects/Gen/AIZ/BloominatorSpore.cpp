@@ -12,6 +12,7 @@ void BloominatorSpore::Create() {
     CleanupInactiveObject = true;
     W = 16;
     H = 16;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Tulipon.bin", SaveGame::CurrentMode);
     Invincible = true;
     BounceOffShield = true;
 }

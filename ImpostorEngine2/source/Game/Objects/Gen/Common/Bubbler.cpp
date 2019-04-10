@@ -11,6 +11,7 @@ void Bubbler::Create() {
     this->H = 32;
     this->Active = true;
     this->Priority = false;
+    Sprite = LevelScene::LoadSpriteFromBin("Global/Water.bin", SaveGame::CurrentMode);
     this->Frame = 0;
     this->CurrentAnimation = 2;
     this->Sprite = Scene->WaterSprite;

@@ -29,7 +29,8 @@ void RideVine::Create() {
     ClassicStyle = false;
     VisualLayer = 0;
     Timer = 0;
-    CurrentAnimation = 26;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Ride Vine.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Ride Vine");
 }
 
 int RideVine::OnLeaveScreen() {

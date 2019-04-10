@@ -6,10 +6,6 @@ var Rise:int;
 var Flip:int;
 var RevolutionDuration:int;
 
-event FlippingBridge() : CONSTRUCTER {
-    BinIndex = LevelScene.LoadSpriteBin("AIZ/Flipping Bridge.bin");
-}
-
 event Create() {
     Active = true;
     Priority = true;
@@ -36,6 +32,8 @@ event Create() {
     Timer = 0;
 
     Frame = 5;
+
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Flipping Bridge.bin",SaveGame.CurrentMode);
 
     CurrentAnimation = Sprite.FindAnimation("Flipping Bridge");
 }

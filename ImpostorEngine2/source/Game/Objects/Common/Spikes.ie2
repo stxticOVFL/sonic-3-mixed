@@ -5,18 +5,12 @@ var Size:int;
 var Vertical:int;
 var In:bool;
 
-event Spikes() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
-        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/Spikes.bin");
-    } else {
-	    BinIndex = LevelScene.LoadSpriteBin("Global/Spikes.bin");
-    }
-}
-
 event Create() {
     Active = true;
     Priority = false;
     DoDeform = true;
+
+	Sprite = LevelScene.LoadSpriteFromBin("Global/Spikes.bin",SaveGame.CurrentMode);
 
     Solid = true;
     Scene.AddSelfToRegistry(this, "Solid");

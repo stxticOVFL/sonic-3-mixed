@@ -11,6 +11,7 @@ void EggCapsuleButton::Create() {
     Priority = false;
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
+    Sprite = LevelScene::LoadSpriteFromBin("Global/EggPrison.bin", SaveGame::CurrentMode);
     W = 32;
     H = 16;
     Rotation = 0;

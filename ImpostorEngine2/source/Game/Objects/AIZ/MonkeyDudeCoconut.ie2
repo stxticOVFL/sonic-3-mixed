@@ -1,13 +1,5 @@
 subclass Enemy;
 
-event MonkeyDudeCoconut() : CONSTRUCTER {
-    if (LevelScene.IsZoneCurrently("AIZ")) {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
-    } else {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
-    }
-}
-
 
 event Create() {
     Active = true;
@@ -15,6 +7,8 @@ event Create() {
 
     W = 16;
     H = 16;
+
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Monkey Dude.bin",SaveGame.CurrentMode);
 
     Invincible = true;
 

@@ -6,19 +6,13 @@ var Falling:bool;
 
 var StartResults:bool;
 
-event Signpost() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
-        BinIndex = LevelScene.LoadSpriteBin("Global/SignPost.bin");
-    } else {
-	    BinIndex = LevelScene.LoadSpriteBin("Global/SignPost.bin");
-    }
-}
-
 event Create() {
     W = 48;
     H = 24;
     Active = true;
     Priority = true;
+
+	Sprite = LevelScene.LoadSpriteFromBin("Global/SignPost.bin",SaveGame.CurrentMode);
 
     CurrentAnimation = int(Scene.Players[0].Character);
 

@@ -11,6 +11,7 @@ CONSTRUCTER FlameMobile::FlameMobile() {
 void FlameMobile::Create() {
     Enemy::Create();
     Visible = true;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/FlameMobile.bin", SaveGame::CurrentMode);
     Active = true;
     Priority = true;
     W = 48;

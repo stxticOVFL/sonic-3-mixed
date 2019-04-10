@@ -4,14 +4,7 @@ var Length:int;
 var LastY:int;
 
 event FallingLog() : CONSTRUCTER {
-    if (Scene.Act == 1) {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/Falling Log (Act 1).bin");
-        LevelScene.LoadSpriteBin("AIZ/Falling Log Splash (Act 1).bin");
-    }
-    else {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/Falling Log (Act 2).bin");
-        LevelScene.LoadSpriteBin("AIZ/Falling Log Splash (Act 2).bin");
-    }
+
 }
 
 event Create() {
@@ -20,6 +13,13 @@ event Create() {
 
     W = 48;
     H = 14;
+
+    if (Scene.Act == 1) {
+        Sprite = LevelScene.LoadSpriteFromBin("AIZ/Falling Log (Act 1).bin",SaveGame.CurrentMode);
+    }
+    else {
+        Sprite = LevelScene.LoadSpriteFromBin("AIZ/Falling Log (Act 2).bin",SaveGame.CurrentMode);
+    }
 
     SolidTop = true;
     Scene.AddSelfToRegistry(this, "Solid");

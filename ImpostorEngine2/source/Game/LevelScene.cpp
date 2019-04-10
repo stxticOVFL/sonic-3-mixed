@@ -629,6 +629,31 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
     }
 }
 
+PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename, byte Mode) {
+	if (IApp::GlobalApp == NULL) {
+		return NULL;
+	}
+
+	if (FindSpriteBin(std::string(Filename)) && SpriteBinMap.find(std::string(Filename))->second != -1) {
+		ISprite* sprite = SpriteBinMapIDs.at(SpriteBinMap.find(std::string(Filename))->second);
+		if (sprite == nullptr) {
+			sprite = SpriteBinMapIDs.at(ResetSpriteBin(Filename));
+		}
+		return sprite;
+	}
+	else {
+		ISprite* BinSprite = new ISprite(Filename, IApp::GlobalApp, Mode);
+		SpriteBinMapIDs.push_back(BinSprite);
+		SpriteBinMapIDs.shrink_to_fit();
+		size_t BinIndex = SpriteBinMapIDs.size() - 1;
+
+		if (!FindSpriteBin(std::string(Filename))) {
+			std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
+			SpriteBinMap.insert(pair);
+		}
+		return BinSprite;
+	}
+}
 
 PUBLIC STATIC ISprite* LevelScene::GetSpriteFromBinIndex(size_t index) {
 	if (index < 0 || index >= SpriteBinMapIDs.size()) {
@@ -2248,7 +2273,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->Sprite = App->NullSprite;
 
 						if (obj->BinIndex == 0xFFFFFFFF && (ObjectName != "BlankObject" && ObjectName != "PlayerSpawn")) {
-							App->Print(1, "Object '%s' Sprite Not found!", ObjectName);
 						} else {
 							obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
 						}

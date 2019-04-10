@@ -3,6 +3,7 @@ object 0x0A;
 event Create() {
     Active = true;
     Priority = false;
+	
 
     CurrentAnimation = 1;
 

@@ -5,27 +5,25 @@
 
 typedef IMath Math;
 
-CONSTRUCTER CollapsingPlatform::CollapsingPlatform() {
-    if (LevelScene::IsZoneCurrently("AIZ")) {
-        Act1BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform.bin");
-        Act2BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform 2.bin");
-        BinIndex = Act1BinIndex;
-    }
-    else if (LevelScene::IsZoneCurrently("ICZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("ICZ/Collapsing Bridge 1.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/Collapsing Platform.bin");
-        Act1BinIndex = BinIndex;
-        Act2BinIndex = BinIndex;
-    }
-}
-
 void CollapsingPlatform::Create() {
     Object::Create();
     Active = true;
     Priority = false;
     DoDeform = true;
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        if (Scene->Act <= 1) {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Collapsing Platform.bin", SaveGame::CurrentMode);
+        }
+        else {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Collapsing Platform 2.bin", SaveGame::CurrentMode);
+        }
+    }
+    else if (LevelScene::IsZoneCurrently("ICZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("ICZ/Collapsing Bridge 1.bin", SaveGame::CurrentMode);
+    }
+    else {
+        Sprite = LevelScene::LoadSpriteFromBin("AIZ/Collapsing Platform.bin", SaveGame::CurrentMode);
+    }
     W = 48;
     H = 32;
     f = -1;
@@ -48,10 +46,8 @@ void CollapsingPlatform::Create() {
         }
 
         if (Scene->Act == 2) {
-            BinIndex = Act2BinIndex;
-            Sprite = LevelScene::GetSpriteFromBinIndex(BinIndex);
             Sprite->LinkPalette(Scene->TileSprite);
-            CurrentAnimation = Sprite->FindAnimation("Collapsing Platform 2");
+			CurrentAnimation = Sprite->FindAnimation("Collapsing Platform 2");
         }
         else if (Scene->Act == 1) {
             BinIndex = Act1BinIndex;

@@ -23,7 +23,6 @@ public:
     Object* Children;
     bool HasCoconut;
     
-    CONSTRUCTER MonkeyDude();
     void Create();
     void Update();
     int OnLeaveScreen();

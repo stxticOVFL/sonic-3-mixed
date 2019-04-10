@@ -47,36 +47,57 @@ void CorkFloor::Create() {
         PieceVels[i++] = 0xFF40;
         PieceVels[i++] = 0x0060;
         PieceVels[i++] = 0xFF40;
-        CurrentAnimation = 8;
-        if (Scene->Act == 2) CurrentAnimation = 9;
-
+        if (Scene->Act <= 1) {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Cork Floor.bin", SaveGame::CurrentMode);
+            CurrentAnimation = Sprite->FindAnimation("Cork Floor");
+        }
+        else {
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Cork Floor 2.bin", SaveGame::CurrentMode);
+            CurrentAnimation = Sprite->FindAnimation("Cork Floor 2");
+        }
         break;
         case 4:
         W = 64;
         H = 64;
-        CurrentAnimation = 12;
+        Sprite = LevelScene::LoadSpriteFromBin("CNZ/Cork Floor.bin", SaveGame::CurrentMode);
+        CurrentAnimation = Sprite->FindAnimation("Cork Floor");
         break;
         case 5:
         W = 32;
         H = 64;
-        CurrentAnimation = 3;
+        Sprite = LevelScene::LoadSpriteFromBin("ICZ/Cork Floor.bin", SaveGame::CurrentMode);
+        CurrentAnimation = Sprite->FindAnimation("Cork Floor");
         BreakableFromTop = true;
         break;
         case 6:
         W = 64;
         H = 64;
-        CurrentAnimation = 4;
+        Sprite = LevelScene::LoadSpriteFromBin("LBZ/Cork Floor.bin", SaveGame::CurrentMode);
+        CurrentAnimation = Sprite->FindAnimation("Cork Floor");
         break;
         case 7:
+        W = 32;
+        H = 32;
+        Sprite = LevelScene::LoadSpriteFromBin("MHZ/Cork Floor.bin", SaveGame::CurrentMode);
+        CurrentAnimation = Sprite->FindAnimation("Cork Floor");
+        break;
         case 8:
         W = 32;
         H = 32;
+        Sprite = LevelScene::LoadSpriteFromBin("FBZ/Cork Floor.bin", SaveGame::CurrentMode);
+        CurrentAnimation = Sprite->FindAnimation("Cork Floor");
         break;
         case 9:
         W = 32;
         H = 32;
+        Sprite = LevelScene::LoadSpriteFromBin("SOZ/Cork Floor.bin", SaveGame::CurrentMode);
+        CurrentAnimation = Sprite->FindAnimation("Cork Floor");
         break;
         case 10:
+        W = 32;
+        H = 32;
+        Sprite = LevelScene::LoadSpriteFromBin("LRZ/Cork Floor.bin", SaveGame::CurrentMode);
+        CurrentAnimation = Sprite->FindAnimation("Cork Floor");
         case 11:
         case 12:
         case 13:

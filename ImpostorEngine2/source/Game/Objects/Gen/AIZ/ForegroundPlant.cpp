@@ -15,7 +15,8 @@ void ForegroundPlant::Create() {
     CamMult = (SubType >> 2) & 0x3C;
     Frame = (SubType & 0xF) & 1;
     VisualLayer = 1;
-    CurrentAnimation = 21;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Foreground Plant.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Foreground Plant");
 }
 
 void ForegroundPlant::Render(int CamX, int CamY) {

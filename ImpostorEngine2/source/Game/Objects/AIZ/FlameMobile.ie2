@@ -42,11 +42,13 @@ enum BossAction {
 }
 
 event FlameMobile() : CONSTRUCTER {
-    //BinIndex = LevelScene.LoadSpriteBin("AIZ/FlameMobile.bin");
+    //
 }
 
 event Create() {
     Visible = true;
+
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/FlameMobile.bin",SaveGame.CurrentMode);
 
     Active = true;
     Priority = true;

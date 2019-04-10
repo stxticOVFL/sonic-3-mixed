@@ -51,7 +51,9 @@ event Create() {
 
     Timer = 0;
 
-    CurrentAnimation = 26;
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Ride Vine.bin",SaveGame.CurrentMode);
+
+    CurrentAnimation = Sprite.FindAnimation("Ride Vine");
 }
 
 event OnLeaveScreen() : int {

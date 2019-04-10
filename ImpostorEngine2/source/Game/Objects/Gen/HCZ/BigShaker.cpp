@@ -5,9 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER BigShaker::BigShaker() {
-}
-
 void BigShaker::Create() {
     Enemy::Create();
     TimerSpin = 0;
@@ -17,6 +14,7 @@ void BigShaker::Create() {
     InvulnTimer = 0;
     Started = false;
     ExplosionTimer = 0x80;
+    BinIndex = LevelScene::LoadSpriteBin("HCZ/BigShaker.bin", SaveGame::CurrentMode);
     Active = true;
     Priority = false;
     IdlePosY = InitialY + 0xEB;

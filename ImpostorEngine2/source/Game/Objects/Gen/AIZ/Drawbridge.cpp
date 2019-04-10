@@ -5,15 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Drawbridge::Drawbridge() {
-    BinIndex = LevelScene::LoadSpriteBin("AIZ/Drawbridge.bin");
-}
-
 void Drawbridge::Create() {
     Object::Create();
     Active = true;
     Priority = false;
     DoDeform = true;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Drawbridge.bin", SaveGame::CurrentMode);
     W = 16;
     H = 192;
     CurrentAnimation = Sprite->FindAnimation("Drawbridge");

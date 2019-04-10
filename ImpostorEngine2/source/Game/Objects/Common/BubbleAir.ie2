@@ -4,10 +4,16 @@ event Create() {
     Active = true;
     Priority = false;
 
+	
+
     Frame = 0;
     CurrentAnimation = Math.randRange(3, 5);
     Sprite = Scene.WaterSprite;
     VisualLayer = 1;
+
+	Sprite = LevelScene.LoadSpriteFromBin("Global/Water.bin",SaveGame.CurrentMode);
+
+	this.Sprite = Scene.WaterSprite;
 
     AutoAnimate = true;
 

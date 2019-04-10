@@ -18,7 +18,6 @@ public:
     bool Drawbridge;
     int Allotted;
     
-    CONSTRUCTER CollapsingLogBridge();
     void Create();
     void Update();
     void Break();

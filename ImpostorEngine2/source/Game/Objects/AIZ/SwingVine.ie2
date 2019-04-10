@@ -29,6 +29,8 @@ event Create() {
 
     Timer = 0;
 
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Ride Vine.bin",SaveGame.CurrentMode);
+
     CurrentAnimation = 26;
 }
 

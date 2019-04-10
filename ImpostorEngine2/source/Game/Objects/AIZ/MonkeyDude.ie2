@@ -10,14 +10,6 @@ var frame_arm:int;
 var Children:Object;
 var HasCoconut:bool;
 
-event MonkeyDude() : CONSTRUCTER {
-    if (LevelScene.IsZoneCurrently("AIZ")) {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
-    } else {
-        BinIndex = LevelScene.LoadSpriteBin("AIZ/Monkey Dude.bin");
-    }
-}
-
 event Create() {
     Active = true;
     Priority = false;
@@ -26,6 +18,8 @@ event Create() {
     H = 32;
     VisW = 64;
     VisH = 64;
+
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Monkey Dude.bin",SaveGame.CurrentMode);
 
     CurrentAnimation = Sprite.FindAnimation("MonkeyBro");
     CleanupInactiveObject = true;

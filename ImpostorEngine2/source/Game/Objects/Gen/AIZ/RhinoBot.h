@@ -22,7 +22,6 @@ public:
     int CurrentDustAnimation;
     ISprite* DustSprite;
     
-    CONSTRUCTER RhinoBot();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

@@ -12,6 +12,8 @@ void FireBreathBomb::Create() {
     W = 10;
     H = 16;
     Frame = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Firebreath.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Bomb");
     YSpeed = -0x400;
 }
 

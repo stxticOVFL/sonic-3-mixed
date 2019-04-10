@@ -48,7 +48,6 @@ public:
     int Shot2;
     int Shot3;
     
-    CONSTRUCTER FireBreath();
     void Create();
     int OnHit();
     void DoExplosionDebris();

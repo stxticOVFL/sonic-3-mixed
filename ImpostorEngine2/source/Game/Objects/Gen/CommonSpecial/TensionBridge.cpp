@@ -25,6 +25,7 @@ void TensionBridge::Create() {
         CurrentAnimation = 18;
         break;
         case 5:
+        Sprite = LevelScene::LoadSpriteFromBin("Global/Tension Bridge.bin", SaveGame::CurrentMode);
         CurrentAnimation = Sprite->FindAnimation("Tension Bridge");
         break;
     }

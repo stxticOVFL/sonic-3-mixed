@@ -8,19 +8,13 @@ var SpringPower:int;
 var Twirl:int;
 var KillTransverseSpeed:bool;
 
-event Spring() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
-        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/Springs.bin");
-    } else {
-	    BinIndex = LevelScene.LoadSpriteBin("Global/Springs.bin");
-    }
-}
-
 event Create() {
     W = 32;
     H = 16;
     Active = true;
     Priority = false;
+
+	Sprite = LevelScene.LoadSpriteFromBin("Global/Springs.bin",SaveGame.CurrentMode);
 
     Frame = 0;
 

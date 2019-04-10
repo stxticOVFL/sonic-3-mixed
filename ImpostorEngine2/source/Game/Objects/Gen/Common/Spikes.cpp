@@ -5,20 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Spikes::Spikes() {
-    if (SaveGame::CurrentMode == 0) {
-        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/Spikes.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("Global/Spikes.bin");
-    }
-}
-
 void Spikes::Create() {
     Object::Create();
     Active = true;
     Priority = false;
     DoDeform = true;
+    Sprite = LevelScene::LoadSpriteFromBin("Global/Spikes.bin", SaveGame::CurrentMode);
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
     Rotation = 0;

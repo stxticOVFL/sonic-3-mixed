@@ -13,6 +13,7 @@ void Button::Create() {
     TriggerID = (SubType & 0xF);
     TriggerType = (SubType >> 6 & 0x1);
     CollisionType = (SubType >> 5 & 0x1);
+    Sprite = LevelScene::LoadSpriteFromBin("Global/Gray Button.bin", SaveGame::CurrentMode);
     if (!CollisionType) Solid = true;
     else SolidTop = true;
     Scene->AddSelfToRegistry(this, "Solid");

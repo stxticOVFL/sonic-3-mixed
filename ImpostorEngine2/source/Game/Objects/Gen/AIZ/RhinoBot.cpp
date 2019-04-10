@@ -5,17 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER RhinoBot::RhinoBot() {
-    if (LevelScene::IsZoneCurrently("AIZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot.bin");
-        DustBinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot Dust.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot.bin");
-        DustBinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot Dust.bin");
-    }
-}
-
 void RhinoBot::Create() {
     Enemy::Create();
     Active = true;
@@ -29,6 +18,14 @@ void RhinoBot::Create() {
     Speed = 0;
     Acceleration = -0x10;
     HitCount = 1;
+    if (LevelScene::IsZoneCurrently("AIZ")) {
+        Sprite = LevelScene::LoadSpriteFromBin("AIZ/RhinoBot.bin", SaveGame::CurrentMode);
+        DustBinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot Dust.bin", SaveGame::CurrentMode);
+    }
+    else {
+        Sprite = LevelScene::LoadSpriteFromBin("AIZ/RhinoBot.bin", SaveGame::CurrentMode);
+        DustBinIndex = LevelScene::LoadSpriteBin("AIZ/RhinoBot Dust.bin", SaveGame::CurrentMode);
+    }
     DustSprite = LevelScene::GetSpriteFromBinIndex(DustBinIndex);
     CurrentAnimation = Sprite->FindAnimation("RhinoBot");
     CurrentDustAnimation = DustSprite->FindAnimation("RhinoBot Dust");

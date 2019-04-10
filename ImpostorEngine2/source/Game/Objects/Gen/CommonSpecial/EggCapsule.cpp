@@ -5,20 +5,12 @@
 
 typedef IMath Math;
 
-CONSTRUCTER EggCapsule::EggCapsule() {
-    if (SaveGame::CurrentMode == 0) {
-        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/EggPrison.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("Global/EggPrison.bin");
-    }
-}
-
 void EggCapsule::Create() {
     Object::Create();
     Active = true;
     Priority = true;
     Flying = FlipY;
+    Sprite = LevelScene::LoadSpriteFromBin("Global/EggPrison.bin", SaveGame::CurrentMode);
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
     W = 64;

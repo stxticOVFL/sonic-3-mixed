@@ -5,21 +5,13 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Spring::Spring() {
-    if (SaveGame::CurrentMode == 0) {
-        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/Springs.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("Global/Springs.bin");
-    }
-}
-
 void Spring::Create() {
     Object::Create();
     W = 32;
     H = 16;
     Active = true;
     Priority = false;
+    Sprite = LevelScene::LoadSpriteFromBin("Global/Springs.bin", SaveGame::CurrentMode);
     Frame = 0;
     Diagonal = 0;
     Solid = true;

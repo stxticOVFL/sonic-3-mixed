@@ -19,7 +19,6 @@ public:
     bool Broken;
     Object* Button;
     
-    CONSTRUCTER EggCapsule();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

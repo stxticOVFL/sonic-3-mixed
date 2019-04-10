@@ -5,21 +5,13 @@
 
 typedef IMath Math;
 
-CONSTRUCTER MonkeyDudeCoconut::MonkeyDudeCoconut() {
-    if (LevelScene::IsZoneCurrently("AIZ")) {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/Monkey Dude.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("AIZ/Monkey Dude.bin");
-    }
-}
-
 void MonkeyDudeCoconut::Create() {
     Enemy::Create();
     Active = true;
     Priority = true;
     W = 16;
     H = 16;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Monkey Dude.bin", SaveGame::CurrentMode);
     Invincible = true;
     BounceOffShield = true;
     VisualLayer = 1;

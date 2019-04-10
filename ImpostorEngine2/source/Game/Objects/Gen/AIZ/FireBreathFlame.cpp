@@ -12,6 +12,7 @@ void FireBreathFlame::Create() {
     W = 32;
     H = 32;
     Frame = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Firebreath Flame.bin", SaveGame::CurrentMode);
     TimerAction = 0;
     Timer = (6 - SubType) << 1;
 }

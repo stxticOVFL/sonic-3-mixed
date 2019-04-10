@@ -44,7 +44,6 @@ public:
     int SpinOffsets[7];
     int State;
     
-    CONSTRUCTER BigShaker();
     void Create();
     void DoExplosionDebris();
     int OnHit();

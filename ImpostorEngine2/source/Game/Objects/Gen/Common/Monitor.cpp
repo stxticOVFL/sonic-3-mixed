@@ -7,7 +7,7 @@ typedef IMath Math;
 
 void Monitor::Create() {
     Object::Create();
-    BinIndex = LevelScene::LoadSpriteBin("Global/ItemBox.bin", SaveGame::CurrentMode);
+    Sprite = LevelScene::LoadSpriteFromBin("Global/ItemBox.bin", SaveGame::CurrentMode);
     W = 26;
     H = 32;
     Active = true;

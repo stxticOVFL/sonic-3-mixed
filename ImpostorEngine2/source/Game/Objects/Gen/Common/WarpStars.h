@@ -19,7 +19,6 @@ public:
     int StoredX;
     int StoredY;
     
-    CONSTRUCTER WarpStars();
     void Create();
     void Update();
     void Render(int CamX, int CamY);

@@ -41,13 +41,12 @@ enum BossAction {
     STOP_AND_EMERGE,
 }
 
-event FireBreath() : CONSTRUCTER {
-    //BinIndex = LevelScene.LoadSpriteBin("AIZ/FireBreath.bin");
-}
-
 event Create() {
     Active = true;
     Priority = true;
+	
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/FireBreath.bin",SaveGame.CurrentMode);
+	
     // Object variables
     W = 48;
     H = 48;

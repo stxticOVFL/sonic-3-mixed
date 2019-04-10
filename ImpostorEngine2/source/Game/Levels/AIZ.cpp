@@ -443,11 +443,11 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
         AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Log Bridge.bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform.bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Collapsing Platform 2.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor.bin");
+		AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor.bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Cork Floor 2.bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor.bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Disappearing Floor Water.bin");
-        AIZObjectsSprite->LoadAnimation("AIZ/Drawbridge.bin");
+		AIZObjectsSprite->LoadAnimation("AIZ/Drawbridge.bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Draw Bridge Fire.bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 1).bin");
         AIZObjectsSprite->LoadAnimation("AIZ/Falling Log (Act 2).bin");
@@ -900,7 +900,8 @@ PUBLIC void Level_AIZ::Subupdate() {
             }
 
             if (!AIZShipTileSprite) {
-                AIZShipTileSprite = new ISprite("Stages/AIZ2/16x16TilesB.gif", App);
+                if (SaveGame::CurrentMode >= 1) AIZShipTileSprite = new ISprite("Mixed/Stages/AIZ2/16x16TilesB.gif", App);
+				else AIZShipTileSprite = new ISprite("Classic/Stages/AIZ2/16x16TilesB.gif", App);
                 TileSpriteBackup = TileSprite;
 
                 ISprite::Animation an;

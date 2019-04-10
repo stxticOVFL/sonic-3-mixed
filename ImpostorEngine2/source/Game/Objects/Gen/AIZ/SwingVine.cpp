@@ -20,6 +20,7 @@ void SwingVine::Create() {
     ClassicStyle = !Scene->Thremixed;
     ClassicStyle = false;
     Timer = 0;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Ride Vine.bin", SaveGame::CurrentMode);
     CurrentAnimation = 26;
 }
 

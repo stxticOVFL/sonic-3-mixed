@@ -11,6 +11,7 @@ void TreeBark::Create() {
     Priority = false;
     W = 16;
     H = 16;
+    Sprite = LevelScene::LoadSpriteFromBin("AIZ/Act 1 Tree.bin", SaveGame::CurrentMode);
     CurrentAnimation = 0;
     Frame = 0;
 }

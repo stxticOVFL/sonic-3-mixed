@@ -15,6 +15,8 @@ void BubbleAir::Create() {
     CurrentAnimation = Math::randRange(3, 5);
     Sprite = Scene->WaterSprite;
     VisualLayer = 1;
+    Sprite = LevelScene::LoadSpriteFromBin("Global/Water.bin", SaveGame::CurrentMode);
+    this->Sprite = Scene->WaterSprite;
     AutoAnimate = true;
     YSpeed = -0x88;
     Timer = 0;
