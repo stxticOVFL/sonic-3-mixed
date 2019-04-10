@@ -9,6 +9,7 @@ void SpecialRing::Create() {
     Object::Create();
     Active = true;
     Priority = true;
+    BinIndex = LevelScene::LoadSpriteBin("Global/SpecialRing.bin", SaveGame::CurrentMode);
     W = 8;
     H = 64;
     VisW = 64;

@@ -5,7 +5,9 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Ring::Ring() {
+void Ring::Create() {
+    Object::Create();
+    Active = true;
     if (SaveGame::CurrentMode == 0) {
         Sprite = LevelScene::LoadSpriteFromBin("GlobalS3K/Ring.bin");
     }
@@ -13,11 +15,6 @@ CONSTRUCTER Ring::Ring() {
         Sprite = LevelScene::LoadSpriteFromBin("Global/Ring.bin");
     }
     ShouldRingFall = false;
-}
-
-void Ring::Create() {
-    Object::Create();
-    Active = true;
     Timer = 0xFF;
     CleanupInactiveObject = true;
     MyX = 0;

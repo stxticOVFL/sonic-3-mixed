@@ -6,17 +6,16 @@ var CurrentFrame:int;
 var MagnetizedTo:int;
 var ShouldRingFall:bool;
 
-event Ring() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
+event Create() {    
+	Active = true;
+	
+	if (SaveGame.CurrentMode == 0) {
         Sprite = LevelScene.LoadSpriteFromBin("GlobalS3K/Ring.bin");
     } else {
 	    Sprite = LevelScene.LoadSpriteFromBin("Global/Ring.bin");
     }
     ShouldRingFall = false;
-}
-
-event Create() {    
-	Active = true;
+	
     Timer = 0xFF;
     CleanupInactiveObject = true;
 	

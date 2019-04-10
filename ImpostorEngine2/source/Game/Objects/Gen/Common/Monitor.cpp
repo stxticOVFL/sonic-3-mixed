@@ -5,17 +5,9 @@
 
 typedef IMath Math;
 
-CONSTRUCTER Monitor::Monitor() {
-    if (SaveGame::CurrentMode == 0) {
-        BinIndex = LevelScene::LoadSpriteBin("GlobalS3K/ItemBox.bin");
-    }
-    else {
-        BinIndex = LevelScene::LoadSpriteBin("Global/ItemBox.bin");
-    }
-}
-
 void Monitor::Create() {
     Object::Create();
+    BinIndex = LevelScene::LoadSpriteBin("Global/ItemBox.bin", SaveGame::CurrentMode);
     W = 26;
     H = 32;
     Active = true;

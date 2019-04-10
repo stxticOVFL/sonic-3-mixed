@@ -536,6 +536,52 @@ PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
     }
 };
 
+PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename, byte Mode) {
+	if (IApp::GlobalApp == NULL) {
+		return 0xFFFFFFFF;
+	}
+
+	string fullFileName;
+
+	/*switch (Mode)
+	{
+	case 0:
+		fullFileName.append("Classic/");
+		break;
+	case 1:
+	case 2:
+	default:
+		fullFileName.append("Mixed/");
+		break;
+	}*/
+
+	fullFileName.append(Filename);
+
+	if (FindSpriteBin(fullFileName) && SpriteBinMap.find(fullFileName)->second != -1) {
+		size_t BinIndex = SpriteBinMap.find(fullFileName)->second;
+		// If BinIndex is bigger then SpriteBinMapIDs.size(), Then a clear happened,
+		// And for some reason the SpriteBinMap wasn't also cleared.
+		if (BinIndex > SpriteBinMap.size() || GetSpriteFromBinIndex(BinIndex) == nullptr) {
+			return ResetSpriteBin(fullFileName.c_str());
+		}
+		else {
+			return BinIndex;
+		}
+	}
+	else {
+		ISprite* BinSprite = new ISprite(fullFileName.c_str(), IApp::GlobalApp, Mode);
+		SpriteBinMapIDs.push_back(BinSprite);
+		SpriteBinMapIDs.shrink_to_fit();
+		size_t BinIndex = SpriteBinMapIDs.size() - 1;
+
+		if (!FindSpriteBin(fullFileName)) {
+			std::pair<std::string, size_t> pair(fullFileName, BinIndex);
+			SpriteBinMap.insert(pair);
+		}
+		return BinIndex;
+	}
+};
+
 PROTECTED STATIC size_t LevelScene::ResetSpriteBin(const char* Filename) {
 #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
     if (IApp::GlobalApp == NULL) {
@@ -581,7 +627,8 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename) {
         }
         return BinSprite;
     }
-};
+}
+
 
 PUBLIC STATIC ISprite* LevelScene::GetSpriteFromBinIndex(size_t index) {
 	if (index < 0 || index >= SpriteBinMapIDs.size()) {

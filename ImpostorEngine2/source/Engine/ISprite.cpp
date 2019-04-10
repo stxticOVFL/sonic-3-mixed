@@ -77,7 +77,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app) {
     App = app;
     G = app->G;
     std::string checkedFilename(filename);
-    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
         checkedFilename = "Sprites/" + checkedFilename;
     }
     Filename = checkedFilename;
@@ -93,7 +93,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, bool IsPrinting) {
     G = app->G;
     Print = IsPrinting;
     std::string checkedFilename(filename);
-    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
         checkedFilename = "Sprites/" + checkedFilename;
     }
     Filename = checkedFilename;
@@ -108,7 +108,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
     App = app;
     G = app->G;
     std::string checkedFilename(filename);
-    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
         checkedFilename = "Sprites/" + checkedFilename;
     }
 	std::string outfile;
@@ -121,6 +121,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
 				break;
 			}
 		}
+				break;
 		case 1:
 		case 2: {
 			outfile.clear();
@@ -131,11 +132,12 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode) {
 				break;
 			}
 		}
+				break;
 		default:
 			outfile.clear();
 			outfile.append(checkedFilename);
 	}
-    Filename = checkedFilename;
+    Filename = outfile;
     if (strEndsWith(Filename.c_str(), ".bin")) {
         LoadBin(Filename.c_str());
     } else {
@@ -148,7 +150,7 @@ PUBLIC ISprite::ISprite(const char* filename, IApp* app, int mode, bool IsPrinti
     G = app->G;
     Print = IsPrinting;
     std::string checkedFilename(filename);
-    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
         checkedFilename = "Sprites/" + checkedFilename;
     }
 	std::string outfile;
@@ -307,7 +309,7 @@ PUBLIC void ISprite::LinkPalette(ISprite* other) {
 
 PUBLIC void ISprite::LoadBin(const char* filename) {
     std::string checkedFilename(filename);
-    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
         checkedFilename = "Sprites/" + checkedFilename;
         Filename = checkedFilename;
     }
@@ -381,7 +383,7 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
 
 PUBLIC void ISprite::LoadAnimation(const char* filename) {
     std::string checkedFilename(filename);
-    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
         checkedFilename = "Sprites/" + checkedFilename;
     }
     IResource* SpriteFile = IResources::Load(checkedFilename.c_str());
@@ -453,7 +455,7 @@ PUBLIC void ISprite::LoadAnimation(const char* filename) {
 
 PUBLIC void ISprite::LoadSprite(const char* filename) {
     std::string checkedFilename(filename);
-    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/Stages") && !strBeginsWith(filename, "Mixed/Stages")) {
+    if (!strBeginsWith(filename, "Sprites") && !strBeginsWith(filename, "Classic/") && !strBeginsWith(filename, "Mixed/")) {
         checkedFilename = "Sprites/" + checkedFilename;
         Filename = checkedFilename;
     }

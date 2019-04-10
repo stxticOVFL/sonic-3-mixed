@@ -1051,33 +1051,33 @@ void IPlayer::Create() {
             
              // Allocates memory by calling: ISprite::operator new(size_t size, const char* identifier)
              // and then constructs an object at the newly allocated space.
-			Sprites[0] = new ("ISprite - PlayersClassic/Sonic.gif") ISprite("PlayersClassic/Sonic.gif", App);
+			Sprites[0] = new ("ISprite - Players/Sonic.gif") ISprite("Players/Sonic.gif", App,SaveGame::CurrentMode);
 			Sprites[0]->SetTransparentColorIndex(0);
-            Sprites[0]->LoadAnimation("PlayersClassic/Sonic.bin");
+			Sprites[0]->LoadAnimation("Classic/Sprites/Players/Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
-			Sprites[0]->LoadAnimation("PlayersClassic/Super Sonic.bin");
+			Sprites[0]->LoadAnimation("Classic/Sprites/Players/Super Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
 		} else {
 			bool Tria = true;
 			if (Tria) {
-				Sprites[0] = new ("ISprite - PlayersMixed/Sonic1.gif") ISprite("PlayersMixed/Sonic1.gif", App);
-				Sprites[1] = new ("ISprite - PlayersMixed/Sonic2.gif") ISprite("PlayersMixed/Sonic2.gif", App);
-				Sprites[2] = new ("ISprite - PlayersMixed/Sonic3.gif") ISprite("PlayersMixed/Sonic3.gif", App);
-				Sprites[3] = new ("ISprite - PlayersMixed/Sonic4.gif") ISprite("PlayersMixed/Sonic4.gif", App);
-				Sprites[4] = new ("ISprite - PlayersMixed/SonicCutsceneCPZ.gif") ISprite("PlayersMixed/SonicCutsceneCPZ.gif", App);
+				Sprites[0] = new ("ISprite - Players/Sonic1.gif") ISprite("Players/Sonic1.gif", App, SaveGame::CurrentMode);
+				Sprites[1] = new ("ISprite - Players/Sonic2.gif") ISprite("Players/Sonic2.gif", App, SaveGame::CurrentMode);
+				Sprites[2] = new ("ISprite - Players/Sonic3.gif") ISprite("Players/Sonic3.gif", App, SaveGame::CurrentMode);
+				Sprites[3] = new ("ISprite - Players/Sonic4.gif") ISprite("Players/Sonic4.gif", App, SaveGame::CurrentMode);
+				Sprites[4] = new ("ISprite - Players/SonicCutsceneCPZ.gif") ISprite("Players/SonicCutsceneCPZ.gif", App, SaveGame::CurrentMode);
 
-				Sprites[0]->LoadAnimation("PlayersMixed/Sonic.bin");
+				Sprites[0]->LoadAnimation("Mixed/Sprites/Players/Sonic.bin");
 
 				int i = 0;
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 				}
 
-				Sprites[0]->LoadAnimation("PlayersMixed/SuperSonic.bin");
+				Sprites[0]->LoadAnimation("Mixed/Sprites/Players/SuperSonic.bin");
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 				}
@@ -1095,15 +1095,15 @@ void IPlayer::Create() {
 				Sprites[0]->Animations[54 + (int)AnimationEnum::Jump].AnimationSpeed = 0x100;
 			} else {
 				int i = 0;
-				Sprites[0] = new ("ISprite - PlayersClassic/Sonic3MClassic.gif") ISprite("PlayersClassic/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(0);
-				Sprites[1] = new ("ISprite - PlayersClassic/Sonic.gif") ISprite("PlayersClassic/Sonic.gif", App);
+				Sprites[0] = new ("ISprite - Players/Sonic3MClassic.gif") ISprite("Classic/Sprites/Players/Sonic3MClassic.gif", App); Sprites[0]->SetTransparentColorIndex(0);
+				Sprites[1] = new ("ISprite - Players/Sonic.gif") ISprite("Classic/Sprites/Players/Sonic.gif", App);
 
-				Sprites[0]->LoadAnimation("PlayersClassic/Sonic3MClassic.bin");
+				Sprites[0]->LoadAnimation("Classic/Sprites/Players/Sonic3MClassic.bin");
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 				}
 
-				Sprites[0]->LoadAnimation("PlayersClassic/Super Sonic.bin");
+				Sprites[0]->LoadAnimation("Classic/Sprites/Players/Super Sonic.bin");
 				for (; i < Sprites[0]->AnimCount; i++) {
 					AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 				}
@@ -1116,21 +1116,21 @@ void IPlayer::Create() {
 		OrigH = H;
 		if (!Thremixed) {
 			int i = 0;
-			Sprites[0] = new ("ISprite - PlayersClassic/Tails.gif") ISprite("PlayersClassic/Tails.gif", App);
+			Sprites[0] = new ("ISprite - Classic/Sprites/Players/Tails.gif") ISprite("Classic/Sprites/Players/Tails.gif", App);
 
-			Sprites[0]->LoadAnimation("PlayersClassic/Tails.bin");
-			Sprites[0]->LoadAnimation("PlayersClassic/TailSprite.bin");
+			Sprites[0]->LoadAnimation("Classic/Sprites/Players/Tails.bin");
+			Sprites[0]->LoadAnimation("Classic/Sprites/Players/TailSprite.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}
 		} else {
-			Sprites[0] = new ("ISprite - PlayersMixed/Tails1.gif") ISprite("PlayersMixed/Tails1.gif", App);
-			Sprites[1] = new ("ISprite - PlayersMixed/Tails2.gif") ISprite("PlayersMixed/Tails2.gif", App);
-			Sprites[2] = new ("ISprite - PlayersMixed/Tails3.gif") ISprite("PlayersMixed/Tails3.gif", App);
-			Sprites[3] = new ("ISprite - PlayersMixed/TailsCutsceneCPZ.gif") ISprite("PlayersMixed/TailsCutsceneCPZ.gif", App);
+			Sprites[0] = new ("ISprite - Mixed/Sprites/Players/Tails1.gif") ISprite("Mixed/Sprites/Players/Tails1.gif", App);
+			Sprites[1] = new ("ISprite - Mixed/Sprites/Players/Tails2.gif") ISprite("Mixed/Sprites/Players/Tails2.gif", App);
+			Sprites[2] = new ("ISprite - Mixed/Sprites/Players/Tails3.gif") ISprite("Mixed/Sprites/Players/Tails3.gif", App);
+			Sprites[3] = new ("ISprite - Mixed/Sprites/Players/TailsCutsceneCPZ.gif") ISprite("Mixed/Sprites/Players/TailsCutsceneCPZ.gif", App);
 
-			Sprites[0]->LoadAnimation("PlayersMixed/Tails.bin");
-			Sprites[0]->LoadAnimation("PlayersMixed/TailSprite.bin");
+			Sprites[0]->LoadAnimation("Mixed/Sprites/Players/Tails.bin");
+			Sprites[0]->LoadAnimation("Mixed/Sprites/Players/TailSprite.bin");
 			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -1149,13 +1149,13 @@ void IPlayer::Create() {
 			}
 		} else {
             ClearKnucklesSprites = true;
-			Sprites[0] = new ("ISprite - PlayersMixed/Knux1.gif") ISprite("PlayersMixed/Knux1.gif", App);
-			Sprites[1] = new ("ISprite - PlayersMixed/Knux2.gif") ISprite("PlayersMixed/Knux2.gif", App);
-			Sprites[2] = new ("ISprite - PlayersMixed/Knux3.gif") ISprite("PlayersMixed/Knux3.gif", App);
-			Sprites[3] = new ("ISprite - PlayersMixed/KnuxCutsceneAIZ.gif") ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
-			Sprites[4] = new ("ISprite - PlayersMixed/KnuxCutsceneHPZ.gif") ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
+			Sprites[0] = new ("ISprite - Mixed/Sprites/Players/Knux1.gif") ISprite("Mixed/Sprites/Players/Knux1.gif", App);
+			Sprites[1] = new ("ISprite - Mixed/Sprites/Players/Knux2.gif") ISprite("Mixed/Sprites/Players/Knux2.gif", App);
+			Sprites[2] = new ("ISprite - Mixed/Sprites/Players/Knux3.gif") ISprite("Mixed/Sprites/Players/Knux3.gif", App);
+			Sprites[3] = new ("ISprite - Mixed/Sprites/Players/KnuxCutsceneAIZ.gif") ISprite("Mixed/Sprites/Players/KnuxCutsceneAIZ.gif", App);
+			Sprites[4] = new ("ISprite - Mixed/Sprites/Players/KnuxCutsceneHPZ.gif") ISprite("Mixed/Sprites/Players/KnuxCutsceneHPZ.gif", App);
 
-			Sprites[0]->LoadAnimation("PlayersMixed/Knux.bin");
+			Sprites[0]->LoadAnimation("Mixed/Sprites/Players/Knux.bin");
 			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 			Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -1168,12 +1168,12 @@ void IPlayer::Create() {
 	}
 	else if (Character == CharacterType::Mighty) {
 		Thremixed = true;
-		Sprites[0] = new ("ISprite - PlayersMixed/Mighty1.gif") ISprite("PlayersMixed/Mighty1.gif", App);
-		Sprites[1] = new ("ISprite - PlayersMixed/Mighty2.gif") ISprite("PlayersMixed/Mighty2.gif", App);
-		Sprites[2] = new ("ISprite - PlayersMixed/Mighty2.gif") ISprite("PlayersMixed/Mighty2.gif", App);
-		Sprites[3] = new ("ISprite - PlayersMixed/MightyCutsceneCPZ.gif") ISprite("PlayersMixed/MightyCutsceneCPZ.gif", App);
+		Sprites[0] = new ("ISprite - Mixed/Sprites/Players/Mighty1.gif") ISprite("Mixed/Sprites/Players/Mighty1.gif", App);
+		Sprites[1] = new ("ISprite - Mixed/Sprites/Players/Mighty2.gif") ISprite("Mixed/Sprites/Players/Mighty2.gif", App);
+		Sprites[2] = new ("ISprite - Mixed/Sprites/Players/Mighty2.gif") ISprite("Mixed/Sprites/Players/Mighty2.gif", App);
+		Sprites[3] = new ("ISprite - Mixed/Sprites/Players/MightyCutsceneCPZ.gif") ISprite("Mixed/Sprites/Players/MightyCutsceneCPZ.gif", App);
 
-		Sprites[0]->LoadAnimation("PlayersMixed/Mighty.bin");
+		Sprites[0]->LoadAnimation("Mixed/Sprites/Players/Mighty.bin");
 		Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -1184,12 +1184,12 @@ void IPlayer::Create() {
 	}
 	else if (Character == CharacterType::Ray) {
 		Thremixed = true;
-		Sprites[0] = new ("ISprite - PlayersMixed/Ray1.gif") ISprite("PlayersMixed/Ray1.gif", App);
-		Sprites[1] = new ("ISprite - PlayersMixed/Ray2.gif") ISprite("PlayersMixed/Ray2.gif", App);
-		Sprites[2] = new ("ISprite - PlayersMixed/Ray3.gif") ISprite("PlayersMixed/Ray3.gif", App);
-		Sprites[3] = new ("ISprite - PlayersMixed/RayCutsceneCPZ.gif") ISprite("PlayersMixed/RayCutsceneCPZ.gif", App);
+		Sprites[0] = new ("ISprite - Mixed/Sprites/Players/Ray1.gif") ISprite("Mixed/Sprites/Players/Ray1.gif", App);
+		Sprites[1] = new ("ISprite - Mixed/Sprites/Players/Ray2.gif") ISprite("Mixed/Sprites/Players/Ray2.gif", App);
+		Sprites[2] = new ("ISprite - Mixed/Sprites/Players/Ray3.gif") ISprite("Mixed/Sprites/Players/Ray3.gif", App);
+		Sprites[3] = new ("ISprite - Mixed/Sprites/Players/RayCutsceneCPZ.gif") ISprite("Mixed/Sprites/Players/RayCutsceneCPZ.gif", App);
 
-		Sprites[0]->LoadAnimation("PlayersMixed/Ray.bin");
+		Sprites[0]->LoadAnimation("Mixed/Sprites/Players/Ray.bin");
 		Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[2]->LinkAnimation(Sprites[0]->Animations);
 		Sprites[3]->LinkAnimation(Sprites[0]->Animations);
@@ -4268,7 +4268,7 @@ void IPlayer::Render(int CamX, int CamY) {
 			y = 20;
 
 		/*
-		"Sprites/PlayersMixed/TailSprite.bin"
+		"Sprites/Mixed/Sprites/Players/TailSprite.bin"
 		"Tails 0" (55) (Flags: 04, FtL: 0, Spd: 64, Frames: 10)
 		"Tails 1" (56) (Flags: 01, FtL: 0, Spd: 64, Frames: 6)
 		"Tails 2" (57) (Flags: 00, FtL: 0, Spd: 128, Frames: 6)

@@ -58,6 +58,7 @@ public:
 	char LevelNames[0xFF][0xFF];
 
 	int isSharp = 1;
+
 };
 #endif
 
@@ -84,6 +85,8 @@ public:
 #include <Game/Scenes/MainMenu.h>
 #include <Game/Scenes/DataSelect.h>
 #include <Game/Scenes/LevelSelect.h>
+
+static bool WriteLogToFile = true;
 
 #if   MSVC
     #include <windows.h>
@@ -968,21 +971,20 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     #endif
 
     int ForgC = 0;
-    bool WriteToFile = false;
     char fullLine[4116];
 
     #if NX
-    WriteToFile = true;
+    WriteLogToFile = true;
     #endif
 
     FILE* f = NULL;
-    if (WriteToFile)
+    if (WriteLogToFile)
         f = fopen("ImpostorEngine2.log", "a");
 
     sprintf(fullLine, "%s", "");
 
     #if MACOSX || LINUX
-        if (!WriteToFile) {
+        if (!WriteLogToFile) {
             if (sev == 0) // LOG
                 sprintf(fullLine, "%s", "\x1b[0;1m");
             else if (sev == 1) // WARNING
@@ -1018,7 +1020,7 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     }
 
     #if MACOSX || LINUX
-        if (!WriteToFile)
+        if (!WriteLogToFile)
             sprintf(fullLine, "%s%s", fullLine, "\x1b[0m");
     #endif
 
@@ -1033,7 +1035,7 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     #endif
 
     printf("%s", fullLine);
-    if (WriteToFile && f)
+    if (WriteLogToFile && f)
         fprintf(f, "%s", fullLine);
 
     #if MSVC
@@ -1044,7 +1046,7 @@ PUBLIC STATIC void IApp::Print(int sev, const char* string, ...) {
     printf("%s\n", str);
     fflush(stdout);
 
-    if (WriteToFile && f) {
+    if (WriteLogToFile && f) {
         fprintf(f, "%s\r\n", str);
         fclose(f);
     }

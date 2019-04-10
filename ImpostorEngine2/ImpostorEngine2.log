@@ -1,0 +1,1170 @@
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+    ERROR: Couldn't open source/Resources/Sounds/Impact1.wav
+    ERROR: Couldn't open file 'Sounds/Impact1.wav'!
+    ERROR: GIF width must be power of two!
+    ERROR: GIF height must be power of two!
+      LOG: Running...
+      LOG: Printing unfreed memory...
+      LOG:  : 047FD880 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FD900 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FDB00 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FD940 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 03A3F518 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 03A3F478 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 03A3F4C8 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 015DF170 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0167A378 [168 bytes] (IAudio)
+      LOG:  : 04770D90 [256 bytes] (IAudio::Loop)
+      LOG:  : 04770EC8 [256 bytes] (IAudio::Paused)
+      LOG:  : 0F769E00 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0F76A230 [1024 bytes] (IAudio::Length)
+      LOG:  : 0F76A660 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0F76AA90 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0F76AEC0 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 03A3FC50 [104 bytes] (ISprite)
+      LOG:  : 0F77E418 [1024 bytes] (GIF::Colors)
+      LOG:  : 0F77E848 [262144 bytes] (GIF::Data)
+      LOG:  : 0F7BE878 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FA88 [104 bytes] (ISprite)
+      LOG:  : 107EB528 [1024 bytes] (GIF::Colors)
+      LOG:  : 107EB958 [131072 bytes] (GIF::Data)
+      LOG:  : 1080B988 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FB20 [104 bytes] (ISprite)
+      LOG:  : 1080BDB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 11490068 [131072 bytes] (GIF::Data)
+      LOG:  : 1080C1E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FCE8 [104 bytes] (ISprite)
+      LOG:  : 108107C0 [1024 bytes] (GIF::Colors)
+      LOG:  : 12468040 [1157785 bytes] (GIF::Data)
+      LOG:  : 10812F78 [1024 bytes] (ISprite::PaletteAlt)
+      LOG: Total: 1696705 bytes (1.617 MB)
+      LOG: Printing unfreed memory...
+      LOG:  : 047FD880 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FD900 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FDB00 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FD940 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 03A3F518 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 03A3F478 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 03A3F4C8 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 015DF170 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0167A378 [168 bytes] (IAudio)
+      LOG:  : 04770D90 [256 bytes] (IAudio::Loop)
+      LOG:  : 04770EC8 [256 bytes] (IAudio::Paused)
+      LOG:  : 0F769E00 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0F76A230 [1024 bytes] (IAudio::Length)
+      LOG:  : 0F76A660 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0F76AA90 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0F76AEC0 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 03A3FC50 [104 bytes] (ISprite)
+      LOG:  : 0F77E418 [1024 bytes] (GIF::Colors)
+      LOG:  : 0F77E848 [262144 bytes] (GIF::Data)
+      LOG:  : 0F7BE878 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FA88 [104 bytes] (ISprite)
+      LOG:  : 107EB528 [1024 bytes] (GIF::Colors)
+      LOG:  : 107EB958 [131072 bytes] (GIF::Data)
+      LOG:  : 1080B988 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FB20 [104 bytes] (ISprite)
+      LOG:  : 1080BDB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 11490068 [131072 bytes] (GIF::Data)
+      LOG:  : 1080C1E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FCE8 [104 bytes] (ISprite)
+      LOG:  : 108107C0 [1024 bytes] (GIF::Colors)
+      LOG:  : 12468040 [1157785 bytes] (GIF::Data)
+      LOG:  : 10812F78 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FD80 [104 bytes] (ISprite)
+      LOG:  : 1155B2D0 [1024 bytes] (GIF::Colors)
+      LOG:  : 1259E040 [1048576 bytes] (GIF::Data)
+      LOG:  : 11559920 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FE18 [104 bytes] (ISprite)
+      LOG:  : 1155AE88 [1024 bytes] (GIF::Colors)
+      LOG:  : 115BB320 [131072 bytes] (GIF::Data)
+      LOG:  : 11558800 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A40078 [104 bytes] (ISprite)
+      LOG:  : 11559D68 [1024 bytes] (GIF::Colors)
+      LOG:  : 115E5E18 [65536 bytes] (GIF::Data)
+      LOG:  : 1155A1B0 [1024 bytes] (ISprite::PaletteAlt)
+      LOG: Total: 2948345 bytes (2.812 MB)
+      LOG: Starting AIZ... 1
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+      LOG: Printing unfreed memory...
+      LOG:  : 047FD880 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FD900 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FDB00 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 047FD940 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 03A3F518 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 03A3F478 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 03A3F4C8 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 015DF170 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0167A378 [168 bytes] (IAudio)
+      LOG:  : 04770D90 [256 bytes] (IAudio::Loop)
+      LOG:  : 04770EC8 [256 bytes] (IAudio::Paused)
+      LOG:  : 0F769E00 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0F76A230 [1024 bytes] (IAudio::Length)
+      LOG:  : 0F76A660 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0F76AA90 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0F76AEC0 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 03A3FC50 [104 bytes] (ISprite)
+      LOG:  : 0F77E418 [1024 bytes] (GIF::Colors)
+      LOG:  : 0F77E848 [262144 bytes] (GIF::Data)
+      LOG:  : 0F7BE878 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FA88 [104 bytes] (ISprite)
+      LOG:  : 107EB528 [1024 bytes] (GIF::Colors)
+      LOG:  : 107EB958 [131072 bytes] (GIF::Data)
+      LOG:  : 1080B988 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FB20 [104 bytes] (ISprite)
+      LOG:  : 1080BDB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 11490068 [131072 bytes] (GIF::Data)
+      LOG:  : 1080C1E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 03A3FCE8 [104 bytes] (ISprite)
+      LOG:  : 108107C0 [1024 bytes] (GIF::Colors)
+      LOG:  : 12468040 [1157785 bytes] (GIF::Data)
+      LOG:  : 10812F78 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 116A24B8 [880 bytes] (LevelScene)
+      LOG:  : 115522E0 [510 bytes] (LevelScene::DebugObjectIDList)
+      LOG:  : 1159D538 [2560 bytes] (LevelScene::AnimatedSprite0Props)
+      LOG:  : 115A75B0 [2560 bytes] (LevelScene::AnimatedSprite1Props)
+      LOG:  : 115AA248 [1024 bytes] (LevelScene::SavedPalette)
+      LOG:  : 115AF7E8 [1024 bytes] (LevelScene::SoundBank)
+      LOG: Total: 1705263 bytes (1.626 MB)
+    ERROR: GIF width must be power of two!
+    ERROR: GIF height must be power of two!
+      LOG: "Sprites/Global/HUD.bin"
+      LOG:     "HUD Elements" (0) (Flags: 00, FtL: 0, Spd: 0, Frames: 20)
+      LOG:     "Numbers" (1) (Flags: 00, FtL: 0, Spd: 0, Frames: 17)
+      LOG:     "Life Icons" (2) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Player Name" (3) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Got Through" (4) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Act" (5) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Game Over" (6) (Flags: 01, FtL: 0, Spd: 0, Frames: 8)
+      LOG:     "Time Over" (7) (Flags: 01, FtL: 0, Spd: 0, Frames: 8)
+      LOG:     "Competition" (8) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Hyper Numbers" (9) (Flags: 00, FtL: 0, Spd: 0, Frames: 11)
+      LOG:     "TA End Icons" (10) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "TA Replay Clap" (11) (Flags: 00, FtL: 5, Spd: 1, Frames: 6)
+      LOG:     "Stock Icons" (12) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Encore Leader" (13) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/Global/TitleCard.bin"
+      LOG:     "Decorations" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 19)
+      LOG:     "Name Letters" (15) (Flags: 00, FtL: 0, Spd: 0, Frames: 27)
+      LOG:     "Zone Letters" (16) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Act Numbers" (17) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG: "Sprites/Global/PlaneSwitch.bin"
+      LOG:     "Plane Flags" (18) (Flags: 00, FtL: 0, Spd: 0, Frames: 6)
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/FlameMobile.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/FireBreath.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: Loading StageConfig...
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (776) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (776) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: BlankObject
+      LOG: AIZSetup
+  WARNING: Object 'AIZSetup' Sprite Not found!
+      LOG: PlayerSpawn
+  WARNING: Object 'PlayerSpawn' Sprite Not found!
+  WARNING: Object 'PlayerSpawn' Sprite Not found!
+      LOG: Ring
+      LOG: HollowTree
+  WARNING: Object 'HollowTree' Sprite Not found!
+      LOG: CollapsingPlatform
+      LOG: Rock
+      LOG: TreeBark
+  WARNING: Object 'TreeBark' Sprite Not found!
+      LOG: RopePeg
+  WARNING: Object 'RopePeg' Sprite Not found!
+      LOG: CorkFloor
+  WARNING: Object 'CorkFloor' Sprite Not found!
+      LOG: FallingLog
+      LOG: ForegroundPlant
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+      LOG: FireBreathCutscene
+  WARNING: Object 'FireBreathCutscene' Sprite Not found!
+      LOG: Monitor
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+      LOG: Spring
+      LOG: Spikes
+      LOG: StarPost
+      LOG: HiddenMonitor
+      LOG: SpecialRing
+  WARNING: Object 'SpecialRing' Sprite Not found!
+      LOG: PlaneSwitch
+      LOG: RollEnforcer
+      LOG: InvisibleBlock
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+      LOG: InvisibleHurtBlockHorizontal
+      LOG: InvisibleHurtBlockVertical
+      LOG: RideVine
+  WARNING: Object 'RideVine' Sprite Not found!
+      LOG: SwingVine
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+      LOG: Ridge
+  WARNING: Object 'Ridge' Sprite Not found!
+      LOG: FloatingPlatform
+      LOG: Bubbler
+      LOG: Bloominator
+      LOG: RhinoBot
+      LOG: MonkeyDude
+      LOG: CaterkillerJr
+    ERROR: Couldn't open source/Resources/Mixed/Music/AIZ1.ogg
+    ERROR: Couldn't open file 'Mixed/Music/AIZ1.ogg'!
+    ERROR: Couldn't find animation Falling Log (Act 1) in Sprite Sprites/AIZ/Objects.gif!
+    ERROR: Couldn't open source/Resources/Classic/Sprites/Global/SpecialRing.bin
+    ERROR: Couldn't open file 'Classic/Sprites/Global/SpecialRing.bin'!
+      LOG: SDL_Init succeeded!
+      LOG: Starting scene
+    ERROR: Couldn't open source/Resources/Sounds/Impact1.wav
+    ERROR: Couldn't open file 'Sounds/Impact1.wav'!
+    ERROR: GIF width must be power of two!
+    ERROR: GIF height must be power of two!
+      LOG: Running...
+      LOG: Printing unfreed memory...
+      LOG:  : 04491850 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491950 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 044917D0 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491C50 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 036BA950 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9A0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9F0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0133BE28 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 013D7698 [168 bytes] (IAudio)
+      LOG:  : 04400050 [256 bytes] (IAudio::Loop)
+      LOG:  : 043FFDE0 [256 bytes] (IAudio::Paused)
+      LOG:  : 0ECA7E98 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0ECA82C8 [1024 bytes] (IAudio::Length)
+      LOG:  : 0ECA86F8 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0ECA8B28 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0ECA8F58 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 036A8260 [104 bytes] (ISprite)
+      LOG:  : 0ECC3BB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 0ECC41C8 [262144 bytes] (GIF::Data)
+      LOG:  : 0ED041F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8390 [104 bytes] (ISprite)
+      LOG:  : 107E0C88 [1024 bytes] (GIF::Colors)
+      LOG:  : 107E10B8 [131072 bytes] (GIF::Data)
+      LOG:  : 108010E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A87B8 [104 bytes] (ISprite)
+      LOG:  : 10801608 [1024 bytes] (GIF::Colors)
+      LOG:  : 11350068 [131072 bytes] (GIF::Data)
+      LOG:  : 11370098 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8428 [104 bytes] (ISprite)
+      LOG:  : 113704C8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1232F040 [1157785 bytes] (GIF::Data)
+      LOG:  : 113708F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG: Total: 1696705 bytes (1.617 MB)
+      LOG: Printing unfreed memory...
+      LOG:  : 04491850 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491950 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 044917D0 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491C50 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 036BA950 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9A0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9F0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0133BE28 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 013D7698 [168 bytes] (IAudio)
+      LOG:  : 04400050 [256 bytes] (IAudio::Loop)
+      LOG:  : 043FFDE0 [256 bytes] (IAudio::Paused)
+      LOG:  : 0ECA7E98 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0ECA82C8 [1024 bytes] (IAudio::Length)
+      LOG:  : 0ECA86F8 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0ECA8B28 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0ECA8F58 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 036A8260 [104 bytes] (ISprite)
+      LOG:  : 0ECC3BB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 0ECC41C8 [262144 bytes] (GIF::Data)
+      LOG:  : 0ED041F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8390 [104 bytes] (ISprite)
+      LOG:  : 107E0C88 [1024 bytes] (GIF::Colors)
+      LOG:  : 107E10B8 [131072 bytes] (GIF::Data)
+      LOG:  : 108010E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A87B8 [104 bytes] (ISprite)
+      LOG:  : 10801608 [1024 bytes] (GIF::Colors)
+      LOG:  : 11350068 [131072 bytes] (GIF::Data)
+      LOG:  : 11370098 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8428 [104 bytes] (ISprite)
+      LOG:  : 113704C8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1232F040 [1157785 bytes] (GIF::Data)
+      LOG:  : 113708F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8688 [104 bytes] (ISprite)
+      LOG:  : 11419FB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 04153040 [1048576 bytes] (GIF::Data)
+      LOG:  : 1141A400 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A7BD8 [104 bytes] (ISprite)
+      LOG:  : 1141B0D8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1147E340 [131072 bytes] (GIF::Data)
+      LOG:  : 1141B520 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A88E8 [104 bytes] (ISprite)
+      LOG:  : 1141BDB0 [1024 bytes] (GIF::Colors)
+      LOG:  : 114A3CE0 [65536 bytes] (GIF::Data)
+      LOG:  : 1141C1F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG: Total: 2948345 bytes (2.812 MB)
+      LOG: Starting AIZ... 1
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+      LOG: Printing unfreed memory...
+      LOG:  : 04491850 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491950 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 044917D0 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491C50 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 036BA950 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9A0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9F0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0133BE28 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 013D7698 [168 bytes] (IAudio)
+      LOG:  : 04400050 [256 bytes] (IAudio::Loop)
+      LOG:  : 043FFDE0 [256 bytes] (IAudio::Paused)
+      LOG:  : 0ECA7E98 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0ECA82C8 [1024 bytes] (IAudio::Length)
+      LOG:  : 0ECA86F8 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0ECA8B28 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0ECA8F58 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 036A8260 [104 bytes] (ISprite)
+      LOG:  : 0ECC3BB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 0ECC41C8 [262144 bytes] (GIF::Data)
+      LOG:  : 0ED041F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8390 [104 bytes] (ISprite)
+      LOG:  : 107E0C88 [1024 bytes] (GIF::Colors)
+      LOG:  : 107E10B8 [131072 bytes] (GIF::Data)
+      LOG:  : 108010E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A87B8 [104 bytes] (ISprite)
+      LOG:  : 10801608 [1024 bytes] (GIF::Colors)
+      LOG:  : 11350068 [131072 bytes] (GIF::Data)
+      LOG:  : 11370098 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8428 [104 bytes] (ISprite)
+      LOG:  : 113704C8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1232F040 [1157785 bytes] (GIF::Data)
+      LOG:  : 113708F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 1156A910 [880 bytes] (LevelScene)
+      LOG:  : 11414478 [510 bytes] (LevelScene::DebugObjectIDList)
+      LOG:  : 11570970 [2560 bytes] (LevelScene::AnimatedSprite0Props)
+      LOG:  : 115713A0 [2560 bytes] (LevelScene::AnimatedSprite1Props)
+      LOG:  : 11474520 [1024 bytes] (LevelScene::SavedPalette)
+      LOG:  : 11473400 [1024 bytes] (LevelScene::SoundBank)
+      LOG: Total: 1705263 bytes (1.626 MB)
+    ERROR: GIF width must be power of two!
+    ERROR: GIF height must be power of two!
+      LOG: "Sprites/Global/HUD.bin"
+      LOG:     "HUD Elements" (0) (Flags: 00, FtL: 0, Spd: 0, Frames: 20)
+      LOG:     "Numbers" (1) (Flags: 00, FtL: 0, Spd: 0, Frames: 17)
+      LOG:     "Life Icons" (2) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Player Name" (3) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Got Through" (4) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Act" (5) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Game Over" (6) (Flags: 01, FtL: 0, Spd: 0, Frames: 8)
+      LOG:     "Time Over" (7) (Flags: 01, FtL: 0, Spd: 0, Frames: 8)
+      LOG:     "Competition" (8) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Hyper Numbers" (9) (Flags: 00, FtL: 0, Spd: 0, Frames: 11)
+      LOG:     "TA End Icons" (10) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "TA Replay Clap" (11) (Flags: 00, FtL: 5, Spd: 1, Frames: 6)
+      LOG:     "Stock Icons" (12) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Encore Leader" (13) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/Global/TitleCard.bin"
+      LOG:     "Decorations" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 19)
+      LOG:     "Name Letters" (15) (Flags: 00, FtL: 0, Spd: 0, Frames: 27)
+      LOG:     "Zone Letters" (16) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Act Numbers" (17) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG: "Sprites/Global/PlaneSwitch.bin"
+      LOG:     "Plane Flags" (18) (Flags: 00, FtL: 0, Spd: 0, Frames: 6)
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/FlameMobile.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/FireBreath.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: Loading StageConfig...
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (776) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (776) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: BlankObject
+      LOG: AIZSetup
+  WARNING: Object 'AIZSetup' Sprite Not found!
+      LOG: PlayerSpawn
+  WARNING: Object 'PlayerSpawn' Sprite Not found!
+  WARNING: Object 'PlayerSpawn' Sprite Not found!
+      LOG: Ring
+      LOG: HollowTree
+  WARNING: Object 'HollowTree' Sprite Not found!
+      LOG: CollapsingPlatform
+      LOG: Rock
+      LOG: TreeBark
+  WARNING: Object 'TreeBark' Sprite Not found!
+      LOG: RopePeg
+  WARNING: Object 'RopePeg' Sprite Not found!
+      LOG: CorkFloor
+  WARNING: Object 'CorkFloor' Sprite Not found!
+      LOG: FallingLog
+      LOG: ForegroundPlant
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+      LOG: FireBreathCutscene
+  WARNING: Object 'FireBreathCutscene' Sprite Not found!
+      LOG: Monitor
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+      LOG: Spring
+      LOG: Spikes
+      LOG: StarPost
+      LOG: HiddenMonitor
+      LOG: SpecialRing
+  WARNING: Object 'SpecialRing' Sprite Not found!
+      LOG: PlaneSwitch
+      LOG: RollEnforcer
+      LOG: InvisibleBlock
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+      LOG: InvisibleHurtBlockHorizontal
+      LOG: InvisibleHurtBlockVertical
+      LOG: RideVine
+  WARNING: Object 'RideVine' Sprite Not found!
+      LOG: SwingVine
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+      LOG: Ridge
+  WARNING: Object 'Ridge' Sprite Not found!
+      LOG: FloatingPlatform
+      LOG: Bubbler
+      LOG: Bloominator
+      LOG: RhinoBot
+      LOG: MonkeyDude
+      LOG: CaterkillerJr
+    ERROR: Couldn't open source/Resources/Mixed/Music/AIZ1.ogg
+    ERROR: Couldn't open file 'Mixed/Music/AIZ1.ogg'!
+    ERROR: Couldn't find animation Falling Log (Act 1) in Sprite Sprites/AIZ/Objects.gif!
+    ERROR: Couldn't find animation Ring Flash in Sprite Classic/Sprites/Dev/NullGfx.gif!
+      LOG: Printing unfreed memory...
+      LOG:  : 04491850 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491950 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 044917D0 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491C50 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 036BA950 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9A0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9F0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0133BE28 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 013D7698 [168 bytes] (IAudio)
+      LOG:  : 04400050 [256 bytes] (IAudio::Loop)
+      LOG:  : 043FFDE0 [256 bytes] (IAudio::Paused)
+      LOG:  : 0ECA7E98 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0ECA82C8 [1024 bytes] (IAudio::Length)
+      LOG:  : 0ECA86F8 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0ECA8B28 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0ECA8F58 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 036A8260 [104 bytes] (ISprite)
+      LOG:  : 0ECC3BB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 0ECC41C8 [262144 bytes] (GIF::Data)
+      LOG:  : 0ED041F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8390 [104 bytes] (ISprite)
+      LOG:  : 107E0C88 [1024 bytes] (GIF::Colors)
+      LOG:  : 107E10B8 [131072 bytes] (GIF::Data)
+      LOG:  : 108010E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A87B8 [104 bytes] (ISprite)
+      LOG:  : 10801608 [1024 bytes] (GIF::Colors)
+      LOG:  : 11350068 [131072 bytes] (GIF::Data)
+      LOG:  : 11370098 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8428 [104 bytes] (ISprite)
+      LOG:  : 113704C8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1232F040 [1157785 bytes] (GIF::Data)
+      LOG:  : 113708F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 1156A910 [880 bytes] (LevelScene)
+      LOG:  : 12FC8AB8 [300 bytes] (Object)
+      LOG:  : 12FC9170 [300 bytes] (Object)
+      LOG:  : 12FC8EC0 [300 bytes] (Object)
+      LOG:  : 13004278 [300 bytes] (Object)
+      LOG:  : 13003A68 [300 bytes] (Object)
+      LOG:  : 13004BE0 [300 bytes] (Object)
+      LOG:  : 130043D0 [300 bytes] (Object)
+      LOG:  : 130047D8 [300 bytes] (Object)
+      LOG:  : 13004528 [300 bytes] (Object)
+      LOG:  : 130037B8 [300 bytes] (Object)
+      LOG:  : 130033B0 [300 bytes] (Object)
+      LOG:  : 13004D38 [300 bytes] (Object)
+      LOG:  : 13003BC0 [300 bytes] (Object)
+      LOG: Total: 1701485 bytes (1.622 MB)
+      LOG: Starting AIZ... 1
+      LOG: Angel Island Act 1 Constructor took 0.000s to run.
+      LOG: Printing unfreed memory...
+      LOG:  : 04491850 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491950 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 044917D0 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491C50 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 036BA950 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9A0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9F0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0133BE28 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 013D7698 [168 bytes] (IAudio)
+      LOG:  : 04400050 [256 bytes] (IAudio::Loop)
+      LOG:  : 043FFDE0 [256 bytes] (IAudio::Paused)
+      LOG:  : 0ECA7E98 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0ECA82C8 [1024 bytes] (IAudio::Length)
+      LOG:  : 0ECA86F8 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0ECA8B28 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0ECA8F58 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 036A8260 [104 bytes] (ISprite)
+      LOG:  : 0ECC3BB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 0ECC41C8 [262144 bytes] (GIF::Data)
+      LOG:  : 0ED041F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8390 [104 bytes] (ISprite)
+      LOG:  : 107E0C88 [1024 bytes] (GIF::Colors)
+      LOG:  : 107E10B8 [131072 bytes] (GIF::Data)
+      LOG:  : 108010E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A87B8 [104 bytes] (ISprite)
+      LOG:  : 10801608 [1024 bytes] (GIF::Colors)
+      LOG:  : 11350068 [131072 bytes] (GIF::Data)
+      LOG:  : 11370098 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8428 [104 bytes] (ISprite)
+      LOG:  : 113704C8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1232F040 [1157785 bytes] (GIF::Data)
+      LOG:  : 113708F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 12FC8AB8 [300 bytes] (Object)
+      LOG:  : 12FC9170 [300 bytes] (Object)
+      LOG:  : 12FC8EC0 [300 bytes] (Object)
+      LOG:  : 13004278 [300 bytes] (Object)
+      LOG:  : 13003A68 [300 bytes] (Object)
+      LOG:  : 13004BE0 [300 bytes] (Object)
+      LOG:  : 130043D0 [300 bytes] (Object)
+      LOG:  : 130047D8 [300 bytes] (Object)
+      LOG:  : 13004528 [300 bytes] (Object)
+      LOG:  : 130037B8 [300 bytes] (Object)
+      LOG:  : 130033B0 [300 bytes] (Object)
+      LOG:  : 13004D38 [300 bytes] (Object)
+      LOG:  : 13003BC0 [300 bytes] (Object)
+      LOG:  : 11AB3748 [880 bytes] (LevelScene)
+      LOG:  : 1199DAB0 [510 bytes] (LevelScene::DebugObjectIDList)
+      LOG:  : 11C5C578 [2560 bytes] (LevelScene::AnimatedSprite0Props)
+      LOG:  : 123121E0 [2560 bytes] (LevelScene::AnimatedSprite1Props)
+      LOG:  : 13301BC8 [1024 bytes] (LevelScene::SavedPalette)
+      LOG:  : 13306D20 [1024 bytes] (LevelScene::SoundBank)
+      LOG: Total: 1709163 bytes (1.630 MB)
+    ERROR: GIF width must be power of two!
+    ERROR: GIF height must be power of two!
+      LOG: "Sprites/Global/HUD.bin"
+      LOG:     "HUD Elements" (0) (Flags: 00, FtL: 0, Spd: 0, Frames: 20)
+      LOG:     "Numbers" (1) (Flags: 00, FtL: 0, Spd: 0, Frames: 17)
+      LOG:     "Life Icons" (2) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Player Name" (3) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Got Through" (4) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Act" (5) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Game Over" (6) (Flags: 01, FtL: 0, Spd: 0, Frames: 8)
+      LOG:     "Time Over" (7) (Flags: 01, FtL: 0, Spd: 0, Frames: 8)
+      LOG:     "Competition" (8) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Hyper Numbers" (9) (Flags: 00, FtL: 0, Spd: 0, Frames: 11)
+      LOG:     "TA End Icons" (10) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "TA Replay Clap" (11) (Flags: 00, FtL: 5, Spd: 1, Frames: 6)
+      LOG:     "Stock Icons" (12) (Flags: 00, FtL: 0, Spd: 0, Frames: 5)
+      LOG:     "Encore Leader" (13) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: "Sprites/Global/TitleCard.bin"
+      LOG:     "Decorations" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 19)
+      LOG:     "Name Letters" (15) (Flags: 00, FtL: 0, Spd: 0, Frames: 27)
+      LOG:     "Zone Letters" (16) (Flags: 00, FtL: 0, Spd: 0, Frames: 4)
+      LOG:     "Act Numbers" (17) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG: "Sprites/Global/PlaneSwitch.bin"
+      LOG:     "Plane Flags" (18) (Flags: 00, FtL: 0, Spd: 0, Frames: 6)
+      LOG: "Sprites/Global/Water.bin"
+      LOG:     "Waves" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 10)
+      LOG:     "Splash" (1) (Flags: 00, FtL: 16, Spd: 1, Frames: 17)
+      LOG:     "Bubbler" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Large Bubble" (3) (Flags: 00, FtL: 13, Spd: 1, Frames: 18)
+      LOG:     "Medium Bubble" (4) (Flags: 00, FtL: 9, Spd: 1, Frames: 11)
+      LOG:     "Small Bubble" (5) (Flags: 00, FtL: 5, Spd: 1, Frames: 9)
+      LOG:     "Burst" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Countdown Appear" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 11)
+      LOG:     "Countdown 0" (8) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 1" (9) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 2" (10) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 3" (11) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 4" (12) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Countdown 5" (13) (Flags: 00, FtL: 3, Spd: 1, Frames: 4)
+      LOG:     "Tic" (14) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG: "Sprites/AIZ/Act 2 Background Tree.bin"
+      LOG:     "Main" (0) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/Airship.bin"
+      LOG:     "Bomb" (1) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG:     "Explosion 1" (2) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Explosion 2" (3) (Flags: 00, FtL: 0, Spd: 1, Frames: 6)
+      LOG:     "Propeller" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG: "Sprites/AIZ/FlameMobile.bin"
+      LOG:     "Main" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 56)
+      LOG:     "Smol" (6) (Flags: 00, FtL: 0, Spd: 1, Frames: 1)
+      LOG: "Sprites/AIZ/FireBreath.bin"
+      LOG:     "Miniboss Main" (7) (Flags: 00, FtL: 0, Spd: 1, Frames: 12)
+      LOG:     "Flame" (8) (Flags: 00, FtL: 0, Spd: 1, Frames: 5)
+      LOG:     "Small" (9) (Flags: 00, FtL: 0, Spd: 1, Frames: 3)
+      LOG:     "Pieces" (10) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+      LOG:     "Bomb" (11) (Flags: 00, FtL: 0, Spd: 1, Frames: 2)
+      LOG: Loading StageConfig...
+IMPORTANT: Layer 0 (Background (Sky & Sea)): Width (32) Height (32) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Background (Forest)): Width (240) Height (56) Infos (26) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 2 (FG Low): Width (776) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 3 (FG High): Width (776) Height (104) Infos (1) Vertical Scrolling (0) UnknownFlags (1) 
+IMPORTANT: Layer 4 (Fire Overlay): Width (32) Height (48) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+      LOG: BlankObject
+      LOG: AIZSetup
+  WARNING: Object 'AIZSetup' Sprite Not found!
+      LOG: PlayerSpawn
+  WARNING: Object 'PlayerSpawn' Sprite Not found!
+  WARNING: Object 'PlayerSpawn' Sprite Not found!
+      LOG: Ring
+      LOG: HollowTree
+  WARNING: Object 'HollowTree' Sprite Not found!
+      LOG: CollapsingPlatform
+      LOG: Rock
+      LOG: TreeBark
+  WARNING: Object 'TreeBark' Sprite Not found!
+      LOG: RopePeg
+  WARNING: Object 'RopePeg' Sprite Not found!
+      LOG: CorkFloor
+  WARNING: Object 'CorkFloor' Sprite Not found!
+      LOG: FallingLog
+      LOG: ForegroundPlant
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+  WARNING: Object 'ForegroundPlant' Sprite Not found!
+      LOG: FireBreathCutscene
+  WARNING: Object 'FireBreathCutscene' Sprite Not found!
+      LOG: Monitor
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+  WARNING: Object 'Monitor' Sprite Not found!
+      LOG: Spring
+      LOG: Spikes
+      LOG: StarPost
+      LOG: HiddenMonitor
+      LOG: SpecialRing
+  WARNING: Object 'SpecialRing' Sprite Not found!
+      LOG: PlaneSwitch
+      LOG: RollEnforcer
+      LOG: InvisibleBlock
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+  WARNING: Object 'InvisibleBlock' Sprite Not found!
+      LOG: InvisibleHurtBlockHorizontal
+      LOG: InvisibleHurtBlockVertical
+      LOG: RideVine
+  WARNING: Object 'RideVine' Sprite Not found!
+      LOG: SwingVine
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+  WARNING: Object 'SwingVine' Sprite Not found!
+      LOG: Ridge
+  WARNING: Object 'Ridge' Sprite Not found!
+      LOG: FloatingPlatform
+      LOG: Bubbler
+      LOG: Bloominator
+      LOG: RhinoBot
+      LOG: MonkeyDude
+      LOG: CaterkillerJr
+    ERROR: Couldn't open source/Resources/Mixed/Music/AIZ1.ogg
+    ERROR: Couldn't open file 'Mixed/Music/AIZ1.ogg'!
+    ERROR: Couldn't find animation Falling Log (Act 1) in Sprite Sprites/AIZ/Objects.gif!
+    ERROR: Couldn't find animation Ring Flash in Sprite Classic/Sprites/Dev/NullGfx.gif!
+    ERROR: Couldn't find animation Ring Flash in Sprite Sprites/Global/Objects.gif!
+    ERROR: Couldn't find animation Ring Flash in Sprite Sprites/Global/Objects.gif!
+      LOG: Printing unfreed memory...
+      LOG:  : 04491850 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491950 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 044917D0 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491C50 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 036BA950 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9A0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9F0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0133BE28 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 013D7698 [168 bytes] (IAudio)
+      LOG:  : 04400050 [256 bytes] (IAudio::Loop)
+      LOG:  : 043FFDE0 [256 bytes] (IAudio::Paused)
+      LOG:  : 0ECA7E98 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0ECA82C8 [1024 bytes] (IAudio::Length)
+      LOG:  : 0ECA86F8 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0ECA8B28 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0ECA8F58 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 036A8260 [104 bytes] (ISprite)
+      LOG:  : 0ECC3BB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 0ECC41C8 [262144 bytes] (GIF::Data)
+      LOG:  : 0ED041F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8390 [104 bytes] (ISprite)
+      LOG:  : 107E0C88 [1024 bytes] (GIF::Colors)
+      LOG:  : 107E10B8 [131072 bytes] (GIF::Data)
+      LOG:  : 108010E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A87B8 [104 bytes] (ISprite)
+      LOG:  : 10801608 [1024 bytes] (GIF::Colors)
+      LOG:  : 11350068 [131072 bytes] (GIF::Data)
+      LOG:  : 11370098 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8428 [104 bytes] (ISprite)
+      LOG:  : 113704C8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1232F040 [1157785 bytes] (GIF::Data)
+      LOG:  : 113708F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 12FC8AB8 [300 bytes] (Object)
+      LOG:  : 12FC9170 [300 bytes] (Object)
+      LOG:  : 12FC8EC0 [300 bytes] (Object)
+      LOG:  : 13004278 [300 bytes] (Object)
+      LOG:  : 13003A68 [300 bytes] (Object)
+      LOG:  : 13004BE0 [300 bytes] (Object)
+      LOG:  : 130043D0 [300 bytes] (Object)
+      LOG:  : 130047D8 [300 bytes] (Object)
+      LOG:  : 13004528 [300 bytes] (Object)
+      LOG:  : 130037B8 [300 bytes] (Object)
+      LOG:  : 130033B0 [300 bytes] (Object)
+      LOG:  : 13004D38 [300 bytes] (Object)
+      LOG:  : 13003BC0 [300 bytes] (Object)
+      LOG:  : 11AB3748 [880 bytes] (LevelScene)
+      LOG:  : 043B4C08 [300 bytes] (Object)
+      LOG:  : 043B3FF0 [300 bytes] (Object)
+      LOG:  : 043B42A0 [300 bytes] (Object)
+      LOG:  : 043B4148 [300 bytes] (Object)
+      LOG:  : 043B43F8 [300 bytes] (Object)
+      LOG:  : 12FC96D0 [300 bytes] (Object)
+      LOG:  : 12FC9018 [300 bytes] (Object)
+      LOG:  : 12FC92C8 [300 bytes] (Object)
+      LOG:  : 12FC9420 [300 bytes] (Object)
+      LOG:  : 12FC8C10 [300 bytes] (Object)
+      LOG:  : 12FC8D68 [300 bytes] (Object)
+      LOG:  : 12FC9578 [300 bytes] (Object)
+      LOG:  : 12FC8960 [300 bytes] (Object)
+      LOG:  : 11833BA0 [904 bytes] (LevelScene)
+      LOG:  : 1199E618 [510 bytes] (LevelScene::DebugObjectIDList)
+      LOG:  : 1360E0C0 [2560 bytes] (LevelScene::AnimatedSprite0Props)
+      LOG:  : 120A90F0 [2560 bytes] (LevelScene::AnimatedSprite1Props)
+      LOG:  : 1276F0C0 [1024 bytes] (LevelScene::SavedPalette)
+      LOG:  : 1276F508 [1024 bytes] (LevelScene::SoundBank)
+      LOG:  : 11832C68 [104 bytes] (ISprite)
+      LOG:  : 12772420 [1024 bytes] (GIF::Colors)
+      LOG:  : 013FF040 [1048576 bytes] (GIF::Data)
+      LOG:  : 12770A70 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 11832D98 [104 bytes] (ISprite)
+      LOG:  : 12771748 [1024 bytes] (GIF::Colors)
+      LOG:  : 12F0BA30 [65536 bytes] (GIF::Data)
+      LOG:  : 12771FD8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 118327A8 [104 bytes] (ISprite)
+      LOG:  : 122EFF98 [1024 bytes] (GIF::Colors)
+      LOG:  : 13B43BC8 [262144 bytes] (GIF::Data)
+      LOG:  : 122F0C70 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 11832840 [104 bytes] (ISprite)
+      LOG:  : 122EE5E8 [1024 bytes] (GIF::Colors)
+      LOG:  : 120A9B20 [131072 bytes] (GIF::Data)
+      LOG:  : 122ED080 [1024 bytes] (ISprite::PaletteAlt)
+      LOG: Total: 3229903 bytes (3.080 MB)
+      LOG: Loading StageConfig...
+IMPORTANT: Layer 0 (Background): Width (32) Height (16) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 1 (Frustum 1): Width (11) Height (7) Infos (1) Vertical Scrolling (0) UnknownFlags (16) 
+IMPORTANT: Layer 2 (Frustum 2): Width (9) Height (9) Infos (1) Vertical Scrolling (0) UnknownFlags (16) 
+IMPORTANT: Layer 3 (Globe): Width (32) Height (16) Infos (1) Vertical Scrolling (0) UnknownFlags (0) 
+IMPORTANT: Layer 4 (Playfield): Width (32) Height (32) Infos (1) Vertical Scrolling (0) UnknownFlags (16) 
+IMPORTANT: Layer 5 (Ring Count): Width (32) Height (32) Infos (1) Vertical Scrolling (0) UnknownFlags (16) 
+      LOG: Blank Object
+      LOG: Music
+      LOG: BSS_Palette
+  WARNING: Object 'BSS_Palette' Sprite Not found!
+      LOG: BSS_Setup
+      LOG: BSS_Player
+      LOG: BSS_Horizon
+      LOG: BSS_HUD
+      LOG: BSS_Collectable
+      LOG: BSS_Collected
+      LOG: BSS_Message
+      LOG: SaveGame
+    ERROR: GIF width must be power of two!
+    ERROR: GIF height must be power of two!
+      LOG: "Sprites/Global/ItemBox.bin"
+      LOG:     "Normal" (0) (Flags: 00, FtL: 0, Spd: 0, Frames: 1)
+      LOG:     "Broken" (1) (Flags: 00, FtL: 0, Spd: 0, Frames: 3)
+      LOG:     "Powerups" (2) (Flags: 00, FtL: 0, Spd: 0, Frames: 15)
+      LOG:     "Scanlines" (3) (Flags: 00, FtL: 0, Spd: 2, Frames: 2)
+      LOG:     "Snow" (4) (Flags: 00, FtL: 0, Spd: 1, Frames: 24)
+      LOG:     "Item Disappear" (5) (Flags: 00, FtL: 0, Spd: 1, Frames: 14)
+      LOG:     "Debris" (6) (Flags: 01, FtL: 0, Spd: 64, Frames: 10)
+      LOG: "Sprites/Global/Ring.bin"
+      LOG:     "Normal Ring" (7) (Flags: 00, FtL: 0, Spd: 64, Frames: 16)
+      LOG:     "Hyper Ring" (8) (Flags: 00, FtL: 0, Spd: 64, Frames: 16)
+      LOG:     "Sparkle 1" (9) (Flags: 00, FtL: 0, Spd: 4, Frames: 32)
+      LOG:     "Sparkle 2" (10) (Flags: 00, FtL: 0, Spd: 4, Frames: 8)
+      LOG:     "Sparkle 3" (11) (Flags: 00, FtL: 0, Spd: 4, Frames: 9)
+      LOG: "Sprites/Special/Ring.bin"
+      LOG:     "Ring" (12) (Flags: 00, FtL: 0, Spd: 128, Frames: 16)
+      LOG:     "Sparkle" (13) (Flags: 00, FtL: 0, Spd: 1, Frames: 4)
+  WARNING: Value 0: 00000000 (0) 4
+  WARNING: Value 1: 00000101 (5) 1
+  WARNING: Value 2: 00000101 (5) 1
+  WARNING: Value 3: 00000101 (5) 1
+  WARNING: Value 4: 00000101 (5) 1
+  WARNING: Value 5: 00000101 (5) 1
+  WARNING: Value 6: 00000101 (5) 1
+  WARNING: Value 7: 00000001 (1) 1
+  WARNING: Value 8: 00000001 (1) 1
+  WARNING: Value 9: 00000001 (1) 1
+  WARNING: Value 10: 00000001 (1) 1
+  WARNING: Value 11: 00000001 (1) 1
+  WARNING: Value 12: 00000001 (1) 1
+  WARNING: Value 13: 00000001 (1) 1
+      LOG: Printing unfreed memory...
+      LOG:  : 04491850 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491950 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 044917D0 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 04491C50 [20 bytes] (IInput::Controllers[i])
+      LOG:  : 036BA950 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9A0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 036BA9F0 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 0133BE28 [36 bytes] (IInput::ControllerMaps[i])
+      LOG:  : 013D7698 [168 bytes] (IAudio)
+      LOG:  : 04400050 [256 bytes] (IAudio::Loop)
+      LOG:  : 043FFDE0 [256 bytes] (IAudio::Paused)
+      LOG:  : 0ECA7E98 [1024 bytes] (IAudio::Buffer)
+      LOG:  : 0ECA82C8 [1024 bytes] (IAudio::Length)
+      LOG:  : 0ECA86F8 [1024 bytes] (IAudio::BufferStart)
+      LOG:  : 0ECA8B28 [1024 bytes] (IAudio::LengthStart)
+      LOG:  : 0ECA8F58 [1024 bytes] (IAudio::LoopPoint)
+      LOG:  : 036A8260 [104 bytes] (ISprite)
+      LOG:  : 0ECC3BB8 [1024 bytes] (GIF::Colors)
+      LOG:  : 0ECC41C8 [262144 bytes] (GIF::Data)
+      LOG:  : 0ED041F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8390 [104 bytes] (ISprite)
+      LOG:  : 107E0C88 [1024 bytes] (GIF::Colors)
+      LOG:  : 107E10B8 [131072 bytes] (GIF::Data)
+      LOG:  : 108010E8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A87B8 [104 bytes] (ISprite)
+      LOG:  : 10801608 [1024 bytes] (GIF::Colors)
+      LOG:  : 11350068 [131072 bytes] (GIF::Data)
+      LOG:  : 11370098 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 036A8428 [104 bytes] (ISprite)
+      LOG:  : 113704C8 [1024 bytes] (GIF::Colors)
+      LOG:  : 1232F040 [1157785 bytes] (GIF::Data)
+      LOG:  : 113708F8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 12FC8AB8 [300 bytes] (Object)
+      LOG:  : 12FC9170 [300 bytes] (Object)
+      LOG:  : 12FC8EC0 [300 bytes] (Object)
+      LOG:  : 13004278 [300 bytes] (Object)
+      LOG:  : 13003A68 [300 bytes] (Object)
+      LOG:  : 13004BE0 [300 bytes] (Object)
+      LOG:  : 130043D0 [300 bytes] (Object)
+      LOG:  : 130047D8 [300 bytes] (Object)
+      LOG:  : 13004528 [300 bytes] (Object)
+      LOG:  : 130037B8 [300 bytes] (Object)
+      LOG:  : 130033B0 [300 bytes] (Object)
+      LOG:  : 13004D38 [300 bytes] (Object)
+      LOG:  : 13003BC0 [300 bytes] (Object)
+      LOG:  : 043B4C08 [300 bytes] (Object)
+      LOG:  : 043B3FF0 [300 bytes] (Object)
+      LOG:  : 043B42A0 [300 bytes] (Object)
+      LOG:  : 043B4148 [300 bytes] (Object)
+      LOG:  : 043B43F8 [300 bytes] (Object)
+      LOG:  : 12FC96D0 [300 bytes] (Object)
+      LOG:  : 12FC9018 [300 bytes] (Object)
+      LOG:  : 12FC92C8 [300 bytes] (Object)
+      LOG:  : 12FC9420 [300 bytes] (Object)
+      LOG:  : 12FC8C10 [300 bytes] (Object)
+      LOG:  : 12FC8D68 [300 bytes] (Object)
+      LOG:  : 12FC9578 [300 bytes] (Object)
+      LOG:  : 12FC8960 [300 bytes] (Object)
+      LOG:  : 11833BA0 [904 bytes] (LevelScene)
+      LOG:  : 11832C68 [104 bytes] (ISprite)
+      LOG:  : 12772420 [1024 bytes] (GIF::Colors)
+      LOG:  : 013FF040 [1048576 bytes] (GIF::Data)
+      LOG:  : 12770A70 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 11832D98 [104 bytes] (ISprite)
+      LOG:  : 12771748 [1024 bytes] (GIF::Colors)
+      LOG:  : 12F0BA30 [65536 bytes] (GIF::Data)
+      LOG:  : 12771FD8 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 118327A8 [104 bytes] (ISprite)
+      LOG:  : 122EFF98 [1024 bytes] (GIF::Colors)
+      LOG:  : 13B43BC8 [262144 bytes] (GIF::Data)
+      LOG:  : 122F0C70 [1024 bytes] (ISprite::PaletteAlt)
+      LOG:  : 11832840 [104 bytes] (ISprite)
+      LOG:  : 122EE5E8 [1024 bytes] (GIF::Colors)
+      LOG:  : 120A9B20 [131072 bytes] (GIF::Data)
+      LOG:  : 122ED080 [1024 bytes] (ISprite::PaletteAlt)
+      LOG: Total: 3221345 bytes (3.071 MB)

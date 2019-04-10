@@ -235,6 +235,7 @@ public:
     void SaveState();
     void LoadState();
     static size_t LoadSpriteBin(const char* Filename);
+    static size_t LoadSpriteBin(const char* Filename, byte Mode);
     static ISprite* LoadSpriteFromBin(const char* Filename);
     static ISprite* GetSpriteFromBinIndex(size_t index);
     virtual void CreateAttributeValue(AttributeValue* Attribute);

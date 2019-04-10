@@ -32,15 +32,10 @@ enum ItemTypes {
     END_LIST_DONT_MOVE,
 }
 
-event Monitor() : CONSTRUCTER {
-    if (SaveGame.CurrentMode == 0) {
-        BinIndex = LevelScene.LoadSpriteBin("GlobalS3K/ItemBox.bin");
-    } else {
-	    BinIndex = LevelScene.LoadSpriteBin("Global/ItemBox.bin");
-    }
-}
-
 event Create() {
+	
+	    BinIndex = LevelScene.LoadSpriteBin("Global/ItemBox.bin",SaveGame.CurrentMode);
+	
     W = 26;
     H = 32;
     Active = true;
