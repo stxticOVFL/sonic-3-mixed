@@ -3109,7 +3109,7 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 	} else if (SaveGame::CurrentMode == 1) {
 		ModeName = "Mixed Mode";
 	} else if (SaveGame::CurrentMode == 2) {
-		ModeName = "Locked On";
+		ModeName = "Mixed Mode";
 	}
 
 	Discord_UpdatePresence(ModeName, levelname, imgkey, true);

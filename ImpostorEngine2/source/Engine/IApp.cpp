@@ -94,27 +94,24 @@ static bool WriteLogToFile = true;
     #include "switch.h"
 #endif
 
+bool IApp::Mobile = false;
+
 #if   MSVC
     Platforms IApp::Platform = Platforms::Windows;
-	bool      IApp::Mobile   = false;
 #elif MACOSX
     Platforms IApp::Platform = Platforms::MacOSX;
-	bool      IApp::Mobile = false;
 #elif LINUX
     Platforms IApp::Platform = Platforms::Linux;
-	bool      IApp::Mobile = false;
 #elif UBUNTU
     Platforms IApp::Platform = Platforms::Ubuntu;
-	bool      IApp::Mobile = false;
 #elif NX
     Platforms IApp::Platform = Platforms::Switch;
-	bool      IApp::Mobile = false;
 #elif IOS
     Platforms IApp::Platform = Platforms::iOS;
-	bool      IApp::Mobile = true;
+	IApp::Mobile = true;
 #elif ANDROID
     Platforms IApp::Platform = Platforms::Android;
-	bool      IApp::Mobile = true;
+	IApp::Mobile = true;
 #else
     Platforms IApp::Platform = Platforms::Default;
 #endif
@@ -123,6 +120,11 @@ IApp* IApp::GlobalApp = NULL;
 
 PUBLIC IApp::IApp() {
     IMath::Init();
+
+	if (WriteLogToFile) {
+        FILE* f = fopen("ImpostorEngine2.log", "w");
+        fclose(f);
+    }
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         Print(0, "SDL_Init failed with error: %s", SDL_GetError());
@@ -276,12 +278,7 @@ PUBLIC void IApp::ExecuteCommand(char* cmd) {
 PUBLIC void IApp::Run() {
     if (!Running)
         return;
-        
-    if (WriteLogToFile) {
-        FILE* f = fopen("ImpostorEngine2.log", "w");
-        fclose(f);
-    }
-        
+                
 
     unsigned long frameTimeMillis;
     unsigned long beginFrameBatch;
@@ -471,19 +468,6 @@ PUBLIC void IApp::Run() {
 			G->SetFilter(0);
 			int DrawY = 36;
 
-			char* numbers[10] = {
-					"0",
-					"1",
-					"2",
-					"3",
-					"4",
-					"5",
-					"6",
-					"7",
-					"8",
-					"9",
-			};
-
 			int values[0xA];
 			int valueCount = 0;
 
@@ -588,50 +572,15 @@ PUBLIC void IApp::Run() {
 				G->DrawText(WIDTH / 2 - strlen("Debug Settings") * 4, 126, "Debug Settings", DevMenuSelected == 3 ? 0xF0F0F0 : 0x848294);
 				G->DrawText(WIDTH / 2 - strlen("Back") * 4, 136, "Back", DevMenuSelected == 4 ? 0xF0F0F0 : 0x848294);
 
-				switch (DevMenuSelected)
+				if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
 				{
-				default:
-					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
-					{
-						DevMenuCurMenu = 0;
-						DevMenuSelected = 0;
-					}
-					break;
-				case 0:
-					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
-					{
-						DevMenuCurMenu = 3;
-						DevMenuSelected = 0;
-					}
-					break;
-				case 1:
-					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
-					{
-						DevMenuCurMenu = 4;
-						DevMenuSelected = 0;
-					}
-					break;
-				case 2:
-					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
-					{
-						DevMenuCurMenu = 5;
-						DevMenuSelected = 0;
-					}
-					break;
-				case 3:
-					if (Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED])
-					{
-						DevMenuCurMenu = 6;
-						DevMenuSelected = 0;
-					}
-					break;
+					DevMenuCurMenu = DevMenuSelected + 3;
+					DevMenuSelected = 0;
 				}
-				break;
 			case 3: //Options Video
 				MaxButtons = 4;
 				G->DrawText(WIDTH / 2 - strlen("Window Size:") * 4, 96, "Window Size:", DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
 				G->DrawText(WIDTH / 2 - strlen("FullScreen:") * 4, 106, "FullScreen:", DevMenuSelected == 1 ? 0xF0F0F0 : 0x848294);
-
 				G->DrawText(WIDTH / 2 - strlen("Confirm") * 4, 126, "Confirm", DevMenuSelected == 2 ? 0xF0F0F0 : 0x848294);
 				G->DrawText(WIDTH / 2 - strlen("Cancel") * 4, 136, "Cancel", DevMenuSelected == 3 ? 0xF0F0F0 : 0x848294);
 				
@@ -647,7 +596,7 @@ PUBLIC void IApp::Run() {
 
 				for (int i = valueCount; i >= 0; i--)
 				{
-					G->DrawText(XPos + (8 * valueID++), 96, numbers[values[i]], DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
+					G->DrawText(XPos + (8 * valueID++), 96, Format("%d", values[i]), DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
 				}
 
 				G->DrawText(XPos, 106, DevMenuFlagA == 1 ? "YES" : "NO", DevMenuSelected == 1 ? 0xF0F0F0 : 0x848294);
@@ -709,7 +658,7 @@ PUBLIC void IApp::Run() {
 
 				for (int i = valueCount; i >= 0; i--)
 				{
-					G->DrawText(XPos + (8 * valueID++), 96, numbers[values[i]], DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
+					G->DrawText(XPos + (8 * valueID++), 96, Format("%d", values[i]), DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
 				}
 
 				value = Audio->MusicVolume * 100;
@@ -723,7 +672,7 @@ PUBLIC void IApp::Run() {
 
 				for (int i = valueCount; i >= 0; i--)
 				{
-					G->DrawText(XPos + (8 * valueID++), 106, numbers[values[i]], DevMenuSelected == 1 ? 0xF0F0F0 : 0x848294);
+					G->DrawText(XPos + (8 * valueID++), 106, Format("%d", values[i]), DevMenuSelected == 1 ? 0xF0F0F0 : 0x848294);
 				}
 
 				value = Audio->SoundFXVolume * 100;
