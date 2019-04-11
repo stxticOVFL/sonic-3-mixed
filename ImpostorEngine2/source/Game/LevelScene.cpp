@@ -3712,6 +3712,70 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 	return obj;
 }
 
+PUBLIC Object* LevelScene::AddNewObject(int ID, int X, int Y, bool FLIPX, bool FLIPY) {
+	ObjectNewCount++;
+
+	Object* obj = GetNewObjectFromID(ID);
+	if (obj) {
+		obj->G = G;
+		obj->App = App;
+		obj->Scene = this;
+		obj->InitialX = X;
+		obj->InitialY = Y;
+		obj->FlipX = FLIPX == 1;
+		obj->FlipY = FLIPY == 1;
+		obj->ID = ID;
+		if (obj->BinIndex == 0xFFFFFFFF) {
+			while (!SpriteMapIDs.at(ID)) {
+				ID--;
+			}
+
+			obj->Sprite = SpriteMapIDs.at(ID);
+		}
+		else {
+			obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
+		}
+
+		obj->Create();
+		obj->DrawCollisions = App->viewObjectCollision;
+		ObjectCount++;
+		Objects.push_back(obj);
+	}
+	return obj;
+}
+
+PUBLIC Object* LevelScene::AddNewObject(int ID, int X, int Y) {
+	ObjectNewCount++;
+
+	Object* obj = GetNewObjectFromID(ID);
+	if (obj) {
+		obj->G = G;
+		obj->App = App;
+		obj->Scene = this;
+		obj->InitialX = X;
+		obj->InitialY = Y;
+		obj->FlipX = false;
+		obj->FlipY = false;
+		obj->ID = ID;
+		if (obj->BinIndex == 0xFFFFFFFF) {
+			while (!SpriteMapIDs.at(ID)) {
+				ID--;
+			}
+
+			obj->Sprite = SpriteMapIDs.at(ID);
+		}
+		else {
+			obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
+		}
+
+		obj->Create();
+		obj->DrawCollisions = App->viewObjectCollision;
+		ObjectCount++;
+		Objects.push_back(obj);
+	}
+	return obj;
+}
+
 PUBLIC Object* LevelScene::AddNewObject(char* ObjName, int X, int Y) {
 	ObjectNewCount++;
 
@@ -3735,15 +3799,6 @@ PUBLIC Object* LevelScene::AddNewObject(char* ObjName, int X, int Y) {
 		obj->Scene = this;
 		obj->InitialX = X;
 		obj->InitialY = Y;
-		/*if (obj->BinIndex == 0xFFFFFFFF) {
-			while (!SpriteMapIDs.at(ID)) {
-				ID--;
-			}
-
-			obj->Sprite = SpriteMapIDs.at(ID);
-		} else {
-			obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
-		}*/
 
 		obj->Filter = obj->GetAttribute("Filter")->ValUint8;
 		obj->SubType = obj->GetAttribute("Subtype")->ValUint8;

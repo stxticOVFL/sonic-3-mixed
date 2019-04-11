@@ -30,6 +30,16 @@ void WarpStars::Update() {
     Object::Update();
 }
 
+void WarpStars::DrawStar(int Rock, int Ang, int Side, int CamX, int CamY) {
+    int cosval = (Math::cosHex(Rock) * 16) >> 16;
+    int xx = (cosval * Math::cosHex(Ang)) >> 16;
+    int yy = (cosval * Math::sinHex(Ang)) >> 16;
+    if (Math::sinHex(Rock) * Side >= 0) {
+        G->DrawSprite(Sprite, Sprite->Animations[5].Frames[0].X, Sprite->Animations[5].Frames[0].Y, Sprite->Animations[5].Frames[0].W, Sprite->Animations[5].Frames[0].H, X - CamX + xx, Y - CamY + yy, 0, IE_NOFLIP, Sprite->Animations[5].Frames[0].OffX, Sprite->Animations[5].Frames[0].OffY);
+    }
+
+}
+
 void WarpStars::Render(int CamX, int CamY) {
     if (Active) {
         G->DrawSprite(Sprite, CurrentAnimation, 0, this->X - CamX, (this->Y) - CamY, 0, IE_NOFLIP);

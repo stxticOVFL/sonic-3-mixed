@@ -124,7 +124,7 @@ int StarPost::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
         Scene->Checkpoint = this->SubType;
         Scene->SavedPositionX = X;
         Scene->SavedPositionY = Y + H / 2 - 16;
-        if (Scene->Players[PlayerID]->Rings >= 25) {
+        if (Scene->Players[PlayerID]->Rings >= 20) {
             if (StarTimer > 0) {
                 ShowStars = true;
                 StarGoTimer = 48;

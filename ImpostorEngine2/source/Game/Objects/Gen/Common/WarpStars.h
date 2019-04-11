@@ -21,6 +21,7 @@ public:
     
     void Create();
     void Update();
+    void DrawStar(int Rock, int Ang, int Side, int CamX, int CamY);
     void Render(int CamX, int CamY);
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
