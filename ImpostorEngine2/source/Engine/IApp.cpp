@@ -686,7 +686,7 @@ PUBLIC void IApp::Run() {
 
 				for (int i = valueCount; i >= 0; i--)
 				{
-					G->DrawText(XPos + (8 * valueID++), 116, numbers[values[i]], DevMenuSelected == 2 ? 0xF0F0F0 : 0x848294);
+					G->DrawText(XPos + (8 * valueID++), 116, Format("%d", values[i]), DevMenuSelected == 2 ? 0xF0F0F0 : 0x848294);
 				}
 
 				G->DrawText(WIDTH / 2 - strlen("Back") * 4, 136, "Back", DevMenuSelected == 3 ? 0xF0F0F0 : 0x848294);
