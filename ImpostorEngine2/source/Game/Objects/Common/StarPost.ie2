@@ -148,7 +148,7 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
         Scene.SavedPositionX = X;
         Scene.SavedPositionY = Y + H / 2 - 16;
 
-		if (Scene.Players[PlayerID].Rings >= 25)
+		if (Scene.Players[PlayerID].Rings >= 20)
 		{
 			if (StarTimer > 0) {
 				ShowStars = true;
