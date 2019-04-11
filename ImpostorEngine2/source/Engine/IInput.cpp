@@ -334,6 +334,10 @@ PUBLIC void IInput::Poll() {
 				break;
 			}
 		}
+		if (!Controllers[i][I_ANY] && MouseDown)
+		{
+			Controllers[i][I_ANY] = true;
+		}
     }
 }
 
