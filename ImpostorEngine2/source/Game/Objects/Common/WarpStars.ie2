@@ -29,9 +29,29 @@ event Update() {
 	}
 }
 
+event DrawStar(Rock:int, Ang:int, Side:int, CamX:int, CamY:int) {
+    var cosval:int = (Math.cosHex(Rock) * 16) >> 16;
+    var xx:int = (cosval * Math.cosHex(Ang)) >> 16;
+    var yy:int = (cosval * Math.sinHex(Ang)) >> 16;
+
+    if (Math.sinHex(Rock) * Side >= 0) {
+        G.DrawSprite(Sprite,
+            Sprite.Animations[5].Frames[0].X,
+            Sprite.Animations[5].Frames[0].Y,
+            Sprite.Animations[5].Frames[0].W,
+            Sprite.Animations[5].Frames[0].H,
+            X - CamX + xx, Y - CamY + yy, 0,
+            IE_NOFLIP,
+            Sprite.Animations[5].Frames[0].OffX,
+            Sprite.Animations[5].Frames[0].OffY);
+    }
+}
+
 event Render(CamX:int, CamY:int) {
 		if (Active)
 		{
+			
+			
 			//Draw Star
 			G.DrawSprite(Sprite, CurrentAnimation, 0, this.X - CamX, (this.Y) - CamY, 0, IE_NOFLIP);
 	
