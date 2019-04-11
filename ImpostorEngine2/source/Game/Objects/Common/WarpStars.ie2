@@ -54,6 +54,7 @@ event Render(CamX:int, CamY:int) {
 			
 			//Draw Star
 			G.DrawSprite(Sprite, CurrentAnimation, 0, this.X - CamX, (this.Y) - CamY, 0, IE_NOFLIP);
+			//DrawStar();
 	
 			if (App.viewObjectCollision) {
 				G.SetDrawAlpha(0x80);

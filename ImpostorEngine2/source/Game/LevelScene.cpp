@@ -4308,8 +4308,8 @@ PUBLIC void LevelScene::Update() {
 						break;
 					case Obj_InvisibleSpikes: // Invisible Spikes
 					case Obj_InvisibleDeath: // Invisible Death
-					case Obj_InvisibleBlockH: // Invisible Block
-					case Obj_InvisibleBlockV: // Invisible Block
+					case Obj_InvisibleBlockH: // Invisible Block H
+					case Obj_InvisibleBlockV: // Invisible Block V
 						obj = GetNewObjectFromID(objId);
 						Player->DebugObjectSubIndex = 17;
 						break;
