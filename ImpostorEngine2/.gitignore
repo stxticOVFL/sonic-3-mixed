@@ -7,3 +7,6 @@ ImpostorEngine2.log
 makeheaders.bin
 ie2_objtable.bin
 *.idb
+*.bak
+*.log
+log.txt

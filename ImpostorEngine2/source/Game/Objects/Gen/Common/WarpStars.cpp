@@ -50,13 +50,24 @@ int WarpStars::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
     if (Timer != 0) return 0;
 
+    if (Scene->Player->Rings > 20 && Scene->Player->Rings < 35) {
+        Scene->NextBonusStage = 2;
+    }
+    else if (Scene->Player->Rings > 34 && Scene->Player->Rings < 50) {
+        Scene->NextBonusStage = 1;
+    }
+    else if (Scene->Player->Rings >= 50) {
+        Scene->NextBonusStage = 0;
+    }
+    else {
+        return 0;
+    }
     Scene->Player->ObjectControlled = 0xFF;
     Scene->Player->Hidden = true;
     Scene->StopTimer = true;
     GoTimer = 48;
     App->Audio->FadeMusic(1.0);
     Scene->SaveState();
-    Scene->NextBonusStage = Math::randRange(0, 2);
     Scene->FadeAction = 5;
     Scene->FadeTimerMax = 48 + 48;
     Scene->FadeMax = 0x200;
