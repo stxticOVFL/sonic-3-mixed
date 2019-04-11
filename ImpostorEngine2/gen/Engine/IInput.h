@@ -60,6 +60,9 @@ public:
     void Vibrate(int c, double strength, int duration);
     uint8_t* GetControllerInput(int ControllerID);
     bool GetControllerInput(int ControllerID, int Button);
+    bool Get(int b, bool p, int c);
+    bool Get(int b, bool p);
+    bool Get(int b);
 };
 
 #endif /* IINPUT_H */

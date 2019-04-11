@@ -458,7 +458,35 @@ PUBLIC void IApp::Run() {
             G->DrawTextShadow(WIDTH - 91, Y, fpstext, 0xFFFFFF);
             Y += 8;
         }
+		// Show Controls
+		int ShowControls = -1;
+		Settings->GetInteger("dev", "viewControls", &ShowControls);
+		if (ShowControls != -1) {
+			//int X = 3;
+			char ctrltext[10] = "         ";
+			if (Input->Get(IInput::I_UP, false, ShowControls))
+				ctrltext[0] = (char)"U";
+			if (Input->Get(IInput::I_DOWN, false, ShowControls))
+				ctrltext[1] = (char)"D";
+			if (Input->Get(IInput::I_LEFT, false, ShowControls))
+				ctrltext[2] = (char)"L";
+			if (Input->Get(IInput::I_RIGHT, false, ShowControls))
+				ctrltext[3] = (char)"R";
 
+			if (Input->Get(IInput::I_CONFIRM, false, ShowControls))
+				ctrltext[4] = (char)"C";
+			if (Input->Get(IInput::I_DENY, false, ShowControls))
+				ctrltext[5] = (char)"D";
+			if (Input->Get(IInput::I_PAUSE, false, ShowControls))
+				ctrltext[6] = (char)"P";
+
+			if (Input->Get(IInput::I_EXTRA, false, ShowControls))
+				ctrltext[7] = (char)"1";
+			if (Input->Get(IInput::I_EXTRA2, false, ShowControls))
+				ctrltext[7] = (char)"2";
+			G->DrawTextShadow(3, 3, ctrltext, 0xFFFFFF);
+		}
+			
 		int MaxButtons = 5;
         // Dev Menu
 

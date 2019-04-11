@@ -74,7 +74,7 @@ namespace ControllerType {
 		Touchscreen,
 		JoyconLibNX,
 	};
-}
+}	
 
 PUBLIC IInput::IInput(IApp* app) {
     App = app;
@@ -348,5 +348,21 @@ PUBLIC uint8_t* IInput::GetControllerInput(int ControllerID) {
 
 PUBLIC bool IInput::GetControllerInput(int ControllerID, int Button) {
 	if (ControllerID < 0) return false;
-	return !!Controllers[ControllerID][Button];
+	return Controllers[ControllerID][Button];
+}
+
+PUBLIC bool IInput::Get(int b, bool p, int c) {
+	if (c < 0 || b > 19) return false;
+	if (b == I_ANY) {
+		if (p) b++;
+	}
+	else
+		if (p) b += 10;
+	return Controllers[c][b];
+}
+PUBLIC bool IInput::Get(int b, bool p) {
+	return Get(b, p, 0);
+}
+PUBLIC bool IInput::Get(int b) {
+	return Get(b, true, 0);
 }
