@@ -75,14 +75,14 @@ PUBLIC void Scene_VSMenu::Update() {
     }
 
     if (FadeTimer == -1) {
-        if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
+        if (App->Input->Get(IInput::I_UP)) {
             selected--;
 			if (selected < 0)
 				selected = 1;
 
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
-		if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+		if (App->Input->Get(IInput::I_DOWN)) {
 			selected++;
 				if (selected > 1)
 					selected = 0;
@@ -90,14 +90,14 @@ PUBLIC void Scene_VSMenu::Update() {
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
 
-        if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED] && !App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
+        if (App->Input->Get(IInput::I_LEFT) && !App->Input->Get(IInput::I_EXTRA, false)) {
             character--;
             if (character < 0)
                 character = 4;
 
             Sound::Play(Sound::SFX_MENUBLEEP);
         }
-        if (App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED] && !App->Input->GetControllerInput(0)[IInput::I_EXTRA]) {
+        if (App->Input->Get(IInput::I_RIGHT) && !App->Input->Get(IInput::I_EXTRA, false)) {
             character++;
 
             Sound::Play(Sound::SFX_MENUBLEEP);
@@ -107,7 +107,7 @@ PUBLIC void Scene_VSMenu::Update() {
 
     character = character % 5;
 
-    if (App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED]) {
+    if (App->Input->Get(IInput::I_CONFIRM)) {
         bool acc = false;
         if (acc) {
             Sound::Play(Sound::SFX_MENUACCEPT);	
@@ -120,7 +120,7 @@ PUBLIC void Scene_VSMenu::Update() {
         }
     }
 
-	if (App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED]) {
+	if (App->Input->Get(IInput::I_DENY)) {
 		GoBack = true;
 		FadeIn = false;
 		FadeTimerMax = 30;

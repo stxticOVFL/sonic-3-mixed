@@ -63,6 +63,8 @@ public:
     bool Get(int b, bool p, int c);
     bool Get(int b, bool p);
     bool Get(int b);
+    bool MouseCheck(int x1, int x2, int y1, int y2, bool d);
+    bool MouseCheck(int center, int xrange, int yrange, bool d);
 };
 
 #endif /* IINPUT_H */

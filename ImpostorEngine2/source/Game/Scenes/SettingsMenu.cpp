@@ -107,9 +107,9 @@ PUBLIC void Scene_SettingsMenu::Init() {
 }
 
 PUBLIC void Scene_SettingsMenu::Update() {
-	bool CONFIRM_PRESSED = App->Input->GetControllerInput(0)[IInput::I_CONFIRM_PRESSED];
-	bool CONFIRM_DOWN = App->Input->GetControllerInput(0)[IInput::I_CONFIRM] || App->Input->MouseDown;
-	bool BACK_PRESSED = App->Input->GetControllerInput(0)[IInput::I_DENY_PRESSED];
+	bool CONFIRM_PRESSED = App->Input->Get(IInput::I_CONFIRM);
+	bool CONFIRM_DOWN = App->Input->Get(IInput::I_CONFIRM, false) || App->Input->MouseDown;
+	bool BACK_PRESSED = App->Input->Get(IInput::I_DENY);
 
 	int mx = App->Input->MouseX;
 	int my = App->Input->MouseY;
@@ -193,7 +193,7 @@ PUBLIC void Scene_SettingsMenu::Update() {
 				FadeIn = false;
 				FadeTimerMax = 30;
 			}
-			if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
+			if (App->Input->Get(IInput::I_UP)) {
 				selected--;
 				if (selected < 0)
 					selected = 0;
@@ -201,7 +201,7 @@ PUBLIC void Scene_SettingsMenu::Update() {
 				Sound::Play(Sound::SFX_MENUBLEEP);
 				Changed = true;
 			}
-			if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+			if (App->Input->Get(IInput::I_DOWN)) {
 				selected++;
 				if (selected > 2)
 					selected = 2;
@@ -221,7 +221,7 @@ PUBLIC void Scene_SettingsMenu::Update() {
 				inselect = false;
 				subselected = -1;
 			}
-			if (App->Input->GetControllerInput(0)[IInput::I_UP_PRESSED]) {
+			if (App->Input->Get(IInput::I_UP)) {
 				subselected--;
 				if (subselected < 0)
 					subselected = 0;
@@ -229,7 +229,7 @@ PUBLIC void Scene_SettingsMenu::Update() {
 				Sound::Play(Sound::SFX_MENUBLEEP);
 				Changed = true;
 			}
-			if (App->Input->GetControllerInput(0)[IInput::I_DOWN_PRESSED]) {
+			if (App->Input->Get(IInput::I_DOWN)) {
 				subselected++;
 				if (subselected > 2)
 					subselected = 2;
@@ -237,8 +237,8 @@ PUBLIC void Scene_SettingsMenu::Update() {
 				Sound::Play(Sound::SFX_MENUBLEEP);
 				Changed = true;
 			}
-			if (App->Input->GetControllerInput(0)[IInput::I_LEFT_PRESSED] || App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]) {
-				HandleChange(App->Input->GetControllerInput(0)[IInput::I_RIGHT_PRESSED]);
+			if (App->Input->Get(IInput::I_LEFT) || App->Input->Get(IInput::I_RIGHT)) {
+				HandleChange(App->Input->Get(IInput::I_RIGHT));
 				Sound::Play(Sound::SFX_MENUBLEEP);
 			}
 		}

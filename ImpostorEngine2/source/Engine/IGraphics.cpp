@@ -257,7 +257,7 @@ PUBLIC VIRTUAL void IGraphics::Present() {
 		SDL_RenderPresent(Renderer);
 	}
 	// Clear framebuffer
-	memset(FrameBuffer, 0, 407040);
+	memset(FrameBuffer, 0, App->WIDTH * App->HEIGHT);
 }
 
 PUBLIC VIRTUAL void IGraphics::Cleanup() {

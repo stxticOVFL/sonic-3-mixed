@@ -27,6 +27,13 @@ public:
     int WIDTH = 424;
     int HEIGHT = 240;
 	int SCALE = 1;
+	//0 LETTERBOX
+	//1 WS
+	//2 18:9
+	//3 UWS
+	//4 NTSCGEN
+	//5 GENWS
+	int AspectRatio = -1;
 
     const bool DEBUG = true;
     const bool DEV = true;
@@ -215,8 +222,30 @@ PUBLIC IApp::IApp() {
 	Settings->GetInteger("display", "fullscreen", &full);
 	SDL_SetWindowFullscreen(G->Window, full);
 
+	//Find Aspect Ratio
+	float asp = desW / desH;
+	if (asp == (float)4 / 3)
+		AspectRatio = 0;
+	if (asp == (float)16 / 9)
+		AspectRatio = 1;
+	if (asp == (float)18 / 9)
+		AspectRatio = 2;
+	if (asp == (float)21 / 9)
+		AspectRatio = 3;
+	if (asp == (float)10 / 7)
+		AspectRatio = 4;
+	if (asp == (float)53 / 30)
+		AspectRatio = 5;
+
     Input = new IInput(this);
     Audio = new IAudio(this);
+	int audiopoop;
+	Settings->GetInteger("audio", "global", &audiopoop);
+	Audio->GlobalVolume = (float)audiopoop / 100;
+	Settings->GetInteger("audio", "music", &audiopoop);
+	Audio->MusicVolume = (float)audiopoop / 100;
+	Settings->GetInteger("audio", "sfx", &audiopoop);
+	Audio->SoundFXVolume = (float)audiopoop / 100;
     Achievements = new IAchievement(this);
 
 	NullSprite = new ISprite("Classic/Sprites/Dev/NullGfx.gif", this);
@@ -484,7 +513,10 @@ PUBLIC void IApp::Run() {
 				ctrltext[7] = (char)"1";
 			if (Input->Get(IInput::I_EXTRA2, false, ShowControls))
 				ctrltext[7] = (char)"2";
+
 			G->DrawTextShadow(3, 3, ctrltext, 0xFFFFFF);
+
+			G->DrawTextShadow(3, 11, Format("%.3d %.3d %s", Input->MouseX, Input->MouseY, Input->MouseDown ? "M" : " "), 0xFFFFFF);
 		}
 			
 		int MaxButtons = 5;

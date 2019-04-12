@@ -40,6 +40,13 @@ public:
     int WIDTH = 424;
     int HEIGHT = 240;
     int SCALE = 1;
+    //0 LETTERBOX
+    //1 WS
+    //2 18:9
+    //3 UWS
+    //4 NTSCGEN
+    //5 GENWS
+    int AspectRatio = -1;
     const bool DEBUG = true;
     const bool DEV = true;
     bool viewObjectCollision = false;

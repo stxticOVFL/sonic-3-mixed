@@ -361,7 +361,7 @@ PUBLIC bool IInput::Get(int b, bool p, int c) {
 		if (p) b++;
 	}
 	else
-		if (p) b += 10;
+		if (p) b += 9;
 	return Controllers[c][b];
 }
 PUBLIC bool IInput::Get(int b, bool p) {
@@ -370,3 +370,12 @@ PUBLIC bool IInput::Get(int b, bool p) {
 PUBLIC bool IInput::Get(int b) {
 	return Get(b, true, 0);
 }
+	
+PUBLIC bool IInput::MouseCheck(int x1, int x2, int y1, int y2, bool d) {
+	return (MouseX >= x1 && MouseX <= x2) && (MouseY >= y1 && MouseY <= y2) && (!d ? true : MouseDown);
+}
+PUBLIC bool IInput::MouseCheck(int center, int xrange, int yrange, bool d) {
+	return MouseCheck(center - xrange, center + xrange, center - yrange, center + yrange, d);
+}
+
+//rdc steals from taxman? no dignity.
