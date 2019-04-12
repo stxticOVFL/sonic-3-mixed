@@ -46,7 +46,7 @@ public:
     //3 UWS
     //4 NTSCGEN
     //5 GENWS
-    int AspectRatio = -1;
+    int AspectRatio;
     const bool DEBUG = true;
     const bool DEV = true;
     bool viewObjectCollision = false;

@@ -475,17 +475,20 @@ PUBLIC void Scene_MainMenu::Render() {
 	G->DrawSprite(MenuSprite, 1, 0, App->WIDTH - 424, 0, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 1, 1, App->WIDTH - 424, App->HEIGHT, 0, IE_NOFLIP);
 	//G->DrawSprite(MenuSprite, 1, 2, 0, 0, 0, IE_NOFLIP);
+
 	if (App->AspectRatio != 0 && App->AspectRatio != 4) {
+		//Black behind triangle
 		G->DrawRectangle(0, 0, blackGirth, App->HEIGHT, 0x000000);
 		G->DrawRectangle(App->WIDTH - blackGirth, 0, blackGirth, App->HEIGHT, 0x000000);
 
 		G->DrawRectangle(0, 0, App->WIDTH - 424 + 128, 16, 0);
 		G->DrawRectangle(0, App->HEIGHT - 24, App->WIDTH - 424 + 128, 24, 0);
-	}
-	// Triangles
-	if (App->AspectRatio != 0 && App->AspectRatio != 4) {
-		for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, blackGirth, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
-		for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, App->WIDTH - blackGirth, i * 20 - (frame >> 1), 0, IE_FLIPX);
+
+		// Triangles
+		if (App->AspectRatio != 0 && App->AspectRatio != 4) {
+			for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, blackGirth, i * 20 - 20 + (frame >> 1), 0, IE_NOFLIP);
+			for (int i = 0; i <= 12; i++) G->DrawSprite(MenuSprite, 1, 3, App->WIDTH - blackGirth, i * 20 - (frame >> 1), 0, IE_FLIPX);
+		}
 	}
 	// Menu Title
 	G->DrawSprite(MenuSprite, 9, 0, App->WIDTH, 12, 0, IE_NOFLIP);
