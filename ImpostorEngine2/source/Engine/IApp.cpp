@@ -215,6 +215,7 @@ PUBLIC IApp::IApp() {
 	desW *= scale;
 	desH *= scale;
 	DevMenuFlagB = scale;
+	SCALE = scale;
 	Settings->GetInteger("display", "shader", &isSharp);
 	G->SetDisplay(desW, desH, isSharp);
     SDL_SetWindowTitle(G->Window, Title);
@@ -222,19 +223,20 @@ PUBLIC IApp::IApp() {
 	Settings->GetInteger("display", "fullscreen", &full);
 	SDL_SetWindowFullscreen(G->Window, full);
 
+
 	//Find Aspect Ratio
 	float asp = desW / desH;
-	if (asp == (float)4 / 3)
+	if (asp ==  4 / (float)3)
 		AspectRatio = 0;
-	if (asp == (float)16 / 9)
+	if (asp == 16 / (float)9)
 		AspectRatio = 1;
-	if (asp == (float)18 / 9)
+	if (asp == 18 / (float)9)
 		AspectRatio = 2;
-	if (asp == (float)21 / 9)
+	if (asp == 21 / (float)9)
 		AspectRatio = 3;
-	if (asp == (float)10 / 7)
+	if (asp == 10 / (float)7)
 		AspectRatio = 4;
-	if (asp == (float)53 / 30)
+	if (asp == 53 / (float)30)
 		AspectRatio = 5;
 
     Input = new IInput(this);
@@ -553,13 +555,18 @@ PUBLIC void IApp::Run() {
 			G->DrawText(WIDTH / 2 - 8 * 4, DrawY, VersionString, 0x848294);
 
 			//STATS AND SHIT
-			char buffer[0x40];
-			sprintf(buffer, "Global Volume: %d", (int)(Audio->GlobalVolume * 100));
-			G->DrawText(WIDTH / 2 - strlen(buffer) * 4, 175, buffer, 0xFFFFFF);
-			sprintf(buffer, "Music Volume: %d", (int)(Audio->MusicVolume * 100));
-			G->DrawText(WIDTH / 2 - strlen(buffer) * 4, 175 + 16, buffer, 0xFFFFFF);
-			sprintf(buffer, "SoundFX Volume: %d", (int)(Audio->SoundFXVolume * 100));
-			G->DrawText(WIDTH / 2 - strlen(buffer) * 4, 175 + 32, buffer, 0xFFFFFF);
+			//char buffer[0x40];
+			//sprintf(buffer, "Global Volume: %d", (int)(Audio->GlobalVolume * 100));
+			G->DrawText(WIDTH / 2 - 140, 175, Format(" Global Volume: %d", (int)(Audio->GlobalVolume * 100)), 0xFFFFFF);
+			//sprintf(buffer, "Music Volume: %d", (int)(Audio->MusicVolume * 100));
+			G->DrawText(WIDTH / 2 - 140, 183, Format("  Music Volume: %d", (int)(Audio->MusicVolume * 100)), 0xFFFFFF);
+			//sprintf(buffer, "SoundFX Volume: %d", (int)(Audio->SoundFXVolume * 100));
+			G->DrawText(WIDTH / 2 - 140, 191, Format("SoundFX Volume: %d", (int)(Audio->SoundFXVolume * 100)), 0xFFFFFF);
+
+			G->DrawText(WIDTH / 2 - 20, 175, Format("         Width: %d", WIDTH), 0xFFFFFF);
+			G->DrawText(WIDTH / 2 - 20, 183, Format("        Height: %d", HEIGHT), 0xFFFFFF);
+			G->DrawText(WIDTH / 2 - 20, 191, Format("        Aspect: %d", AspectRatio), 0xFFFFFF);
+			G->DrawText(WIDTH / 2 - 20, 199, Format("         Scale: %d", SCALE), 0xFFFFFF);
 			switch (DevMenuCurMenu)
 			{
 			default:
