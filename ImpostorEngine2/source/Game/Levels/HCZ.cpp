@@ -412,69 +412,6 @@ PUBLIC void Level_HCZ::RenderAboveBackground() {
             int Y = 0x200 - (CameraY >> 2);
             int WY = VisualWaterLevel - CameraY;
 
-			/*		//BG Water
-		Layer BGLayer = Data->Layers[FindLayer("Background")];
-
-		for (int h = 0; h < BGLayer.Height; h++)
-		{
-			for (int w = 0; w < BGLayer.Width; w++)
-			{
-				int Tile = (BGLayer.Tiles[(h * BGLayer.Width) + w] & 0x3FF);
-				int AniReplaceTile = 0;
-				bool Bottom = false;
-				switch (Tile)
-				{
-				case 461:
-					AniReplaceTile = 0;
-					break;
-				case 462:
-					AniReplaceTile = 1;
-					break;
-				case 463:
-					AniReplaceTile = 2;
-					break;
-				case 464:
-					AniReplaceTile = 3;
-					break;
-				case 465:
-					AniReplaceTile = 4;
-					break;
-				case 466:
-					AniReplaceTile = 5;
-					break;
-				case 467:
-					AniReplaceTile = 0;
-					Bottom = true;
-					break;
-				case 468:
-					AniReplaceTile = 1;
-					Bottom = true;
-					break;
-				case 469:
-					AniReplaceTile = 2;
-					Bottom = true;
-					break;
-				case 470:
-					AniReplaceTile = 3;
-					Bottom = true;
-					break;
-				case 471:
-					AniReplaceTile = 4;
-					Bottom = true;
-					break;
-				case 472:
-					AniReplaceTile = 5;
-					Bottom = true;
-					break;
-				}
-
-				if (CameraY > WaterLevel)
-				{
-
-				}
-			}
-		}*/
-
             int xBase = CameraX >> 2;
             for (int X = xBase; X < xBase + App->WIDTH + 0x10; X += 0x10) {
                 if (Y < WY) {
