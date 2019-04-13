@@ -890,6 +890,21 @@ PUBLIC void Level_HCZ::Subupdate() {
             }
         }
     }
+	for (int p = 0; p < PlayerCount; p++) {
+		IPlayer* Player = Players[p];
+		if (ZoneID == 2 && /*Player->Ground &&*/ abs(Player->GroundSpeed) > 0x600 && /*Player->Angle == 0 &&*/ !Player->Underwater && (Player->Y >> 16) < WaterLevel && CanWaterRun) {
+			if (Player->Y >= WaterLevel - 0x20 && Player->Y <= WaterLevel + 0x20) {
+				Player->WaterRunning = true;
+				//if (Player->Angle) {
+					//Player->Angle = 0;
+				//}
+				//return true;	
+			}
+		}
+		else {
+			Player->WaterRunning = false;
+		}
+	}
 }
 
 PUBLIC void Level_HCZ::HandleCamera() {

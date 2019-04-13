@@ -226,28 +226,29 @@ PUBLIC IApp::IApp() {
 
 	//Find Aspect Ratio
 	float asp = ((float)WIDTH / (float)HEIGHT);
-	Print(0, "asp %f", asp);
 
-	//Old method don't work :/
+	//Old method don't work :/	
 	float Letterbox = (float)4 / (float)3;
 	float WideScreen = (float)16 / (float)9;
 	float WiderSceen = (float)18 / (float)9;
 	float UltraWideScreen = (float)21 / (float)9;
 	float MegaDriveNTSC = (float)10 / (float)7;
 	float GENWS = (float)53 / (float)30;
+	Print(0, "asp %f %f", MegaDriveNTSC);
 
-	if (asp <= Letterbox + 0.05 && asp >= Letterbox - 0.05)
+	if (asp <= MegaDriveNTSC + 0.05 && asp >= MegaDriveNTSC - 0.05)
+		AspectRatio = 4;
+	else if (asp <= Letterbox + 0.05 && asp >= Letterbox - 0.05)
 		AspectRatio = 0;
+
+	if (asp <= GENWS + 0.05 && asp >= GENWS - 0.05)
+		AspectRatio = 5;
 	else if (asp <= WideScreen + 0.05 && asp >= WideScreen - 0.05)
 		AspectRatio = 1;
 	else if (asp <= WiderSceen + 0.05 && asp >= WiderSceen - 0.05)
 		AspectRatio = 2;
 	else if (asp <= UltraWideScreen + 0.05 && asp >= UltraWideScreen - 0.05)
 		AspectRatio = 3;
-	else if (asp <= MegaDriveNTSC + 0.05 && asp >= MegaDriveNTSC - 0.05)
-		AspectRatio = 4;
-	else if (asp <= GENWS + 0.05 && asp >= GENWS - 0.05)
-		AspectRatio = 5;
 
     Input = new IInput(this);
     Audio = new IAudio(this);
