@@ -133,14 +133,6 @@ PUBLIC IApp::IApp() {
         fclose(f);
     }
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-        Print(0, "SDL_Init failed with error: %s", SDL_GetError());
-        //return;
-    }
-    Print(0, "SDL_Init succeeded!");
-
-    SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
-    SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
     // SDL_SetHint(SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH, "1");	
     // SDL_GL_SetAttribute(SDL_GL_RETAINED_BACKING, 0);
 
@@ -163,6 +155,7 @@ PUBLIC IApp::IApp() {
 	}
 
 	//RMG YOU HAVE TO CLOSE IT! - You're welcome, with love - Ducky
+	//no fuck you - fuck you, with hate - rmg
 	IResources::Close(DevConfig);
 
     // HACK:
@@ -211,6 +204,15 @@ PUBLIC IApp::IApp() {
 	else {
 		G = new IGraphics(this);
 	}
+
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+		Print(0, "SDL_Init failed with error: %s", SDL_GetError());
+		//return;
+	}
+	Print(0, "SDL_Init succeeded!");
+
+	SDL_SetHint(SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight");
+	SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
 
 	desW *= scale;
 	desH *= scale;

@@ -420,6 +420,9 @@ PUBLIC void Level_HCZ::RenderAboveBackground() {
 			int xBase = (CameraX % 32) * 16;
 			int i = 0;
 			for (int X = xBase; X < xBase + App->WIDTH + 0x10; X += 0x10) {
+				/*for (int j = X; j < X + 16; j++) {
+					G->DeformX[j] = j * G->DeformX[j];
+				}//*/
 				if (Y < WY) {
 					if (WY - Y < 128)
 						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16 + ((((Y) / 32) * CameraX) % 32)), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
