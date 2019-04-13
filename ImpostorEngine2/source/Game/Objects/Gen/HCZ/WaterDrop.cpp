@@ -64,7 +64,7 @@ void WaterDrop::Update() {
 
         break;
         case 4:
-			Frame = 4;
+        Frame = 4;
         Timer++;
         if (Timer > 5) {
             State++;

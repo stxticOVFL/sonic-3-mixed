@@ -417,20 +417,22 @@ PUBLIC void Level_HCZ::RenderAboveBackground() {
 			bool deformPrev = G->DoDeform;
 			G->DoDeform = true;
 			memcpy(G->DeformX, Data->Layers[FindLayer("Background")].DeformX, App->HEIGHT);
-			int xBase = CameraX >> 2;
+			int xBase = (CameraX % 32) * 16;
+			int i = 0;
 			for (int X = xBase; X < xBase + App->WIDTH + 0x10; X += 0x10) {
 				if (Y < WY) {
 					if (WY - Y < 128)
-						G->DrawSprite(WaterLine, (WaterLineFrame), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
+						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
 					else
-						G->DrawSprite(WaterLine, (WaterLineFrame), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, 128);
+						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, 128);
 				}
 				else if (Y - WY > 0) {
 					if (Y - WY < 128)
-						G->DrawSprite(WaterLine, (WaterLineFrame), 112, 16, 112, (X & ~0xF) - xBase, WY, 0, IE_NOFLIP, 0, 0, 16, Y - WY);
+						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16), 112, 16, 112, (X & ~0xF) - xBase, WY, 0, IE_NOFLIP, 0, 0, 16, Y - WY);
 					else
-						G->DrawSprite(WaterLine, (WaterLineFrame), 112, 16, 112, (X & ~0xF) - xBase, Y - 128, 0, IE_NOFLIP, 0, 0, 16, 128);
+						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16), 112, 16, 112, (X & ~0xF) - xBase, Y - 128, 0, IE_NOFLIP, 0, 0, 16, 128);
 				}
+				i++;
 			}
 			memset(G->DeformX, 0, App->HEIGHT);
 			G->DoDeform = deformPrev;
