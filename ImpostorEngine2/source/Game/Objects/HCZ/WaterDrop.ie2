@@ -1,0 +1,85 @@
+object 0x6E;
+
+var State:int;
+
+event Create() {
+    Active = true;
+    Priority = false;
+
+	Sprite = LevelScene.LoadSpriteFromBin("HCZ/WaterDrop.bin",SaveGame.CurrentMode);
+
+    W = 8;
+    H = 8;
+	
+	State = -1;
+}
+
+event Update() {
+
+	switch(State) {
+		case -1:
+			Timer++;
+			Visible = false;
+			if (Timer >120) {
+				State++;
+				Timer = 0;
+			}
+		break;
+		case 0:
+			Visible = true;
+			Frame = State;
+			State++;
+			break;
+		case 1:
+			Visible = true;
+			Frame = State;
+			State++;
+			break;
+		case 2:
+			Visible = true;
+			Frame = State;
+			State++;
+			break;
+		case 3:
+			Visible = true;
+			Frame = State;
+			Y += 2;
+			//do it touch thing?
+			if (Scene.CollisionAt(X,Y)) {
+				State++;
+			}
+			break;
+		case 4:
+			Visible = true;
+			Frame = State;
+			State++;
+			break;
+		case 5:
+			Visible = true;
+			Frame = State;
+			State++;
+			break;
+		case 6:
+			Frame = State;
+			X = InitialX;
+			Y = InitialY;
+			Frame = 0;
+			State = -1;
+			Timer = 0;
+			Visible = false;
+			break;
+	}
+
+}
+
+event Render(CamX:int, CamY:int) {
+	if (!Visible) return;
+	   //water water there is water here
+       G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+		
+	if (DrawCollisions) {
+		G.SetDrawAlpha(0x80);
+		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+		G.SetDrawAlpha(0xFF);
+	}
+}

@@ -63,6 +63,7 @@
 #include "Common/InvisibleDeath.h"			// A0BE8640
 #include "CommonSpecial/TensionBridge.h"			// 5F02A27F
 #include "HCZ/WaterSplash.h"			// 9095B5CC
+#include "HCZ/WaterDrop.h"			// BE0BDD3C
 #include "Common/HiddenMonitor.h"			// 8616E0BD
 #include "CommonSpecial/EggCapsule.h"			// 973691D6
 #include "CommonSpecial/CutsceneKnuckles.h"			// 2822B56D
@@ -192,6 +193,7 @@ enum {
     Obj_InvisibleDeath = 0x06B,
     Obj_TensionBridge = 0x06C,
     Obj_WaterSplash = 0x06D,
+    Obj_WaterDrop = 0x06E,
     Obj_HiddenMonitor = 0x080,
     Obj_EggCapsule = 0x081,
     Obj_CutsceneKnuckles = 0x082,

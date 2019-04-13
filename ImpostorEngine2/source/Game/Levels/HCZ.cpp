@@ -320,6 +320,7 @@ PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
 	SpriteMapIDs.at(0x67) = SpriteMap["HCZ"];
 	SpriteMapIDs.at(0x6C) = SpriteMap["HCZ"];
 	SpriteMapIDs.at(0x6D) = SpriteMap["HCZ"];
+	SpriteMapIDs.at(Obj_WaterDrop) = SpriteMap["HCZCLASSIC"];
 
 	SpriteMapIDs.at(0x93) = SpriteMap["HCZ Enemies"];
 	SpriteMapIDs.at(0x99) = SpriteMap["HCZ Boss"];
@@ -330,36 +331,40 @@ PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 	if (!SpriteMap["HCZ"]) {
-		SpriteMap["HCZ"] = new ISprite("HCZ/Objects.gif", App);
+		SpriteMap["HCZ"] = new ISprite("HCZ/Objects.gif", App, SaveGame::CurrentMode);
 		SpriteMap["HCZ"]->Print = true;
 
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/Button.bin");
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/Fan.bin");
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/HandLauncher.bin");
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/BreakBar.bin");
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/Decoration.bin");
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/Platform.bin");
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/Wake.bin");
-		SpriteMap["HCZ"]->LoadAnimation("HCZ/Bridge.bin");
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Button.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Fan.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/HandLauncher.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/BreakBar.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Decoration.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Platform.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Wake.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ"]->LoadAnimation("HCZ/Bridge.bin", SaveGame::CurrentMode);
 	}
 	if (!SpriteMap["HCZ Enemies"]) {
-		SpriteMap["HCZ Enemies"] = new ISprite("HCZ/Enemies.gif", App);
-		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Blastoid.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Buggernaut.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/TurboSpiker.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/MegaChomper.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Pointdexter.bin");
-		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Jawz.bin");
+		SpriteMap["HCZ Enemies"] = new ISprite("HCZ/Enemies.gif", App, SaveGame::CurrentMode);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Blastoid.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Buggernaut.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/TurboSpiker.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/MegaChomper.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Pointdexter.bin", SaveGame::CurrentMode);
+		SpriteMap["HCZ Enemies"]->LoadAnimation("HCZ/Jawz.bin", SaveGame::CurrentMode);
 	}
 	if (!SpriteMap["HCZ Boss"]) {
-		SpriteMap["HCZ Boss"] = new ISprite("HCZ/Boss.gif", App);
-		SpriteMap["HCZ Boss"]->LoadAnimation("HCZ/BigShaker.bin");
+		SpriteMap["HCZ Boss"] = new ISprite("HCZ/Boss.gif", App, SaveGame::CurrentMode);
+		SpriteMap["HCZ Boss"]->LoadAnimation("HCZ/BigShaker.bin", SaveGame::CurrentMode);
 	}
 	if (!SpriteMap["HCZ Boss2"]) {
-		SpriteMap["HCZ Boss2"] = new ISprite("HCZ/Objects2.gif", App);
-		SpriteMap["HCZ Boss2"]->LoadAnimation("HCZ/ScrewMobile.bin");
+		SpriteMap["HCZ Boss2"] = new ISprite("HCZ/Objects2.gif", App, SaveGame::CurrentMode);
+		SpriteMap["HCZ Boss2"]->LoadAnimation("HCZ/ScrewMobile.bin", SaveGame::CurrentMode);
 	}
-
+	if (!SpriteMap["HCZCLASSIC"]) {
+		SpriteMap["HCZCLASSIC"] = new ISprite("HCZ/Objects-Classic.gif", App, SaveGame::CurrentMode);
+		SpriteMap["HCZCLASSIC"]->Print = true;
+		SpriteMap["HCZCLASSIC"]->LoadAnimation("HCZ/WaterDrop.bin", SaveGame::CurrentMode);
+	}
     if (!KnuxSprite[0]) {
 		if (SaveGame::CurrentMode >= 1)
 		{
@@ -395,6 +400,8 @@ PUBLIC void Level_HCZ::Cleanup() {
     CLEANUP(SpriteMap["HCZ"]);
     CLEANUP(SpriteMap["HCZ Enemies"]);
     CLEANUP(SpriteMap["HCZ Boss"]);
+    CLEANUP(SpriteMap["HCZ Boss2"]);
+    CLEANUP(SpriteMap["HCZCLASSIC"]);
 
     LevelScene::Cleanup();
 }
@@ -405,6 +412,68 @@ PUBLIC void Level_HCZ::RenderAboveBackground() {
             int Y = 0x200 - (CameraY >> 2);
             int WY = VisualWaterLevel - CameraY;
 
+			/*		//BG Water
+		Layer BGLayer = Data->Layers[FindLayer("Background")];
+
+		for (int h = 0; h < BGLayer.Height; h++)
+		{
+			for (int w = 0; w < BGLayer.Width; w++)
+			{
+				int Tile = (BGLayer.Tiles[(h * BGLayer.Width) + w] & 0x3FF);
+				int AniReplaceTile = 0;
+				bool Bottom = false;
+				switch (Tile)
+				{
+				case 461:
+					AniReplaceTile = 0;
+					break;
+				case 462:
+					AniReplaceTile = 1;
+					break;
+				case 463:
+					AniReplaceTile = 2;
+					break;
+				case 464:
+					AniReplaceTile = 3;
+					break;
+				case 465:
+					AniReplaceTile = 4;
+					break;
+				case 466:
+					AniReplaceTile = 5;
+					break;
+				case 467:
+					AniReplaceTile = 0;
+					Bottom = true;
+					break;
+				case 468:
+					AniReplaceTile = 1;
+					Bottom = true;
+					break;
+				case 469:
+					AniReplaceTile = 2;
+					Bottom = true;
+					break;
+				case 470:
+					AniReplaceTile = 3;
+					Bottom = true;
+					break;
+				case 471:
+					AniReplaceTile = 4;
+					Bottom = true;
+					break;
+				case 472:
+					AniReplaceTile = 5;
+					Bottom = true;
+					break;
+				}
+
+				if (CameraY > WaterLevel)
+				{
+
+				}
+			}
+		}*/
 
             int xBase = CameraX >> 2;
             for (int X = xBase; X < xBase + App->WIDTH + 0x10; X += 0x10) {
@@ -628,6 +697,7 @@ PUBLIC void Level_HCZ::EarlyUpdate() {
 
         Data->Layers[3].OffsetX = WallX >> 16;
         Data->Layers[3].OffsetY = WallY;
+
 
         // Boss water and camera management
         if (Player->Action != ActionType::Dead) {
