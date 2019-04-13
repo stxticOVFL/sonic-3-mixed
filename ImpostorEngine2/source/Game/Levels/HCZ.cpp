@@ -4,6 +4,8 @@
 class Level_HCZ : public LevelScene {
 public:
     ISprite* WaterLine = NULL;
+	int WaterLineFrame = 0;
+	int WaterLineTimer = 0;
 
     int WallX = 0x4000000;
     int WallY = 0x600;
@@ -320,7 +322,6 @@ PUBLIC void Level_HCZ::AssignSpriteMapIDs() {
 	SpriteMapIDs.at(0x67) = SpriteMap["HCZ"];
 	SpriteMapIDs.at(0x6C) = SpriteMap["HCZ"];
 	SpriteMapIDs.at(0x6D) = SpriteMap["HCZ"];
-	SpriteMapIDs.at(Obj_WaterDrop) = SpriteMap["HCZCLASSIC"];
 
 	SpriteMapIDs.at(0x93) = SpriteMap["HCZ Enemies"];
 	SpriteMapIDs.at(0x99) = SpriteMap["HCZ Boss"];
@@ -360,11 +361,6 @@ PUBLIC void Level_HCZ::LoadZoneSpecificSprites() {
 		SpriteMap["HCZ Boss2"] = new ISprite("HCZ/Objects2.gif", App, SaveGame::CurrentMode);
 		SpriteMap["HCZ Boss2"]->LoadAnimation("HCZ/ScrewMobile.bin", SaveGame::CurrentMode);
 	}
-	if (!SpriteMap["HCZCLASSIC"]) {
-		SpriteMap["HCZCLASSIC"] = new ISprite("HCZ/Objects-Classic.gif", App, SaveGame::CurrentMode);
-		SpriteMap["HCZCLASSIC"]->Print = true;
-		SpriteMap["HCZCLASSIC"]->LoadAnimation("HCZ/WaterDrop.bin", SaveGame::CurrentMode);
-	}
     if (!KnuxSprite[0]) {
 		if (SaveGame::CurrentMode >= 1)
 		{
@@ -401,34 +397,45 @@ PUBLIC void Level_HCZ::Cleanup() {
     CLEANUP(SpriteMap["HCZ Enemies"]);
     CLEANUP(SpriteMap["HCZ Boss"]);
     CLEANUP(SpriteMap["HCZ Boss2"]);
-    CLEANUP(SpriteMap["HCZCLASSIC"]);
 
     LevelScene::Cleanup();
 }
 
 PUBLIC void Level_HCZ::RenderAboveBackground() {
-    if (Act == 1) {
-        if (WaterLine) {
-            int Y = 0x200 - (CameraY >> 2);
-            int WY = VisualWaterLevel - CameraY;
+	if (Act == 1) {
+		if (WaterLine) {
+			WaterLineTimer++;
+			if (WaterLineTimer >= 4) {
+				WaterLineFrame++;
+				WaterLineTimer = 0;
+			}
+			if (WaterLineFrame + 16 >= WaterLine->Width) WaterLineFrame = 0;
+			int Y = 0x200 - (CameraY >> 2);
+			int WY = VisualWaterLevel - CameraY;
 
-            int xBase = CameraX >> 2;
-            for (int X = xBase; X < xBase + App->WIDTH + 0x10; X += 0x10) {
-                if (Y < WY) {
-                    if (WY - Y < 128)
-                        G->DrawSprite(WaterLine, 0, 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
-                    else
-                        G->DrawSprite(WaterLine, 0, 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, 128);
-                }
-                else if (Y - WY > 0) {
-                    if (Y - WY < 128)
-                        G->DrawSprite(WaterLine, 0, 112, 16, 112, (X & ~0xF) - xBase, WY, 0, IE_NOFLIP, 0, 0, 16, Y - WY);
-                    else
-                        G->DrawSprite(WaterLine, 0, 112, 16, 112, (X & ~0xF) - xBase, Y - 128, 0, IE_NOFLIP, 0, 0, 16, 128);
-                }
-            }
-        }
-    }
+			//add our deform data :)
+			bool deformPrev = G->DoDeform;
+			G->DoDeform = true;
+			memcpy(G->DeformX, Data->Layers[FindLayer("Background")].DeformX, App->HEIGHT);
+			int xBase = CameraX >> 2;
+			for (int X = xBase; X < xBase + App->WIDTH + 0x10; X += 0x10) {
+				if (Y < WY) {
+					if (WY - Y < 128)
+						G->DrawSprite(WaterLine, (WaterLineFrame), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
+					else
+						G->DrawSprite(WaterLine, (WaterLineFrame), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, 128);
+				}
+				else if (Y - WY > 0) {
+					if (Y - WY < 128)
+						G->DrawSprite(WaterLine, (WaterLineFrame), 112, 16, 112, (X & ~0xF) - xBase, WY, 0, IE_NOFLIP, 0, 0, 16, Y - WY);
+					else
+						G->DrawSprite(WaterLine, (WaterLineFrame), 112, 16, 112, (X & ~0xF) - xBase, Y - 128, 0, IE_NOFLIP, 0, 0, 16, 128);
+				}
+			}
+			memset(G->DeformX, 0, App->HEIGHT);
+			G->DoDeform = deformPrev;
+		}
+	}
 }
 PUBLIC void Level_HCZ::RenderAboveForeground() {
     if (SaveGame::CurrentMode == 1) {

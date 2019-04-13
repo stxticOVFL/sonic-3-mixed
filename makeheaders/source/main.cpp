@@ -1119,11 +1119,15 @@ void MakeObjectListing(char* fullpath) {
     //printf("%s\n", fullasspath);
     //#include "Spring.h"
 
-    const char* template1 = "#ifndef OBJECTLISTING_H\n#define OBJECTLISTING_H\n\n%s\nObject* GetNewObjectFromID(int ID);\nObject* GetNewObjectFromCRC32(uint32_t Hash);\n\n#endif /* OBJECTLISTING_H */";
-    const char* template2 = "#include \"ObjectListing.h\"\n\nObject* GetNewObjectFromID(int ID) {\n    switch (ID) {\n%s\n        default:\n            break;\n    }\n    return NULL;\n}\n\nObject* GetNewObjectFromCRC32(uint32_t Hash) {\n    switch (Hash) {\n%s\n        default:\n            break;\n    }\n    return NULL;\n}";
+    const char* template1 = "#ifndef OBJECTLISTING_H\n#define OBJECTLISTING_H\n\n%s\nObject* GetNewObjectFromID(int ID);\nObject* GetNewObjectFromCRC32(uint32_t Hash);\nint GetObjectIDFromName(const char* ObjName);\n\n#endif /* OBJECTLISTING_H */";
+    const char* template2 = "#include \"ObjectListing.h\"\n\nObject* GetNewObjectFromID(int ID) {\n    switch (ID) {\n%s\n        default:\n            break;\n    }\n    return NULL;\n}\n\nObject* GetNewObjectFromCRC32(uint32_t Hash) {\n    switch (Hash) {\n%s\n        default:\n            break;\n    }\n    return NULL;\n}\n\nint GetObjectIDFromName(const char* ObjName) {\n    %s        \n}";
     const char* temp2 = "        case 0x%02XU:\n\
             return new %s();\n\
             break;\n";
+	const char* ifpoop =
+"        if (!strcmp(ObjName, \"%s\")) {\n\
+            return 0x%XU;\n\
+        }\n\n";
 
     MD5_CTX* ctx = (MD5_CTX*)malloc(sizeof(MD5_CTX));
     memset(ctx, 0, sizeof(MD5_CTX));
@@ -1133,7 +1137,9 @@ void MakeObjectListing(char* fullpath) {
     string includes;
     string sauce;
 	string sauceHash;
+	string poopSauce;
     char* ObjectListSourcePart = (char*)calloc(1, 12024);
+	int BlankObjectID = -1;
     for (int i = 0; i < ObjectNamesAndIDs.size(); i++) {
         includes += "#include \"" + get<0>(ObjectNamesAndIDs[i]) + "h\"";
 
@@ -1153,7 +1159,17 @@ void MakeObjectListing(char* fullpath) {
 
 		sprintf(ObjectListSourcePart, temp2, crc32((char*)md5Data, 16), get<1>(ObjectNamesAndIDs[i]).c_str());
 		sauceHash += ObjectListSourcePart;
+
+		if (get<1>(ObjectNamesAndIDs[i]) == "BlankObject") {
+			BlankObjectID = get<2>(ObjectNamesAndIDs[i]);
+		}
+
+		sprintf(ObjectListSourcePart, ifpoop, get<1>(ObjectNamesAndIDs[i]).c_str(), get<2>(ObjectNamesAndIDs[i]));
+		poopSauce += ObjectListSourcePart;
     }
+
+	sprintf(ObjectListSourcePart, "\n		IApp::Print(1,\"Object wasn't found!\");\n	return 0x%XU; //Return the BlankObject ID, since the requested one wasn't found\n", BlankObjectID);
+	poopSauce += ObjectListSourcePart;
 
     includes += "\n\n";
 
@@ -1183,7 +1199,7 @@ void MakeObjectListing(char* fullpath) {
     printf("%s\n", fullasspath);
 
     char* ObjectListSource = (char*)calloc(1, 82024);
-    sprintf(ObjectListSource, template2, sauce.c_str(), sauceHash.c_str());
+    sprintf(ObjectListSource, template2, sauce.c_str(), sauceHash.c_str(), poopSauce.c_str());
     //printf("%s\n\n\n", ObjectListSource);
     f = fopen(fullasspath, "wb");
     if (!f) {
