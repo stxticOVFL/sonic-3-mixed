@@ -262,5 +262,6 @@ enum {
 
 Object* GetNewObjectFromID(int ID);
 Object* GetNewObjectFromCRC32(uint32_t Hash);
+int GetObjectIDFromName(const char* ObjName);
 
 #endif /* OBJECTLISTING_H */

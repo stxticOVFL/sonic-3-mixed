@@ -4,6 +4,7 @@
 class Level_LBZ : public LevelScene {
 public:
     ISprite* LBZObjectsSprite = NULL;
+    ISprite* WaterLine = NULL;
 };
 #endif
 
@@ -34,6 +35,7 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 			Str_TileSprite = "Mixed/Stages/LBZ2/16x16Tiles.gif";
 			Str_AnimatedSprites = "Mixed/Stages/LBZ2/Animated Tiles.gif";
 			Str_StageBin = "Mixed/Stages/LBZ2/Stageconfig.bin";
+			WaterLine = new ISprite("LBZ/AniTiles2.gif", App, SaveGame::CurrentMode);
 		}
 	}
 	else
@@ -51,6 +53,7 @@ PUBLIC Level_LBZ::Level_LBZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 			Str_TileSprite = "Classic/Stages/LBZ2/16x16Tiles.gif";
 			Str_AnimatedSprites = "Classic/Stages/LBZ2/Animated Tiles.gif";
 			Str_StageBin = "Classic/Stages/LBZ2/Stageconfig.bin";
+			WaterLine = new ISprite("LBZ/AniTiles2.gif", App, SaveGame::CurrentMode);
 		}
 	}
 
@@ -211,6 +214,31 @@ PUBLIC void Level_LBZ::GoToNextAct() {
 		//Level_CNZ* NextAct = new Level_CNZ(App, G, 1);
 		//TransferCommonLevelData(NextAct);
 		//App->NextScene = NextAct;
+	}
+}
+
+PUBLIC void Level_LBZ::RenderAboveBackground() {
+	if (Act == 2) {
+		if (WaterLine) {
+			int Y = 0x200 - (CameraY >> 2);
+			int WY = VisualWaterLevel - CameraY;
+
+			int xBase = CameraX >> 2;
+			for (int X = xBase; X < xBase + App->WIDTH + 0x10; X += 0x10) {
+				if (Y < WY) {
+					if (WY - Y < 128)
+						G->DrawSprite(WaterLine, 0, 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
+					else
+						G->DrawSprite(WaterLine, 0, 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, 128);
+				}
+				else if (Y - WY > 0) {
+					if (Y - WY < 128)
+						G->DrawSprite(WaterLine, 0, 112, 16, 112, (X & ~0xF) - xBase, WY, 0, IE_NOFLIP, 0, 0, 16, Y - WY);
+					else
+						G->DrawSprite(WaterLine, 0, 112, 16, 112, (X & ~0xF) - xBase, Y - 128, 0, IE_NOFLIP, 0, 0, 16, 128);
+				}
+			}
+		}
 	}
 }
 

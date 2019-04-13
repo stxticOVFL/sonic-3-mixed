@@ -15,6 +15,8 @@ class ISprite;
 class Level_HCZ : public LevelScene {
 public:
     ISprite* WaterLine = NULL;
+    int WaterLineFrame = 0;
+    int WaterLineTimer = 0;
     int WallX = 0x4000000;
     int WallY = 0x600;
     int WallMoving = false;

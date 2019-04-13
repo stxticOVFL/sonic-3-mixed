@@ -285,6 +285,8 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 	App = app;
 	G = g;
 
+	int ObjectID = GetObjectIDFromName("Motobug");
+	App->Print(0, "ObjectID: %d", ObjectID);
 	// Memory::ClearTrackedMemory();
 
 	//Create Achievements Here (may change later lol)
@@ -2280,6 +2282,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 						obj->Sprite = App->NullSprite;
 
+						//Store our name
+						obj->Name = ObjectName;
+
 						if (obj->BinIndex == 0xFFFFFFFF && (ObjectName != "BlankObject" && ObjectName != "PlayerSpawn")) {
 						} else {
 							obj->Sprite = SpriteBinMapIDs.at(obj->BinIndex);
@@ -2288,6 +2293,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 						// Dunno what do to with filter so fuck it for now
 						obj->ObjectAttributeCount = AttributeCount - 1;
+
+						//Store object type
+						obj->ID = GetObjectIDFromName(obj->Name.c_str());
 
 						// Done for backwards compatibility, Returns 0 on error.
 						obj->SubType = obj->GetAttribute("Subtype")->ValUint8;
@@ -2300,6 +2308,9 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->SKObject = bool(obj->Filter >> 1 & 1);
 						obj->MixedObject = bool(obj->Filter >> 2 & 1);
 						obj->LockedOnObject = bool(obj->Filter >> 3 & 1);
+						obj->EasyModeObject = bool(obj->Filter >> 4 & 1);
+						obj->NormalModeObject = bool(obj->Filter >> 5 & 1);
+						obj->HardModeObject = bool(obj->Filter >> 6 & 1);
 
 						// Done for backwards compatibility, Returns false on error.
 						obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
@@ -3029,6 +3040,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	ObjectCount = Objects.size() - ObjectNewCount;
 
 	for (int i = ObjectCount; i < ObjectCount + ObjectNewCount; i++) {
+		Objects.at(i)->OnDestroy();
 		delete Objects.at(i);
 		Objects.at(i) = NULL;
 	}
@@ -6648,6 +6660,7 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	}
 
 	for (int i = 0; i < ObjectCount; i++) {
+		Objects.at(i)->OnDestroy();
 		delete Objects.at(i);
 	}
 	ObjectCount = 0;

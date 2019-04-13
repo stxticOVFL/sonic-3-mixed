@@ -9,12 +9,14 @@
 #define CONSTRUCTER
 
 class ISprite;
+class ISprite;
 
 #include <Game/LevelScene.h>
 
 class Level_LBZ : public LevelScene {
 public:
     ISprite* LBZObjectsSprite = NULL;
+    ISprite* WaterLine = NULL;
 
     Level_LBZ(IApp* app, IGraphics* g, int act);
     void Init();
@@ -24,6 +26,7 @@ public:
     void LoadZoneSpecificSprites();
     void FinishResults();
     void GoToNextAct();
+    void RenderAboveBackground();
     void EarlyUpdate();
     void Subupdate();
     void HandleCamera();

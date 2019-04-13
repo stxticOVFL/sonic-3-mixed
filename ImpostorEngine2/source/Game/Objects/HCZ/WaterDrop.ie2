@@ -12,6 +12,7 @@ event Create() {
     H = 8;
 	
 	State = -1;
+	CurrentAnimation = 0;
 }
 
 event Update() {
@@ -20,53 +21,71 @@ event Update() {
 		case -1:
 			Timer++;
 			Visible = false;
-			if (Timer >120) {
+			if (Timer > 180) {
 				State++;
 				Timer = 0;
 			}
 		break;
 		case 0:
 			Visible = true;
-			Frame = State;
-			State++;
+			Frame = 0;
+			Timer++;
+			if (Timer > 5) {
+				State++;
+				Timer = 0;
+			}
 			break;
 		case 1:
-			Visible = true;
-			Frame = State;
-			State++;
+			Frame = 1;
+			Timer++;
+			if (Timer > 5) {
+				State++;
+				Timer = 0;
+			}
 			break;
 		case 2:
-			Visible = true;
-			Frame = State;
-			State++;
+			Frame = 2;
+			Timer++;
+			if (Timer > 8) {
+				State++;
+				Timer = 0;
+			}
 			break;
 		case 3:
-			Visible = true;
-			Frame = State;
-			Y += 2;
-			//do it touch thing?
+			Frame = 3;
+			Y += 1;
+			//do it touch a thing?
 			if (Scene.CollisionAt(X,Y)) {
 				State++;
 			}
 			break;
 		case 4:
-			Visible = true;
-			Frame = State;
-			State++;
+			Frame = 4;
+			Timer++;
+			if (Timer > 5) {
+				State++;
+				Timer = 0;
+			}
 			break;
 		case 5:
-			Visible = true;
-			Frame = State;
-			State++;
+			Frame = 5;
+			Timer++;
+			if (Timer > 5) {
+				State++;
+				Timer = 0;
+			}
 			break;
 		case 6:
-			Frame = State;
-			X = InitialX;
-			Y = InitialY;
-			Frame = 0;
-			State = -1;
-			Timer = 0;
-			Visible = false;
+			Frame = 6;
+			Timer++;
+			if (Timer > 5) {
+				X = InitialX;
+				Y = InitialY;
+				Frame = 0;
+				State = -1;
+				Timer = 0;
+				Visible = false;
+			}
 			break;
 	}
 
@@ -75,11 +94,20 @@ event Update() {
 event Render(CamX:int, CamY:int) {
 	if (!Visible) return;
 	   //water water there is water here
-       G.DrawSprite(this.Sprite, CurrentAnimation, Frame >> 8, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+       G.DrawSprite(this.Sprite, CurrentAnimation, Frame, this.X - CamX, this.Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
 		
 	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);
 	}
+}
+
+event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
+	if (!Scene.Players[PlayerID]) return 0;
+	
+	if (State == 3) {
+		State++;
+	}
+	return 1;
 }

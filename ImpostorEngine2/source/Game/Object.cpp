@@ -30,6 +30,10 @@ void Object::UpdateSubType() {
 
 }
 
+void Object::OnDestroy() {
+
+}
+
 void Object::OnPush(int PlayerID, int HitFrom) {
 	if (((Scene->Players[PlayerID]->WallLeft && Scene->Players[PlayerID]->InputLeft) ||
 		(Scene->Players[PlayerID]->Action == ActionType::Spindash && Scene->Players[PlayerID]->DisplayFlip < 0)) && HitFrom == CollideSide::RIGHT && (HitFrom & (int)PushableSide)) {

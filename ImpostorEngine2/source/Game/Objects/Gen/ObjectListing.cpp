@@ -779,3 +779,518 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
     }
     return NULL;
 }
+
+int GetObjectIDFromName(const char* ObjName) {
+            if (!strcmp(ObjName, "Ring")) {
+            return 0x0U;
+        }
+
+        if (!strcmp(ObjName, "Monitor")) {
+            return 0x1U;
+        }
+
+        if (!strcmp(ObjName, "HollowTree")) {
+            return 0x3U;
+        }
+
+        if (!strcmp(ObjName, "CollapsingPlatform")) {
+            return 0x4U;
+        }
+
+        if (!strcmp(ObjName, "Rock")) {
+            return 0x5U;
+        }
+
+        if (!strcmp(ObjName, "RideVine")) {
+            return 0x6U;
+        }
+
+        if (!strcmp(ObjName, "Spring")) {
+            return 0x7U;
+        }
+
+        if (!strcmp(ObjName, "Spikes")) {
+            return 0x8U;
+        }
+
+        if (!strcmp(ObjName, "TreeBark")) {
+            return 0x9U;
+        }
+
+        if (!strcmp(ObjName, "RopePeg")) {
+            return 0xAU;
+        }
+
+        if (!strcmp(ObjName, "SwingVine")) {
+            return 0xCU;
+        }
+
+        if (!strcmp(ObjName, "BreakableWall")) {
+            return 0xDU;
+        }
+
+        if (!strcmp(ObjName, "Ridge")) {
+            return 0xEU;
+        }
+
+        if (!strcmp(ObjName, "CollapsingBridge")) {
+            return 0xFU;
+        }
+
+        if (!strcmp(ObjName, "AutomaticTunnel")) {
+            return 0x24U;
+        }
+
+        if (!strcmp(ObjName, "RollEnforcer")) {
+            return 0x26U;
+        }
+
+        if (!strcmp(ObjName, "InvisibleBlockH")) {
+            return 0x28U;
+        }
+
+        if (!strcmp(ObjName, "DisappearingFloor")) {
+            return 0x29U;
+        }
+
+        if (!strcmp(ObjName, "CorkFloor")) {
+            return 0x2AU;
+        }
+
+        if (!strcmp(ObjName, "FlippingBridge")) {
+            return 0x2BU;
+        }
+
+        if (!strcmp(ObjName, "CollapsingLogBridge")) {
+            return 0x2CU;
+        }
+
+        if (!strcmp(ObjName, "FallingLog")) {
+            return 0x2DU;
+        }
+
+        if (!strcmp(ObjName, "SpikedLog")) {
+            return 0x2EU;
+        }
+
+        if (!strcmp(ObjName, "NonAnimSprite")) {
+            return 0x2FU;
+        }
+
+        if (!strcmp(ObjName, "AnimSprite")) {
+            return 0x30U;
+        }
+
+        if (!strcmp(ObjName, "Drawbridge")) {
+            return 0x32U;
+        }
+
+        if (!strcmp(ObjName, "Button")) {
+            return 0x33U;
+        }
+
+        if (!strcmp(ObjName, "StarPost")) {
+            return 0x34U;
+        }
+
+        if (!strcmp(ObjName, "ForegroundPlant")) {
+            return 0x35U;
+        }
+
+        if (!strcmp(ObjName, "BreakableBar")) {
+            return 0x36U;
+        }
+
+        if (!strcmp(ObjName, "VWaterStream")) {
+            return 0x37U;
+        }
+
+        if (!strcmp(ObjName, "Fan")) {
+            return 0x38U;
+        }
+
+        if (!strcmp(ObjName, "LargeFan")) {
+            return 0x39U;
+        }
+
+        if (!strcmp(ObjName, "HandLauncher")) {
+            return 0x3AU;
+        }
+
+        if (!strcmp(ObjName, "WaterWall")) {
+            return 0x3BU;
+        }
+
+        if (!strcmp(ObjName, "Door")) {
+            return 0x3CU;
+        }
+
+        if (!strcmp(ObjName, "ConveyorBelt")) {
+            return 0x3EU;
+        }
+
+        if (!strcmp(ObjName, "ConveyorSpike")) {
+            return 0x3FU;
+        }
+
+        if (!strcmp(ObjName, "Block")) {
+            return 0x40U;
+        }
+
+        if (!strcmp(ObjName, "Balloon")) {
+            return 0x41U;
+        }
+
+        if (!strcmp(ObjName, "CNZLightBulb")) {
+            return 0x45U;
+        }
+
+        if (!strcmp(ObjName, "HoverFan")) {
+            return 0x46U;
+        }
+
+        if (!strcmp(ObjName, "CNZRotatingBarrel")) {
+            return 0x47U;
+        }
+
+        if (!strcmp(ObjName, "VacuumTube")) {
+            return 0x48U;
+        }
+
+        if (!strcmp(ObjName, "Bumper")) {
+            return 0x4AU;
+        }
+
+        if (!strcmp(ObjName, "Bouncepad")) {
+            return 0x4BU;
+        }
+
+        if (!strcmp(ObjName, "QuickMud")) {
+            return 0x4FU;
+        }
+
+        if (!strcmp(ObjName, "FloatingPlatform")) {
+            return 0x51U;
+        }
+
+        if (!strcmp(ObjName, "SmashingPillar")) {
+            return 0x52U;
+        }
+
+        if (!strcmp(ObjName, "MGZSwingingPlatform")) {
+            return 0x53U;
+        }
+
+        if (!strcmp(ObjName, "Bubbler")) {
+            return 0x54U;
+        }
+
+        if (!strcmp(ObjName, "Relief")) {
+            return 0x55U;
+        }
+
+        if (!strcmp(ObjName, "TriggerPlatform")) {
+            return 0x57U;
+        }
+
+        if (!strcmp(ObjName, "DashTrigger")) {
+            return 0x59U;
+        }
+
+        if (!strcmp(ObjName, "TopPlatform")) {
+            return 0x5BU;
+        }
+
+        if (!strcmp(ObjName, "SnakeBlocks")) {
+            return 0x67U;
+        }
+
+        if (!strcmp(ObjName, "SpinningColumn")) {
+            return 0x68U;
+        }
+
+        if (!strcmp(ObjName, "Slide")) {
+            return 0x69U;
+        }
+
+        if (!strcmp(ObjName, "InvisibleSpikes")) {
+            return 0x6AU;
+        }
+
+        if (!strcmp(ObjName, "InvisibleDeath")) {
+            return 0x6BU;
+        }
+
+        if (!strcmp(ObjName, "TensionBridge")) {
+            return 0x6CU;
+        }
+
+        if (!strcmp(ObjName, "WaterSplash")) {
+            return 0x6DU;
+        }
+
+        if (!strcmp(ObjName, "WaterDrop")) {
+            return 0x6EU;
+        }
+
+        if (!strcmp(ObjName, "HiddenMonitor")) {
+            return 0x80U;
+        }
+
+        if (!strcmp(ObjName, "EggCapsule")) {
+            return 0x81U;
+        }
+
+        if (!strcmp(ObjName, "CutsceneKnuckles")) {
+            return 0x82U;
+        }
+
+        if (!strcmp(ObjName, "SpecialRing")) {
+            return 0x85U;
+        }
+
+        if (!strcmp(ObjName, "Bloominator")) {
+            return 0x8CU;
+        }
+
+        if (!strcmp(ObjName, "RhinoBot")) {
+            return 0x8DU;
+        }
+
+        if (!strcmp(ObjName, "MonkeyDude")) {
+            return 0x8EU;
+        }
+
+        if (!strcmp(ObjName, "CaterkillerJr")) {
+            return 0x8FU;
+        }
+
+        if (!strcmp(ObjName, "FireBreathCutscene")) {
+            return 0x90U;
+        }
+
+        if (!strcmp(ObjName, "FireBreath")) {
+            return 0x91U;
+        }
+
+        if (!strcmp(ObjName, "FlameMobile")) {
+            return 0x92U;
+        }
+
+        if (!strcmp(ObjName, "Jawz")) {
+            return 0x93U;
+        }
+
+        if (!strcmp(ObjName, "Blastoid")) {
+            return 0x94U;
+        }
+
+        if (!strcmp(ObjName, "Buggernaut")) {
+            return 0x95U;
+        }
+
+        if (!strcmp(ObjName, "TurboSpiker")) {
+            return 0x96U;
+        }
+
+        if (!strcmp(ObjName, "MegaChomper")) {
+            return 0x97U;
+        }
+
+        if (!strcmp(ObjName, "Pointdexter")) {
+            return 0x98U;
+        }
+
+        if (!strcmp(ObjName, "BigShaker")) {
+            return 0x99U;
+        }
+
+        if (!strcmp(ObjName, "ScrewMobile")) {
+            return 0x9AU;
+        }
+
+        if (!strcmp(ObjName, "BubblesBadnik")) {
+            return 0x9BU;
+        }
+
+        if (!strcmp(ObjName, "Spiker")) {
+            return 0x9CU;
+        }
+
+        if (!strcmp(ObjName, "Mantis")) {
+            return 0x9DU;
+        }
+
+        if (!strcmp(ObjName, "TunnelBotCutscene")) {
+            return 0x9EU;
+        }
+
+        if (!strcmp(ObjName, "TunnelBot")) {
+            return 0x9FU;
+        }
+
+        if (!strcmp(ObjName, "DrillerEggman")) {
+            return 0xA0U;
+        }
+
+        if (!strcmp(ObjName, "DrillMobile")) {
+            return 0xA1U;
+        }
+
+        if (!strcmp(ObjName, "Batbright")) {
+            return 0xA5U;
+        }
+
+        if (!strcmp(ObjName, "StarPointer")) {
+            return 0xAEU;
+        }
+
+        if (!strcmp(ObjName, "CrushingColumn")) {
+            return 0xAFU;
+        }
+
+        if (!strcmp(ObjName, "Freezer")) {
+            return 0xB2U;
+        }
+
+        if (!strcmp(ObjName, "SegmentedColumn")) {
+            return 0xB3U;
+        }
+
+        if (!strcmp(ObjName, "SwingingPlatform")) {
+            return 0xB4U;
+        }
+
+        if (!strcmp(ObjName, "Stalagtite")) {
+            return 0xB5U;
+        }
+
+        if (!strcmp(ObjName, "IceCube")) {
+            return 0xB6U;
+        }
+
+        if (!strcmp(ObjName, "HarmfulIce")) {
+            return 0xB8U;
+        }
+
+        if (!strcmp(ObjName, "SnowPile")) {
+            return 0xB9U;
+        }
+
+        if (!strcmp(ObjName, "Orbinaut")) {
+            return 0xC0U;
+        }
+
+        if (!strcmp(ObjName, "AirshipBomb")) {
+            return 0x400U;
+        }
+
+        if (!strcmp(ObjName, "BloominatorSpore")) {
+            return 0x401U;
+        }
+
+        if (!strcmp(ObjName, "FireBreathBomb")) {
+            return 0x402U;
+        }
+
+        if (!strcmp(ObjName, "FireBreathFlame")) {
+            return 0x403U;
+        }
+
+        if (!strcmp(ObjName, "MonkeyDudeCoconut")) {
+            return 0x404U;
+        }
+
+        if (!strcmp(ObjName, "BatbrightParts")) {
+            return 0x405U;
+        }
+
+        if (!strcmp(ObjName, "BlankObject")) {
+            return 0x406U;
+        }
+
+        if (!strcmp(ObjName, "BubbleAir")) {
+            return 0x407U;
+        }
+
+        if (!strcmp(ObjName, "InvisibleBlockV")) {
+            return 0x408U;
+        }
+
+        if (!strcmp(ObjName, "PlaneSwitcher")) {
+            return 0x409U;
+        }
+
+        if (!strcmp(ObjName, "PlatformOutliner")) {
+            return 0x40AU;
+        }
+
+        if (!strcmp(ObjName, "PlayerSpawn")) {
+            return 0x40BU;
+        }
+
+        if (!strcmp(ObjName, "WarpStars")) {
+            return 0x40CU;
+        }
+
+        if (!strcmp(ObjName, "EggCapsuleButton")) {
+            return 0x40DU;
+        }
+
+        if (!strcmp(ObjName, "Signpost")) {
+            return 0x40EU;
+        }
+
+        if (!strcmp(ObjName, "TensionBridgeChild")) {
+            return 0x40FU;
+        }
+
+        if (!strcmp(ObjName, "ViewCollisionToggler")) {
+            return 0x410U;
+        }
+
+        if (!strcmp(ObjName, "Motobug")) {
+            return 0x411U;
+        }
+
+        if (!strcmp(ObjName, "MotobugSmoke")) {
+            return 0x412U;
+        }
+
+        if (!strcmp(ObjName, "BlastoidShot")) {
+            return 0x413U;
+        }
+
+        if (!strcmp(ObjName, "DepthCharge")) {
+            return 0x414U;
+        }
+
+        if (!strcmp(ObjName, "TurboSpikerSpike")) {
+            return 0x415U;
+        }
+
+        if (!strcmp(ObjName, "SegmentedColumnStub")) {
+            return 0x416U;
+        }
+
+        if (!strcmp(ObjName, "StarPointerOrbs")) {
+            return 0x417U;
+        }
+
+        if (!strcmp(ObjName, "SwingingPlatformTrigger")) {
+            return 0x418U;
+        }
+
+        if (!strcmp(ObjName, "ReliefEye")) {
+            return 0x419U;
+        }
+
+        if (!strcmp(ObjName, "Platform")) {
+            return 0x41AU;
+        }
+
+
+		IApp::Print(1,"Object wasn't found!");
+	return 0x406U; //Return the BlankObject ID, since the requested one wasn't found
+        
+}

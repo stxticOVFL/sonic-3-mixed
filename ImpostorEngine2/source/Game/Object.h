@@ -429,7 +429,7 @@ struct AttributeValue {
 	int8_t ValInt8;
 	int16_t ValInt16;
 	int32_t ValInt32;
-	char* ValString;
+	std::string ValString;
 	int32_t ValVariable;
 	bool ValBool;
 	AttributeColor ValColor;
@@ -457,6 +457,8 @@ public:
 	AttributeValue ObjectAttribute;
 	int	ObjectAttributeCount = 0;
 
+	std::string Name;
+
 	//Unused, but may be useful to store
 	unsigned short SlotID;
 
@@ -483,6 +485,9 @@ public:
 	bool     SKObject = true;
 	bool     MixedObject = true;
 	bool     LockedOnObject = true;
+	bool     EasyModeObject = true;
+	bool     NormalModeObject = true;
+	bool     HardModeObject = true;
 
     int16_t  W = 32;
     int16_t  H = 32;
@@ -560,6 +565,8 @@ public:
     virtual void Render(int CamX, int CamY);
 
 	virtual void DebugCreate();
+
+	virtual void OnDestroy();
 
     virtual int  OnTouchHitbox(int) { return 0; };
 
@@ -651,6 +658,7 @@ public:
 		MD5 md5 = MD5(name);
 
 		string hash = md5.hexdigest();
+		ObjectAttributeCount++;
 		ObjectAttributes.emplace(hash, av);
 	}
     
