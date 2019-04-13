@@ -3117,19 +3117,19 @@ PUBLIC VIRTUAL void LevelScene::UpdateDiscord() {
 
 
 PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY) {
-	return CollisionAt(probeX, probeY, NULL, 0, NULL, NULL);
+	return CollisionAt(probeX, probeY, NULL, 0, NULL, NULL, -1);
 }
 
 PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, Object* IgnoreObject) {
-	return CollisionAt(probeX, probeY, NULL, 0, NULL, IgnoreObject);
+	return CollisionAt(probeX, probeY, NULL, 0, NULL, IgnoreObject, -1);
 }
 
 PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle) {
-	return CollisionAt(probeX, probeY, angle, 0, NULL, NULL);
+	return CollisionAt(probeX, probeY, angle, 0, NULL, NULL, -1);
 }
 
 PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode) {
-	return CollisionAt(probeX, probeY, angle, anglemode, NULL, NULL);
+	return CollisionAt(probeX, probeY, angle, anglemode, NULL, NULL, -1);
 }
 
 PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
@@ -3140,10 +3140,10 @@ PUBLIC bool LevelScene::CollisionAtClimbable(int probeX, int probeY, int* angle,
 }
 
 PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player) {
-	return CollisionAt(probeX, probeY, angle, anglemode, player, NULL);
+	return CollisionAt(probeX, probeY, angle, anglemode, player, NULL,-1);
 }
 
-PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player, Object* IgnoreObject) {
+PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player, Object* IgnoreObject, int ObjID) {
 	if (!Data) return false;
 
 	int tileX = probeX / 16;
@@ -3422,6 +3422,12 @@ PUBLIC VIRTUAL bool LevelScene::CollisionAt(int probeX, int probeY, int* angle, 
 		if (!obj->OnScreen) continue;
 
 		if (CollisionCheckForClimbable) continue;
+
+		//TO-DO: make this work with the new system ok bye
+		if (ObjID != -1)
+		{
+			if (obj->ID != ObjID) continue;
+		}
 
 		if (obj->SolidCustomized) {
 			if (player) {
@@ -6128,10 +6134,10 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 		}
 
 		// Rendering above background
-		/*
+		
 		if (l == Data->CameraLayer - 1)
 			RenderAboveBackground();
-		//*/
+		//
 
 		G->DoDeform = DeformObjects;
 

@@ -173,10 +173,10 @@ void ScrewMobile::Render(int CamX, int CamY) {
         G->DrawSprite(this->Sprite, RackAnim, RackFrame, this->X - CamX, this->Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
     }
     G->DrawSprite(this->Sprite, PropellorAnim, PropellorFrame, this->X - CamX, this->Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-    if (InvulnTimer > 0) G->DrawSprite(Scene->RobotnikSprite, 2, 0, X - CamX, Y - 48 - CamY, 0, !FlipX);
-    else if (HitCount < 0) G->DrawSprite(Scene->RobotnikSprite, 3, 0, X - CamX, Y - 48 - CamY, 0, !FlipX);
-    else G->DrawSprite(Scene->RobotnikSprite, 0, (Scene->Frame / 6) & 1, X - CamX, Y - 48 - CamY, 0, !FlipX);
-    if (App->viewObjectCollision) {
+    if (InvulnTimer > 0) G->DrawSprite(Scene->RobotnikSprite, 2, 0, X - CamX, Y - CamY, 0, !FlipX);
+    else if (HitCount < 0) G->DrawSprite(Scene->RobotnikSprite, 3, 0, X - CamX, Y - CamY, 0, !FlipX);
+    else G->DrawSprite(Scene->RobotnikSprite, 0, (Scene->Frame / 6) & 1, X - CamX, Y - CamY, 0, !FlipX);
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

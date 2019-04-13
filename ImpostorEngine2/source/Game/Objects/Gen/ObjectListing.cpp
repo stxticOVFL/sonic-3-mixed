@@ -188,6 +188,9 @@ Object* GetNewObjectFromID(int ID) {
         case 0x6DU:
             return new WaterSplash();
             break;
+        case 0x6EU:
+            return new WaterDrop();
+            break;
         case 0x80U:
             return new HiddenMonitor();
             break;
@@ -574,6 +577,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0x9095B5CCU:
             return new WaterSplash();
+            break;
+        case 0xBE0BDD3CU:
+            return new WaterDrop();
             break;
         case 0x8616E0BDU:
             return new HiddenMonitor();

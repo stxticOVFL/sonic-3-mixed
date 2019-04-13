@@ -462,7 +462,6 @@ public:
 
     uint32_t  InitialX;
     uint32_t  InitialY;
-    uint32_t* InitialValues;
 
     int32_t  SubX = 0;
     int32_t  SubY = 0;

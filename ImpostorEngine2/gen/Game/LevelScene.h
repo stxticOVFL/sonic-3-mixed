@@ -254,7 +254,7 @@ public:
     bool CollisionAt(int probeX, int probeY, int* angle, int anglemode);
     bool CollisionAtClimbable(int probeX, int probeY, int* angle, int anglemode, IPlayer* player);
     bool CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player);
-    virtual bool CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player, Object* IgnoreObject);
+    virtual bool CollisionAt(int probeX, int probeY, int* angle, int anglemode, IPlayer* player, Object* IgnoreObject, int ObjID);
     void AddActiveRing(int x, int y, int xs, int ys, int mag);
     Explosion* AddExplosion(int animation, bool flip, int x, int y);
     Explosion* AddExplosion(int animation, bool flip, int x, int y, int vl);
