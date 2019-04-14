@@ -626,6 +626,25 @@ public:
 		ObjectAttribute.ValVariable = 0;
 		return &ObjectAttribute; //Make a default
 	}
+
+	virtual void* GetAttribute(char* name, const char* type) {
+		AttributeValue* at = GetAttribute(name);
+		if (type == "int8")
+			return (void*)at->ValInt8;
+		if (type == "int16")
+			return (void*)at->ValInt16;
+		if (type == "int32")
+			return (void*)at->ValInt32;
+		if (type == "string")
+			return (void*)at->ValString.c_str();
+		if (type == "bool")
+			return (void*)at->ValBool;
+		if (type == "color")
+			return (void*)AttribColourToUint32(at->ValColor, false);
+		if (type == "colorA")
+			return (void*)AttribColourToUint32(at->ValColor, true);
+		return nullptr;
+	}
     
 	virtual Uint32 AttribColourToUint32(AttributeColor colour, bool alpha)
 	{

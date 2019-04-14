@@ -68,9 +68,13 @@ public:
     Uint8 Major = 0;
     Uint8 Minor = 0;
     short Build = 1;
-    char VersionString[9];
+    char VersionString[10];
     char Title[256];
-    char LevelNames[0xFF][0xFF];
+    char Categories[0xFF][0x20];
+    char Levels[0xFF][0xFF][0x04];
+    int ActCount[0xFF][0xFF];
+    int CategoryCount = 0;
+    int LevelCount[0xFF];
     int isSharp = 1;
 
     IApp();

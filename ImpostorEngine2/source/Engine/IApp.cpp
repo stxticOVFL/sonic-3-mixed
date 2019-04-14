@@ -59,10 +59,14 @@ public:
 	Uint8 Major = 0;
 	Uint8 Minor = 0;
 	short Build = 1;
-	char VersionString[9];
+	char VersionString[10];
 
 	char Title[256];
-	char LevelNames[0xFF][0xFF];
+	char Categories[0xFF][0x20];
+	char Levels[0xFF][0xFF][0x04];
+	int ActCount[0xFF][0xFF];
+	int CategoryCount = 0;
+	int LevelCount[0xFF];
 
 	int isSharp = 1;
 
@@ -144,14 +148,25 @@ PUBLIC IApp::IApp() {
 	Major = DevRead.ReadByte();
 	Minor = DevRead.ReadByte();
 	Build = DevRead.ReadInt16();
-	sprintf(VersionString, "%.1d.%.2d.%.3d", Major, Minor, Build);
+	sprintf(VersionString, "%.1d.%.2d.%.4d", Major, Minor, Build);
 	sprintf(Title, DevRead.ReadRSDKString().c_str());
 
-	byte StageCount = DevRead.ReadByte();
-
-	for (int i = 0; i < StageCount; i++)
-	{
-		sprintf(LevelNames[i], DevRead.ReadRSDKString().c_str());
+	for (int i = 0; i < 0xFF; i++) {
+		strcpy(Categories[i], DevRead.ReadRSDKString().c_str());
+		Print(0, Categories[i]);
+		CategoryCount += 1;
+		int count;
+		for (int j = 0; j < 0xFF; j++) {
+			strcpy(Levels[i][j], (const char*)DevRead.ReadBytes(3));
+			Print(0, Levels[i][j]);
+			ActCount[i][j] = DevRead.ReadByte();
+			if (DevRead.Distance() >= DevConfig->Size() - 1 || DevRead.ReadByte() == 0x00)
+				break;
+			else
+				DevRead.Seek(DevRead.Distance() - 1);
+			count++;
+		}
+		LevelCount[i] = count;
 	}
 
 	//RMG YOU HAVE TO CLOSE IT! - You're welcome, with love - Ducky
@@ -638,11 +653,10 @@ PUBLIC void IApp::Run() {
 				}
 				break;
 			case 1: //Select Scene
-				MaxButtons = 4; //TO-DO: ALL OF THIS
-				G->DrawText(WIDTH / 2 - strlen(LevelNames[0]) * 4, 96, LevelNames[0], DevMenuSelected == 0 ? 0xF0F0F0 : 0x848294);
-				G->DrawText(WIDTH / 2 - strlen(LevelNames[1]) * 4, 106, LevelNames[1], DevMenuSelected == 1 ? 0xF0F0F0 : 0x848294);
-				G->DrawText(WIDTH / 2 - strlen(LevelNames[2]) * 4, 116, LevelNames[2], DevMenuSelected == 2 ? 0xF0F0F0 : 0x848294);
-				G->DrawText(WIDTH / 2 - strlen(LevelNames[3]) * 4, 126, LevelNames[3], DevMenuSelected == 3 ? 0xF0F0F0 : 0x848294);
+				MaxButtons = CategoryCount; //TO-DO: ALL OF THIS
+				for (int i = 0; i < CategoryCount; i++) {
+					G->DrawText(WIDTH / 2 - strlen(Categories[i]), 96 + i * 10, Categories[i], DevMenuSelected == i ? 0xF0F0F0 : 0x848294);
+				}
 				break;
 			case 2: //Options General
 				MaxButtons = 5;
