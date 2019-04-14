@@ -429,7 +429,7 @@ struct AttributeValue {
 	int8_t ValInt8;
 	int16_t ValInt16;
 	int32_t ValInt32;
-	std::string ValString;
+	char* ValString;
 	int32_t ValVariable;
 	bool ValBool;
 	AttributeColor ValColor;
@@ -636,7 +636,7 @@ public:
 		if (type == "int32")
 			return (void*)at->ValInt32;
 		if (type == "string")
-			return (void*)at->ValString.c_str();
+			return (void*)at->ValString;
 		if (type == "bool")
 			return (void*)at->ValBool;
 		if (type == "color")
