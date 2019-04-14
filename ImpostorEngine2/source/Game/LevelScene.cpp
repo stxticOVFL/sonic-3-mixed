@@ -2151,6 +2151,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			ObjectCount = 0;
 			ObjectNewCount = 0;
 
+			int CurObjID = 0;
+
 			Data->ObjectDefinitionCount = reader.ReadByte();
 			for (int i = 0; i < Data->ObjectDefinitionCount; i++) {
 				char str[16];
@@ -2208,6 +2210,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					unsigned short SlotID = reader.ReadUInt16(); //SlotID
 					if (obj) { 
                         obj->SlotID = SlotID;
+                        obj->ListID = CurObjID++;
                     }
 
 					unsigned short X_low = reader.ReadUInt16();

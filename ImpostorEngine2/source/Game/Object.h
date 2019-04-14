@@ -461,6 +461,8 @@ public:
 
 	//Unused, but may be useful to store
 	unsigned short SlotID;
+	//Might be the same as above but a little safety is never bad
+	unsigned short ListID;
 
     uint32_t  InitialX;
     uint32_t  InitialY;

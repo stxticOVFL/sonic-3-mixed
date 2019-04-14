@@ -671,6 +671,8 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 			ObjectCount = 0;
 			ObjectNewCount = 0;
 
+			int CurObjID = 0;
+
 			Data->ObjectDefinitionCount = reader.ReadByte();
 			for (int i = 0; i < Data->ObjectDefinitionCount; i++) {
 				char str[16];
@@ -728,6 +730,7 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 					unsigned short SlotID = reader.ReadUInt16(); //SlotID
 					if (obj) {
 						obj->SlotID = SlotID;
+						obj->ListID = CurObjID++;
 					}
 
 					unsigned short X_low = reader.ReadUInt16();
@@ -980,7 +983,17 @@ PUBLIC void Level_SpecialStage::Init() {
 
 	if (LevelScene::ObjectCount > 0)
 	{
+		//Shit
 		Object* obj = LevelScene::Objects[0];
+		//a check incase it's not object 0
+		for (int o = 0; o < ObjectCount; o++)
+		{
+			if (!strcmp(LevelScene::Objects[o]->Name.c_str(), "BSS_Setup"))
+			{
+				obj = LevelScene::Objects[o];
+				break;
+			}
+		}
 		useStageConfig = obj->GetAttribute("useStageConfig")->ValBool;
 		PaletteID = obj->GetAttribute("paletteID")->ValVariable;
 		SkyAlpha = obj->GetAttribute("skyAlpha")->ValUint8;
