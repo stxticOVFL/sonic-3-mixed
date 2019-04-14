@@ -3132,6 +3132,10 @@ PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY) {
 	return CollisionAt(probeX, probeY, NULL, 0, NULL, NULL, -1);
 }
 
+PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, int ObjectID) {
+	return CollisionAt(probeX, probeY, NULL, 0, NULL, NULL, ObjectID);
+}
+
 PUBLIC bool LevelScene::CollisionAt(int probeX, int probeY, Object* IgnoreObject) {
 	return CollisionAt(probeX, probeY, NULL, 0, NULL, IgnoreObject, -1);
 }

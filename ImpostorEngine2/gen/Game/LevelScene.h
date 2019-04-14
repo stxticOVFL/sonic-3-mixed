@@ -249,6 +249,7 @@ public:
     virtual int FindLayer(std::string name);
     virtual void UpdateDiscord();
     bool CollisionAt(int probeX, int probeY);
+    bool CollisionAt(int probeX, int probeY, int ObjectID);
     bool CollisionAt(int probeX, int probeY, Object* IgnoreObject);
     bool CollisionAt(int probeX, int probeY, int* angle);
     bool CollisionAt(int probeX, int probeY, int* angle, int anglemode);
