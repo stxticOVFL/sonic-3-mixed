@@ -1283,12 +1283,12 @@ int main(int argc, char **argv) {
 		fseek(dc, 2, 0);
 		fread(&b, sizeof(short), 1, dc);
 		PrintHeader(stdout, "makeheaders: ", PrintColor::Green);
-		printf("Current Build: %.3d\n", b);
+		printf("Current Build: %.4d\n", b);
 		fseek(dc, 2, 0);
 		b++;
 		fwrite(&b, sizeof(short), 1, dc);
 		PrintHeader(stdout, "makeheaders: ", PrintColor::Green);
-		printf("New Build:     %.3d\n", b);
+		printf("New Build:     %.4d\n", b);
 	}
 	else {
 		PrintHeader(stdout, "makeheaders: ", PrintColor::Red);
