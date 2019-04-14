@@ -3,3 +3,4 @@ SDL2-2.0.9-SRC/
 .vs/
 *.bak
 *.cache
+/makeheaders/MSVC2013/makeheaders/Debug
