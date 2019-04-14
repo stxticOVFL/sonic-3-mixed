@@ -8,6 +8,7 @@ typedef IMath Math;
 void WaterSplash::Create() {
     Object::Create();
     this->Active = true;
+    Sprite = LevelScene::LoadSpriteFromBin("HCZ/WaterGush.bin", SaveGame::CurrentMode);
     this->CurrentAnimation = 13;
     this->W = 48;
     this->H = 32;

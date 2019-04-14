@@ -9,6 +9,7 @@ var StarTimer:int;
 var StarGoTimer:int;
 var Stars:Object[4];
 
+var id:int;
 
 event Create() {
     Active = true;
@@ -40,6 +41,9 @@ event Create() {
 	Stars[2].Active = false;
 	Stars[3].Active = false;
 
+	AttributeBuffer = GetAttribute("id");
+	id = AttributeBuffer.ValVar;
+
     // TODO: Go through level editor and move all StarPosts out of the ground
 }
 
@@ -53,7 +57,7 @@ event Update() {
             }
         }
 
-        if (Scene.Checkpoint > this.SubType) {
+        if (Scene.Checkpoint > id) {
             this.Blinking = true;
         }
         if (this.Activated && this.Spin < 32) {
@@ -143,8 +147,8 @@ event OnCollisionWithPlayer(PlayerID:int, HitFrom:int, Data:int) : int {
     if (!this.Blinking)
         this.Activated = true;
 
-    if (Scene.Checkpoint < this.SubType) {
-        Scene.Checkpoint = this.SubType;
+    if (Scene.Checkpoint < id) {
+        Scene.Checkpoint = id;
         Scene.SavedPositionX = X;
         Scene.SavedPositionY = Y + H / 2 - 16;
 

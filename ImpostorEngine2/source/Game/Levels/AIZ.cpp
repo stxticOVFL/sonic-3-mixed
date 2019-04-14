@@ -337,7 +337,7 @@ PUBLIC void Level_AIZ::Init() {
 
 
 PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
-    App->Audio->ClearMusic();
+	App->Audio->ClearMusic();
 	PlayMusic(Act < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (Act < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, Act < 2 ? 0x90 : 0xE0);
 
     BackgroundRepeatTileWidth = 32;

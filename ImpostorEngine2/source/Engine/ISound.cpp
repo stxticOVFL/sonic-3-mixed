@@ -216,11 +216,30 @@ PUBLIC long long ISound::TellVorbis(Vorbis* vorb) {
 	return ov_pcm_tell(&vorb->vf);
 }
 
+PUBLIC ISound::ISound(std::string filename) {
+	ISound::Load(filename.c_str(), false);
+}
+
+PUBLIC ISound::ISound(std::string* filename) {
+	ISound::Load(filename->c_str(), false);
+}
+
 PUBLIC ISound::ISound(const char* filename) {
     ISound::Load(filename, false);
 }
+
+PUBLIC ISound::ISound(std::string filename, bool streamFromFile) {
+	ISound::Load(filename.c_str(), streamFromFile);
+}
+PUBLIC ISound::ISound(std::string* filename, bool streamFromFile) {
+	ISound::Load(filename->c_str(), streamFromFile);
+}
 PUBLIC ISound::ISound(const char* filename, bool streamFromFile) {
     ISound::Load(filename, streamFromFile);
+}
+
+PUBLIC void ISound::Load(std::string* filename, bool streamFromFile) {
+	Load(filename->c_str(), streamFromFile);
 }
 
 PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {

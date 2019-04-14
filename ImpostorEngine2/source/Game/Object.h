@@ -430,7 +430,7 @@ struct AttributeValue {
 	int16_t ValInt16;
 	int32_t ValInt32;
 	char* ValString;
-	int32_t ValVariable;
+	int32_t ValVar;
 	bool ValBool;
 	AttributeColor ValColor;
 	AttributePosition ValPosition;
@@ -455,6 +455,7 @@ public:
 
 	std::map<std::string, AttributeValue> ObjectAttributes;
 	AttributeValue ObjectAttribute;
+	AttributeValue AttributeBuffer;
 	int	ObjectAttributeCount = 0;
 
 	std::string Name;
@@ -587,7 +588,7 @@ public:
     virtual Object* GetObjectParent();
 	virtual bool IsParentFloatingPlatform();
 
-	virtual AttributeValue* GetAttribute(char* name)
+	virtual AttributeValue GetAttribute(char* name)
 	{
 		if (ObjectAttributeCount >= 1)
 		{
@@ -602,7 +603,7 @@ public:
 			else
 			{
 				//yay we found it!
-				return &ObjectAttributes[hash];
+				return ObjectAttributes[hash];
 			}
 		}
 		else
@@ -623,26 +624,26 @@ public:
 		ObjectAttribute.ValUint16 = 0;
 		ObjectAttribute.ValUint32 = 0;
 		ObjectAttribute.ValUint8 = 0;
-		ObjectAttribute.ValVariable = 0;
-		return &ObjectAttribute; //Make a default
+		ObjectAttribute.ValVar = 0;
+		return ObjectAttribute; //Make a default
 	}
 
 	virtual void* GetAttribute(char* name, const char* type) {
-		AttributeValue* at = GetAttribute(name);
+		AttributeValue at = GetAttribute(name);
 		if (type == "int8")
-			return (void*)at->ValInt8;
+			return (void*)at.ValInt8;
 		if (type == "int16")
-			return (void*)at->ValInt16;
+			return (void*)at.ValInt16;
 		if (type == "int32")
-			return (void*)at->ValInt32;
+			return (void*)at.ValInt32;
 		if (type == "string")
-			return (void*)at->ValString;
+			return (void*)at.ValString;
 		if (type == "bool")
-			return (void*)at->ValBool;
+			return (void*)at.ValBool;
 		if (type == "color")
-			return (void*)AttribColourToUint32(at->ValColor, false);
+			return (void*)AttribColourToUint32(at.ValColor, false);
 		if (type == "colorA")
-			return (void*)AttribColourToUint32(at->ValColor, true);
+			return (void*)AttribColourToUint32(at.ValColor, true);
 		return nullptr;
 	}
     
@@ -674,7 +675,7 @@ public:
 		av.ValUint16 = 0;
 		av.ValUint32 = 0;
 		av.ValUint8 = 0;
-		av.ValVariable = 0;
+		av.ValVar = 0;
 
 		MD5 md5 = MD5(name);
 

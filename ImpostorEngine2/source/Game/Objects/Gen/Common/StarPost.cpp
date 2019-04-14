@@ -29,6 +29,8 @@ void StarPost::Create() {
     Stars[1]->Active = false;
     Stars[2]->Active = false;
     Stars[3]->Active = false;
+    AttributeBuffer = GetAttribute("id");
+    id = AttributeBuffer.ValVar;
 }
 
 void StarPost::Update() {
@@ -40,7 +42,7 @@ void StarPost::Update() {
             }
 
         }
-        if (Scene->Checkpoint > this->SubType) {
+        if (Scene->Checkpoint > id) {
             this->Blinking = true;
         }
 
@@ -120,8 +122,8 @@ void StarPost::Render(int CamX, int CamY) {
 int StarPost::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     if (!this->Blinking) this->Activated = true;
 
-    if (Scene->Checkpoint < this->SubType) {
-        Scene->Checkpoint = this->SubType;
+    if (Scene->Checkpoint < id) {
+        Scene->Checkpoint = id;
         Scene->SavedPositionX = X;
         Scene->SavedPositionY = Y + H / 2 - 16;
         if (Scene->Players[PlayerID]->Rings >= 20) {

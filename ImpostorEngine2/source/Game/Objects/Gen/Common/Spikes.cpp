@@ -10,54 +10,60 @@ void Spikes::Create() {
     Active = true;
     Priority = false;
     DoDeform = true;
+    Rotation = 0;
+    In = false;
     Sprite = LevelScene::LoadSpriteFromBin("Global/Spikes.bin", SaveGame::CurrentMode);
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
-    Rotation = 0;
-    Size = 1 + (SubType & 0x30) / 0x10;
-    Vertical = (SubType >> 6) & 0x1;
-    In = false;
-    W = 32 * Size;
+    AttributeBuffer = GetAttribute("type");
+    Type = AttributeBuffer.ValVar;
+    AttributeBuffer = GetAttribute("moving");
+    Moving = AttributeBuffer.ValBool;
+    AttributeBuffer = GetAttribute("count");
+    Count = AttributeBuffer.ValUint8;
+    AttributeBuffer = GetAttribute("stagger");
+    Stagger = AttributeBuffer.ValUint8;
+    AttributeBuffer = GetAttribute("timer");
+    TimerMax = AttributeBuffer.ValUint8;
+    AttributeBuffer = GetAttribute("planeFilter");
+    PlaneFilter = AttributeBuffer.ValUint8;
+    AttributeBuffer = GetAttribute("in");
+    In = AttributeBuffer.ValBool;
+    W = 32 * Count;
     H = 32;
     Y = InitialY;
+    Vertical = 0;
     Timer = 0;
     CleanupInactiveObject = true;
-    if (Vertical && FlipX) {
+    if (Type == 2) {
         W = 32;
-        H = 32 * Size;
+        H = 32 * Count;
         Rotation = 0x40;
+        Vertical = 1;
     }
 
-    if (Vertical && !FlipX) {
+    if (Type == 3) {
         W = 32;
-        H = 32 * Size;
+        H = 32 * Count;
         Rotation = 0xC0;
+        Vertical = 1;
     }
 
-    if (!Vertical && FlipY) {
-        W = 32 * Size;
+    if (Type == 1) {
+        W = 32 * Count;
         H = 32;
         Rotation = 0x80;
     }
-
-    if ((SubType & 0xF) == 0x1) {
-        if (FlipY) {
-            Y += 32;
-        }
-
-    }
-
-    if (!((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2)) In = true;
 
     CurrentAnimation = Sprite->FindAnimation("Spikes V");
 }
 
 void Spikes::Update() {
-    if ((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2) {
+    if (Moving) {
         Timer++;
         Timer &= 0x3F;
-        if (Timer >= 60) {
-            if (Timer == 60) In = !In;
+        if (Timer >= TimerMax) {
+            if (Timer == TimerMax) In = !In;
 
             if (In) {
                 X += Math::sinHex(Rotation) >> 13;
@@ -82,13 +88,13 @@ void Spikes::Render(int CamX, int CamY) {
         flag = IE_FLIPX;
     }
 
-    for (int i = 0; i < Size; i++)
+    for (int i = 0; i < Count; i++)
 {
         if (Vertical) {
-            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - (Size - 1) * 16 + i * 32, Rotation, flag);
+            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY - (Count - 1) * 16 + i * 32, Rotation, flag);
         }
         else {
-            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX - (Size - 1) * 16 + i * 32, Y - CamY, Rotation, flag);
+            G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX - (Count - 1) * 16 + i * 32, Y - CamY, Rotation, flag);
         }
     }
     if (DrawCollisions) {

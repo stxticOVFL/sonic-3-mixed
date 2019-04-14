@@ -1,0 +1,17 @@
+BlankObject
+PlayerSpawn
+Ring
+Bridge
+HPZEmerald
+HPZWaterfalls
+Platform
+CollapsingPlatform
+Bridge
+CollapsingPlatform
+Ring
+Monitor
+Monitor
+Batbot
+Rhinobot
+Dinobot
+HPZOrb

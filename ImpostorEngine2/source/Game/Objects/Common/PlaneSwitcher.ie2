@@ -7,19 +7,17 @@ var Size:int;
 event Create() {
     Active = true;
 	
-	var AttributeHolder:AttributeValue;
+	AttributeBuffer = GetAttribute("Angle");
+	Angle = AttributeBuffer.ValUint32;
 	
-	AttributeHolder = GetAttribute("Angle");
-	Angle = AttributeHolder.ValUint32;
+	AttributeBuffer = GetAttribute("Flags");
+	Flags = AttributeBuffer.ValUint32;
 	
-	AttributeHolder = GetAttribute("Flags");
-	Flags = AttributeHolder.ValUint32;
+	AttributeBuffer = GetAttribute("OnPath");
+	OnPath = AttributeBuffer.ValBool;
 	
-	AttributeHolder = GetAttribute("OnPath");
-	OnPath = AttributeHolder.ValBool;
-	
-	AttributeHolder = GetAttribute("Size");
-	Size = AttributeHolder.ValUint32;
+	AttributeBuffer = GetAttribute("Size");
+	Size = AttributeBuffer.ValUint32;
 	
 	if (Size <= 0) Size = 1;
 	

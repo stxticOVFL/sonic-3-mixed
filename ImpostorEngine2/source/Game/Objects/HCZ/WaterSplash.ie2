@@ -2,7 +2,7 @@ object 0x6D;
 
 event Create() {
     this.Active = true;
-	//Sprite = LevelScene.LoadSpriteFromBin("HCZ/WaterGush.bin",SaveGame.CurrentMode);
+	Sprite = LevelScene.LoadSpriteFromBin("HCZ/WaterGush.bin",SaveGame.CurrentMode);
     this.CurrentAnimation = 13;
 
     this.W = 48;

@@ -1886,33 +1886,39 @@ namespace S3toIE2 {
 
                 //Blank Object Slot (always slot 0, used for errors etc)
                 RSDKv5.SceneObject blankObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("BlankObject"), new List<RSDKv5.AttributeInfo>());
-                blankObjects.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
-                blankObjects.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
+                blankObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                blankObjects.Attributes.Add(new RSDKv5.AttributeInfo("subtype", RSDKv5.AttributeTypes.UINT8));
 
                 scene.Objects.Add(blankObjects);
 
                 //Stage Setups (always slot 1)
-                RSDKv5.SceneObject setupObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier(lvlIDs[ZoneID] + "Setup"), new List<RSDKv5.AttributeInfo>());
-                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
-                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
-                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("ActID", RSDKv5.AttributeTypes.UINT8));
+                RSDKv5.SceneObject setupObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier(lvlIDs[ZoneID] + "Control"), new List<RSDKv5.AttributeInfo>());
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("actID", RSDKv5.AttributeTypes.UINT8));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("zoneLetters", RSDKv5.AttributeTypes.STRING));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("loadTileconfig", RSDKv5.AttributeTypes.BOOL));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("loadStageconfig", RSDKv5.AttributeTypes.BOOL));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("loadTiles", RSDKv5.AttributeTypes.BOOL));
+                setupObjects.Attributes.Add(new RSDKv5.AttributeInfo("loadAniTiles", RSDKv5.AttributeTypes.BOOL));
 
                 RSDKv5.SceneEntity stageSetup = new RSDKv5.SceneEntity(setupObjects, SlotID++);
-                stageSetup.Position.X.High = (short)0;
-                stageSetup.Position.Y.High = (short)0;
+                stageSetup.Position.X.High = 0;
+                stageSetup.Position.Y.High = 0;
                 stageSetup.Attributes[0].ValueUInt8 = 0xFF;
-                stageSetup.Attributes[2].ValueUInt8 = (byte)Act;
+                stageSetup.Attributes[1].ValueUInt8 = (byte)Act;
+                stageSetup.Attributes[2].ValueString = lvlIDs[ZoneID];
+                stageSetup.Attributes[3].ValueBool = true;
+                stageSetup.Attributes[4].ValueBool = true;
+                stageSetup.Attributes[5].ValueBool = true;
+                stageSetup.Attributes[6].ValueBool = true;
                 setupObjects.Entities.Add(stageSetup);
 
                 scene.Objects.Add(setupObjects);
 
                 //Player Spawn entities (always slot 2)
                 RSDKv5.SceneObject playerObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("PlayerSpawn"), new List<RSDKv5.AttributeInfo>());
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("FlipX", RSDKv5.AttributeTypes.BOOL));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("FlipY", RSDKv5.AttributeTypes.BOOL));
-                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("CharacterID", RSDKv5.AttributeTypes.VAR));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                playerObjects.Attributes.Add(new RSDKv5.AttributeInfo("characterID", RSDKv5.AttributeTypes.VAR));
 
                 // Write Start Positions
                 byte[] startPosDataSonic = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["startpos"])[0].Filename);
@@ -1920,37 +1926,117 @@ namespace S3toIE2 {
                 byte[] startPosDataKnux = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["startpos"])[1].Filename);
                 Array.Reverse(startPosDataKnux);
 
-                RSDKv5.SceneEntity startPosSonicTails = new RSDKv5.SceneEntity(playerObjects, SlotID++);
-                startPosSonicTails.Position.X.High = (short)BitConverter.ToUInt16(startPosDataSonic, 2);
-                startPosSonicTails.Position.Y.High = (short)BitConverter.ToUInt16(startPosDataSonic, 0);
-                startPosSonicTails.Attributes[0].ValueUInt8 = 0xFF;
-                startPosSonicTails.Attributes[4] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
-                startPosSonicTails.Attributes[4].ValueVar = 0b00011011;
-                playerObjects.Entities.Add(startPosSonicTails);
+                short SX = (short)BitConverter.ToUInt16(startPosDataSonic, 2); 
+                short SY = (short)BitConverter.ToUInt16(startPosDataSonic, 0);
+                
+                short KX = (short)BitConverter.ToUInt16(startPosDataKnux, 2); 
+                short KY = (short)BitConverter.ToUInt16(startPosDataKnux, 0); 
 
-                RSDKv5.SceneEntity startPosSonicKnux = new RSDKv5.SceneEntity(playerObjects, SlotID++);
-                startPosSonicKnux.Position.X.High = (short)BitConverter.ToUInt16(startPosDataKnux, 2);
-                startPosSonicKnux.Position.Y.High = (short)BitConverter.ToUInt16(startPosDataKnux, 0);
-                startPosSonicKnux.Attributes[0].ValueUInt8 = 0xFF;
-                startPosSonicKnux.Attributes[4] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
-                startPosSonicKnux.Attributes[4].ValueVar = 0b00000100;
-                playerObjects.Entities.Add(startPosSonicKnux);
+                if (SX == KX && SY == KY)
+                {
+                    RSDKv5.SceneEntity startPosAll = new RSDKv5.SceneEntity(playerObjects, SlotID++);
+                    startPosAll.Position.X.High = SX;
+                    startPosAll.Position.Y.High = SY;
+                    startPosAll.Attributes[0].ValueUInt8 = 0xFF;
+                    startPosAll.Attributes[1] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
+                    startPosAll.Attributes[1].ValueVar = 0xFF;
+                    playerObjects.Entities.Add(startPosAll);
+                }
+                else
+                {
+                    RSDKv5.SceneEntity startPosSonicTails = new RSDKv5.SceneEntity(playerObjects, SlotID++);
+                    startPosSonicTails.Position.X.High = SX;
+                    startPosSonicTails.Position.Y.High = SY;
+                    startPosSonicTails.Attributes[0].ValueUInt8 = 0xFF;
+                    startPosSonicTails.Attributes[1] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
+                    startPosSonicTails.Attributes[1].ValueVar = 0b00011011;
+                    playerObjects.Entities.Add(startPosSonicTails);
+
+                    RSDKv5.SceneEntity startPosSonicKnux = new RSDKv5.SceneEntity(playerObjects, SlotID++);
+                    startPosSonicKnux.Position.X.High = KX;
+                    startPosSonicKnux.Position.Y.High = KY;
+                    startPosSonicKnux.Attributes[0].ValueUInt8 = 0xFF;
+                    startPosSonicKnux.Attributes[1] = new RSDKv5.AttributeValue(RSDKv5.AttributeTypes.VAR);
+                    startPosSonicKnux.Attributes[1].ValueVar = 0b00000100;
+                    playerObjects.Entities.Add(startPosSonicKnux);
+                }
 
                 scene.Objects.Add(playerObjects);
 
+                //Titlecard (always slot 3)
+                RSDKv5.SceneObject tCardObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("TitleCard"), new List<RSDKv5.AttributeInfo>());
+                tCardObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                tCardObjects.Attributes.Add(new RSDKv5.AttributeInfo("zoneName", RSDKv5.AttributeTypes.STRING));
+                tCardObjects.Attributes.Add(new RSDKv5.AttributeInfo("actID", RSDKv5.AttributeTypes.UINT8));
+
+                RSDKv5.SceneEntity titleCard = new RSDKv5.SceneEntity(tCardObjects, SlotID++);
+                titleCard.Position.X.High = 0;
+                titleCard.Position.Y.High = 0;
+                titleCard.Attributes[0].ValueUInt8 = 0xFF;
+                titleCard.Attributes[1].ValueString = lvlNames[ZoneID].ToUpper();
+                titleCard.Attributes[2].ValueUInt8 = (byte)Act;
+                tCardObjects.Entities.Add(titleCard);
+
+                scene.Objects.Add(tCardObjects);
+
+                //HUD (always slot 4)
+                RSDKv5.SceneObject HUDObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("HUD"), new List<RSDKv5.AttributeInfo>());
+                HUDObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+
+                RSDKv5.SceneEntity HUD = new RSDKv5.SceneEntity(HUDObjects, SlotID++);
+                HUD.Position.X.High = 0;
+                HUD.Position.Y.High = 0;
+                HUD.Attributes[0].ValueUInt8 = 0xFF;
+                HUDObjects.Entities.Add(HUD);
+
+                scene.Objects.Add(HUDObjects);
+
+                //Music (always slot 5)
+                RSDKv5.SceneObject musicObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("Music"), new List<RSDKv5.AttributeInfo>());
+                musicObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                musicObjects.Attributes.Add(new RSDKv5.AttributeInfo("trackFile", RSDKv5.AttributeTypes.STRING));
+                musicObjects.Attributes.Add(new RSDKv5.AttributeInfo("soundTestTitle", RSDKv5.AttributeTypes.STRING));
+                musicObjects.Attributes.Add(new RSDKv5.AttributeInfo("trackID", RSDKv5.AttributeTypes.VAR));
+                musicObjects.Attributes.Add(new RSDKv5.AttributeInfo("trackLoop", RSDKv5.AttributeTypes.UINT32));
+                musicObjects.Attributes.Add(new RSDKv5.AttributeInfo("playOnLoad", RSDKv5.AttributeTypes.BOOL));
+
+                RSDKv5.SceneEntity music = new RSDKv5.SceneEntity(musicObjects, SlotID++);
+                music.Position.X.High = 0;
+                music.Position.Y.High = 0;
+                music.Attributes[0].ValueUInt8 = 0xFF;
+                music.Attributes[1].ValueString = lvlIDs[ZoneID] + Act + ".ogg";
+                music.Attributes[2].ValueString = lvlNames[ZoneID].ToUpper() + " ZONE " + Act;
+                music.Attributes[3].ValueVar = 0;
+                music.Attributes[4].ValueUInt32 = 0;
+                music.Attributes[5].ValueBool = true;
+                musicObjects.Entities.Add(music);
+
+                scene.Objects.Add(musicObjects);
+
+                //PauseMenu (always slot 4)
+                RSDKv5.SceneObject PauseObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("PauseMenu"), new List<RSDKv5.AttributeInfo>());
+                PauseObjects.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+
+                RSDKv5.SceneEntity PauseMenu = new RSDKv5.SceneEntity(PauseObjects, SlotID++);
+                PauseMenu.Position.X.High = 0;
+                PauseMenu.Position.Y.High = 0;
+                PauseMenu.Attributes[0].ValueUInt8 = 0xFF;
+                PauseObjects.Entities.Add(PauseMenu);
+
+                scene.Objects.Add(PauseObjects);
 
                 // Write Ring Data
                 byte[] ringData = File.ReadAllBytes(Globals.ROOT + FileInfo.Load(iniLevel["rings"])[0].Filename);
                 int ringDataCount = ringData.Length / 4 - 1;
 
                 RSDKv5.SceneObject ringObjects = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier("Ring"), new List<RSDKv5.AttributeInfo>());
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Filter"), RSDKv5.AttributeTypes.UINT8));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Type"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("PlaneFilter"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("MoveType"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Amplitude"), RSDKv5.AttributeTypes.POSITION));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Speed"), RSDKv5.AttributeTypes.VAR));
-                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("Angle"), RSDKv5.AttributeTypes.INT32));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("filter"), RSDKv5.AttributeTypes.UINT8));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("type"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("planeFilter"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("moveType"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("amplitude"), RSDKv5.AttributeTypes.POSITION));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("speed"), RSDKv5.AttributeTypes.VAR));
+                ringObjects.Attributes.Add(new RSDKv5.AttributeInfo(new RSDKv5.NameIdentifier("angle"), RSDKv5.AttributeTypes.INT32));
 
                 using (MemoryStream ringStream = new MemoryStream(ringData))
                 {
@@ -1959,7 +2045,7 @@ namespace S3toIE2 {
                         short x = (short)BigEndian.Read2(ringStream);
                         short y = (short)BigEndian.Read2(ringStream);
 
-                        if (i == 0) continue; // remove TOp Left ring
+                        if (i == 0) continue; // remove Top Left ring
 
                         RSDKv5.SceneEntity ringEntity = new RSDKv5.SceneEntity(ringObjects, SlotID++);
                         ringEntity.Position.X.High = x;
@@ -2198,24 +2284,90 @@ namespace S3toIE2 {
                     IDs.Add(def.Key);
 
                     RSDKv5.SceneObject objDefinition = new RSDKv5.SceneObject(new RSDKv5.NameIdentifier(ObjectName), new List<RSDKv5.AttributeInfo>());
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Filter", RSDKv5.AttributeTypes.UINT8));
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Subtype", RSDKv5.AttributeTypes.UINT8));
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("FlipX", RSDKv5.AttributeTypes.BOOL));
-                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("FlipY", RSDKv5.AttributeTypes.BOOL));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("subtype", RSDKv5.AttributeTypes.UINT8));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flipX", RSDKv5.AttributeTypes.BOOL));
+                    objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flipY", RSDKv5.AttributeTypes.BOOL));
 
                     if (objDefinition.Name.Name == "PlaneSwitch")
                     {
-                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Flags", RSDKv5.AttributeTypes.UINT32));
-                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Size", RSDKv5.AttributeTypes.UINT32));
-                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("Angle", RSDKv5.AttributeTypes.INT32));
-                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("OnPath", RSDKv5.AttributeTypes.BOOL));
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flags", RSDKv5.AttributeTypes.UINT32));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("size", RSDKv5.AttributeTypes.UINT32));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("angle", RSDKv5.AttributeTypes.INT32));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("onPath", RSDKv5.AttributeTypes.BOOL));
+                    }
+                    else if (objDefinition.Name.Name == "Spring")
+                    {
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("type", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("flipFlag", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("onGround", RSDKv5.AttributeTypes.BOOL));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("planeFilter", RSDKv5.AttributeTypes.UINT8));
+                    }
+                    else if (objDefinition.Name.Name == "ItemBox")
+                    {
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("type", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("isFalling", RSDKv5.AttributeTypes.BOOL));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("hidden", RSDKv5.AttributeTypes.BOOL));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("direction", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("planeFilter", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("lrzConvPhys", RSDKv5.AttributeTypes.BOOL));
+                    }
+                    else if (objDefinition.Name.Name == "Spikes")
+                    {
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("type", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("moving", RSDKv5.AttributeTypes.BOOL));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("count", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("stagger", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("timer", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("planeFilter", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("in", RSDKv5.AttributeTypes.BOOL));
+                    }
+                    else if (objDefinition.Name.Name == "StarPost")
+                    {
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("id", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("direction", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("vsRemove", RSDKv5.AttributeTypes.BOOL));
+                    }
+                    else if (objDefinition.Name.Name == "SignPost")
+                    {
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("type", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("vsBoundsSize", RSDKv5.AttributeTypes.POSITION));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("vsBoundsOffset", RSDKv5.AttributeTypes.POSITION));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("vsExtendTop", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("vsExtendBottom", RSDKv5.AttributeTypes.VAR));
+                    }
+                    else if (objDefinition.Name.Name == "SpecialRing")
+                    {
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("id", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("planeFilter", RSDKv5.AttributeTypes.VAR));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("gotoHPZ", RSDKv5.AttributeTypes.BOOL));
+                    }
+                    else if (objDefinition.Name.Name == "EggPrison")
+                    {
+                        objDefinition.Attributes.Clear();
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("filter", RSDKv5.AttributeTypes.UINT8));
+                        objDefinition.Attributes.Add(new RSDKv5.AttributeInfo("type", RSDKv5.AttributeTypes.VAR));
                     }
                     else
                     {
                         foreach (PropertySpec n in def.Value.CustomProperties)
                         {
-                            string name = n.Name.ToLower().Replace(" ", "");
-                            string tmp = name[0].ToString().ToUpper();
+                            string name = n.Name.Replace(" ", "");
+                            string tmp = name[0].ToString().ToLower();
                             name = name.Remove(0, 1);
                             name = tmp + name;
                             if (n.Type == typeof(bool))
@@ -2256,9 +2408,13 @@ namespace S3toIE2 {
                         objEntity.Position.X.High = (short)x;
                         objEntity.Position.Y.High = (short)y;
                         objEntity.Attributes[0].ValueUInt8 = 0xFF;
-                        objEntity.Attributes[1].ValueUInt8 = (byte)SubType;
-                        objEntity.Attributes[2].ValueBool = FlipX;
-                        objEntity.Attributes[3].ValueBool = FlipY;
+
+                        if (def.Name.Name != "PlaneSwitch" && def.Name.Name != "Spring" && def.Name.Name != "ItemBox" && def.Name.Name != "Spikes" && def.Name.Name != "StarPost" && def.Name.Name != "SignPost" && def.Name.Name != "SpecialRing" && def.Name.Name != "EggPrison")
+                        {
+                            objEntity.Attributes[1].ValueUInt8 = (byte)SubType;
+                            objEntity.Attributes[2].ValueBool = FlipX;
+                            objEntity.Attributes[3].ValueBool = FlipY;
+                        }
 
                         if (def.Name.Name == "PlaneSwitch")
                         {
@@ -2272,10 +2428,93 @@ namespace S3toIE2 {
                             int leftUpPriority = ((SubType >> 6) & 0x01); //1 is high, 0 is low
                             int rightDownPriority = ((SubType >> 5) & 0x01);
 
-                            objEntity.Attributes[4].ValueUInt32 = (uint)(rightDownPath << 3 | rightDownPriority << 2 | leftUpPath << 1 | leftUpPriority);
-                            objEntity.Attributes[5].ValueUInt32 = (uint)H;
-                            objEntity.Attributes[6].ValueInt32 = orientation * 0xC0;
-                            objEntity.Attributes[7].ValueBool = groundOnly == 1;
+                            objEntity.Attributes[1].ValueUInt32 = (uint)(rightDownPath << 3 | rightDownPriority << 2 | leftUpPath << 1 | leftUpPriority);
+                            objEntity.Attributes[2].ValueUInt32 = (uint)H;
+                            objEntity.Attributes[3].ValueInt32 = orientation * 0xC0;
+                            objEntity.Attributes[4].ValueBool = groundOnly == 1;
+                        }
+                        else if (def.Name.Name == "Spring")
+                        {
+                            int SpringType = 1;
+                            if ((SubType & 0x2) != 0x0)
+                                SpringType = 0;
+
+                            int fX = FlipX ? 1 : 0;
+                            int fY = FlipY ? 1 : 0;
+
+                            objEntity.Attributes[2].ValueVar = (uint)(fX | fY);
+
+                            if ((SubType & 0xF0) == 0x10)
+                            {
+                                objEntity.Attributes[1].ValueVar = (uint)(2 + SpringType);
+                            }
+                            else if ((SubType & 0xF0) == 0x20)
+                            {
+                                objEntity.Attributes[1].ValueVar = (uint)(0 + SpringType);
+                            }
+                            else if ((SubType & 0xF0) == 0x30)
+                            {
+                                objEntity.Attributes[1].ValueVar = (uint)(4 + SpringType);
+                            }
+                            else if ((SubType & 0xF0) == 0x40)
+                            {
+                                objEntity.Attributes[1].ValueVar = (uint)(4 + SpringType);
+                            }
+                        }
+                        else if (def.Name.Name == "ItemBox")
+                        {
+                            objEntity.Attributes[1].ValueVar = (uint)SubType;
+                        }
+                        else if (def.Name.Name == "Spikes")
+                        {
+                            int count = (1 + (SubType & 0x30) / 0x10);
+                            int Vertical = ((SubType >> 6) & 0x1);
+
+                            uint type = 0;
+
+                            if (Vertical == 1 && !FlipX)
+                            {
+                                type = 3;
+                            }
+                            else if (Vertical == 1 && FlipX)
+                            {
+                                type = 2;
+                            }
+                            else if (Vertical == 0 && !FlipY)
+                            {
+                                type = 0;
+                            }
+                            else if (Vertical == 0 && FlipY)
+                            {
+                                type = 1;
+                            }
+
+                            objEntity.Attributes[1].ValueVar = type;
+
+                            objEntity.Attributes[2].ValueBool = false;
+
+                            if ((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2)
+                            {
+                                objEntity.Attributes[2].ValueBool = true;
+                            }
+
+                            if (!((SubType & 0xF) == 0x1 || (SubType & 0xF) == 0x2))
+                            {
+                                objEntity.Attributes[7].ValueBool = true;
+                            }
+
+                            objEntity.Attributes[3].ValueUInt8 = (byte)count;
+
+                            objEntity.Attributes[5].ValueUInt8 = 60;
+                        }
+                        else if (def.Name.Name == "StarPost")
+                        {
+                            objEntity.Attributes[1].ValueVar = (uint)SubType;
+                        }
+                        else if (def.Name.Name == "SpecialRing")
+                        {
+                            objEntity.Attributes[1].ValueVar = (uint)(SubType & 0x7F);
+                            objEntity.Attributes[3].ValueBool = (SubType & 0x80) == 1;
                         }
                         else
                         {

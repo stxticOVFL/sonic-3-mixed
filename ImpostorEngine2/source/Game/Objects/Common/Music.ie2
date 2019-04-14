@@ -1,0 +1,38 @@
+var trackFile:string;
+var soundtestName:string;
+var trackID:uint32_t;
+var trackLoop:uint32_t;
+var playOnLoad:bool;
+var loopTrack:bool;
+
+event Create() {
+
+	AttributeBuffer = GetAttribute("trackFile");
+	trackFile = AttributeBuffer.ValString;
+	
+	AttributeBuffer = GetAttribute("soundtestTitle");
+	soundtestName = AttributeBuffer.ValString;
+	
+	AttributeBuffer = GetAttribute("trackID");
+	trackID = AttributeBuffer.ValVar;
+	
+	AttributeBuffer = GetAttribute("trackLoop");
+	trackLoop = AttributeBuffer.ValUint32;
+	
+	playOnLoad = false;
+	
+	AttributeBuffer = GetAttribute("playOnLoad");
+	playOnLoad = AttributeBuffer.ValBool;
+	
+	loopTrack = false;
+	if (trackLoop > 0) {
+		loopTrack = true;
+	}
+	
+	if (playOnLoad) {
+		Sound.SoundBank[trackID].Load(trackFile, true);
+		Sound.Audio.LoopPoint[trackID] = trackLoop;
+		Sound.Audio.Loop[trackID] = false;
+		App.Audio.PushMusicAt(Sound.SoundBank[trackID], 0, loopTrack, trackLoop);
+	}
+}

@@ -22,6 +22,9 @@ public:
     int SpringPower;
     int Twirl;
     bool KillTransverseSpeed;
+    int FlipFlag;
+    bool OnGround;
+    int PlaneFilter;
     
     void Create();
     void Update();

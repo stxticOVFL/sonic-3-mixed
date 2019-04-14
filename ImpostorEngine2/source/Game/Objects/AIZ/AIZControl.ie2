@@ -1,0 +1,33 @@
+
+var ActID:int;
+var ZoneLetters:string;
+var LoadTileconfig:bool;
+var LoadStageconfig:bool;
+var LoadTiles:bool;
+var LoadAniTiles:bool;
+
+event Create() {
+
+	AttributeBuffer = GetAttribute("actID");
+	ActID = AttributeBuffer.ValUint8;
+	
+	AttributeBuffer = GetAttribute("zoneLetters");
+	ZoneLetters = AttributeBuffer.ValString;
+	
+	AttributeBuffer = GetAttribute("loadTileconfig");
+	LoadTileconfig = AttributeBuffer.ValBool;
+	
+	AttributeBuffer = GetAttribute("loadStageconfig");
+	LoadStageconfig = AttributeBuffer.ValBool;
+	
+	AttributeBuffer = GetAttribute("loadTiles");
+	LoadTiles = AttributeBuffer.ValBool;
+	
+	AttributeBuffer = GetAttribute("loadAniTiles");
+	LoadAniTiles = AttributeBuffer.ValBool;
+
+}
+
+event Update() {
+
+}

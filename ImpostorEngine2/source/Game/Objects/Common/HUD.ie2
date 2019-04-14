@@ -1,0 +1,12 @@
+
+event Create() {
+
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+
+}

@@ -22,6 +22,7 @@ public:
     int StarTimer;
     int StarGoTimer;
     Object* Stars[4];
+    int id;
     
     void Create();
     void Update();

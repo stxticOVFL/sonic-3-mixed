@@ -1,0 +1,21 @@
+
+var zoneName:string;
+var actID:int;
+
+event Create() {
+
+	AttributeBuffer = GetAttribute("zoneName");
+	zoneName = AttributeBuffer.ValString;
+	
+	AttributeBuffer = GetAttribute("actID");
+	actID = AttributeBuffer.ValUint8;
+
+}
+
+event Update() {
+
+}
+
+event Render(CamX:int, CamY:int) {
+
+}

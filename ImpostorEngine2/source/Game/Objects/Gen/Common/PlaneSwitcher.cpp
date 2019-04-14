@@ -8,15 +8,14 @@ typedef IMath Math;
 void PlaneSwitcher::Create() {
     Object::Create();
     Active = true;
-    AttributeValue* AttributeHolder;
-    AttributeHolder = GetAttribute("Angle");
-    Angle = AttributeHolder->ValUint32;
-    AttributeHolder = GetAttribute("Flags");
-    Flags = AttributeHolder->ValUint32;
-    AttributeHolder = GetAttribute("OnPath");
-    OnPath = AttributeHolder->ValBool;
-    AttributeHolder = GetAttribute("Size");
-    Size = AttributeHolder->ValUint32;
+    AttributeBuffer = GetAttribute("Angle");
+    Angle = AttributeBuffer.ValUint32;
+    AttributeBuffer = GetAttribute("Flags");
+    Flags = AttributeBuffer.ValUint32;
+    AttributeBuffer = GetAttribute("OnPath");
+	OnPath = AttributeBuffer.ValBool;
+    AttributeBuffer = GetAttribute("Size");
+    Size = AttributeBuffer.ValUint32;
     if (Size <= 0) Size = 1;
 
     W = Size * 16;

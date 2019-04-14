@@ -339,7 +339,7 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 		DebugObjectIDList[i] = 0;
 	}
 	AddNewDebugObjectID(Obj_Ring); // Ring
-	AddNewDebugObjectID(Obj_Monitor); // Monitor
+	AddNewDebugObjectID(Obj_ItemBox); // Monitor
 	AddNewDebugObjectID(Obj_StarPost); // StarPost
 	AddNewDebugObjectID(Obj_Signpost); // SignPost
 	AddNewDebugObjectID(Obj_EggCapsule); // SignPost
@@ -685,11 +685,12 @@ PUBLIC VIRTUAL void LevelScene::CreateAttributeValue(AttributeValue* Attribute) 
 	Attribute->ValInt8 = 0;
 	Attribute->ValPosition.X = 0;
 	Attribute->ValPosition.Y = 0;
-	Attribute->ValString = "String";
+	Attribute->ValString = &std::string("");
+	Attribute->ValString->append("String");
 	Attribute->ValUint16 = 0;
 	Attribute->ValUint32 = 0;
 	Attribute->ValUint8 = 0;
-	Attribute->ValVariable = 0;
+	Attribute->ValVar = 0;
 }
 
 PUBLIC VIRTUAL void LevelScene::LoadData() {
@@ -2226,6 +2227,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					}
 
 					// If we have more than one attribute
+					char* fuck;
 					if (AttributeCount > 1) {
 						for (int a = 1; a < AttributeCount; a++) {
 							switch (AttributeTypes[a]) {
@@ -2241,7 +2243,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                                     Attributes[a].ValUint16 = (unsigned short)reader.ReadUInt16();
                                     break;
                                 case ATTRIBUTE_VAR:
-                                    Attributes[a].ValVariable = (unsigned int)reader.ReadUInt32();
+                                    Attributes[a].ValVar = (unsigned int)reader.ReadUInt32();
                                     break;
                                 case ATTRIBUTE_BOOL:
                                     Attributes[a].ValBool = reader.ReadUInt32() != 0;
@@ -2259,7 +2261,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                                     Attributes[a].ValUint32 = (unsigned int)reader.ReadUInt32();
                                     break;
                                 case ATTRIBUTE_STRING:
-                                    Attributes[a].ValString = reader.ReadRSDKUnicodeString();
+                                    Attributes[a].ValString = &std::string(reader.ReadRSDKUnicodeString());
                                     break;
                                 case ATTRIBUTE_POSITION:
 
@@ -2301,10 +2303,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->ID = GetObjectIDFromName(obj->Name.c_str());
 
 						// Done for backwards compatibility, Returns 0 on error.
-						obj->SubType = obj->GetAttribute("Subtype")->ValUint8;
+						obj->SubType = obj->GetAttribute("subtype").ValUint8;
 
 						// Load our filter attribute, And if nothing return 0.
-						obj->Filter = obj->GetAttribute("Filter")->ValUint8;
+						obj->Filter = obj->GetAttribute("filter").ValUint8;
 
 						//Setup object flags
 						obj->S3Object = bool(obj->Filter >> 0 & 1);
@@ -2316,8 +2318,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->HardModeObject = bool(obj->Filter >> 6 & 1);
 
 						// Done for backwards compatibility, Returns false on error.
-						obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
-						obj->FlipY = obj->GetAttribute("FlipY")->ValBool;
+						obj->FlipX = obj->GetAttribute("flipX").ValBool;
+						obj->FlipY = obj->GetAttribute("flipY").ValBool;
 
 						obj->Create();
 
@@ -2339,19 +2341,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					if (obj && ObjHash == OBJ_PLANESWITCHER) {
 						PlaneSwitchers[PlaneSwitchCount].X = obj->X;
 						PlaneSwitchers[PlaneSwitchCount].Y = obj->Y;
-						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->ValUint32;
-						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->ValUint32;
-						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath")->ValBool;
-						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("angle").ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("flags").ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("onPath").ValBool;
+						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("size").ValUint32;
 						if (PlaneSwitchers[PlaneSwitchCount].Size <= 0) PlaneSwitchers[PlaneSwitchCount].Size = 1;
 						PlaneSwitchCount++;
 					}
-				}
-
-				//Figure this out it crash :(
-				if (AttributeCount > 1) {
-					//free(AttributeTypes);
-					//free(attributes);
 				}
 			}
 			//delete[] AttributeTypes;
@@ -3825,10 +3821,10 @@ PUBLIC Object* LevelScene::AddNewObject(char* ObjName, int X, int Y) {
 		obj->InitialX = X;
 		obj->InitialY = Y;
 
-		obj->Filter = obj->GetAttribute("Filter")->ValUint8;
-		obj->SubType = obj->GetAttribute("Subtype")->ValUint8;
-		obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
-		obj->FlipY = obj->GetAttribute("FlipY")->ValBool;
+		obj->Filter = obj->GetAttribute("Filter").ValUint8;
+		obj->SubType = obj->GetAttribute("Subtype").ValUint8;
+		obj->FlipX = obj->GetAttribute("FlipX").ValBool;
+		obj->FlipY = obj->GetAttribute("FlipY").ValBool;
 		obj->Create();
 		obj->DrawCollisions = App->viewObjectCollision;
 		ObjectCount++;

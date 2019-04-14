@@ -761,7 +761,7 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 								Attributes[a].ValUint16 = (unsigned short)reader.ReadUInt16();
 								break;
 							case ATTRIBUTE_VAR:
-								Attributes[a].ValVariable = (unsigned int)reader.ReadUInt32();
+								Attributes[a].ValVar = (unsigned int)reader.ReadUInt32();
 								break;
 							case ATTRIBUTE_BOOL:
 								Attributes[a].ValBool = reader.ReadUInt32() != 0;
@@ -779,7 +779,8 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 								Attributes[a].ValUint32 = (unsigned int)reader.ReadUInt32();
 								break;
 							case ATTRIBUTE_STRING:
-								Attributes[a].ValString = reader.ReadRSDKUnicodeString();
+								Attributes[a].ValString = &std::string("");
+								Attributes[a].ValString->append(reader.ReadRSDKUnicodeString());
 								break;
 							case ATTRIBUTE_POSITION:
 								short XHigh = reader.ReadInt16();
@@ -819,10 +820,10 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 						obj->ObjectAttributeCount = AttributeCount - 1;
 
 						// Done for backwards compatibility, Returns 0 on error.
-						obj->SubType = obj->GetAttribute("Subtype")->ValUint8;
+						obj->SubType = obj->GetAttribute("Subtype").ValUint8;
 
 						// Load our filter attribute, And if nothing return 0.
-						obj->Filter = obj->GetAttribute("Filter")->ValUint8;
+						obj->Filter = obj->GetAttribute("Filter").ValUint8;
 
 						//Setup object flags
 						obj->S3Object = bool(obj->Filter >> 0 & 1);
@@ -831,8 +832,8 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 						obj->LockedOnObject = bool(obj->Filter >> 3 & 1);
 
 						// Done for backwards compatibility, Returns false on error.
-						obj->FlipX = obj->GetAttribute("FlipX")->ValBool;
-						obj->FlipY = obj->GetAttribute("FlipY")->ValBool;
+						obj->FlipX = obj->GetAttribute("FlipX").ValBool;
+						obj->FlipY = obj->GetAttribute("FlipY").ValBool;
 
 						// Add our object to the scene
 						LevelScene::Objects.push_back(obj);
@@ -852,10 +853,10 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 					} if (obj && ObjHash == OBJ_PLANESWITCHER) {
 						PlaneSwitchers[PlaneSwitchCount].X = obj->X;
 						PlaneSwitchers[PlaneSwitchCount].Y = obj->Y;
-						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle")->ValUint32;
-						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags")->ValUint32;
-						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath")->ValBool;
-						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size")->ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].Angle = obj->GetAttribute("Angle").ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].Flags = obj->GetAttribute("Flags").ValUint32;
+						PlaneSwitchers[PlaneSwitchCount].OnPath = obj->GetAttribute("OnPath").ValBool;
+						PlaneSwitchers[PlaneSwitchCount].Size = obj->GetAttribute("Size").ValUint32;
 						if (PlaneSwitchers[PlaneSwitchCount].Size <= 0) PlaneSwitchers[PlaneSwitchCount].Size = 1;
 						PlaneSwitchCount++;
 					}
@@ -994,15 +995,15 @@ PUBLIC void Level_SpecialStage::Init() {
 				break;
 			}
 		}
-		useStageConfig = obj->GetAttribute("useStageConfig")->ValBool;
-		PaletteID = obj->GetAttribute("paletteID")->ValVariable;
-		SkyAlpha = obj->GetAttribute("skyAlpha")->ValUint8;
-		GlobeAlpha = obj->GetAttribute("globeAlpha")->ValUint8;
-		playFieldColourA = obj->AttribColourToUint32(obj->GetAttribute("playfieldA")->ValColor, false);
-		playFieldColourB = obj->AttribColourToUint32(obj->GetAttribute("playfieldB")->ValColor, false);
-		BGColour = obj->AttribColourToUint32(obj->GetAttribute("bgColor1")->ValColor, false);
-		BGStarColour1 = obj->AttribColourToUint32(obj->GetAttribute("bgColor2")->ValColor, false);
-		BGStarColour2 = obj->AttribColourToUint32(obj->GetAttribute("bgColor3")->ValColor, false);
+		useStageConfig = obj->GetAttribute("useStageConfig").ValBool;
+		PaletteID = obj->GetAttribute("paletteID").ValVar;
+		SkyAlpha = obj->GetAttribute("skyAlpha").ValUint8;
+		GlobeAlpha = obj->GetAttribute("globeAlpha").ValUint8;
+		playFieldColourA = obj->AttribColourToUint32(obj->GetAttribute("playfieldA").ValColor, false);
+		playFieldColourB = obj->AttribColourToUint32(obj->GetAttribute("playfieldB").ValColor, false);
+		BGColour = obj->AttribColourToUint32(obj->GetAttribute("bgColor1").ValColor, false);
+		BGStarColour1 = obj->AttribColourToUint32(obj->GetAttribute("bgColor2").ValColor, false);
+		BGStarColour2 = obj->AttribColourToUint32(obj->GetAttribute("bgColor3").ValColor, false);
 	}
 
 	//FadeTimer = 0;

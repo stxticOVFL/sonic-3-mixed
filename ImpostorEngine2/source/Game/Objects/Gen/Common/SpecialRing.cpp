@@ -29,7 +29,8 @@ void SpecialRing::Create() {
     GoTimer = -1;
     StoredX = 0;
     StoredY = 0;
-    RingID = SubType & 0x7F;
+    AttributeBuffer = GetAttribute("id");
+    RingID = AttributeBuffer.ValVar;
     Used = (SaveGame::CurrentUsedZoneRings >> RingID & 1) == 1;
     if (isHeldDebugObject) {
         Used = false;
