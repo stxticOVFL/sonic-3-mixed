@@ -1,5 +1,5 @@
 0x00,Ring
-0x01,Monitor
+0x01,ItemBox
 0x02,PlaneSwitch
 0x03,HollowTree
 0x04,CollapsingPlatform
@@ -127,7 +127,7 @@
 0x7E,PlatformBlocks
 0x7F,MissileLauncher
 0x80,HiddenMonitor
-0x81,EggCapsule
+0x81,EggPrison
 0x82,CutsceneKnuckles
 0x83,CutsceneButton
 0x84,CutsceneSonic
