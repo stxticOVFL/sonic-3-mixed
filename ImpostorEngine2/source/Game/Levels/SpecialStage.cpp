@@ -1023,19 +1023,23 @@ PUBLIC void Level_SpecialStage::Init() {
 	}
 
 	if (!ItemsSprite) {
-		if (SaveGame::CurrentMode == 1) {
+		/*if (SaveGame::CurrentMode == 1) {
 			ItemsSprite = new ISprite("Global/Items.gif", App);
 			ItemsSprite->Print = true;
 			ItemsSprite->LoadAnimation("Global/ItemBox.bin");
 			ItemsSprite->LoadAnimation("Global/Ring.bin");
 			ItemsSprite->LoadAnimation("Mixed/Sprites/Special/Ring.bin");
 		}
-		else {
+		else {	
 			ItemsSprite = new ISprite("GlobalS3K/Items.gif", App);
-			ItemsSprite->LoadAnimation("GlobalS3K/ItemBox.bin");
+			ItemsSprite->LoadAnimation("GlobalS3K/ItemBox.bin",);
 			ItemsSprite->LoadAnimation("GlobalS3K/Ring.bin");
 			ItemsSprite->LoadAnimation("Mixed/Sprites/Special/Ring.bin");
-		}
+		}*/
+		ItemsSprite = new ISprite("Global/Items.gif", App, SaveGame::CurrentMode);
+		ItemsSprite->LoadAnimation("Global/ItemBox.bin", SaveGame::CurrentMode);
+		ItemsSprite->LoadAnimation("Global/Ring.bin", SaveGame::CurrentMode);
+		ItemsSprite->LoadAnimation("Special/Ring.bin", SaveGame::CurrentMode);
 	}
 
 	IResource* SetupBin;
@@ -1190,13 +1194,14 @@ PUBLIC void Level_SpecialStage::Init() {
 		else if (SaveGame::CurrentMode == 1)
 			ModeName = "Mixed Mode";
 		else if (SaveGame::CurrentMode == 2)
-			ModeName = "Locked On";
+			ModeName = "Mixed Mode";
 		Discord_UpdatePresence(ModeName, levelname, "11", true);
 	}
 	else {
 		sprintf(levelname, "%s%s%d", "Blue Spheres", " Level ", Act + 1);
 		Discord_UpdatePresence("Extras", levelname, "11", true);
 	}
+	memset(Data->Layers[globeLayerID].DeformX, IMath::abs((App->WIDTH / 2) - 212) * -1, App->HEIGHT);
 }
 
 PUBLIC void Level_SpecialStage::RestartStage(bool doActTransition, bool drawBackground) {
@@ -2512,6 +2517,7 @@ PUBLIC void Level_SpecialStage::RenderEverything() {
 						G->DoDeform = false;
 				}
 			}
+			memset(G->DeformX, 0, App->HEIGHT);
 		}
 	}
 

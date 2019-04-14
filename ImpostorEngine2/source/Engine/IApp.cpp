@@ -59,7 +59,7 @@ public:
 	Uint8 Major = 0;
 	Uint8 Minor = 0;
 	short Build = 1;
-	char VersionString[9];
+	char VersionString[10];
 
 	char Title[256];
 	char LevelNames[0xFF][0xFF];
@@ -144,8 +144,9 @@ PUBLIC IApp::IApp() {
 	Major = DevRead.ReadByte();
 	Minor = DevRead.ReadByte();
 	Build = DevRead.ReadInt16();
-	sprintf(VersionString, "%.1d.%.2d.%.3d", Major, Minor, Build);
+	sprintf(VersionString, "%.1d.%.2d.%.4d", Major, Minor, Build);
 	sprintf(Title, DevRead.ReadRSDKString().c_str());
+	//somehow versionstring is lea
 
 	byte StageCount = DevRead.ReadByte();
 
