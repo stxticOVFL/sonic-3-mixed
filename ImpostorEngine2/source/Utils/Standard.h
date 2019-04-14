@@ -60,4 +60,6 @@ void Discord_UpdatePresence(const char* header, const char* state, const char* i
 
 using namespace std;
 
+typedef std::string string;
+
 #endif // STANDARDLIBS_H

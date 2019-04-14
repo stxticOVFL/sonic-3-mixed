@@ -16,9 +16,14 @@ class Spikes: public Object {
 public:    
     
     int Rotation;
-    int Size;
+    int Count;
     int Vertical;
     bool In;
+    bool Moving;
+    int Type;
+    int TimerMax;
+    int Stagger;
+    int PlaneFilter;
     
     void Create();
     void Update();

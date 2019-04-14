@@ -151,7 +151,9 @@ PUBLIC IApp::IApp() {
 	sprintf(VersionString, "%.1d.%.2d.%.4d", Major, Minor, Build);
 	sprintf(Title, DevRead.ReadRSDKString().c_str());
 
-	for (int i = 0; i < 0xFF; i++) {
+	byte catCount = DevRead.ReadByte();;
+
+	for (int i = 0; i < catCount; i++) {
 		strcpy(Categories[i], DevRead.ReadRSDKString().c_str());
 		Print(0, Categories[i]);
 		CategoryCount += 1;

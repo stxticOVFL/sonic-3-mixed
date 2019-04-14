@@ -706,6 +706,24 @@
     <ClCompile Include="..\source\Game\Objects\Gen\HCZ\WaterDrop.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\ItemBox.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\TitleCard.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\PauseMenu.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Music.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\HUD.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZControl.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

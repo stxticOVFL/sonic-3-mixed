@@ -8,6 +8,9 @@ var PlayerAggressor:int;
 var Player:IPlayer;
 
 var MonitorType:int;
+var Direction:int;
+var Hidden:bool;
+var PlaneFilter:int;
 
 enum ItemTypes {
     TYPE_STATIC,
@@ -59,11 +62,21 @@ event Create() {
     CanFall = false;
     GhostY = 0.0;
     CleanupInactiveObject = true;
-        // New style of Attributes (instead of MonitorType)
-        // NOTE: Does not replace, just an alternative for now.
 
-	MonitorType = SubType;
-    //MonitorType = GetAttribute("Type").value_uint8;
+	AttributeBuffer = GetAttribute("type");
+	MonitorType = AttributeBuffer.ValVar;
+	
+	AttributeBuffer = GetAttribute("isFalling");
+	CanFall = AttributeBuffer.ValBool;
+	
+	AttributeBuffer = GetAttribute("direction");
+	Direction = AttributeBuffer.ValUint8;
+	
+	AttributeBuffer = GetAttribute("planeFilter");
+	PlaneFilter = AttributeBuffer.ValVar;
+	
+	AttributeBuffer = GetAttribute("hidden");
+	Hidden = AttributeBuffer.ValBool;
 	
     SubTypeFrame = 0;
     switch (MonitorType) {

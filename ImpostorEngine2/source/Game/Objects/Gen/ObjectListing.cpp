@@ -6,7 +6,7 @@ Object* GetNewObjectFromID(int ID) {
             return new Ring();
             break;
         case 0x01U:
-            return new Monitor();
+            return new ItemBox();
             break;
         case 0x03U:
             return new HollowTree();
@@ -306,81 +306,96 @@ Object* GetNewObjectFromID(int ID) {
             return new AirshipBomb();
             break;
         case 0x401U:
-            return new BloominatorSpore();
+            return new AIZControl();
             break;
         case 0x402U:
-            return new FireBreathBomb();
+            return new BloominatorSpore();
             break;
         case 0x403U:
-            return new FireBreathFlame();
+            return new FireBreathBomb();
             break;
         case 0x404U:
-            return new MonkeyDudeCoconut();
+            return new FireBreathFlame();
             break;
         case 0x405U:
-            return new BatbrightParts();
+            return new MonkeyDudeCoconut();
             break;
         case 0x406U:
-            return new BlankObject();
+            return new BatbrightParts();
             break;
         case 0x407U:
-            return new BubbleAir();
+            return new BlankObject();
             break;
         case 0x408U:
-            return new InvisibleBlockV();
+            return new BubbleAir();
             break;
         case 0x409U:
-            return new PlaneSwitcher();
+            return new HUD();
             break;
         case 0x40AU:
-            return new PlatformOutliner();
+            return new InvisibleBlockV();
             break;
         case 0x40BU:
-            return new PlayerSpawn();
+            return new Music();
             break;
         case 0x40CU:
-            return new WarpStars();
+            return new PauseMenu();
             break;
         case 0x40DU:
-            return new EggCapsuleButton();
+            return new PlaneSwitcher();
             break;
         case 0x40EU:
-            return new Signpost();
+            return new PlatformOutliner();
             break;
         case 0x40FU:
-            return new TensionBridgeChild();
+            return new PlayerSpawn();
             break;
         case 0x410U:
-            return new ViewCollisionToggler();
+            return new TitleCard();
             break;
         case 0x411U:
-            return new Motobug();
+            return new WarpStars();
             break;
         case 0x412U:
-            return new MotobugSmoke();
+            return new EggCapsuleButton();
             break;
         case 0x413U:
-            return new BlastoidShot();
+            return new Signpost();
             break;
         case 0x414U:
-            return new DepthCharge();
+            return new TensionBridgeChild();
             break;
         case 0x415U:
-            return new TurboSpikerSpike();
+            return new ViewCollisionToggler();
             break;
         case 0x416U:
-            return new SegmentedColumnStub();
+            return new Motobug();
             break;
         case 0x417U:
-            return new StarPointerOrbs();
+            return new MotobugSmoke();
             break;
         case 0x418U:
-            return new SwingingPlatformTrigger();
+            return new BlastoidShot();
             break;
         case 0x419U:
-            return new ReliefEye();
+            return new DepthCharge();
             break;
         case 0x41AU:
+            return new TurboSpikerSpike();
+            break;
+        case 0x41BU:
+            return new SegmentedColumnStub();
+            break;
+        case 0x41CU:
+            return new StarPointerOrbs();
+            break;
+        case 0x41DU:
+            return new SwingingPlatformTrigger();
+            break;
+        case 0x41EU:
+            return new ReliefEye();
+            break;
+        case 0x41FU:
             return new Platform();
             break;
 
@@ -395,8 +410,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x2EA61FD6U:
             return new Ring();
             break;
-        case 0xBDE7E33AU:
-            return new Monitor();
+        case 0xD028F874U:
+            return new ItemBox();
             break;
         case 0x1E5BFA5FU:
             return new HollowTree();
@@ -695,6 +710,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x8E8C37A1U:
             return new AirshipBomb();
             break;
+        case 0x46F4A841U:
+            return new AIZControl();
+            break;
         case 0xBF8DF98AU:
             return new BloominatorSpore();
             break;
@@ -716,8 +734,17 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x11DAFFC3U:
             return new BubbleAir();
             break;
+        case 0x200B8155U:
+            return new HUD();
+            break;
         case 0x76DDB5BU:
             return new InvisibleBlockV();
+            break;
+        case 0xE3B8D32U:
+            return new Music();
+            break;
+        case 0xA55958B7U:
+            return new PauseMenu();
             break;
         case 0x7573BB38U:
             return new PlaneSwitcher();
@@ -727,6 +754,9 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0xEACB9471U:
             return new PlayerSpawn();
+            break;
+        case 0xFAEE228AU:
+            return new TitleCard();
             break;
         case 0x7E49DBD3U:
             return new WarpStars();
@@ -785,7 +815,7 @@ int GetObjectIDFromName(const char* ObjName) {
             return 0x0U;
         }
 
-        if (!strcmp(ObjName, "Monitor")) {
+        if (!strcmp(ObjName, "ItemBox")) {
             return 0x1U;
         }
 
@@ -1185,112 +1215,132 @@ int GetObjectIDFromName(const char* ObjName) {
             return 0x400U;
         }
 
-        if (!strcmp(ObjName, "BloominatorSpore")) {
+        if (!strcmp(ObjName, "AIZControl")) {
             return 0x401U;
         }
 
-        if (!strcmp(ObjName, "FireBreathBomb")) {
+        if (!strcmp(ObjName, "BloominatorSpore")) {
             return 0x402U;
         }
 
-        if (!strcmp(ObjName, "FireBreathFlame")) {
+        if (!strcmp(ObjName, "FireBreathBomb")) {
             return 0x403U;
         }
 
-        if (!strcmp(ObjName, "MonkeyDudeCoconut")) {
+        if (!strcmp(ObjName, "FireBreathFlame")) {
             return 0x404U;
         }
 
-        if (!strcmp(ObjName, "BatbrightParts")) {
+        if (!strcmp(ObjName, "MonkeyDudeCoconut")) {
             return 0x405U;
         }
 
-        if (!strcmp(ObjName, "BlankObject")) {
+        if (!strcmp(ObjName, "BatbrightParts")) {
             return 0x406U;
         }
 
-        if (!strcmp(ObjName, "BubbleAir")) {
+        if (!strcmp(ObjName, "BlankObject")) {
             return 0x407U;
         }
 
-        if (!strcmp(ObjName, "InvisibleBlockV")) {
+        if (!strcmp(ObjName, "BubbleAir")) {
             return 0x408U;
         }
 
-        if (!strcmp(ObjName, "PlaneSwitcher")) {
+        if (!strcmp(ObjName, "HUD")) {
             return 0x409U;
         }
 
-        if (!strcmp(ObjName, "PlatformOutliner")) {
+        if (!strcmp(ObjName, "InvisibleBlockV")) {
             return 0x40AU;
         }
 
-        if (!strcmp(ObjName, "PlayerSpawn")) {
+        if (!strcmp(ObjName, "Music")) {
             return 0x40BU;
         }
 
-        if (!strcmp(ObjName, "WarpStars")) {
+        if (!strcmp(ObjName, "PauseMenu")) {
             return 0x40CU;
         }
 
-        if (!strcmp(ObjName, "EggCapsuleButton")) {
+        if (!strcmp(ObjName, "PlaneSwitcher")) {
             return 0x40DU;
         }
 
-        if (!strcmp(ObjName, "Signpost")) {
+        if (!strcmp(ObjName, "PlatformOutliner")) {
             return 0x40EU;
         }
 
-        if (!strcmp(ObjName, "TensionBridgeChild")) {
+        if (!strcmp(ObjName, "PlayerSpawn")) {
             return 0x40FU;
         }
 
-        if (!strcmp(ObjName, "ViewCollisionToggler")) {
+        if (!strcmp(ObjName, "TitleCard")) {
             return 0x410U;
         }
 
-        if (!strcmp(ObjName, "Motobug")) {
+        if (!strcmp(ObjName, "WarpStars")) {
             return 0x411U;
         }
 
-        if (!strcmp(ObjName, "MotobugSmoke")) {
+        if (!strcmp(ObjName, "EggCapsuleButton")) {
             return 0x412U;
         }
 
-        if (!strcmp(ObjName, "BlastoidShot")) {
+        if (!strcmp(ObjName, "Signpost")) {
             return 0x413U;
         }
 
-        if (!strcmp(ObjName, "DepthCharge")) {
+        if (!strcmp(ObjName, "TensionBridgeChild")) {
             return 0x414U;
         }
 
-        if (!strcmp(ObjName, "TurboSpikerSpike")) {
+        if (!strcmp(ObjName, "ViewCollisionToggler")) {
             return 0x415U;
         }
 
-        if (!strcmp(ObjName, "SegmentedColumnStub")) {
+        if (!strcmp(ObjName, "Motobug")) {
             return 0x416U;
         }
 
-        if (!strcmp(ObjName, "StarPointerOrbs")) {
+        if (!strcmp(ObjName, "MotobugSmoke")) {
             return 0x417U;
         }
 
-        if (!strcmp(ObjName, "SwingingPlatformTrigger")) {
+        if (!strcmp(ObjName, "BlastoidShot")) {
             return 0x418U;
         }
 
-        if (!strcmp(ObjName, "ReliefEye")) {
+        if (!strcmp(ObjName, "DepthCharge")) {
             return 0x419U;
         }
 
-        if (!strcmp(ObjName, "Platform")) {
+        if (!strcmp(ObjName, "TurboSpikerSpike")) {
             return 0x41AU;
+        }
+
+        if (!strcmp(ObjName, "SegmentedColumnStub")) {
+            return 0x41BU;
+        }
+
+        if (!strcmp(ObjName, "StarPointerOrbs")) {
+            return 0x41CU;
+        }
+
+        if (!strcmp(ObjName, "SwingingPlatformTrigger")) {
+            return 0x41DU;
+        }
+
+        if (!strcmp(ObjName, "ReliefEye")) {
+            return 0x41EU;
+        }
+
+        if (!strcmp(ObjName, "Platform")) {
+            return 0x41FU;
         }
 
 
 		IApp::Print(1,"Object wasn't found!");
-	return 0x406U; //Return the BlankObject ID, since the requested one wasn't found
+	return 0x407U; //Return the BlankObject ID, since the requested one wasn't found
         
 }

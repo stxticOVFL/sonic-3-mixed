@@ -71,6 +71,7 @@
     <ClCompile Include="..\source\Game\ObjectNames.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AirshipBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZBoss.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZControl.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossCutscene.cpp" />
@@ -128,14 +129,18 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\CollapsingPlatform.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\FloatingPlatform.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\HiddenMonitor.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\HUD.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlock.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlockH.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleBlockV.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleDeath.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\InvisibleSpikes.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\ItemBox.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Monitor.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\Music.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnim.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\NonAnimSprite.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\PauseMenu.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\PlaneSwitcher.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\PlatformOutliner.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\PlayerSpawn.cpp" />
@@ -146,6 +151,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spikes.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Spring.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\StarPost.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\TitleCard.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\WarpStars.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\Motobug.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\GHZ\MotobugSmoke.cpp" />

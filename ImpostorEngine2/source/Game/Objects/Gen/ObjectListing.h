@@ -2,7 +2,7 @@
 #define OBJECTLISTING_H
 
 #include "Common/Ring.h"			// 2EA61FD6
-#include "Common/Monitor.h"			// BDE7E33A
+#include "Common/ItemBox.h"			// D028F874
 #include "AIZ/HollowTree.h"			// 1E5BFA5F
 #include "Common/CollapsingPlatform.h"			// 95087B30
 #include "CommonSpecial/Rock.h"			// FE0305DD
@@ -102,6 +102,7 @@
 #include "ICZ/SnowPile.h"			// CF9FDC21
 #include "LBZ/Orbinaut.h"			// 75BEA9FB
 #include "AIZ/AirshipBomb.h"			// 8E8C37A1
+#include "AIZ/AIZControl.h"			// 46F4A841
 #include "AIZ/BloominatorSpore.h"			// BF8DF98A
 #include "AIZ/FireBreathBomb.h"			// A1BB73AA
 #include "AIZ/FireBreathFlame.h"			// CE81DA7E
@@ -109,10 +110,14 @@
 #include "CNZ/BatbrightParts.h"			// D5ADBFDB
 #include "Common/BlankObject.h"			// 8D487F51
 #include "Common/BubbleAir.h"			// 11DAFFC3
+#include "Common/HUD.h"			// 200B8155
 #include "Common/InvisibleBlockV.h"			// 76DDB5B
+#include "Common/Music.h"			// E3B8D32
+#include "Common/PauseMenu.h"			// A55958B7
 #include "Common/PlaneSwitcher.h"			// 7573BB38
 #include "Common/PlatformOutliner.h"			// 5DFC3336
 #include "Common/PlayerSpawn.h"			// EACB9471
+#include "Common/TitleCard.h"			// FAEE228A
 #include "Common/WarpStars.h"			// 7E49DBD3
 #include "CommonSpecial/EggCapsuleButton.h"			// A0128E04
 #include "CommonSpecial/Signpost.h"			// 6A8C340C
@@ -132,7 +137,7 @@
 
 enum {
     Obj_Ring = 0x000,
-    Obj_Monitor = 0x001,
+    Obj_ItemBox = 0x001,
     Obj_HollowTree = 0x003,
     Obj_CollapsingPlatform = 0x004,
     Obj_Rock = 0x005,
@@ -232,32 +237,37 @@ enum {
     Obj_SnowPile = 0x0B9,
     Obj_Orbinaut = 0x0C0,
     Obj_AirshipBomb = 0x400,
-    Obj_BloominatorSpore = 0x401,
-    Obj_FireBreathBomb = 0x402,
-    Obj_FireBreathFlame = 0x403,
-    Obj_MonkeyDudeCoconut = 0x404,
-    Obj_BatbrightParts = 0x405,
-    Obj_BlankObject = 0x406,
-    Obj_BubbleAir = 0x407,
-    Obj_InvisibleBlockV = 0x408,
-    Obj_PlaneSwitcher = 0x409,
-    Obj_PlatformOutliner = 0x40A,
-    Obj_PlayerSpawn = 0x40B,
-    Obj_WarpStars = 0x40C,
-    Obj_EggCapsuleButton = 0x40D,
-    Obj_Signpost = 0x40E,
-    Obj_TensionBridgeChild = 0x40F,
-    Obj_ViewCollisionToggler = 0x410,
-    Obj_Motobug = 0x411,
-    Obj_MotobugSmoke = 0x412,
-    Obj_BlastoidShot = 0x413,
-    Obj_DepthCharge = 0x414,
-    Obj_TurboSpikerSpike = 0x415,
-    Obj_SegmentedColumnStub = 0x416,
-    Obj_StarPointerOrbs = 0x417,
-    Obj_SwingingPlatformTrigger = 0x418,
-    Obj_ReliefEye = 0x419,
-    Obj_Platform = 0x41A,
+    Obj_AIZControl = 0x401,
+    Obj_BloominatorSpore = 0x402,
+    Obj_FireBreathBomb = 0x403,
+    Obj_FireBreathFlame = 0x404,
+    Obj_MonkeyDudeCoconut = 0x405,
+    Obj_BatbrightParts = 0x406,
+    Obj_BlankObject = 0x407,
+    Obj_BubbleAir = 0x408,
+    Obj_HUD = 0x409,
+    Obj_InvisibleBlockV = 0x40A,
+    Obj_Music = 0x40B,
+    Obj_PauseMenu = 0x40C,
+    Obj_PlaneSwitcher = 0x40D,
+    Obj_PlatformOutliner = 0x40E,
+    Obj_PlayerSpawn = 0x40F,
+    Obj_TitleCard = 0x410,
+    Obj_WarpStars = 0x411,
+    Obj_EggCapsuleButton = 0x412,
+    Obj_Signpost = 0x413,
+    Obj_TensionBridgeChild = 0x414,
+    Obj_ViewCollisionToggler = 0x415,
+    Obj_Motobug = 0x416,
+    Obj_MotobugSmoke = 0x417,
+    Obj_BlastoidShot = 0x418,
+    Obj_DepthCharge = 0x419,
+    Obj_TurboSpikerSpike = 0x41A,
+    Obj_SegmentedColumnStub = 0x41B,
+    Obj_StarPointerOrbs = 0x41C,
+    Obj_SwingingPlatformTrigger = 0x41D,
+    Obj_ReliefEye = 0x41E,
+    Obj_Platform = 0x41F,
 };
 
 Object* GetNewObjectFromID(int ID);

@@ -17,9 +17,14 @@ void Spring::Create() {
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
     Scene->AddSelfToRegistry(this, "Spring");
-    SpringType = 1;
-    if ((SubType & 0x2) != 0x0) SpringType = 0;
-
+    AttributeBuffer = GetAttribute("type");
+    SpringType = AttributeBuffer.ValVar;
+    AttributeBuffer = GetAttribute("flipFlag");
+    FlipFlag = AttributeBuffer.ValVar;
+    AttributeBuffer = GetAttribute("onGround");
+    OnGround = AttributeBuffer.ValBool;
+    AttributeBuffer = GetAttribute("planeFilter");
+    PlaneFilter = AttributeBuffer.ValUint8;
     CurrentAnimation = SpringType;
     Rotation = 0;
     DoAnimate = false;
@@ -29,28 +34,31 @@ void Spring::Create() {
 
     Twirl = 0;
     KillTransverseSpeed = (SubType & 0x80) == 0x80;
-    if ((SubType & 0xF0) == 0x10) {
+    if (SpringType == 2 || SpringType == 3) {
         W = 18;
         H = 32;
-        CurrentAnimation = SpringType + 2;
         Rotation = 270;
-        if (FlipX) Rotation = 90;
+        if (FlipFlag == 1 || FlipFlag == 3) {
+            Rotation = 90;
+            FlipX = true;
+        }
 
     }
-    else if ((SubType & 0xF0) == 0x20) {
-        Rotation = 180;
-        FlipY = true;
+    else if (SpringType == 1 || SpringType == 0) {
+        if (FlipFlag == 2 || FlipFlag == 3) {
+            Rotation = 180;
+            FlipY = true;
+        }
+
     }
-    else if ((SubType & 0xF0) == 0x30) {
+    else if (SpringType == 4 || SpringType == 5 && FlipFlag < 2) {
         Diagonal = -1;
-        CurrentAnimation = SpringType + 4;
         Solid = false;
         W = 28;
         H = 28;
     }
-    else if ((SubType & 0xF0) == 0x40) {
+    else if (SpringType == 4 || SpringType == 5) {
         Diagonal = 1;
-        CurrentAnimation = SpringType + 4;
         Solid = false;
         FlipY = true;
         W = 28;
@@ -180,38 +188,45 @@ int Spring::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
 
 void Spring::UpdateSubType() {
     Diagonal = 0;
-    SpringType = 1;
-    if ((SubType & 0x2) != 0x0) SpringType = 0;
-
+    AttributeBuffer = GetAttribute("type");
+    SpringType = AttributeBuffer.ValVar;
+    AttributeBuffer = GetAttribute("flipFlag");
+    FlipFlag = AttributeBuffer.ValVar;
+    AttributeBuffer = GetAttribute("onGround");
+    OnGround = AttributeBuffer.ValBool;
+    AttributeBuffer = GetAttribute("planeFilter");
+    PlaneFilter = AttributeBuffer.ValUint8;
     CurrentAnimation = SpringType;
     Rotation = 0;
     DoAnimate = false;
+    CleanupInactiveObject = true;
     SpringPower = 0x1000;
     if (SpringType == 0) SpringPower = 0xA00;
 
+    Twirl = 0;
     KillTransverseSpeed = (SubType & 0x80) == 0x80;
-    if ((SubType & 0xF0) == 0x10) {
+    if (SpringType == 0 || SpringType == 1) {
         W = 18;
         H = 32;
-        CurrentAnimation = SpringType + 2;
         Rotation = 270;
-        if (FlipX) Rotation = 90;
+        if (FlipFlag == 1 || FlipFlag == 3) {
+            Rotation = 90;
+            FlipX = true;
+        }
 
     }
-    else if ((SubType & 0xF0) == 0x20) {
+    else if (SpringType == 2 || SpringType == 3) {
         Rotation = 180;
         FlipY = true;
     }
-    else if ((SubType & 0xF0) == 0x30) {
+    else if (SpringType == 4 || SpringType == 5 && FlipFlag < 2) {
         Diagonal = -1;
-        CurrentAnimation = SpringType + 4;
         Solid = false;
         W = 28;
         H = 28;
     }
-    else if ((SubType & 0xF0) == 0x40) {
+    else if (SpringType == 4 || SpringType == 5) {
         Diagonal = 1;
-        CurrentAnimation = SpringType + 4;
         Solid = false;
         FlipY = true;
         W = 28;

@@ -14,8 +14,9 @@ event Create() {
 	SpawnAsSidekick = false;
 	
 	SpawnPlayerIndex = 0;
-	SpawnPlayerID = SubType;
-	//SpawnPlayerID = GetAttribute("CharacterID").value_uint8;
+	
+	AttributeBuffer = GetAttribute("characterID");
+	SpawnPlayerID = AttributeBuffer.ValUint8;
 	
 	SpawnSonic = bool(SpawnPlayerID >> 0 & 1);
 	SpawnMiles = bool(SpawnPlayerID >> 1 & 1);

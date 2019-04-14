@@ -46,8 +46,13 @@ public:
     int ReadVorbis(Vorbis* vorb, void* dst, int size);
     int SeekVorbis(Vorbis* vorb, int64_t pos);
     long long TellVorbis(Vorbis* vorb);
+    ISound(std::string filename);
+    ISound(std::string* filename);
     ISound(const char* filename);
+    ISound(std::string filename, bool streamFromFile);
+    ISound(std::string* filename, bool streamFromFile);
     ISound(const char* filename, bool streamFromFile);
+    void Load(std::string* filename, bool streamFromFile);
     void Load(const char* filename, bool streamFromFile);
     int  RequestMoreData(int samples, int amount);
     void Seek(int amount);
