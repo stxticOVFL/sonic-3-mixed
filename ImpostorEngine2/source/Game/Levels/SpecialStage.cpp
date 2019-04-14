@@ -1024,17 +1024,17 @@ PUBLIC void Level_SpecialStage::Init() {
 
 	if (!ItemsSprite) {
 		if (SaveGame::CurrentMode == 1) {
-			ItemsSprite = new ISprite("Global/Items.gif", App);
+			ItemsSprite = new ISprite("Global/Items.gif", App, SaveGame::CurrentMode);
 			ItemsSprite->Print = true;
-			ItemsSprite->LoadAnimation("Global/ItemBox.bin");
-			ItemsSprite->LoadAnimation("Global/Ring.bin");
-			ItemsSprite->LoadAnimation("Mixed/Sprites/Special/Ring.bin");
+			ItemsSprite->LoadAnimation("Global/ItemBox.bin", SaveGame::CurrentMode);
+			ItemsSprite->LoadAnimation("Global/Ring.bin", SaveGame::CurrentMode);
+			ItemsSprite->LoadAnimation("Mixed/Sprites/Special/Ring.bin", SaveGame::CurrentMode);
 		}
 		else {
-			ItemsSprite = new ISprite("GlobalS3K/Items.gif", App);
-			ItemsSprite->LoadAnimation("GlobalS3K/ItemBox.bin");
-			ItemsSprite->LoadAnimation("GlobalS3K/Ring.bin");
-			ItemsSprite->LoadAnimation("Mixed/Sprites/Special/Ring.bin");
+			ItemsSprite = new ISprite("Global/Items.gif", App, SaveGame::CurrentMode);
+			ItemsSprite->LoadAnimation("Global/ItemBox.bin", SaveGame::CurrentMode);
+			ItemsSprite->LoadAnimation("Global/Ring.bin", SaveGame::CurrentMode);
+			ItemsSprite->LoadAnimation("Mixed/Sprites/Special/Ring.bin", SaveGame::CurrentMode);
 		}
 	}
 

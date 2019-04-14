@@ -1213,13 +1213,13 @@ void IPlayer::Create() {
 		SpriteShields->LoadAnimation("Global/ShieldsOld.bin");
 	}
 	else {
-		SpriteShields = new ("ISprite - GlobalS3K/ShieldsOld.gif") ISprite("GlobalS3K/ShieldsOld.gif", App);
-		SpriteShields->LoadAnimation("GlobalS3K/ShieldsOld.bin");
+		SpriteShields = new ("ISprite - Global/ShieldsOld.gif") ISprite("Global/ShieldsOld.gif", App, SaveGame::CurrentMode);
+		SpriteShields->LoadAnimation("Global/ShieldsOld.bin", SaveGame::CurrentMode);
 	}
 
-	SpriteShields2 = new ("ISprite - Global/Shields.gif") ISprite("Global/Shields.gif", App);
-	SpriteShields2->LoadAnimation("Global/Invincible.bin");
-	SpriteShields2->LoadAnimation("Global/Shields.bin");
+	SpriteShields2 = new ("ISprite - Global/Shields.gif") ISprite("Global/Shields.gif", App, SaveGame::CurrentMode);
+	SpriteShields2->LoadAnimation("Global/Invincible.bin", SaveGame::CurrentMode);
+	SpriteShields2->LoadAnimation("Global/Shields.bin", SaveGame::CurrentMode);
 
 	for (int i = 0; i < 8; i++) {
 		if (!Sprites[i]) break;
