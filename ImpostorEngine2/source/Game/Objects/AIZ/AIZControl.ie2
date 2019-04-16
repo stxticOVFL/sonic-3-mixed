@@ -1,6 +1,6 @@
 
 var ActID:int;
-var ZoneLetters:string;
+var ZoneLetters:char[128];
 var LoadTileconfig:bool;
 var LoadStageconfig:bool;
 var LoadTiles:bool;
@@ -12,7 +12,7 @@ event Create() {
 	ActID = AttributeBuffer.ValUint8;
 	
 	AttributeBuffer = GetAttribute("zoneLetters");
-	ZoneLetters = AttributeBuffer.ValString;
+	sprintf(ZoneLetters,AttributeBuffer.ValString);
 	
 	AttributeBuffer = GetAttribute("loadTileconfig");
 	LoadTileconfig = AttributeBuffer.ValBool;

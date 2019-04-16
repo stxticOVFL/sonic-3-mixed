@@ -16,7 +16,7 @@ class AIZControl: public Object {
 public:    
     
     int ActID;
-    string* ZoneLetters;
+    char ZoneLetters[128];
     bool LoadTileconfig;
     bool LoadStageconfig;
     bool LoadTiles;

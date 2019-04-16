@@ -442,7 +442,7 @@ PUBLIC void Level_CNZ::LoadData() {
 	{
 		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
 	}
-	TileSprite->UpdatePalette();
+	TileSprite->Paletted = 2;
 }
 
 PUBLIC void Level_CNZ::AssignSpriteMapIDs() {

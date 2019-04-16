@@ -779,8 +779,7 @@ PUBLIC void Level_SpecialStage::LoadStage() {
 								Attributes[a].ValUint32 = (unsigned int)reader.ReadUInt32();
 								break;
 							case ATTRIBUTE_STRING:
-								Attributes[a].ValString = &std::string("");
-								Attributes[a].ValString->append(reader.ReadRSDKUnicodeString());
+								Attributes[a].ValString = reader.ReadRSDKUnicodeString();
 								break;
 							case ATTRIBUTE_POSITION:
 								short XHigh = reader.ReadInt16();

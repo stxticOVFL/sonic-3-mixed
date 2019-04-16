@@ -1,5 +1,5 @@
-var trackFile:string;
-var soundtestName:string;
+var trackFile:char[128];
+var soundtestName:char[128];
 var trackID:uint32_t;
 var trackLoop:uint32_t;
 var playOnLoad:bool;
@@ -8,10 +8,10 @@ var loopTrack:bool;
 event Create() {
 
 	AttributeBuffer = GetAttribute("trackFile");
-	trackFile = AttributeBuffer.ValString;
+	sprintf(trackFile,AttributeBuffer.ValString);
 	
 	AttributeBuffer = GetAttribute("soundtestTitle");
-	soundtestName = AttributeBuffer.ValString;
+	sprintf(soundtestName,AttributeBuffer.ValString);
 	
 	AttributeBuffer = GetAttribute("trackID");
 	trackID = AttributeBuffer.ValVar;
@@ -30,7 +30,7 @@ event Create() {
 	}
 	
 	if (playOnLoad) {
-		Sound.SoundBank[trackID].Load(trackFile, true);
+		Scene.LoadMusic(trackFile, SaveGame.CurrentMode);
 		Sound.Audio.LoopPoint[trackID] = trackLoop;
 		Sound.Audio.Loop[trackID] = false;
 		App.Audio.PushMusicAt(Sound.SoundBank[trackID], 0, loopTrack, trackLoop);

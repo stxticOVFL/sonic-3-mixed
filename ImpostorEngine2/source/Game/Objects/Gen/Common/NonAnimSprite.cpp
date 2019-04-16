@@ -38,7 +38,7 @@ void NonAnimSprite::Create() {
     switch (Scene->ZoneID) {
         case 1:
         {
-            Sprite = LevelScene::LoadSpriteFromBin("MGZ/Non Animated Sprites.bin", SaveGame::CurrentMode);
+            Sprite = LevelScene::LoadSpriteFromBin("AIZ/Non Animated Sprites.bin", SaveGame::CurrentMode);
             CurrentAnimation = Sprite->FindAnimation("Non Animated Sprites");
             if (SubType <= 4) {
                 Frame = SubType;

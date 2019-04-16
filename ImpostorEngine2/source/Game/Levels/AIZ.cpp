@@ -337,8 +337,8 @@ PUBLIC void Level_AIZ::Init() {
 
 
 PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
-	App->Audio->ClearMusic();
-	PlayMusic(Act < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (Act < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, Act < 2 ? 0x90 : 0xE0);
+	//App->Audio->ClearMusic();
+	//PlayMusic(Act < 2 ? 1 : 2, SaveGame::CurrentMode == 0 ? (Act < 2 ? 0 : 85113) : 0, SaveGame::CurrentMode, Act < 2 ? 0x90 : 0xE0);
 
     BackgroundRepeatTileWidth = 32;
 
@@ -514,7 +514,7 @@ PUBLIC void Level_AIZ::LoadData() {
 	{
 		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
 	}
-	TileSprite->UpdatePalette();
+	TileSprite->Paletted = 2;
     AIZObjectsSprite->LinkPalette(TileSprite);
 }
 

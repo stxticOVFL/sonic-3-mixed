@@ -225,6 +225,7 @@ public:
     }; 
 
     LevelScene(IApp* app, IGraphics* g);
+    virtual void LoadMusic(const char* path, byte mode);
     virtual void PlayMusic(const char* path, int loop);
     virtual void PlayMusic(const char* path, int loop, int vol);
     virtual void PlayMusic(int act, int loop, int mode);

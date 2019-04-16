@@ -31,7 +31,7 @@ event Create() {
 
     switch (Scene.ZoneID) {
         case 1: {
-			Sprite = LevelScene.LoadSpriteFromBin("MGZ/Non Animated Sprites.bin",SaveGame.CurrentMode);
+			Sprite = LevelScene.LoadSpriteFromBin("AIZ/Non Animated Sprites.bin",SaveGame.CurrentMode);
             CurrentAnimation = Sprite.FindAnimation("Non Animated Sprites");
             //CurrentAnimation = 23;
             if (SubType <= 4) {

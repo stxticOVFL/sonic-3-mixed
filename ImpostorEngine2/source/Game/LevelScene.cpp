@@ -414,6 +414,10 @@ PUBLIC LevelScene::LevelScene(IApp* app, IGraphics* g) {
 
 int MusicVolume = 0xFF;
 
+PUBLIC VIRTUAL void LevelScene::LoadMusic(const char* path, byte mode) {
+	Sound::SoundBank[0] = new ISound(path, true, mode);
+}
+
 PUBLIC VIRTUAL void LevelScene::PlayMusic(const char* path, int loop) {
 	PlayMusic(path, loop, 0xFF);
 }
@@ -685,8 +689,7 @@ PUBLIC VIRTUAL void LevelScene::CreateAttributeValue(AttributeValue* Attribute) 
 	Attribute->ValInt8 = 0;
 	Attribute->ValPosition.X = 0;
 	Attribute->ValPosition.Y = 0;
-	Attribute->ValString = &std::string("");
-	Attribute->ValString->append("String");
+	Attribute->ValString = "String";
 	Attribute->ValUint16 = 0;
 	Attribute->ValUint32 = 0;
 	Attribute->ValUint8 = 0;
@@ -2261,7 +2264,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
                                     Attributes[a].ValUint32 = (unsigned int)reader.ReadUInt32();
                                     break;
                                 case ATTRIBUTE_STRING:
-                                    Attributes[a].ValString = &std::string(reader.ReadRSDKUnicodeString());
+                                    Attributes[a].ValString = reader.ReadRSDKUnicodeString();
                                     break;
                                 case ATTRIBUTE_POSITION:
 
@@ -5545,6 +5548,7 @@ PUBLIC void LevelScene::RenderHUD() {
 		value /= 10;
 	}
 
+
 	App->Input->UseTouchController = true;
 	App->Input->CenterPauseButton = false;
 	if (Mobile && !PauseFinished) {
@@ -6630,8 +6634,10 @@ PUBLIC VIRTUAL void LevelScene::Cleanup() {
 	for (int o = 0; o < Data->animatedTilesCount; o++) {
 		Memory::Free(Data->animatedTileDurations[o]);
 	}
-	Memory::Free(Data->animatedTileDurations);
-	Memory::Free(Data->animatedTileFrames);
+
+	//CAUSES CRASH EVERY TIME!!!!
+	//if (Data->animatedTileDurations) Memory::Free(Data->animatedTileDurations);
+	//if (Data->animatedTileFrames) Memory::Free(Data->animatedTileFrames);
 
 	for (int i = 0; i < Data->layerCount; i++) {
         Memory::Free(Data->Layers[i].DeformX);

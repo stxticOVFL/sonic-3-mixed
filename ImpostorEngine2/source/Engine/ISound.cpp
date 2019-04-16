@@ -220,10 +220,6 @@ PUBLIC ISound::ISound(std::string filename) {
 	ISound::Load(filename.c_str(), false);
 }
 
-PUBLIC ISound::ISound(std::string* filename) {
-	ISound::Load(filename->c_str(), false);
-}
-
 PUBLIC ISound::ISound(const char* filename) {
     ISound::Load(filename, false);
 }
@@ -231,11 +227,12 @@ PUBLIC ISound::ISound(const char* filename) {
 PUBLIC ISound::ISound(std::string filename, bool streamFromFile) {
 	ISound::Load(filename.c_str(), streamFromFile);
 }
-PUBLIC ISound::ISound(std::string* filename, bool streamFromFile) {
-	ISound::Load(filename->c_str(), streamFromFile);
-}
 PUBLIC ISound::ISound(const char* filename, bool streamFromFile) {
     ISound::Load(filename, streamFromFile);
+}
+
+PUBLIC ISound::ISound(const char* filename, bool streamFromFile, byte Mode) {
+	ISound::Load(filename, streamFromFile, Mode);
 }
 
 PUBLIC void ISound::Load(std::string* filename, bool streamFromFile) {
@@ -332,6 +329,114 @@ PUBLIC void ISound::Load(const char* filename, bool streamFromFile) {
         IResources::Close(res);
         LoadFailed = false;
     }
+}
+
+PUBLIC void ISound::Load(const char* filename, bool streamFromFile, byte Mode) {
+	LoadFailed = true;
+
+	std::string path;
+
+	switch (Mode)
+	{
+	case 0:
+		path.clear();
+		path.append("Classic/Music/");
+		break;
+	default:
+		path.clear();
+		path.append("Mixed/Music/");
+		break;
+	}
+
+	path.append(filename);
+
+	StreamFromFile = streamFromFile;
+
+	Name = (char*)path.c_str();
+
+	if (StreamFromFile) {
+		IResource* res = IResources::Load(path.c_str());
+		if (!res) {
+			IApp::Print(2, "Couldn't open file '%s'!", path.c_str());
+			fflush(stdin);
+			return;
+		}
+
+		if (strstr(path.c_str(), ".ogg")) {
+			vorbis_file = LoadVorbis(res, &Format);
+		}
+		else {
+			WAV_HEADER wvhrd;
+			res->Read(&wvhrd, 0x2E);
+
+			Format.freq = wvhrd.SamplesPerSec;
+			Format.format = 0x8100 | (wvhrd.bitsPerSample & 0xFF);
+			Format.channels = wvhrd.NumOfChan;
+		}
+
+		Stream = SDL_NewAudioStream(Format.format, Format.channels, Format.freq, IAudio::DeviceFormat.format, IAudio::DeviceFormat.channels, IAudio::DeviceFormat.freq);
+		if (Stream == NULL) {
+			IApp::Print(2, "Stream failed to create: %s", SDL_GetError());
+			return;
+		}
+
+		Buffer = (uint8_t*)malloc(0x1000);
+		ExtraBuffer = (uint8_t*)malloc(0x1000);
+		Resource = res;
+		LoadFailed = false;
+	}
+	else {
+		IResource* res = IResources::Load(path.c_str(), true);
+		if (!res) {
+			IApp::Print(2, "Couldn't open file '%s'!", path.c_str());
+			fflush(stdin);
+			return;
+		}
+
+		uint32_t length = 0;
+		uint8_t* buffer = NULL;
+
+		Resource = res;
+
+		if (strstr(path.c_str(), ".wav")) {
+			if (!SDL_LoadWAV_RW(Resource->RW, 0, &Format, &buffer, &length)) {
+				IApp::Print(2, "Could not load Sound! (%s)", SDL_GetError());
+				return;
+			}
+		}
+		else {
+			if (!LoadOGG_RW(Resource, false, &Format, &buffer, &length)) {
+				IApp::Print(2, "Could not load OGG Sound! (%s)", path.c_str());
+				return;
+			}
+		}
+
+		if (!buffer) {
+			IApp::Print(2, "Could not load Sound buffer!");
+			return;
+		}
+
+		SDL_AudioCVT convert;
+		if (SDL_BuildAudioCVT(&convert, Format.format, Format.channels, Format.freq, IAudio::DeviceFormat.format, IAudio::DeviceFormat.channels, IAudio::DeviceFormat.freq) > 0) {
+			convert.buf = (uint8_t*)malloc(length * convert.len_mult);
+			convert.len = length;
+			memcpy(convert.buf, buffer, length);
+			SDL_FreeWAV(buffer);
+			SDL_ConvertAudio(&convert);
+
+			Buffer = convert.buf;
+			Length = convert.len_cvt;
+			Remaining = convert.len_cvt;
+		}
+		else {
+			Buffer = buffer;
+			Length = length;
+			Remaining = length;
+		}
+
+		IResources::Close(res);
+		LoadFailed = false;
+	}
 }
 
 PUBLIC int  ISound::RequestMoreData(int samples, int amount) {

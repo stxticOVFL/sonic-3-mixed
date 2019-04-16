@@ -15,8 +15,8 @@ class Music;
 class Music: public Object {
 public:    
     
-    string* trackFile;
-    string* soundtestName;
+    char trackFile[128];
+    char soundtestName[128];
     uint32_t trackID;
     uint32_t trackLoop;
     bool playOnLoad;

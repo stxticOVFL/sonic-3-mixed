@@ -280,6 +280,9 @@ PUBLIC STATIC void Sound::Init() {
 	if (!Sound::SoundBank[0xFD] || strcmp(Sound::SoundBank[0xFD]->Name, "Mixed/Music/Drowning.ogg")) Sound::SoundBank[0xFD] = new ISound("Mixed/Music/Drowning.ogg", true);
 	if (!Sound::SoundBank[0xFC] || strcmp(Sound::SoundBank[0xFC]->Name, "Mixed/Music/ActComplete.ogg")) Sound::SoundBank[0xFC] = new ISound("Mixed/Music/ActComplete.ogg", true);
 	if (!Sound::SoundBank[0xFB] || strcmp(Sound::SoundBank[0xFB]->Name, "Mixed/Music/1up.ogg")) Sound::SoundBank[0xFB] = new ISound("Mixed/Music/1up.ogg", false);
+	
+	//Gonna use this as a "buffer" for the music object
+	if (!Sound::SoundBank[0] || strcmp(Sound::SoundBank[0]->Name, "Mixed/Music/Invincible.ogg")) Sound::SoundBank[0] = new ISound("Mixed/Music/Invincible.ogg", true);
 
 	if (!Sound::SoundBank[0xF2] || strcmp(Sound::SoundBank[0xF2]->Name, "Mixed/Music/Knuckles.ogg")) Sound::SoundBank[0xF2] = new ISound("Mixed/Music/Knuckles.ogg", true);
 	if (!Sound::SoundBank[0xF1] || strcmp(Sound::SoundBank[0xF1]->Name, "Mixed/Music/Miniboss.ogg")) Sound::SoundBank[0xF1] = new ISound("Mixed/Music/Miniboss.ogg", true);

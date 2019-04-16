@@ -8,9 +8,9 @@ typedef IMath Math;
 void Music::Create() {
     Object::Create();
     AttributeBuffer = GetAttribute("trackFile");
-    trackFile = AttributeBuffer.ValString;
+    sprintf(trackFile, AttributeBuffer.ValString);
     AttributeBuffer = GetAttribute("soundtestTitle");
-    soundtestName = AttributeBuffer.ValString;
+    sprintf(soundtestName, AttributeBuffer.ValString);
     AttributeBuffer = GetAttribute("trackID");
     trackID = AttributeBuffer.ValVar;
     AttributeBuffer = GetAttribute("trackLoop");
@@ -24,10 +24,10 @@ void Music::Create() {
     }
 
     if (playOnLoad) {
-        /*Sound::SoundBank[trackID]->Load(trackFile, true);
+        Scene->LoadMusic(trackFile, SaveGame::CurrentMode);
         Sound::Audio->LoopPoint[trackID] = trackLoop;
         Sound::Audio->Loop[trackID] = false;
-        App->Audio->PushMusicAt(Sound::SoundBank[trackID], 0, loopTrack, trackLoop);*/
+        App->Audio->PushMusicAt(Sound::SoundBank[trackID], 0, loopTrack, trackLoop);
     }
 
 }

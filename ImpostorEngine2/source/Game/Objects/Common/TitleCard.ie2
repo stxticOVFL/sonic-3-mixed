@@ -1,11 +1,11 @@
 
-var zoneName:string;
+var zoneName:char[128];
 var actID:int;
 
 event Create() {
 
 	AttributeBuffer = GetAttribute("zoneName");
-	zoneName = AttributeBuffer.ValString;
+	sprintf(zoneName,AttributeBuffer.ValString);
 	
 	AttributeBuffer = GetAttribute("actID");
 	actID = AttributeBuffer.ValUint8;

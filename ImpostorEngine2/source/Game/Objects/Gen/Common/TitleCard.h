@@ -15,7 +15,7 @@ class TitleCard;
 class TitleCard: public Object {
 public:    
     
-    string* zoneName;
+    char zoneName[128];
     int actID;
     
     void Create();

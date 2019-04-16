@@ -217,7 +217,7 @@ PUBLIC void Level_ICZ::LoadData() {
 	{
 		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
 	}
-	TileSprite->UpdatePalette();
+	TileSprite->Paletted = 2;
 }
 
 PUBLIC void Level_ICZ::AssignSpriteMapIDs() {

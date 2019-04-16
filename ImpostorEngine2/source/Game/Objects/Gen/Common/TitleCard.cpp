@@ -8,7 +8,7 @@ typedef IMath Math;
 void TitleCard::Create() {
     Object::Create();
     AttributeBuffer = GetAttribute("zoneName");
-    zoneName = AttributeBuffer.ValString;
+    sprintf(zoneName, AttributeBuffer.ValString);
     AttributeBuffer = GetAttribute("actID");
     actID = AttributeBuffer.ValUint8;
 }

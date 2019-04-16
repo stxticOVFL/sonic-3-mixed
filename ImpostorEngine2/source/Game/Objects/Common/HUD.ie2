@@ -5,8 +5,151 @@ event Create() {
 
 event Update() {
 
+	if (Scene.Player) {
+		if (Scene.LevelCardTimer >= 1.5 && Scene.Player.Action != ActionType.Dead && !Scene.StopTimer) {
+			Scene.Timer++;
+		}
+	}
+
+	// Max timer
+	if (Scene.Timer > 10 * 60 * 60 - 1) Scene.Timer = 10 * 60 * 60 - 1;
+
 }
 
 event Render(CamX:int, CamY:int) {
+
+	var Mobile:bool;
+	Mobile = IApp.Mobile;
+
+	var value:int;
+	var valen:int;
+
+	var STR_X:int;
+	STR_X = 16 - (Scene.HUDAnim >> 1);
+
+	if (SaveGame.CurrentMode == 0) {
+		//Scene.GlobalDisplaySprite = Scene.GlobalDisplaySpriteS3K;
+	}
+	// Score
+	G.DrawSprite(Scene.GlobalDisplaySprite, 0, 0, STR_X, 12, 0, IE_NOFLIP);
+
+	// Time
+	G.DrawSprite(Scene.GlobalDisplaySprite, 0, 1, STR_X, 28, 0, IE_NOFLIP);
+
+	// Rings
+	var CurrentFrame:int;
+	CurrentFrame = 3;
+	if (Scene.Player.Rings == 0 && (Scene.Frame & 0xF) < 8)
+		CurrentFrame = 4;
+	G.DrawSprite(Scene.GlobalDisplaySprite, 0, CurrentFrame, STR_X, 44, 0, IE_NOFLIP);
+
+	// Score value
+	value = Scene.Score;
+	for (var i:int = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
+		G.DrawSprite(Scene.GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 12 + 14, 0, IE_NOFLIP);
+		value /= 10;
+	}
+
+	// Timer " and '
+	G.DrawSprite(Scene.GlobalDisplaySprite, 0, 12, STR_X + 48 + 8 * 1 - 8 + 3, 28 + 14 - 16, 0, IE_NOFLIP);
+
+	// Timer value (Centiseconds)
+	value = (Scene.Timer % 60) * 100 / 60;
+	if (Scene.Timer >= 10 * 60 * 60 - 3)
+		value = 99;
+	for (var i:int = 0; i < 2; i++) {
+		G.DrawSprite(Scene.GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 28 + 14, 0, IE_NOFLIP);
+		value /= 10;
+	}
+	// Scene.Timer value (Seconds)
+	value = (Scene.Timer / 60) % 60;
+	for (var i:int = 0; i < 2; i++) {
+		G.DrawSprite(Scene.GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 4 - 8 * i - 9, 28 + 14, 0, IE_NOFLIP);
+		value /= 10;
+	}
+	// Scene.Timer value (Minutes)
+	value = (Scene.Timer / 60 / 60);
+	if (value > 9)
+		value = 9;
+	G.DrawSprite(Scene.GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 1 - 10, 28 + 14, 0, IE_NOFLIP);
+
+	// Ring value (Or object count value in Debug mode.)
+	if (!Scene.maxLayer) {
+		value = Scene.ObjectCount;
+	}
+	else {
+		value = Scene.Player.Rings;
+	}
+
+	for (var i:int = 0; i < 7 && (value > 0 || (value == 0 && i == 0)); i++) {
+		G.DrawSprite(Scene.GlobalDisplaySprite, 1, value % 10, STR_X + 48 + 8 * 7 - 8 * i - 8, 44 + 14, 0, IE_NOFLIP);
+		value /= 10;
+	}
+
+	var iconX:int;
+	iconX = STR_X;
+	var iconY:int;
+	iconY = App.HEIGHT - 12;
+
+	if (Mobile) {
+		iconX = App.WIDTH - 64 - 8 - STR_X; // 24 is for Pause Button
+		iconY = 12 + 17;
+	}
+
+	// Character Icon
+	G.DrawSprite(Scene.GlobalDisplaySprite, 2, int(Scene.Player.Character), iconX, iconY, 0, IE_NOFLIP);
+
+	// x symbol
+	if (SaveGame.CurrentMode == 1)
+		G.DrawSprite(Scene.GlobalDisplaySprite, 0, 14, iconX, iconY, 0, IE_NOFLIP);
+
+	// Lives value
+	var LifeNumberAnim:int;
+	LifeNumberAnim = 1;
+	if (!SaveGame.CurrentMode == 1)
+		LifeNumberAnim = 10;
+
+	valen = 1;
+	value = Scene.Player.Lives;
+	if (value >= 10)
+		valen = 2;
+	if (value >= 99)
+		value = 99;
+	for (var i:int = 0; i < valen; i++) {
+		G.DrawSprite(Scene.GlobalDisplaySprite, LifeNumberAnim, value % 10, iconX + 32 + 2 * 8 - i * 8, iconY, 0, IE_NOFLIP);
+		value /= 10;
+	}
+
+	/*
+	//Makeheaders throws a tantrum
+	App.Input.UseTouchController = true;
+	App.Input.CenterPauseButton = false;
+	if (Mobile && !Scene.PauseFinished) {
+		G.SetDrawAlpha(0xC0 - (0xC0 * ControlsAnim >> 8));
+		var bX:int;
+		bX = 48;
+		var bY:int;
+		bY = App.HEIGHT - 48;
+		if (App.Input.GetControllerInput(0)[IInput.I_UP])
+			G.DrawSprite(Scene.MobileButtonsSprite, 0, 1, bX, bY, 0, IE_NOFLIP);
+		else if (App.Input.GetControllerInput(0)[IInput.I_DOWN])
+			G.DrawSprite(Scene.MobileButtonsSprite, 0, 2, bX, bY, 0, IE_NOFLIP);
+		else if (App.Input.GetControllerInput(0)[IInput.I_LEFT])
+			G.DrawSprite(Scene.MobileButtonsSprite, 0, 3, bX, bY, 0, IE_FLIPX);
+		else if (App.Input.GetControllerInput(0)[IInput.I_RIGHT])
+			G.DrawSprite(Scene.MobileButtonsSprite, 0, 3, bX, bY, 0, IE_NOFLIP);
+		else
+			G.DrawSprite(Scene.MobileButtonsSprite, 0, 0, bX, bY, 0, IE_NOFLIP);
+
+		// A button
+		if (App.Input.GetControllerInput(0)[IInput.I_CONFIRM])
+			G.SetDrawAlpha(0xFF);
+
+		G.DrawSprite(Scene.MobileButtonsSprite, 0, 4, App.WIDTH - 48, bY, 0, IE_NOFLIP);
+		G.SetDrawAlpha(0xFF);
+
+		// Pause
+		G.DrawSprite(Scene.MobileButtonsSprite, 0, 5, App.WIDTH - 22, 22, 0, IE_NOFLIP);
+	}*/
 
 }
