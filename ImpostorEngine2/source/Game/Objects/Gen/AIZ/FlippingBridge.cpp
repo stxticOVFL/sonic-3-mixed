@@ -30,7 +30,8 @@ void FlippingBridge::Create() {
 }
 
 void FlippingBridge::Update() {
-    Timer = Scene->Frame % RevolutionDuration;
+    if (RevolutionDuration > 0) Timer = Scene->Frame % RevolutionDuration;
+
     if (FlipX) Timer = (RevolutionDuration - 1) - Timer;
 
     Object::Update();

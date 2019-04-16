@@ -39,6 +39,7 @@ event Create() {
 }
 
 event Update() {
+	if (RevolutionDuration > 0)
     Timer = Scene.Frame % RevolutionDuration;
     if (FlipX)
         Timer = (RevolutionDuration - 1) - Timer;

@@ -9,3 +9,14 @@ C:\Users\Justin\Dropbox\ImpostorEditor2\Kosinski\obj\Debug\Kosinski.csproj.CoreC
 C:\Users\Justin\Dropbox\ImpostorEditor2\Kosinski\obj\Debug\Kosinski.csproj.CopyComplete
 C:\Users\Justin\Dropbox\ImpostorEditor2\Kosinski\obj\Debug\SonicRetro.KensSharp.Kosinski.dll
 C:\Users\Justin\Dropbox\ImpostorEditor2\Kosinski\obj\Debug\SonicRetro.KensSharp.Kosinski.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\bin\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\bin\Debug\SonicRetro.KensSharp.Kosinski.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\obj\Debug\Kosinski.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\obj\Debug\SonicRetro.KensSharp.Properties.Resources.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\obj\Debug\Kosinski.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\obj\Debug\Kosinski.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\obj\Debug\Kosinski.csproj.CopyComplete
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\obj\Debug\SonicRetro.KensSharp.Kosinski.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Kosinski\obj\Debug\SonicRetro.KensSharp.Kosinski.pdb

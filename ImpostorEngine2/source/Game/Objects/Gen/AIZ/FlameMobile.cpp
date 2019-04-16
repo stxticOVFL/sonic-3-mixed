@@ -5,9 +5,6 @@
 
 typedef IMath Math;
 
-CONSTRUCTER FlameMobile::FlameMobile() {
-}
-
 void FlameMobile::Create() {
     Enemy::Create();
     Visible = true;
@@ -20,7 +17,7 @@ void FlameMobile::Create() {
     HitboxEnemy.Left = -24;
     HitboxEnemy.Right = 24;
     HitboxEnemy.Bottom = 24;
-    CurrentAnimation = 5;
+    CurrentAnimation = Sprite->FindAnimation("Main");
     Frame = 0;
     XSpeed = 0;
     YSpeed = 0;

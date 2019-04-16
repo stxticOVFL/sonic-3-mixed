@@ -13,7 +13,7 @@ void FireBreathCutscene::Create() {
     W = 48;
     H = 48;
     Radius = 24;
-    CurrentAnimation = 7;
+    CurrentAnimation = Sprite->FindAnimation("Miniboss Main");
     Frame = 0;
     XSpeed = 0;
     YSpeed = 0;
@@ -86,7 +86,8 @@ void FireBreathCutscene::Create() {
 }
 
 int FireBreathCutscene::OnHit() {
-    HitCount--;
+    if (!Cutscene) HitCount--;
+
     if (HitCount == 0) {
         Scene->StopTimer = true;
         Scene->Score += 1000;

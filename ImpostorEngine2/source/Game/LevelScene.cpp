@@ -2324,7 +2324,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 						obj->FlipX = obj->GetAttribute("flipX").ValBool;
 						obj->FlipY = obj->GetAttribute("flipY").ValBool;
 
-						obj->Create();
+						//obj->Create();
 
 						// Add our object to the scene
 						Objects.push_back(obj);
@@ -2806,6 +2806,18 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		App->Print(2, "Scene.bin at '%s' could not be read.", Str_SceneBin);
 		exit(1);
 	}
+
+	/*//Regular Palette
+	for (int i = 0; i < 256; i++)
+	{
+		TileSprite->Palette[i] = Data->Palette[0][i];
+	}*/
+	//Water Palette
+	for (int i = 0; i < 256; i++)
+	{
+		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
+	}
+	TileSprite->Paletted = 2;
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "Scene loading", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();

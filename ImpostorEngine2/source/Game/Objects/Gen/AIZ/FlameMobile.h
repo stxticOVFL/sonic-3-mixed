@@ -49,7 +49,6 @@ public:
     int TargetY;
     int TargetIndex;
     
-    CONSTRUCTER FlameMobile();
     void Create();
     int OnHit();
     void DoExplosionDebris();

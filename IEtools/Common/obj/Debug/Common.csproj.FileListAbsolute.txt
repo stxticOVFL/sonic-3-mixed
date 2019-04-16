@@ -6,3 +6,11 @@ C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\Common.csproj.GenerateR
 C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
 C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\SonicRetro.KensSharp.Common.dll
 C:\Users\Justin\Dropbox\ImpostorEditor2\Common\obj\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\obj\Debug\Common.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\obj\Debug\SonicRetro.KensSharp.Properties.Resources.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\obj\Debug\Common.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\obj\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Common\obj\Debug\SonicRetro.KensSharp.Common.pdb

@@ -88,12 +88,6 @@ PUBLIC void Level_LBZ::RestartStage(bool doActTransition, bool drawBackground) {
 
 PUBLIC void Level_LBZ::LoadData() {
 	LevelScene::LoadData();
-	//Water Palette
-	for (int i = 0; i < 256; i++)
-	{
-		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
-	}
-	TileSprite->Paletted = 2;
 }
 
 PUBLIC void Level_LBZ::AssignSpriteMapIDs() {

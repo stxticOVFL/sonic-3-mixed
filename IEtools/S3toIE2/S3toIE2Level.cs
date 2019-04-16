@@ -2629,6 +2629,57 @@ namespace S3toIE2 {
 
                 using (FileStream fileStreamStageConfig = new FileStream(Globals.OUT + outFolderName + "\\StageConfig.bin", FileMode.OpenOrCreate))
                 {
+                    // Set Palette
+                    int lasti = 0;
+                    int[] palette;
+                    List<Color> cpal = new List<Color>();
+                    List<Color> cpal2 = new List<Color>();
+                    for (int i = 0; i < 256; i++)
+                    {
+                        cpal.Add(Color.FromArgb(255, 255, 0, 255));
+                        cpal2.Add(Color.FromArgb(255, 255, 0, 255));
+                    }
+                    if (outFolderName == "ALZ1" || outFolderName == "BPZ1" || outFolderName == "CGZ1" || outFolderName == "DPZ1" || outFolderName == "EMZ1")
+                    {
+                        if (iniLevel.ContainsKey("palette"))
+                        {
+                            palette = LoadPalette(Globals.ROOT + @"General\Sprites\Sonic\Palettes\SonicAndTails.bin", Globals.ROOT + FileInfo.Load(iniLevel["palette"])[2].Filename);
+                            for (int i = 0; i < palette.Length; i++)
+                            {
+                                cpal[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                                cpal[i & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                                lasti = i;
+                            }
+                            palette = LoadPalette(null, Globals.ROOT + FileInfo.Load(iniLevel["palette"])[1].Filename);
+                            for (int i = 0; i < palette.Length; i++)
+                            {
+                                cpal2[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                                cpal2[(i) & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                                lasti = i;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        palette = LoadPalette(Globals.ROOT + @"General\Sprites\Sonic\Palettes\SonicAndTails.bin", Globals.ROOT + FileInfo.Load(iniLevel["palette"])[1].Filename);
+                        for (int i = 0; i < palette.Length; i++)
+                        {
+                            cpal[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                            cpal[i & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                            lasti = i;
+                        }
+                        if (iniLevel.ContainsKey("palette2"))
+                        {
+                            palette = LoadPalette(null, Globals.ROOT + FileInfo.Load(iniLevel["palette2"])[1].Filename);
+                            for (int i = 0; i < palette.Length; i++)
+                            {
+                                cpal2[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                                cpal2[(i) & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                                lasti = i;
+                            }
+                        }
+                    }
+
                     using (RSDKv5.Writer writer = new RSDKv5.Writer(fileStreamStageConfig))
                     {
                         fileStreamStageConfig.WriteByte((byte)'C');
@@ -2645,10 +2696,40 @@ namespace S3toIE2 {
                         }
 
                         // Palette Tables
-                        for (int i = 0; i < 8; i++)
+                        for (int i = 0; i < 2; i++)
                         {
                             // Palette Positions
-                            ushort Positions = 0b0000000000000000;
+                            ushort Positions = 0xFFFF;
+                            writer.Write(Positions);
+                            int palID = 0;
+                            for (int col = 0; col < 16; col++)
+                            {
+                                if ((Positions & (1 << col)) != 0)
+                                {
+                                    for (int d = 0; d < 16; d++)
+                                    {
+                                        if (i == 0)
+                                        {
+                                            fileStreamStageConfig.WriteByte(cpal[palID].R);
+                                            fileStreamStageConfig.WriteByte(cpal[palID].G);
+                                            fileStreamStageConfig.WriteByte(cpal[palID].B);
+                                            palID++;
+                                        }
+                                        else
+                                        {
+                                            fileStreamStageConfig.WriteByte(cpal2[palID].R);
+                                            fileStreamStageConfig.WriteByte(cpal2[palID].G);
+                                            fileStreamStageConfig.WriteByte(cpal2[palID].B);
+                                            palID++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        for (int i = 2; i < 8; i++)
+                        {
+                            // Palette Positions
+                            ushort Positions = 0;
                             writer.Write(Positions);
                             for (int col = 0; col < 16; col++)
                             {
@@ -2656,9 +2737,9 @@ namespace S3toIE2 {
                                 {
                                     for (int d = 0; d < 16; d++)
                                     {
-                                        int R = 0;
+                                        int R = 255;
                                         int G = 0;
-                                        int B = 0;
+                                        int B = 255;
                                         fileStreamStageConfig.WriteByte((byte)R);
                                         fileStreamStageConfig.WriteByte((byte)G);
                                         fileStreamStageConfig.WriteByte((byte)B);

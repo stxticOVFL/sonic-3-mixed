@@ -41,10 +41,6 @@ enum BossAction {
     STOP_AND_EMERGE,
 }
 
-event FlameMobile() : CONSTRUCTER {
-    //
-}
-
 event Create() {
     Visible = true;
 
@@ -59,7 +55,7 @@ event Create() {
     HitboxEnemy.Left = -24;
     HitboxEnemy.Right = 24;
     HitboxEnemy.Bottom = 24;
-    CurrentAnimation = 5;
+    CurrentAnimation = Sprite.FindAnimation("Main");
     Frame = 0;
     XSpeed = 0;
     YSpeed = 0;

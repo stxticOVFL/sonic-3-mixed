@@ -9,3 +9,14 @@ C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\Nemesis.csproj.CoreCom
 C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\Nemesis.csproj.CopyComplete
 C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\SonicRetro.KensSharp.Nemesis.dll
 C:\Users\Justin\Dropbox\ImpostorEditor2\Nemesis\obj\Debug\SonicRetro.KensSharp.Nemesis.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\bin\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\bin\Debug\SonicRetro.KensSharp.Nemesis.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\obj\Debug\Nemesis.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\obj\Debug\SonicRetro.KensSharp.Properties.Resources.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\obj\Debug\Nemesis.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\obj\Debug\Nemesis.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\obj\Debug\Nemesis.csproj.CopyComplete
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\obj\Debug\SonicRetro.KensSharp.Nemesis.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Nemesis\obj\Debug\SonicRetro.KensSharp.Nemesis.pdb

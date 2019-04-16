@@ -9,3 +9,14 @@ C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\Enigma.csproj.CoreCompi
 C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\Enigma.csproj.CopyComplete
 C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\SonicRetro.KensSharp.Enigma.dll
 C:\Users\Justin\Dropbox\ImpostorEditor2\Enigma\obj\Debug\SonicRetro.KensSharp.Enigma.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\bin\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\bin\Debug\SonicRetro.KensSharp.Enigma.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\bin\Debug\SonicRetro.KensSharp.Common.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\bin\Debug\SonicRetro.KensSharp.Common.pdb
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\obj\Debug\Enigma.csprojAssemblyReference.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\obj\Debug\SonicRetro.KensSharp.Properties.Resources.resources
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\obj\Debug\Enigma.csproj.GenerateResource.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\obj\Debug\Enigma.csproj.CoreCompileInputs.cache
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\obj\Debug\Enigma.csproj.CopyComplete
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\obj\Debug\SonicRetro.KensSharp.Enigma.dll
+C:\Users\owner\Documents\Fan Games\sonic-3-mixed\IEtools\Enigma\obj\Debug\SonicRetro.KensSharp.Enigma.pdb
