@@ -24,11 +24,15 @@ void Music::Create() {
     }
 
     if (playOnLoad) {
-        Scene->LoadMusic(trackFile, SaveGame::CurrentMode);
-        Sound::Audio->LoopPoint[trackID] = trackLoop;
-        Sound::Audio->Loop[trackID] = false;
-        App->Audio->PushMusicAt(Sound::SoundBank[trackID], 0, loopTrack, trackLoop);
+        PlayMusic();
     }
 
+}
+
+void Music::PlayMusic() {
+    Scene->LoadMusic(trackFile, SaveGame::CurrentMode);
+    Sound::Audio->LoopPoint[trackID] = trackLoop;
+    Sound::Audio->Loop[trackID] = false;
+    App->Audio->PushMusicAt(Sound::SoundBank[trackID], 0, loopTrack, trackLoop);
 }
 

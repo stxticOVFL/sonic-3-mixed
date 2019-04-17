@@ -22,7 +22,6 @@ void CollapsingLogBridge::Create() {
     if (SubType & 0x80) {
         VisualLayer = 1;
         Drawbridge = true;
-        CurrentAnimation = 13;
         W = 192;
         H = 16;
     }

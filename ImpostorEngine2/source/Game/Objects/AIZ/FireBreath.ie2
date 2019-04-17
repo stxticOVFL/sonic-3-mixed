@@ -51,7 +51,7 @@ event Create() {
     W = 48;
     H = 48;
     Radius = 24;
-    CurrentAnimation = 7;
+    CurrentAnimation = Sprite.FindAnimation("Miniboss Main");
     Frame = 0;
     XSpeed = 0;
     YSpeed = 0;
@@ -216,7 +216,7 @@ event Update() {
     switch (State) {
         case 2:
             if (Cutscene) {
-                if (Scene.CameraX >= 0x2F10) { // 0x2F10
+                if (Scene.CameraX >= Scene.CameraMaxX) { // 0x2F10
                     TimerAction = 0; // loc_6857A
                     State = 4;
                     Timer = 0xB4; // 180
@@ -224,7 +224,7 @@ event Update() {
                 }
             }
             else {
-                if (Scene.CameraX >= 0x10E0 + 160 - App.WIDTH / 2) {
+                if (Scene.CameraX >= Scene.CameraMaxX + 160 - App.WIDTH / 2) {
                     TimerAction = 0;
                     State = 4;
                     Timer = 0xB4; // 180
@@ -322,13 +322,13 @@ event Update() {
             Shot3 = (Shot3 + 1) & 0x1F;
 
         // if (Shot1 == 0)
-        //     Scene.AddNewObject(Obj_AIZMinibossBomb, 0x00, X, Y - 32, false, false);
+        //     Scene.AddNewObject(Obj_FireBreathBomb, 0x00, X, Y - 32, false, false);
         // set object current animaiton here
         // if (Shot2 == 0)
-        //     Scene.AddNewObject(Obj_AIZMinibossBomb, 0x00, X + 9, Y - 28, false, false);
+        //     Scene.AddNewObject(Obj_FireBreathBomb, 0x00, X + 9, Y - 28, false, false);
         // set object current animaiton here
         // if (Shot3 == 0)
-        //     Scene.AddNewObject(Obj_AIZMinibossBomb, 0x00, X + 18, Y - 24, false, false);
+        //     Scene.AddNewObject(Obj_FireBreathBomb, 0x00, X + 18, Y - 24, false, false);
         // set object current animaiton here
 
         if (State < 4 && State >= 0) return;

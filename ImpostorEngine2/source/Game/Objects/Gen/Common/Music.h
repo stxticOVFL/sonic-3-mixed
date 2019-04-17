@@ -23,6 +23,7 @@ public:
     bool loopTrack;
     
     void Create();
+    void PlayMusic();
 };
 
 #endif /* MUSIC_H */

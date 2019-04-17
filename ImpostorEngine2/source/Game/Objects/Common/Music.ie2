@@ -30,9 +30,14 @@ event Create() {
 	}
 	
 	if (playOnLoad) {
-		Scene.LoadMusic(trackFile, SaveGame.CurrentMode);
-		Sound.Audio.LoopPoint[trackID] = trackLoop;
-		Sound.Audio.Loop[trackID] = false;
-		App.Audio.PushMusicAt(Sound.SoundBank[trackID], 0, loopTrack, trackLoop);
+		PlayMusic();
 	}
+}
+
+//if playOnLoad wasn't on or something idfk
+event PlayMusic() {
+	Scene.LoadMusic(trackFile, SaveGame.CurrentMode);
+	Sound.Audio.LoopPoint[trackID] = trackLoop;
+	Sound.Audio.Loop[trackID] = false;
+	App.Audio.PushMusicAt(Sound.SoundBank[trackID], 0, loopTrack, trackLoop);
 }

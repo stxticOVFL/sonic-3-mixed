@@ -6,6 +6,21 @@ var LoadStageconfig:bool;
 var LoadTiles:bool;
 var LoadAniTiles:bool;
 
+var FireRiseValue:int;
+var FireRiseValue2:int;
+var Timerrrr:int;
+var TreeRevealRow:int;
+var FireLayerBackup:Layer;
+var FireInd:int;
+
+var AIZShipTileSprite:ISprite;
+var IntroSprite:ISprite;
+var TileSpriteBackup:ISprite;
+var CutsceneActTimer:int;
+var ShipTimer:Uint32;
+var BombDelay:int;
+var BombIndex:int;
+
 event Create() {
 
 	AttributeBuffer = GetAttribute("actID");
@@ -25,6 +40,66 @@ event Create() {
 	
 	AttributeBuffer = GetAttribute("loadAniTiles");
 	LoadAniTiles = AttributeBuffer.ValBool;
+
+    Scene.ZoneID = 1;
+	Scene.VisualAct = ActID;
+	Scene.Act = ActID;
+	sprintf(Scene.ZoneLetters,ZoneLetters);
+	
+    Scene.AddNewDebugObjectID(Obj_CollapsingPlatform); // Collapsing Platform
+    Scene.AddNewDebugObjectID(Obj_BreakableWall); // Breakable Wall
+    Scene.AddNewDebugObjectID(Obj_SpikedLog); // Spiked Log - Currently doesn't work. (Sprites do not render.)
+    Scene.AddNewDebugObjectID(Obj_Bloominator); // Bloominator
+    Scene.AddNewDebugObjectID(Obj_RhinoBot); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
+    Scene.AddNewDebugObjectID(Obj_MonkeyDude); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
+    Scene.AddNewDebugObjectID(Obj_CaterkillerJr); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
+    Scene.AddNewDebugObjectID(Obj_FireBreath); 
+    Scene.AddNewDebugObjectID(Obj_FlameMobile);
+	
+	//var Intro:Object = Scene.AddNewObject("AIZIntro");
+	//Intro.IntroSprite = IntroSprite;
+	//Intro.TileSpriteBackup = TileSpriteBackup;
+	//Intro.Create();
+
+	if (ActID == 1) {
+		Scene.VisualWaterLevel = 0x508;
+		Scene.WaterLevel = 0x508;
+
+		FireRiseValue = 0;
+		FireRiseValue2 = 0;
+		Timerrrr = 2;
+		TreeRevealRow = 32;
+		FireLayerBackup = NULL;
+		CutsceneActTimer = 60;
+
+		Scene.Data.Layers[4].OffsetY = 0;
+	}
+	if (ActID == 2) {
+		Scene.VisualWaterLevel = 0x528;
+        Scene.WaterLevel = 0x528;
+
+        ShipTimer = 0x40200000;
+		BombDelay = 0x1A4;
+        BombIndex = 0;
+		
+		if (Scene.RoutineNumber == -2) {
+            Scene.LevelCardTimer = 6.0;
+            Scene.LevelCardHide = true;
+        } else {
+            Scene.LevelCardTimer = 0.0;
+            Scene.LevelCardHide = false;
+        }
+	}
+	
+	if (Scene.Player) {
+		//Setup Knux Path
+		if (Scene.Player.Character != CharacterType.Knuckles) {
+			
+		}
+		else {
+			
+		}
+	}
 
 }
 

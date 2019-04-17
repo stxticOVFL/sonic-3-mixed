@@ -1,0 +1,60 @@
+
+var IntroSprite:ISprite;
+var TileSpriteBackup:ISprite;
+
+var CutSceneKnux:bool;
+
+var OnBeach:bool;
+var SuperSonicMoving:bool;
+
+var CutsceneRoutineNumber:int;
+var Cutscene_KnucklesBackForth:int;
+var Cutscene_SonicWaitTimer:int;
+
+//Setup Intro
+event Create() {
+
+	Scene.HUDVisible = false;
+
+	Scene.LevelCardTimer = 0.0;
+	Scene.LevelCardHide = true;
+	Scene.FadeAction = 0;
+	Scene.FadeTimerMax = 90;
+	Scene.FadeMax = 0x140;
+	OnBeach = false;
+	SuperSonicMoving = true;
+	CutsceneRoutineNumber = 0x00;
+	Cutscene_SonicWaitTimer = -1;
+	Cutscene_KnucklesBackForth = -1;
+
+	Scene.Player.Cutscene = true;
+	Scene.Player.ControlLocked = true;
+	//Scene.Player.ChangeAnimation(Player->AnimationMap["S_Run"]);
+
+	//Play out knuckles cutscene or sonic's?
+	if (Scene.Player) {
+		if (Scene.Player.Character != CharacterType.Knuckles) {
+			CutSceneKnux = true;
+		}
+		else {
+			CutSceneKnux = false;
+			Scene.TileSprite = IntroSprite;
+		}
+	}
+
+	//Program the object later so for rn just call finish
+	IntroFinish();
+}
+
+//Play Intro
+event Update() {
+
+}
+
+//End Intro
+event IntroFinish() {
+	Scene.TileSprite = TileSpriteBackup;
+	Scene.HUDVisible = true;
+	Scene.Player.Cutscene = false;
+	Scene.Player.ControlLocked = false;
+}

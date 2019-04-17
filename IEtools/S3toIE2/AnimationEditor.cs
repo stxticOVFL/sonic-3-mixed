@@ -126,7 +126,7 @@ namespace S3toIE2 {
         }
 
         public AnimationEditor() {
-            // OpenFolder("");
+            //OpenFolder("");
             //goto DOPRGM;
             //goto DOEXIT;
 
@@ -138,7 +138,8 @@ namespace S3toIE2 {
                 goto DOEXIT;
             }
             else if (useType == UseType.SpriteExporting) {
-                Globals.OUT = @"C:\Users\Justin\sonic-3-mixed\ImpostorEngine2\source\Resources\Sprites\";
+               //Globals.OUT = @"C:\Users\Justin\sonic-3-mixed\ImpostorEngine2\source\Resources\Sprites\";
+               Globals.OUT = @"C:\Users\owner\Documents\Fan Games\sonic-3-mixed\ImpostorEngine2\source\Resources\SpritePorts\";
 
                 Dictionary<uint, uint> checksums = new Dictionary<uint, uint>();
 
@@ -162,7 +163,9 @@ namespace S3toIE2 {
                     var chk = Crc32Algorithm.Compute(File.ReadAllBytes("Patches/" + file.Name));
                     if (checksums.ContainsKey(key)) {
                         if (checksums[key] == chk)
-                            continue;
+                        {
+                            //continue;
+                        }
                     }
 
                     Console.WriteLine("Opening '" + file.Name + "'...");
@@ -213,7 +216,7 @@ namespace S3toIE2 {
             ushort[] palEnc;
             int paletteLines = 0;
             using (MemoryStream output = new MemoryStream()) {
-                using (FileStream input = File.OpenRead(@"C:\Users\Justin\skdisasm-master\General\Sprites\Sonic\Palettes\SonicAndTails.bin")) {
+                using (FileStream input = File.OpenRead(@"C:\Users\owner\Documents\Fan Games\3mZones\Sonic 3\General\Sprites\Sonic\Palettes\SonicAndTails.bin")) {
                     for (int i = 0; i < 16; i++) {
                         LittleEndian.Write2(output, BigEndian.Read2(input));
                     }
@@ -256,72 +259,86 @@ namespace S3toIE2 {
                     totalTiles += nbs.Length / 0x20;
                 }
 
-                byte[] dec = null;
-                if (file.Contains("Tiles\\"))
-                    dec = ModuledKosinski.Decompress(file, Endianness.BigEndian);
-                else {
-                    switch (requests[d].compression) {
-                        case CompressionType.Uncompressed:
-                            dec = File.ReadAllBytes(file);
-                            break;
+                try
+                {
+                    byte[] dec = null;
+                    if (file.Contains("Tiles\\"))
+                        dec = ModuledKosinski.Decompress(file, Endianness.BigEndian);
+                    else
+                    {
+                        switch (requests[d].compression)
+                        {
+                            case CompressionType.Uncompressed:
+                                dec = File.ReadAllBytes(file);
+                                break;
 
-                        case CompressionType.Kosinski:
-                            dec = Kosinski.Decompress(file);
-                            break;
+                            case CompressionType.Kosinski:
+                                dec = Kosinski.Decompress(file);
+                                break;
 
-                        case CompressionType.KosinskiM:
-                            dec = ModuledKosinski.Decompress(file, Endianness.BigEndian);
-                            break;
+                            case CompressionType.KosinskiM:
+                                dec = ModuledKosinski.Decompress(file, Endianness.BigEndian);
+                                break;
 
-                        case CompressionType.Nemesis:
-                            dec = Nemesis.Decompress(file);
-                            break;
+                            case CompressionType.Nemesis:
+                                dec = Nemesis.Decompress(file);
+                                break;
 
-                        default:
-                            dec = Nemesis.Decompress(file);
-                            break;
+                            default:
+                                dec = Nemesis.Decompress(file);
+                                break;
+                        }
+
                     }
-                    
-                }
-                tileData = tileData.Concat(dec).ToArray();
+                    tileData = tileData.Concat(dec).ToArray();
 
-                Console.WriteLine("\"" + file + "\": 0x" + totalTiles.ToString("X"));
-                totalTiles += dec.Length / 0x20;
-            }
+                    Console.WriteLine("\"" + file + "\": 0x" + totalTiles.ToString("X"));
+                    totalTiles += dec.Length / 0x20;
 
-            tileImage = new Bitmap(8 * paletteLines, totalTiles * 8, PixelFormat.Format8bppIndexed);
-            // Set palette
-            ColorPalette cpal = tileImage.Palette;
-            for (int i = 0; i < palette.Length; i++) {
-                cpal.Entries[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
-                // Set Transparent Color
-                cpal.Entries[i & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
-            }
-            tileImage.Palette = cpal;
-            
-            // Set pixels
-            Rectangle rect = new Rectangle(0, 0, tileImage.Width, tileImage.Height);
-            System.Drawing.Imaging.BitmapData bmpData = tileImage.LockBits(rect, ImageLockMode.WriteOnly, tileImage.PixelFormat);
+                    tileImage = new Bitmap(8 * paletteLines, totalTiles * 8, PixelFormat.Format8bppIndexed);
+                    // Set palette
+                    ColorPalette cpal = tileImage.Palette;
+                    for (int i = 0; i < palette.Length; i++)
+                    {
+                        cpal.Entries[i] = Color.FromArgb(palette[i] >> 16 & 0xFF, palette[i] >> 8 & 0xFF, palette[i] & 0xFF);
+                        // Set Transparent Color
+                        cpal.Entries[i & 0xF0] = Color.FromArgb(0, 0xFF, 0x00, 0xFF);
+                    }
+                    tileImage.Palette = cpal;
 
-            IntPtr ptr = bmpData.Scan0;
+                    // Set pixels
+                    Rectangle rect = new Rectangle(0, 0, tileImage.Width, tileImage.Height);
+                    System.Drawing.Imaging.BitmapData bmpData = tileImage.LockBits(rect, ImageLockMode.WriteOnly, tileImage.PixelFormat);
 
-            byte[] px = new byte[tileData.Length * 2 * paletteLines];
-            for (int i = 0; i < tileData.Length / 0x20; i++) {
-                int tilStart = i * 0x20;
-                for (int x = 0; x < 4; x++) {
-                    for (int y = 0; y < 8; y++) {
-                        int basee = tileData[tilStart + x + y * 4];
-                        for (int p = 0; p < paletteLines * 8; p += 8) {
-                            px[(i * 8 + y) * bmpData.Stride + x * 2 + p] = (byte)((basee >> 4) + p * 2);
-                            px[(i * 8 + y) * bmpData.Stride + x * 2 + p + 1] = (byte)((basee & 0xF) + p * 2);
+                    IntPtr ptr = bmpData.Scan0;
+
+                    byte[] px = new byte[tileData.Length * 2 * paletteLines];
+                    for (int i = 0; i < tileData.Length / 0x20; i++)
+                    {
+                        int tilStart = i * 0x20;
+                        for (int x = 0; x < 4; x++)
+                        {
+                            for (int y = 0; y < 8; y++)
+                            {
+                                int basee = tileData[tilStart + x + y * 4];
+                                for (int p = 0; p < paletteLines * 8; p += 8)
+                                {
+                                    px[(i * 8 + y) * bmpData.Stride + x * 2 + p] = (byte)((basee >> 4) + p * 2);
+                                    px[(i * 8 + y) * bmpData.Stride + x * 2 + p + 1] = (byte)((basee & 0xF) + p * 2);
+                                }
+                            }
                         }
                     }
+                    Marshal.Copy(px, 0, ptr, px.Length);
+                    tileImage.UnlockBits(bmpData);
+
+                    Image = tileImage;
+                }
+                catch (Exception ex)
+                {
+                    
                 }
             }
-            Marshal.Copy(px, 0, ptr, px.Length);
-            tileImage.UnlockBits(bmpData);
-            
-            Image = tileImage;
 
             return tileData;
         }
@@ -916,9 +933,16 @@ namespace S3toIE2 {
                         if (argsStr.Length >= 8) isPlayer = argsStr[7].Trim().ToUpper() == "TRUE";
                         if (argsStr.Length >= 9) dplcArtTile = S3toIE2Level.ParseInt(argsStr[8].Trim());
 
-                        sprites.Add(LoadSprite(mapfile, startingArtTile, pal, dplcfile, isPlayer, minframe, maxframe, dplcArtTile));
-                        if (rename != "")
-                            sprites.Last().Name = rename;
+                        try
+                        {
+                            sprites.Add(LoadSprite(mapfile, startingArtTile, pal, dplcfile, isPlayer, minframe, maxframe, dplcArtTile));
+                            if (rename != "")
+                                sprites.Last().Name = rename;
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
                     else if (line.StartsWith("CUSTOMSPRITETOGGLE")) {
                         string[] argsStr = line.Substring("CUSTOMSPRITETOGGLE ".Length).Split(',');
@@ -952,7 +976,8 @@ namespace S3toIE2 {
                             }
 
                             if (spr == null) {
-                                throw new Exception("Could not find Sprite of name '" + ar[0] + "'!");
+                                //throw new Exception("Could not find Sprite of name '" + ar[0] + "'!");
+                                continue;
                             }
 
                             SprAnim sprAnim = customSprites.Last().Anim.Last();
@@ -1068,7 +1093,15 @@ namespace S3toIE2 {
                         }
                     }
                 }
-                
+    
+                try
+                {
+                    paleetteLeeel = paleetteLeeel.Replace("PATCH", "");
+                }
+                catch
+                {
+
+                }
                 artTiles = ArtToBitmap(paleetteLeeel, requests);
             }
 
@@ -1525,7 +1558,7 @@ namespace S3toIE2 {
             bitmap.UnlockBits(bmpData);
             bitmap.Save(Globals.OUT + outZoneID + "\\" + fileName + ".gif", ImageFormat.Gif);
             bitmap.Dispose();
-            Process.Start("file://" + Path.GetFullPath(Globals.OUT + outZoneID));
+            //Process.Start("file://" + Path.GetFullPath(Globals.OUT + outZoneID));
         }
 
         RSDKv5.Animation currentAnimation = null;
@@ -1543,9 +1576,9 @@ namespace S3toIE2 {
 
         void Open(string filename) {
             using (FileStream input = File.OpenRead(filename)) {
-                using (BinaryReader reader = new BinaryReader(input)) {
+                using (RSDKv5.Reader reader = new RSDKv5.Reader(input)) {
                     string[] spp = filename.Split('\\');
-                    currentAnimation = new RSDKv5.Animation((RSDKv5.Reader)reader);
+                    currentAnimation = new RSDKv5.Animation(reader);
 
                     this.Text = "Animation Editor - " + spp[spp.Length - 1];
                     this.currentFilename = filename;

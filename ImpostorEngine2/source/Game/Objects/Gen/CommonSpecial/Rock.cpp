@@ -175,7 +175,7 @@ void Rock::Create() {
             Sprite = LevelScene::GetSpriteFromBinIndex(BinIndex);
             Sprite->LinkPalette(Scene->TileSprite);
             RockBitsSprite = LevelScene::GetSpriteFromBinIndex(RockBitsBinIndex);
-            RockBitsSprite->LinkPalette(Scene->TileSprite);
+			RockBitsSprite->LinkPalette(Scene->TileSprite);
             CurrentAnimation = Sprite->FindAnimation("Rock");
             CurrentRockBitsAnimation = RockBitsSprite->FindAnimation("Rock Bits");
         }
