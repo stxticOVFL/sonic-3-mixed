@@ -256,6 +256,7 @@ PUBLIC void Level_HCZ::LoadData() {
 		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
 	}
 	TileSprite->Paletted = 2;
+	TileSprite->SetTransparentColorIndex(63);
 }
 
 PUBLIC void Level_HCZ::FinishResults() {

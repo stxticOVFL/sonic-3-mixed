@@ -1770,6 +1770,8 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		}
 	}
 	TileSprite->Animations.push_back(an);
+	//Lazy but works
+	TileSprite->SetTransparentColorIndex(0);
 
 	IApp::Print(-1, "LevelScene \"%s\" took %0.3fs to run.", "TileSprite frame buffering", (SDL_GetTicks() - startTime) / 1000.0);
 	startTime = SDL_GetTicks();
@@ -5879,9 +5881,6 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 	int tile, flipX, flipY, baseX, baseY, wheree;
 	int index, TileBaseX, TileBaseY;
 	// int EndTileBaseX, EndTileBaseY;
-
-	//Lazy but works
-	TileSprite->SetTransparentColorIndex(0);
 
 	for (int l = 0; l < Data->layerCount; l++) {
 		y = 0;
