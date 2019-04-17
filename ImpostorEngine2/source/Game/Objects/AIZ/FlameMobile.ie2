@@ -153,16 +153,16 @@ event OnHit() : int {
 }
 
 event DoExplosionDebris() {
-    Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 0, FlipX, false, -0x400, -0x400, 0x38);
-    Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 1, FlipX, false,  0x400, -0x400, 0x38);
-    Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 2, FlipX, false, -0x400, -0x400, 0x48);
-    Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 3, FlipX, false,  0x400, -0x400, 0x48);
+    //Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 0, FlipX, false, -0x400, -0x400, 0x38);
+    //Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 1, FlipX, false,  0x400, -0x400, 0x38);
+    //Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 2, FlipX, false, -0x400, -0x400, 0x48);
+    //Scene.AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 3, FlipX, false,  0x400, -0x400, 0x48);
 
     if (X < 0x4948)
         X = 0x4948;
 
-    var Signpost:Object = Scene.AddNewObject(Obj_Signpost, 0x00, X, Scene.CameraY - 64, false, false);
-    Signpost.VisualLayer = VisualLayer;
+    var Capsule:Object = Scene.AddNewObject(Obj_EggCapsule, 0x00, X, Scene.CameraY - 64, false, true);
+    Capsule.VisualLayer = VisualLayer;
 }
 event HandleDamage() {
     if (HitCount > 0) {

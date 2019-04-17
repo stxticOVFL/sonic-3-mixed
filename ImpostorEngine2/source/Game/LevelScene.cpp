@@ -2230,7 +2230,6 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 					}
 
 					// If we have more than one attribute
-					char* fuck;
 					if (AttributeCount > 1) {
 						for (int a = 1; a < AttributeCount; a++) {
 							switch (AttributeTypes[a]) {
@@ -3780,6 +3779,10 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int X, int Y, bool FLIPX, bool F
 	return obj;
 }
 
+PUBLIC Object* LevelScene::AddNewObject(int ID) {
+	return AddNewObject(ID, 0, 0);
+}
+
 PUBLIC Object* LevelScene::AddNewObject(int ID, int X, int Y) {
 	ObjectNewCount++;
 
@@ -3812,23 +3815,14 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int X, int Y) {
 	return obj;
 }
 
+PUBLIC Object* LevelScene::AddNewObject(char* ObjName) {
+	return AddNewObject(ObjName, 0, 0);
+}
+
 PUBLIC Object* LevelScene::AddNewObject(char* ObjName, int X, int Y) {
 	ObjectNewCount++;
 
-	MD5 md5 = MD5(ObjName);
-
-	std::string hash = md5.getdigest();
-
-	char hashdata[16];
-
-	for (int i = 0; i < 16; i++)
-	{
-		hashdata[i] = hash[i];
-	}
-
-	uint32_t objHash = crc32((char*)hashdata, 16);
-
-	Object* obj = GetNewObjectFromCRC32(objHash);
+	Object* obj = GetNewObjectFromID(GetObjectIDFromName(ObjName));
 	if (obj) {
 		obj->G = G;
 		obj->App = App;
@@ -4322,7 +4316,13 @@ PUBLIC void LevelScene::Update() {
 					Object* obj = NULL;
 					Ring *ring = NULL;
 
+					if (Player->LastDebugObjectIndex > 0 && Player->LastDebugObjectIndex < ObjectCount) {
+						//Destroy last object
+						Objects[Player->LastDebugObjectIndex]->OnDestroy();
+					}
+
 					if (objId != Player->LastDebugObjId) {
+						Player->LastDebugObjectIndex = ObjectCount;
 						Player->LastDebugObjId = objId;
 						Player->DebugObjectSubIndex = 0;
 					}

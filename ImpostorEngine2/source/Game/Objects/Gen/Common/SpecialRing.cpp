@@ -12,7 +12,7 @@ void SpecialRing::Create() {
     Sprite = LevelScene::LoadSpriteFromBin("Global/SpecialRing.bin", SaveGame::CurrentMode);
     W = 8;
     H = 64;
-    VisW = 64;
+	VisW = 64;
     VisH = 64;
     CurrentAnimation = 0;
     Scale = 1;

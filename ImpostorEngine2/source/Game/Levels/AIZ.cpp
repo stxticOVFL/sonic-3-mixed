@@ -409,7 +409,7 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 
         Player->Cutscene = true;
         Player->ControlLocked = true;
-        Player->ChangeAnimation(Player->AnimationMap["S_Run"]);
+		Player->ChangeAnimation(Player->AnimationMap["S_Run"]);
     }
 }
 

@@ -13,7 +13,7 @@ void FireBreath::Create() {
     W = 48;
     H = 48;
     Radius = 24;
-    CurrentAnimation = 7;
+    CurrentAnimation = Sprite->FindAnimation("Miniboss Main");
     Frame = 0;
     XSpeed = 0;
     YSpeed = 0;
@@ -157,7 +157,7 @@ void FireBreath::Update() {
         switch (State) {
             case 2:
             if (Cutscene) {
-                if (Scene->CameraX >= 0x2F10) {
+                if (Scene->CameraX >= Scene->CameraMaxX) {
                     TimerAction = 0;
                     State = 4;
                     Timer = 0xB4;
@@ -166,7 +166,7 @@ void FireBreath::Update() {
 
             }
             else {
-                if (Scene->CameraX >= 0x10E0 + 160 - App->WIDTH / 2) {
+                if (Scene->CameraX >= Scene->CameraMaxX + 160 - App->WIDTH / 2) {
                     TimerAction = 0;
                     State = 4;
                     Timer = 0xB4;

@@ -72,6 +72,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AirshipBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZBoss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZControl.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZIntro.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMiniboss.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossBomb.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\AIZMinibossCutscene.cpp" />

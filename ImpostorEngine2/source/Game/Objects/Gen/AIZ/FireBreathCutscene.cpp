@@ -75,7 +75,6 @@ void FireBreathCutscene::Create() {
         SmallX = 0;
         SmallerX = 0;
         SmallestX = 0;
-        X = 0x2F10 + App->WIDTH - 0x30;
         VisualLayer = 0;
     }
     else {
@@ -158,7 +157,7 @@ void FireBreathCutscene::Update() {
         switch (State) {
             case 2:
             if (Cutscene) {
-                if (Scene->CameraX >= 0x2F10) {
+                if (Scene->CameraX >= Scene->CameraMaxX) {
                     TimerAction = 0;
                     State = 4;
                     Timer = 0xB4;
@@ -167,7 +166,7 @@ void FireBreathCutscene::Update() {
 
             }
             else {
-                if (Scene->CameraX >= 0x10E0 + 160 - App->WIDTH / 2) {
+                if (Scene->CameraX >= Scene->CameraMaxX + 160 - App->WIDTH / 2) {
                     TimerAction = 0;
                     State = 4;
                     Timer = 0xB4;

@@ -133,7 +133,7 @@ event Create() {
         SmallerX = 0;
         SmallestX = 0;
 
-        X = 0x2F10 + App.WIDTH - 0x30;
+        //X = 0x2F10 + App.WIDTH - 0x30;
         VisualLayer = 0;
     }
     else {
@@ -210,13 +210,12 @@ event HandleDamage() {
 
 event Update() {
 	
-	if (!isHeldDebugObject)
-	{
+	if (!isHeldDebugObject) {
 		    // Boss States
     switch (State) {
         case 2:
             if (Cutscene) {
-                if (Scene.CameraX >= 0x2F10) { // 0x2F10
+                if (Scene.CameraX >= Scene.CameraMaxX) { // 0x2F10
                     TimerAction = 0; // loc_6857A
                     State = 4;
                     Timer = 0xB4; // 180
@@ -224,7 +223,7 @@ event Update() {
                 }
             }
             else {
-                if (Scene.CameraX >= 0x10E0 + 160 - App.WIDTH / 2) {
+                if (Scene.CameraX >= Scene.CameraMaxX + 160 - App.WIDTH / 2) {
                     TimerAction = 0;
                     State = 4;
                     Timer = 0xB4; // 180
@@ -373,7 +372,7 @@ event Render(CamX:int, CamY:int) {
     // Nozzle
     G.DrawSprite(Sprite, CurrentAnimation, 6, X - CamX, Y - CamY, 0, FlipX);
 	
-				if (App.viewObjectCollision) {
+	if (App.viewObjectCollision) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);

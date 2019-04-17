@@ -16,6 +16,9 @@ void EggCapsule::Create() {
     W = 64;
     H = 64;
     CurrentAnimation = Sprite->FindAnimation("Capsule");
+    TimerX = 0;
+    TimerY = 0;
+    Left = false;
     Broken = false;
     if (Flying) {
         MaxAccel = 0xC0;
@@ -26,16 +29,38 @@ void EggCapsule::Create() {
     else {
         Gravity = 0x70;
     }
-    Button = Scene->AddNewObject(Obj_EggCapsuleButton, 0, X, Y - 32, false, FlipY);
+    if (!Flying) Button = Scene->AddNewObject(Obj_EggCapsuleButton, 0, X, Y - 32, false, FlipY);
+    else Button = Scene->AddNewObject(Obj_EggCapsuleButton, 0, X, Y + 32, false, FlipY);
+    Button->VisualLayer = VisualLayer;
     Button->Sprite = Sprite;
     Button->CurrentAnimation = CurrentAnimation + 1;
+    Button->Parent = this;
     VisualLayer = 1;
+    Button->VisualLayer = VisualLayer;
 }
 
 void EggCapsule::Update() {
     if (!isHeldDebugObject) {
         if (Flying) {
             Swing_UpAndDown();
+            if (Y < Scene->CameraY + (H / 2)) {
+                TimerY++;
+                if (TimerY >= 3) {
+                    Y++;
+                    TimerY = 0;
+                }
+
+            }
+
+            TimerX++;
+            if (TimerX >= 2) {
+                if (!Left) X++;
+
+                if (Left) X--;
+
+                TimerX = 0;
+            }
+
         }
         else {
             if (Gravity) {
@@ -55,8 +80,8 @@ void EggCapsule::Update() {
             }
 
         }
-        Button->SubY = SubY + (YSpeed << 8) - 0x200000;
-        Button->InitialY = Button->SubY >> 16;
+        Button->InitialY = FlipY ? Y + (H / 2) : Y - (H / 2);
+        Button->X = X;
         if (Button->BounceOffShield && !Broken) {
             Broken = true;
             Scene->StopTimer = true;
@@ -67,6 +92,15 @@ void EggCapsule::Update() {
 
     }
 
+    if (X + (W / 2) >= Scene->CameraX + App->WIDTH) {
+        Left = true;
+    }
+    else {
+        if (X - (W / 2) <= Scene->CameraX) {
+            Left = false;
+        }
+
+    }
     Object::Update();
 }
 
@@ -79,5 +113,20 @@ void EggCapsule::Render(int CamX, int CamY) {
     else {
         G->DrawSprite(Sprite, CurrentAnimation, Broken, X - CamX, Y - CamY, 0, IE_NOFLIP);
     }
+    if (DrawCollisions) {
+        G->SetDrawAlpha(0x80);
+        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
+        G->SetDrawAlpha(0xFF);
     }
+
+    }
+
+void EggCapsule::OnDestroy() {
+    if (isHeldDebugObject) {
+        Button->OnDestroy();
+        Button->Active = false;
+        Button->Visible = false;
+    }
+
+}
 

@@ -21,6 +21,19 @@ public:
     bool LoadStageconfig;
     bool LoadTiles;
     bool LoadAniTiles;
+    int FireRiseValue;
+    int FireRiseValue2;
+    int Timerrrr;
+    int TreeRevealRow;
+    Layer* FireLayerBackup;
+    int FireInd;
+    ISprite* AIZShipTileSprite;
+    ISprite* IntroSprite;
+    ISprite* TileSpriteBackup;
+    int CutsceneActTimer;
+    Uint32 ShipTimer;
+    int BombDelay;
+    int BombIndex;
     
     void Create();
     void Update();

@@ -110,7 +110,7 @@ void Signpost::Render(int CamX, int CamY) {
     w = (24 * c >> 16) + (-4 * s >> 16);
     if (w - x > 0) G->DrawSpriteSized(Sprite, 5, Frame >> 8, X - CamX + x + 24, Y - CamY + 22 + Sprite->Animations[5].Frames[Frame >> 8].OffY, 0, IE_NOFLIP, w - x, 30);
 
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

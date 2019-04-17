@@ -105,14 +105,10 @@ int FlameMobile::OnHit() {
 }
 
 void FlameMobile::DoExplosionDebris() {
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 0, FlipX, false, -0x400, -0x400, 0x38);
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 1, FlipX, false, 0x400, -0x400, 0x38);
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 2, FlipX, false, -0x400, -0x400, 0x48);
-    Scene->AddMovingSprite(Sprite, X, Y, CurrentAnimation + 3, 3, FlipX, false, 0x400, -0x400, 0x48);
     if (X < 0x4948) X = 0x4948;
 
-    Object* Signpost = Scene->AddNewObject(Obj_Signpost, 0x00, X, Scene->CameraY - 64, false, false);
-    Signpost->VisualLayer = VisualLayer;
+    Object* Capsule = Scene->AddNewObject(Obj_EggCapsule, 0x00, X, Scene->CameraY - 64, false, true);
+    Capsule->VisualLayer = VisualLayer;
 }
 
 void FlameMobile::HandleDamage() {

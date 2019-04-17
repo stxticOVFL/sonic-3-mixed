@@ -203,7 +203,7 @@ void RhinoBot::Render(int CamX, int CamY) {
             G->DrawRectangle(X - (W / 2) - CamX + Flip * 14, Y - (H / 2) - CamY + 1, W, H, DrawCollisionsColor);
         }
         else {
-            G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
+            G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         }
         G->SetDrawAlpha(0xFF);
     }
