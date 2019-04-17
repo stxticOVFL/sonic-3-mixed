@@ -17,6 +17,7 @@ public:
         uint8_t  Continues;
         uint32_t Score;
         uint32_t TargetScore;
+		uint16_t Flags;
         uint16_t UsedZoneRings[16];
     };
 
@@ -30,6 +31,7 @@ public:
     static uint8_t  CurrentPartnerFlag;
 	static uint16_t CurrentUsedZoneRings;
 	static uint16_t CurrentEmeralds;
+	static uint16_t CurrentFlags;
 	static bool		SuperEmeraldRoomActivated;
 
 	static bool AchievementData[0x40];
@@ -59,6 +61,7 @@ uint8_t             SaveGame::CurrentCharacterFlag = 0;
 uint8_t             SaveGame::CurrentPartnerFlag = 0xFF;
 uint16_t            SaveGame::CurrentUsedZoneRings = 0x0000; // resets on every zone
 uint16_t            SaveGame::CurrentEmeralds = 0xFFFF;
+uint16_t            SaveGame::CurrentFlags = 0;
 bool				SaveGame::AchievementData[TOTAL_ACHIEVEMENT_COUNT];
 bool				SaveGame::SuperEmeraldRoomActivated = false;
 
@@ -88,6 +91,7 @@ PUBLIC STATIC void SaveGame::Init() {
             Savefiles[s].Continues = reader.ReadByte();
             Savefiles[s].Score = reader.ReadUInt32();
             Savefiles[s].TargetScore = reader.ReadUInt32();
+			Savefiles[s].Flags = reader.ReadUInt16();
             reader.ReadBytesTo((uint8_t*)&Savefiles[s].UsedZoneRings[0], 16 << 1);
         }
 
@@ -132,6 +136,7 @@ PUBLIC STATIC void SaveGame::Flush() {
             writer.WriteByte(Savefiles[s].Continues);
             writer.WriteUInt32(Savefiles[s].Score);
             writer.WriteUInt32(Savefiles[s].TargetScore);
+			writer.WriteUInt16(Savefiles[s].Flags);
             writer.WriteBytes((uint8_t*)&Savefiles[s].UsedZoneRings[0], 16 << 1);
         }
 
@@ -210,4 +215,16 @@ PUBLIC STATIC void SaveGame::SetSuperEmeraldFlag(bool state) {
 	if (SaveGame::CurrentSaveFile == -1) return;
 
 	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Emeralds = SaveGame::CurrentEmeralds;
+}
+
+PUBLIC STATIC bool SaveGame::GetFlag(int id) {
+	if (SaveGame::CurrentSaveFile == -1) return SaveGame::CurrentFlags >> id & 1;
+
+	return SaveGame::Savefiles[SaveGame::CurrentSaveFile].Flags >> id & 1;
+}
+PUBLIC STATIC void SaveGame::SetFlag(int value, int id) {
+	SaveGame::CurrentFlags |= (value & 1) << id;
+	if (SaveGame::CurrentSaveFile == -1) return;
+
+	SaveGame::Savefiles[SaveGame::CurrentSaveFile].Flags = SaveGame::CurrentFlags;
 }

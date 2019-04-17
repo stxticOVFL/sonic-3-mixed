@@ -136,6 +136,7 @@ public:
     std::vector<ISprite *> SpriteMapIDs;
     static std::unordered_map<std::string, size_t> SpriteBinMap;
     static std::vector<ISprite *> SpriteBinMapIDs;
+    bool isCutscene = false;
     int ZoneID = 0;
     int Act = 1;
     int VisualAct = 1;
@@ -235,6 +236,7 @@ public:
     virtual void LoadZoneSpecificSprites();
     void SaveState();
     void LoadState();
+    static ISprite* LoadLevelTiles(const char* Filename);
     static size_t LoadSpriteBin(const char* Filename);
     static size_t LoadSpriteBin(const char* Filename, byte Mode);
     static ISprite* LoadSpriteFromBin(const char* Filename);

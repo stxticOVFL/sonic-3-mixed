@@ -7,6 +7,7 @@ typedef IMath Math;
 
 void AIZControl::Create() {
     Object::Create();
+    Priority = true;
     AttributeBuffer = GetAttribute("actID");
     ActID = AttributeBuffer.ValUint8;
     AttributeBuffer = GetAttribute("zoneLetters");
@@ -32,6 +33,10 @@ void AIZControl::Create() {
     Scene->AddNewDebugObjectID(Obj_CaterkillerJr);
     Scene->AddNewDebugObjectID(Obj_FireBreath);
     Scene->AddNewDebugObjectID(Obj_FlameMobile);
+    if (!SaveGame::GetFlag(0)) {
+        Object* Intro = Scene->AddNewObject(Obj_AIZIntro);
+    }
+
     if (ActID == 1) {
         Scene->VisualWaterLevel = 0x508;
         Scene->WaterLevel = 0x508;
@@ -61,7 +66,21 @@ void AIZControl::Create() {
     }
 
     if (Scene->Player) {
-        if (Scene->Player->Character != CharacterType::Knuckles) {
+        if (Scene->Player->Character == CharacterType::Knuckles) {
+            if (ActID == 1) {
+                int BGLayer = Scene->FindLayer("Background (Sky & Sea)");
+                int YPos = 23;
+                for (int i = 0; i < Scene->Data->Layers[BGLayer].Width; i++)
+{
+                    Scene->Data->Layers[BGLayer].Tiles[(YPos * Scene->Data->Layers[BGLayer].Width) + i] = 75;
+                }
+                YPos = 24;
+                for (int i = 0; i < Scene->Data->Layers[BGLayer].Width; i++)
+{
+                    Scene->Data->Layers[BGLayer].Tiles[(YPos * Scene->Data->Layers[BGLayer].Width) + i] = 75;
+                }
+            }
+
         }
         else {
         }

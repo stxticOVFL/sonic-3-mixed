@@ -27,6 +27,7 @@ public:
     uint8_t  Continues;
     uint32_t Score;
     uint32_t TargetScore;
+    uint16_t Flags;
     uint16_t UsedZoneRings[16];
     }; 
     static SaveFile Savefiles[36];
@@ -39,6 +40,7 @@ public:
     static uint8_t  CurrentPartnerFlag;
     static uint16_t CurrentUsedZoneRings;
     static uint16_t CurrentEmeralds;
+    static uint16_t CurrentFlags;
     static bool		SuperEmeraldRoomActivated;
     static bool AchievementData[0x40];
 
@@ -57,6 +59,8 @@ public:
     static void SetEmeralds(int value);
     static bool SuperEmeraldsActive();
     static void SetSuperEmeraldFlag(bool state);
+    static bool GetFlag(int id);
+    static void SetFlag(int value, int id);
 };
 
 #endif /* SAVEGAME_H */

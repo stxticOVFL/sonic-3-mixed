@@ -23,6 +23,8 @@ var BombIndex:int;
 
 event Create() {
 
+	Priority = true;
+
 	AttributeBuffer = GetAttribute("actID");
 	ActID = AttributeBuffer.ValUint8;
 	
@@ -56,11 +58,9 @@ event Create() {
     Scene.AddNewDebugObjectID(Obj_FireBreath); 
     Scene.AddNewDebugObjectID(Obj_FlameMobile);
 	
-	//var Intro:Object = Scene.AddNewObject("AIZIntro");
-	//Intro.IntroSprite = IntroSprite;
-	//Intro.TileSpriteBackup = TileSpriteBackup;
-	//Intro.Create();
-
+	if (!SaveGame.GetFlag(0)) {
+		var Intro:Object = Scene.AddNewObject(Obj_AIZIntro);
+	}
 	if (ActID == 1) {
 		Scene.VisualWaterLevel = 0x508;
 		Scene.WaterLevel = 0x508;
@@ -93,8 +93,20 @@ event Create() {
 	
 	if (Scene.Player) {
 		//Setup Knux Path
-		if (Scene.Player.Character != CharacterType.Knuckles) {
+		if (Scene.Player.Character == CharacterType.Knuckles) {
+			if (ActID == 1) {
+			//Create Knux' Sky BG
+			var BGLayer:int = Scene.FindLayer("Background (Sky & Sea)");
+			var YPos:int = 23;
+			for (var i:int = 0; i < Scene.Data.Layers[BGLayer].Width; i++) {
+				Scene.Data.Layers[BGLayer].Tiles[(YPos * Scene.Data.Layers[BGLayer].Width) + i] = 75;
+			}
 			
+			YPos = 24;
+			for (var i:int = 0; i < Scene.Data.Layers[BGLayer].Width; i++) {
+				Scene.Data.Layers[BGLayer].Tiles[(YPos * Scene.Data.Layers[BGLayer].Width) + i] = 75;
+			}
+			}
 		}
 		else {
 			

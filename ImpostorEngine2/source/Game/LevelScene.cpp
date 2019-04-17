@@ -133,6 +133,7 @@ class LevelScene : public IScene {
         static std::unordered_map<std::string, size_t> SpriteBinMap;
         static std::vector<ISprite *> SpriteBinMapIDs;
 
+		bool isCutscene = false;
         int ZoneID = 0;
         int Act = 1;
         int VisualAct = 1;
@@ -512,6 +513,28 @@ PUBLIC void LevelScene::LoadState() {
 	}
 
 	Player->Shield = (ShieldType)StateShield;
+}
+
+//Aurum I need to be able to use 'new' in IE2s
+PUBLIC STATIC ISprite* LevelScene::LoadLevelTiles(const char* Filename) {
+	ISprite* Sprite = new ISprite(Filename, IApp::GlobalApp);
+
+	ISprite::Animation an;
+	an.Name = "Tiles";
+	an.FrameCount = 0x400;
+	an.Frames = (ISprite::AnimFrame*)malloc(0x400 * sizeof(ISprite::AnimFrame));
+	for (int i = 0; i < 0x400; i++) {
+		ISprite::AnimFrame ts_af;
+		ts_af.X = (i & 0x1F) << 4;
+		ts_af.Y = (i >> 5) << 4;
+		ts_af.W = ts_af.H = 16;
+		ts_af.OffX = ts_af.OffY = -8;
+		an.Frames[i] = ts_af;
+		IApp::GlobalApp->G->MakeFrameBufferID(Sprite, an.Frames + i);
+	}
+	Sprite->Animations.push_back(an);
+
+	return Sprite;
 }
 
 PUBLIC STATIC size_t LevelScene::LoadSpriteBin(const char* Filename) {
@@ -3832,10 +3855,10 @@ PUBLIC Object* LevelScene::AddNewObject(char* ObjName, int X, int Y) {
 		obj->InitialX = X;
 		obj->InitialY = Y;
 
-		obj->Filter = obj->GetAttribute("Filter").ValUint8;
-		obj->SubType = obj->GetAttribute("Subtype").ValUint8;
-		obj->FlipX = obj->GetAttribute("FlipX").ValBool;
-		obj->FlipY = obj->GetAttribute("FlipY").ValBool;
+		obj->Filter = obj->GetAttribute("filter").ValUint8;
+		obj->SubType = obj->GetAttribute("subtype").ValUint8;
+		obj->FlipX = obj->GetAttribute("flipX").ValBool;
+		obj->FlipY = obj->GetAttribute("flipY").ValBool;
 		obj->Create();
 		obj->DrawCollisions = App->viewObjectCollision;
 		ObjectCount++;
@@ -4738,6 +4761,72 @@ PUBLIC void LevelScene::Update() {
 
 		HandleCamera();
 		Subupdate();
+
+		//Subupdate
+		if (Player)
+		{
+			for (unsigned int o = 0; o < (unsigned int)ObjectCount && Player->Action != ActionType::Dead; o++) {
+				Object* obj = Objects[o];
+				if (obj != NULL) {
+					if (obj->Active) {
+						LastObjectUpdated = obj;
+
+						//int32_t NoNegativeCamY = CameraY + App->HEIGHT / 2;
+
+						bool OnScreen = false;
+
+						if (Data->Layers[Data->CameraLayer].IsScrollingVertical) {
+							if (obj->VisW > obj->W || obj->VisH > obj->H) {
+								OnScreen |= (
+									-1 < (obj->X - CameraX) + obj->VisW &&
+									((obj->X - CameraX) - obj->VisW) < 0x140 &&
+									((obj->Y - CameraY) + obj->VisH & ScreenYWrapValue) < ((obj->VisH * 2) + 0xe0));
+							}
+							else {
+								int16_t Calc = (obj->Y - CameraY) + obj->H & ScreenYWrapValue;
+								if ((obj->Y - CameraY) + obj->H > ScreenYWrapValue) {
+									Calc = (((obj->Y - CameraY) + obj->H) + ScreenYWrapValue) & ScreenYWrapValue;
+								}
+								OnScreen |= (
+									-1 < (obj->X - CameraX) + obj->W &&
+									((obj->X - CameraX) - obj->W) < 0x140 &&
+									(Calc < (obj->H * 2) + 0xe0));
+
+								if (obj->PrintDebuggingInfo) {
+									App->Print(0, "%04X, %04X", Calc, (obj->H * 2) + 0xe0);
+								}
+							}
+						}
+						else {
+							if (obj->VisW > obj->W || obj->VisH > obj->H) {
+								OnScreen |= (
+									obj->X + obj->VisW >= CameraX - 0x80 &&
+									obj->Y + obj->VisH >= CameraY - 0x80 &&
+									obj->X - obj->VisW < CameraX + App->WIDTH + 0x80 &&
+									obj->Y - obj->VisH < CameraY + App->HEIGHT + 0x80);
+							}
+							else {
+								OnScreen |= (
+									obj->X + obj->W / 2 >= CameraX - 0x80 &&
+									obj->Y + obj->H / 2 >= CameraY - 0x80 &&
+									obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
+									obj->Y - obj->H / 2 < CameraY + App->HEIGHT + 0x80);
+							}
+						}
+
+						if (obj->OnScreen && !OnScreen) {
+							obj->OnScreen = OnScreen;
+							obj->OnLeaveScreen();
+						}
+
+						obj->OnScreen = OnScreen;
+						if (obj->Priority || OnScreen) {
+							//obj->SubUpdate();
+						}
+					}
+				}
+			}
+		}
 
 		if (ShakeTimer > 0)
 			ShakeTimer--;

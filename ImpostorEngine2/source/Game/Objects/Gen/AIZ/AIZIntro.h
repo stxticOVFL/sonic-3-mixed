@@ -25,7 +25,7 @@ public:
     int Cutscene_SonicWaitTimer;
     
     void Create();
-    void Update();
+    void SubUpdate();
     void IntroFinish();
 };
 

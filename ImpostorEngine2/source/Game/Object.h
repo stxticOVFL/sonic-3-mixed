@@ -562,6 +562,7 @@ public:
 
     virtual void Create();
     virtual void Update();
+    virtual void SubUpdate();
 	virtual void UpdateSubType();
     virtual uint8_t GetSubTypeIncrement();
 	virtual uint8_t GetSubTypeMax();

@@ -223,6 +223,11 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     VisualAct = Act = ACT;
 	sprintf(ZoneLetters, "AIZ");
 
+	if (Act == 0)
+	{
+		isCutscene = true;
+	}
+
     IApp::Print(0, "Starting AIZ... %d", ACT);
 
     uint64_t startTime = SDL_GetTicks();
@@ -303,14 +308,14 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     sprintf(LevelNameDiscord, "Angel Island");
 
     if (Act == 0) {
-        PlayerStartX = 0x01E0;
-        PlayerStartY = 0x041A;
+        //PlayerStartX = 0x01E0;
+        //PlayerStartY = 0x041A;
 
-        HUDVisible = false;
+        //HUDVisible = false;
     }
     else if (Act == 1) {
-        PlayerStartX = 0x13E0;
-        PlayerStartY = 0x041A;
+        //PlayerStartX = 0x13E0;
+        //PlayerStartY = 0x041A;
 
         // PlayerStartX = 0x3000;
         // PlayerStartY = 0x034C;
@@ -349,6 +354,16 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 	TileSpriteBackup = NULL;
 
     LevelScene::RestartStage(doActTransition, drawBackground);
+
+	if (Act == 0) {
+		TileSpriteBackup = TileSprite;
+		if (SaveGame::CurrentMode == 0) {
+			TileSprite = LoadLevelTiles("Classic/Stages/AIZ1/Intro/16x16Tiles.gif");
+		}
+		else {
+			TileSprite = LoadLevelTiles("Mixed/Stages/AIZ1/Intro/16x16Tiles.gif");
+		}
+	}
 
     if (Act == 1) {
         VisualWaterLevel = 0x508;
@@ -392,24 +407,6 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
             LevelCardTimer = 0.0;
             LevelCardHide = false;
         }
-    }
-
-    if (Act == 0) {
-        LevelCardTimer = 0.0;
-        LevelCardHide = true;
-        FadeAction = FadeActionType::FADEIN;
-        FadeTimerMax = 90;
-        FadeMax = 0x140;
-        OnBeach = false;
-        SuperSonicMoving = true;
-        CutsceneRoutineNumber = 0x00;
-
-        Cutscene_SonicWaitTimer = -1;
-        Cutscene_KnucklesBackForth = -1;
-
-        Player->Cutscene = true;
-        Player->ControlLocked = true;
-		Player->ChangeAnimation(Player->AnimationMap["S_Run"]);
     }
 }
 
@@ -565,15 +562,9 @@ PUBLIC void Level_AIZ::Subupdate() {
                 Frame--;
 
                 Act = 1;
-                PlayerStartX = 0x13E0;
-                PlayerStartY = 0x041A;
-                Str_TileConfigBin = "Stages/AIZ/TileConfig1.bin";
-                Str_SceneBin = "Stages/AIZ/Scene1.bin";
-                Str_TileSprite = "Stages/AIZ/16x16Tiles1.gif";
-                //Str_AnimatedSprites = "Sprites/AIZ/AnimatedTiles";
-                Str_ObjectsList = "Stages/AIZ/Objects1.bin";
-                Str_RingsList = "Stages/AIZ/Rings1.bin";
-                Init();
+				isCutscene = false;
+				SaveGame::SetFlag(1, 0);
+                RestartStage(false,false);
             }
         }
 
@@ -908,7 +899,7 @@ PUBLIC void Level_AIZ::Subupdate() {
             if (!AIZShipTileSprite) {
                 if (SaveGame::CurrentMode >= 1) AIZShipTileSprite = new ISprite("Mixed/Stages/AIZ2/16x16TilesB.gif", App);
 				else AIZShipTileSprite = new ISprite("Classic/Stages/AIZ2/16x16TilesB.gif", App);
-                TileSpriteBackup = TileSprite;
+				TileSpriteBackup = TileSprite;
 
 				ISprite::Animation an;
                 an.Name = "";
@@ -1042,13 +1033,13 @@ PUBLIC void Level_AIZ::HandleCamera() {
 
     if (Act == 0) {
         if (SuperSonicMoving) {
-            if (CameraX < 0x1400 && !OnBeach) {
+            if (CameraX < 3200 && !OnBeach) {
                 BackgroundRepeatTileWidth = 32;
                 Data->Layers[1].Visible = false;
                 Data->Layers[2].Visible = false;
                 // Intro sequence camera stuff
             }
-            else if (CameraX >= 0x1400 && !OnBeach) {
+            else if (CameraX >= 3200 && !OnBeach) {
                 CameraX = 0x000;
                 //Player->EZX -= 0x800;
                 BackgroundRepeatTileWidth = 0;
@@ -1063,8 +1054,8 @@ PUBLIC void Level_AIZ::HandleCamera() {
             Player->GroundSpeed = 0xC00;
             Player->Ground = true;
 
-            if (CameraX >= 0x1308 && OnBeach) {
-                CameraX = 0x1308;
+            if (CameraX >= 5024 && OnBeach) {
+                CameraX = 5024;
 
                 SuperSonicMoving = false;
                 Player->GroundSpeed = 0x0;
@@ -1075,6 +1066,14 @@ PUBLIC void Level_AIZ::HandleCamera() {
                 Player->ChangeAnimation(Player->AnimationMap["Hurt"]);
 
                 CutsceneRoutineNumber = 1;
+
+				HUDVisible = true;
+				Player->Cutscene = false;
+				Player->ControlLocked = false;
+				Act = 1;
+				isCutscene = false;
+				TileSprite = TileSpriteBackup;
+				SaveGame::SetFlag(1, 0);
             }
         }
 

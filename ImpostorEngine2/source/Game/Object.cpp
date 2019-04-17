@@ -26,6 +26,9 @@ void Object::Update() {
     Animate();
 }
 
+void Object::SubUpdate() {
+}
+
 void Object::UpdateSubType() {
 
 }

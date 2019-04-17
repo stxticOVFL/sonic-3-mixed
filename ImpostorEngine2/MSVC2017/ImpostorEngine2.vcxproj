@@ -122,6 +122,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\Common\AnimSprite.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\AutomaticTunnel.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BlankObject.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\Common\BoundsMarker.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BreakableWall.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\BubbleAir.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\Common\Bubbler.cpp" />
