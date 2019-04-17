@@ -28,7 +28,7 @@ void ItemBox::Create() {
     AttributeBuffer = GetAttribute("type");
     MonitorType = AttributeBuffer.ValVar;
     AttributeBuffer = GetAttribute("isFalling");
-	CanFall = AttributeBuffer.ValBool;
+    CanFall = AttributeBuffer.ValBool;
     AttributeBuffer = GetAttribute("direction");
     Direction = AttributeBuffer.ValUint8;
     AttributeBuffer = GetAttribute("planeFilter");
@@ -39,7 +39,7 @@ void ItemBox::Create() {
     switch (MonitorType) {
         case ItemTypes::TYPE_RINGS:
         SubTypeFrame = 0;
-		break;
+        break;
         case ItemTypes::TYPE_SHIELD:
         SubTypeFrame = 1;
         break;

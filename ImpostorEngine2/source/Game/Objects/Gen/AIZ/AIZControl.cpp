@@ -9,7 +9,7 @@ void AIZControl::Create() {
     Object::Create();
     AttributeBuffer = GetAttribute("actID");
     ActID = AttributeBuffer.ValUint8;
-	AttributeBuffer = GetAttribute("zoneLetters");
+    AttributeBuffer = GetAttribute("zoneLetters");
     sprintf(ZoneLetters, AttributeBuffer.ValString);
     AttributeBuffer = GetAttribute("loadTileconfig");
     LoadTileconfig = AttributeBuffer.ValBool;

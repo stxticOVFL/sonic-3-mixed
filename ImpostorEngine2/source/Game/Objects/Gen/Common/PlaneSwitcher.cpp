@@ -13,7 +13,7 @@ void PlaneSwitcher::Create() {
     AttributeBuffer = GetAttribute("Flags");
     Flags = AttributeBuffer.ValUint32;
     AttributeBuffer = GetAttribute("OnPath");
-	OnPath = AttributeBuffer.ValBool;
+    OnPath = AttributeBuffer.ValBool;
     AttributeBuffer = GetAttribute("Size");
     Size = AttributeBuffer.ValUint32;
     if (Size <= 0) Size = 1;
