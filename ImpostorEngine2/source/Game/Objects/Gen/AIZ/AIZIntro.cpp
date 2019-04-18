@@ -101,7 +101,7 @@ void AIZIntro::SonicCutscene() {
             if (SonicFrame > 4) {
                 SonicFrame = 4;
                 if (SonicX + 128 < Scene->CameraX && SonicY - 48 <= UpdateTimer) {
-                    CutsceneRoutineNumber++;
+					CutsceneRoutineNumber++;
                     SuperSonicMoving++;
                     Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
                     SonicY = 1;

@@ -4814,6 +4814,8 @@ void IPlayer::HandlePathSwitchers() {
 	for (int i = 0; i < Scene->PlaneSwitchCount; i++) {
 		int W = 16 * Scene->PlaneSwitchers[i].Size;
 		int H = 16 * Scene->PlaneSwitchers[i].Size;
+		W /= 2;
+		H /= 2;
 		int rnd = (Scene->PlaneSwitchers[i].Angle & 0xC0);
 		if (rnd == 0x00 ||
 			rnd == 0x80) {

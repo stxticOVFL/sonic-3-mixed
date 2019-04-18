@@ -45,7 +45,7 @@ void Spring::Create() {
 
     }
     else if (SpringType == 1 || SpringType == 0) {
-        if (FlipFlag == 2 || FlipFlag == 3) {
+        if (FlipFlag == 2 || FlipFlag >= 3) {
             Rotation = 180;
             FlipY = true;
         }
