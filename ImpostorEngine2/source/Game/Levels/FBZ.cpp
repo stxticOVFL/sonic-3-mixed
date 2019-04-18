@@ -76,33 +76,32 @@ PUBLIC void Level_FBZ::AssignSpriteMapIDs() {
 }
 
 PUBLIC void Level_FBZ::LoadZoneSpecificSprites() {
-
-    if (!KnuxSprite[0]) {
+	if (!KnuxSprite[0]) {
 		if (SaveGame::CurrentMode >= 1)
 		{
-			KnuxSprite[0] = new ISprite("PlayersMixed/Knux1.gif", App);
-			KnuxSprite[1] = new ISprite("PlayersMixed/Knux2.gif", App);
-			KnuxSprite[2] = new ISprite("PlayersMixed/Knux3.gif", App);
-			KnuxSprite[3] = new ISprite("PlayersMixed/KnuxCutsceneAIZ.gif", App);
-			KnuxSprite[4] = new ISprite("PlayersMixed/KnuxCutsceneHPZ.gif", App);
+			KnuxSprite[0] = new ISprite("Mixed/Sprites/Players/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("Mixed/Sprites/Players/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("Mixed/Sprites/Players/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("Mixed/Sprites/Players/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("Mixed/Sprites/Players/KnuxCutsceneHPZ.gif", App);
 
-			KnuxSprite[0]->LoadAnimation("PlayersMixed/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("Mixed/Sprites/Players/Knux.bin");
 		}
 		else
 		{
-			KnuxSprite[0] = new ISprite("PlayersClassic/Knux1.gif", App);
-			KnuxSprite[1] = new ISprite("PlayersClassic/Knux2.gif", App);
-			KnuxSprite[2] = new ISprite("PlayersClassic/Knux3.gif", App);
-			KnuxSprite[3] = new ISprite("PlayersClassic/KnuxCutsceneAIZ.gif", App);
-			KnuxSprite[4] = new ISprite("PlayersClassic/KnuxCutsceneHPZ.gif", App);
+			KnuxSprite[0] = new ISprite("Classic/Sprites/Players/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("Classic/Sprites/Players/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("Classic/Sprites/Players/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("Classic/Sprites/Players/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("Classic/Sprites/Players/KnuxCutsceneHPZ.gif", App);
 
-			KnuxSprite[0]->LoadAnimation("PlayersClassic/Knux.bin");
+			KnuxSprite[0]->LoadAnimation("Classic/Sprites/Players/Knux.bin");
 		}
-        KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-    }
+		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
+	}
 }
 
 PUBLIC void Level_FBZ::EarlyUpdate() {

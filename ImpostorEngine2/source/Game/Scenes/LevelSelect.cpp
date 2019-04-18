@@ -161,13 +161,19 @@ PUBLIC void Scene_LevelSelect::Update() {
                     if (Sound::SoundBank[0]) Sound::SoundBank[0]->Cleanup();
                     delete Sound::SoundBank[0];
                     Sound::SoundBank[0] = NULL;
+					int tmp = (selected % 2) + 1;
 					if (mode != 2) {
 						IApp::Print(0, "%d", selected);
 						switch (selected) {
 							LevelScene* ls;
 						case 0:
 						case 1:
-							App->NextScene = new Level_AIZ(App, G, (selected % 2) + 1);
+							if (!SaveGame::GetFlag(0) && tmp == 1) {
+								App->NextScene = new Level_AIZ(App, G, 0);
+							}
+							else {
+								App->NextScene = new Level_AIZ(App, G, (selected % 2) + 1);
+							}
 							break;
 						case 2:
 						case 3:

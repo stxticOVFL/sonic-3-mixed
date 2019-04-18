@@ -4224,6 +4224,7 @@ void IPlayer::LateUpdate() {
 
 void IPlayer::Render(int CamX, int CamY) {
 	if (Hidden) return;
+	if (!Visible) return;
 
 	// Invincibility stars:
 	// 2 per sonic status position
@@ -4825,10 +4826,10 @@ void IPlayer::HandlePathSwitchers() {
 		if (rnd != Scene->PlaneSwitchers[i].Angle)
 			continue; // just don't even deal with angles like these tbh
 
-		if (EZX + 10 + sz_l >= Scene->PlaneSwitchers[i].X - W &&
-			EZX - 10 + sz_r < Scene->PlaneSwitchers[i].X + W &&
-			EZY + 10 + 00 >= Scene->PlaneSwitchers[i].Y - H &&
-			EZY - 10 - 00 < Scene->PlaneSwitchers[i].Y + H) {
+		if (EZX + sz_l >= Scene->PlaneSwitchers[i].X - W &&
+			EZX + sz_r < Scene->PlaneSwitchers[i].X + W &&
+			EZY >= Scene->PlaneSwitchers[i].Y - H &&
+			EZY < Scene->PlaneSwitchers[i].Y + H) {
 			if (Scene->PlaneSwitchers[i].OnPath) {
 				if (Ground) {
 					int dot = 0;

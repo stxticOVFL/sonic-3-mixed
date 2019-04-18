@@ -109,8 +109,6 @@ event Update() {
 	}
 	else Scale = 0.5;
 
-    Sprite = Scene.Objects3Sprite;
-
     var LoopPoint:int = Sprite.Animations[CurrentAnimation].FrameToLoop;
     var FrameCount:int = Sprite.Animations[CurrentAnimation].FrameCount;
 

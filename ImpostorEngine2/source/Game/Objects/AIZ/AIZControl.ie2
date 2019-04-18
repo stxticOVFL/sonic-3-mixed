@@ -45,20 +45,29 @@ event Create() {
 
     Scene.ZoneID = 1;
 	Scene.VisualAct = ActID;
-	Scene.Act = ActID;
+	if (SaveGame.GetFlag(0)) {
+		Scene.Act = ActID;
+	}
+	else if (ActID == 1) {
+		Scene.Act = 0;
+	}
 	sprintf(Scene.ZoneLetters,ZoneLetters);
 	
-    Scene.AddNewDebugObjectID(Obj_CollapsingPlatform); // Collapsing Platform
-    Scene.AddNewDebugObjectID(Obj_BreakableWall); // Breakable Wall
-    Scene.AddNewDebugObjectID(Obj_SpikedLog); // Spiked Log - Currently doesn't work. (Sprites do not render.)
-    Scene.AddNewDebugObjectID(Obj_Bloominator); // Bloominator
-    Scene.AddNewDebugObjectID(Obj_RhinoBot); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
-    Scene.AddNewDebugObjectID(Obj_MonkeyDude); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
-    Scene.AddNewDebugObjectID(Obj_CaterkillerJr); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
+	sprintf(Scene.LevelName, "ANGEL ISLAND");
+    sprintf(Scene.LevelNameDiscord, "Angel Island");
+	
+    Scene.AddNewDebugObjectID(Obj_CollapsingPlatform);
+    Scene.AddNewDebugObjectID(Obj_BreakableWall);
+    Scene.AddNewDebugObjectID(Obj_SpikedLog);
+    Scene.AddNewDebugObjectID(Obj_Bloominator);
+    Scene.AddNewDebugObjectID(Obj_RhinoBot);
+    Scene.AddNewDebugObjectID(Obj_MonkeyDude);
+    Scene.AddNewDebugObjectID(Obj_CaterkillerJr);
     Scene.AddNewDebugObjectID(Obj_FireBreath); 
     Scene.AddNewDebugObjectID(Obj_FlameMobile);
 	
-	if (!SaveGame.GetFlag(0)) {
+	if (!SaveGame.GetFlag(0) && ActID == 1) {
+		Scene.CameraX = 0;
 		var Intro:Object = Scene.AddNewObject(Obj_AIZIntro);
 	}
 	if (ActID == 1) {

@@ -408,7 +408,12 @@ PUBLIC void Scene_DataSelect::Update() {
 				switch (SaveGame::Savefiles[i].LastZoneID) {
 					LevelScene* ls;
 				case 0:
-					App->NextScene = new Level_AIZ(App, G, 1);
+					if (!SaveGame::GetFlag(0)) {
+						App->NextScene = new Level_AIZ(App, G, 0);
+					}
+					else {
+						App->NextScene = new Level_AIZ(App, G, 1);
+					}
 					break;
 				case 1:
 					App->NextScene = new Level_HCZ(App, G, 1);

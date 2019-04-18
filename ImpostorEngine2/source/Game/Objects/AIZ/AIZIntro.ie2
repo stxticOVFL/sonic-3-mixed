@@ -11,13 +11,42 @@ var CutsceneRoutineNumber:int;
 var Cutscene_KnucklesBackForth:int;
 var Cutscene_SonicWaitTimer:int;
 
+var UpdateTimer:int;
+
+var IntroPlayersSprite:ISprite;
+var IntroObjectsSprite:ISprite;
+
+var InitialCamX:int;
+var InitialCamY:int;
+
+var SonicX:int;
+var SonicY:int;
+var SonicFrame:int;
+var SonicFrameTimer:int;
+var SonicAnim:int;
+
 //Setup Intro
 event Create() {
 
 	Priority = true;
 
-	Scene.Act = 0;
+	InitialCamX = Scene.CameraX;
+	InitialCamY = Scene.CameraY;
+
+	Scene.LevelCardHide = true;
 	Scene.isCutscene = true;
+
+	SonicAnim = 0;
+	SonicFrame = 0;
+
+	SonicX = App.WIDTH / 2 - 4;
+	SonicY = App.HEIGHT / 2 - 16;
+
+	IntroPlayersSprite = LevelScene.LoadSpriteFromBin("Players/AIZCutscene.bin",SaveGame.CurrentMode);
+	if (IntroPlayersSprite) {
+		IntroPlayersSprite.SetTransparentColorIndex(0);
+	}
+	//IntroObjectsSprite = LevelScene.LoadSpriteFromBin("AIZ/Intro.bin",SaveGame.CurrentMode);
 
 	if (SaveGame.CurrentMode == 0) {
 		IntroSprite = Scene.LoadLevelTiles("Classic/Stages/AIZ1/Intro/16x16Tiles.gif");
@@ -43,9 +72,9 @@ event Create() {
 		}
 		else {
 			CutSceneKnux = false;
-			Scene.TileSprite = IntroSprite;
+			//Scene.TileSprite = IntroSprite;
 			OnBeach = false;
-			SuperSonicMoving = true;
+			SuperSonicMoving = false;
 			CutsceneRoutineNumber = 0x00;
 			Cutscene_SonicWaitTimer = -1;
 			Cutscene_KnucklesBackForth = -1;
@@ -55,28 +84,77 @@ event Create() {
 			Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["S_Run"]);
 		}
 	}
-
-	//Program the object later so for rn just call finish
-	//IntroFinish();
 }
 
-//Play Intro
-event SubUpdate() {
+event Update() {
+	
+	if (CutSceneKnux) {
+		KnuxCutscene();
+	}
+	else {
+		SonicCutscene();
+	}
+	
+}
 
-	/*var LayerForest:int = Scene.FindLayer("Background (Forest)");
+//Play Sonic Intro
+event SonicCutscene() {
+
+	var LayerForest:int = Scene.FindLayer("Background (Forest)");
 	var LayerFire:int = Scene.FindLayer("Fire Overlay");
 	var LayerBG:int = Scene.FindLayer("Background (Sea & Sky)");
 	
-	//Sonic Cutscene
-	if (SuperSonicMoving) {
-		if (Scene.CameraX < 3200 && !OnBeach) {
+	if (CutsceneRoutineNumber == 0) {
+		SonicFrameTimer++;
+		if (SonicFrameTimer > 1) {
+			SonicFrame++;
+			if (SonicFrame > 1) SonicFrame = 0;
+			SonicFrameTimer = 0;
+		}
+		Scene.Player.Visible = false;
+		UpdateTimer++;
+		
+		if (UpdateTimer > 180) {
+			CutsceneRoutineNumber++;
+			UpdateTimer = 0;
+			UpdateTimer = SonicY;
+		}
+		Scene.Player.EZX = Scene.CameraX + App.WIDTH / 2 - 4;
+		Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
+	}
+	else if (CutsceneRoutineNumber == 1) {
+		//Sonic falls off and goes super
+		SonicAnim=1;
+		SonicFrameTimer++;
+		SonicX -= 8;
+		if (SonicY - 48 < UpdateTimer) {
+			SonicY += 4;
+		}
+		if (SonicFrameTimer > 4) {
+			SonicFrame++;
+			if (SonicFrame > 4) {
+				SonicFrame = 4;
+				if (SonicX + 128 < Scene.CameraX && SonicY - 48 <= UpdateTimer) {
+					CutsceneRoutineNumber++;
+					SuperSonicMoving++;
+					//Correct it while he's off screen
+					Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
+					SonicY = 1;
+				}
+			}
+			SonicFrameTimer = 0;
+		}
+	}		
+	if (SuperSonicMoving && CutsceneRoutineNumber > 1) {
+		if (Scene.CameraX < InitialCamX + 2900 && !OnBeach) {
 			Scene.BackgroundRepeatTileWidth = 32;
+			Scene.Player.Visible = true;
 			//Scene.Data.Layers[LayerForest].Visible = false;
 			//Scene.Data.Layers[LayerFire].Visible = false;
 			// Intro sequence camera stuff
 		}
-		else if (Scene.CameraX >= 3200 && !OnBeach) {
-			Scene.CameraX = 0x000;
+		else if (Scene.CameraX >= InitialCamX + 2900 && !OnBeach) {
+			Scene.CameraX = InitialCamX + 0x000;
 			//Scene.Player.EZX -= 0x800;
 			Scene.BackgroundRepeatTileWidth = 0;
 			//Scene.Data.Layers[LayerForest].Visible = true;
@@ -85,13 +163,30 @@ event SubUpdate() {
 			OnBeach = true;
 		}
 
-		Scene.Player.EZX = Scene.CameraX + App.WIDTH / 2 - 4;
-		Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
+		if (SonicX >= Scene.CameraX + App.WIDTH / 2 - 4) {
+			SonicY = 0;
+			Scene.CameraX += 16;
+			Scene.Player.EZX = Scene.CameraX + App.WIDTH / 2 - 4;
+			Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
+		}
+		else {		
+			if (SonicY > 0) {
+				SonicX += 16;
+				Scene.Player.EZX = SonicX;
+				Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
+			}
+			else {
+				Scene.CameraX += 16;
+				Scene.Player.EZX = Scene.CameraX + App.WIDTH / 2 - 4;
+				Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
+			}
+		}			
+		//Scene.CameraX = Scene.Player.EZX;
 		Scene.Player.GroundSpeed = 0xC00;
 		Scene.Player.Ground = true;
 
-		if (Scene.CameraX >= 5024 && OnBeach) {
-			Scene.CameraX = 5024;
+		if (Scene.CameraX >= InitialCamX + 5024 && OnBeach) {
+			Scene.CameraX = InitialCamX + 5024;
 
 			SuperSonicMoving = false;
 			Scene.Player.GroundSpeed = 0x0;
@@ -101,10 +196,10 @@ event SubUpdate() {
 			Scene.Player.Deform();
 			Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["Hurt"]);
 
-			CutsceneRoutineNumber = 1;
-			IntroFinish();
+			CutsceneRoutineNumber = 3;
 		}
 	}
+
 
 	var MaxY:int = 0x400 - 8;
 	Scene.CameraY = MaxY - App.HEIGHT / 2;
@@ -119,46 +214,48 @@ event SubUpdate() {
             Scene.LevelCardHide = false;
         }
 
-        if (CutsceneRoutineNumber == 1) {
+        if (CutsceneRoutineNumber == 3) {
             if (Scene.Player.Ground && Cutscene_SonicWaitTimer < 0) {
                 Scene.Player.Action = ActionType.Normal;
-                Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["Bored 1"]);
+                //Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["Bored 1"]);
+                Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["Idle"]);
                 Cutscene_SonicWaitTimer = 120;
             }
 
             if (Cutscene_SonicWaitTimer == 0) {
-                CutsceneRoutineNumber = 2;
-                Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["Balance 2"]);
+                CutsceneRoutineNumber = 4;
+                Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["Idle"]);
+				
+				
+				//Knuckles should start Running now
                 Cutscene_KnucklesBackForth = 60;
                 Scene.Player.EZX -= 4;
             }
         }
-        else if (CutsceneRoutineNumber == 2) {
+        else if (CutsceneRoutineNumber == 4) {
             if (Cutscene_KnucklesBackForth == 0) {
-                CutsceneRoutineNumber = 3;
+                CutsceneRoutineNumber = 5;
                 Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["Idle"]);
                 Scene.Player.EZX += 4;
                 Cutscene_SonicWaitTimer = 120;
             }
         }
-        else if (CutsceneRoutineNumber == 3) {
+        else if (CutsceneRoutineNumber == 5) {
             if (Cutscene_SonicWaitTimer == 0) {
                 Scene.Player.Cutscene = false;
                 Scene.Player.ControlLocked = false;
                 Scene.Player.Rings = 0;
 
-               Scene. LevelCardTimer = 0.0;
-                Scene.LevelCardHide = false;
+                Scene.LevelCardTimer = 0.0;
+                Scene.LevelCardHide = true;
 
                 Scene.HUDVisible = true;
                 Timer = 0;
-
                 Scene.Frame--;
-
-                Scene.Act = 1;
 				Scene.isCutscene = false;
-				SaveGame.SetFlag(1, 0);
-                Scene.RestartStage(false,false);
+				SaveGame.SetFlag(1,0);
+				Scene.TileSprite = TileSpriteBackup;
+				Scene.LoadNextAct = true;
             }
         }
 
@@ -166,8 +263,17 @@ event SubUpdate() {
         if (Cutscene_SonicWaitTimer > 0)
             Cutscene_SonicWaitTimer--;
         if (Cutscene_KnucklesBackForth > 0)
-            Cutscene_KnucklesBackForth--;*/
+            Cutscene_KnucklesBackForth--;
+}
 
+event KnuxCutscene() {
+	//TO-DO
+}
+
+event Render(CamX:int, CamY:int) {
+	if (CutsceneRoutineNumber < 2) {
+		G.DrawSprite(IntroPlayersSprite, SonicAnim, SonicFrame, SonicX, SonicY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+	}
 }
 
 //End Intro
@@ -175,8 +281,7 @@ event IntroFinish() {
 	Scene.HUDVisible = true;
 	Scene.Player.Cutscene = false;
 	Scene.Player.ControlLocked = false;
-	Scene.Act = 0;
+	Scene.Act = 1;
 	Scene.isCutscene = false;
-	Scene.TileSprite = TileSpriteBackup;
 	SaveGame.SetFlag(1,0);
 }

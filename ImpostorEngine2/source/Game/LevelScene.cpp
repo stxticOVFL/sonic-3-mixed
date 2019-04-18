@@ -182,6 +182,7 @@ class LevelScene : public IScene {
 
         bool ManiaLevel = false;
         bool SonicKnucklesLevel = false;
+		bool LoadNextAct = false;
 
         const char* Str_TileConfigBin = NULL;
         const char* Str_SceneBin = NULL;
@@ -795,6 +796,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 				ItemsSprite = new ISprite("Classic/Sprites/Global/Items.gif", App);
 				ItemsSprite->LoadAnimation("Classic/Sprites/Global/ItemBox.bin");
 				ItemsSprite->LoadAnimation("Classic/Sprites/Global/Ring.bin");
+				//ItemsSprite->SetTransparentColorIndex(0x0);
 			}
 		}
 		if (!AnimalsSprite) {
@@ -818,6 +820,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 				ObjectsSprite->LoadAnimation("Classic/Sprites/Global/Gray Button.bin");
 				ObjectsSprite->LoadAnimation("Classic/Sprites/Global/EggPrison.bin");
+				ObjectsSprite->SetTransparentColorIndex(0x0);
 			}
 		}
 		if (!Objects2Sprite) {
@@ -4070,10 +4073,14 @@ PUBLIC void LevelScene::Update() {
 		if (PauseMusicFade < 0)
 			PauseMusicFade = 0;
 	}
-	else
-		if (MusicVolume == -1 && !App->Audio->Paused)
+	else if (MusicVolume == -1 && !App->Audio->Paused)
 			App->Audio->AudioPauseAll();
 	// Pause function
+	if (LoadNextAct) {
+		LoadNextAct = false;
+		GoToNextAct();
+	}
+
 	if (FadeAction == 0 && !ShowResults) {
 		// Toggle pause
 		if (App->Input->GetControllerInput(0)[IInput::I_PAUSE_PRESSED] && LevelCardTimer >= 4.0) {
@@ -4217,12 +4224,6 @@ PUBLIC void LevelScene::Update() {
 				}
 			}
 		}
-
-		/*if (FadeAction == 0 && LevelCardTimer >= 1.5 && FadeAction == FadeActionType::TO_BONUS_STAGE) {
-			if (Player) {
-			}
-			App->Print(3, "imagine we went to the bonus stage uwu");
-		}*/
 
 		if (Player && SaveGame::CurrentPartnerFlag != 0xFF)
 		{
@@ -6265,7 +6266,7 @@ PUBLIC VIRTUAL void LevelScene::RenderEverything() {
 			Object* obj = Objects[i];
 			if (obj == NULL) continue;
 
-			if (obj->Active && obj->OnScreen) {
+			if (obj->Active && obj->OnScreen || obj->Active && obj->Priority) {
 				if (l == Data->CameraLayer + obj->VisualLayer) {
 					obj->DrawCollisions = App->viewObjectCollision;
                     if ((obj->BinIndex >= 0 && obj->BinIndex < SpriteBinMapIDs.size()) && SpriteBinMapIDs.at(obj->BinIndex) != obj->Sprite) {

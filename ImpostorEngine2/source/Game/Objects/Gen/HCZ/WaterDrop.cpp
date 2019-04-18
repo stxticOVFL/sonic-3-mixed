@@ -10,6 +10,7 @@ void WaterDrop::Create() {
     Active = true;
     Priority = false;
     Sprite = LevelScene::LoadSpriteFromBin("HCZ/WaterDrop.bin", SaveGame::CurrentMode);
+    Sprite->SetTransparentColorIndex(0);
     W = 8;
     H = 8;
     State = -1;

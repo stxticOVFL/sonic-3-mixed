@@ -236,19 +236,12 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 	if (SaveGame::CurrentMode >= 1)
 	{
 		if (Act == 0) {
-			/*Str_TileConfigBin = "Mixed/Stages/AIZ/TileConfig1.bin";
-			Str_SceneBin = "Mixed/Stages/AIZ/Scene0.bin";
-			Str_TileSprite = "Mixed/Stages/AIZ/16x16Tiles0.gif";
-			Str_ObjectsList = "Mixed/Stages/AIZ/Objects0.bin";
-			Str_RingsList = "Mixed/Stages/AIZ/Rings0.bin";
-			Str_StageBin = "Mixed/Stages/AIZ1/Stageconfig.bin";*/
-
-			Str_TileConfigBin = "Mixed/Stages/AIZ1/TileConfig.bin";
-			Str_SceneBin = "Mixed/Stages/AIZ1/Scene.bin";
-			Str_TileSprite = "Mixed/Stages/AIZ1/16x16Tiles.gif";
-			Str_AnimatedSprites = "Mixed/Stages/AIZ1/Animated Tiles.gif";
-			Str_StageBin = "Mixed/Stages/AIZ1/Stageconfig.bin";
-
+			Str_TileConfigBin = "Mixed/Stages/AIZ1/Intro/TileConfig.bin";
+			Str_SceneBin = "Mixed/Stages/AIZ1/Intro/Scene.bin";
+			Str_TileSprite = "Mixed/Stages/AIZ1/Intro/16x16Tiles.gif";
+			Str_AnimatedSprites = "Mixed/Stages/AIZ1/Intro/Animated Tiles.gif";
+			Str_StageBin = "Mixed/Stages/AIZ1/Intro/Stageconfig.bin";
+			LevelCardHide = true;
 			VisualAct = 1;
 		}
 		else if (Act == 1) {
@@ -269,19 +262,12 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 	else
 	{
 		if (Act == 0) {
-			/*Str_TileConfigBin = "Classic/Stages/AIZ/TileConfig1.bin";
-			Str_SceneBin = "Classic/Stages/AIZ/Scene0.bin";
-			Str_TileSprite = "Classic/Stages/AIZ/16x16Tiles0.gif";
-			Str_ObjectsList = "Classic/Stages/AIZ/Objects0.bin";
-			Str_RingsList = "Classic/Stages/AIZ/Rings0.bin";
-			Str_StageBin = "Classic/Stages/AIZ1/Stageconfig.bin";*/
-
-			Str_TileConfigBin = "Classic/Stages/AIZ1/TileConfig.bin";
-			Str_SceneBin = "Classic/Stages/AIZ1/Scene.bin";
-			Str_TileSprite = "Classic/Stages/AIZ1/16x16Tiles.gif";
-			Str_AnimatedSprites = "Classic/Stages/AIZ1/Animated Tiles.gif";
-			Str_StageBin = "Classic/Stages/AIZ1/Stageconfig.bin";
-
+			Str_TileConfigBin = "Classic/Stages/AIZ1/Intro/TileConfig.bin";
+			Str_SceneBin = "Classic/Stages/AIZ1/Intro/Scene.bin";
+			Str_TileSprite = "Classic/Stages/AIZ1/Intro/16x16Tiles.gif";
+			Str_AnimatedSprites = "Classic/Stages/AIZ1/Intro/Animated Tiles.gif";
+			Str_StageBin = "Classic/Stages/AIZ1/Intro/Stageconfig.bin";
+			LevelCardHide = true;
 			VisualAct = 1;
 		}
 		else if (Act == 1) {
@@ -303,35 +289,6 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 			Str_StageBin = "Classic/Stages/AIZ2/Stageconfig.bin";
 		}
 	}
-
-    sprintf(LevelName, "ANGEL ISLAND");
-    sprintf(LevelNameDiscord, "Angel Island");
-
-    if (Act == 0) {
-        //PlayerStartX = 0x01E0;
-        //PlayerStartY = 0x041A;
-
-        //HUDVisible = false;
-    }
-    else if (Act == 1) {
-        //PlayerStartX = 0x13E0;
-        //PlayerStartY = 0x041A;
-
-        // PlayerStartX = 0x3000;
-        // PlayerStartY = 0x034C;
-    }
-    else {
-        // PlayerStartX = 0x4850;
-        // PlayerStartY = 0x01B0;
-    }
-    
-    AddNewDebugObjectID(Obj_CollapsingPlatform); // Collapsing Platform
-    AddNewDebugObjectID(Obj_BreakableWall); // Breakable Wall
-    AddNewDebugObjectID(Obj_SpikedLog); // Spiked Log - Currently doesn't work. (Sprites do not render.)
-    AddNewDebugObjectID(Obj_Bloominator); // Bloominator
-    AddNewDebugObjectID(Obj_RhinoBot); // RhinoBot - Currently doesn't work. (Sprites do not render, Also attaches to closet surface on level it's placed.)
-    AddNewDebugObjectID(Obj_MonkeyDude); // MonkeyDude - Currently doesn't work. (Sprites do not render.)
-    AddNewDebugObjectID(Obj_CaterkillerJr); // Caterkiller Jr - Currently doesn't work. (Sprites do not render.)
 
     IApp::Print(0, "%s Act %d Constructor took %0.3fs to run.", LevelNameDiscord, Act, (SDL_GetTicks() - startTime) / 1000.0);
 }
@@ -517,7 +474,7 @@ PUBLIC void Level_AIZ::LoadData() {
 
 PUBLIC void Level_AIZ::Subupdate() {
     // Screen events?
-    if (Act == 0) {
+    /*if (Act == 0) {
         if (LevelCardTimer >= 1.5) {
             LevelCardTimer = 5.0;
         }
@@ -573,8 +530,9 @@ PUBLIC void Level_AIZ::Subupdate() {
             Cutscene_SonicWaitTimer--;
         if (Cutscene_KnucklesBackForth > 0)
             Cutscene_KnucklesBackForth--;
-    }
-    else if (Act == 1) {
+    }*/
+    //else 
+	if (Act == 1) {
         if (Frame & 0x1) {
             int water = VisualWaterLevel - CameraY;
             if (water < App->HEIGHT) {
@@ -1022,7 +980,7 @@ PUBLIC void Level_AIZ::Subupdate() {
 PUBLIC void Level_AIZ::HandleCamera() {
     if (Act != 0)
         LevelScene::HandleCamera();
-    else {
+    /*else {
         if (SuperSonicMoving) {
             if (OnBeach)
                 CameraX += 16;
@@ -1082,8 +1040,9 @@ PUBLIC void Level_AIZ::HandleCamera() {
         if (Player->EZY > 0x480) {
             Player->EZY = 0x480;
         }
-    }
-    else if (Act == 1) {
+    }*/
+    //else
+	if (Act == 1) {
         int MaxY = 0x0;
         int ToS3X = CameraX + App->WIDTH / 2 - 0xA0;
 
@@ -1286,7 +1245,54 @@ PUBLIC void Level_AIZ::FinishResults() {
 }
 
 PUBLIC void Level_AIZ::GoToNextAct() {
-    if (Act == 1 && VisualAct == 1) {
+	if (Act == 0) {
+		Level_AIZ* NextAct = new Level_AIZ(App, G, 1);
+
+		TransferCommonLevelData(NextAct);
+
+		// We disable "reloading" the player to keep things like shields.
+		NextAct->Player->ReloadPlayer = false;
+		for (int p = 0; p < PlayerCount; p++) {
+			NextAct->Players[p]->ReloadPlayer = false;
+		}
+
+		NextAct->AIZObjectsSprite = AIZObjectsSprite;
+		NextAct->AIZBossSprite = AIZBossSprite;
+
+		LevelCardTimer = 0.0;
+		FadeTimer = 0;
+		FadeAction = 0;
+		LevelCardHide = false;
+		RoutineNumber = 0;
+
+		// Transfer over Timer and current frame
+		NextAct->ResetTimer = false;
+		NextAct->Timer = Timer;
+		NextAct->Frame = Frame;
+		NextAct->HUDVisible = HUDVisible;
+		NextAct->HUDAnim = HUDAnim;
+		NextAct->ControlsVisible = ControlsVisible;
+		NextAct->ControlsAnim = ControlsAnim;
+		// Set water level
+		NextAct->VisualWaterLevel = NextAct->WaterLevel = 0x528;
+		NextAct->WaterAnimationFrame = (Frame % 40) << 6;
+		NextAct->VisualAct = 1;
+		// Set player spawn position relative to their previous position
+		NextAct->SpecialSpawnPositionX = Player->X - 0x2F00;
+		NextAct->SpecialSpawnPositionY = Player->Y - 0x80;
+		NextAct->RoutineNumber = -2;
+		NextAct->LevelTriggerFlag = 0x00;
+		NextAct->CameraMaxY = 0x258;
+
+		NextAct->ObjectCount = 0;
+		NextAct->ObjectNewCount = 0;
+
+		if (NextAct->CameraMinX < 0x1308)
+			NextAct->CameraMinX = 0x1308;
+
+		App->NextScene = NextAct;
+	}
+    else if (Act == 1 && VisualAct == 1) {
         Level_AIZ* NextAct = new Level_AIZ(App, G, 2);
 
         TransferCommonLevelData(NextAct);
@@ -1323,8 +1329,12 @@ PUBLIC void Level_AIZ::GoToNextAct() {
         NextAct->LevelTriggerFlag = 0x00;
         NextAct->CameraMaxY = 0x258;
 
+		NextAct->ObjectCount = 0;
+		NextAct->ObjectNewCount = 0;
+
         App->NextScene = NextAct;
-    } else if (Act == 2 && VisualAct == 1) {
+    }
+	else if (Act == 2 && VisualAct == 1) {
         VisualAct = 2;
         ResultsTimer = 0;
         ShowResults = false;

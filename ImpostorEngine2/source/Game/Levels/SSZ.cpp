@@ -69,18 +69,31 @@ PUBLIC Level_SSZ::Level_SSZ(IApp* app, IGraphics* g, int act) : LevelScene(app, 
 
 PUBLIC void Level_SSZ::LoadZoneSpecificSprites() {
 	if (!KnuxSprite[0]) {
-        KnuxSprite[0] = new ISprite("Players/Knux1.gif", App);
-        KnuxSprite[1] = new ISprite("Players/Knux2.gif", App);
-        KnuxSprite[2] = new ISprite("Players/Knux3.gif", App);
-        KnuxSprite[3] = new ISprite("Players/KnuxCutsceneAIZ.gif", App);
-        KnuxSprite[4] = new ISprite("Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1)
+		{
+			KnuxSprite[0] = new ISprite("Mixed/Sprites/Players/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("Mixed/Sprites/Players/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("Mixed/Sprites/Players/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("Mixed/Sprites/Players/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("Mixed/Sprites/Players/KnuxCutsceneHPZ.gif", App);
 
-        KnuxSprite[0]->LoadAnimation("Players/Knux.bin");
-        KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
-        KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
-    }
+			KnuxSprite[0]->LoadAnimation("Mixed/Sprites/Players/Knux.bin");
+		}
+		else
+		{
+			KnuxSprite[0] = new ISprite("Classic/Sprites/Players/Knux1.gif", App);
+			KnuxSprite[1] = new ISprite("Classic/Sprites/Players/Knux2.gif", App);
+			KnuxSprite[2] = new ISprite("Classic/Sprites/Players/Knux3.gif", App);
+			KnuxSprite[3] = new ISprite("Classic/Sprites/Players/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ISprite("Classic/Sprites/Players/KnuxCutsceneHPZ.gif", App);
+
+			KnuxSprite[0]->LoadAnimation("Classic/Sprites/Players/Knux.bin");
+		}
+		KnuxSprite[1]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[2]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[3]->LinkAnimation(KnuxSprite[0]->Animations);
+		KnuxSprite[4]->LinkAnimation(KnuxSprite[0]->Animations);
+	}
 }
 
 PUBLIC void Level_SSZ::Init() {

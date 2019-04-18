@@ -174,6 +174,7 @@ public:
     int ControlsAnim = 0x00;
     bool ManiaLevel = false;
     bool SonicKnucklesLevel = false;
+    bool LoadNextAct = false;
     const char* Str_TileConfigBin = NULL;
     const char* Str_SceneBin = NULL;
     const char* Str_TileSprite = NULL;

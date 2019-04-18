@@ -12,7 +12,7 @@ void SpecialRing::Create() {
     Sprite = LevelScene::LoadSpriteFromBin("Global/SpecialRing.bin", SaveGame::CurrentMode);
     W = 8;
     H = 64;
-	VisW = 64;
+    VisW = 64;
     VisH = 64;
     CurrentAnimation = 0;
     Scale = 1;
@@ -93,7 +93,6 @@ void SpecialRing::Update() {
 
     }
     else Scale = 0.5;
-    Sprite = Scene->Objects3Sprite;
     int LoopPoint = Sprite->Animations[CurrentAnimation].FrameToLoop;
     int FrameCount = Sprite->Animations[CurrentAnimation].FrameCount;
     if (Sprite->Animations[CurrentAnimation].AnimationSpeed > 0 && Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration != 0) Frame += ((0x100 * Sprite->Animations[CurrentAnimation].AnimationSpeed * 0x100) >> 8) / Sprite->Animations[CurrentAnimation].Frames[Frame >> 8].Duration;

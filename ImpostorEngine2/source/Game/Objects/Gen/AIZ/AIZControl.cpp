@@ -22,8 +22,16 @@ void AIZControl::Create() {
     LoadAniTiles = AttributeBuffer.ValBool;
     Scene->ZoneID = 1;
     Scene->VisualAct = ActID;
-    Scene->Act = ActID;
+    if (SaveGame::GetFlag(0)) {
+        Scene->Act = ActID;
+    }
+    else if (ActID == 1) {
+        Scene->Act = 0;
+    }
+
     sprintf(Scene->ZoneLetters, ZoneLetters);
+    sprintf(Scene->LevelName, "ANGEL ISLAND");
+    sprintf(Scene->LevelNameDiscord, "Angel Island");
     Scene->AddNewDebugObjectID(Obj_CollapsingPlatform);
     Scene->AddNewDebugObjectID(Obj_BreakableWall);
     Scene->AddNewDebugObjectID(Obj_SpikedLog);
@@ -33,7 +41,8 @@ void AIZControl::Create() {
     Scene->AddNewDebugObjectID(Obj_CaterkillerJr);
     Scene->AddNewDebugObjectID(Obj_FireBreath);
     Scene->AddNewDebugObjectID(Obj_FlameMobile);
-    if (!SaveGame::GetFlag(0)) {
+    if (!SaveGame::GetFlag(0) && ActID == 1) {
+        Scene->CameraX = 0;
         Object* Intro = Scene->AddNewObject(Obj_AIZIntro);
     }
 

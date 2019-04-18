@@ -23,9 +23,22 @@ public:
     int CutsceneRoutineNumber;
     int Cutscene_KnucklesBackForth;
     int Cutscene_SonicWaitTimer;
+    int UpdateTimer;
+    ISprite* IntroPlayersSprite;
+    ISprite* IntroObjectsSprite;
+    int InitialCamX;
+    int InitialCamY;
+    int SonicX;
+    int SonicY;
+    int SonicFrame;
+    int SonicFrameTimer;
+    int SonicAnim;
     
     void Create();
-    void SubUpdate();
+    void Update();
+    void SonicCutscene();
+    void KnuxCutscene();
+    void Render(int CamX, int CamY);
     void IntroFinish();
 };
 
