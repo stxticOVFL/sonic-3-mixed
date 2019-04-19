@@ -214,6 +214,17 @@ PUBLIC void Level_MGZ::LoadZoneSpecificSprites() {
 	}
 }
 
+PUBLIC void Level_MGZ::LoadData() {
+	LevelScene::LoadData();
+	//Water Palette
+	for (int i = 0; i < 256; i++)
+	{
+		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
+	}
+	TileSprite->Paletted = 2;
+	if (Act == 1) TileSprite->SetTransparentColorIndex(48);
+}
+
 PUBLIC void Level_MGZ::RenderAboveBackground() {
 }
 PUBLIC void Level_MGZ::RenderAboveForeground() {

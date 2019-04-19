@@ -102,8 +102,6 @@ void AIZTornado::Update() {
 
     }
 
-    Scene->CameraX = InitialX;
-    Scene->CameraY = InitialY;
     InitialX += 16;
     X += 16;
     Object::Update();
@@ -137,11 +135,11 @@ void AIZTornado::TornadoBob() {
 void AIZTornado::Render(int CamX, int CamY) {
     if (!Visible || !Active) return;
 
-    G->DrawSprite(Sprite, TornadoAnim, Frame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, PropellorAnim, PropellorFrame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, FlameAnim, FlameFrame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, ShadowAnim, ShadowFrame, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, HeadsAnim, HeadsFrame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X - CamX, Y + TornadoBobAmount - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+    G->DrawSprite(Sprite, TornadoAnim, Frame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, PropellorAnim, PropellorFrame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, FlameAnim, FlameFrame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, ShadowAnim, ShadowFrame, InitialX, InitialY, 0, IE_NOFLIP);
+	G->DrawSprite(Sprite, HeadsAnim, HeadsFrame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + TornadoBobAmount, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 

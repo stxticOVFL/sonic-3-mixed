@@ -24,6 +24,7 @@ public:
     void GoToNextAct();
     void AssignSpriteMapIDs();
     void LoadZoneSpecificSprites();
+    void LoadData();
     void RenderAboveBackground();
     void RenderAboveForeground();
     void RenderEverything();

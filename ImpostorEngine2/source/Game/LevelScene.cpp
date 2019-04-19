@@ -1761,7 +1761,7 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 		AnimTileSprite->LinkPalette(TileSprite);
 	}
 
-	if (!SaveGame::CurrentMode == 1) {
+	if (SaveGame::CurrentMode < 1) {
 		ItemsSprite->LinkPalette(TileSprite);
 		ExplosionSprite->LinkPalette(TileSprite);
 		ObjectsSprite->LinkPalette(TileSprite);
@@ -1948,13 +1948,13 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 			AnimTileSprite->UpdatePalette();
 		}
 
-		ItemsSprite->SplitPalette();
+		/*ItemsSprite->SplitPalette();
 		ObjectsSprite->SplitPalette();
 		ExplosionSprite->SplitPalette();
 
 		ItemsSprite->UpdatePalette();
 		ObjectsSprite->UpdatePalette();
-		ExplosionSprite->UpdatePalette();
+		ExplosionSprite->UpdatePalette();*/
 	}
 
 	// Loading SceneBin

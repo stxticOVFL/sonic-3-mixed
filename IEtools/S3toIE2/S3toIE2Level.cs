@@ -2439,24 +2439,32 @@ namespace S3toIE2 {
                             if ((SubType & 0x2) != 0x0)
                                 SpringType = 0;
 
-                            int fX = FlipX ? 1 : 0;
-                            int fY = FlipY ? 1 : 0;
-
-                            objEntity.Attributes[2].ValueVar = (uint)(fX | fY);
+                            if (!FlipX && !FlipY)
+                            {
+                                objEntity.Attributes[2].ValueVar = 0;
+                            }
+                            else if (FlipX && !FlipY)
+                            {
+                                objEntity.Attributes[2].ValueVar = 1;
+                            }
+                            else if (!FlipX && FlipY)
+                            {
+                                objEntity.Attributes[2].ValueVar = 2;
+                            }
+                            else if (FlipX && FlipY)
+                            {
+                                objEntity.Attributes[2].ValueVar = 3;
+                            }
 
                             if ((SubType & 0xF0) == 0x10)
                             {
                                 objEntity.Attributes[1].ValueVar = (uint)(2 + SpringType);
                             }
-                            else if ((SubType & 0xF0) == 0x20)
+                            else if ((SubType & 0xF0) == 0x20 || (SubType & 0xF0) == 0x00)
                             {
                                 objEntity.Attributes[1].ValueVar = (uint)(0 + SpringType);
                             }
-                            else if ((SubType & 0xF0) == 0x30)
-                            {
-                                objEntity.Attributes[1].ValueVar = (uint)(4 + SpringType);
-                            }
-                            else if ((SubType & 0xF0) == 0x40)
+                            else if ((SubType & 0xF0) == 0x30 || (SubType & 0xF0) == 0x40)
                             {
                                 objEntity.Attributes[1].ValueVar = (uint)(4 + SpringType);
                             }

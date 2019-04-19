@@ -29,8 +29,8 @@ void Spring::Create() {
     Rotation = 0;
     DoAnimate = false;
     CleanupInactiveObject = true;
-    SpringPower = 0x1000;
-    if (SpringType == 0) SpringPower = 0xA00;
+    SpringPower = 0xA00;
+    if (SpringType % 2 != 0) SpringPower = 0x1000;
 
     Twirl = 0;
     KillTransverseSpeed = (SubType & 0x80) == 0x80;
