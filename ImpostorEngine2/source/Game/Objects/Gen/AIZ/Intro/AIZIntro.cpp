@@ -41,6 +41,8 @@ void AIZIntro::Create() {
             Scene->Player->ControlLocked = true;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["S_Run"]);
             Scene->AddNewObject(Obj_AIZTornado);
+            Knux = Scene->AddNewObject(Obj_AIZIntroKnux);
+            Knux->X = InitialCamX + 5024;
         }
     }
 
@@ -112,7 +114,7 @@ void AIZIntro::SonicCutscene() {
         }
         else if (Scene->CameraX >= InitialCamX + 2900 && !OnBeach) {
             Scene->CameraX = InitialCamX + 0x000;
-			Scene->BackgroundRepeatTileWidth = 0;
+            Scene->BackgroundRepeatTileWidth = 0;
             OnBeach = true;
         }
 

@@ -110,14 +110,14 @@ void AIZTornado::TornadoBob() {
         TornadoBobTimer = 0;
         if (TornadoBobDir >= 1) {
             TornadoBobAmount++;
-            if (TornadoBobAmount >= 3) {
+            if (TornadoBobAmount >= 4) {
                 TornadoBobDir = -1;
             }
 
         }
         else if (TornadoBobDir <= -1) {
             TornadoBobAmount--;
-            if (TornadoBobAmount <= -3) {
+            if (TornadoBobAmount <= -4) {
                 TornadoBobDir = 1;
             }
 

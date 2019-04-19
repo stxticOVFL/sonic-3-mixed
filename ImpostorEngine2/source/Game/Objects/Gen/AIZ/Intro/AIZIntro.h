@@ -30,6 +30,7 @@ public:
     int InitialCamY;
     int TornadoX;
     int TornadoY;
+    Object* Knux;
     int SonicFrame;
     int SonicFrameTimer;
     
