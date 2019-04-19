@@ -142,7 +142,7 @@ void AIZIntro::SonicCutscene() {
             SuperSonicMoving = false;
             Scene->Player->GroundSpeed = 0x0;
             Scene->Player->XSpeed = 0x0;
-			Scene->Player->Rings = 1;
+            Scene->Player->Rings = 1;
             Scene->Player->Hurt(Scene->Player->EZX + 1, false);
             Scene->Player->Deform();
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Hurt"]);
