@@ -40,7 +40,7 @@ event Create() {
 	AttributeBuffer = GetAttribute("planeFilter");
 	PlaneFilter = AttributeBuffer.ValUint8;
 
-    CurrentAnimation = SpringType; // 0: yellow, +1: red
+    CurrentAnimation = SpringType; // 0: yellow, 1: red
     Rotation = 0;
     DoAnimate = false;
     CleanupInactiveObject = true;
@@ -106,7 +106,7 @@ event OnLeaveScreen() : int {
 event Render(CamX:int, CamY:int) {
     G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, (FlipX ? IE_FLIPX : IE_NOFLIP) | (FlipY ? IE_FLIPY : IE_NOFLIP));
 	
-				if (App.viewObjectCollision) {
+	if (App.viewObjectCollision) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);

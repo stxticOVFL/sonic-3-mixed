@@ -12,15 +12,6 @@ void AIZIntro::Create() {
     InitialCamY = Scene->CameraY;
     Scene->LevelCardHide = true;
     Scene->isCutscene = true;
-    SonicAnim = 0;
-    SonicFrame = 0;
-    SonicX = App->WIDTH / 2 - 4;
-    SonicY = App->HEIGHT / 2 - 16;
-    IntroPlayersSprite = LevelScene::LoadSpriteFromBin("Players/AIZCutscene.bin", SaveGame::CurrentMode);
-    if (IntroPlayersSprite) {
-        IntroPlayersSprite->SetTransparentColorIndex(0);
-    }
-
     if (SaveGame::CurrentMode == 0) {
         IntroSprite = Scene->LoadLevelTiles("Classic/Stages/AIZ1/Intro/16x16Tiles.gif");
     }
@@ -49,6 +40,7 @@ void AIZIntro::Create() {
             Scene->Player->Cutscene = true;
             Scene->Player->ControlLocked = true;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["S_Run"]);
+            Tornado = Scene->AddNewObject(Obj_AIZTornado);
         }
     }
 
@@ -82,29 +74,28 @@ void AIZIntro::SonicCutscene() {
         if (UpdateTimer > 180) {
             CutsceneRoutineNumber++;
             UpdateTimer = 0;
-            UpdateTimer = SonicY;
+            UpdateTimer = Tornado->Y;
         }
 
-		Scene->Player->EZX = Scene->CameraX + App->WIDTH / 2 - 4;
+        Scene->Player->EZX = Scene->CameraX + App->WIDTH / 2 - 4;
         Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
     }
     else if (CutsceneRoutineNumber == 1) {
-        SonicAnim = 1;
         SonicFrameTimer++;
-        SonicX -= 8;
-        if (SonicY - 48 < UpdateTimer) {
-            SonicY += 4;
+        Tornado->X -= 8;
+        if (Tornado->Y - 48 < UpdateTimer) {
+            Tornado->Y += 4;
         }
 
         if (SonicFrameTimer > 4) {
             SonicFrame++;
             if (SonicFrame > 4) {
                 SonicFrame = 4;
-                if (SonicX + 128 < Scene->CameraX && SonicY - 48 <= UpdateTimer) {
-					CutsceneRoutineNumber++;
+                if (Tornado->X + 128 < Scene->CameraX && Tornado->Y - 48 <= UpdateTimer) {
+                    CutsceneRoutineNumber++;
                     SuperSonicMoving++;
                     Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
-                    SonicY = 1;
+                    Tornado->Y = 1;
                 }
 
             }
@@ -118,6 +109,7 @@ void AIZIntro::SonicCutscene() {
         if (Scene->CameraX < InitialCamX + 2900 && !OnBeach) {
             Scene->BackgroundRepeatTileWidth = 32;
             Scene->Player->Visible = true;
+            Tornado->Active = false;
         }
         else if (Scene->CameraX >= InitialCamX + 2900 && !OnBeach) {
             Scene->CameraX = InitialCamX + 0x000;
@@ -125,16 +117,16 @@ void AIZIntro::SonicCutscene() {
             OnBeach = true;
         }
 
-        if (SonicX >= Scene->CameraX + App->WIDTH / 2 - 4) {
-            SonicY = 0;
+        if (Tornado->X >= Scene->CameraX + App->WIDTH / 2 - 4) {
+            Tornado->Y = 0;
             Scene->CameraX += 16;
             Scene->Player->EZX = Scene->CameraX + App->WIDTH / 2 - 4;
             Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
         }
         else {
-            if (SonicY > 0) {
-                SonicX += 16;
-                Scene->Player->EZX = SonicX;
+            if (Tornado->Y > 0) {
+                Tornado->X += 16;
+                Scene->Player->EZX = Tornado->X;
                 Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
             }
             else {
@@ -150,7 +142,7 @@ void AIZIntro::SonicCutscene() {
             SuperSonicMoving = false;
             Scene->Player->GroundSpeed = 0x0;
             Scene->Player->XSpeed = 0x0;
-            Scene->Player->Rings = 1;
+			Scene->Player->Rings = 1;
             Scene->Player->Hurt(Scene->Player->EZX + 1, false);
             Scene->Player->Deform();
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Hurt"]);
@@ -223,13 +215,6 @@ void AIZIntro::SonicCutscene() {
 
 void AIZIntro::KnuxCutscene() {
 }
-
-void AIZIntro::Render(int CamX, int CamY) {
-    if (CutsceneRoutineNumber < 2) {
-        G->DrawSprite(IntroPlayersSprite, SonicAnim, SonicFrame, SonicX, SonicY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-    }
-
-    }
 
 void AIZIntro::IntroFinish() {
     Scene->HUDVisible = true;

@@ -1,0 +1,26 @@
+var FrameTimer:int;
+
+event Create() {
+	Priority = true;
+	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Intro.bin",SaveGame.CurrentMode);
+	if (Sprite) {
+		Sprite.SetTransparentColorIndex(0);
+		CurrentAnimation = Sprite.FindAnimation("Waves");
+	}
+	FrameTimer = 0;
+}
+
+event Update() {
+	FrameTimer++;
+	if (FrameTimer >= 2) {
+		Frame++;
+		if (Frame > 5) {
+			Visible = false;
+		}
+	}
+}
+
+event Render(CamX:int, CamY:int) {
+	if (!Visible || !Active) return;
+	G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+}

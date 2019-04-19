@@ -309,99 +309,105 @@ Object* GetNewObjectFromID(int ID) {
             return new AIZControl();
             break;
         case 0x402U:
-            return new AIZIntro();
-            break;
-        case 0x403U:
             return new BloominatorSpore();
             break;
-        case 0x404U:
+        case 0x403U:
             return new FireBreathBomb();
             break;
-        case 0x405U:
+        case 0x404U:
             return new FireBreathFlame();
             break;
+        case 0x405U:
+            return new AIZIntro();
+            break;
         case 0x406U:
-            return new MonkeyDudeCoconut();
+            return new AIZIntroSplash();
             break;
         case 0x407U:
-            return new BatbrightParts();
+            return new AIZTornado();
             break;
         case 0x408U:
-            return new BlankObject();
+            return new MonkeyDudeCoconut();
             break;
         case 0x409U:
-            return new BoundsMarker();
+            return new BatbrightParts();
             break;
         case 0x40AU:
-            return new BubbleAir();
+            return new BlankObject();
             break;
         case 0x40BU:
-            return new HUD();
+            return new BoundsMarker();
             break;
         case 0x40CU:
-            return new InvisibleBlockV();
+            return new BubbleAir();
             break;
         case 0x40DU:
-            return new Music();
+            return new HUD();
             break;
         case 0x40EU:
-            return new PauseMenu();
+            return new InvisibleBlockV();
             break;
         case 0x40FU:
-            return new PlaneSwitcher();
+            return new Music();
             break;
         case 0x410U:
-            return new PlatformOutliner();
+            return new PauseMenu();
             break;
         case 0x411U:
-            return new PlayerSpawn();
+            return new PlaneSwitcher();
             break;
         case 0x412U:
-            return new TitleCard();
+            return new PlatformOutliner();
             break;
         case 0x413U:
-            return new WarpStars();
+            return new PlayerSpawn();
             break;
         case 0x414U:
-            return new EggCapsuleButton();
+            return new TitleCard();
             break;
         case 0x415U:
-            return new Signpost();
+            return new WarpStars();
             break;
         case 0x416U:
-            return new TensionBridgeChild();
+            return new EggCapsuleButton();
             break;
         case 0x417U:
-            return new ViewCollisionToggler();
+            return new Signpost();
             break;
         case 0x418U:
-            return new Motobug();
+            return new TensionBridgeChild();
             break;
         case 0x419U:
-            return new MotobugSmoke();
+            return new ViewCollisionToggler();
             break;
         case 0x41AU:
-            return new BlastoidShot();
+            return new Motobug();
             break;
         case 0x41BU:
-            return new DepthCharge();
+            return new MotobugSmoke();
             break;
         case 0x41CU:
-            return new TurboSpikerSpike();
+            return new BlastoidShot();
             break;
         case 0x41DU:
-            return new SegmentedColumnStub();
+            return new DepthCharge();
             break;
         case 0x41EU:
-            return new StarPointerOrbs();
+            return new TurboSpikerSpike();
             break;
         case 0x41FU:
-            return new SwingingPlatformTrigger();
+            return new SegmentedColumnStub();
             break;
         case 0x420U:
-            return new ReliefEye();
+            return new StarPointerOrbs();
             break;
         case 0x421U:
+            return new SwingingPlatformTrigger();
+            break;
+        case 0x422U:
+            return new ReliefEye();
+            break;
+        case 0x423U:
             return new Platform();
             break;
 
@@ -719,9 +725,6 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x46F4A841U:
             return new AIZControl();
             break;
-        case 0x7B6FD60BU:
-            return new AIZIntro();
-            break;
         case 0xBF8DF98AU:
             return new BloominatorSpore();
             break;
@@ -730,6 +733,15 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
             break;
         case 0xCE81DA7EU:
             return new FireBreathFlame();
+            break;
+        case 0x7B6FD60BU:
+            return new AIZIntro();
+            break;
+        case 0x6FC38B24U:
+            return new AIZIntroSplash();
+            break;
+        case 0xA257AE9AU:
+            return new AIZTornado();
             break;
         case 0x5C688649U:
             return new MonkeyDudeCoconut();
@@ -1231,136 +1243,144 @@ int GetObjectIDFromName(const char* ObjName) {
             return 0x401U;
         }
 
-        if (!strcmp(ObjName, "AIZIntro")) {
+        if (!strcmp(ObjName, "BloominatorSpore")) {
             return 0x402U;
         }
 
-        if (!strcmp(ObjName, "BloominatorSpore")) {
+        if (!strcmp(ObjName, "FireBreathBomb")) {
             return 0x403U;
         }
 
-        if (!strcmp(ObjName, "FireBreathBomb")) {
+        if (!strcmp(ObjName, "FireBreathFlame")) {
             return 0x404U;
         }
 
-        if (!strcmp(ObjName, "FireBreathFlame")) {
+        if (!strcmp(ObjName, "AIZIntro")) {
             return 0x405U;
         }
 
-        if (!strcmp(ObjName, "MonkeyDudeCoconut")) {
+        if (!strcmp(ObjName, "AIZIntroSplash")) {
             return 0x406U;
         }
 
-        if (!strcmp(ObjName, "BatbrightParts")) {
+        if (!strcmp(ObjName, "AIZTornado")) {
             return 0x407U;
         }
 
-        if (!strcmp(ObjName, "BlankObject")) {
+        if (!strcmp(ObjName, "MonkeyDudeCoconut")) {
             return 0x408U;
         }
 
-        if (!strcmp(ObjName, "BoundsMarker")) {
+        if (!strcmp(ObjName, "BatbrightParts")) {
             return 0x409U;
         }
 
-        if (!strcmp(ObjName, "BubbleAir")) {
+        if (!strcmp(ObjName, "BlankObject")) {
             return 0x40AU;
         }
 
-        if (!strcmp(ObjName, "HUD")) {
+        if (!strcmp(ObjName, "BoundsMarker")) {
             return 0x40BU;
         }
 
-        if (!strcmp(ObjName, "InvisibleBlockV")) {
+        if (!strcmp(ObjName, "BubbleAir")) {
             return 0x40CU;
         }
 
-        if (!strcmp(ObjName, "Music")) {
+        if (!strcmp(ObjName, "HUD")) {
             return 0x40DU;
         }
 
-        if (!strcmp(ObjName, "PauseMenu")) {
+        if (!strcmp(ObjName, "InvisibleBlockV")) {
             return 0x40EU;
         }
 
-        if (!strcmp(ObjName, "PlaneSwitcher")) {
+        if (!strcmp(ObjName, "Music")) {
             return 0x40FU;
         }
 
-        if (!strcmp(ObjName, "PlatformOutliner")) {
+        if (!strcmp(ObjName, "PauseMenu")) {
             return 0x410U;
         }
 
-        if (!strcmp(ObjName, "PlayerSpawn")) {
+        if (!strcmp(ObjName, "PlaneSwitcher")) {
             return 0x411U;
         }
 
-        if (!strcmp(ObjName, "TitleCard")) {
+        if (!strcmp(ObjName, "PlatformOutliner")) {
             return 0x412U;
         }
 
-        if (!strcmp(ObjName, "WarpStars")) {
+        if (!strcmp(ObjName, "PlayerSpawn")) {
             return 0x413U;
         }
 
-        if (!strcmp(ObjName, "EggCapsuleButton")) {
+        if (!strcmp(ObjName, "TitleCard")) {
             return 0x414U;
         }
 
-        if (!strcmp(ObjName, "Signpost")) {
+        if (!strcmp(ObjName, "WarpStars")) {
             return 0x415U;
         }
 
-        if (!strcmp(ObjName, "TensionBridgeChild")) {
+        if (!strcmp(ObjName, "EggCapsuleButton")) {
             return 0x416U;
         }
 
-        if (!strcmp(ObjName, "ViewCollisionToggler")) {
+        if (!strcmp(ObjName, "Signpost")) {
             return 0x417U;
         }
 
-        if (!strcmp(ObjName, "Motobug")) {
+        if (!strcmp(ObjName, "TensionBridgeChild")) {
             return 0x418U;
         }
 
-        if (!strcmp(ObjName, "MotobugSmoke")) {
+        if (!strcmp(ObjName, "ViewCollisionToggler")) {
             return 0x419U;
         }
 
-        if (!strcmp(ObjName, "BlastoidShot")) {
+        if (!strcmp(ObjName, "Motobug")) {
             return 0x41AU;
         }
 
-        if (!strcmp(ObjName, "DepthCharge")) {
+        if (!strcmp(ObjName, "MotobugSmoke")) {
             return 0x41BU;
         }
 
-        if (!strcmp(ObjName, "TurboSpikerSpike")) {
+        if (!strcmp(ObjName, "BlastoidShot")) {
             return 0x41CU;
         }
 
-        if (!strcmp(ObjName, "SegmentedColumnStub")) {
+        if (!strcmp(ObjName, "DepthCharge")) {
             return 0x41DU;
         }
 
-        if (!strcmp(ObjName, "StarPointerOrbs")) {
+        if (!strcmp(ObjName, "TurboSpikerSpike")) {
             return 0x41EU;
         }
 
-        if (!strcmp(ObjName, "SwingingPlatformTrigger")) {
+        if (!strcmp(ObjName, "SegmentedColumnStub")) {
             return 0x41FU;
         }
 
-        if (!strcmp(ObjName, "ReliefEye")) {
+        if (!strcmp(ObjName, "StarPointerOrbs")) {
             return 0x420U;
         }
 
-        if (!strcmp(ObjName, "Platform")) {
+        if (!strcmp(ObjName, "SwingingPlatformTrigger")) {
             return 0x421U;
+        }
+
+        if (!strcmp(ObjName, "ReliefEye")) {
+            return 0x422U;
+        }
+
+        if (!strcmp(ObjName, "Platform")) {
+            return 0x423U;
         }
 
 
 		IApp::Print(1,"Object wasn't found!");
-	return 0x408U; //Return the BlankObject ID, since the requested one wasn't found
+	return 0x40AU; //Return the BlankObject ID, since the requested one wasn't found
         
 }
