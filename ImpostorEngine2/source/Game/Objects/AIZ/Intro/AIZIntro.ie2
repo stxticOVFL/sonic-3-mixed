@@ -93,11 +93,11 @@ event Update() {
 //Play Sonic Intro
 event SonicCutscene() {
 
-	var LayerForest:int = Scene.FindLayer("Background (Forest)");
-	var LayerFire:int = Scene.FindLayer("Fire Overlay");
-	var LayerBG:int = Scene.FindLayer("Background (Sea & Sky)");
+	var LayerBG:int = Scene.FindLayer("Background");
 	
 	if (CutsceneRoutineNumber == 0) {
+		Scene.BackgroundRepeatTileWidth = 16;
+		//Scene.Data.Layers[LayerBG].OffsetX-=16;
 		SonicFrameTimer++;
 		if (SonicFrameTimer > 1) {
 			SonicFrame++;

@@ -53,6 +53,9 @@ event Create() {
 	InitialX-=31;
 	InitialY+=25;
 	
+	Scene.CameraX = InitialX;
+	Scene.CameraY = InitialY;
+	
 	SonicAnim = 0;
 	SonicFrame = 0;
 	
@@ -81,7 +84,7 @@ event Update() {
 		SonicAnim=1;
 		SonicFrameTimer++;
 		this.X -= 8;
-		InitialX+=16;
+		//InitialX+=16;
 		if (this.Y - 48 < UpdateTimer) {
 			this.Y += 4;
 		}
@@ -118,6 +121,9 @@ event Update() {
 			ShadowFrame = 0;
 		}
 	}
+	
+	InitialX+=16;
+	X+=16;
 }
 
 var TornadoBobAmount:int;
@@ -131,13 +137,13 @@ event TornadoBob() {
 		
 		if (TornadoBobDir >= 1) {
 			TornadoBobAmount++;
-			if (TornadoBobAmount >= 4) {
+			if (TornadoBobAmount >= 3) {
 				TornadoBobDir = -1;
 			}
 		}
 		else if (TornadoBobDir <= -1) {
 			TornadoBobAmount--;
-			if (TornadoBobAmount <= -4) {
+			if (TornadoBobAmount <= -3) {
 				TornadoBobDir = 1;
 			}
 		}
@@ -157,4 +163,15 @@ event Render(CamX:int, CamY:int) {
 	
 	//Smug Sonikku
 	G.DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + TornadoBobAmount, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+	
+	//Makes it not work??????
+	/*
+	G.DrawSprite(Sprite, TornadoAnim, Frame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
+	G.DrawSprite(Sprite, PropellorAnim, PropellorFrame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
+	G.DrawSprite(Sprite, FlameAnim, FlameFrame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
+	G.DrawSprite(Sprite, ShadowAnim, ShadowFrame, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
+	G.DrawSprite(Sprite, HeadsAnim, HeadsFrame, InitialX - CamX, InitialY + TornadoBobAmount - CamY, 0, IE_NOFLIP);
+	
+	//Smug Sonikku
+	G.DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X - CamX, Y + TornadoBobAmount - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);*/
 }

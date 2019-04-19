@@ -736,6 +736,9 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Intro\AIZTornado.cpp">
       <Filter>Source Files\Game\Objects\CPP</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Intro\AIZIntroKnux.cpp">
+      <Filter>Source Files\Game\Objects\CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Game\LevelSceneExt.h">

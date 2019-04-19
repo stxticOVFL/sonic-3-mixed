@@ -59,10 +59,9 @@ void AIZIntro::Update() {
 }
 
 void AIZIntro::SonicCutscene() {
-    int LayerForest = Scene->FindLayer("Background (Forest)");
-    int LayerFire = Scene->FindLayer("Fire Overlay");
-    int LayerBG = Scene->FindLayer("Background (Sea & Sky)");
+    int LayerBG = Scene->FindLayer("Background");
     if (CutsceneRoutineNumber == 0) {
+        Scene->BackgroundRepeatTileWidth = 16;
         SonicFrameTimer++;
         if (SonicFrameTimer > 1) {
             SonicFrame++;

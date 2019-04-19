@@ -92,6 +92,7 @@
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\ForegroundPlant.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\HollowTree.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Intro\AIZIntro.cpp" />
+    <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Intro\AIZIntroKnux.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Intro\AIZIntroSplash.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\Intro\AIZTornado.cpp" />
     <ClCompile Include="..\source\Game\Objects\Gen\AIZ\MonkeyDude.cpp" />

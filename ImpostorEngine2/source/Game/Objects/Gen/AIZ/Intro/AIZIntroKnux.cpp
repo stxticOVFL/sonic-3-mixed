@@ -8,7 +8,7 @@ typedef IMath Math;
 void AIZIntroKnux::Create() {
     Object::Create();
     Priority = true;
-    Sprite = LevelScene::LoadSpriteFromBin("Player/Knux.bin", SaveGame::CurrentMode);
+    Sprite = LevelScene::LoadSpriteFromBin("Players/Knux.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Jump");
     Frame = 0;
 }
@@ -18,6 +18,6 @@ void AIZIntroKnux::Update() {
 }
 
 void AIZIntroKnux::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, Animation, Frame, X - CamX, Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+	G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 
