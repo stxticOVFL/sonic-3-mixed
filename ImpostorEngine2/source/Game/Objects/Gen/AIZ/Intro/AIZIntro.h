@@ -28,7 +28,8 @@ public:
     ISprite* IntroObjectsSprite;
     int InitialCamX;
     int InitialCamY;
-    Object* Tornado;
+    int TornadoX;
+    int TornadoY;
     int SonicFrame;
     int SonicFrameTimer;
     

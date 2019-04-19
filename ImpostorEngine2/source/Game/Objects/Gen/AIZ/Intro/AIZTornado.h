@@ -35,9 +35,13 @@ public:
     int SonicAnim;
     int State;
     int UpdateTimer;
+    int TornadoBobAmount;
+    int TornadoBobDir;
+    int TornadoBobTimer;
     
     void Create();
     void Update();
+    void TornadoBob();
     void Render(int CamX, int CamY);
 };
 

@@ -19,7 +19,8 @@ var IntroObjectsSprite:ISprite;
 var InitialCamX:int;
 var InitialCamY:int;
 
-var Tornado:Object;
+var TornadoX:int;
+var TornadoY:int;
 
 var SonicFrame:int;
 var SonicFrameTimer:int;
@@ -69,7 +70,7 @@ event Create() {
 			Scene.Player.Cutscene = true;
 			Scene.Player.ControlLocked = true;
 			Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["S_Run"]);
-			Tornado = Scene.AddNewObject(Obj_AIZTornado);
+			Scene.AddNewObject(Obj_AIZTornado);
 		}
 	}
 }
@@ -105,7 +106,7 @@ event SonicCutscene() {
 		if (UpdateTimer > 180) {
 			CutsceneRoutineNumber++;
 			UpdateTimer = 0;
-			UpdateTimer = Tornado.Y;
+			UpdateTimer = TornadoY;
 		}
 		Scene.Player.EZX = Scene.CameraX + App.WIDTH / 2 - 4;
 		Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
@@ -113,20 +114,20 @@ event SonicCutscene() {
 	else if (CutsceneRoutineNumber == 1) {
 		//Sonic falls off and goes super
 		SonicFrameTimer++;
-		Tornado.X -= 8;
-		if (Tornado.Y - 48 < UpdateTimer) {
-			Tornado.Y += 4;
+		TornadoX -= 8;
+		if (TornadoY - 48 < UpdateTimer) {
+			TornadoY += 4;
 		}
 		if (SonicFrameTimer > 4) {
 			SonicFrame++;
 			if (SonicFrame > 4) {
 				SonicFrame = 4;
-				if (Tornado.X + 128 < Scene.CameraX && Tornado.Y - 48 <= UpdateTimer) {
+				if (TornadoX + 128 < Scene.CameraX && TornadoY - 48 <= UpdateTimer) {
 					CutsceneRoutineNumber++;
 					SuperSonicMoving++;
 					//Correct it while he's off screen
 					Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
-					Tornado.Y = 1;
+					TornadoY = 1;
 				}
 			}
 			SonicFrameTimer = 0;
@@ -136,7 +137,6 @@ event SonicCutscene() {
 		if (Scene.CameraX < InitialCamX + 2900 && !OnBeach) {
 			Scene.BackgroundRepeatTileWidth = 32;
 			Scene.Player.Visible = true;
-			Tornado.Active = false;
 			//Scene.Data.Layers[LayerForest].Visible = false;
 			//Scene.Data.Layers[LayerFire].Visible = false;
 			// Intro sequence camera stuff
@@ -151,16 +151,16 @@ event SonicCutscene() {
 			OnBeach = true;
 		}
 
-		if (Tornado.X >= Scene.CameraX + App.WIDTH / 2 - 4) {
-			Tornado.Y = 0;
+		if (TornadoX >= Scene.CameraX + App.WIDTH / 2 - 4) {
+			TornadoY = 0;
 			Scene.CameraX += 16;
 			Scene.Player.EZX = Scene.CameraX + App.WIDTH / 2 - 4;
 			Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
 		}
 		else {		
-			if (Tornado.Y > 0) {
-				Tornado.X += 16;
-				Scene.Player.EZX = Tornado.X;
+			if (TornadoY > 0) {
+				TornadoX += 16;
+				Scene.Player.EZX = TornadoX;
 				Scene.Player.EZY = Scene.CameraY + App.HEIGHT / 2 + 32;
 			}
 			else {

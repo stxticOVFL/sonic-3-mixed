@@ -40,7 +40,7 @@ void AIZIntro::Create() {
             Scene->Player->Cutscene = true;
             Scene->Player->ControlLocked = true;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["S_Run"]);
-            Tornado = Scene->AddNewObject(Obj_AIZTornado);
+            Scene->AddNewObject(Obj_AIZTornado);
         }
     }
 
@@ -74,7 +74,7 @@ void AIZIntro::SonicCutscene() {
         if (UpdateTimer > 180) {
             CutsceneRoutineNumber++;
             UpdateTimer = 0;
-            UpdateTimer = Tornado->Y;
+            UpdateTimer = TornadoY;
         }
 
         Scene->Player->EZX = Scene->CameraX + App->WIDTH / 2 - 4;
@@ -82,20 +82,20 @@ void AIZIntro::SonicCutscene() {
     }
     else if (CutsceneRoutineNumber == 1) {
         SonicFrameTimer++;
-        Tornado->X -= 8;
-        if (Tornado->Y - 48 < UpdateTimer) {
-            Tornado->Y += 4;
+        TornadoX -= 8;
+        if (TornadoY - 48 < UpdateTimer) {
+            TornadoY += 4;
         }
 
         if (SonicFrameTimer > 4) {
             SonicFrame++;
             if (SonicFrame > 4) {
                 SonicFrame = 4;
-                if (Tornado->X + 128 < Scene->CameraX && Tornado->Y - 48 <= UpdateTimer) {
+                if (TornadoX + 128 < Scene->CameraX && TornadoY - 48 <= UpdateTimer) {
                     CutsceneRoutineNumber++;
                     SuperSonicMoving++;
                     Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
-                    Tornado->Y = 1;
+                    TornadoY = 1;
                 }
 
             }
@@ -109,24 +109,23 @@ void AIZIntro::SonicCutscene() {
         if (Scene->CameraX < InitialCamX + 2900 && !OnBeach) {
             Scene->BackgroundRepeatTileWidth = 32;
             Scene->Player->Visible = true;
-            Tornado->Active = false;
         }
         else if (Scene->CameraX >= InitialCamX + 2900 && !OnBeach) {
             Scene->CameraX = InitialCamX + 0x000;
-            Scene->BackgroundRepeatTileWidth = 0;
+			Scene->BackgroundRepeatTileWidth = 0;
             OnBeach = true;
         }
 
-        if (Tornado->X >= Scene->CameraX + App->WIDTH / 2 - 4) {
-            Tornado->Y = 0;
+        if (TornadoX >= Scene->CameraX + App->WIDTH / 2 - 4) {
+            TornadoY = 0;
             Scene->CameraX += 16;
             Scene->Player->EZX = Scene->CameraX + App->WIDTH / 2 - 4;
             Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
         }
         else {
-            if (Tornado->Y > 0) {
-                Tornado->X += 16;
-                Scene->Player->EZX = Tornado->X;
+            if (TornadoY > 0) {
+                TornadoX += 16;
+                Scene->Player->EZX = TornadoX;
                 Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
             }
             else {
@@ -142,7 +141,7 @@ void AIZIntro::SonicCutscene() {
             SuperSonicMoving = false;
             Scene->Player->GroundSpeed = 0x0;
             Scene->Player->XSpeed = 0x0;
-			Scene->Player->Rings = 1;
+            Scene->Player->Rings = 1;
             Scene->Player->Hurt(Scene->Player->EZX + 1, false);
             Scene->Player->Deform();
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Hurt"]);

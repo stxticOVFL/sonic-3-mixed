@@ -7,6 +7,7 @@ typedef IMath Math;
 
 void AIZTornado::Create() {
     Object::Create();
+    Priority = true;
     Sprite = LevelScene::LoadSpriteFromBin("AIZ/Intro.bin", SaveGame::CurrentMode);
     if (Sprite) {
         Sprite->SetTransparentColorIndex(0);
@@ -23,10 +24,17 @@ void AIZTornado::Create() {
         PlayerSprite->SetTransparentColorIndex(0);
     }
 
+    InitialX = App->WIDTH / 2 - 4;
+    InitialY = App->HEIGHT / 2 - 16;
     X = App->WIDTH / 2 - 4;
     Y = App->HEIGHT / 2 - 16;
+    X -= 1;
+    Y -= 20;
+    InitialX -= 31;
+    InitialY += 25;
     SonicAnim = 0;
     SonicFrame = 0;
+    ShadowFrame = 3;
 }
 
 void AIZTornado::Update() {
@@ -52,6 +60,7 @@ void AIZTornado::Update() {
         SonicAnim = 1;
         SonicFrameTimer++;
         this->X -= 8;
+        InitialX += 16;
         if (this->Y - 48 < UpdateTimer) {
             this->Y += 4;
         }
@@ -65,19 +74,69 @@ void AIZTornado::Update() {
             SonicFrameTimer = 0;
         }
 
+        if (InitialX > Scene->CameraX + App->WIDTH + 128) {
+            Visible = false;
+        }
+
+    }
+
+    TornadoBob();
+    FlameFrame++;
+    if (FlameFrame > 1) {
+        FlameFrame = 0;
+    }
+
+    PropellorFrame++;
+    if (PropellorFrame > 3) {
+        PropellorFrame = 0;
+    }
+
+    ShadowFrameTimer++;
+    if (ShadowFrameTimer > 4) {
+        ShadowFrame++;
+        ShadowFrameTimer = 0;
+        if (ShadowFrame > 5) {
+            ShadowFrame = 0;
+        }
+
     }
 
     Object::Update();
 }
 
+void AIZTornado::TornadoBob() {
+    TornadoBobTimer++;
+    if (TornadoBobTimer >= 2) {
+        TornadoBobTimer = 0;
+        if (TornadoBobDir >= 1) {
+            TornadoBobAmount++;
+            if (TornadoBobAmount >= 3) {
+                TornadoBobDir = -1;
+            }
+
+        }
+        else if (TornadoBobDir <= -1) {
+            TornadoBobAmount--;
+            if (TornadoBobAmount <= -3) {
+                TornadoBobDir = 1;
+            }
+
+        }
+        else {
+            TornadoBobDir = 1;
+        }
+    }
+
+}
+
 void AIZTornado::Render(int CamX, int CamY) {
     if (!Visible || !Active) return;
 
-    G->DrawSprite(Sprite, TornadoAnim, Frame, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, PropellorAnim, PropellorFrame, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, FlameAnim, FlameFrame, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, ShadowAnim, ShadowFrame, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(Sprite, HeadsAnim, HeadsFrame, InitialX - CamX, InitialY - CamY, 0, IE_NOFLIP);
-    G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+    G->DrawSprite(Sprite, TornadoAnim, Frame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, PropellorAnim, PropellorFrame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, FlameAnim, FlameFrame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, ShadowAnim, ShadowFrame, InitialX, InitialY, 0, IE_NOFLIP);
+    G->DrawSprite(Sprite, HeadsAnim, HeadsFrame, InitialX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
+    G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + TornadoBobAmount, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 
