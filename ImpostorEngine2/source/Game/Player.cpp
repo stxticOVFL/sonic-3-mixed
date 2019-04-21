@@ -921,7 +921,7 @@ void IPlayer::Create() {
 				}
 				break;
 			default: //Default to Sonic
-				PaletteReader = IResources::Load("Objects/PlayerSonicS3.bin");
+				PaletteReader = IResources::Load("Objects/PlayerSonicC.bin");
 				//Load S3 Sonic Colours
 				if (PaletteReader)
 				{
@@ -1052,7 +1052,9 @@ void IPlayer::Create() {
              // Allocates memory by calling: ISprite::operator new(size_t size, const char* identifier)
              // and then constructs an object at the newly allocated space.
 			Sprites[0] = new ("ISprite - Players/Sonic.gif") ISprite("Players/Sonic.gif", App,SaveGame::CurrentMode);
+			Sprites[1] = new ("ISprite - Players/Sonic3MClassic.gif") ISprite("Players/Sonic3MClassic.gif", App, SaveGame::CurrentMode);
 			Sprites[0]->SetTransparentColorIndex(0);
+			Sprites[1]->SetTransparentColorIndex(0);
 			Sprites[0]->LoadAnimation("Classic/Sprites/Players/Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
@@ -1061,6 +1063,7 @@ void IPlayer::Create() {
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace("S_" + string(Sprites[0]->Animations[i].Name), i);
 			}
+			Sprites[1]->LinkAnimation(Sprites[0]->Animations);
 		} else {
 			bool Tria = true;
 			if (Tria) {

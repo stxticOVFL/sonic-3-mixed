@@ -108,30 +108,40 @@ namespace AnimationEditor
 
         private void ButtonFrameLeft_Click(object sender, RoutedEventArgs e)
         {
+            int selected = ViewModel.SelectedFrameIndex;
             ViewModel.ShiftFrameLeft(ViewModel.SelectedFrameIndex);
             Interfacer.UpdateFramesList();
             Interfacer.UpdateUI(true);
+            if (selected == 0) selected++;  
+            ViewModel.SelectedFrameIndex = selected - 1;
         }
 
         private void ButtonFrameRight_Click(object sender, RoutedEventArgs e)
         {
+            int selected = ViewModel.SelectedFrameIndex;
             ViewModel.ShiftFrameRight(ViewModel.SelectedFrameIndex);
             Interfacer.UpdateFramesList();
             Interfacer.UpdateUI(true);
+            if (selected == ViewModel.FramesCount) selected--;
+            ViewModel.SelectedFrameIndex = selected + 1;
         }
 
         private void ButtonAnimationDuplicate_Click(object sender, RoutedEventArgs e)
         {
+            int selected = ViewModel.SelectedAnimationIndex;
             ViewModel.DuplicateAnimation(ViewModel.SelectedAnimationIndex);
             Interfacer.FullUpdateList();
             Interfacer.UpdateUI();
+            ViewModel.SelectedAnimationIndex = selected + 1;
         }
 
         private void ButtonAnimationRemove_Click(object sender, RoutedEventArgs e)
         {
+            int selected = ViewModel.SelectedAnimationIndex;
             ViewModel.RemoveAnimation(ViewModel.SelectedAnimationIndex);
             Interfacer.FullUpdateList();
             Interfacer.UpdateUI();
+            ViewModel.SelectedAnimationIndex = selected;
         }
 
         private void ButtonAnimationImport_Click(object sender, RoutedEventArgs e)
@@ -173,9 +183,12 @@ namespace AnimationEditor
 
         private void ButtonFrameRemove_Click(object sender, RoutedEventArgs e)
         {
+            int selected = ViewModel.SelectedFrameIndex;
             ViewModel.RemoveFrame(ViewModel.SelectedFrameIndex);
             Interfacer.UpdateFramesList();
             Interfacer.UpdateUI(true);
+            if (selected == ViewModel.FramesCount) selected--;
+            ViewModel.SelectedFrameIndex = selected;
         }
 
         private void ButtonFrameImport_Context(object sender, RoutedEventArgs e)

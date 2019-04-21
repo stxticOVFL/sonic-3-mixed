@@ -74,7 +74,7 @@ void AIZIntro::SonicCutscene() {
 
         Scene->Player->Visible = false;
         UpdateTimer++;
-        if (UpdateTimer > 180) {
+        if (UpdateTimer > 260) {
             CutsceneRoutineNumber++;
             UpdateTimer = 0;
             UpdateTimer = TornadoY;
@@ -97,6 +97,7 @@ void AIZIntro::SonicCutscene() {
                 if (TornadoX + 128 < Scene->CameraX && TornadoY - 48 <= UpdateTimer) {
                     CutsceneRoutineNumber++;
                     SuperSonicMoving++;
+                    Scene->RoutineNumber = 1;
                     Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
                     TornadoY = 1;
                 }
@@ -108,12 +109,11 @@ void AIZIntro::SonicCutscene() {
 
     }
 
-    if (SuperSonicMoving && CutsceneRoutineNumber > 1) {
-        if (Scene->CameraX < InitialCamX + 2900 && !OnBeach) {
+    if (SuperSonicMoving && CutsceneRoutineNumber == 2) {
+        if (Scene->CameraX < InitialCamX + 3000 && !OnBeach) {
             Scene->BackgroundRepeatTileWidth = 32;
-            Scene->Player->Visible = true;
         }
-        else if (Scene->CameraX >= InitialCamX + 2900 && !OnBeach) {
+        else if (Scene->CameraX >= InitialCamX + 3000 && !OnBeach) {
             Scene->CameraX = InitialCamX + 0x000;
             Scene->BackgroundRepeatTileWidth = 0;
             OnBeach = true;
@@ -143,12 +143,14 @@ void AIZIntro::SonicCutscene() {
         if (Scene->CameraX >= InitialCamX + 5024 && OnBeach) {
             Scene->CameraX = InitialCamX + 5024;
             SuperSonicMoving = false;
+            Scene->Player->Visible = true;
             Scene->Player->GroundSpeed = 0x0;
             Scene->Player->XSpeed = 0x0;
             Scene->Player->Rings = 1;
             Scene->Player->Hurt(Scene->Player->EZX + 1, false);
             Scene->Player->Deform();
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Hurt"]);
+            Scene->RoutineNumber = 2;
             CutsceneRoutineNumber = 3;
         }
 
@@ -179,7 +181,6 @@ void AIZIntro::SonicCutscene() {
             CutsceneRoutineNumber = 4;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Idle"]);
             Cutscene_KnucklesBackForth = 60;
-            Scene->Player->EZX -= 4;
         }
 
     }
@@ -187,7 +188,6 @@ void AIZIntro::SonicCutscene() {
         if (Cutscene_KnucklesBackForth == 0) {
             CutsceneRoutineNumber = 5;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Idle"]);
-            Scene->Player->EZX += 4;
             Cutscene_SonicWaitTimer = 120;
         }
 

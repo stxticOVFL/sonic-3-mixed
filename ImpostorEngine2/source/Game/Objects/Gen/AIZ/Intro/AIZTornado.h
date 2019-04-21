@@ -33,9 +33,11 @@ public:
     int SonicFrame;
     int SonicFrameTimer;
     int SonicAnim;
+    bool SonicVisible;
     int State;
     int UpdateTimer;
     int VisualX;
+    int InitialFallFrame;
     int TornadoBobAmount;
     int TornadoBobDir;
     int TornadoBobTimer;
