@@ -60,8 +60,10 @@ void AIZIntro::Update() {
 
 void AIZIntro::SonicCutscene() {
     int LayerBG = Scene->FindLayer("Background");
+    int LayerFG = Scene->FindLayer("FG High");
     if (CutsceneRoutineNumber == 0) {
         Scene->BackgroundRepeatTileWidth = 16;
+        Scene->Data->Layers[LayerFG].Visible = false;
         SonicFrameTimer++;
         if (SonicFrameTimer > 1) {
             SonicFrame++;
@@ -115,6 +117,7 @@ void AIZIntro::SonicCutscene() {
             Scene->CameraX = InitialCamX + 0x000;
             Scene->BackgroundRepeatTileWidth = 0;
             OnBeach = true;
+            Scene->Data->Layers[LayerFG].Visible = true;
         }
 
         if (TornadoX >= Scene->CameraX + App->WIDTH / 2 - 4) {

@@ -94,10 +94,12 @@ event Update() {
 event SonicCutscene() {
 
 	var LayerBG:int = Scene.FindLayer("Background");
+	var LayerFG:int = Scene.FindLayer("FG High");
 	
 	if (CutsceneRoutineNumber == 0) {
 		Scene.BackgroundRepeatTileWidth = 16;
 		//Scene.Data.Layers[LayerBG].OffsetX-=16;
+		Scene.Data.Layers[LayerFG].Visible = false;
 		SonicFrameTimer++;
 		if (SonicFrameTimer > 1) {
 			SonicFrame++;
@@ -153,6 +155,7 @@ event SonicCutscene() {
 			//Scene.Data.Layers[LayerFire].Visible = true;
 			//Scene.Data.Layers[LayerBG].ScrollIndexes[0].Size = 0x7FFF;
 			OnBeach = true;
+			Scene.Data.Layers[LayerFG].Visible = true;
 		}
 
 		if (TornadoX >= Scene.CameraX + App.WIDTH / 2 - 4) {

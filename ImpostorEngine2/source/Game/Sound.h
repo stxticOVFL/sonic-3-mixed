@@ -1,0 +1,173 @@
+#ifndef SOUND_H
+#define SOUND_H
+
+#define PUBLIC
+#define PRIVATE
+#define PROTECTED
+#define STATIC
+#define VIRTUAL
+#define CONSTRUCTER
+
+
+#include <Utils/Standard.h>
+#include <Engine/IAudio.h>
+#include <Engine/ISound.h>
+
+class Sound {
+public:
+    enum {
+    SFX_RING = 0x33,
+    SFX_34 = 0x34,
+    SFX_DEATH = 0x35,
+    SFX_SKID = 0x36,
+    SFX_SPIKE_DEATH = 0x37,
+    SFX_AIR_BUBBLE = 0x38,
+    SFX_SPLASH = 0x39,
+    SFX_SHIELD = 0x3A,
+    SFX_DROWN = 0x3B,
+    SFX_ROLL = 0x3C,
+    SFX_DESTROY = 0x3D,
+    SFX_SHIELD_FIRE = 0x3E,
+    SFX_SHIELD_BUBBLE = 0x3F,
+    SFX_40 = 0x40,
+    SFX_SHIELD_ELECTRIC = 0x41,
+    SFX_INSTASHIELD = 0x42,
+    SFX_SHIELD_FIRE_DASH = 0x43,
+    SFX_SHIELD_BUBBLE_BOUNCE = 0x44,
+    SFX_SHIELD_ELECTRIC_JUMP = 0x45,
+    SFX_46 = 0x46,
+    SFX_47 = 0x47,
+    SFX_48 = 0x48,
+    SFX_49 = 0x49,
+    SFX_GRAB = 0x4A,
+    SFX_BIG_SPLASH = 0x4B,
+    SFX_4C = 0x4C,
+    SFX_SHOT = 0x4D,
+    SFX_BOMB_EXPLOSION = 0x4E,
+    SFX_4F = 0x4F,
+    SFX_50 = 0x50,
+    SFX_DROP = 0x51,
+    SFX_52 = 0x52,
+    SFX_53 = 0x53,
+    SFX_54 = 0x54,
+    SFX_55 = 0x55,
+    SFX_56 = 0x56,
+    SFX_57 = 0x57,
+    SFX_58 = 0x58,
+    SFX_COLLAPSE = 0x59,
+    SFX_5A = 0x5A,
+    SFX_SCORE_ADD = 0x5B,
+    SFX_IMPACT1 = 0x5C,
+    SFX_IMPACT2 = 0x5D,
+    SFX_IMPACT3 = 0x5E,
+    SFX_IMPACT4 = 0x5F,
+    SFX_IMPACT5 = 0x60,
+    SFX_IMPACT6 = 0x61,
+    SFX_JUMP = 0x62,
+    SFX_STARPOST = 0x63,
+    SFX_64 = 0x64,
+    SFX_BLUEBALL = 0x65,
+    SFX_SPECIALSTAGE_FLYAWAY = 0x66,
+    SFX_67 = 0x67,
+    SFX_68 = 0x68,
+    SFX_PUSHING = 0x69,
+    SFX_SPECIALSTAGE_EXIT = 0x6A,
+    SFX_6B = 0x6B,
+    SFX_6C = 0x6C,
+    SFX_6D = 0x6D,
+    SFX_BOSSHIT = 0x6E,
+    SFX_RUMBLE = 0x6F,
+    SFX_70 = 0x70,
+    SFX_71 = 0x71,
+    SFX_CARNIVAL_FAN = 0x72,
+    SFX_73 = 0x73,
+    SFX_VACUUM_TUBE = 0x74,
+    SFX_75 = 0x75,
+    SFX_76 = 0x76,
+    SFX_BALLOON_POP = 0x77,
+    SFX_78 = 0x78,
+    SFX_79 = 0x79,
+    SFX_7A = 0x7A,
+    SFX_PAD_BOUNCE = 0x7B,
+    SFX_7C = 0x7C,
+    SFX_7D = 0x7D,
+    SFX_7E = 0x7E,
+    SFX_7F = 0x7F,
+    SFX_80 = 0x80,
+    SFX_81 = 0x81,
+    SFX_82 = 0x82,
+    SFX_83 = 0x83,
+    SFX_84 = 0x84,
+    SFX_85 = 0x85,
+    SFX_86 = 0x86,
+    SFX_87 = 0x87,
+    SFX_88 = 0x88,
+    SFX_89 = 0x89,
+    SFX_8A = 0x8A,
+    SFX_8B = 0x8B,
+    SFX_8C = 0x8C,
+    SFX_8D = 0x8D,
+    SFX_8E = 0x8E,
+    SFX_8F = 0x8F,
+    SFX_90 = 0x90,
+    SFX_91 = 0x91,
+    SFX_92 = 0x92,
+    SFX_93 = 0x93,
+    SFX_94 = 0x94,
+    SFX_95 = 0x95,
+    SFX_96 = 0x96,
+    SFX_97 = 0x97,
+    SFX_98 = 0x98,
+    SFX_99 = 0x99,
+    SFX_9A = 0x9A,
+    SFX_9B = 0x9B,
+    SFX_9C = 0x9C,
+    SFX_9D = 0x9D,
+    SFX_9E = 0x9E,
+    SFX_TRANSFORM = 0x9F,
+    SFX_UNDERWATER_BEEP = 0xA9,
+    SFX_BUMPER = 0xAA,
+    SFX_SPINDASHREV = 0xAB,
+    SFX_SS_WARP = 0xAF,
+    SFX_SCORE_TOTAL = 0xB0,
+    SFX_SPRING = 0xB1,
+    SFX_ENTER_SS_RING = 0xB3,
+    SFX_BOSSEXPLOSION = 0xB4,
+    SFX_SPINDASH = 0xB6,
+    SFX_RINGLOSS = 0xB9,
+    SFX_TAILS_FLY = 0xBA,
+    SFX_TAILS_TIRED = 0xBB,
+    SFX_SLIDE = 0xBC,
+    SFX_AIRSHIP = 0xBD,
+    SFX_FAN_BIG = 0xC0,
+    SFX_FAN_SMALL = 0xC1,
+    SFX_WATERRUN = 0xDB,
+    SFX_EMERALD = 0xE1,
+    SFX_MIGHTY_DRILL = 0xC2,
+    SFX_MIGHTY_LAND = 0xC3,
+    SFX_MIGHTY_DEFLECT = 0xC4,
+    SFX_MIGHTY_UNSPIN = 0xC5,
+    SFX_DROPDASHREADY = 0x01,
+    SFX_DROPDASH = 0x02,
+    SFX_MENUACCEPT = 0x03,
+    SFX_MENUBLEEP = 0x04,
+    SFX_MENUWOOSH = 0x05,
+    SFX_MENUFAIL = 0x06,
+    SFX_AIRSHIP2 = 0x07,
+    SFX_RAY_DIVE = 0x08,
+    SFX_RAY_SWOOP = 0x09,
+    }; 
+    static IAudio* Audio;
+    static bool    AudioLoaded;
+    static ISound* SoundBank[256];
+
+    Sound();
+    static void Init();
+    static void Play(int sound);
+    static void Loop(int sound, int looppoint);
+    static void Stop(int sound);
+    static void LoadStream(int sound, const char* file, bool loop, int lp, bool override);
+    static void PlayStream(int sound, const char* file, bool loop, int lp, int at, bool override);
+};
+
+#endif /* SOUND_H */

@@ -35,6 +35,7 @@ public:
     int SonicAnim;
     int State;
     int UpdateTimer;
+    int VisualX;
     int TornadoBobAmount;
     int TornadoBobDir;
     int TornadoBobTimer;
