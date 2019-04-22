@@ -15,6 +15,8 @@ class AIZIntroKnux;
 class AIZIntroKnux: public Object {
 public:    
     
+    int ActionTimer;
+    int Action;
     
     void Create();
     void Update();
