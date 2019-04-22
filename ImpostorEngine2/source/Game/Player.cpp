@@ -921,7 +921,10 @@ void IPlayer::Create() {
 				}
 				break;
 			default: //Default to Sonic
-				PaletteReader = IResources::Load("Objects/PlayerSonicC.bin");
+				if (App->Settings->GetBool("dev", "newSonic"))
+					PaletteReader = IResources::Load("Objects/PlayerSonicC.bin");
+				else
+					PaletteReader = IResources::Load("Objects/PlayerSonicS3.bin");
 				//Load S3 Sonic Colours
 				if (PaletteReader)
 				{
@@ -1055,7 +1058,10 @@ void IPlayer::Create() {
 			Sprites[1] = new ("ISprite - Players/Sonic3MClassic.gif") ISprite("Players/Sonic3MClassic.gif", App, SaveGame::CurrentMode);
 			Sprites[0]->SetTransparentColorIndex(0);
 			Sprites[1]->SetTransparentColorIndex(0);
-			Sprites[0]->LoadAnimation("Classic/Sprites/Players/Sonic.bin");
+			if (App->Settings->GetBool("dev", "newSonic"))
+				Sprites[0]->LoadAnimation("Classic/Sprites/Players/Sonic+3M.bin");
+			else
+				Sprites[0]->LoadAnimation("Classic/Sprites/Players/Sonic.bin");
 			for (; i < Sprites[0]->AnimCount; i++) {
 				AnimationMap.emplace(string(Sprites[0]->Animations[i].Name), i);
 			}

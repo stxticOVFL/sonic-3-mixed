@@ -106,6 +106,20 @@ PUBLIC int IINI::GetInteger(const char* section, const char* key, int* dest) {
 
 	return 0;
 }
+PUBLIC int IINI::GetInteger(const char* section, const char* key) {
+	if (count == 0)
+		return 0;
+
+	for (int x = 0; x < count; x++) {
+		if (!strcmp(section, item[x].section)) {
+			if (!strcmp(key, item[x].key)) {
+				return atoi(item[x].value);
+			}
+		}
+	}
+
+	return 0;
+}
 PUBLIC int IINI::GetBool(const char* section, const char* key, bool* dest) {
 	if (count == 0)
 		return 0;
@@ -120,6 +134,20 @@ PUBLIC int IINI::GetBool(const char* section, const char* key, bool* dest) {
 	}
 
 	return 0;
+}
+PUBLIC bool IINI::GetBool(const char* section, const char* key) {
+	if (count == 0)
+		return 0;
+
+	for (int x = 0; x < count; x++) {
+		if (!strcmp(section, item[x].section)) {
+			if (!strcmp(key, item[x].key)) {
+				return !strcmp(item[x].value, "true") || !strcmp(item[x].value, "1");
+			}
+		}
+	}
+
+	return false;
 }
 
 PUBLIC int IINI::SetString(const char* section, const char* key, char* value) {
