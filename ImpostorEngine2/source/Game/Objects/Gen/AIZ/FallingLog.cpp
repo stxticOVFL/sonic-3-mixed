@@ -24,9 +24,12 @@ void FallingLog::Create() {
     Scene->AddSelfToRegistry(this, "Solid");
     Length = 0;
     LastY = Y;
-    CurrentAnimation = Sprite->FindAnimation("Falling Log (Act 1)");
-    if (Scene->Act == 2) CurrentAnimation = Sprite->FindAnimation("Falling Log (Act 2)");
-
+    if (Scene->Act == 1) {
+        CurrentAnimation = Sprite->FindAnimation("Falling Log (Act 1)");
+    }
+    else {
+        CurrentAnimation = Sprite->FindAnimation("Falling Log (Act 2)");
+    }
 }
 
 void FallingLog::Update() {

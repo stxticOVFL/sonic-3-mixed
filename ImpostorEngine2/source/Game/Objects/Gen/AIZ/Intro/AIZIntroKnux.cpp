@@ -13,11 +13,12 @@ void AIZIntroKnux::Create() {
     Frame = 0;
     Action = 0;
     ActionTimer = 0;
-    Gravity = 0.21875;
+    Gravity = 0;
 }
 
 void AIZIntroKnux::Update() {
     if (Scene->RoutineNumber == 2) {
+        Gravity = 0.21875;
     }
 
     Object::Update();

@@ -17,6 +17,7 @@ public:
 	int FrameZigzag = 0;
 	int FrameZigzagRed = 0;
 	int FrameZigzagBlue = 0;
+	int squareframe = 0;
 	int CharacterFlag = 0;
 	int PartnerFlag = 0xFF;
     int Mode = 0;
@@ -636,9 +637,12 @@ PUBLIC void Scene_DataSelect::Update() {
 		viewOffX += (selected * 10000 - viewOffX) / 2;
 
 	FrameCircle = (FrameCircle + 1) & 0xFF;
-	FrameZigzag = (FrameZigzag + 1) % (40 * 4);
+	//FrameZigzag = (FrameZigzag + 1) % (40 * 4);
 	FrameZigzagRed = (FrameZigzagRed + 1) % (117 * 4);
 	FrameZigzagBlue = (FrameZigzagBlue + 1) % (110 * 4);
+
+	squareframe = (squareframe + 1) % 64;
+	FrameZigzag = (FrameZigzag + 1) % 134;
 
 	frame++;
 	if (frame > (32 << 1))
@@ -657,7 +661,7 @@ PUBLIC void Scene_DataSelect::Render() {
 	// BG
 	G->DrawRectangle(0, 0, App->WIDTH, App->HEIGHT, 0xF0F0F0);
 
-	// Zigzags
+	/*// Zigzags
 	int pX = cenX - (260 - 186) - 5;
 	int pY = 223 - 5;
 	G->SetClip(0, App->HEIGHT - 60, 293, 60);
@@ -706,7 +710,35 @@ PUBLIC void Scene_DataSelect::Render() {
 	// Tilted Squares
 	G->DrawSprite(MenuSprite, 13, 0, cenX - (260 - 253), 51 - (yup >> 15), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 13, 2, cenX - (260 - 265), 47 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 13, 1, cenX - (260 - 259), 49 + (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 1, cenX - (260 - 259), 49 + (yup >> 15), 0, IE_NOFLIP);//*/
+
+	//Squares
+	for (int i = 0; i < App->HEIGHT / 32 + 1; i++) {
+		for (int j = 0; j < App->WIDTH / 32 + 1; j++) {
+			//G->DrawSprite(MenuSprite, 22, 0, (j * 32) + squareframe + ((i % 2) * 32), i * 32, 0, IE_NOFLIP);
+			G->DrawRectangle((j - 1) * 64 + squareframe + (i % 2) * 32, i * 32, 32, 32, 0xB6B6B6);
+		}
+	}
+	//Zigzags
+	int zX = 70; //charazx
+	//BLUE
+	G->SetClip(0, 0, 140, 80);
+	G->DrawSprite(MenuSprite, 23, 0, zX + FrameZigzag, 0 - FrameZigzag, 0, IE_FLIPX);
+	G->DrawSprite(MenuSprite, 23, 0, zX - 134 + FrameZigzag, 134 - FrameZigzag, 0, IE_FLIPX);
+	//RED
+	G->SetClip(App->WIDTH - 140, 0, 140, 80);
+	G->DrawSprite(MenuSprite, 23, 1, App->WIDTH - zX - FrameZigzag, 0 - FrameZigzag, 0, IE_FLIPX);
+	G->DrawSprite(MenuSprite, 23, 1, App->WIDTH - zX + 134 - FrameZigzag, 134 - FrameZigzag, 0, IE_FLIPX);
+	//YELLOW
+	G->SetClip(0, App->HEIGHT - 80, 140, 80);
+	G->DrawSprite(MenuSprite, 23, 2, zX + FrameZigzag, App->HEIGHT + FrameZigzag, 0, IE_FLIPX);
+	G->DrawSprite(MenuSprite, 23, 2, zX - 134 + FrameZigzag, App->HEIGHT - 134 + FrameZigzag, 0, IE_FLIPX);
+	//GREEN
+	G->SetClip(App->WIDTH - 140, App->HEIGHT - 80, 140, 80);
+	G->DrawSprite(MenuSprite, 23, 3, App->WIDTH - zX - FrameZigzag, App->HEIGHT + FrameZigzag, 0, IE_FLIPX);
+	G->DrawSprite(MenuSprite, 23, 3, App->WIDTH - zX + 134 - FrameZigzag, App->HEIGHT - 134 + FrameZigzag, 0, IE_FLIPX);
+
+	G->ClearClip();
 
 	int blackGirth = 32;
 

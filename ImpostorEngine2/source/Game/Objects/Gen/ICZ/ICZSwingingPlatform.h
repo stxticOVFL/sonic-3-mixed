@@ -1,7 +1,7 @@
-#ifndef SWINGINGPLATFORM_H
-#define SWINGINGPLATFORM_H
+#ifndef ICZSWINGINGPLATFORM_H
+#define ICZSWINGINGPLATFORM_H
 
-class SwingingPlatform;
+class ICZSwingingPlatform;
 
 #include <Utils/Standard.h>
 
@@ -12,7 +12,7 @@ class SwingingPlatform;
 #include <Game/LevelScene.h>
 #include <Game/Objects/Gen/ObjectListing.h>
 
-class SwingingPlatform: public Object {
+class ICZSwingingPlatform: public Object {
 public:    
     
     int RingAnimation;
@@ -28,4 +28,4 @@ public:
     int OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data);
 };
 
-#endif /* SWINGINGPLATFORM_H */
+#endif /* ICZSWINGINGPLATFORM_H */

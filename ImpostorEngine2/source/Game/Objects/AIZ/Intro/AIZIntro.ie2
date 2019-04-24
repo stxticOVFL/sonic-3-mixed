@@ -22,10 +22,12 @@ var InitialCamY:int;
 var TornadoX:int;
 var TornadoY:int;
 
-var Knux:Object;
+var Knux:IPlayer;
 
 var SonicFrame:int;
 var SonicFrameTimer:int;
+
+//var Knuckles:IPlayer;
 
 //Setup Intro
 event Create() {
@@ -73,8 +75,8 @@ event Create() {
 			Scene.Player.ControlLocked = true;
 			Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["S_Run"]);
 			Scene.AddNewObject(Obj_AIZTornado);
-			Knux = Scene.AddNewObject(Obj_AIZIntroKnux);
-			Knux.X = InitialCamX + 5024;
+			//Knux = Scene.AddNewObject(Obj_AIZIntroKnux);
+			//Knux.X = InitialCamX + 5024;
 		}
 	}
 }

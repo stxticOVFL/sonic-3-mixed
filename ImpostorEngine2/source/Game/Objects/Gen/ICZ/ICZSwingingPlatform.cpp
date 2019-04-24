@@ -1,11 +1,11 @@
 // Object ID: 0xB4
-// Object Name: SwingingPlatform.cpp
+// Object Name: ICZSwingingPlatform.cpp
 
-#include "SwingingPlatform.h"
+#include "ICZSwingingPlatform.h"
 
 typedef IMath Math;
 
-void SwingingPlatform::Create() {
+void ICZSwingingPlatform::Create() {
     Object::Create();
     Sprite = LevelScene::LoadSpriteFromBin("ICZ/Swinging Platform.bin", SaveGame::CurrentMode);
     CurrentAnimation = Sprite->FindAnimation("Swinging Platform");
@@ -22,7 +22,7 @@ void SwingingPlatform::Create() {
     Pivot = 0x84;
 }
 
-void SwingingPlatform::Update() {
+void ICZSwingingPlatform::Update() {
     if (!Trigger) return;
 
     SubType = SubType == 0 ? 0 : SubType - 1;
@@ -33,7 +33,7 @@ void SwingingPlatform::Update() {
     Object::Update();
 }
 
-void SwingingPlatform::Render(int CamX, int CamY) {
+void ICZSwingingPlatform::Render(int CamX, int CamY) {
     if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - CamX, Y - CamY, W, H, DrawCollisionsColor);
@@ -44,7 +44,7 @@ void SwingingPlatform::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, RingAnimation, 0, InitialX - CamX, InitialY - Pivot - CamY, 0, IE_NOFLIP);
     }
 
-int SwingingPlatform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
+int ICZSwingingPlatform::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     Player = Scene->Players[PlayerID];
     if (Player->GroundSpeed <= 0x10 || !Player->Ground || SubType != 0) return 0;
 

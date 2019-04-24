@@ -285,7 +285,7 @@ Object* GetNewObjectFromID(int ID) {
             return new SegmentedColumn();
             break;
         case 0xB4U:
-            return new SwingingPlatform();
+            return new ICZSwingingPlatform();
             break;
         case 0xB5U:
             return new Stalagtite();
@@ -704,8 +704,8 @@ Object* GetNewObjectFromCRC32(uint32_t Hash) {
         case 0x5EE8DBE4U:
             return new SegmentedColumn();
             break;
-        case 0x3200872EU:
-            return new SwingingPlatform();
+        case 0xEA181B0BU:
+            return new ICZSwingingPlatform();
             break;
         case 0xC73D2821U:
             return new Stalagtite();
@@ -1217,7 +1217,7 @@ int GetObjectIDFromName(const char* ObjName) {
             return 0xB3U;
         }
 
-        if (!strcmp(ObjName, "SwingingPlatform")) {
+        if (!strcmp(ObjName, "ICZSwingingPlatform")) {
             return 0xB4U;
         }
 

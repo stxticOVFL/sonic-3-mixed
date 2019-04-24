@@ -644,7 +644,13 @@ PUBLIC void ISprite::Cleanup() {
             Animations.at(a).Frames = NULL;
         }
     }
-	Animations.clear();
+	try {
+		if (Animations.size() != 0)
+			Animations.clear(); 
+	}
+	catch (...) {
+		IApp::Print(2, "Error clearing animations on ISprite cleanup!!!");
+	}
 
     if (Data) {
         Memory::Free(Data);

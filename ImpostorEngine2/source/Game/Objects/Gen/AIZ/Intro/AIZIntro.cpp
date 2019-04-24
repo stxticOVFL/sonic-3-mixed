@@ -41,8 +41,6 @@ void AIZIntro::Create() {
             Scene->Player->ControlLocked = true;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["S_Run"]);
             Scene->AddNewObject(Obj_AIZTornado);
-            Knux = Scene->AddNewObject(Obj_AIZIntroKnux);
-            Knux->X = InitialCamX + 5024;
         }
     }
 

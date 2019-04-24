@@ -31,6 +31,7 @@ public:
     int FrameZigzag = 0;
     int FrameZigzagRed = 0;
     int FrameZigzagBlue = 0;
+    int squareframe = 0;
     int CharacterFlag = 0;
     int PartnerFlag = 0xFF;
     int Mode = 0;

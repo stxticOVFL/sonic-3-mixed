@@ -50,12 +50,13 @@ public:
 
 int FrameCircle = 0;
 int FrameZigzag = 0;
-int FrameZigzagRed = 0;
-int FrameZigzagBlue = 0;
+//int FrameZigzagRed = 0;
+//int FrameZigzagBlue = 0;
 
 int frame = 0;
 int triframe = 0;
 int palframe = 0;
+int squareframe = 0;
 
 int paletteindexes[9] = {
 	1,
@@ -166,10 +167,10 @@ PUBLIC void Scene_MainMenu::Update() {
 		FadeTimer--;
 
 		if (!FadeIn) {
-			//G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));
+			G->SetFade(int((1.0 - float(FadeTimer - 1) / FadeTimerMax) * FadeMax));
 		}
 		else {
-			//G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
+			G->SetFade(int((float(FadeTimer) / FadeTimerMax) * FadeMax));
 		}
 		
 	}
@@ -320,7 +321,7 @@ PUBLIC void Scene_MainMenu::Update() {
 			prechange = selected;
 			if (ran == 1) {
 				std::srand(std::time(nullptr));
-				if (std::rand() % 1024 == 0) {
+				if (std::rand() % 256 == 0) {
 					ran = 4;
 				}
 			}
@@ -353,9 +354,9 @@ PUBLIC void Scene_MainMenu::Update() {
 	}
 
 	FrameCircle = (FrameCircle + 1) & 0xFF;
-	FrameZigzag = (FrameZigzag + 1) % (40 * 4);
-	FrameZigzagRed = (FrameZigzagRed + 1) % (117 * 4);
-	FrameZigzagBlue = (FrameZigzagBlue + 1) % (110 * 4);
+	//FrameZigzag = (FrameZigzag + 1) % (40 * 4);
+	//FrameZigzagRed = (FrameZigzagRed + 1) % (117 * 4);
+	//FrameZigzagBlue = (FrameZigzagBlue + 1) % (110 * 4);
 	openBlue = openRed = 15;
 	if (opened) {
 		openTimer = openTimer > 0 ? openTimer - 1 : 0;
@@ -386,7 +387,7 @@ PUBLIC void Scene_MainMenu::Update() {
 		App->Print(0, "Total Score = %lu", TotalScore);
 	}
 
-	if (FrameCircle & 1) return;
+	//if (FrameCircle & 1) return; //the hell??
 
 	// Palette rotating
 	palframe += 1 + 18;
@@ -395,6 +396,9 @@ PUBLIC void Scene_MainMenu::Update() {
 	frame++;
 	if (frame > (20 << 1))
 		frame = 0;
+
+	squareframe = (squareframe + 1) % 64;
+	FrameZigzag = (FrameZigzag + 1) % 134;
 
 	triframe = frame >> 1;
 	if (triframe < 6)
@@ -418,7 +422,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	// BG
 	G->DrawSprite(MenuSprite, 0, 0, 0, 0, 0, IE_NOFLIP);
 
-	// Zigzags
+	/*// Zigzags
 	int pX = cenX - (260 - 186) - 5;
 	int pY = 223 - 5;
 	G->SetClip(0, App->HEIGHT - 60, 293, 60);
@@ -467,7 +471,35 @@ PUBLIC void Scene_MainMenu::Render() {
 	// Tilted Squares
 	G->DrawSprite(MenuSprite, 13, 0, cenX - (260 - 253), 51 - (yup >> 15), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 13, 2, cenX - (260 - 265), 47 - (yup >> 15), 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 13, 1, cenX - (260 - 259), 49 + (yup >> 15), 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 13, 1, cenX - (260 - 259), 49 + (yup >> 15), 0, IE_NOFLIP);//*/
+
+	//Squares
+	for (int i = 0; i < App->HEIGHT / 32 + 1; i++) {
+		for (int j = 0; j < App->WIDTH / 32 + 1; j++) {	
+			//G->DrawSprite(MenuSprite, 22, 0, (j * 32) + squareframe + ((i % 2) * 32), i * 32, 0, IE_NOFLIP);
+			G->DrawRectangle((j - 1) * 64 + squareframe + (i % 2) * 32, i * 32, 32, 32, 0xB6B6B6);
+		}
+	}
+	//Zigzags
+	int zX = 35; //charazx
+	//BLUE
+	G->SetClip(0, 0, 140, 60);
+	G->DrawSprite(MenuSprite, 23, 0, zX + FrameZigzag, 0 + FrameZigzag, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 23, 0, zX - 134 + FrameZigzag, -134 + FrameZigzag, 0, IE_NOFLIP);
+	//RED
+	G->SetClip(App->WIDTH - 140, 0, 140, 60);
+	G->DrawSprite(MenuSprite, 23, 1, App->WIDTH - zX - FrameZigzag, 0 + FrameZigzag, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 23, 1, App->WIDTH - zX + 134 - FrameZigzag, -134 + FrameZigzag, 0, IE_NOFLIP);
+	//YELLOW
+	G->SetClip(0, App->HEIGHT - 60, 140, 60);
+	G->DrawSprite(MenuSprite, 23, 2, zX + FrameZigzag, App->HEIGHT - FrameZigzag, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 23, 2, zX - 134 + FrameZigzag, App->HEIGHT + 134 - FrameZigzag, 0, IE_NOFLIP);
+	//GREEN
+	G->SetClip(App->WIDTH - 140, App->HEIGHT - 60, 140, 60);
+	G->DrawSprite(MenuSprite, 23, 3, App->WIDTH - zX - FrameZigzag, App->HEIGHT - FrameZigzag, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 23, 3, App->WIDTH - zX + 134 - FrameZigzag, App->HEIGHT + 134 - FrameZigzag, 0, IE_NOFLIP);
+
+	G->ClearClip();
 
 	int blackGirth = 32;
 
@@ -499,16 +531,16 @@ PUBLIC void Scene_MainMenu::Render() {
 	//Boxes
 	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY - (openBlue * 3) + 11, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 18, 0, cenX, cenY - (openBlue * 3) + 22, 0, IE_NOFLIP);
+	//G->DrawSprite(MenuSprite, 18, 0, cenX, cenY - (openBlue * 3) + 22, 0, IE_NOFLIP);
 	//Triangles
 	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY - (openBlue * 3) + 11, 0, IE_NOFLIP);
-	G->DrawSprite(MenuSprite, 19, 0, cenX, cenY - (openBlue * 3) + 22, 0, IE_NOFLIP);
+	//G->DrawSprite(MenuSprite, 19, 0, cenX, cenY - (openBlue * 3) + 22, 0, IE_NOFLIP);
 	//Names
 	G->DrawSprite(MenuSprite, 20, 0, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 20, 1, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
 	//if (LockedOnNotUnlocked)
-	G->DrawSprite(MenuSprite, 20, 2, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP);
+	//G->DrawSprite(MenuSprite, 20, 2, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP); leave missing to hide locked on
 	//else
 	//G->DrawSprite(MenuSprite, 20, 3, cenX, cenY, 0, IE_NOFLIP);
 
@@ -565,7 +597,7 @@ PUBLIC void Scene_MainMenu::Render() {
 
 	// Spinny Triangle
 	G->DrawRectangle(cenX + (-129 + 2), cenY + (-39), 12, 9, 0x000000);
-	if (selected == 0&& subselected > -1)
+	if (selected == 0 && subselected > -1)
 		G->DrawSprite(MenuSprite, 2, triframe, cenX + (-129 + 2), cenY + (-39), 0, IE_NOFLIP);
 	else
 		G->DrawSprite(MenuSprite, 2, 0, cenX + (-129 + 2), cenY + (-39), 0, IE_NOFLIP);
@@ -624,10 +656,10 @@ PUBLIC void Scene_MainMenu::Render() {
 	}
 
 	//Fade
-	if (FadeTimer != -1) {
+	/*if (FadeTimer != -1) {
 		G->DrawSprite(MenuSprite, 21, 0, ((FadeIn ? 20 : 0) - FadeTimer) * (App->WIDTH / 20), cenY, 0, FadeIn ? IE_FLIPX : IE_NOFLIP);
 		G->DrawRectangle(FadeIn ? ((20 - FadeTimer) * (App->WIDTH / 20)) - 10 : 0, 0, FadeIn ? (FadeTimer * (App->WIDTH / 20)) - 10 : App->WIDTH - ((20 - FadeTimer) * (App->WIDTH / 20)), App->HEIGHT, 0);
-	}
+	}//*/
 }
 PUBLIC void Scene_MainMenu::Cleanup() {
 #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }

@@ -95,7 +95,7 @@
 #include "ICZ/CrushingColumn.h"			// A5F30B34
 #include "ICZ/Freezer.h"			// DE608819
 #include "ICZ/SegmentedColumn.h"			// 5EE8DBE4
-#include "ICZ/SwingingPlatform.h"			// 3200872E
+#include "ICZ/ICZSwingingPlatform.h"			// EA181B0B
 #include "ICZ/Stalagtite.h"			// C73D2821
 #include "ICZ/IceCube.h"			// E855624C
 #include "ICZ/HarmfulIce.h"			// 8BC9A52C
@@ -235,7 +235,7 @@ enum {
     Obj_CrushingColumn = 0x0AF,
     Obj_Freezer = 0x0B2,
     Obj_SegmentedColumn = 0x0B3,
-    Obj_SwingingPlatform = 0x0B4,
+    Obj_ICZSwingingPlatform = 0x0B4,
     Obj_Stalagtite = 0x0B5,
     Obj_IceCube = 0x0B6,
     Obj_HarmfulIce = 0x0B8,

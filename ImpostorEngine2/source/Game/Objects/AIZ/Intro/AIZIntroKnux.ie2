@@ -15,7 +15,7 @@ event Create() {
 
 event Update() {
     if (Scene.RoutineNumber == 2) {
-    Gravity = 0.21875;
+        Gravity = 0.21875;
     }
 }
 event Render(CamX:int, CamY:int) {

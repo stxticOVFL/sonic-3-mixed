@@ -77,6 +77,7 @@ void AIZTornado::Update() {
         }
 
         if (InitialX > Scene->CameraX + App->WIDTH + 128) {
+
         }
 
     }
