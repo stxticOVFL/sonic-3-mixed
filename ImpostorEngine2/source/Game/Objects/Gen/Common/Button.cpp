@@ -21,9 +21,7 @@ void Button::Create() {
     H = 16;
     Rotation = 0;
     StartY = this->Y;
-    CurrentAnimation = 15;
-    if (Scene->ZoneID == 2) CurrentAnimation = 0;
-
+    CurrentAnimation = Sprite->FindAnimation("Button");
     Down = false;
     Pressed = false;
 }
@@ -45,11 +43,7 @@ void Button::Update() {
 }
 
 void Button::Render(int CamX, int CamY) {
-    if (Scene->ZoneID != 2) G->DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
-    else {
-        G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - 4 * Down - CamY + 3, 0, IE_NOFLIP);
-        G->DrawSprite(Sprite, CurrentAnimation, Down + 1, X - CamX, StartY - CamY + 7, 0, IE_NOFLIP);
-    }
+    G->DrawSprite(Sprite, CurrentAnimation, Down, X - CamX, Y - 4 * Down - CamY, 0, IE_NOFLIP);
     if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);

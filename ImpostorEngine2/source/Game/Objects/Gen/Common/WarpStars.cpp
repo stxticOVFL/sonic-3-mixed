@@ -10,7 +10,7 @@ void WarpStars::Create() {
     Active = false;
     Priority = true;
     DoDeform = false;
-    BinIndex = LevelScene::LoadSpriteBin("Global/StarPost.bin", SaveGame::CurrentMode);
+    Sprite = LevelScene::LoadSpriteFromBin("Global/StarPost.bin", SaveGame::CurrentMode);
     W = 16;
     H = 16;
     Rotation = 0;
