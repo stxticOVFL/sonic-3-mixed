@@ -41,7 +41,7 @@ void AIZIntro::Create() {
             Scene->Player->Cutscene = true;
             Scene->Player->ControlLocked = true;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["S_Run"]);
-			Scene->AddNewObject(Obj_AIZTornado);
+            Scene->AddNewObject(Obj_AIZTornado);
             Scene->PlayMusicObj();
         }
     }
