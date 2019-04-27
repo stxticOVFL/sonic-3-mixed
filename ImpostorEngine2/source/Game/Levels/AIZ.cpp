@@ -303,16 +303,6 @@ PUBLIC void Level_AIZ::RestartStage(bool doActTransition, bool drawBackground) {
 
     LevelScene::RestartStage(doActTransition, drawBackground);
 
-	if (Act == 0) {
-		TileSpriteBackup = TileSprite;
-		if (SaveGame::CurrentMode == 0) {
-			TileSprite = LoadLevelTiles("Classic/Stages/AIZ1/Intro/16x16Tiles.gif");
-		}
-		else {
-			TileSprite = LoadLevelTiles("Mixed/Stages/AIZ1/Intro/16x16Tiles.gif");
-		}
-	}
-
     if (Act == 1) {
         VisualWaterLevel = 0x508;
         WaterLevel = 0x508;
@@ -887,6 +877,23 @@ PUBLIC void Level_AIZ::Subupdate() {
     }
 
     // Do palette stuffs
+
+	//Intro Palette Cycle
+	/*if (Act == 0) {
+		if (Frame % 8 == 0) {
+			// Waterfalls
+			//TileSprite->RotatePaletteLeft(TileSprite->Palette + 0x2B, 4);
+			//TileSprite->RotatePaletteLeft(TileSprite->PaletteAlt + 0x2B, 4);
+
+			// Glittering Water
+			// Find: \$([A-F0-9])([A-F0-9])([A-F0-9]),
+			// Replace: 0x$3$3$2$2$1$1,\n
+			//for (int i = 0; i < 3; i++)
+			//	TileSprite->SetPalette(0x3C + i, AIZ1_GlitteringWaterPalette[(Frame / 8 * 3) % 24 + i]);
+		}
+
+		TileSprite->UpdatePalette();
+	}*/
     if (Act <= 1) {
 		// TileSprite->SetPalette(0x21, G->GetRetroColor(0x4CA));
 		// TileSprite->SetPalette(0x29, G->GetRetroColor(0x2C8));
@@ -925,7 +932,7 @@ PUBLIC void Level_AIZ::Subupdate() {
             if (CameraX < 0x3800) {
                 TileSprite->SetPalette(0x24, AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24]);
                 TileSprite->SetPalette(0x28, AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 1]);
-                TileSprite->SetPalette(0x3B, AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 2]);
+				TileSprite->SetPalette(0x3B, AnPal_PalAIZ2_2[(Frame / 6 * 3) % 24 + 2]);
             }
             else {
                 TileSprite->SetPalette(0x24, AnPal_PalAIZ2_3[(Frame / 6 * 3) % 24]);

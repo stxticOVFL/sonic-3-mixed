@@ -260,6 +260,7 @@
     <ClInclude Include="..\source\Utils\Standard.h" />
     <ClInclude Include="..\source\Utils\StandardSDL2.h" />
     <ClInclude Include="..\source\Utils\unzip.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\source\Game\Objects\AIZ\AirshipBomb.ie2" />
@@ -365,6 +366,12 @@
     <None Include="..\source\Game\Objects\MGZ\MGZTriggerPlatform.ie2" />
     <None Include="..\source\Game\Objects\MGZ\Spiker.ie2" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ImpostorEngine21.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="main.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{43B7CD4C-B24A-450B-A277-12F246CF664C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -415,6 +422,8 @@
     </CustomBuildBeforeTargets>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <ExecutablePath>$(SolutionDir)External\Debug\bin;$(ExecutablePath)</ExecutablePath>
+    <OutDir>$(SolutionDir)\..\</OutDir>
+    <TargetName>Sonic 3'Mixed</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>

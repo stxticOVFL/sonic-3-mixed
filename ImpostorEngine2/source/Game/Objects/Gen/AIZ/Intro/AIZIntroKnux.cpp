@@ -38,6 +38,32 @@ void AIZIntroKnux::Update() {
         ActionTimer--;
         if (ActionTimer < 0) {
             Action = 3;
+            ActionTimer = 20;
+        }
+
+    }
+
+    if (Action == 3) {
+        ActionTimer--;
+        if (ActionTimer <= 0) {
+            Action = 4;
+        }
+
+    }
+
+    if (Action == 4) {
+        if (ActionTimer < 16 && Cutscene_KnucklesBackForth == 0) {
+            ActionTimer++;
+            if (ActionTimer == 15) {
+                Cutscene_KnucklesBackForth++;
+            }
+
+        }
+        else {
+            ActionTimer--;
+            X += 8;
+        }
+        if (ActionTimer <= 0) {
         }
 
     }

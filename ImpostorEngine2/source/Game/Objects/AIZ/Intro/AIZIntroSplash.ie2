@@ -2,7 +2,7 @@ var FrameTimer:int;
 
 event Create() {
 	Priority = true;
-	
+	VisualLayer = 1;
 	//Remove this object on scene reload
 	//Temporary = true;
 	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Intro.bin",SaveGame.CurrentMode);
@@ -15,15 +15,16 @@ event Create() {
 
 event Update() {
 	FrameTimer++;
-	if (FrameTimer >= 2) {
+	if (FrameTimer >= 4) {
 		Frame++;
 		if (Frame > 5) {
 			Visible = false;
 		}
 	}
+	X-=16	;
 }
 
 event Render(CamX:int, CamY:int) {
 	if (!Visible || !Active) return;
-	G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, IE_NOFLIP);
+	G.DrawSprite(Sprite, CurrentAnimation, Frame, X, Y - 32, 0, IE_NOFLIP);
 }

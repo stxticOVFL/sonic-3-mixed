@@ -55,6 +55,7 @@ void AIZTornado::Update() {
         UpdateTimer++;
         if (UpdateTimer > 180) {
             State++;
+            StoredX = Scene->CameraX;
             InitialFallFrame = Scene->Frame;
             UpdateTimer = 0;
             UpdateTimer = this->Y;
@@ -75,6 +76,8 @@ void AIZTornado::Update() {
 
             SonicFrameTimer = 0;
         }
+
+        if (Scene->RoutineNumber < 1) Scene->CameraX = StoredX;
 
         if (InitialX > Scene->CameraX + App->WIDTH + 128) {
         }
@@ -124,6 +127,15 @@ void AIZTornado::Update() {
         X = Scene->Player->EZX - Scene->CameraX;
         Y = Math::abs(Scene->Player->EZY - Scene->CameraY);
         SonicAnim = 2;
+        SonicWaveTimer++;
+        if (SonicWaveTimer >= 6) {
+            if (Scene->CameraX < InitialX + 3000) {
+                Scene->AddNewObject(Obj_AIZIntroSplash, X - 64, Y);
+                SonicWaveTimer = 0;
+            }
+
+        }
+
         SonicFrameTimer++;
         if (SonicFrameTimer > 3) {
             SonicFrame++;

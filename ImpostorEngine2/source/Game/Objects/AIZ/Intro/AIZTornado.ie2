@@ -22,11 +22,13 @@ var SonicFrame:int;
 var SonicFrameTimer:int;
 var SonicAnim:int;
 var SonicVisible:bool;
+var SonicWaveTimer:int;
 
 var State:int;
 var UpdateTimer:int;
 
 var VisualX:int;
+var StoredX:int;
 
 var InitialFallFrame:int;
 
@@ -85,6 +87,7 @@ event Update() {
 		
 		if (UpdateTimer > 180) {
 			State++;
+			StoredX = Scene.CameraX;
 			InitialFallFrame = Scene.Frame;
 			UpdateTimer = 0;
 			UpdateTimer = this.Y;
@@ -105,7 +108,7 @@ event Update() {
 			}
 			SonicFrameTimer = 0;
 		}
-		
+		if (Scene.RoutineNumber < 1) Scene.CameraX = StoredX;
 		if (InitialX > Scene.CameraX + App.WIDTH + 128) {
 			//Visible = false;
 		}
@@ -154,6 +157,14 @@ event Update() {
 		X = Scene.Player.EZX - Scene.CameraX;
 		Y = Math.abs(Scene.Player.EZY - Scene.CameraY);
 		SonicAnim = 2;
+		SonicWaveTimer++;
+		if (SonicWaveTimer >= 6) {
+			if (Scene.CameraX < InitialX + 3000) {
+				Scene.AddNewObject(Obj_AIZIntroSplash,X-64,Y);
+				SonicWaveTimer = 0;
+			}
+		}
+		
 		SonicFrameTimer++;
 		if (SonicFrameTimer > 3) {
 			SonicFrame++;
