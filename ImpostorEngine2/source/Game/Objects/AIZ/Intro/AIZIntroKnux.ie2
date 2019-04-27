@@ -3,33 +3,42 @@ var Action:int;
 
 var Cutscene_KnucklesBackForth:int;
 
+var KnuxAnim:int;
+
+var Floor:int;
+
 event Create() {
     Priority = true;
 	
 	//Remove this object on scene reload
 	//Temporary = true;
-    //Sprite = LevelScene.LoadSpriteFromBin("Players/AIZCutscene.bin",SaveGame.CurrentMode);
-    //CurrentAnimation = Sprite.FindAnimation("KJump");
+    Sprite = LevelScene.LoadSpriteFromBin("Players/AIZCutscene.bin",SaveGame.CurrentMode);
+    KnuxAnim = Sprite.FindAnimation("KJump");
+	CurrentAnimation = KnuxAnim + 1;
 	
 	//Im on a fuckin plane without wifi cut me some fucking slack
-	Sprite = LevelScene.LoadSpriteFromBin("Dev/NullGfx.bin",SaveGame.CurrentMode);
+	//Sprite = LevelScene.LoadSpriteFromBin("Dev/NullGfx.bin",SaveGame.CurrentMode);
     Frame = 0;
 
     Action = 0;
     ActionTimer = 0;
     
+	Gravity = 0x38;
+	Floor = Y + 0x10;
 }
 
 event Update() {
+	if (Y >= Floor && CurrentAnimation != KnuxAnim + 1)
+		Y = Floor;
 	
 	if (Action == 1) {
-		//if (ActionTimer >= 15) {
+		if (ActionTimer >= 15) {
 			Y-=2;
-			//CurrentAnimation = uppercut;
-		//}
-		//else {
-		//	Y+=4;
-		//}
+			CurrentAnimation = KnuxAnim + 1;
+		}
+		else {
+			Y+=4;
+		}
 		ActionTimer--;
 		if (ActionTimer < 0) {
 			Action = 0;
@@ -38,12 +47,13 @@ event Update() {
 	
 	
     if (Cutscene_KnucklesBackForth > 0 && Action == 2) {
-		//CurrentAnimation = glide;
-		if (Cutscene_KnucklesBackForth >= 30) X-=8;
+		CurrentAnimation = KnuxAnim;
+		/*if (Cutscene_KnucklesBackForth >= 30) X-=8;
 		else X+=8;
 		if (Cutscene_KnucklesBackForth % 10 == 0) Y+=2;
 		Cutscene_KnucklesBackForth--;
-		ActionTimer = 24;
+		ActionTimer = 24;*/
+		if (Cutscene_KnucklesBackForth >= 59) YSpeed = -0x600;
 	}
 	if (Cutscene_KnucklesBackForth <= 0 && Action == 2) {
 		//CurrentAnimation = stop gliding;

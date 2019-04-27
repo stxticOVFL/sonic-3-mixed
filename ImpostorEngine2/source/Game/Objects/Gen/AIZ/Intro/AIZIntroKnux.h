@@ -18,6 +18,8 @@ public:
     int ActionTimer;
     int Action;
     int Cutscene_KnucklesBackForth;
+    int KnuxAnim;
+    int Floor;
     
     void Create();
     void Update();

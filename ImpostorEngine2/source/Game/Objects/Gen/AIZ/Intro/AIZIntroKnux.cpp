@@ -8,15 +8,27 @@ typedef IMath Math;
 void AIZIntroKnux::Create() {
     Object::Create();
     Priority = true;
-    Sprite = LevelScene::LoadSpriteFromBin("Dev/NullGfx.bin", SaveGame::CurrentMode);
+    Sprite = LevelScene::LoadSpriteFromBin("Players/AIZCutscene.bin", SaveGame::CurrentMode);
+    KnuxAnim = Sprite->FindAnimation("KJump");
+    CurrentAnimation = KnuxAnim + 1;
     Frame = 0;
     Action = 0;
     ActionTimer = 0;
+    Gravity = 0x38;
+    Floor = Y + 0x10;
 }
 
 void AIZIntroKnux::Update() {
+    if (Y >= Floor && CurrentAnimation != KnuxAnim + 1) Y = Floor;
+
     if (Action == 1) {
-        Y -= 2;
+        if (ActionTimer >= 15) {
+            Y -= 2;
+            CurrentAnimation = KnuxAnim + 1;
+        }
+        else {
+            Y += 4;
+        }
         ActionTimer--;
         if (ActionTimer < 0) {
             Action = 0;
@@ -25,12 +37,9 @@ void AIZIntroKnux::Update() {
     }
 
     if (Cutscene_KnucklesBackForth > 0 && Action == 2) {
-        if (Cutscene_KnucklesBackForth >= 30) X -= 8;
-        else X += 8;
-        if (Cutscene_KnucklesBackForth % 10 == 0) Y += 2;
+        CurrentAnimation = KnuxAnim;
+        if (Cutscene_KnucklesBackForth >= 59) YSpeed = -0x600;
 
-        Cutscene_KnucklesBackForth--;
-        ActionTimer = 24;
     }
 
     if (Cutscene_KnucklesBackForth <= 0 && Action == 2) {
