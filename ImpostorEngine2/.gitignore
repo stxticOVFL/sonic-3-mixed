@@ -9,4 +9,9 @@ ie2_objtable.bin
 *.idb
 *.bak
 *.log
+*.exe
+*.pdb
+*.ilk
+*.map
+*.obj
 log.txt
