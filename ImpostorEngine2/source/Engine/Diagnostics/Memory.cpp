@@ -192,7 +192,7 @@ PUBLIC STATIC void Memory::Free(void* mem) {
     for (Uint32 i = 0; i < TrackedMemory.size(); i++) {
         if (TrackedMemory[i] == mem) {
             TrackedMemoryNames.erase(TrackedMemoryNames.begin() + i);
-            TrackedMemory.erase(TrackedMemory.begin() + i);
+			TrackedMemory.erase(TrackedMemory.begin() + i);
             TrackedSizes.erase(TrackedSizes.begin() + i);
             break;
         }
@@ -203,7 +203,7 @@ PUBLIC STATIC void Memory::Free(void* mem) {
 PUBLIC STATIC void Memory::TrackMemory(const char* identifier, void *mem, size_t count, size_t size) {
     if (mem) {
         TrackedMemory.push_back(mem);
-        TrackedSizes.push_back(count * size);
+		TrackedSizes.push_back(count * size);
         TrackedMemoryNames.push_back(identifier);
     }
 }

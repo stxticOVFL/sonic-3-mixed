@@ -8,19 +8,38 @@ typedef IMath Math;
 void AIZIntroKnux::Create() {
     Object::Create();
     Priority = true;
-    Sprite = LevelScene::LoadSpriteFromBin("Players/AIZCutscene.bin", SaveGame::CurrentMode);
-    CurrentAnimation = Sprite->FindAnimation("KJump");
+    Sprite = LevelScene::LoadSpriteFromBin("Dev/NullGfx.bin", SaveGame::CurrentMode);
     Frame = 0;
     Action = 0;
     ActionTimer = 0;
-    GRV = 0;
 }
 
 void AIZIntroKnux::Update() {
-    YSpeed += GRV;
-    if (Scene->RoutineNumber == 2) {
-        YSpeed = -0x400;
-        GRV = 0x38;
+    if (Action == 1) {
+        Y -= 2;
+        ActionTimer--;
+        if (ActionTimer < 0) {
+            Action = 0;
+        }
+
+    }
+
+    if (Cutscene_KnucklesBackForth > 0 && Action == 2) {
+        if (Cutscene_KnucklesBackForth >= 30) X -= 8;
+        else X += 8;
+        if (Cutscene_KnucklesBackForth % 10 == 0) Y += 2;
+
+        Cutscene_KnucklesBackForth--;
+        ActionTimer = 24;
+    }
+
+    if (Cutscene_KnucklesBackForth <= 0 && Action == 2) {
+        Y += 2;
+        ActionTimer--;
+        if (ActionTimer < 0) {
+            Action = 3;
+        }
+
     }
 
     Object::Update();
@@ -29,4 +48,15 @@ void AIZIntroKnux::Update() {
 void AIZIntroKnux::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
     }
+
+void AIZIntroKnux::UpdateSubType() {
+    if (SubType == 1) {
+        Action = 1;
+        ActionTimer = 30;
+    }
+    else {
+        Cutscene_KnucklesBackForth = SubType;
+        Action = 2;
+    }
+}
 

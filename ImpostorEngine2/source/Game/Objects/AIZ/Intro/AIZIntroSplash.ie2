@@ -2,6 +2,9 @@ var FrameTimer:int;
 
 event Create() {
 	Priority = true;
+	
+	//Remove this object on scene reload
+	//Temporary = true;
 	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Intro.bin",SaveGame.CurrentMode);
 	if (Sprite) {
 		Sprite.SetTransparentColorIndex(0);

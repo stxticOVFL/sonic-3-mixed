@@ -8,6 +8,7 @@ typedef IMath Math;
 void AIZIntro::Create() {
     Object::Create();
     Priority = true;
+    Scene->TileSprite->SetTransparentColorIndex(48);
     InitialCamX = Scene->CameraX;
     InitialCamY = Scene->CameraY;
     Scene->LevelCardHide = true;
@@ -41,8 +42,6 @@ void AIZIntro::Create() {
             Scene->Player->ControlLocked = true;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["S_Run"]);
             Scene->AddNewObject(Obj_AIZTornado);
-            Knux = Scene->AddNewObject(Obj_AIZIntroKnux);
-            Knux->X = InitialCamX + 5024;
         }
     }
 
@@ -152,6 +151,9 @@ void AIZIntro::SonicCutscene() {
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Hurt"]);
             Scene->RoutineNumber = 2;
             CutsceneRoutineNumber = 3;
+            Scene->AddNewObject(Obj_AIZIntroKnux, InitialCamX + 5313, Scene->Player->Y);
+            Knux = Scene->ObjectCount - 1;
+            Scene->SetObjectSubType(Knux, 1);
         }
 
     }
@@ -181,6 +183,7 @@ void AIZIntro::SonicCutscene() {
             CutsceneRoutineNumber = 4;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Idle"]);
             Cutscene_KnucklesBackForth = 60;
+            Scene->SetObjectSubType(Knux, 60);
         }
 
     }

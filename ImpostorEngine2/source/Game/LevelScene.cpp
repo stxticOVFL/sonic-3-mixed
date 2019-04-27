@@ -3096,8 +3096,13 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 	for (int i = 0; i < ObjectCount; i++) {
 		Object *object = Objects.at(i);
 		if (object != NULL) {
-			object->Create();
-			object->DrawCollisions = App->viewObjectCollision;
+			//if (!object->Temporary) {
+				object->Create();
+				object->DrawCollisions = App->viewObjectCollision;
+			//}
+			//else {
+			//	Objects.at(i) == NULL;
+			//}
 		}
 	}
 
@@ -3575,6 +3580,28 @@ PUBLIC Explosion* LevelScene::AddExplosion(ISprite* sprite, int animation, bool 
 	return dropdashdust;
 }
 
+PUBLIC Object* LevelScene::AddTempObject(int ID) {
+
+	return AddTempObject(ID, 0, 0, 0);
+}
+
+PUBLIC Object* LevelScene::AddTempObject(int ID, int x, int y) {
+	return AddTempObject(ID, 0, x, y);
+}
+
+PUBLIC Object* LevelScene::AddTempObject(int ID, int subType, int x, int y) {
+	Object* tempObject;
+	tempObject = new Explosion();
+	tempObject->G = G;
+	tempObject->App = App;
+	tempObject->Active = true;
+	tempObject->X = x;
+	tempObject->Y = y;
+	TempObjects.push_back(tempObject);
+
+	return tempObject;
+}
+
 PUBLIC void LevelScene::AddScoreGhost(int frame, int x, int y) {
 	ScoreGhost* dropdashdust;
 	dropdashdust = new ScoreGhost();
@@ -3743,6 +3770,11 @@ PUBLIC void LevelScene::AddAnimal(int x, int y, bool flipX, bool flipY, int xspe
 	flicky->YSpeed = -0x400;
 	flicky->JumpSpeed = animalSpeeds[animalType * 2 + 1];
 	TempObjects.push_back(flicky);
+}
+
+PUBLIC void LevelScene::SetObjectSubType(int ObjID, int SubType) {
+	Objects[ObjID]->SubType = SubType;
+	Objects[ObjID]->UpdateSubType();
 }
 
 PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY) {

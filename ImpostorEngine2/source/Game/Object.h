@@ -507,6 +507,7 @@ public:
     int16_t  SwingCounter = 0;
 
     bool     Active = false;
+	bool     Temporary = true;
     bool     Priority = false;
     bool     OnScreen = false;
     bool     OutOfBounds = false;

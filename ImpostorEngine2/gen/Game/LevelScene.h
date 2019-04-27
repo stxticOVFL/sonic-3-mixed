@@ -265,6 +265,9 @@ public:
     Explosion* AddExplosion(int animation, bool flip, int x, int y, int vl);
     Explosion* AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y);
     Explosion* AddExplosion(ISprite* sprite, int animation, bool flip, int x, int y, int vl);
+    Object* AddTempObject(int ID);
+    Object* AddTempObject(int ID, int x, int y);
+    Object* AddTempObject(int ID, int subType, int x, int y);
     void AddScoreGhost(int frame, int x, int y);
     void AddFallingTile(int til, int x, int y, int offX, int offY, bool flipX, bool flipY, int hold);
     void AddFallingTile(int til, int x, int y, int offX, int offY, bool flipX, bool flipY, int xspeed, int yspeed);
@@ -273,6 +276,7 @@ public:
     void AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv);
     void AddMovingSprite(ISprite* sprite, int x, int y, int animation, int frame, bool flipX, bool flipY, int xspeed, int yspeed, int grv, int life, int hold);
     void AddAnimal(int x, int y, bool flipX, bool flipY, int xspeed, int yspeed, bool escaping);
+    void SetObjectSubType(int ObjID, int SubType);
     Object* AddNewObject(int ID, int SubType, int X, int Y, bool FLIPX, bool FLIPY);
     Object* AddNewObject(int ID, int X, int Y, bool FLIPX, bool FLIPY);
     Object* AddNewObject(int ID);

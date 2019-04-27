@@ -22,18 +22,21 @@ var InitialCamY:int;
 var TornadoX:int;
 var TornadoY:int;
 
-var Knux:Object;
-
 var SonicFrame:int;
 var SonicFrameTimer:int;
 
-//var Knuckles:IPlayer;
+var Knux:int;
 
 //Setup Intro
 event Create() {
 
 	Priority = true;
-
+	
+	//Remove this object on scene reload
+	//Temporary = true;
+	
+	Scene.TileSprite.SetTransparentColorIndex(48);
+	
 	InitialCamX = Scene.CameraX;
 	InitialCamY = Scene.CameraY;
 
@@ -74,9 +77,7 @@ event Create() {
 			Scene.Player.Cutscene = true;
 			Scene.Player.ControlLocked = true;
 			Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["S_Run"]);
-			Scene.AddNewObject(Obj_AIZTornado);
-			Knux = Scene.AddNewObject(Obj_AIZIntroKnux);
-			Knux.X = InitialCamX + 5024;
+			Scene.AddNewObject(Obj_AIZTornado);	
 			//Scene.SpawnPlayer(5, false, )
 		}
 	}
@@ -199,6 +200,9 @@ event SonicCutscene() {
 			Scene.RoutineNumber = 2;
 
 			CutsceneRoutineNumber = 3;
+			Scene.AddNewObject(Obj_AIZIntroKnux,InitialCamX + 5313,Scene.Player.Y);
+			Knux = Scene.ObjectCount-1;
+			Scene.SetObjectSubType(Knux,1);
 		}
 	}
 
@@ -231,6 +235,7 @@ event SonicCutscene() {
 				
 				//Knuckles should start Running now
                 Cutscene_KnucklesBackForth = 60;
+				Scene.SetObjectSubType(Knux,60);
                 //Scene.Player.EZX -= 4; why?
             }
         }

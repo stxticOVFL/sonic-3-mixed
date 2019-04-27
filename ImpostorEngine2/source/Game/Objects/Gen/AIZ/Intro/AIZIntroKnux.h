@@ -17,12 +17,12 @@ public:
     
     int ActionTimer;
     int Action;
-    int GRV;
-    int GroundX;
+    int Cutscene_KnucklesBackForth;
     
     void Create();
     void Update();
     void Render(int CamX, int CamY);
+    void UpdateSubType();
 };
 
 #endif /* AIZINTROKNUX_H */
