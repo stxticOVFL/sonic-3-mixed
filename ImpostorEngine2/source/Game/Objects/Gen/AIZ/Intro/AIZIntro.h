@@ -33,6 +33,7 @@ public:
     int SonicFrame;
     int SonicFrameTimer;
     int Knux;
+    int WaitTimer;
     
     void Create();
     void Update();
