@@ -72,6 +72,9 @@ event Create() {
 	SonicVisible = true;
 	
 	ShadowFrame = 3;
+	
+	//Incase dups
+	Scene.CleanDuplicateObjects(ListID,ID);
 }
 
 event Update() {
@@ -206,7 +209,8 @@ event TornadoBob() {
 }
 
 event Render(CamX:int, CamY:int) {
-	if (SonicVisible) 
+	if (!Active) return;
+	if (SonicVisible && Visible) 
 		G.DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene.RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
 	if (Visible) {
 		G.DrawSprite(Sprite, TornadoAnim, Frame, VisualX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
