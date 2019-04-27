@@ -4580,17 +4580,17 @@ PUBLIC void LevelScene::Update() {
 
 						if (Data->Layers[Data->CameraLayer].IsScrollingVertical) {
 							// Reverse Engineered code from Sonic 3 & Knuckles, Ported to our form.
-							/*
+							
 							// Original Version
-							OnScreen |= (
+							/*OnScreen |= (
 									 -1 < (obj->X - CameraX) + obj->W &&
-									 ((obj->X - CameraX) - obj->W) < 0x140 &&
-									 ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < ((obj->H * 2) + 0xe0));
+									 ((obj->X - CameraX) - obj->W) < App->WIDTH &&
+									 ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) < ((obj->H * 2) + 0xe0));*/
 
 							// Split up version.
-							OnScreen |= (
+							/*OnScreen |= (
 								   (-1 < ((obj->X - CameraX) + obj->W)) &&
-								   (((obj->X - CameraX) - obj->W) < 0x140) &&
+								   (((obj->X - CameraX) - obj->W) < App->WIDTH) &&
 								   ((obj->Y - CameraY) + obj->H & ScreenYWrapValue) &&
 								   (((obj->Y - CameraY) - obj->H & ScreenYWrapValue) < 0xe0));
 
@@ -4609,7 +4609,7 @@ PUBLIC void LevelScene::Update() {
 
 							OnScreen |= (
 								   (-1 < ((obj->X - 0x80) + obj->W)) &&
-								   (((obj->X - 0x80) - obj->W) < 0x140) &&
+								   (((obj->X - 0x80) - obj->W) < App->WIDTH) &&
 								   (-1 < ((obj->Y - 0x80) + obj->H)) &&
 								   (((obj->Y - 0x80) - obj->H) < 0xe0));
 						   */
@@ -4617,16 +4617,16 @@ PUBLIC void LevelScene::Update() {
 							if (obj->VisW > obj->W || obj->VisH > obj->H) {
 								OnScreen |= (
 									-1 < (obj->X - CameraX) + obj->VisW &&
-									((obj->X - CameraX) - obj->VisW) < 0x140 &&
+									((obj->X - CameraX) - obj->VisW) < App->WIDTH &&
 									((obj->Y - CameraY) + obj->VisH & ScreenYWrapValue) < ((obj->VisH * 2) + 0xe0));
 
-								/*
+								
 								OnScreen |= (
 									obj->X + obj->VisW / 2 >= CameraX - 0x80 &&
 									(obj->Y + obj->VisH / 2) % (Data->Layers[Data->CameraLayer].Height * 16) >= CameraY - 0x80 &&
 									obj->X - obj->VisW / 2 < CameraX + App->WIDTH + 0x80 &&
 									(obj->Y - obj->VisH / 2) % (Data->Layers[Data->CameraLayer].Height * 16) < CameraY + App->HEIGHT + 0x80);
-								*/
+								
 							}
 							else {
 								int16_t Calc = (obj->Y - CameraY) + obj->H & ScreenYWrapValue;
@@ -4635,15 +4635,15 @@ PUBLIC void LevelScene::Update() {
 								}
 								OnScreen |= (
 									-1 < (obj->X - CameraX) + obj->W &&
-									((obj->X - CameraX) - obj->W) < 0x140 &&
+									((obj->X - CameraX) - obj->W) < App->WIDTH &&
 									(Calc < (obj->H * 2) + 0xe0));
 
 								if (obj->PrintDebuggingInfo) {
 									App->Print(0, "%04X, %04X", Calc, (obj->H * 2) + 0xe0);
 								}
 
-								/*
-								OnScreen |= (
+								
+								/*OnScreen |= (
 									obj->X + obj->W / 2 >= CameraX - 0x80 &&
 									(obj->Y + obj->H / 2) % (Data->Layers[Data->CameraLayer].Height * 16) >= CameraY - 0x80 &&
 									obj->X - obj->W / 2 < CameraX + App->WIDTH + 0x80 &&
@@ -4786,7 +4786,7 @@ PUBLIC void LevelScene::Update() {
 							if (obj->VisW > obj->W || obj->VisH > obj->H) {
 								OnScreen |= (
 									-1 < (obj->X - CameraX) + obj->VisW &&
-									((obj->X - CameraX) - obj->VisW) < 0x140 &&
+									((obj->X - CameraX) - obj->VisW) < App->WIDTH &&
 									((obj->Y - CameraY) + obj->VisH & ScreenYWrapValue) < ((obj->VisH * 2) + 0xe0));
 							}
 							else {
@@ -4796,7 +4796,7 @@ PUBLIC void LevelScene::Update() {
 								}
 								OnScreen |= (
 									-1 < (obj->X - CameraX) + obj->W &&
-									((obj->X - CameraX) - obj->W) < 0x140 &&
+									((obj->X - CameraX) - obj->W) < App->WIDTH &&
 									(Calc < (obj->H * 2) + 0xe0));
 
 								if (obj->PrintDebuggingInfo) {
