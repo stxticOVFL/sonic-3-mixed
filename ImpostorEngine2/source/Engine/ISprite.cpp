@@ -332,21 +332,24 @@ PUBLIC void ISprite::LoadBin(const char* filename) {
 
     int sheets = reader.ReadByte();
     for (int i = 0; i < sheets; i++) {
-        std::string sheet = reader.ReadRSDKString();
-		std::string sheetpath = sheet;
-		if (strBeginsWith(filename, "Classic/"))
-		{
-			sheetpath.clear();
-			sheetpath.append("Classic/Sprites/");
-			sheetpath.append(sheet);
+		std::string sheet = reader.ReadRSDKString();
+		//Shit gets fucky wuck with more than one	
+		if (i == 0) {
+			std::string sheetpath = sheet;
+			if (strBeginsWith(filename, "Classic/"))
+			{
+				sheetpath.clear();
+				sheetpath.append("Classic/Sprites/");
+				sheetpath.append(sheet);
+			}
+			if (strBeginsWith(filename, "Mixed/"))
+			{
+				sheetpath.clear();
+				sheetpath.append("Mixed/Sprites/");
+				sheetpath.append(sheet);
+			}
+			LoadSprite(sheetpath);
 		}
-		if (strBeginsWith(filename, "Mixed/"))
-		{
-			sheetpath.clear();
-			sheetpath.append("Mixed/Sprites/");
-			sheetpath.append(sheet);
-		}
-        LoadSprite(sheetpath);
     }
 
     int collisionboxes = reader.ReadByte();
@@ -647,12 +650,11 @@ PUBLIC void ISprite::Cleanup() {
 	try {
 		if (Animations.size() != 0)
 			Animations.clear(); 
-	}
-	catch (...) {
+	} catch (...) {
 		IApp::Print(2, "Error clearing animations on ISprite cleanup!!!");
 	}
 
-    if (Data) {
+    if (Data != nullptr) {
         Memory::Free(Data);
         Data = NULL;
     }

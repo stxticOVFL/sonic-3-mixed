@@ -425,15 +425,15 @@ PUBLIC void Level_HCZ::RenderAboveBackground() {
 				}//*/
 				if (Y < WY) {
 					if (WY - Y < 128)
-						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16 + ((((Y) / 32) * CameraX) % 32)), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
+						G->DrawSprite(WaterLine, (i), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, WY - Y);
 					else
-						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16 + ((((Y) / 32) * CameraX) % 32)), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, 128);
+						G->DrawSprite(WaterLine, (i), 0, 16, 112, (X & ~0xF) - xBase, Y, 0, IE_NOFLIP, 0, 0, 16, 128);
 				}
 				else if (Y - WY > 0) {
 					if (Y - WY < 128)
-						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16 + ((((-Y) / 32) * CameraX) % 32)), 112, 16, 112, (X & ~0xF) - xBase, WY, 0, IE_NOFLIP, 0, 0, 16, Y - WY);
+						G->DrawSprite(WaterLine, (i), 112, 16, 112, (X & ~0xF) - xBase, WY, 0, IE_NOFLIP, 0, 0, 16, Y - WY);
 					else
-						G->DrawSprite(WaterLine, (WaterLineFrame + (i % 32) * 16 + ((((-Y) / 32) * CameraX) % 32)), 112, 16, 112, (X & ~0xF) - xBase, Y - 128, 0, IE_NOFLIP, 0, 0, 16, 128);
+						G->DrawSprite(WaterLine, (i), 112, 16, 112, (X & ~0xF) - xBase, Y - 128, 0, IE_NOFLIP, 0, 0, 16, 128);
 				}
 				i++;
 			}

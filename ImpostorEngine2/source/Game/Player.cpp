@@ -4444,6 +4444,10 @@ void IPlayer::Render(int CamX, int CamY) {
 
 		bool LowerZero = FinalAngle < 0;
 
+
+		//Keep it like this for now until someone does all the correct flags in the editor
+		Sprites[0]->Animations[CurrentAnimation].Flags = 1;
+
 		switch (Sprites[0]->Animations[CurrentAnimation].Flags)
 		{
 		case 0:

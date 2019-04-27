@@ -21,7 +21,7 @@ void SwingVine::Create() {
     ClassicStyle = false;
     Timer = 0;
     Sprite = LevelScene::LoadSpriteFromBin("AIZ/Ride Vine.bin", SaveGame::CurrentMode);
-    CurrentAnimation = 26;
+    CurrentAnimation = 0;
 }
 
 void SwingVine::Update() {
@@ -159,7 +159,7 @@ void SwingVine::Render(int CamX, int CamY) {
         }
     }
     G->DrawSprite(Sprite, CurrentAnimation, 0x20, X - CamX, Y - CamY, 0, IE_NOFLIP);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

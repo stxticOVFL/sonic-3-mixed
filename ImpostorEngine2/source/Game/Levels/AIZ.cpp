@@ -223,8 +223,7 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
     VisualAct = Act = ACT;
 	sprintf(ZoneLetters, "AIZ");
 
-	if (Act == 0)
-	{
+	if (Act == 0) {
 		isCutscene = true;
 	}
 
@@ -232,9 +231,7 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 
     uint64_t startTime = SDL_GetTicks();
 
-
-	if (SaveGame::CurrentMode >= 1)
-	{
+	if (SaveGame::CurrentMode >= 1) {
 		if (Act == 0) {
 			Str_TileConfigBin = "Mixed/Stages/AIZ1/Intro/TileConfig.bin";
 			Str_SceneBin = "Mixed/Stages/AIZ1/Intro/Scene.bin";
@@ -243,24 +240,20 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 			Str_StageBin = "Mixed/Stages/AIZ1/Intro/Stageconfig.bin";
 			LevelCardHide = true;
 			VisualAct = 1;
-		}
-		else if (Act == 1) {
+		} else if (Act == 1) {
 			Str_TileConfigBin = "Mixed/Stages/AIZ1/TileConfig.bin";
 			Str_SceneBin = "Mixed/Stages/AIZ1/Scene.bin";
 			Str_TileSprite = "Mixed/Stages/AIZ1/16x16Tiles.gif";
 			Str_AnimatedSprites = "Mixed/Stages/AIZ1/Animated Tiles.gif";
 			Str_StageBin = "Mixed/Stages/AIZ1/Stageconfig.bin";
-		}
-		else {
+		} else {
 			Str_TileConfigBin = "Mixed/Stages/AIZ2/TileConfig.bin";
 			Str_SceneBin = "Mixed/Stages/AIZ2/Scene.bin";
 			Str_TileSprite = "Mixed/Stages/AIZ2/16x16Tiles.gif";
 			Str_AnimatedSprites = "Mixed/Stages/AIZ2/Animated Tiles.gif";
 			Str_StageBin = "Mixed/Stages/AIZ2/Stageconfig.bin";
 		}
-	}
-	else
-	{
+	} else {
 		if (Act == 0) {
 			Str_TileConfigBin = "Classic/Stages/AIZ1/Intro/TileConfig.bin";
 			Str_SceneBin = "Classic/Stages/AIZ1/Intro/Scene.bin";
@@ -269,16 +262,14 @@ PUBLIC Level_AIZ::Level_AIZ(IApp* app, IGraphics* g, int ACT) : LevelScene(app, 
 			Str_StageBin = "Classic/Stages/AIZ1/Intro/Stageconfig.bin";
 			LevelCardHide = true;
 			VisualAct = 1;
-		}
-		else if (Act == 1) {
+		} else if (Act == 1) {
 			Str_TileConfigBin = "Classic/Stages/AIZ1/TileConfig.bin";
 			Str_SceneBin = "Classic/Stages/AIZ1/Scene.bin";
 			Str_TileSprite = "Classic/Stages/AIZ1/16x16Tiles.gif";
 			Str_AnimatedSprites = "Classic/Stages/AIZ1/Animated Tiles.gif";
 			Str_StageBin = "Classic/Stages/AIZ1/Stageconfig.bin";
 
-		}
-		else {
+		} else {
 			//PlayMusic("AIZ2.ogg", 94550, SaveGame::CurrentMode);
 			// Sound::Audio->LoopPoint[0] = 85113;
 
@@ -388,7 +379,7 @@ PUBLIC void Level_AIZ::AssignSpriteMapIDs() {
 
 PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
     if (!AIZObjectsSprite) {
-		AIZObjectsSprite = new ISprite("AIZ/Objects.gif", App, SaveGame::CurrentMode);
+		AIZObjectsSprite = new ("ISprite - AIZ/Objects.gif") ISprite("AIZ/Objects.gif", App, SaveGame::CurrentMode);
         AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Tree.bin", SaveGame::CurrentMode);
         AIZObjectsSprite->LoadAnimation("AIZ/Act 1 Zipline Peg.bin", SaveGame::CurrentMode);
         AIZObjectsSprite->LoadAnimation("AIZ/Animated Sprites.bin", SaveGame::CurrentMode);
@@ -425,7 +416,7 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 	}
 
     if (!AIZBossSprite) {
-        AIZBossSprite = new ISprite("AIZ/Boss.gif", App, SaveGame::CurrentMode);
+        AIZBossSprite = new ("ISprite - AIZ/Boss.gif") ISprite("AIZ/Boss.gif", App, SaveGame::CurrentMode);
         AIZBossSprite->Print = true;
         AIZBossSprite->LoadAnimation("AIZ/Act 2 Background Tree.bin", SaveGame::CurrentMode);
         AIZBossSprite->LoadAnimation("AIZ/Airship.bin", SaveGame::CurrentMode);
@@ -434,23 +425,20 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
     }
 
     if (!KnuxSprite[0]) {
-		if (SaveGame::CurrentMode >= 1)
-		{
-			KnuxSprite[0] = new ISprite("Mixed/Sprites/Players/Knux1.gif", App);
-			KnuxSprite[1] = new ISprite("Mixed/Sprites/Players/Knux2.gif", App);
-			KnuxSprite[2] = new ISprite("Mixed/Sprites/Players/Knux3.gif", App);
-			KnuxSprite[3] = new ISprite("Mixed/Sprites/Players/KnuxCutsceneAIZ.gif", App);
-			KnuxSprite[4] = new ISprite("Mixed/Sprites/Players/KnuxCutsceneHPZ.gif", App);
+		if (SaveGame::CurrentMode >= 1) {
+			KnuxSprite[0] = new ("ISprite - Mixed/Sprites/Players/Knux1.gif") ISprite("Mixed/Sprites/Players/Knux1.gif", App);
+			KnuxSprite[1] = new ("ISprite - Mixed/Sprites/Players/Knux2.gif") ISprite("Mixed/Sprites/Players/Knux2.gif", App);
+			KnuxSprite[2] = new ("ISprite - Mixed/Sprites/Players/Knux3.gif") ISprite("Mixed/Sprites/Players/Knux3.gif", App);
+			KnuxSprite[3] = new ("ISprite - Mixed/Sprites/Players/KnuxCutsceneAIZ.gif") ISprite("Mixed/Sprites/Players/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ("ISprite - Mixed/Sprites/Players/KnuxCutsceneHPZ.gif") ISprite("Mixed/Sprites/Players/KnuxCutsceneHPZ.gif", App);
 
 			KnuxSprite[0]->LoadAnimation("Mixed/Sprites/Players/Knux.bin");
-		}
-		else
-		{
-			KnuxSprite[0] = new ISprite("Classic/Sprites/Players/Knux1.gif", App);
-			KnuxSprite[1] = new ISprite("Classic/Sprites/Players/Knux2.gif", App);
-			KnuxSprite[2] = new ISprite("Classic/Sprites/Players/Knux3.gif", App);
-			KnuxSprite[3] = new ISprite("Classic/Sprites/Players/KnuxCutsceneAIZ.gif", App);
-			KnuxSprite[4] = new ISprite("Classic/Sprites/Players/KnuxCutsceneHPZ.gif", App);
+		} else {
+			KnuxSprite[0] = new ("ISprite - Classic/Sprites/Players/Knux1.gif") ISprite("Classic/Sprites/Players/Knux1.gif", App);
+			KnuxSprite[1] = new ("ISprite - Classic/Sprites/Players/Knux2.gif") ISprite("Classic/Sprites/Players/Knux2.gif", App);
+			KnuxSprite[2] = new ("ISprite - Classic/Sprites/Players/Knux3.gif") ISprite("Classic/Sprites/Players/Knux3.gif", App);
+			KnuxSprite[3] = new ("ISprite - Classic/Sprites/Players/KnuxCutsceneAIZ.gif") ISprite("Classic/Sprites/Players/KnuxCutsceneAIZ.gif", App);
+			KnuxSprite[4] = new ("ISprite - Classic/Sprites/Players/KnuxCutsceneHPZ.gif") ISprite("Classic/Sprites/Players/KnuxCutsceneHPZ.gif", App);
 
 			KnuxSprite[0]->LoadAnimation("Classic/Sprites/Players/Knux.bin");
 		}
@@ -464,8 +452,7 @@ PUBLIC void Level_AIZ::LoadZoneSpecificSprites() {
 PUBLIC void Level_AIZ::LoadData() {
     LevelScene::LoadData();
 	//Water Palette
-	for (int i = 0; i < 256; i++)
-	{
+	for (int i = 0; i < 256; i++) {
 		TileSprite->PaletteAlt[i] = Data->Palette[1][i];
 	}
 	TileSprite->Paletted = 2;
@@ -538,8 +525,7 @@ PUBLIC void Level_AIZ::Subupdate() {
             if (water < App->HEIGHT) {
                 if (water < 0) {
                     water = 0;
-                }
-                else {
+                } else {
                     memset(Data->Layers[1].DeformX, 0, water);
                 }
 
@@ -552,8 +538,7 @@ PUBLIC void Level_AIZ::Subupdate() {
                 for (int i = water; i < App->HEIGHT; i++) {
                     Data->Layers[1].DeformX[i] = AIZ1_WaterDeformDelta[(i + (Frame >> 1) + CameraY) & 0x3F];
                 }
-            }
-            else {
+            } else {
                 memset(Data->Layers[1].DeformX, 0, App->HEIGHT);
             }
             memcpy(Data->Layers[2].DeformX, Data->Layers[1].DeformX, App->HEIGHT);
@@ -1378,7 +1363,7 @@ PUBLIC void Level_AIZ::GoToNextAct() {
 }
 
 PUBLIC void Level_AIZ::Cleanup() {
-    #define CLEANUP(name) if (name) { name->Cleanup(); delete name; name = NULL; }
+    #define CLEANUP(name) if (name != nullptr) { name->Cleanup(); delete name; name = NULL; }
 
     CLEANUP(AIZObjectsSprite);
     CLEANUP(AIZBossSprite);

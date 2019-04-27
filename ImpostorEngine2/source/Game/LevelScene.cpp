@@ -676,7 +676,6 @@ PUBLIC STATIC ISprite* LevelScene::LoadSpriteFromBin(const char* Filename, byte 
 		SpriteBinMapIDs.push_back(BinSprite);
 		SpriteBinMapIDs.shrink_to_fit();
 		size_t BinIndex = SpriteBinMapIDs.size() - 1;
-
 		if (!FindSpriteBin(std::string(Filename))) {
 			std::pair<std::string, size_t> pair(std::string(Filename), BinIndex);
 			SpriteBinMap.insert(pair);
@@ -1763,7 +1762,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 	if (SaveGame::CurrentMode < 1) {
 		ItemsSprite->LinkPalette(TileSprite);
-		ExplosionSprite->LinkPalette(TileSprite);
+        
+        // Linking this in Mania format levels has pallete issues.
+		//ExplosionSprite->LinkPalette(TileSprite);
+        
 		ObjectsSprite->LinkPalette(TileSprite);
 	}
 
