@@ -1763,7 +1763,10 @@ PUBLIC VIRTUAL void LevelScene::LoadData() {
 
 	if (SaveGame::CurrentMode < 1) {
 		ItemsSprite->LinkPalette(TileSprite);
-		ExplosionSprite->LinkPalette(TileSprite);
+        
+        // Linking this in Mania format levels has pallete issues.
+		//ExplosionSprite->LinkPalette(TileSprite);
+        
 		ObjectsSprite->LinkPalette(TileSprite);
 	}
 

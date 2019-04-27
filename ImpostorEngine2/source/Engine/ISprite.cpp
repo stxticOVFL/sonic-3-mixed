@@ -647,12 +647,11 @@ PUBLIC void ISprite::Cleanup() {
 	try {
 		if (Animations.size() != 0)
 			Animations.clear(); 
-	}
-	catch (...) {
+	} catch (...) {
 		IApp::Print(2, "Error clearing animations on ISprite cleanup!!!");
 	}
 
-    if (Data) {
+    if (Data != nullptr) {
         Memory::Free(Data);
         Data = NULL;
     }
