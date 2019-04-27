@@ -13,7 +13,9 @@ void TurboSpiker::Create() {
     H = 16;
     Y += 7;
     Sprite = LevelScene::LoadSpriteFromBin("HCZ/TurboSpiker.bin", SaveGame::CurrentMode);
-    CurrentAnimation = Sprite->FindAnimation("Body");
+    CurrentAnimation = Sprite->FindAnimation("Idle");
+    SplashAnim = CurrentAnimation + 5;
+    ShellAnim = CurrentAnimation + 2;
     Flip = 1;
     if (FlipX) Flip = -1;
 
@@ -58,9 +60,9 @@ void TurboSpiker::Update() {
         else XSpeed = 0;
         if (FireTimer == -30 && Fired) VisualLayer = 0;
 
-        if (Fired) CurrentAnimation = 6;
+        if (Fired) CurrentAnimation = Sprite->FindAnimation("Body");
 
-        if (TurnTimer > 0) CurrentAnimation = 8;
+        if (TurnTimer > 0) CurrentAnimation = Sprite->FindAnimation("Turn");
 
         Flip = (Scene->Players[0]->X >= X && !Fired) ? -1 : (KeptFlip != 0 ? KeptFlip : 1);
         if (Sprite->Animations.size() > CurrentAnimation) {
@@ -111,9 +113,9 @@ void TurboSpiker::MoveSprite() {
 }
 
 void TurboSpiker::Render(int CamX, int CamY) {
-    if (20 - FireTimer <= 5) G->DrawSprite(Sprite, 12, 20 - FireTimer, X - CamX, Y - CamY - 8, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+    if (20 - FireTimer <= 5) G->DrawSprite(Sprite, SplashAnim, 20 - FireTimer, X - CamX, Y - CamY - 8, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
 
-    if (!Fired) G->DrawSprite(Sprite, 9, 0, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
+    if (!Fired) G->DrawSprite(Sprite, ShellAnim, 0, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
 
     G->DrawSprite(Sprite, CurrentAnimation, Frame >> 8, X - CamX, Y - CamY, 0, Flip < 0 ? IE_NOFLIP : IE_FLIPX);
     if (DrawCollisions) {

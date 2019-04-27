@@ -22,6 +22,8 @@ public:
     int KeptFlip;
     int TurnTimer;
     bool Turning;
+    int SplashAnim;
+    int ShellAnim;
     
     void Create();
     int OnHit();

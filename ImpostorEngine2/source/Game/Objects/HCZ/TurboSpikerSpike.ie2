@@ -13,11 +13,12 @@ event Create() {
     Timer = 0;
     VisualLayer = 0;
 	
-	Sprite = LevelScene.LoadSpriteFromBin("HCZ/TurboSpiker.bin",SaveGame.CurrentMode);
+	Sprite = LevelScene.LoadSpriteFromBin("HCZ/TurboSpiker.bin", SaveGame.CurrentMode);
+    CurrentAnimation = Sprite.FindAnimation("Shell");
 }
 
 event Update() {
-    Timer = Timer < 4 ? Timer + 1 : 0;
+    Timer = (Timer + 1) % 4;
     if (!OnScreen) {
         X = -16;
         Y = -16;
@@ -27,8 +28,8 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, 9, 0, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
-    G.DrawSprite(Sprite, 10, Timer, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+    G.DrawSprite(Sprite, CurrentAnimation + 1, Timer, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 	
 					if (App.viewObjectCollision) {
 		G.SetDrawAlpha(0x80);

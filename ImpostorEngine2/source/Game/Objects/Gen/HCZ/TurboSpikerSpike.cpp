@@ -17,10 +17,11 @@ void TurboSpikerSpike::Create() {
     Timer = 0;
     VisualLayer = 0;
     Sprite = LevelScene::LoadSpriteFromBin("HCZ/TurboSpiker.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("Shell");
 }
 
 void TurboSpikerSpike::Update() {
-    Timer = Timer < 4 ? Timer + 1 : 0;
+    Timer = (Timer + 1) % 4;
     if (!OnScreen) {
         X = -16;
         Y = -16;
@@ -32,8 +33,8 @@ void TurboSpikerSpike::Update() {
 }
 
 void TurboSpikerSpike::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, 9, 0, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
-    G->DrawSprite(Sprite, 10, Timer, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation, 0, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
+    G->DrawSprite(Sprite, CurrentAnimation + 1, Timer, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     if (App->viewObjectCollision) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
