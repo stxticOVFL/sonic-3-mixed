@@ -27,8 +27,6 @@ var SonicFrameTimer:int;
 
 var Knux:int;
 
-var WaitTimer:int;
-
 //Setup Intro
 event Create() {
 
@@ -80,7 +78,7 @@ event Create() {
 			Scene.Player.ControlLocked = true;
 			Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["S_Run"]);
 			Scene.AddNewObject(Obj_AIZTornado);	
-			//Scene.SpawnPlayer(5, false, )
+			Scene.PlayMusicObj();
 		}
 	}
 }
@@ -102,11 +100,6 @@ event SonicCutscene() {
 	var LayerBG:int = Scene.FindLayer("Background");
 	var LayerFG:int = Scene.FindLayer("FG High");
 	
-	WaitTimer++;
-	
-	//what is math
-	if (WaitTimer >= 60 * 5) {
-		Scene.PlayMusicObj();
 	
 	if (CutsceneRoutineNumber == 0) {
 		Scene.BackgroundRepeatTileWidth = 16;
@@ -279,7 +272,6 @@ event SonicCutscene() {
             Cutscene_SonicWaitTimer--;
         if (Cutscene_KnucklesBackForth > 0)
             Cutscene_KnucklesBackForth--;
-	}
 }
 
 event KnuxCutscene() {

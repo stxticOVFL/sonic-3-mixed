@@ -36,3 +36,11 @@ void Music::PlayMusic() {
     App->Audio->PushMusicAt(Sound::SoundBank[trackID], 0, loopTrack, trackLoop);
 }
 
+void Music::UpdateSubType() {
+    if (SubType == 1) {
+        PlayMusic();
+    }
+    else {
+    }
+}
+
