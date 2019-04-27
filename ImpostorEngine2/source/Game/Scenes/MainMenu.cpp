@@ -390,14 +390,13 @@ PUBLIC void Scene_MainMenu::Update() {
 	//if (FrameCircle & 1) return; //the hell??
 
 	// Palette rotating
-	palframe += 1 + 18;
-	palframe %= 18;
+	palframe = (palframe + 1) % 36;
 
 	frame++;
 	if (frame > (20 << 1))
 		frame = 0;
 
-	squareframe = (squareframe + 1) % 64 * 4;
+	squareframe = (squareframe + 1) % (64 * 4);
 	FrameZigzag = (FrameZigzag + 1) % 134;
 
 	triframe = frame >> 1;
@@ -477,7 +476,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	for (int i = 0; i < App->HEIGHT / 32 + 1; i++) {
 		for (int j = 0; j < App->WIDTH / 32 + 1; j++) {	
 			//G->DrawSprite(MenuSprite, 22, 0, (j * 32) + squareframe + ((i % 2) * 32), i * 32, 0, IE_NOFLIP);
-			G->DrawRectangle((j - 1) * 64 + squareframe + (i % 2) * 32, i * 32, 32, 32, 0xB6B6B6);
+			G->DrawRectangle((j - 1) * 64 + (squareframe / 4) + (i % 2) * 32, i * 32, 32, 32, 0xB6B6B6);
 		}
 	}
 	//Zigzags
@@ -558,7 +557,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	G->DrawSprite(MenuSprite, 20, 5, cenX, cenY - (openRed * 3), 0, IE_NOFLIP);
 	// Selection
 	for (int i = 0; i < 9; i++)
-		MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[(palframe - i + 18) % 18]);
+		MenuSprite->SetPalette(paletteindexes[i], paletteToCycle[((palframe / 2) - i + 18) % 18]);
 	MenuSprite->UpdatePalette();
 	//Submenu Select Triangle
 	if (subselected != -1) {

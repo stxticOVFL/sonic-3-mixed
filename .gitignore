@@ -4,3 +4,9 @@ SDL2-2.0.9-SRC/
 *.bak
 *.cache
 /makeheaders/MSVC2013/makeheaders/Debug
+/ImpostorEngine2/curl.exe
+/ImpostorEngine2/ImpostorEngine2.exe
+/ImpostorEngine2/SDL2.dll
+/ImpostorEngine2/SDL2.pdb
+/ImpostorEngine2/send-presence.exe
+/ImpostorEngine2/zlib12.dll
