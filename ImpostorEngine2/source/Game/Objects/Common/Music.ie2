@@ -41,3 +41,12 @@ event PlayMusic() {
 	Sound.Audio.Loop[trackID] = false;
 	App.Audio.PushMusicAt(Sound.SoundBank[trackID], 0, loopTrack, trackLoop);
 }
+
+event UpdateSubType() {
+	if (SubType == 1) {
+		PlayMusic();
+	}
+	else {
+
+	}
+}

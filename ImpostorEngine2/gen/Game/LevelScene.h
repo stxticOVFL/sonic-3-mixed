@@ -232,6 +232,7 @@ public:
     virtual void PlayMusic(const char* path, int loop, int vol);
     virtual void PlayMusic(int act, int loop, int mode);
     virtual void PlayMusic(int act, int loop, int mode, int vol);
+    virtual void PlayMusicObj();
     static bool IsZoneCurrently(const char* CheckZoneLetters);
     virtual void AssignSpriteMapIDs();
     virtual void LoadZoneSpecificSprites();

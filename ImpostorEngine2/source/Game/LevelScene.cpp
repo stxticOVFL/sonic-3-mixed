@@ -447,7 +447,7 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 
 PUBLIC VIRTUAL void LevelScene::PlayMusicObj() {
 	for (int i = 0; i < Objects.size(); i++) {
-		if (Objects[i]->Name == "Music") {
+		;		if (Objects[i]->Name == "Music") {
 			SetObjectSubType(i, 1);
 		}
 	}

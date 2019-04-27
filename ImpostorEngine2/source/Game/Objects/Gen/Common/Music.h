@@ -24,6 +24,7 @@ public:
     
     void Create();
     void PlayMusic();
+    void UpdateSubType();
 };
 
 #endif /* MUSIC_H */
