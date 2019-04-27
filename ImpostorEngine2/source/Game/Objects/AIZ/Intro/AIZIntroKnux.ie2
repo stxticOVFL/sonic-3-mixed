@@ -25,6 +25,7 @@ event Update() {
 	if (Action == 1) {
 		//if (ActionTimer >= 15) {
 			Y-=2;
+			//CurrentAnimation = uppercut;
 		//}
 		//else {
 		//	Y+=4;
@@ -37,6 +38,7 @@ event Update() {
 	
 	
     if (Cutscene_KnucklesBackForth > 0 && Action == 2) {
+		//CurrentAnimation = glide;
 		if (Cutscene_KnucklesBackForth >= 30) X-=8;
 		else X+=8;
 		if (Cutscene_KnucklesBackForth % 10 == 0) Y+=2;
@@ -44,10 +46,36 @@ event Update() {
 		ActionTimer = 24;
 	}
 	if (Cutscene_KnucklesBackForth <= 0 && Action == 2) {
+		//CurrentAnimation = stop gliding;
 		Y+=2;
 		ActionTimer--;
 		if (ActionTimer < 0) {
 			Action = 3;
+			ActionTimer = 20;
+		}
+	}
+	if (Action == 3) { //LAUGH									  																					!
+		//CurrentAnimation = the one that laughs;
+		ActionTimer--;
+		if (ActionTimer <= 0) {
+			Action = 4;
+		}
+	}
+	if (Action == 4) { //Spindash
+			//CurrentAnimation = spindash;
+		if (ActionTimer < 16 && Cutscene_KnucklesBackForth == 0) {
+			ActionTimer++;
+			if (ActionTimer == 15) {
+				Cutscene_KnucklesBackForth++; //Flag
+			}
+		}
+		else {
+			ActionTimer--;
+			X+=8;
+			//CurrentAnimation = roll;
+		}
+		if (ActionTimer <= 0) {
+			//ok
 		}
 	}
 }

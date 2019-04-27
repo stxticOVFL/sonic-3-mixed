@@ -153,7 +153,6 @@ void AIZIntro::SonicCutscene() {
             CutsceneRoutineNumber = 3;
             Scene->AddNewObject(Obj_AIZIntroKnux, InitialCamX + 5313, Scene->Player->Y);
             Knux = Scene->ObjectCount - 1;
-            Scene->SetObjectSubType(Knux, 1);
         }
 
     }
@@ -176,13 +175,14 @@ void AIZIntro::SonicCutscene() {
         if (Scene->Player->Ground && Cutscene_SonicWaitTimer < 0) {
             Scene->Player->Action = ActionType::Normal;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Idle"]);
-            Cutscene_SonicWaitTimer = 120;
+            Cutscene_SonicWaitTimer = 30;
+            Scene->SetObjectSubType(Knux, 1);
         }
 
         if (Cutscene_SonicWaitTimer == 0) {
             CutsceneRoutineNumber = 4;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Idle"]);
-            Cutscene_KnucklesBackForth = 60;
+            Cutscene_KnucklesBackForth = 112;
             Scene->SetObjectSubType(Knux, 60);
         }
 
@@ -191,7 +191,7 @@ void AIZIntro::SonicCutscene() {
         if (Cutscene_KnucklesBackForth == 0) {
             CutsceneRoutineNumber = 5;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Idle"]);
-            Cutscene_SonicWaitTimer = 120;
+            Cutscene_SonicWaitTimer = 60;
         }
 
     }

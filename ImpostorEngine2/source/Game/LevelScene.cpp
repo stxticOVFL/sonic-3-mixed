@@ -445,6 +445,14 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 	PlayMusic(MusicPath, loop, vol);
 }
 
+PUBLIC VIRTUAL void LevelScene::PlayMusicObj() {
+	for (int i = 0; i < Objects.size(); i++) {
+		if (Objects[i]->Name == "Music") {
+			SetObjectSubType(i, 1);
+		}
+	}
+}
+
 PUBLIC STATIC bool LevelScene::IsZoneCurrently(const char* CheckZoneLetters) {
     char NewCheckZoneLetters[4];
     char NewZoneLetters[4];
