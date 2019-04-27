@@ -447,8 +447,23 @@ PUBLIC VIRTUAL void LevelScene::PlayMusic(int act, int loop, int mode, int vol) 
 
 PUBLIC VIRTUAL void LevelScene::PlayMusicObj() {
 	for (int i = 0; i < Objects.size(); i++) {
-		;		if (Objects[i]->Name == "Music") {
+		if (Objects[i]->Name == "Music") {
 			SetObjectSubType(i, 1);
+		}
+	}
+}
+
+PUBLIC VIRTUAL void LevelScene::CleanDuplicateObjects(int ObjID, int ID) {
+	int FirstID = -1;
+	for (int i = 0; i < Objects.size(); i++) {
+		if (i != FirstID && Objects[i]->ID == ID) {
+			if (FirstID < 0) {
+				FirstID = i;
+			}
+			else {
+				Objects[i] == NULL;
+				ObjectCount--;
+			}
 		}
 	}
 }
@@ -3105,7 +3120,7 @@ PUBLIC VIRTUAL void LevelScene::RestartStage(bool doActTransition, bool drawBack
 		Object *object = Objects.at(i);
 		if (object != NULL) {
 			//if (!object->Temporary) {
-				object->Create();
+			object->Create();
 				object->DrawCollisions = App->viewObjectCollision;
 			//}
 			//else {
@@ -3798,6 +3813,7 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int SubType, int X, int Y, bool 
 		obj->FlipX = FLIPX == 1;
 		obj->FlipY = FLIPY == 1;
 		obj->ID = ID;
+		obj->SlotID = obj->ListID = ObjectCount;
         if (obj->BinIndex == 0xFFFFFFFF) {
             while (!SpriteMapIDs.at(ID)) {
                 ID--;
@@ -3866,6 +3882,7 @@ PUBLIC Object* LevelScene::AddNewObject(int ID, int X, int Y) {
 		obj->FlipX = false;
 		obj->FlipY = false;
 		obj->ID = ID;
+		obj->SlotID = obj->ListID = ObjectCount;
 		if (obj->BinIndex == 0xFFFFFFFF) {
 			while (!SpriteMapIDs.at(ID)) {
 				ID--;

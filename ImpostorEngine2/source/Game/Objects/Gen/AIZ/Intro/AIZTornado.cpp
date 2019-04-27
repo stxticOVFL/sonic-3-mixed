@@ -39,6 +39,7 @@ void AIZTornado::Create() {
     SonicFrame = 0;
     SonicVisible = true;
     ShadowFrame = 3;
+    Scene->CleanDuplicateObjects(ListID, ID);
 }
 
 void AIZTornado::Update() {
@@ -178,7 +179,9 @@ void AIZTornado::TornadoBob() {
 }
 
 void AIZTornado::Render(int CamX, int CamY) {
-    if (SonicVisible) G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene->RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+    if (!Active) return;
+
+    if (SonicVisible && Visible) G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene->RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
 
     if (Visible) {
         G->DrawSprite(Sprite, TornadoAnim, Frame, VisualX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
