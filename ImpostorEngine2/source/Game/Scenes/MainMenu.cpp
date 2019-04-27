@@ -397,7 +397,7 @@ PUBLIC void Scene_MainMenu::Update() {
 	if (frame > (20 << 1))
 		frame = 0;
 
-	squareframe = (squareframe + 1) % 64;
+	squareframe = (squareframe + 1) % 64 * 4;
 	FrameZigzag = (FrameZigzag + 1) % 134;
 
 	triframe = frame >> 1;
@@ -526,6 +526,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	G->DrawSprite(MenuSprite, 9, 0, App->WIDTH, 12, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 10, 0, App->WIDTH - 12, 12, 0, IE_NOFLIP);
 
+	G->DrawSprite(MenuSprite, 24, 0, cenX, cenY, 0, IE_NOFLIP);
 
 	// Submenus for Blue
 	//Boxes
@@ -543,6 +544,7 @@ PUBLIC void Scene_MainMenu::Render() {
 	//G->DrawSprite(MenuSprite, 20, 2, cenX, cenY - (openBlue * 3), 0, IE_NOFLIP); leave missing to hide locked on
 	//else
 	//G->DrawSprite(MenuSprite, 20, 3, cenX, cenY, 0, IE_NOFLIP);
+	G->DrawSprite(MenuSprite, 24, 1, cenX, cenY, 0, IE_NOFLIP);
 
 	// Submenus for Red
 	//Boxes
@@ -571,16 +573,18 @@ PUBLIC void Scene_MainMenu::Render() {
 	// Blue Button
 	G->DrawSprite(MenuSprite, 3, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 0, cenX - 50 - 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
+
 	// Red Button
 	G->DrawSprite(MenuSprite, 4, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 1, cenX + 50 + 29, cenY - 25 - 29 - 3, 0, IE_NOFLIP);
 
-
 	// Yellow Button
+	G->DrawSprite(MenuSprite, 24, 2, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 5, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 2, cenX - 50 - 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
 
 	// Green Button
+	G->DrawSprite(MenuSprite, 24, 3, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 6, 0, cenX, cenY, 0, IE_NOFLIP);
 	G->DrawSprite(MenuSprite, 8, 3, cenX + 50 + 29, cenY + 25 + 29 - 3, 0, IE_NOFLIP);
 

@@ -17,6 +17,8 @@ public:
     
     int ActionTimer;
     int Action;
+    int GRV;
+    int GroundX;
     
     void Create();
     void Update();

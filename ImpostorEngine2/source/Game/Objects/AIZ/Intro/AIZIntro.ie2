@@ -22,7 +22,7 @@ var InitialCamY:int;
 var TornadoX:int;
 var TornadoY:int;
 
-var Knux:IPlayer;
+var Knux:Object;
 
 var SonicFrame:int;
 var SonicFrameTimer:int;
@@ -46,8 +46,8 @@ event Create() {
 	else {
 		IntroSprite = Scene.LoadLevelTiles("Mixed/Stages/AIZ1/Intro/16x16Tiles.gif");
 	}
-	IntroSprite.LinkPalette(Scene.TileSprite);
 	TileSpriteBackup = Scene.TileSprite;
+	IntroSprite.SetTransparentColorIndex(0);
 
 	Scene.HUDVisible = false;
 
@@ -75,8 +75,9 @@ event Create() {
 			Scene.Player.ControlLocked = true;
 			Scene.Player.ChangeAnimation(Scene.Player.AnimationMap["S_Run"]);
 			Scene.AddNewObject(Obj_AIZTornado);
-			//Knux = Scene.AddNewObject(Obj_AIZIntroKnux);
-			//Knux.X = InitialCamX + 5024;
+			Knux = Scene.AddNewObject(Obj_AIZIntroKnux);
+			Knux.X = InitialCamX + 5024;
+			//Scene.SpawnPlayer(5, false, )
 		}
 	}
 }

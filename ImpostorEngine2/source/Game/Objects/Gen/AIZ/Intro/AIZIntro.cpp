@@ -18,8 +18,8 @@ void AIZIntro::Create() {
     else {
         IntroSprite = Scene->LoadLevelTiles("Mixed/Stages/AIZ1/Intro/16x16Tiles.gif");
     }
-    IntroSprite->LinkPalette(Scene->TileSprite);
     TileSpriteBackup = Scene->TileSprite;
+    IntroSprite->SetTransparentColorIndex(0);
     Scene->HUDVisible = false;
     Scene->LevelCardTimer = 0.0;
     Scene->LevelCardHide = true;
@@ -41,6 +41,8 @@ void AIZIntro::Create() {
             Scene->Player->ControlLocked = true;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["S_Run"]);
             Scene->AddNewObject(Obj_AIZTornado);
+            Knux = Scene->AddNewObject(Obj_AIZIntroKnux);
+            Knux->X = InitialCamX + 5024;
         }
     }
 

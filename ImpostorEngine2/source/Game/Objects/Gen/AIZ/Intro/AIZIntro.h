@@ -30,7 +30,7 @@ public:
     int InitialCamY;
     int TornadoX;
     int TornadoY;
-    IPlayer* Knux;
+    Object* Knux;
     int SonicFrame;
     int SonicFrameTimer;
     

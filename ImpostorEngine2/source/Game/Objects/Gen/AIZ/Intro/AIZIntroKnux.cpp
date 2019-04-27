@@ -8,17 +8,19 @@ typedef IMath Math;
 void AIZIntroKnux::Create() {
     Object::Create();
     Priority = true;
-    Sprite = LevelScene::LoadSpriteFromBin("Players/Knux.bin", SaveGame::CurrentMode);
-    CurrentAnimation = Sprite->FindAnimation("Jump");
+    Sprite = LevelScene::LoadSpriteFromBin("Players/AIZCutscene.bin", SaveGame::CurrentMode);
+    CurrentAnimation = Sprite->FindAnimation("KJump");
     Frame = 0;
     Action = 0;
     ActionTimer = 0;
-    Gravity = 0;
+    GRV = 0;
 }
 
 void AIZIntroKnux::Update() {
+    YSpeed += GRV;
     if (Scene->RoutineNumber == 2) {
-        Gravity = 0.21875;
+        YSpeed = -0x400;
+        GRV = 0x38;
     }
 
     Object::Update();
