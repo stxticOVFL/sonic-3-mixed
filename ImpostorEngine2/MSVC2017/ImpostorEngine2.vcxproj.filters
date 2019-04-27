@@ -56,6 +56,9 @@
     <Filter Include="Source Files\Engine\ImageFormats">
       <UniqueIdentifier>{c1ee2982-67b4-4694-95b7-ecbf8d744805}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{588abc52-22b0-4383-bedf-643fea9c14c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\Game\Levels\AIZ.cpp">
@@ -777,6 +780,9 @@
     <ClInclude Include="..\source\Engine\IGenesis.hh">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\source\Game\Objects\Common\SpecialRing.ie2">
@@ -1079,5 +1085,15 @@
     <None Include="..\source\Game\Objects\CNZ\CNZRotatingBarrel.ie2">
       <Filter>Source Files\Game\Objects\CNZ</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ImpostorEngine21.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="main.ico">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>
