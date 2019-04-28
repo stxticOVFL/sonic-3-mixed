@@ -63,6 +63,7 @@ void AIZTornado::Update() {
             UpdateTimer = 0;
             UpdateTimer = this->Y;
             PebbleState = 1;
+            PebbleY = Y;
         }
 
     }
@@ -88,13 +89,12 @@ void AIZTornado::Update() {
 
     }
 
-    if (PebbleState == 1) {
-        if (PebbleX > X) PebbleX -= 3;
-
-        if (PebbleY < Y) PebbleY++;
-
-        if (PebbleX <= X && PebbleY >= Y) {
+    if (PebbleState >= 1) {
+        PebbleX -= 8;
+        PebbleRotation++;
+        if (PebbleX <= X && PebbleState <= 1) {
             State++;
+            PebbleState = 2;
         }
 
     }
@@ -144,8 +144,8 @@ void AIZTornado::Update() {
         SonicAnim = 2;
         SonicWaveTimer++;
         if (SonicWaveTimer >= 6) {
-            if (Scene->CameraX < InitialX + 3000) {
-                Scene->AddNewObject(Obj_AIZIntroSplash, X - 32, Y);
+            if (Scene->CameraX < 3357) {
+                Scene->AddNewObject(Obj_AIZIntroSplash, X - 64, Y);
                 SonicWaveTimer = 0;
             }
 
@@ -205,8 +205,8 @@ void AIZTornado::Render(int CamX, int CamY) {
 
     if (SonicVisible && Visible) G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene->RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
 
-    if (PebbleState > 0) {
-        G->DrawSprite(Sprite, Sprite->FindAnimation("Pebble"), 0, PebbleX, PebbleY, 0, IE_NOFLIP);
+    if (PebbleState == 1) {
+        G->DrawSprite(Sprite, Sprite->FindAnimation("Pebble"), 0, PebbleX, PebbleY, PebbleRotation, IE_NOFLIP);
     }
 
     }

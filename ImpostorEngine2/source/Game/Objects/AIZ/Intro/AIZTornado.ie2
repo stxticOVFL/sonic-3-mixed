@@ -33,6 +33,7 @@ var StoredX:int;
 var InitialFallFrame:int;
 
 var PebbleState:int;
+var PebbleRotation:int;
 var PebbleX:int;
 var PebbleY:int;
 
@@ -102,6 +103,7 @@ event Update() {
 			UpdateTimer = 0;
 			UpdateTimer = this.Y;
 			PebbleState = 1;
+			PebbleY = Y;
 		}
 	}
 	else if (State == 1) {
@@ -126,13 +128,14 @@ event Update() {
 	}	
 
 	//Yeet it towards the player
-	if (PebbleState == 1) {
+	if (PebbleState >= 1) {
 		//Shit
-		if (PebbleX > X) PebbleX-=3;
-		if (PebbleY < Y) PebbleY++;
+		PebbleX-=8;
+		PebbleRotation++;
 		
-		if (PebbleX <= X && PebbleY >= Y) {
+		if (PebbleX <= X && PebbleState <= 1) {
 			State++;
+			PebbleState = 2;
 		}
 	}
 
@@ -181,8 +184,8 @@ event Update() {
 		SonicAnim = 2;
 		SonicWaveTimer++;
 		if (SonicWaveTimer >= 6) {
-			if (Scene.CameraX < InitialX + 3000) {
-				Scene.AddNewObject(Obj_AIZIntroSplash,X-32,Y);
+			if (Scene.CameraX < 3357) {
+				Scene.AddNewObject(Obj_AIZIntroSplash,X-64,Y);
 				SonicWaveTimer = 0;
 			}
 		}
@@ -238,8 +241,8 @@ event Render(CamX:int, CamY:int) {
 	}
 	if (SonicVisible && Visible) 
 		G.DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene.RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
-	if (PebbleState > 0) {
-				G.DrawSprite(Sprite, Sprite.FindAnimation("Pebble"), 0, PebbleX, PebbleY, 0, IE_NOFLIP);
+	if (PebbleState == 1) {
+		G.DrawSprite(Sprite, Sprite.FindAnimation("Pebble"), 0, PebbleX, PebbleY, PebbleRotation, IE_NOFLIP);
 	}
 	//Smug Sonikku
 	

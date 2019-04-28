@@ -41,6 +41,7 @@ public:
     int StoredX;
     int InitialFallFrame;
     int PebbleState;
+    int PebbleRotation;
     int PebbleX;
     int PebbleY;
     int TornadoBobAmount;
