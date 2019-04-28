@@ -154,14 +154,19 @@ PUBLIC STATIC GIF* GIF::Load(const char* filename) {
                 subtype = stream->ReadByte();
                 switch (subtype) {
                     // Graphics Control Extension
-                    case 0xF9:
-                        stream->Skip(0x06);
+                    //case 0xF9:
+                       // stream->Skip(0x06);
                         // temp = stream->ReadByte();  // Block Size [byte] (always 0x04)
                         // temp = stream->ReadByte();  // Packed Field [byte] //
                         // temp16 = stream->ReadUInt16(); // Delay Time [short] //
                         // temp = stream->ReadByte();  // Transparent Color Index? [byte] //
                         // temp = stream->ReadByte();  // Block Terminator [byte] //
-                        break;
+                        //break;
+					case 0xF9:
+						stream->Skip(0x04);
+						gif->TransparentColorIndex = stream->ReadByte();  // Transparent Color Index? [byte] //
+						stream->Skip(0x01);
+						break;
                     // Plain Text Extension
                     case 0x01:
                     // Comment Extension

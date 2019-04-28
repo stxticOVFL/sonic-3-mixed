@@ -153,6 +153,7 @@ void AIZIntro::SonicCutscene() {
             Scene->RoutineNumber = 2;
             CutsceneRoutineNumber = 3;
             Scene->AddNewObject(Obj_AIZIntroKnux, InitialCamX + 5313, Scene->Player->Y);
+            Scene->SetObjectSubType(Knux, 1);
             Knux = Scene->ObjectCount - 1;
         }
 
@@ -177,7 +178,6 @@ void AIZIntro::SonicCutscene() {
             Scene->Player->Action = ActionType::Normal;
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Idle"]);
             Cutscene_SonicWaitTimer = 30;
-            Scene->SetObjectSubType(Knux, 1);
         }
 
         if (Cutscene_SonicWaitTimer == 0) {

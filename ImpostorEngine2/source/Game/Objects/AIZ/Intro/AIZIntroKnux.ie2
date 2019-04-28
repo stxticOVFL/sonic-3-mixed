@@ -3,9 +3,12 @@ var Action:int;
 
 var Cutscene_KnucklesBackForth:int;
 
-var KnuxAnim:int;
+var JumpAnim:int;
+var AnimTimer:int;
 
 var Floor:int;
+
+var StayGrounded:bool;
 
 event Create() {
     Priority = true;
@@ -13,66 +16,71 @@ event Create() {
 	//Remove this object on scene reload
 	//Temporary = true;
     Sprite = LevelScene.LoadSpriteFromBin("Players/AIZCutscene.bin",SaveGame.CurrentMode);
-    KnuxAnim = Sprite.FindAnimation("KJump");
-	CurrentAnimation = KnuxAnim + 1;
+    JumpAnim = Sprite.FindAnimation("KJump");
+	CurrentAnimation = -1;
 	
 	//Im on a fuckin plane without wifi cut me some fucking slack
 	//Sprite = LevelScene.LoadSpriteFromBin("Dev/NullGfx.bin",SaveGame.CurrentMode);
     Frame = 0;
 
-    Action = 0;
-    ActionTimer = 0;
+    Action = 1;
+    ActionTimer = 120;
+	AnimTimer = 0;
     
 	Gravity = 0x38;
-	Floor = Y + 0x10;
+	Floor = Y + 0x9;
+	FlipX = true;
+	StayGrounded = false;
 }
 
 event Update() {
-	if (Y >= Floor && CurrentAnimation != KnuxAnim + 1)
+	if (SubY >= Floor /*|| (Action == 1 && ActionTimer <= 30) */|| StayGrounded) {
+		YSpeed = 0;
 		Y = Floor;
+	}
+	else
+		YSpeed += Gravity;
 	
 	if (Action == 1) {
-		if (ActionTimer >= 15) {
-			Y-=2;
-			CurrentAnimation = KnuxAnim + 1;
-		}
-		else {
-			Y+=4;
-		}
+		CurrentAnimation = JumpAnim + 1;
+		if (ActionTimer >= 90)
+			YSpeed = -0x600;
 		ActionTimer--;
-		if (ActionTimer < 0) {
-			Action = 0;
-		}
+		Cutscene_KnucklesBackForth = 10;
 	}
 	
 	
     if (Cutscene_KnucklesBackForth > 0 && Action == 2) {
-		CurrentAnimation = KnuxAnim;
+		CurrentAnimation = JumpAnim + 2;
+		StayGrounded = true;
 		/*if (Cutscene_KnucklesBackForth >= 30) X-=8;
 		else X+=8;
 		if (Cutscene_KnucklesBackForth % 10 == 0) Y+=2;
 		Cutscene_KnucklesBackForth--;
 		ActionTimer = 24;*/
-		if (Cutscene_KnucklesBackForth >= 59) YSpeed = -0x600;
+		Cutscene_KnucklesBackForth--;
 	}
 	if (Cutscene_KnucklesBackForth <= 0 && Action == 2) {
-		//CurrentAnimation = stop gliding;
-		Y+=2;
-		ActionTimer--;
-		if (ActionTimer < 0) {
-			Action = 3;
-			ActionTimer = 20;
-		}
+		CurrentAnimation = JumpAnim + 3;
+		Action = 3;
+		ActionTimer = 20;
+		//Y+=2;
+		//ActionTimer--;
+		//if (ActionTimer < 0) {
+		//	Action = 3;
+		//	ActionTimer = 20;
+		//}
 	}
 	if (Action == 3) { //LAUGH									  																					!
-		//CurrentAnimation = the one that laughs;
+		// CurrentAnimation = the one that laughs;
 		ActionTimer--;
 		if (ActionTimer <= 0) {
 			Action = 4;
 		}
 	}
 	if (Action == 4) { //Spindash
-			//CurrentAnimation = spindash;
+		FlipX = false;
+		CurrentAnimation = JumpAnim + 4;
 		if (ActionTimer < 16 && Cutscene_KnucklesBackForth == 0) {
 			ActionTimer++;
 			if (ActionTimer == 15) {
@@ -81,16 +89,26 @@ event Update() {
 		}
 		else {
 			ActionTimer--;
-			X+=8;
-			//CurrentAnimation = roll;
+			X+=16;
+			CurrentAnimation = JumpAnim;
 		}
 		if (ActionTimer <= 0) {
 			//ok
 		}
 	}
+
+	//handle anims
+	if (CurrentAnimation != -1) {
+		AnimTimer++;
+		if (AnimTimer > Sprite.Animations[CurrentAnimation].Frames[Frame].Duration / Sprite.Animations[CurrentAnimation].AnimationSpeed) {
+			Frame = (Frame > Sprite.Animations[CurrentAnimation].FrameCount) ? Sprite.Animations[CurrentAnimation].FrameToLoop : Frame + 1;
+			AnimTimer = 0;
+		} 
+	}
 }
 event Render(CamX:int, CamY:int) {
-    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
+	if (CurrentAnimation == -1) return;
+    G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 }
 
 event UpdateSubType() {

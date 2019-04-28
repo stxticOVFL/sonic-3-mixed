@@ -9,47 +9,43 @@ void AIZIntroKnux::Create() {
     Object::Create();
     Priority = true;
     Sprite = LevelScene::LoadSpriteFromBin("Players/AIZCutscene.bin", SaveGame::CurrentMode);
-    KnuxAnim = Sprite->FindAnimation("KJump");
-    CurrentAnimation = KnuxAnim + 1;
+    JumpAnim = Sprite->FindAnimation("KJump");
+    CurrentAnimation = -1;
     Frame = 0;
-    Action = 0;
-    ActionTimer = 0;
+    Action = 1;
+    ActionTimer = 120;
+    AnimTimer = 0;
     Gravity = 0x38;
-    Floor = Y + 0x10;
+    Floor = Y + 0x9;
+    FlipX = true;
+    StayGrounded = false;
 }
 
 void AIZIntroKnux::Update() {
-    if (Y >= Floor && CurrentAnimation != KnuxAnim + 1) Y = Floor;
-
+    if (SubY >= Floor || StayGrounded) {
+        YSpeed = 0;
+        Y = Floor;
+    }
+    else YSpeed += Gravity;
     if (Action == 1) {
-        if (ActionTimer >= 15) {
-            Y -= 2;
-            CurrentAnimation = KnuxAnim + 1;
-        }
-        else {
-            Y += 4;
-        }
-        ActionTimer--;
-        if (ActionTimer < 0) {
-            Action = 0;
-        }
+        CurrentAnimation = JumpAnim + 1;
+        App->Print(0, "heehee");
+        if (ActionTimer >= 90) YSpeed = -0x600;
 
+        ActionTimer--;
+        Cutscene_KnucklesBackForth = 10;
     }
 
     if (Cutscene_KnucklesBackForth > 0 && Action == 2) {
-        CurrentAnimation = KnuxAnim;
-        if (Cutscene_KnucklesBackForth >= 59) YSpeed = -0x600;
-
+        CurrentAnimation = JumpAnim + 2;
+        StayGrounded = true;
+        Cutscene_KnucklesBackForth--;
     }
 
     if (Cutscene_KnucklesBackForth <= 0 && Action == 2) {
-        Y += 2;
-        ActionTimer--;
-        if (ActionTimer < 0) {
-            Action = 3;
-            ActionTimer = 20;
-        }
-
+        CurrentAnimation = JumpAnim + 3;
+        Action = 3;
+        ActionTimer = 20;
     }
 
     if (Action == 3) {
@@ -61,6 +57,8 @@ void AIZIntroKnux::Update() {
     }
 
     if (Action == 4) {
+        FlipX = false;
+        CurrentAnimation = JumpAnim + 4;
         if (ActionTimer < 16 && Cutscene_KnucklesBackForth == 0) {
             ActionTimer++;
             if (ActionTimer == 15) {
@@ -70,9 +68,19 @@ void AIZIntroKnux::Update() {
         }
         else {
             ActionTimer--;
-            X += 8;
+            X += 16;
+            CurrentAnimation = JumpAnim;
         }
         if (ActionTimer <= 0) {
+        }
+
+    }
+
+    if (CurrentAnimation != -1) {
+        AnimTimer++;
+        if (AnimTimer > Sprite->Animations[CurrentAnimation].Frames[Frame].Duration / Sprite->Animations[CurrentAnimation].AnimationSpeed) {
+            Frame = (Frame > Sprite->Animations[CurrentAnimation].FrameCount) ? Sprite->Animations[CurrentAnimation].FrameToLoop : Frame + 1;
+            AnimTimer = 0;
         }
 
     }
@@ -81,7 +89,9 @@ void AIZIntroKnux::Update() {
 }
 
 void AIZIntroKnux::Render(int CamX, int CamY) {
-    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+    if (CurrentAnimation == -1) return;
+
+    G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     }
 
 void AIZIntroKnux::UpdateSubType() {
