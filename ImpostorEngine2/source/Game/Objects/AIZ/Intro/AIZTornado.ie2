@@ -59,7 +59,7 @@ event Create() {
 		PlayerSprite.SetTransparentColorIndex(0);
 	}
 	
-	InitialX = App.WIDTH / 2 - 104;
+	InitialX = App.WIDTH / 2 - 234;
 	InitialY = App.HEIGHT / 2 - 16;
 	X = InitialX;
 	Y = InitialY;
@@ -112,8 +112,8 @@ event Update() {
 		SonicFrameTimer++;
 		this.X -= 2;
 		//InitialX+=16;
-		if (this.Y - 24 < UpdateTimer) 
-			this.Y += Math.abs(Scene.Frame - InitialFallFrame) / 4;
+		if (this.Y - 128 < UpdateTimer) 
+			this.Y += Math.abs(Scene.Frame - InitialFallFrame) / 8;
 		if (SonicFrameTimer > 2) {
 			SonicFrame++;
 			if (SonicFrame > 4) {
@@ -241,9 +241,9 @@ event Render(CamX:int, CamY:int) {
 	}
 	if (SonicVisible && Visible) 
 		G.DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene.RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
-	if (PebbleState == 1) {
+	//if (PebbleState == 1) {
 		G.DrawSprite(Sprite, Sprite.FindAnimation("Pebble"), 0, PebbleX, PebbleY, PebbleRotation, IE_NOFLIP);
-	}
+	//}
 	//Smug Sonikku
 	
 	//Makes it not work??????

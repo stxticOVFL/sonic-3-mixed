@@ -153,7 +153,7 @@ void AIZIntro::SonicCutscene() {
             Scene->Player->ChangeAnimation(Scene->Player->AnimationMap["Hurt"]);
             Scene->RoutineNumber = 2;
             CutsceneRoutineNumber = 3;
-            Scene->AddNewObject(Obj_AIZIntroKnux, InitialCamX + 5313, Scene->Player->Y);
+            Scene->AddNewObject(Obj_AIZIntroKnux, InitialCamX + 5269, Scene->Player->Y);
             Scene->SetObjectSubType(Knux, 1);
             Knux = Scene->ObjectCount - 1;
         }

@@ -10,47 +10,80 @@ void AIZIntroKnux::Create() {
     Priority = true;
     Sprite = LevelScene::LoadSpriteFromBin("Players/AIZCutscene.bin", SaveGame::CurrentMode);
     JumpAnim = Sprite->FindAnimation("KJump");
-    CurrentAnimation = -1;
+    CurrentAnimation = JumpAnim + 1;
     Frame = 0;
     Action = 1;
-    ActionTimer = 120;
+    ActionTimer = 10;
     AnimTimer = 0;
     Gravity = 0x38;
-    Floor = Y + 0x9;
+    Floor = InitialY + 0xF;
     FlipX = true;
     StayGrounded = false;
     PebbleX = X + 0x20;
-    PebbleY = Y;
+    PebbleY = InitialY;
+    EmeraldsX = X - 0x10;
+    EmeraldsY = InitialY;
+    DisplayEmeralds = true;
+    Y += 0x35;
+    AllowGrounded = false;
+    LandStarted = false;
+    LandFinished = false;
 }
 
 void AIZIntroKnux::Update() {
-    if (SubY >= Floor || StayGrounded) {
+    if (StayGrounded || (Y >= Floor && AllowGrounded)) {
         YSpeed = 0;
         Y = Floor;
     }
-    else YSpeed += Gravity;
+
+    if (StayGrounded) Gravity = 0;
+
     if (Action == 1) {
         CurrentAnimation = JumpAnim + 1;
-        if (ActionTimer >= 90) YSpeed = -0x600;
-
+        if (ActionTimer >= 5) {
+            YSpeed = -0x600;
+        }
+        else AllowGrounded = true;
         ActionTimer--;
-        Cutscene_KnucklesBackForth = 10;
+        if (Y == Floor) {
+            Action = 2;
+            FlipX = true;
+        }
+
+        if (ActionTimer >= 0) EmeraldsX += ActionTimer * 2;
+
+        Cutscene_KnucklesBackForth = 8;
     }
 
     if (Cutscene_KnucklesBackForth > 0 && Action == 2) {
+        if (!LandStarted) {
+            Frame = 0;
+            LandStarted = true;
+            FlipX = true;
+        }
+
         CurrentAnimation = JumpAnim + 2;
+        if (CurrentAnimation == JumpAnim + 2 && (Frame + 1) == 4) LandFinished = true;
+
+        if (LandFinished) {
+            CurrentAnimation = JumpAnim + 3;
+            FlipX = false;
+        }
+
         StayGrounded = true;
         Cutscene_KnucklesBackForth--;
     }
 
     if (Cutscene_KnucklesBackForth <= 0 && Action == 2) {
+        FlipX = false;
         CurrentAnimation = JumpAnim + 3;
         Action = 3;
-        ActionTimer = 20;
+        ActionTimer = 40;
     }
 
     if (Action == 3) {
         ActionTimer--;
+        FlipX = false;
         if (ActionTimer <= 0) {
             Action = 4;
         }
@@ -58,11 +91,10 @@ void AIZIntroKnux::Update() {
     }
 
     if (Action == 4) {
-        FlipX = false;
         CurrentAnimation = JumpAnim + 4;
-        if (ActionTimer < 16 && Cutscene_KnucklesBackForth == 0) {
+        if (ActionTimer < 32 && Cutscene_KnucklesBackForth == 0) {
             ActionTimer++;
-            if (ActionTimer == 15) {
+            if (ActionTimer >= 31) {
                 Cutscene_KnucklesBackForth++;
             }
 
@@ -70,6 +102,8 @@ void AIZIntroKnux::Update() {
         else {
             ActionTimer--;
             X += 10;
+            if (X >= EmeraldsX + 0xF) DisplayEmeralds = false;
+
             CurrentAnimation = JumpAnim;
         }
         if (ActionTimer <= 0) {
@@ -92,6 +126,8 @@ void AIZIntroKnux::Update() {
 
 void AIZIntroKnux::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, JumpAnim + 5, 0, PebbleX - CamX, PebbleY - CamY, 0, IE_NOFLIP);
+    if (DisplayEmeralds) G->DrawSprite(Sprite, JumpAnim + 6, 0, EmeraldsX - CamX, EmeraldsY - CamY, 0, IE_NOFLIP);
+
     if (CurrentAnimation == -1) return;
 
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
@@ -103,7 +139,6 @@ void AIZIntroKnux::UpdateSubType() {
         ActionTimer = 30;
     }
     else {
-        Cutscene_KnucklesBackForth = SubType;
         Action = 2;
     }
 }

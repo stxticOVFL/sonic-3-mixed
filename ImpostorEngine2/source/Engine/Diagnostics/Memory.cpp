@@ -168,7 +168,7 @@ PUBLIC STATIC void* Memory::TrackedMalloc(const char* identifier, size_t size) {
         TrackedMemory.push_back(mem);
         TrackedSizes.push_back(size);
         TrackedMemoryNames.push_back(identifier);
-    }
+    }	
 #endif
     return mem;
 }

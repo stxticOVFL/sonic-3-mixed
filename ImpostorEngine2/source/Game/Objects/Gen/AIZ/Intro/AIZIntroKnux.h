@@ -22,8 +22,14 @@ public:
     int AnimTimer;
     int Floor;
     bool StayGrounded;
+    bool AllowGrounded;
     int PebbleX;
     int PebbleY;
+    bool LandStarted;
+    bool LandFinished;
+    int EmeraldsX;
+    int EmeraldsY;
+    bool DisplayEmeralds;
     
     void Create();
     void Update();
