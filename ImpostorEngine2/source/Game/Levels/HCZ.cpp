@@ -931,8 +931,8 @@ PUBLIC void Level_HCZ::HandleCamera() {
     int offY = App->HEIGHT / 2 - 0x70;
     if (Act == 1) {
         if (Player->EZX > 0x35B0) {
-            if (CameraMinY < 0x300)
-                CameraMinY = 0x300;
+            if (CameraMinY < 0x300 - 80)
+                CameraMinY = 0x300 - 80;
 
             if (Player->EZY > 0x600)
                 CameraMinY = CameraY;

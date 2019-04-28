@@ -51,18 +51,25 @@ void Spring::Create() {
         }
 
     }
-    else if (SpringType == 4 || SpringType == 5 && FlipFlag < 2) {
+    else if (SpringType == 4 || SpringType == 5) {
         Diagonal = -1;
         Solid = false;
         W = 28;
         H = 28;
-    }
-    else if (SpringType == 4 || SpringType == 5) {
-        Diagonal = 1;
-        Solid = false;
-        FlipY = true;
-        W = 28;
-        H = 28;
+        if (FlipFlag == 1) {
+            FlipX = true;
+            Rotation = 90;
+        }
+        else if (FlipFlag == 2) {
+            FlipY = true;
+            Rotation = 180;
+        }
+        else if (FlipFlag == 3) {
+            FlipX = true;
+            FlipY = true;
+            Rotation = 270;
+        }
+
     }
 
     if (Rotation == 0) {
