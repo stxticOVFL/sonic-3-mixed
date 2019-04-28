@@ -104,7 +104,14 @@ event Update() {
 	}
 
 	//handle anims
-	Frame = ProccessAnimation(Sprite,CurrentAnimation);
+	AnimTimer++;
+	if (AnimTimer > Sprite.Animations[CurrentAnimation].Frames[Frame].Duration / Sprite.Animations[CurrentAnimation].AnimationSpeed) {
+		Frame++;
+		if (Frame >= Sprite.Animations[CurrentAnimation].FrameCount) {
+			Frame = Sprite.Animations[CurrentAnimation].FrameToLoop;
+		}
+		AnimTimer = 0;
+	}
 }
 event Render(CamX:int, CamY:int) {
 	G.DrawSprite(Sprite, JumpAnim + 5, 0, PebbleX - CamX, PebbleY - CamY, 0, IE_NOFLIP);

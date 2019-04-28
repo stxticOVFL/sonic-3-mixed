@@ -40,6 +40,9 @@ public:
     int VisualX;
     int StoredX;
     int InitialFallFrame;
+    int PebbleState;
+    int PebbleX;
+    int PebbleY;
     int TornadoBobAmount;
     int TornadoBobDir;
     int TornadoBobTimer;

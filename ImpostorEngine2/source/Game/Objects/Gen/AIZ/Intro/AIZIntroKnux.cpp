@@ -77,7 +77,16 @@ void AIZIntroKnux::Update() {
 
     }
 
-    Frame = ProccessAnimation(Sprite, CurrentAnimation);
+    AnimTimer++;
+    if (AnimTimer > Sprite->Animations[CurrentAnimation].Frames[Frame].Duration / Sprite->Animations[CurrentAnimation].AnimationSpeed) {
+        Frame++;
+        if (Frame >= Sprite->Animations[CurrentAnimation].FrameCount) {
+            Frame = Sprite->Animations[CurrentAnimation].FrameToLoop;
+        }
+
+        AnimTimer = 0;
+    }
+
     Object::Update();
 }
 

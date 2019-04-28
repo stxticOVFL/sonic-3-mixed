@@ -135,13 +135,13 @@ void Object::AnimationProgress(int16_t animationData[]) {
 int Object::ProccessAnimation(ISprite *Sprite, int Anim) {
 	if (Sprite == NULL) return -1;
 	if (Anim < 0) return -1;
-	if (Frame < 0) return 0;
+	if (AnimationFrame < 0) return 0;
 
 	AnimationTimer++;
-	if (AnimationTimer > Sprite->Animations[CurrentAnimation].Frames[Frame].Duration / Sprite->Animations[CurrentAnimation].AnimationSpeed) {
+	if (AnimationTimer > Sprite->Animations[Anim].Frames[AnimationFrame].Duration / Sprite->Animations[Anim].AnimationSpeed) {
 		AnimationFrame++;
-		if (AnimationFrame >= Sprite->Animations[CurrentAnimation].FrameCount) {
-			AnimationFrame = Sprite->Animations[CurrentAnimation].FrameToLoop;
+		if (AnimationFrame >= Sprite->Animations[Anim].FrameCount) {
+			AnimationFrame = Sprite->Animations[Anim].FrameToLoop;
 		}
 		AnimationTimer = 0;
 	}

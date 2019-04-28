@@ -39,6 +39,9 @@ void AIZTornado::Create() {
     SonicFrame = 0;
     SonicVisible = true;
     ShadowFrame = 3;
+    PebbleX = App->WIDTH + 16;
+    PebbleY = -16;
+    PebbleState = 0;
     Scene->CleanDuplicateObjects(ListID, ID);
 }
 
@@ -55,11 +58,11 @@ void AIZTornado::Update() {
         Scene->Player->Visible = false;
         UpdateTimer++;
         if (UpdateTimer > 180) {
-            State++;
             StoredX = Scene->CameraX;
             InitialFallFrame = Scene->Frame;
             UpdateTimer = 0;
             UpdateTimer = this->Y;
+            PebbleState = 1;
         }
 
     }
@@ -81,6 +84,17 @@ void AIZTornado::Update() {
         if (Scene->RoutineNumber < 1) Scene->CameraX = StoredX;
 
         if (InitialX > Scene->CameraX + App->WIDTH + 128) {
+        }
+
+    }
+
+    if (PebbleState == 1) {
+        if (PebbleX > X) PebbleX -= 3;
+
+        if (PebbleY < Y) PebbleY++;
+
+        if (PebbleX <= X && PebbleY >= Y) {
+            State++;
         }
 
     }
@@ -190,6 +204,10 @@ void AIZTornado::Render(int CamX, int CamY) {
     }
 
     if (SonicVisible && Visible) G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene->RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
+
+    if (PebbleState > 0) {
+        G->DrawSprite(Sprite, Sprite->FindAnimation("Pebble"), 0, PebbleX, PebbleY, 0, IE_NOFLIP);
+    }
 
     }
 

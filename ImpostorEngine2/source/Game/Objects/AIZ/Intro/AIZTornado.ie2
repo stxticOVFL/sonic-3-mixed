@@ -32,6 +32,10 @@ var StoredX:int;
 
 var InitialFallFrame:int;
 
+var PebbleState:int;
+var PebbleX:int;
+var PebbleY:int;
+
 event Create() {
 	Priority = true;
 	
@@ -73,6 +77,10 @@ event Create() {
 	
 	ShadowFrame = 3;
 	
+	PebbleX = App.WIDTH + 16;
+	PebbleY = -16;
+	PebbleState = 0;
+	
 	//Incase dups
 	Scene.CleanDuplicateObjects(ListID,ID);
 }
@@ -89,11 +97,11 @@ event Update() {
 		UpdateTimer++;
 		
 		if (UpdateTimer > 180) {
-			State++;
 			StoredX = Scene.CameraX;
 			InitialFallFrame = Scene.Frame;
 			UpdateTimer = 0;
 			UpdateTimer = this.Y;
+			PebbleState = 1;
 		}
 	}
 	else if (State == 1) {
@@ -116,6 +124,17 @@ event Update() {
 			//Visible = false;
 		}
 	}	
+
+	//Yeet it towards the player
+	if (PebbleState == 1) {
+		//Shit
+		if (PebbleX > X) PebbleX-=3;
+		if (PebbleY < Y) PebbleY++;
+		
+		if (PebbleX <= X && PebbleY >= Y) {
+			State++;
+		}
+	}
 
 	TornadoBob();
 
@@ -219,7 +238,9 @@ event Render(CamX:int, CamY:int) {
 	}
 	if (SonicVisible && Visible) 
 		G.DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene.RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this.FlipX ? IE_FLIPX : IE_NOFLIP);
-	
+	if (PebbleState > 0) {
+				G.DrawSprite(Sprite, Sprite.FindAnimation("Pebble"), 0, PebbleX, PebbleY, 0, IE_NOFLIP);
+	}
 	//Smug Sonikku
 	
 	//Makes it not work??????
