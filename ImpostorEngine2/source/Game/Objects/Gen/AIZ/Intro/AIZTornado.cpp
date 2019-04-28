@@ -148,7 +148,7 @@ void AIZTornado::Update() {
         SonicVisible = true;
     }
 
-    if (Scene->RoutineNumber == 2) SonicVisible = false;
+    if (Scene->RoutineNumber == 2) Visible = false;
 
     Object::Update();
 }
@@ -181,8 +181,6 @@ void AIZTornado::TornadoBob() {
 void AIZTornado::Render(int CamX, int CamY) {
     if (!Active) return;
 
-    if (SonicVisible && Visible) G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene->RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
-
     if (Visible) {
         G->DrawSprite(Sprite, TornadoAnim, Frame, VisualX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
         G->DrawSprite(Sprite, PropellorAnim, PropellorFrame, VisualX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
@@ -190,6 +188,8 @@ void AIZTornado::Render(int CamX, int CamY) {
         G->DrawSprite(Sprite, ShadowAnim, ShadowFrame, VisualX, InitialY, 0, IE_NOFLIP);
         G->DrawSprite(Sprite, HeadsAnim, HeadsFrame, VisualX, InitialY + TornadoBobAmount, 0, IE_NOFLIP);
     }
+
+    if (SonicVisible && Visible) G->DrawSprite(PlayerSprite, SonicAnim, SonicFrame, X, Y + ((Scene->RoutineNumber == 1) ? 0 : TornadoBobAmount), 0, this->FlipX ? IE_FLIPX : IE_NOFLIP);
 
     }
 

@@ -18,6 +18,10 @@ public:
     int ActionTimer;
     int Action;
     int Cutscene_KnucklesBackForth;
+    int JumpAnim;
+    int AnimTimer;
+    int Floor;
+    bool StayGrounded;
     
     void Create();
     void Update();
