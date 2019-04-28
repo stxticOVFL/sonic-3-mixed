@@ -10,6 +10,9 @@ var Floor:int;
 
 var StayGrounded:bool;
 
+var PebbleX:int;
+var PebbleY:int;
+
 event Create() {
     Priority = true;
 	
@@ -31,6 +34,9 @@ event Create() {
 	Floor = Y + 0x9;
 	FlipX = true;
 	StayGrounded = false;
+
+	PebbleX = X + 0x20;
+	PebbleY = Y;
 }
 
 event Update() {
@@ -89,7 +95,7 @@ event Update() {
 		}
 		else {
 			ActionTimer--;
-			X+=16;
+			X+=10;
 			CurrentAnimation = JumpAnim;
 		}
 		if (ActionTimer <= 0) {
@@ -107,6 +113,7 @@ event Update() {
 	}
 }
 event Render(CamX:int, CamY:int) {
+	G.DrawSprite(Sprite, JumpAnim + 5, 0, PebbleX - CamX, PebbleY - CamY, 0, IE_NOFLIP);
 	if (CurrentAnimation == -1) return;
     G.DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 }

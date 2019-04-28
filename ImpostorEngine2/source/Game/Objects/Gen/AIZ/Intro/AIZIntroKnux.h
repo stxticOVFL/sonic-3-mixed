@@ -22,6 +22,8 @@ public:
     int AnimTimer;
     int Floor;
     bool StayGrounded;
+    int PebbleX;
+    int PebbleY;
     
     void Create();
     void Update();

@@ -19,6 +19,8 @@ void AIZIntroKnux::Create() {
     Floor = Y + 0x9;
     FlipX = true;
     StayGrounded = false;
+    PebbleX = X + 0x20;
+    PebbleY = Y;
 }
 
 void AIZIntroKnux::Update() {
@@ -29,7 +31,6 @@ void AIZIntroKnux::Update() {
     else YSpeed += Gravity;
     if (Action == 1) {
         CurrentAnimation = JumpAnim + 1;
-        App->Print(0, "heehee");
         if (ActionTimer >= 90) YSpeed = -0x600;
 
         ActionTimer--;
@@ -89,6 +90,7 @@ void AIZIntroKnux::Update() {
 }
 
 void AIZIntroKnux::Render(int CamX, int CamY) {
+    G->DrawSprite(Sprite, JumpAnim + 5, 0, PebbleX - CamX, PebbleY - CamY, 0, IE_NOFLIP);
     if (CurrentAnimation == -1) return;
 
     G->DrawSprite(Sprite, CurrentAnimation, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
