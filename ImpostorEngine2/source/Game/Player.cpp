@@ -4418,35 +4418,35 @@ void IPlayer::Render(int CamX, int CamY) {
 
 		ISprite::AnimFrame currentFrame = animation.Frames[CurrentFrame / 0x100];
 
-		//AfterImages
-		if ((SuperForm && Thremixed) || HyperForm || (SpeedSneakersActive && Thremixed) || Action == ActionType::MightyStomp) {
-			for (int i = -5 - 8; i <= -5; i += 4) {
-				G->SetDrawAlpha(0xFF + i * 0xC);
-				PlayerStatus status = PlayerStatusTable[(PlayerStatusTableIndex + 0x20 + i) & 0x1F];
-				int status_Y = status.Y;
-				if (Ground && Angle == 0)
-					status_Y = EZY;
+		if (!Scene->Paused && Scene->maxLayer) {
+			//AfterImages
+			if ((SuperForm && Thremixed) || HyperForm || (SpeedSneakersActive && Thremixed) || Action == ActionType::MightyStomp) {
+				for (int i = -5 - 8; i <= -5; i += 4) {
+					G->SetDrawAlpha(0xFF + i * 0xC);
+					PlayerStatus status = PlayerStatusTable[(PlayerStatusTableIndex + 0x20 + i) & 0x1F];
+					int status_Y = status.Y;
+					if (Ground && Angle == 0)
+						status_Y = EZY;
 
-				if (Character == CharacterType::Tails) {
-					if (Action == ActionType::Jumping || Action == ActionType::Rolling) {
-						Ang = IMath::atanHex(status.XSpeed, -status.YSpeed);
+					if (Character == CharacterType::Tails) {
+						if (Action == ActionType::Jumping || Action == ActionType::Rolling) {
+							Ang = IMath::atanHex(status.XSpeed, -status.YSpeed);
+						}
+
+						if (Ani > 0)
+							G->DrawSprite(Sprites[0], Ani, Fra, status.X + x - CamX, status_Y + y - CamY, Ang, Fli);
 					}
 
-					if (Ani > 0)
-						G->DrawSprite(Sprites[0], Ani, Fra, status.X + x - CamX, status_Y + y - CamY, Ang, Fli);
+					G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, status.X + x - CamX, status_Y + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
 				}
-
-				G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, status.X + x - CamX, status_Y + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
 			}
 		}
 
 		G->SetDrawAlpha(0xFF);
 
-		bool LowerZero = FinalAngle < 0;
+		//Fix for the direct
+		/*bool LowerZero = FinalAngle < 0;
 
-
-		//Keep it like this for now until someone does all the correct flags in the editor
-		Sprites[0]->Animations[CurrentAnimation].Flags = 1;
 
 		switch (Sprites[0]->Animations[CurrentAnimation].Flags)
 		{
@@ -4487,7 +4487,7 @@ void IPlayer::Render(int CamX, int CamY) {
 			FinalAngle *= 10;
 			if (LowerZero) FinalAngle = -FinalAngle;
 			break;
-		}
+		}*/
 
 		G->DrawSprite(Sprites[currentFrame.SheetNumber], CurrentAnimation, CurrentFrame / 0x100, EZX + x - CamX, EZY + y - CamY, FinalAngle, DisplayFlip > 0 ? IE_NOFLIP : IE_FLIPX);
 	
@@ -4497,7 +4497,6 @@ void IPlayer::Render(int CamX, int CamY) {
 			G->SetDrawAlpha(0xFF);
 		}
 }
-
 	// Draw spindash dust
 	if (Action == ActionType::Spindash)
 		G->DrawSprite(SpriteDashDust, 1, DashFrame >> 8, EZX - CamX, EZY + H / 2 - CamY, 0, (DisplayFlip < 0) ? IE_FLIPX : IE_NOFLIP);
@@ -4524,35 +4523,37 @@ void IPlayer::Render(int CamX, int CamY) {
 		}
 	}
 
-	// Draw Invincibility stars
-	if (Invincibility == InvincibilityType::Full) {
-		int star = 0;
-		G->SetDrawFunc(1);
-		for (int i = -5 - 8; i <= -1; i += 4) {
-			G->SetDrawAlpha(0xFF + i * 0x8);
-			PlayerStatus status = PlayerStatusTable[(PlayerStatusTableIndex + 0x20 + i) & 0x1F];
-			ISprite::Animation animation = SpriteShields2->Animations[star];
-			// ISprite::AnimFrame currentFrame = animation.Frames[Scene->Frame % animation.FrameCount];
+	if (!Scene->Paused && Scene->maxLayer) {
+		// Draw Invincibility stars
+		if (Invincibility == InvincibilityType::Full) {
+			int star = 0;
+			G->SetDrawFunc(1);
+			for (int i = -5 - 8; i <= -1; i += 4) {
+				G->SetDrawAlpha(0xFF + i * 0x8);
+				PlayerStatus status = PlayerStatusTable[(PlayerStatusTableIndex + 0x20 + i) & 0x1F];
+				ISprite::Animation animation = SpriteShields2->Animations[star];
+				// ISprite::AnimFrame currentFrame = animation.Frames[Scene->Frame % animation.FrameCount];
 
-			int x, y, ang;
-			ang = (((Scene->Frame + star) % 16) * 0x2FE / 16 + (Scene->Frame << 2));
-			x = (IMath::cosHex(ang) * 16) >> 16;
-			y = (IMath::sinHex(ang) * 16) >> 16;
+				int x, y, ang;
+				ang = (((Scene->Frame + star) % 16) * 0x2FE / 16 + (Scene->Frame << 2));
+				x = (IMath::cosHex(ang) * 16) >> 16;
+				y = (IMath::sinHex(ang) * 16) >> 16;
 
-			G->DrawSprite(SpriteShields2, star, Scene->Frame % animation.FrameCount,
-				status.X - x - CamX,
-				status.Y + y - CamY,
-				0, IE_NOFLIP);
+				G->DrawSprite(SpriteShields2, star, Scene->Frame % animation.FrameCount,
+					status.X - x - CamX,
+					status.Y + y - CamY,
+					0, IE_NOFLIP);
 
-			G->DrawSprite(SpriteShields2, star, Scene->Frame % animation.FrameCount,
-				status.X + x - CamX,
-				status.Y - y - CamY,
-				0, IE_NOFLIP);
+				G->DrawSprite(SpriteShields2, star, Scene->Frame % animation.FrameCount,
+					status.X + x - CamX,
+					status.Y - y - CamY,
+					0, IE_NOFLIP);
 
-			star++;
+				star++;
+			}
+			G->SetDrawFunc(0);
+			G->SetDrawAlpha(0xFF);
 		}
-		G->SetDrawFunc(0);
-		G->SetDrawAlpha(0xFF);
 	}
 }
 

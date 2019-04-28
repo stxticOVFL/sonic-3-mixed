@@ -62,7 +62,6 @@ void AIZIntro::SonicCutscene() {
     int LayerBG = Scene->FindLayer("Background");
     int LayerFG = Scene->FindLayer("FG High");
     if (CutsceneRoutineNumber == 0) {
-        Scene->BackgroundRepeatTileWidth = 16;
         Scene->Data->Layers[LayerFG].Visible = false;
         SonicFrameTimer++;
         if (SonicFrameTimer > 1) {
@@ -123,6 +122,7 @@ void AIZIntro::SonicCutscene() {
         if (TornadoX >= Scene->CameraX + App->WIDTH / 2 - 4) {
             TornadoY = 0;
             Scene->CameraX += 16;
+            Scene->Data->Layers[LayerBG].OffsetX -= 4;
             Scene->Player->EZX = Scene->CameraX + App->WIDTH / 2 - 4;
             Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
         }
@@ -134,6 +134,7 @@ void AIZIntro::SonicCutscene() {
             }
             else {
                 Scene->CameraX += 16;
+                Scene->Data->Layers[LayerBG].OffsetX -= 4;
                 Scene->Player->EZX = Scene->CameraX + App->WIDTH / 2 - 4;
                 Scene->Player->EZY = Scene->CameraY + App->HEIGHT / 2 + 32;
             }

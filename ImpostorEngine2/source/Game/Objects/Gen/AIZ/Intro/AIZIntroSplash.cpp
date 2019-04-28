@@ -8,7 +8,6 @@ typedef IMath Math;
 void AIZIntroSplash::Create() {
     Object::Create();
     Priority = true;
-    VisualLayer = 1;
     Sprite = LevelScene::LoadSpriteFromBin("AIZ/Intro.bin", SaveGame::CurrentMode);
     if (Sprite) {
         Sprite->SetTransparentColorIndex(0);

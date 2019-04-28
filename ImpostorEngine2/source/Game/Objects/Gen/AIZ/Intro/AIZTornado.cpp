@@ -144,9 +144,9 @@ void AIZTornado::Update() {
         SonicAnim = 2;
         SonicWaveTimer++;
         if (SonicWaveTimer >= 6) {
-            if (Scene->CameraX < 3357) {
-                Scene->AddNewObject(Obj_AIZIntroSplash, X - 64, Y);
-                SonicWaveTimer = 0;
+            if (Scene->CameraX < 3400) {
+				Scene->AddNewObject(Obj_AIZIntroSplash, X - 64, Y);
+				SonicWaveTimer = 0;;
             }
 
         }

@@ -2,7 +2,7 @@ var FrameTimer:int;
 
 event Create() {
 	Priority = true;
-	VisualLayer = 1;
+	//VisualLayer = 1;
 	//Remove this object on scene reload
 	//Temporary = true;
 	Sprite = LevelScene.LoadSpriteFromBin("AIZ/Intro.bin",SaveGame.CurrentMode);
