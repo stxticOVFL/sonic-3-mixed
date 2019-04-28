@@ -132,6 +132,22 @@ void Object::AnimationProgress(int16_t animationData[]) {
 	}
 }
 
+int Object::ProccessAnimation(ISprite *Sprite, int Anim) {
+	if (Sprite == NULL) return -1;
+	if (Anim < 0) return -1;
+	if (Frame < 0) return 0;
+
+	AnimationTimer++;
+	if (AnimationTimer > Sprite->Animations[CurrentAnimation].Frames[Frame].Duration / Sprite->Animations[CurrentAnimation].AnimationSpeed) {
+		AnimationFrame++;
+		if (AnimationFrame >= Sprite->Animations[CurrentAnimation].FrameCount) {
+			AnimationFrame = Sprite->Animations[CurrentAnimation].FrameToLoop;
+		}
+		AnimationTimer = 0;
+	}
+	return AnimationFrame;
+}
+
 int Object::OnLeaveScreen() {
 	if (isDebugModeObject && !isHeldDebugObject) {
 		Active = false;

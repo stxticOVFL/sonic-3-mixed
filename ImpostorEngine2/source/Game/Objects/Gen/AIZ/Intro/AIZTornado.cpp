@@ -67,7 +67,7 @@ void AIZTornado::Update() {
         SonicAnim = 1;
         SonicFrameTimer++;
         this->X -= 2;
-        if (this->Y - 48 < UpdateTimer) this->Y += Math::abs(Scene->Frame - InitialFallFrame) / 4;
+        if (this->Y - 24 < UpdateTimer) this->Y += Math::abs(Scene->Frame - InitialFallFrame) / 4;
 
         if (SonicFrameTimer > 2) {
             SonicFrame++;
@@ -131,7 +131,7 @@ void AIZTornado::Update() {
         SonicWaveTimer++;
         if (SonicWaveTimer >= 6) {
             if (Scene->CameraX < InitialX + 3000) {
-                Scene->AddNewObject(Obj_AIZIntroSplash, X - 64, Y);
+                Scene->AddNewObject(Obj_AIZIntroSplash, X - 32, Y);
                 SonicWaveTimer = 0;
             }
 

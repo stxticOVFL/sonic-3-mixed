@@ -529,6 +529,7 @@ public:
     int      AnimationFrame = -2;
     int      Frame = 0;
     int      Timer = -1;
+    int      AnimationTimer = -1;
     int      Rotation = 0;
 
     bool     Solid = false;
@@ -702,6 +703,7 @@ public:
 
     void Animate();
 	void AnimationProgress(int16_t animationData[]);
+	virtual int ProccessAnimation(ISprite *Sprite, int Anim);
 	int16_t DelayedAnimationProgress(int16_t animationData[]);
 	int16_t DelayedAnimationProgress(int16_t animationData[], ISprite::Animation Animation);
     int Swing_UpAndDown();

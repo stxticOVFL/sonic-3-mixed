@@ -69,7 +69,7 @@ void AIZIntroKnux::Update() {
         }
         else {
             ActionTimer--;
-            X += 16;
+            X += 10;
             CurrentAnimation = JumpAnim;
         }
         if (ActionTimer <= 0) {
@@ -77,15 +77,7 @@ void AIZIntroKnux::Update() {
 
     }
 
-    if (CurrentAnimation != -1) {
-        AnimTimer++;
-        if (AnimTimer > Sprite->Animations[CurrentAnimation].Frames[Frame].Duration / Sprite->Animations[CurrentAnimation].AnimationSpeed) {
-            Frame = (Frame > Sprite->Animations[CurrentAnimation].FrameCount) ? Sprite->Animations[CurrentAnimation].FrameToLoop : Frame + 1;
-            AnimTimer = 0;
-        }
-
-    }
-
+    Frame = ProccessAnimation(Sprite, CurrentAnimation);
     Object::Update();
 }
 
