@@ -10,7 +10,6 @@ void MGZTriggerPlatform::Create() {
     Active = true;
     Priority = true;
     PlatformType = SubType >> 4;
-    TriggerID = SubType & 0xF;
     W = 64;
     H = 128;
     if (PlatformType == 0) {
@@ -18,14 +17,13 @@ void MGZTriggerPlatform::Create() {
         H = 0x40;
     }
 
-    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Trigger Platform.bin", SaveGame::CurrentMode);
     Solid = true;
     Scene->AddSelfToRegistry(this, "Solid");
 }
 
 void MGZTriggerPlatform::Update() {
     if (PlatformType > 0) {
-        if ((Scene->LevelTriggerFlag >> TriggerID) & 1) {
+        if (Scene->LevelTriggerFlag - 1 == (SubType & 0xF)) {
             Scene->ShakeTimer = 0;
             if (FlipX) {
                 if (Y + (SubType & 0xF0) * 4 > InitialY) {
@@ -37,7 +35,7 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (Y == InitialY - (SubType & 0xF0) * 4) {
-                    Scene->LevelTriggerFlag &= (1 << TriggerID);
+                    Scene->LevelTriggerFlag &= 0xFFF0;
                 }
 
             }
@@ -51,19 +49,19 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (Y == InitialY + (SubType & 0xF0) * 4) {
-                    Scene->LevelTriggerFlag &= (1 << TriggerID);
+                    Scene->LevelTriggerFlag &= 0xFFF0;
                 }
 
             }
         }
 
-        if (((Scene->LevelTriggerFlag >> TriggerID) & 1) && Math::abs(X - Scene->Player->EZX) >= 0x1D0) {
+        if (Scene->LevelTriggerFlag - 1 != (SubType & 0xF) && Math::abs(X - Scene->Player->EZX) >= 0x1D0) {
             Y = InitialY;
         }
 
     }
     else {
-        if (((Scene->LevelTriggerFlag >> TriggerID) & 1)) {
+        if (Scene->LevelTriggerFlag - 1 == (SubType & 0xF)) {
             Scene->ShakeTimer = 0;
             if (FlipX) {
                 if (X > InitialX - 0x80) {
@@ -75,7 +73,7 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (X == InitialX - 0x80) {
-                    Scene->LevelTriggerFlag &= (1 << TriggerID);
+                    Scene->LevelTriggerFlag &= 0xFF0F;
                     Active = false;
                 }
 
@@ -90,7 +88,7 @@ void MGZTriggerPlatform::Update() {
 
                 }
                 else if (X == InitialX + 0x80) {
-                    Scene->LevelTriggerFlag &= (1 << TriggerID);
+                    Scene->LevelTriggerFlag &= 0xFFF0;
                     Active = false;
                 }
 
@@ -103,11 +101,5 @@ void MGZTriggerPlatform::Update() {
 
 void MGZTriggerPlatform::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 6, Math::sign(PlatformType), X - CamX, Y - CamY, 0, FlipY ? IE_FLIPY : IE_NOFLIP);
-    if (App->viewObjectCollision) {
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
-        G->SetDrawAlpha(0xFF);
-    }
-
     }
 

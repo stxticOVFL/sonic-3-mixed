@@ -13,15 +13,6 @@ void Platform::Create() {
     W = 64;
     H = 64;
     int i = 0;
-    Type = Attributes[0];
-    AmplitudeX = Attributes[1];
-    Speed = Attributes[2];
-    HasTension = Attributes[3];
-    FrameID = Attributes[4];
-    Collision = Attributes[5];
-    TileOriginX = Attributes[6];
-    ChildCount = Attributes[7];
-    Angle = Attributes[8];
     if (Collision == 0) SolidTop = true;
     else Solid = true;
     if (Type == PlatformType::PUSHABLE) {
@@ -69,7 +60,7 @@ void Platform::Update() {
 
 void Platform::Render(int CamX, int CamY) {
     G->DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
-    if (App->viewObjectCollision) {
+    if (DrawCollisions) {
         G->SetDrawAlpha(0x80);
         G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
         G->SetDrawAlpha(0xFF);

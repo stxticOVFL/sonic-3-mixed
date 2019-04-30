@@ -11,8 +11,7 @@ void BreakBar::Create() {
     Priority = false;
     W = 8;
     H = ((SubType & 0x30) << 1) + 64;
-    Sprite = LevelScene::LoadSpriteFromBin("HCZ/BreakBar.bin", SaveGame::CurrentMode);
-    CurrentAnimation = Sprite->FindAnimation("Vertical");
+    CurrentAnimation = 9;
     Broken = false;
     Horizontal = !!(SubType & 0x80);
     Delay = (SubType & 0xF) * 60;
@@ -104,11 +103,5 @@ void BreakBar::Render(int CamX, int CamY) {
         G->DrawSprite(Sprite, CurrentAnimation, 1, X - CamX, Y - CamY + i, 0, IE_NOFLIP);
     }
     G->DrawSprite(Sprite, CurrentAnimation, 2, X - CamX, Y - CamY + H / 2 - 4, 0, IE_NOFLIP);
-    if (App->viewObjectCollision) {
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
-        G->SetDrawAlpha(0xFF);
-    }
-
     }
 

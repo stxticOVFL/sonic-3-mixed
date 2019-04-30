@@ -237,12 +237,7 @@ void HCZSlide::Update() {
 }
 
 void HCZSlide::Render(int CamX, int CamY) {
-    if (App->viewObjectCollision) {
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, SubType >= 0x80 ? 0xFF0000 : 0x0000FF);
-        G->SetDrawAlpha(0xFF);
-    }
-
+    G->DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, SubType >= 0x80 ? 0xFF0000 : 0x0000FF);
     }
 
 int HCZSlide::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

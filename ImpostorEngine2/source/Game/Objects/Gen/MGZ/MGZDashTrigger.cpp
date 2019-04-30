@@ -14,7 +14,6 @@ void MGZDashTrigger::Create() {
     Rev = 0;
     SolidCustomized = true;
     Scene->AddSelfToRegistry(this, "Solid");
-    Sprite = LevelScene::LoadSpriteFromBin("MGZ/Dash Trigger.bin", SaveGame::CurrentMode);
 }
 
 void MGZDashTrigger::Update() {
@@ -31,18 +30,12 @@ void MGZDashTrigger::Render(int CamX, int CamY) {
     G->DrawSprite(Sprite, 1, Frame, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
     if (Rev & 1) G->DrawSprite(Sprite, 1, 4, X - CamX, Y - CamY, 0, FlipX ? IE_FLIPX : IE_NOFLIP);
 
-    if (App->viewObjectCollision) {
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
-        G->SetDrawAlpha(0xFF);
-    }
-
     }
 
 int MGZDashTrigger::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {
     int i;
-    if ((Scene->Players[PlayerID]->Action == ActionType::Spindash) || (Scene->Players[PlayerID]->DropDashRev >= 71)) {
-        Scene->LevelTriggerFlag |= 1 << (SubType & 0xF);
+    if (Scene->Players[PlayerID]->Action == ActionType::Spindash) {
+        Scene->LevelTriggerFlag = (Scene->LevelTriggerFlag & 0xFFF0) | ((SubType & 0xF) + 1);
         Rev = 60;
     }
 

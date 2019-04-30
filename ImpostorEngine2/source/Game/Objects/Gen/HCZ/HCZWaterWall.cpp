@@ -16,12 +16,6 @@ void HCZWaterWall::Create() {
 }
 
 void HCZWaterWall::Render(int CamX, int CamY) {
-    if (App->viewObjectCollision) {
-        G->SetDrawAlpha(0x80);
-        G->DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
-        G->SetDrawAlpha(0xFF);
-    }
-
     }
 
 int HCZWaterWall::OnCollisionWithPlayer(int PlayerID, int HitFrom, int Data) {

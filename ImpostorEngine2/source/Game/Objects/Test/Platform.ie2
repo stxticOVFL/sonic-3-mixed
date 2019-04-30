@@ -30,17 +30,17 @@ event Create() {
     H = 64;
 
     var i:int = 0;
-    Type = Attributes[0];
-    AmplitudeX = Attributes[1];
+    // Type = Attributes[0];
+    // AmplitudeX = Attributes[1];
     // AmplitudeY = Attributes[i++];
-    Speed = Attributes[2];
-    HasTension = Attributes[3];
-    FrameID = Attributes[4];
-    Collision = Attributes[5];
-    TileOriginX = Attributes[6];
+    // Speed = Attributes[2];
+    // HasTension = Attributes[3];
+    // FrameID = Attributes[4];
+    // Collision = Attributes[5];
+    // TileOriginX = Attributes[6];
     // TileOriginY = Attributes[i++];
-    ChildCount = Attributes[7];
-    Angle = Attributes[8];
+    // ChildCount = Attributes[7];
+    // Angle = Attributes[8];
 
     if (Collision == 0)
         SolidTop = true;
@@ -90,9 +90,9 @@ event Update() {
 }
 
 event Render(CamX:int, CamY:int) {
-        G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
+    G.DrawRectangle(X - CamX - W / 2, Y - CamY - H / 2, W, H, 0xFFFFFF);
     
-				if (App.viewObjectCollision) {
+	if (DrawCollisions) {
 		G.SetDrawAlpha(0x80);
 		G.DrawRectangle(X - (W / 2) - CamX, Y - (H / 2) - CamY, W, H, DrawCollisionsColor);
 		G.SetDrawAlpha(0xFF);

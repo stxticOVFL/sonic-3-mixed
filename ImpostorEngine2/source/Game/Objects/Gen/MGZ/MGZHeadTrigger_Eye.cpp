@@ -43,7 +43,7 @@ int MGZHeadTrigger_Eye::OnHit() {
 
 int MGZHeadTrigger_Eye::OnDeath() {
     Scene->LevelTriggerFlag = (SubType + 1);
-    return Enemy::OnDeath();
+    return Enemy.OnDeath();
 }
 
 void MGZHeadTrigger_Eye::Render(int CamX, int CamY) {

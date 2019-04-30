@@ -15,7 +15,6 @@ class MGZTriggerPlatform;
 class MGZTriggerPlatform: public Object {
 public:    
     
-    int TriggerID;
     int PlatformType;
     
     void Create();
