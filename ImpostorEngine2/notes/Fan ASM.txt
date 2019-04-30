@@ -1,0 +1,286 @@
+// word_[A-z0-9]+:
+
+
+Obj_HCZCGZFan:
+		tst.w	(Competition_mode).w
+		bne.w	loc_309CC
+		movea.l	a0,a1
+		tst.b	$2C(a0)
+		bpl.s	loc_30602 // if positive (non-solid), branch
+		jsr	(Create_New_Sprite3).l
+		bne.w	locret_3064C
+		move.l	#loc_30850,(a0)
+		move.w	$10(a0),$10(a1)
+		move.w	$10(a0),$40(a0)
+		move.w	$14(a0),$14(a1)
+		addi.w	#$1C,$14(a0)
+		move.l	#Map_HCZWaterRushBlock,$C(a0)
+		move.w	#$43D4,$A(a0)
+		move.b	#$10,7(a0)
+		move.b	#$10,6(a0)
+		move.b	#4,4(a0)
+		move.w	#$280,8(a0)
+		move.w	a1,$3C(a0)
+		move.b	$2C(a0),d0
+
+loc_305E6:
+		andi.w	#$30,d0
+		add.w	d0,d0
+		move.w	d0,$3A(a0)
+		move.b	$2C(a0),$2C(a1)
+		bclr	#5,$2C(a1)
+		bset	#4,$2C(a1)
+
+loc_30602:
+		move.l	#Map_HCZFan,$C(a1)
+		move.w	#$240B,$A(a1)
+		ori.b	#4,4(a1)
+		move.w	#$200,8(a1)
+		move.b	#$10,7(a1)
+		move.b	#$C,6(a1)
+		move.w	$10(a1),$40(a1)
+		move.b	$2C(a1),d0
+		andi.w	#$F,d0
+		addq.w	#8,d0
+		lsl.w	#4,d0
+		move.w	d0,$36(a1)
+		addi.w	#$30,d0
+		move.w	d0,$38(a1)
+		move.l	#loc_3064E,(a1)
+
+locret_3064C:
+		rts
+; ---------------------------------------------------------------------------
+
+loc_3064E:
+		move.b	$2C(a0),d0
+		btst	#5,d0
+		beq.s	loc_3066C
+		tst.b	(Level_trigger_array).w
+		beq.w	loc_30774
+		bclr	#5,$2C(a0)
+		bset	#4,$2C(a0)
+
+loc_3066C:
+		tst.b	$42(a0)
+		bne.s	loc_306A2
+		btst	#4,$2C(a0)
+		bne.s	loc_306C2
+		subq.w	#1,$30(a0)
+		bpl.s	loc_3069A
+		move.w	#0,$34(a0)
+		move.w	#$78,$30(a0)
+
+loc_3068C:
+		bchg	#0,$32(a0)
+		beq.s	loc_3069A
+		move.w	#$B4,$30(a0)
+
+loc_3069A:
+
+		tst.b	$32(a0)
+		beq.w	loc_306C2
+
+loc_306A2:
+		subq.b	#1,$24(a0)
+		bpl.w	loc_30774
+		cmpi.w	#$400,$34(a0)
+		bhs.w	loc_30774
+		addi.w	#$2A,$34(a0)
+		move.b	$34(a0),$24(a0)
+		bra.s	loc_306E0
+; ---------------------------------------------------------------------------
+
+loc_306C2:
+
+		lea	(Player_1).w,a1
+		bsr.w	loc_3077E
+		lea	(Player_2).w,a1
+		bsr.w	loc_3077E
+		subq.b	#1,$24(a0)
+		bpl.w	loc_306F2
+		move.b	#0,$24(a0)
+
+loc_306E0:
+		addq.b	#1,$22(a0)
+		cmpi.b	#5,$22(a0)
+		blo.s	loc_306F2
+		move.b	#0,$22(a0)
+
+loc_306F2:
+
+		tst.b	4(a0)
+		bpl.s	loc_3070C
+		move.b	(Level_frame_counter+1).w,d0
+		addq.b	#1,d0
+		andi.b	#$F,d0
+		bne.s	loc_3070C
+		moveq	#-$3F,d0
+		jsr	(Play_Sound_2).l
+
+loc_3070C:
+
+		btst	#6,$2C(a0)
+		beq.s	loc_30774
+		move.b	(Level_frame_counter+1).w,d0
+		andi.b	#3,d0
+		bne.s	loc_30774
+		jsr	(Create_New_Sprite).l
+		bne.s	loc_30774
+		move.l	#loc_30834,(a1)
+		move.l	#Map_Bubbler,$C(a1)
+		move.w	#$45C,$A(a1)
+		move.b	#-$7C,4(a1)
+		move.b	#4,7(a1)
+		move.b	#4,7(a1)
+		move.w	#$300,8(a1)
+		move.w	$10(a0),$10(a1)
+		jsr	(Random_Number).l
+		andi.w	#$F,d0
+		subq.w	#8,d0
+		add.w	d0,$10(a1)
+		move.w	$14(a0),$14(a1)
+		move.w	#-$800,$1A(a1)
+
+loc_30774:
+
+		move.w	$40(a0),d0
+		jmp	(Sprite_OnScreen_Test2).l
+; ---------------------------------------------------------------------------
+
+loc_3077E:
+
+		cmpi.b	#4,5(a1)
+		bhs.w	locret_3081C
+		move.w	$10(a1),d0
+		sub.w	$10(a0),d0
+		addi.w	#$18,d0
+		cmpi.w	#$30,d0
+		bhs.w	locret_3081C
+		moveq	#0,d1
+		move.b	($FFFFFE84).w,d1
+		add.w	$14(a1),d1
+		add.w	$36(a0),d1
+		sub.w	$14(a0),d1
+		bcs.s	locret_3081C
+		cmp.w	$38(a0),d1
+		bhs.s	locret_3081C
+		tst.b	$2E(a1)
+		bne.s	loc_3081E
+		sub.w	$36(a0),d1
+		bcs.s	loc_307C6
+		not.w	d1
+		add.w	d1,d1
+
+loc_307C6:
+		add.w	$36(a0),d1
+		neg.w	d1
+		asr.w	#6,d1
+
+loc_307CE:
+		add.w	d1,$14(a1)
+		bset	#1,$2A(a1)
+		bclr	#4,$2A(a1)
+		move.w	#0,$1A(a1)
+		move.b	#0,$2F(a1)
+		move.b	#0,$40(a1)
+		btst	#6,$2C(a0)
+		bne.s	loc_30826
+		move.w	#1,$1C(a1)
+		tst.b	$27(a1)
+		bne.s	locret_3081C
+		move.b	#1,$27(a1)
+
+loc_3080A:
+		move.b	#0,$20(a1)
+		move.b	#$7F,$30(a1)
+		move.b	#8,$31(a1)
+
+locret_3081C:
+
+		rts
+; ---------------------------------------------------------------------------
+
+loc_3081E:
+		move.w	#1,$1C(a1)
+		rts
+; ---------------------------------------------------------------------------
+
+loc_30826:
+		move.w	#1,$1C(a1)
+		move.b	#$F,$20(a1)
+		rts
+; ---------------------------------------------------------------------------
+
+loc_30834:
+		move.w	(Water_level).w,d0
+		cmp.w	$14(a0),d0
+		bhs.s	loc_3084A
+		jsr	(MoveSprite2).l
+		jmp	(Draw_Sprite).l
+; ---------------------------------------------------------------------------
+
+loc_3084A:
+		jmp	(Delete_Current_Sprite).l
+; ---------------------------------------------------------------------------
+
+loc_30850:
+		movea.w	$3C(a0),a1
+		move.w	($FFFFB014).w,d0
+		sub.w	$14(a0),d0
+		bcs.s	loc_3088E
+		cmpi.w	#$20,d0
+		blt.s	loc_308B8
+		tst.b	$42(a1)
+		bne.s	loc_3087E
+		move.b	#1,$42(a1)
+		move.w	#0,$34(a1)
+		moveq	#$58,d0
+		jsr	(Play_Sound_2).l
+
+loc_3087E:
+		move.w	$3A(a0),d1
+		cmp.w	$30(a0),d1
+		beq.s	loc_308B8
+		addq.w	#8,$30(a0)
+		bra.s	loc_308B8
+; ---------------------------------------------------------------------------
+
+loc_3088E:
+		cmpi.w	#-$30,d0
+		bge.s	loc_308B8
+		tst.b	$42(a1)
+		beq.s	loc_308AE
+		move.b	#0,$42(a1)
+		move.b	#0,$24(a1)
+		moveq	#$58,d0
+		jsr	(Play_Sound_2).l
+
+loc_308AE:
+		tst.w	$30(a0)
+		beq.s	loc_308B8
+		subq.w	#8,$30(a0)
+
+loc_308B8:
+
+		move.w	$30(a0),d0
+		btst	#0,$2A(a0)
+		beq.s	loc_308C6
+		neg.w	d0
+
+loc_308C6:
+		add.w	$40(a0),d0
+		move.w	d0,$10(a0)
+		move.w	d0,$10(a1)
+		moveq	#0,d1
+		move.b	7(a0),d1
+		addi.w	#$B,d1
+		moveq	#0,d2
+		move.b	6(a0),d2
+		move.w	d2,d3
+		addq.w	#1,d3
+		move.w	$10(a0),d4
+		jsr	(SolidObjectFull).l
+		move.w	$40(a0),d0
+		jmp	(Sprite_OnScreen_Test2).l
+; ---------------------------------------------------------------------------

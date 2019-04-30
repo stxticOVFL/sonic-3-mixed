@@ -10,7 +10,7 @@ void StarPost::Create() {
     Active = true;
     Priority = false;
     DoDeform = false;
-	Sprite = LevelScene::LoadSpriteFromBin("Global/StarPost.bin", SaveGame::CurrentMode);
+    Sprite = LevelScene::LoadSpriteFromBin("Global/StarPost.bin", SaveGame::CurrentMode);
     W = 16;
     H = 64;
     Rotation = 0;

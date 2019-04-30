@@ -124,7 +124,7 @@ void EggCapsule::Render(int CamX, int CamY) {
 void EggCapsule::OnDestroy() {
     if (isHeldDebugObject) {
         Button->OnDestroy();
-		Button->Active = false;
+        Button->Active = false;
         Button->Visible = false;
     }
 

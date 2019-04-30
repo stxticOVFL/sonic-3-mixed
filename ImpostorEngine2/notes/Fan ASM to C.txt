@@ -1,0 +1,104 @@
+// this thing needs to be able to analyze code flow
+// and display missing loc(ation)s
+
+if (Competition_mode != 0) {
+    // call loc_309CC (missing)
+}
+// also as a side note:
+// currently a0 = this
+// currently a1 = BackupObj
+Object* BackupObj = this; // since this is the first set of an address or register (or if it's a clearing and setting of an address or register) this is a new variable initialization
+
+// inside this if statement could be turned into a function
+if (BackupObj.SubType > 0) { // this[0x2C] = "SubType", blockless
+    // loc_30602
+    BackupObj.SpriteMapping = Map_HCZFan; // this[0xC] = "SpriteMapping"
+    BackupObj.SpriteTileBlock = 0x240B; // this[0xA] = "SpriteTileBlock", honestly unimportant, points to the index of the tile to be used in VRAM, plus palette line info
+    BackupObj.RenderFlags |= 4; // this[0x4] = "RenderFlags", sets bit 2 (0x4), so this functions with playfield coordinates (level-relative)
+    BackupObj.ZIndex = 0x200; // this[0x8] = "ZIndex", it's for ordering, we don't need this for now
+    BackupObj.Width = 0x10; // this[0x7] = "Width"
+    BackupObj.Height = 0x0C; // this[0x6] = "Height"
+    BackupObj.BackupX = BackupObj.X; // this[0x40] = "Backup", this derives it's name from if what's setting it is an object property (e.g. X), if immediate, then just Backup1 and so on
+    /*
+    char BackupSubType = BackupObj.SubType; // it's only a backup if the value is an object property, otherwise the name is Unknown
+    BackupSubType &= 0xF;
+    BackupSubType += 0x8;
+    BackupSubType <<= 4; // multiplied by 16
+    */
+    char BackupSubType = ((BackupObj.SubType & 0xF) + 8) << 4; // concatenated, only if this is a simple mathmatical operation
+    BackupObj.FanHeight = BackupSubType; // this[0x36] is scratch RAM, and this is it's first set, so in this case it becomes object.variableName = variableName
+    BackupSubType += 0x30;
+    BackupObj.FanHeightMax = BackupSubType; // this[0x38] is also scratch RAM, and this is it's first set, so in this case it becomes object.variableName = variableName, but since object.variableName exists, its now object.variableName2
+
+    BackupObj.SetMainUpdateCodeTo(loc_3064E);
+}
+
+Object* NewSprite1 = Create_New_Sprite3(); // Create_New_Sprite3 makes a1 the new object, so a1 is now NewSprite1
+if (NewSprite1 != 0) // bne.w??
+    return; // couldn't make sprite, so return using locret_3064C
+
+this.SetMainUpdateCodeTo(loc_30850);
+
+NewSprite1.X = this.X;
+this.BackupX = this.X;
+NewSprite1.Y = this.Y;
+this.Y += 0x1C; // 28
+this.SpriteMapping = Map_HCZWaterRushBlock;
+this.SpriteTileBlock = 0x43D4;
+this.Width = 0x10;
+this.Height = 0x10;
+this.RenderFlags = 4; // this[0x4] = "RenderFlags", sets bit 2 (0x4) clears rest, so this functions with playfield coordinates (level-relative)
+this.ZIndex = 0x280;
+this.ScapeGoat = NewSprite1; // this[0x3C] = "ScapeGoat", the object that will be deleted when called to remove this one
+// loc_305E6~
+char BackupSubType = (this.SubType & 0x30); // concatenated
+// BackupSubType &= 0x30;
+BackupSubType += BackupSubType; // not immediate, do not concatenate
+this.BackupBackupSubType = BackupSubType;
+NewSprite1.SubType = this.SubType;
+NewSprite1.SubType &= ~0x20; // clr bit 5
+NewSprite1.SubType |= 0x10; // set bit 4
+/////// call loc_30602
+// sets NewSprite1 to Fan
+
+/////////// Create() complete
+
+/////////// Update() start (for Fan sprite)
+char BackupSubType = this.SubType;
+if ((BackupSubType & 0x20) == 0) { // does not need activation
+    // loc_3066C
+
+}
+this.SubType &= ~0x20; // clr bit 5
+this.SubType |= 0x10; // set bit 4
+
+//// ...
+
+// a0 = this
+// a1 = Player
+
+if (Player.Routine >= 4)
+    return;
+
+short XDistance = Player.X - this.X + 0x18;
+if (XDistance >= 0x30)
+    return;
+
+short YDistance = Player.Y + this.FanHeight - this.Y;
+if (YDistance < 0x0)
+    return;
+
+if (YDistance >= this.FanHeightMax)
+    return;
+
+if (Player.ObjectControlled != 0) {
+    Player.Speed = 1;
+}
+
+YDistance -= this.FanHeight;
+
+
+/////////// Update() complete
+
+
+// footer

@@ -1,0 +1,57 @@
+# LineDataTypes
+# Object: Object ID, Object Name
+# SubtypeProperty: Property Name, Type (int/bool), Bitmask
+# SubtypeEnum: Label, Value
+#
+#
+Object;0x01;Monitor
+SubtypeProperty;Type;int;0xFF
+SubtypeEnum;Static;0
+SubtypeEnum;1-Up;1
+SubtypeEnum;Robotnik;2
+SubtypeEnum;Super Ring;3
+SubtypeEnum;Speed Shoes;4
+SubtypeEnum;Fire Shield;5
+SubtypeEnum;Lightning Shield;6
+SubtypeEnum;Bubble Shield;7
+SubtypeEnum;Invincibility;8
+SubtypeEnum;S Monitor;9
+SubtypeEnum;Broken;10
+#
+Object;0x02;PathSwitcher
+SubtypeProperty;Size;int;0x03
+SubtypeEnum;Small (64px);0
+SubtypeEnum;Medium (128px);1
+SubtypeEnum;Large (256px);2
+SubtypeEnum;Even Bigger (512px);3
+SubtypeProperty;Orientation;int;0x04
+SubtypeEnum;Vertical;0
+SubtypeEnum;Horizontal;1
+SubtypeProperty;On Path;bool;0x80
+SubtypeProperty;Left/Up Layer;bool;0x10
+SubtypeEnum;Low;0
+SubtypeEnum;High;1
+SubtypeProperty;Left/Up Visual Layer;bool;0x40
+SubtypeEnum;Low;0
+SubtypeEnum;High;1
+SubtypeProperty;Right/Down Layer;bool;0x08
+SubtypeEnum;Low;0
+SubtypeEnum;High;1
+SubtypeProperty;Right/Down Visual Layer;bool;0x20
+SubtypeEnum;Low;0
+SubtypeEnum;High;1
+#
+Object;0x05;Rock
+SubtypeProperty;Size;int;0x30
+SubtypeEnum;Small;2
+SubtypeEnum;Medium;1
+SubtypeEnum;Large;0
+SubtypeProperty;Behavior;int;0x0F
+SubtypeEnum;Solid;0
+SubtypeEnum;Solid (Pushable);2
+SubtypeEnum;Breakable Top;1
+SubtypeEnum;Breakable Top (Pushable);3
+SubtypeEnum;Breakable Top (Knuckles Only);15
+SubtypeEnum;Sides;4
+SubtypeEnum;Sides (Knuckles Only);132
+SubtypeEnum;Sides (Knuckles Only);132

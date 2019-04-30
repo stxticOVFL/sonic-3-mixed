@@ -1,0 +1,140 @@
+══════════════════
+══════════════════
+THE BIG TODO LIST
+══════════════════
+══════════════════
+
+Protip: Ctrl+F and Find the category you're looking for.
+
+╔══════════╗
+║ OBJECTS: ║
+╚══════════╝
+
+Monitor:
+- Needs to be updated for Ray & Mighty. (Category: Art)
+
+StarPost:
+- Make stars appear for 20-34 rings. [Slot Machine] (Category: Programming)
+- Make stars appear for 35-49 rings. [Glowing Spheres] (Category: Programming)
+- Make stars appear for 50 rings. [Gumball Machine] (Category: Programming)
+
+╔═════════╗
+║ LEVELS: ║
+╚═════════╝
+
+AIZ:
+- Allow for opening cutscene to function. (Category: Programming)
+- Update tiles for 3mixed style. (Category: Programming)
+
+HCZ:
+X Add HCZ2 BG ScrollingInfo. (Category: Programming)
+X Add HCZ2 SubBG. (Category: Programming)
+X Add the Underwater Spikes (currently invisible) in HCZ1. (Category: Programming)
+X Implement HCZ2 moving wall. (Category: Programming)
+X Finish HCZ2 16x16 Tile reordering. (Category: Programming)
+- Adjust HCZ2 slide tunnels to have accurate speed & acceleration calculation. (Category: Programming)
+X HCZ2 slides need to invoke ActionType::Peril. (Category: Programming)
+- Replace NonAnim tiles where needed [Intersecting slides, top layer of slide tunnels, etc.] (Category: Programming)
+- Implement objects:
+  - Obj_WaterDrop (0x6E) (Category: Art) (Category: Programming)
+  X Obj_CutsceneKnuckles (0x82) (Category: Programming)
+  - Obj_HCZEndBoss (0x9A) (Category: Programming)
+X Need Act 1 music. (Category: Music)
+X Need Act 2 music. (Category: Music)
+- Obj_HCZMiniboss:
+  - Finish death animations. (Category: Programming)
+  - Give the rockets hurtboxes. (Category: Programming)
+  - Implement boss patterns. (Category: Programming)
+
+MGZ:
+- Need 16x16 Tiles. (Category: Art)
+
+CNZ:
+- Need 16x16 Tiles. (Category: Art)
+
+ICZ:
+- Need 16x16 Tiles. (Category: Art)
+- Need Act 1 music. (Category: Music)
+- Need Act 2 music. (Category: Music)
+
+LBZ:
+- Need 16x16 Tiles. (Category: Art)
+- Need Act 2 music. (Category: Music)
+
+Special Stage:
+- Implement perspective rotation. (Category: Programming)
+- Make player speed up in time with music. (Category: Programming)
+
+Bonus Stage (Slot Machine):
+
+Bonus Stage (Glowing Spheres):
+
+Bonus Stage (Gumball Machine):
+
+╔══════════╗
+║ PLAYERS: ║
+╚══════════╝
+
+General:
+- Players need to be able to be crushed. (Category: Programming)
+- Sidekick AI needs to actually work. (Category: Programming)
+X Super & HCZ Palettes need to be fully implemented. (Category: Programming)
+- Super Forms need to be fully implemented. (Category: Programming)
+
+Sonic:
+- Super Sonic sprite needs to be updated to fit the new style. (Category: Art)
+X Make instashield happen. (Category: Programming)
+- Make Super Peel Out happen. (Category: Programming)
+
+Tails:
+X Needs to be implemented. (Category: Programming)
+X Figure out the whole Tails' tails thing. (Category: Programming)
+
+Knuckles:
+- Finish Gliding. (Category: Programming)
+X Climbing needs to be fully implemented. (Category: Programming)
+
+Mighty:
+- Needs to be implemented. (Category: Programming)
+- Sprite needs to be updated to fit the new style. (Category: Art)
+
+Ray:
+- Sprite needs to be updated to fit the new style. (Category: Art)
+
+╔══════════════╗
+║ OTHER MENUS: ║
+╚══════════════╝
+
+- Save Select:
+  - Need background art. (Category: Art)
+
+╔════════════════╗
+║ OTHER SPRITES: ║
+╚════════════════╝
+
+- Things that need to be S3 sprites instead of Mania:
+  - Animals.gif
+    - Animals
+  - Objects2.gif
+    - SignPost
+  - Objects3.gif
+    - SpecialRing
+    - SuperSparkle
+    - Shields
+  - Water.gif
+    - Water
+
+╔═════════╗
+║ ENGINE: ║
+╚═════════╝
+
+- Level Scenes
+  X Need animated tiles. (Category: Programming)
+- Audio:
+  X Let music be able to fade out before getting pushed off top. (Category: Programming)
+
+╔═══════╗
+║ BUGS: ║
+╚═══════╝
+
+- Sonic touches InvisibleDeath at 0x25E0,0x07E0 in MGZ2 when he shouldn't. (Category: Bugs)

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.17">
+    <grammar name="New grammar" start="id:11" author="Justin">
+        <structure name="RSDK Sprite" id="11" length="0" encoding="ISO_8859-1:1987" endian="little" signed="no" strokecolor="FF5500" fillcolor="AAFFFF">
+            <string name="Magic" id="12" type="fixed-length" length="4"/>
+            <number name="Padding" id="16" type="integer" length="4"/>
+            <number name="SheetCount" id="17" type="integer" length="1"/>
+            <structure name="SheetStrings" id="48" repeat="id:17" repeatmin="0" repeatmax="-1" consists-of="id:43">
+                <structref name="&lt;RSDK String&gt;" id="50" repeatmin="0" structure="id:43"/>
+            </structure>
+            <number name="AttributeCount" id="36" type="integer" length="1"/>
+            <structure name="AttributeStrings" id="51" repeat="id:36" repeatmin="0" repeatmax="-1" consists-of="id:43">
+                <structref name="&lt;RSDK String&gt;" id="53" structure="id:43"/>
+            </structure>
+            <number name="AnimationCount" id="54" type="integer" length="2" endian="little"/>
+            <structure name="Animations" id="60" repeat="id:54" repeatmin="0" repeatmax="-1">
+                <structref name="&lt;RSDK Anim&gt;" id="62" structure="id:55"/>
+            </structure>
+        </structure>
+        <structure name="RSDK String" id="43" repeat="id:17" repeatmin="0" repeatmax="-1" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <number name="Length" id="45" type="integer" length="1"/>
+            <string name="Value" id="46" type="fixed-length" length="Length"/>
+        </structure>
+        <structure name="RSDK Anim" id="55" encoding="ISO_8859-1:1987" endian="big" signed="no">
+            <structref name="Name" id="63" structure="id:43"/>
+            <number name="FrameCount" id="64" type="integer" length="2" endian="little"/>
+            <number name="AnimationSpeed" id="65" type="integer" length="2" endian="little">
+                <fixedvalues>
+                    <fixedvalue name="Frame Dependent" value="1"/>
+                </fixedvalues>
+            </number>
+            <number name="FrameToLoop" id="66" type="integer" length="1"/>
+            <number name="Flags" id="67" type="integer" length="1"/>
+            <structref name="Frame" id="77" repeatmin="0" repeatmax="4" structure="id:68"/>
+        </structure>
+        <structure name="RSDK Frame" id="68" encoding="ISO_8859-1:1987" endian="little" signed="no">
+            <number name="SheetNumber" id="70" type="integer" length="1"/>
+            <number name="Duration" id="71" type="integer" length="2" endian="little"/>
+            <number name="Unknown" id="72" type="integer" length="2"/>
+            <number name="X" id="73" type="integer" length="2"/>
+            <number name="Y" id="74" type="integer" length="2"/>
+            <number name="W" id="75" type="integer" length="2"/>
+            <number name="H" id="76" type="integer" length="2"/>
+            <number name="OffX" id="78" type="integer" length="2" signed="yes"/>
+            <number name="OffY" id="79" type="integer" length="2" signed="yes"/>
+        </structure>
+    </grammar>
+</ufwb>

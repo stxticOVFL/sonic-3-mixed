@@ -1,0 +1,113 @@
+1.	SStageKos_PerspectiveMaps (bin) is loaded into a0
+   	for Decompression (decmp size: $54BC)
+	(destination a1 = RAM_start = $FFFF0000)
+2.  call Draw_SSSprites
+3.  Seemingly different states:
+    Draw_SSSprite_Normal
+    Draw_SSSprite_FlyAway
+
+Player X = $FFFFE422
+Player Y = $FFFFE424
+Player Angle = $FFFFE426
+(first 2 bits of $FFFFE426 are an index to word_98B0)
+
+Draw_SSSprites:
+    a5 =
+
+note:
+maybe bit #6 of ($FFFFE426) is the "moving backwards"
+
+FFFFE426 spinning? or angle?
+
+
+((a1) & 0x7C)
+if 0
+
+endif
+(((a1) & 0x7C) >> 2) - 6
+
+Draw_SSSprite_Normal:
+    params:
+    d1 = how many times to repeat - 1
+    a1 = the address from the persp map
+    a3 = address to take data from might be sprite mappings
+    a6 = destination? (Sprite_table_buffer?)
+    before:
+    d1 = (($FFFFE422) >> 8) + 1
+    a4 = ($FFFFE480)
+         long: RAM addr to Sprite Map (Sphere, Ring, etc.)
+         long: Some long value, Flags maybe
+         x 28
+
+
+     a6
+     word: Y Pos of Sprite (top left)
+     byte: Size
+     byte: padding
+     word: VRAM + offset
+     word: X Pos
+
+d4 = (word_98B0[0] + (PY / 0x10)) & word_98B0[3]
+
+
+d1 = (PY >> 8);
+d5 = (word_98B0[1] + d1) & word_98B0[5];
+for (int x = 0x0; x <= 0xF; x++) {
+    d4 = (word_98B0[0] + (PY >> 8)) & word_98B0[3];
+    for (int y = 0x0; y <= 0xE; y++) {
+        d0 = (d5 << 5) | d4;
+        d1 = (((persp[0] & 0x7C) >> 2) - 6) * 2;
+        d6 = MapPtr_A10A[d0 / 4 + 1] >> 16;
+        d0 = MapPtr_A10A[d0 / 4 + 1] & 0xFFFF;
+        d0 *= 2;
+    }
+}
+
+
+
+Perspective Map Structure:
+Start    End (non-inclusive)
+0x0000 - 0x005C: 23 Addresses pointing to data in the map (Address - 0x00FF0000 = Location)
+0x005C - ??????: First Data Line
+Structure:
+0x0000 (word): d1 something (Flags?)
+0x0002 (word): X Offset
+0x0004 (word): Y Offset
+
+SStageKos_PerspectiveMaps:
+First 23 Long Numbers are RAM addresses
+
+d0 is some kind of value, it's multiplied by 4
+and becomes the index of the Long Addr to be used
+from the BIN file that's loaded into a1
+(a1 = BIN[d0 * 4].l)
+
+$FFFFE420 is what gives d0 it's initial value
+
+
+FlyAwayValue = $FFFFE44A
+$FFFFE44C
+
+
+function sub_9B62() {
+    d1 = (($FFFFE44C) & 0xFF);
+    if (d1 == 0)
+        return;
+    d1 -= 1;
+    if (d1 != 0)
+        loc_9C5C();
+    if (FlyAwayValue <= 0x100)
+        loc_9BA6();
+
+    FlyAwayValue += 2;
+    if (FlyAwayValue == 2)
+        Sound::Play(Sound::SFX_SPECIALSTAGEFLYAWAY);
+    // loc_9B8C
+    if (FlyAwayValue > 0x40)
+        return;
+    FlyAwayValue += 1;
+
+    if (FlyAwayValue > 0x80)
+        return;
+    FlyAwayValue += 1;
+}

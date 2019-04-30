@@ -1,0 +1,235 @@
+Obj_AIZHollowTree
+
+Create() {
+    W = 0xD0;
+}
+
+Update() {
+    sub_1F7B8_CheckForPlayers();
+
+    d0 = this.status;
+    d0 &= 0x18;
+    if (d0 == 0) {
+        if (this.Timer != 0) {
+            this.Timer--;
+            if (this.Timer == 0) {
+                Camera_min_X_pos = 0x1300;
+                Camera_max_X_pos = 0x4000;
+            }
+            // loc_1F77A
+            else if (Camera_min_X_pos != 0x1300) {
+                if (Scene.Player.EZX >= 0x2D00) {
+                    Camera_min_X_pos = 0x1300;
+                }
+                else {
+                    // loc_1F792
+                    Camera_min_X_pos -= 4;
+                }
+            }
+            // loc_1F796
+            if (Camera_max_X_pos != 0x4000) {
+                if (Scene.Player.EZX < 0x2D00) {
+                    Camera_max_X_pos = 0x4000;
+                }
+                else {
+                    // loc_1F7AE
+                    Camera_max_X_pos += 4;
+                }
+            }
+            // loc_1F7B2
+            Delete_Sprite_If_Not_In_Range();
+        }
+    }
+}
+
+void sub_1F7B8_CheckForPlayers() {
+    a1 = Player_1;          // lea	(Player_1).w,a1
+    a2 = a0 + 0x30;         // lea	$30(a0),a2
+    d6 = 3;
+    sub_1F7CE_CheckPlayer();            // bsr.s	sub_1F7CE_CheckPlayer
+
+    a1 = Player_2;          // lea	(Player_2).w,a1
+    a2 = a0 + 0x34;         // lea	$34(a0),a2
+    d6++;
+    sub_1F7CE_CheckPlayer();
+}
+
+void sub_1F7CE_CheckPlayer() {
+    // btst	d6,status(a0)
+    // inverse of // bne.w	loc_1F85C
+    if (((this.status >> d6) & 1) == 0) { // if we don't have the player
+        if (((a1.status >> Status_InAir) & 1) == 0) {
+            d0  = a1.x_pos;
+            d0 += 0x10;
+            d0 -= this.x_pos;
+            if (d0 >= 0) { // inverse of // bcs.s	locret_1F85A
+                if (d0 < 0x40) {
+                    d0  = a1.y_pos;
+                    d0 -= this.y_pos;
+                    if (d0 >= -0x5A) {
+                        if (d0 <= 0xA0) {
+                            if (a1.x_vel >= 0x600) {
+                                if (a1.object_control == 0) {
+                                    RideObject_SetRide();
+                                    *a2 = 0;
+                                    a1.object_control |= (1 << 6);
+                                    a1.object_control |= (1 << 1);
+                                    a1.anim = 0;
+                                    if (a1 == Player_1) {
+                                        if (Create_New_Sprite3()) {
+                                            a1 = new Obj_AIZ1TreeRevealControl;
+                                        }
+                                        Camera_min_X_pos = 0x2C60;
+                                        Camera_max_X_pos = 0x2C60;
+                                        this.Timer = 0x3C;
+                                        return;
+                                    }
+                                    else return;
+                                }
+                                else return;
+                            }
+                            else return;
+                        }
+                        else return;
+                    }
+                    else return;
+                }
+                else return;
+            }
+            else return;
+        }
+        else return;
+    }
+    else {
+        // loc_1F85C (does not end with branch)
+        d0 = a1.ground_vel;
+        if (d0 <= 0) {
+            d0 = -d0;
+        }
+        // loc_1F864
+        if (d0 >= 0x600) {
+            if (((a1.status >> Status_InAir) & 1) == 0) {
+                d0  = a1.y_pos;
+                d0 -= this.y_pos;
+                d0 += 0x90;
+
+                if (d0 > 0) {
+                    if (d0 > 0x130) { // bls.w	AIZTree_SetPlayerPos
+                        AIZTree_FallOff();
+                        return;
+                        // the AIZTree_FallOf function
+                        // end with rts and are technically subroutines,
+                        // but are not jmp'd or bsr'd to,
+                        // so its called and then returned
+                    }
+                    else {
+                        AIZTree_SetPlayerPos();
+                    }
+                }
+                else {
+                    AIZTree_FallOff();
+                    return;
+                }
+            }
+            // loc_1F88C (does not end with branch)
+            else {
+                if (a1.x_pos < 0x2C99) {
+                    a1.x_pos = 0x2C99;
+                    a1.x_vel = 0x400;
+                }
+                if (a1.x_pos >= 0x2D66) {
+                    a1.x_pos = 0x2D66;
+                    a1.x_vel = -0x400;
+                }
+                else {
+                    AIZTree_FallOff();
+                    return;
+                }
+            }
+        }
+        // loc_1F8FE
+        else {
+            if (*a2 < 0x400) {
+                stack.push(d6);
+                stack.push(a1);
+                AIZTree_SetPlayerPos();
+                a1 = stack.pop();
+                d6 = stack.pop();
+                AIZTree_FallOff();
+                return;
+            }
+            else {
+                AIZTree_FallOff();
+                return;
+            }
+        }
+    }
+}
+
+void AIZTree_FallOff() {
+    a1.status |= (1 << Status_InAir);
+    a1.status &= (1 << Status_Roll) ^ 0xFF;
+    a1.y_radius = 19;
+    a1.x_radius = 9;
+    a1.anim = 1;
+    a1.status &= (1 << Status_OnObj) ^ 0xFF;
+    this.status &= (1 << d6) ^ 0xFF;
+    a1.flips_remaining = 0;
+    a1.flip_speed = 4;
+    this.object_control &= (1 << 6) ^ 0xFF;
+    this.object_control &= (1 << 1) ^ 0xFF;
+    a1.x_vel >>= 1;
+    a1.y_vel >>= 1;
+    return;
+}
+
+void AIZTree_SetPlayerPos() {
+    if (((a1.status >> Status_OnObj) & 1) != 0) {
+        d0 = a1.ground_vel;
+        // extend d0
+        d0 <<= 8;
+        *a2 += d0;
+        if (*a2 >= 0) {
+            if (*a2 >= 0x400) {
+                Camera_min_X_pos = 0x1300;
+                Camera_max_X_pos = 0x4000;
+            }
+            d2 = a1.x_pos;
+            d0 = *a2;
+            d0 >>= 1;
+
+            GetSineCosine(); // d1 = cos(d0); d0 = sin(d0);
+            d0 *= 0x7000;
+            d0 >>= 16;
+            d0 += this.x_pos;
+            a1.x_pos = d0;
+            d0 -= d2;
+            d0 <<= 8;
+            a1.x_vel = d0;
+            d2 = a1.y_pos;
+            d0 = *a2;
+            d0 >>= 2;
+            d0 = -d0;
+            d0 += 0x90;
+            d0 += this.y_pos;
+            a1.y_pos = d0;
+            d0 -= d2;
+            d0 <<= 8;
+            a1.y_vel = d0;
+
+            d0 = 0;
+            d0 = *a2;
+            d0 >>= 1;
+            d0 /= 0xB;
+            a1.frame = AIZTree_PlayerFrames[d0];
+
+            d0 = 0;
+            d0 = a1.frame;
+        }
+        else {
+            AIZTree_FallOff();
+            return;
+        }
+    }
+    else return;
+}
