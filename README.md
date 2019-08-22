@@ -10,3 +10,5 @@
 SONIC 3 MIXED IS A CANCELLED FAN GAME, however, **do not** use assets without asking ShibaM.
 
 ImpostorEngine2 is property of Aurum.
+
+![Enjoy Yourselves.](enjoy.jpg?raw=true)
